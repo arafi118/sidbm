@@ -12,7 +12,7 @@ class Inventaris
 
         $tgl_beli = $inv->tgl_beli;
         $unit = $inv->unit;
-        $harga_satuan = $inv->harga_satuan;
+        $harga_satuan = $inv->harsat;
         $umur = $inv->umur_ekonomis;
 
         $penyusutan = $harga_satuan / $umur;
@@ -24,22 +24,77 @@ class Inventaris
             return 1;
         }
 
-        return $nilai;
+        return number_format($nilai, 2);
     }
 
     public static function bulan($start, $end, $periode = 'bulan')
     {
-        $diff = date_diff($start, $end);
+        $batasan = date('t');
+        $thn_awal    = substr($start, 0, 4);
+        $bln_awal    = substr($start, 5, 2);   //12
+        $tgl_awal    = substr($start, 8, 2);   //29
+
+        if ($tgl_awal <= $batasan) {
+            $tgl_awal = 01;
+            if ($bln_awal == 1) {
+                $thn_awal -= 1;
+                $bln_awal = 12;
+            } else {
+                $bln_awal -= 1;
+            }
+        } else {
+            $bln_awal = $bln_awal;
+            $tgl_awal = $tgl_awal;
+        }
+
+        $start = "$thn_awal-$bln_awal-$tgl_awal";
+        $day = 0;
+        $month = 0;
+        $month_array = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+        $datestart = strtotime($start);
+        $dateend = strtotime($end);
+        $month_start = strftime("%m", $datestart);
+        $current_year = strftime("%y", $datestart);
+        $diff = $dateend - $datestart;
+        $date = $diff / (60 * 60 * 24);
+        $day = $date;
+        $awal = 1;
+
+        while ($date > 0) {
+            if ($awal) {
+                $loop = $month_start - 1;
+                $awal = 0;
+            } else {
+                $loop = 0;
+            }
+            for ($i = $loop; $i < 12; $i++) {
+                if ($current_year % 4 == 0 && $i == 1)
+                    $day_of_month = 29;
+                else
+                    $day_of_month = $month_array[$i];
+
+                $date -= $day_of_month;
+
+                if ($date <= 0) {
+                    if ($date == 0)
+                        $month++;
+                    break;
+                }
+                $month++;
+            }
+
+            $current_year++;
+        }
 
         switch ($periode) {
-            case 'tahun':
-                return $diff->y;
+            case "hari":
+                return $day;
                 break;
-            case 'bulan':
-                return $diff->m;
+            case "bulan":
+                return $month;
                 break;
-            case 'hari':
-                return $diff->d;
+            case "tahun":
+                return (float) ($month / 12);
                 break;
         }
     }

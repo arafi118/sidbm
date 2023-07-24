@@ -1,3 +1,6 @@
+@php
+use App\Utils\Inventaris as Inv;
+@endphp
 <div class="col-sm-12">
     <div class="my-2">
         <label class="form-label" for="nama_barang">Nama Barang</label>
