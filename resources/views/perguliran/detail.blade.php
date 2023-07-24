@@ -165,7 +165,7 @@
                     data: form.serialize(),
                     success: function (result) {
                         if (result.hapus) {
-                            Swal.fire('Berhasil', result.msg, 'success').then(() => {
+                            Swal.fire('Berhasil!', result.msg, 'success').then(() => {
                                 window.location.href = '/perguliran'
                             })
                         } else {
