@@ -8,7 +8,11 @@ use App\Utils\Inventaris as Inv;
             <option value="">-- Pilih Nama Barang --</option>
             @foreach ($inventaris as $inv)
             <option value="{{ $inv->id }}">
-                {{ $inv->nama_barang }} {{ Inv::nilaiBuku($tgl_transaksi, $inv->id) }}
+                @php
+                $nilai_buku = Inv::nilaiBuku($tgl_transaksi, $inv->id)
+                @endphp
+                {{ $inv->nama_barang }} ({{ $inv->unit }} unit x
+                {{ number_format($inv->harsat) }}) | NB. {{ number_format($nilai_buku, 2) }}
             </option>
             @endforeach
         </select>

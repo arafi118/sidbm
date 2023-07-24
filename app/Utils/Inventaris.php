@@ -24,7 +24,7 @@ class Inventaris
             return 1;
         }
 
-        return number_format($nilai, 2);
+        return $nilai;
     }
 
     public static function bulan($start, $end, $periode = 'bulan')
