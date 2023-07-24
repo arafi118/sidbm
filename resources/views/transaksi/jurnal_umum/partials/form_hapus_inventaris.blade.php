@@ -18,8 +18,8 @@
         <select class="form-control" name="alasan" id="alasan">
             <option value="">-- Alasan Penghapusan --</option>
             <option value="hapus">Hapus</option>
-            <option value="rusak">Rusak</option>
             <option value="hilang">Hilang</option>
+            <option value="rusak">Rusak</option>
             <option value="jual">Jual</option>
         </select>
         <small class="text-danger" id="msg_alasan"></small>
