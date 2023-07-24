@@ -5,7 +5,7 @@
             <option value="">-- Pilih Nama Barang --</option>
             @foreach ($inventaris as $inv)
             <option value="{{ $inv->id }}">
-                {{ $inv->nama_barang }}
+                {{ $inv->nama_barang }} {{ Inv::nilaiBuku($tgl_transaksi, $inv->id) }}
             </option>
             @endforeach
         </select>

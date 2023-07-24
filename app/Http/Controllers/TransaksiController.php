@@ -12,6 +12,7 @@ use App\Utils\Tanggal;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use App\Utils\Inventaris as Inv;
 
 class TransaksiController extends Controller
 {
@@ -229,13 +230,14 @@ class TransaksiController extends Controller
 
     public function form()
     {
+        $tgl_transaksi = request()->get('tgl_transaksi');
         $jenis_transaksi = request()->get('jenis_transaksi');
         $sumber_dana = request()->get('sumber_dana');
         $disimpan_ke = request()->get('disimpan_ke');
 
         if (Keuangan::startWith($sumber_dana, '1.2.02') && $jenis_transaksi == 2) {
             $inventaris = Inventaris::where('status', 'Baik')->get();
-            return view('transaksi.jurnal_umum.partials.form_hapus_inventaris')->with(compact('inventaris'));
+            return view('transaksi.jurnal_umum.partials.form_hapus_inventaris')->with(compact('inventaris', 'tgl_transaksi'));
         } else {
             if (Keuangan::startWith($disimpan_ke, '1.2.01') || Keuangan::startWith($disimpan_ke, '1.2.03')) {
                 $kuitansi = false;

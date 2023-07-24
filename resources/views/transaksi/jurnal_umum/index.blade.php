@@ -187,6 +187,7 @@
     $(document).on('change', '#sumber_dana,#disimpan_ke', function (e) {
         e.preventDefault()
 
+        var tgl_transaksi = $('#tgl_transaksi').val()
         var jenis_transaksi = $('#jenis_transaksi').val()
         var sumber_dana = $('#sumber_dana').val()
         var disimpan_ke = $('#disimpan_ke').val()
@@ -194,7 +195,8 @@
         $.get('/transaksi/form_nominal/', {
             jenis_transaksi,
             sumber_dana,
-            disimpan_ke
+            disimpan_ke,
+            tgl_transaksi
         }, function (result) {
             $('#form_nominal').html(result)
         })
