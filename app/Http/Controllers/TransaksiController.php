@@ -47,7 +47,7 @@ class TransaksiController extends Controller
     public function store(Request $request)
     {
 
-        if (Keuangan::startWith($request->sumber_dana, '1.2.02') && $request->jenis_transaksi == '2') {
+        if (Keuangan::startWith($request->sumber_dana, '1.2.02') && Keuangan::startWith($request->disimpan_ke, '5.3.02.01') && $request->jenis_transaksi == '2') {
             $data = $request->only([
                 'tgl_transaksi',
                 'jenis_transaksi',
@@ -350,12 +350,24 @@ class TransaksiController extends Controller
         $sumber_dana = request()->get('sumber_dana');
         $disimpan_ke = request()->get('disimpan_ke');
 
-        if (Keuangan::startWith($sumber_dana, '1.2.02') && $jenis_transaksi == 2) {
+        if (Keuangan::startWith($sumber_dana, '1.2.02') && Keuangan::startWith($disimpan_ke, '5.3.02.01') && $jenis_transaksi == 2) {
+            if ($sumber_dana == '1.2.02.01') {
+                $jenis = '1';
+                $kategori = '2';
+            } elseif ($sumber_dana == '1.2.02.02') {
+                $jenis = '1';
+                $kategori = '3';
+            } else {
+                $jenis = '1';
+                $kategori = '4';
+            }
+
             $inventaris = Inventaris::where([
-                ['status', 'Baik'],
-                ['jenis', '1'],
-                ['kategori', '4']
-            ])->get();
+                ['jenis', $jenis],
+                ['kategori', $kategori]
+            ])->where(function ($query) {
+                $query->where('status', 'Baik')->orwhere('status', 'Rusak');
+            })->get();
             return view('transaksi.jurnal_umum.partials.form_hapus_inventaris')->with(compact('inventaris', 'tgl_transaksi'));
         } else {
             if (Keuangan::startWith($disimpan_ke, '1.2.01') || Keuangan::startWith($disimpan_ke, '1.2.03')) {

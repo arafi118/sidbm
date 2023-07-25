@@ -160,8 +160,8 @@
     })
 
     var jenis_transaksi = new Choices($('#jenis_transaksi')[0])
-    new Choices($('#sumber_dana')[0])
-    new Choices($('#disimpan_ke')[0])
+    var sumber = new Choices($('#sumber_dana')[0])
+    var simpan = new Choices($('#disimpan_ke')[0])
     new Choices($('#tahun')[0])
     new Choices($('#bulan')[0])
     new Choices($('#tanggal')[0])
@@ -181,6 +181,15 @@
             $.get('/transaksi/ambil_rekening/' + $(this).val(), function (result) {
                 $('#kd_rekening').html(result)
             })
+        }
+    })
+
+    $(document).on('change', '#sumber_dana', function (e) {
+        e.preventDefault()
+        var sumber_dana = $(this).val()
+
+        if (sumber_dana == '1.2.02.01' || sumber_dana == '1.2.02.02' || sumber_dana == '1.2.02.03') {
+            simpan.setChoiceByValue('5.3.02.01')
         }
     })
 
