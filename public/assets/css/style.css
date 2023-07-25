@@ -211,3 +211,12 @@ small.text-danger {
     -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
     transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
 }
+
+.choices .choices__list.choices__list--single .choices__item--selectable {
+    white-space: nowrap !important;
+    overflow-x: hidden !important;
+}
+
+.choices__list--single .choices__item {
+    width: 90%;
+}

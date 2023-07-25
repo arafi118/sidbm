@@ -239,5 +239,52 @@
         })
     })
 
+    $(document).on('change', '#nama_barang', function (e) {
+        var value = $(this).val().split('#')
+
+        var id = value[0]
+        var unit = parseInt(value[1])
+        var nilai_buku = parseInt(value[2])
+
+        var harga = nilai_buku / unit
+
+        $('#unit').attr('max', unit)
+
+        $('#unit').val(unit)
+        $('#harsat').val(harga)
+        $('#nilai_buku').val(formatter.format(nilai_buku))
+        $('#harga_jual').val(formatter.format(nilai_buku))
+    })
+
+    $(document).on('change', '#unit', function () {
+        var max = parseInt($(this).attr('max'))
+        var unit = parseInt($(this).val())
+
+        if (unit > max) {
+            $(this).val(max)
+            unit = max
+        }
+
+        var harga = parseInt($('#harsat').val())
+        var nilai_buku = unit * harga
+
+        $('#nilai_buku').val(formatter.format(nilai_buku))
+        $('#harga_jual').val(formatter.format(nilai_buku))
+    })
+
+    $(document).on('change', '#alasan', function () {
+        var status = $(this).val()
+        console.log(status)
+
+        if (status == "dijual") {
+            $('#col_nilai_buku,#col_unit').attr('class', 'col-sm-4')
+            $('#col_harga_jual').show()
+            $("#col_harga_jual").focus()
+        } else {
+            $('#col_nilai_buku,#col_unit').attr('class', 'col-sm-6')
+            $('#col_harga_jual').hide()
+        }
+    })
+
 </script>
 @endsection
