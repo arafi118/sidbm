@@ -26,10 +26,10 @@ class DashboardController extends Controller
 
         $year = date('Y');
         $month = date('m');
-        $day = date('d', strtotime('-1 days', date('Y-m-d')));
+        $day = date('d', strtotime('-1 days', strtotime(date('Y-m-d'))));
 
         $transaksi = Transaksi::where('tgl_transaksi', date('Y-m-d'))
-            ->whereRaw("(rekening_debit='1.1.05.01' AND rekening_kredit='4.1.01.01' OR rekening_debit='1.1.05.02' AND rekening_kredit='4.1.01.02' OR rekening_debit='1.1.05.03' AND rekening_kredit='4.1.01.03')");
+            ->whereRaw("(rekening_debit='1.1.03.04' AND rekening_kredit='4.1.01.01' OR rekening_debit='1.1.03.05' AND rekening_kredit='4.1.01.02' OR rekening_debit='1.1.03.06' AND rekening_kredit='4.1.01.03')");
 
         if ($transaksi->count() <= 0) {
             $pinjaman_kelompok = PinjamanKelompok::where('status', 'A')->whereDay('tgl_cair', $day)->with('kelompok')->get();
@@ -74,7 +74,7 @@ class DashboardController extends Controller
                     $nunggak_jasa = $target_jasa - $sum_jasa;
 
                     $insert = [
-                        'tgl_transaksi' => Date('Y-m-d'),
+                        'tgl_transaksi' => date('Y-m-d'),
                         'rekening_debit' => $piutang,
                         'rekening_kredit' => $pendapatan,
                         'idtp' => 0,
@@ -87,10 +87,14 @@ class DashboardController extends Controller
                         'id_user' => auth()->user()->id,
                     ];
 
-                    Transaksi::create($insert);
+                    if ($nunggak_jasa > 0) {
+                        Transaksi::create($insert);
+                    }
                 }
             }
         }
+
+        echo '<script>window.close()</script>';
     }
 
     private function _piutang()
