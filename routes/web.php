@@ -25,6 +25,7 @@ Route::get('/', [AuthController::class, 'index'])->middleware('guest')->name('/'
 Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+Route::get('/piutang_jasa', [DashboardController::class, 'piutang'])->middleware('auth');
 
 Route::get('/database/kelompok/register_kelompok', [KelompokController::class, 'register']);
 Route::get('/database/kelompok/generatekode', [KelompokController::class, 'generateKode']);
