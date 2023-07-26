@@ -33,6 +33,12 @@ class TransaksiController extends Controller
         return view('transaksi.jurnal_umum.index')->with(compact('title', 'jenis_transaksi', 'kec'));
     }
 
+    public function jurnalAngsuran()
+    {
+        $title = 'Jurnal Angsuran';
+        return view('transaksi.jurnal_angsuran.index')->with(compact('title'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

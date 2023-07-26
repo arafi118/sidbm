@@ -60,6 +60,7 @@ Route::get('/hapus_pemanfaat/{id}', [PinjamanAnggotaController::class, 'hapus'])
 Route::resource('/pinjaman_anggota', PinjamanAnggotaController::class);
 
 Route::get('/transaksi/jurnal_umum', [TransaksiController::class, 'jurnalUmum']);
+Route::get('/transaksi/jurnal_angsuran', [TransaksiController::class, 'jurnalAngsuran']);
 
 Route::get('/transaksi/ambil_rekening/{id}', [TransaksiController::class, 'rekening']);
 Route::get('/transaksi/form_nominal/', [TransaksiController::class, 'form']);
