@@ -51,6 +51,7 @@ Route::get('/perguliran/generate/{id_pinj}', [PinjamanKelompokController::class,
 Route::get('/lunas/{perguliran}', [PinjamanKelompokController::class, 'pelunasan']);
 Route::get('/cetak_keterangan_lunas/{perguliran}', [PinjamanKelompokController::class, 'keterangan']);
 
+Route::get('/perguliran/cari_kelompok', [PinjamanKelompokController::class, 'cariKelompok']);
 Route::resource('/perguliran', PinjamanKelompokController::class);
 
 Route::get('/pinjaman_anggota/register/{id_pinkel}', [PinjamanAnggotaController::class, 'create']);
@@ -64,5 +65,8 @@ Route::get('/transaksi/jurnal_angsuran', [TransaksiController::class, 'jurnalAng
 
 Route::get('/transaksi/ambil_rekening/{id}', [TransaksiController::class, 'rekening']);
 Route::get('/transaksi/form_nominal/', [TransaksiController::class, 'form']);
+Route::get('/transaksi/form_angsuran/{id_pinkel}', [TransaksiController::class, 'formAngsuran']);
+
+Route::post('/transaksi/angsuran', [TransaksiController::class, 'angsuran']);
 
 Route::resource('/transaksi', TransaksiController::class);

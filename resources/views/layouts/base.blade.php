@@ -151,6 +151,7 @@
     <script src="/assets/js/plugins/choices.min.js"></script>
     <script src="/assets/js/plugins/sweetalert.min.js"></script>
     <script src="/assets/js/plugins/flatpickr.min.js"></script>
+    <script src="/assets/js/plugins/chartjs.min.js"></script>
 
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
@@ -163,6 +164,94 @@
 
     <script src="/assets/js/plugins/world.js"></script>
     @yield('script')
+
+    <script>
+        var formatter = new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        })
+
+        $('#cariKelompok').typeahead({
+            source: function (query, process) {
+                var states = [];
+                return $.get('/perguliran/cari_kelompok', {
+                    query: query
+                }, function (result) {
+                    var resultList = result.map(function (item) {
+                        states.push({
+                            "id": item.id,
+                            "name": item.nama_kelompok +
+                                ' [' + item.nama_desa + ']' +
+                                ' [' + item.ketua + ']',
+                            "value": item.id
+                        });
+                    });
+
+                    return process(states);
+                })
+            },
+            afterSelect: function (item) {
+                var path = '{{ Request::path() }}'
+                if (path == 'transaksi/jurnal_angsuran') {
+                    $.get('/transaksi/form_angsuran/' + item.id, function (result) {
+                        $('#pokok').val(formatter.format(result.saldo_pokok))
+                        $('#jasa').val(formatter.format(result.saldo_jasa))
+                        $('#id').val(result.pinkel.id)
+
+                        var ch_pokok = document.getElementById('chartP').getContext(
+                            "2d");
+                        var ch_jasa = document.getElementById('chartJ').getContext(
+                            "2d");
+
+                        if (pokok) {
+                            pokok.destroy()
+                        }
+
+                        if (jasa) {
+                            jasa.destroy()
+                        }
+
+                        makeChart('pokok', ch_pokok, result.sisa_pokok, result.sum_pokok)
+                        makeChart('jasa', ch_jasa, result.sisa_jasa, result.sum_jasa)
+
+                        $('#pokok,#jasa,#denda').trigger('change')
+                    })
+                } else {
+                    window.location.href = '/transaksi/jurnal_angsuran?pinkel=' + item.id
+                }
+            }
+        });
+
+        function makeChart(id, target, sisa_saldo, sum_saldo) {
+            console.log(id, sisa_saldo, sum_saldo)
+            window[id] = new Chart(target, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'Sisa Saldo',
+                        'Total Pengembalian'
+                    ],
+                    datasets: [{
+                        label: 'My First Dataset',
+                        data: [sisa_saldo, sum_saldo],
+                        backgroundColor: [
+                            '#e3316e',
+                            '#3A416F'
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            })
+        }
+
+    </script>
 
     <script>
         var win = navigator.platform.indexOf('Win') > -1;

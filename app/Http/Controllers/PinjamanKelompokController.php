@@ -647,6 +647,26 @@ class PinjamanKelompokController extends Controller
         ]);
     }
 
+    public function cariKelompok()
+    {
+        $param = request()->get('query');
+        if (strlen($param) >= '0') {
+            $kelompok = Kelompok::leftJoin('desa', 'desa.kd_desa', '=', 'kelompok_' . auth()->user()->lokasi . '.desa')
+                ->leftJoin('pinjaman_kelompok_' . auth()->user()->lokasi . ' as pk', 'pk.id_kel', '=', 'kelompok_' . auth()->user()->lokasi . '.id')
+                ->where(function ($query) use ($param) {
+                    $query->where('kelompok_' . auth()->user()->lokasi . '.nama_kelompok', 'like', '%' . $param . '%')
+                        ->orwhere('kelompok_' . auth()->user()->lokasi . '.kd_kelompok', 'like', '%' . $param . '%')
+                        ->orwhere('kelompok_' . auth()->user()->lokasi . '.ketua', 'like', '%' . $param . '%');
+                })
+                ->where('pk.status', 'A')
+                ->get();
+
+            return response()->json($kelompok);
+        }
+
+        return response()->json($param);
+    }
+
     public function generate($id_pinj)
     {
         $pinkel = PinjamanKelompok::where('id', $id_pinj)->firstOrFail();

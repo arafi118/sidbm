@@ -33,11 +33,16 @@
                 </div>
             </a>
         </div>
-        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-            <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 justify-content-between" id="navbar">
+            <div class="ms-md-3 pe-md-3 d-flex align-items-center w-100">
                 <div class="input-group input-group-outline">
-                    <label class="form-label">Search here</label>
-                    <input type="text" class="form-control">
+                    <label class="form-label">Cari Kelompok</label>
+                    @if (Request::get('pinkel'))
+                    <input type="text" id="cariKelompok" name="cariKelompok" class="form-control"
+                        value="{{ $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] [' . $pinkel->kelompok->ketua . ']' }}">
+                    @else
+                    <input type="text" id="cariKelompok" name="cariKelompok" class="form-control">
+                    @endif
                 </div>
             </div>
             <ul class="navbar-nav justify-content-end align-items-center">

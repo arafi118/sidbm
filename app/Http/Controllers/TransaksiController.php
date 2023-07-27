@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Inventaris;
 use App\Models\JenisTransaksi;
 use App\Models\Kecamatan;
+use App\Models\PinjamanKelompok;
+use App\Models\RealAngsuran;
 use App\Models\Rekening;
+use App\Models\RencanaAngsuran;
 use App\Models\Transaksi;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
@@ -36,7 +39,15 @@ class TransaksiController extends Controller
     public function jurnalAngsuran()
     {
         $title = 'Jurnal Angsuran';
-        return view('transaksi.jurnal_angsuran.index')->with(compact('title'));
+
+        if (request()->get('pinkel')) {
+            $pinkel = PinjamanKelompok::where('id', request()->get('pinkel'))->with('kelompok');
+            $pinkel = $pinkel->first();
+        } else {
+            $pinkel = '0';
+        }
+
+        return view('transaksi.jurnal_angsuran.index')->with(compact('title', 'pinkel'));
     }
 
     /**
@@ -275,6 +286,52 @@ class TransaksiController extends Controller
         ]);
     }
 
+    public function angsuran(Request $request)
+    {
+        $data = $request->only([
+            'id',
+            'tgl_transaksi',
+            'pokok',
+            'jasa',
+            'denda'
+        ]);
+
+        $validate = Validator::make($data, [
+            'tgl_transaksi' => 'required',
+            'pokok' => 'required',
+            'jasa' => 'required',
+            'denda' => 'required'
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
+        }
+
+        if ($request->pokok == 0 && $request->jasa == 0) {
+            //
+        }
+
+        $tgl_transaksi = Tanggal::tglNasional($request->tgl_transaksi);
+
+        $pinkel = PinjamanKelompok::where('id', $request->id)->with('kelompok')->first();
+        $real = RealAngsuran::where([
+            ['loan_id', $pinkel->id],
+            ['tgl_transaksi', '<=', $tgl_transaksi]
+        ])->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC')->first();
+
+        $ra = RencanaAngsuran::where([
+            ['loan_id', $pinkel->id],
+            ['jatuh_tempo', '<=', $tgl_transaksi]
+        ])->orderBy('jatuh_tempo', 'DESC')->first();
+
+        $tunggakan_jasa    = $ra->target_jasa - $real->sum_jasa;
+        if ($tunggakan_jasa < '0') $tunggakan_jasa = '0';
+
+        if (strtotime($tgl_transaksi) < strtotime($pinkel->tgl_cair)) {
+            //
+        }
+    }
+
     /**
      * Display the specified resource.
      */
@@ -475,5 +532,47 @@ class TransaksiController extends Controller
                 return view('transaksi.jurnal_umum.partials.form_nominal')->with(compact('relasi', 'keterangan_transaksi'));
             }
         }
+    }
+
+    public function formAngsuran($id_pinkel)
+    {
+        $pinkel = PinjamanKelompok::where('id', $id_pinkel)->with('kelompok')->firstOrFail();
+        $real = RealAngsuran::where([
+            ['loan_id', $id_pinkel],
+            ['tgl_transaksi', '<=', date('Y-m-d')]
+        ])->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
+        $ra = RencanaAngsuran::where([
+            ['loan_id', $id_pinkel],
+            ['jatuh_tempo', 'LIKE', '%' . date('Y-m') . '%'],
+            ['angsuran_ke', '!=', '0']
+        ])->orderBy('jatuh_tempo', 'DESC')->first();
+
+        $alokasi_jasa = $pinkel->alokasi * ($pinkel->pros_jasa / 100);
+
+        if ($real->count() > 0) {
+            $real = $real->first();
+        } else {
+            $real->sum_pokok = 0;
+            $real->sum_jasa = 0;
+        }
+
+        $saldo_pokok = ($ra->target_pokok - $real->sum_pokok > 0) ? $ra->target_pokok - $real->sum_pokok : 0;
+        $saldo_jasa = ($ra->target_jasa - $real->sum_jasa > 0) ? $ra->target_jasa - $real->sum_jasa : 0;
+
+        $sisa_pokok = $pinkel->alokasi - $real->sum_pokok;
+        $sisa_jasa = $alokasi_jasa - $real->sum_jasa;
+
+        $sum_pokok = $real->sum_pokok;
+        $sum_jasa = $real->sum_jasa;
+
+        return response()->json([
+            'saldo_pokok' => $saldo_pokok,
+            'saldo_jasa' => $saldo_jasa,
+            'sisa_pokok' => $sisa_pokok,
+            'sisa_jasa' => $sisa_jasa,
+            'sum_pokok' => $sum_pokok,
+            'sum_jasa' => $sum_jasa,
+            'pinkel' => $pinkel
+        ]);
     }
 }
