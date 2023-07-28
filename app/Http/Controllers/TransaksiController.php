@@ -288,6 +288,7 @@ class TransaksiController extends Controller
 
     public function angsuran(Request $request)
     {
+        $last_idtp = Transaksi::where('idtp', '!=', '0')->max('idtp');
         $data = $request->only([
             'id',
             'tgl_transaksi',
@@ -307,29 +308,189 @@ class TransaksiController extends Controller
             return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
         }
 
-        if ($request->pokok == 0 && $request->jasa == 0) {
-            //
+        if ($request->pokok <= 0 && $request->jasa <= 0 && $request->denda <= 0) {
+            return response()->json([
+                'success' => false,
+                'msg' => 'Total Bayar tidak boleh nol'
+            ]);
         }
 
         $tgl_transaksi = Tanggal::tglNasional($request->tgl_transaksi);
 
+        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
         $pinkel = PinjamanKelompok::where('id', $request->id)->with('kelompok')->first();
+
         $real = RealAngsuran::where([
             ['loan_id', $pinkel->id],
             ['tgl_transaksi', '<=', $tgl_transaksi]
-        ])->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC')->first();
+        ])->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
 
         $ra = RencanaAngsuran::where([
             ['loan_id', $pinkel->id],
             ['jatuh_tempo', '<=', $tgl_transaksi]
-        ])->orderBy('jatuh_tempo', 'DESC')->first();
+        ])->orderBy('jatuh_tempo', 'DESC');
+
+        if ($real->count() > 0) {
+            $real = $real->first();
+        } else {
+            $real->sum_pokok = 0;
+            $real->sum_jasa = 0;
+        }
+
+        if ($ra->count() > 0) {
+            $ra = $ra->first();
+        } else {
+            $ra->target_pokok = 0;
+            $ra->target_jasa = 0;
+        }
 
         $tunggakan_jasa    = $ra->target_jasa - $real->sum_jasa;
         if ($tunggakan_jasa < '0') $tunggakan_jasa = '0';
 
         if (strtotime($tgl_transaksi) < strtotime($pinkel->tgl_cair)) {
-            //
+            return response()->json([
+                'success' => false,
+                'msg' => 'Tanggal transaksi tidak boleh sebelum Tanggal Cair'
+            ]);
         }
+
+        $kas_umum = '1.1.01.01';
+        if ($pinkel->jenis_pp == '1') {
+            $poko_kredit = '1.1.03.01';
+            $jasa_kredit = '4.1.01.01';
+            $dend_kredit = '4.1.01.04';
+        } elseif ($pinkel->jenis_pp == '2') {
+            $poko_kredit = '1.1.03.02';
+            $jasa_kredit = '4.1.01.02';
+            $dend_kredit = '4.1.01.05';
+        } else {
+            $poko_kredit = '1.1.03.03';
+            $jasa_kredit = '4.1.01.03';
+            $dend_kredit = '4.1.01.06';
+        }
+
+        // if (strtotime($tgl_transaksi) < strtotime($kec->tgl_registrasi)) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'msg' => 'Tanggal transaksi tidak boleh sebelum Tanggal Registrasi Aplikasi'
+        //     ]);
+        // }
+
+        $idtp = $last_idtp + 1;
+        if ($request->pokok > 0) {
+            $trx_pokok = [
+                'tgl_transaksi' => $tgl_transaksi,
+                'rekening_debit' => $kas_umum,
+                'rekening_kredit' => $poko_kredit,
+                'idtp' => $idtp,
+                'id_pinj' => $pinkel->id,
+                'id_pinj_i' => '0',
+                'keterangan_transaksi' => 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] (P)',
+                'relasi' => $pinkel->kelompok->nama_kelompok,
+                'jumlah' => str_replace(',', '', str_replace('.00', '', $request->pokok)),
+                'urutan' => '0',
+                'id_user' => auth()->user()->id
+            ];
+
+            $pokok = Transaksi::create($trx_pokok);
+        }
+
+        if ($request->jasa > 0) {
+            if ($request->jasa < $tunggakan_jasa) {
+                if ($pinkel->jenis_pp == '1') {
+                    $jasa_kredit = '1.1.03.04';
+                } elseif ($pinkel->jenis_pp == '2') {
+                    $jasa_kredit = '1.1.03.05';
+                } else {
+                    $jasa_kredit = '1.1.03.06';
+                }
+
+                $trx_jasa = [
+                    'tgl_transaksi' => $tgl_transaksi,
+                    'rekening_debit' => $kas_umum,
+                    'rekening_kredit' => $jasa_kredit,
+                    'idtp' => $idtp,
+                    'id_pinj' => $pinkel->id,
+                    'id_pinj_i' => '0',
+                    'keterangan_transaksi' => 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] (J)',
+                    'relasi' => $pinkel->kelompok->nama_kelompok,
+                    'jumlah' => str_replace(',', '', str_replace('.00', '', $request->jasa)),
+                    'urutan' => '0',
+                    'id_user' => auth()->user()->id
+                ];
+
+                $jasa = Transaksi::create($trx_jasa);
+            } else {
+                $angs_jasa = ($request->jasa - $tunggakan_jasa > 0) ? ($request->jasa - $tunggakan_jasa) : $request->jasa;
+                $trx_jasa = [
+                    'tgl_transaksi' => $tgl_transaksi,
+                    'rekening_debit' => $kas_umum,
+                    'rekening_kredit' => $jasa_kredit,
+                    'idtp' => $idtp,
+                    'id_pinj' => $pinkel->id,
+                    'id_pinj_i' => '0',
+                    'keterangan_transaksi' => 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
+                    'relasi' => $pinkel->kelompok->nama_kelompok,
+                    'jumlah' => str_replace(',', '', str_replace('.00', '', $angs_jasa)),
+                    'urutan' => '0',
+                    'id_user' => auth()->user()->id
+                ];
+                $jasa = Transaksi::create($trx_jasa);
+
+                if ($request->jasa - $angs_jasa > 0) {
+                    $piutang_kredit = $jasa_kredit;
+                    if ($pinkel->jenis_pp == '1') {
+                        $piutang_kredit = '1.1.03.04';
+                    } elseif ($pinkel->jenis_pp == '2') {
+                        $piutang_kredit = '1.1.03.05';
+                    } else {
+                        $piutang_kredit = '1.1.03.06';
+                    }
+
+                    $piutang_jasa = $request->jasa - $angs_jasa;
+                    $trx_jasa = [
+                        'tgl_transaksi' => $tgl_transaksi,
+                        'rekening_debit' => $kas_umum,
+                        'rekening_kredit' => $piutang_kredit,
+                        'idtp' => $idtp,
+                        'id_pinj' => $pinkel->id,
+                        'id_pinj_i' => '0',
+                        'keterangan_transaksi' => 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
+                        'relasi' => $pinkel->kelompok->nama_kelompok,
+                        'jumlah' => str_replace(',', '', str_replace('.00', '', $piutang_jasa)),
+                        'urutan' => '0',
+                        'id_user' => auth()->user()->id
+                    ];
+
+                    $piutang = Transaksi::create($trx_jasa);
+                }
+            }
+        }
+
+        if ($request->denda > 0) {
+            $trx_denda = [
+                'tgl_transaksi' => $tgl_transaksi,
+                'rekening_debit' => $kas_umum,
+                'rekening_kredit' => $dend_kredit,
+                'idtp' => $idtp,
+                'id_pinj' => $pinkel->id,
+                'id_pinj_i' => '0',
+                'keterangan_transaksi' => 'Denda. ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . ']',
+                'relasi' => $pinkel->kelompok->nama_kelompok,
+                'jumlah' => str_replace(',', '', str_replace('.00', '', $request->denda)),
+                'urutan' => '0',
+                'id_user' => auth()->user()->id
+            ];
+
+            $denda = Transaksi::create($trx_denda);
+        }
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Angsuran kelompok ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] berhasil diposting',
+            'id_pinkel' => $pinkel->id,
+            'idtp' => $idtp
+        ]);
     }
 
     /**
@@ -543,9 +704,9 @@ class TransaksiController extends Controller
         ])->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
         $ra = RencanaAngsuran::where([
             ['loan_id', $id_pinkel],
-            ['jatuh_tempo', 'LIKE', '%' . date('Y-m') . '%'],
+            ['jatuh_tempo', '<=', date('Y-m-d')],
             ['angsuran_ke', '!=', '0']
-        ])->orderBy('jatuh_tempo', 'DESC')->first();
+        ])->orderBy('jatuh_tempo', 'DESC');
 
         $alokasi_jasa = $pinkel->alokasi * ($pinkel->pros_jasa / 100);
 
@@ -554,6 +715,13 @@ class TransaksiController extends Controller
         } else {
             $real->sum_pokok = 0;
             $real->sum_jasa = 0;
+        }
+
+        if ($ra->count() > 0) {
+            $ra = $ra->first();
+        } else {
+            $ra->target_pokok = 0;
+            $ra->target_jasa = 0;
         }
 
         $saldo_pokok = ($ra->target_pokok - $real->sum_pokok > 0) ? $ra->target_pokok - $real->sum_pokok : 0;
@@ -572,7 +740,46 @@ class TransaksiController extends Controller
             'sisa_jasa' => $sisa_jasa,
             'sum_pokok' => $sum_pokok,
             'sum_jasa' => $sum_jasa,
+            'alokasi_pokok' => $pinkel->alokasi,
+            'alokasi_jasa' => $alokasi_jasa,
             'pinkel' => $pinkel
         ]);
+    }
+
+    public function generateReal($id_pinkel)
+    {
+        $idtp = request()->get('idtp');
+        if ($idtp == 0) {
+            return response()->json([
+                'success' => false,
+                'msg' => 'Error'
+            ]);
+        }
+
+        $pinkel = PinjamanKelompok::where('id', $id_pinkel)->first();
+
+        $transaksi = Transaksi::where([
+            ['id_pinj', $pinkel->id],
+            ['idtp', $idtp]
+        ])->get();
+
+        $insert = [
+            'loan_id' => $pinkel->id,
+            'tgl_transaksi' => 0,
+            'realisasi_pokok' => 0,
+            'realisasi_jasa' => 0,
+            'sum_pokok' => 0,
+            'sum_jasa' => 0,
+            'saldo_pokok' => 0,
+            'saldo_jasa' => 0,
+            'tunggakan_pokok' => 0,
+            'tunggakan_jasa' => 0,
+            'lu' => date('Y-m-d H:i:s'),
+            'id_user' => auth()->user()->id,
+        ];
+
+        foreach ($transaksi as $trx) {
+            //
+        }
     }
 }

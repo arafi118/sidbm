@@ -68,5 +68,6 @@ Route::get('/transaksi/form_nominal/', [TransaksiController::class, 'form']);
 Route::get('/transaksi/form_angsuran/{id_pinkel}', [TransaksiController::class, 'formAngsuran']);
 
 Route::post('/transaksi/angsuran', [TransaksiController::class, 'angsuran']);
+Route::get('/transaksi/generate_real/{id_pinkel}', [TransaksiController::class, 'generateReal']);
 
 Route::resource('/transaksi', TransaksiController::class);

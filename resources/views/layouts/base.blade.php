@@ -194,27 +194,10 @@
                 var path = '{{ Request::path() }}'
                 if (path == 'transaksi/jurnal_angsuran') {
                     $.get('/transaksi/form_angsuran/' + item.id, function (result) {
-                        $('#pokok').val(formatter.format(result.saldo_pokok))
-                        $('#jasa').val(formatter.format(result.saldo_jasa))
-                        $('#id').val(result.pinkel.id)
-
-                        var ch_pokok = document.getElementById('chartP').getContext(
-                            "2d");
-                        var ch_jasa = document.getElementById('chartJ').getContext(
-                            "2d");
-
-                        if (pokok) {
-                            pokok.destroy()
-                        }
-
-                        if (jasa) {
-                            jasa.destroy()
-                        }
+                        angsuran(true, result)
 
                         makeChart('pokok', ch_pokok, result.sisa_pokok, result.sum_pokok)
                         makeChart('jasa', ch_jasa, result.sisa_jasa, result.sum_jasa)
-
-                        $('#pokok,#jasa,#denda').trigger('change')
                     })
                 } else {
                     window.location.href = '/transaksi/jurnal_angsuran?pinkel=' + item.id
@@ -223,7 +206,6 @@
         });
 
         function makeChart(id, target, sisa_saldo, sum_saldo) {
-            console.log(id, sisa_saldo, sum_saldo)
             window[id] = new Chart(target, {
                 type: 'doughnut',
                 data: {
@@ -249,6 +231,33 @@
                     }
                 }
             })
+        }
+
+        function angsuran(destroy = false, result) {
+            $('#pokok').val(formatter.format(result.saldo_pokok))
+            $('#jasa').val(formatter.format(result.saldo_jasa))
+            $('#id').val(result.pinkel.id)
+
+            $('#_pokok').val(result.sisa_pokok)
+            $('#_jasa').val(result.sisa_jasa)
+
+            var ch_pokok = document.getElementById('chartP').getContext("2d");
+            var ch_jasa = document.getElementById('chartJ').getContext("2d");
+
+            if (destroy) {
+                if (pokok) {
+                    pokok.destroy()
+                }
+
+                if (jasa) {
+                    jasa.destroy()
+                }
+            }
+
+            $('#alokasi_pokok').html("Rp. " + formatter.format(result.alokasi_pokok))
+            $('#alokasi_jasa').html("Rp. " + formatter.format(result.alokasi_jasa))
+
+            $('#pokok,#jasa,#denda').trigger('change')
         }
 
     </script>

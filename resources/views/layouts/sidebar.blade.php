@@ -165,7 +165,7 @@ return '';
             </li>
             <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#MenuTransaksi"
-                    class="nav-link text-white {{ active('','jurnal_umum','jurnal_umum','tutup_buku') }}"
+                    class="nav-link text-white {{ active('','jurnal_umum','jurnal_angsuran','tutup_buku') }}"
                     aria-controls="MenuTransaksi" role="button" aria-expanded="false">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons-round opacity-10">assessment</i>

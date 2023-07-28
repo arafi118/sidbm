@@ -169,7 +169,7 @@
                                 window.location.href = '/perguliran'
                             })
                         } else {
-                            Swal.fire('Berhasil', result.msg, 'warning')
+                            Swal.fire('Peringatan', result.msg, 'warning')
                         }
                     }
                 })

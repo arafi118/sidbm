@@ -9,6 +9,8 @@
                     @csrf
 
                     <input type="hidden" name="id" id="id" value="{{ Request::get("pinkel") ?: 0 }}">
+                    <input type="hidden" name="_pokok" id="_pokok">
+                    <input type="hidden" name="_jasa" id="_jasa">
                     <div class="row">
                         <div class="col-12">
                             <div class="input-group input-group-static my-3">
@@ -94,15 +96,23 @@
                 </li>
             </ul>
 
-            <div class="tab-content mt-2">
+            <div class="tab-content mt-3">
                 <div class="tab-pane fade show active" id="Pokok" role="tabpanel" aria-labelledby="Pokok">
                     <div class="card card-body p-2">
                         <canvas id="chartP"></canvas>
+                        <div class="d-flex justify-content-between mt-3 mb-1 mx-3 text-sm fw-bold">
+                            <span>Alokasi</span>
+                            <span id="alokasi_pokok"></span>
+                        </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="Jasa" role="tabpanel" aria-labelledby="Jasa">
                     <div class="card card-body p-2">
                         <canvas id="chartJ"></canvas>
+                        <div class="d-flex justify-content-between mt-3 mb-1 mx-3 text-sm fw-bold">
+                            <span>Jasa</span>
+                            <span id="alokasi_jasa"></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -148,14 +158,10 @@
         var ch_jasa = document.getElementById('chartJ').getContext("2d");
 
         $.get('/transaksi/form_angsuran/' + id_pinkel, function (result) {
-            $('#pokok').val(formatter.format(result.saldo_pokok))
-            $('#jasa').val(formatter.format(result.saldo_jasa))
-            $('#id').val(result.pinkel.id)
+            angsuran(false, result)
 
             makeChart('pokok', ch_pokok, result.sisa_pokok, result.sum_pokok)
             makeChart('jasa', ch_jasa, result.sisa_jasa, result.sum_jasa)
-
-            $('#pokok,#jasa,#denda').trigger('change')
         })
     }
 
@@ -189,7 +195,24 @@
             url: form.attr('action'),
             data: form.serialize(),
             success: function (result) {
-                //
+                if (result.success) {
+                    $.get('/transaksi/generate_real/' + result.id_pinkel + '?idtp=' + result.idtp,
+                        function (res) {
+                            Swal.fire('Berhasil!', result.msg, 'success').then(() => {
+                                $.get('/transaksi/form_angsuran/' + result.id_pinkel,
+                                    function (result) {
+                                        angsuran(true, result)
+
+                                        makeChart('pokok', ch_pokok, result
+                                            .sisa_pokok, result.sum_pokok)
+                                        makeChart('jasa', ch_jasa, result.sisa_jasa,
+                                            result.sum_jasa)
+                                    })
+                            })
+                        })
+                } else {
+                    Swal.fire('Peringatan', result.msg, 'warning')
+                }
             }
         })
     })
