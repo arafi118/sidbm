@@ -489,7 +489,8 @@ class TransaksiController extends Controller
             'success' => true,
             'msg' => 'Angsuran kelompok ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] berhasil diposting',
             'id_pinkel' => $pinkel->id,
-            'idtp' => $idtp
+            'idtp' => $idtp,
+            'tgl_transaksi' => $tgl_transaksi
         ]);
     }
 
@@ -749,6 +750,8 @@ class TransaksiController extends Controller
     public function generateReal($id_pinkel)
     {
         $idtp = request()->get('idtp');
+        $tgl_transaksi = request()->get('tgl_transaksi');
+
         if ($idtp == 0) {
             return response()->json([
                 'success' => false,
@@ -763,23 +766,89 @@ class TransaksiController extends Controller
             ['idtp', $idtp]
         ])->get();
 
+        $real = RealAngsuran::where([
+            ['loan_id', $id_pinkel],
+            ['tgl_transaksi', '<=', $tgl_transaksi]
+        ])->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
+        $ra = RencanaAngsuran::where([
+            ['loan_id', $id_pinkel],
+            ['jatuh_tempo', '<=', $tgl_transaksi],
+            ['angsuran_ke', '!=', '0']
+        ])->orderBy('jatuh_tempo', 'DESC');
+
+        $alokasi_pokok = intval($pinkel->alokasi);
+        $alokasi_jasa = intval($pinkel->alokasi * ($pinkel->pros_jasa / 100));
+
+        if ($real->count() > 0) {
+            $real = $real->first();
+        } else {
+            $real->sum_pokok = 0;
+            $real->sum_jasa = 0;
+            $real->saldo_pokok = $alokasi_pokok;
+            $real->saldo_jasa = $alokasi_jasa;
+            $real->tunggakan_pokok = 0;
+            $real->tunggakan_jasa = 0;
+        }
+
+        if ($ra->count() > 0) {
+            $ra = $ra->first();
+        } else {
+            $ra->target_pokok = 0;
+            $ra->target_jasa = 0;
+        }
+
+        $tunggakan_pokok = $ra->target_pokok - $real->sum_pokok;
+        if ($tunggakan_pokok <= 0) $tunggakan_pokok = 0;
+
+        $tunggakan_jasa = $ra->target_jasa - $real->sum_jasa;
+        if ($tunggakan_jasa <= 0) $tunggakan_jasa = 0;
+
         $insert = [
+            'id' => $idtp,
             'loan_id' => $pinkel->id,
-            'tgl_transaksi' => 0,
+            'tgl_transaksi' => $tgl_transaksi,
             'realisasi_pokok' => 0,
             'realisasi_jasa' => 0,
-            'sum_pokok' => 0,
-            'sum_jasa' => 0,
-            'saldo_pokok' => 0,
-            'saldo_jasa' => 0,
-            'tunggakan_pokok' => 0,
-            'tunggakan_jasa' => 0,
+            'sum_pokok' => $real->sum_pokok,
+            'sum_jasa' => $real->sum_jasa,
+            'saldo_pokok' => $real->saldo_pokok,
+            'saldo_jasa' => $real->saldo_jasa,
+            'tunggakan_pokok' => $tunggakan_pokok,
+            'tunggakan_jasa' => $tunggakan_jasa,
             'lu' => date('Y-m-d H:i:s'),
             'id_user' => auth()->user()->id,
         ];
 
+        $rek_pokok = ['1.1.03.01', '1.1.03.02', '1.1.03.03'];
+        $rek_jasa = ['1.1.03.04', '1.1.03.05', '1.1.03.06', '4.1.01.01', '4.1.01.02', '4.1.01.03'];
+
         foreach ($transaksi as $trx) {
-            //
+            if (in_array($trx->rekening_kredit, $rek_pokok)) {
+                $insert['realisasi_pokok'] += $trx->jumlah;
+                $insert['sum_pokok'] += $trx->jumlah;
+                $insert['saldo_pokok'] -= $trx->jumlah;
+                $insert['tunggakan_pokok'] -= $trx->jumlah;
+
+                if ($insert['tunggakan_pokok'] <= 0) $insert['tunggakan_pokok'] = 0;
+            }
+
+            if (in_array($trx->rekening_kredit, $rek_jasa)) {
+                $insert['realisasi_jasa'] += $trx->jumlah;
+                $insert['sum_jasa'] += $trx->jumlah;
+                $insert['saldo_jasa'] -= $trx->jumlah;
+                $insert['tunggakan_jasa'] -= $trx->jumlah;
+
+                if ($insert['tunggakan_jasa'] <= 0) $insert['tunggakan_jasa'] = 0;
+            }
         }
+
+        if (RealAngsuran::where([['id', $idtp], ['loan_id', $pinkel->id]])->count() > 0) {
+            RealAngsuran::where([['id', $idtp], ['loan_id', $pinkel->id]])->delete();
+        }
+
+        RealAngsuran::create($insert);
+        return response()->json([
+            'success' => true
+        ]);
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DesaController;
 use App\Http\Controllers\KelompokController;
+use App\Http\Controllers\PelaporanController;
 use App\Http\Controllers\PinjamanAnggotaController;
 use App\Http\Controllers\PinjamanKelompokController;
 use App\Http\Controllers\TransaksiController;
@@ -71,3 +72,5 @@ Route::post('/transaksi/angsuran', [TransaksiController::class, 'angsuran']);
 Route::get('/transaksi/generate_real/{id_pinkel}', [TransaksiController::class, 'generateReal']);
 
 Route::resource('/transaksi', TransaksiController::class);
+
+Route::get('/pelaporan', [PelaporanController::class, 'index']);

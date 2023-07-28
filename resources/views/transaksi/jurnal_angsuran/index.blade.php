@@ -171,10 +171,16 @@
         var denda = $('#denda').val()
 
         pokok = parseInt(pokok.split(',').join('').split('.00').join(''))
-        if (!pokok) pokok = 0;
+        if (!pokok) {
+            pokok = 0;
+            $('#pokok').val(formatter.format('0'))
+        }
 
         jasa = parseInt(jasa.split(',').join('').split('.00').join(''))
-        if (!jasa) jasa = 0;
+        if (!jasa) {
+            jasa = 0;
+            $('#jasa').val(formatter.format('0'))
+        }
 
         denda = parseInt(denda.split(',').join('').split('.00').join(''))
         if (!denda) {
@@ -196,7 +202,8 @@
             data: form.serialize(),
             success: function (result) {
                 if (result.success) {
-                    $.get('/transaksi/generate_real/' + result.id_pinkel + '?idtp=' + result.idtp,
+                    $.get('/transaksi/generate_real/' + result.id_pinkel + '?idtp=' + result.idtp +
+                        '&tgl_transaksi=' + result.tgl_transaksi,
                         function (res) {
                             Swal.fire('Berhasil!', result.msg, 'success').then(() => {
                                 $.get('/transaksi/form_angsuran/' + result.id_pinkel,
