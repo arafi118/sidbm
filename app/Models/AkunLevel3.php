@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class AkunLevel3 extends Model
 {
     use HasFactory;
+
+    protected $table = 'akun_level_3';
 }

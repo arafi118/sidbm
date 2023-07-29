@@ -74,3 +74,4 @@ Route::get('/transaksi/generate_real/{id_pinkel}', [TransaksiController::class, 
 Route::resource('/transaksi', TransaksiController::class);
 
 Route::get('/pelaporan', [PelaporanController::class, 'index']);
+Route::get('/pelaporan/sub_laporan/{file}', [PelaporanController::class, 'subLaporan']);
