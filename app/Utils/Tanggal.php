@@ -30,6 +30,14 @@ class Tanggal
         return $tgl[2] . ' ' . self::namaBulan($tanggal) . ' ' . $tgl[0];
     }
 
+    public static function tahun($tanggal)
+    {
+        $tgl = explode('-', $tanggal);
+        $thn = $tgl[0];
+
+        return $thn;
+    }
+
     public static function namaBulan($tanggal)
     {
         $tgl = explode('-', $tanggal);
@@ -75,5 +83,13 @@ class Tanggal
         }
 
         return $bulan;
+    }
+
+    public static function hari($tanggal)
+    {
+        $tgl = explode('-', $tanggal);
+        $hari = $tgl[2];
+
+        return $hari;
     }
 }
