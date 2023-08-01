@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AkunLevel1;
+use App\Models\AkunLevel2;
 use App\Models\AkunLevel3;
 use App\Models\JenisLaporan;
 use App\Models\JenisLaporanPinjaman;
@@ -91,6 +93,14 @@ class PelaporanController extends Controller
         $data['kab'] = $kab;
         $data['dir'] = $dir;
 
+        if (strlen($data['hari']) > 0 && strlen($data['bulan']) > 0) {
+            $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
+        } elseif (strlen($data['bulan']) > 0) {
+            $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . date('t', strtotime($data['tahun'] . '-' . $data['bulan']));
+        } else {
+            $data['tgl_kondisi'] = $data['tahun'] . '-12-31';
+        }
+
         $file = $request->laporan;
         if ($file == 3) {
             //
@@ -130,16 +140,18 @@ class PelaporanController extends Controller
         $bln = $data['bulan'];
         $hari = $data['hari'];
 
-        $tgl = $thn . '-' . $bln . '-' . $hari;
         if (strlen($hari) > 0 && strlen($bln) > 0) {
+            $tgl = $thn . '-' . $bln . '-' . $hari;
             $data['judul'] = 'Laporan Harian';
             $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
             $data['tgl'] = Tanggal::tglLatin($tgl);
         } elseif (strlen($bln) > 0) {
+            $tgl = $thn . '-' . $bln . '-' . $hari;
             $data['judul'] = 'Laporan Bulanan';
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
         } else {
+            $tgl = $thn . '-' . $bln . '-' . $hari;
             $data['judul'] = 'Laporan Tahunan';
             $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tahun($tgl);
@@ -168,7 +180,56 @@ class PelaporanController extends Controller
             $data['tgl'] = Tanggal::tahun($tgl);
         }
 
+        $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with('akun2')->orderBy('kode_akun', 'ASC')->get();
+
+        $data['debit'] = 0;
+        $data['kredit'] = 0;
+
         $view = view('pelaporan.view.neraca', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    private function laba_rugi(array $data)
+    {
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        if (strlen($hari) > 0 && strlen($bln) > 0) {
+            $data['sub_judul'] = 'Per ' . $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::tglLatin($tgl);
+            $data['bulan_lalu'] = date('Y-m-d', strtotime('-1 day', strtotime($data['tgl_kondisi'])));
+        } elseif (strlen($bln) > 0) {
+            $data['sub_judul'] = 'Per ' . date('t', strtotime($tgl)) . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['bulan_lalu'] = date('Y-m-d', strtotime('-1 month', strtotime($data['tgl_kondisi'])));
+        } else {
+            $data['sub_judul'] = 'Per 31 Desember' . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::tahun($tgl);
+            $data['bulan_lalu'] = ($thn - 1) . '-12-31';
+        }
+
+        $data['pendapatan'] = AkunLevel2::where([
+            ['lev1', '4'],
+            ['lev2', '1']
+        ])->with('rek')->orderBy('kode_akun', 'ASC')->get();
+
+        $data['beban'] = AkunLevel2::where('lev1', '5')->where(function ($query) {
+            $query->where('lev2', '1')->orwhere('lev2', '2');
+        })->with('rek')->orderBy('kode_akun', 'ASC')->get();
+
+        $data['pendapatan_NOP'] = AkunLevel2::where('lev1', '4')->where(function ($query) {
+            $query->where('lev2', '2')->orwhere('lev2', '3');
+        })->with('rek')->orderBy('kode_akun', 'ASC')->get();
+
+        $data['biaya_NOP'] = AkunLevel2::where([
+            ['lev1', '5'],
+            ['lev2', '3']
+        ])->with('rek')->orderBy('kode_akun', 'ASC')->get();
+
+        $view = view('pelaporan.view.laba_rugi', $data)->render();
         $pdf = PDF::loadHTML($view);
         return $pdf->stream();
     }
