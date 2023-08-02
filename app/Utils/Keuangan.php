@@ -53,18 +53,26 @@ class Keuangan
 
     public static function Saldo($tgl_kondisi, $kode_akun)
     {
-        $rekening = Rekening::where('kode_akun', $kode_akun)->first();
         $saldo_awal = self::saldoAwal($tgl_kondisi, $kode_akun);
         $debit = self::saldoD($tgl_kondisi, $kode_akun);
         $kredit = self::saldoK($tgl_kondisi, $kode_akun);
 
-        if (strtolower($rekening->jenis_mutasi) == 'debet') {
+        $lev1 = explode('.', $kode_akun)[0];
+        $jenis_mutasi = 'kredit';
+        if ($lev1 == '1' || $lev1 == '5') $jenis_mutasi = 'debet';
+
+        if (strtolower($jenis_mutasi) == 'debet') {
             $saldo = ($saldo_awal['debit'] - $saldo_awal['kredit']) + $debit - $kredit;
-        } elseif (strtolower($rekening->jenis_mutasi) == 'kredit') {
+        } elseif (strtolower($jenis_mutasi) == 'kredit') {
             $saldo = ($saldo_awal['kredit'] - $saldo_awal['debit']) + $kredit - $debit;
         }
 
         return $saldo;
+    }
+
+    public static function SaldoTrx()
+    {
+        //
     }
 
     public static function saldoAwal($tgl_kondisi, $kode_akun)

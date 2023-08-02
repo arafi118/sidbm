@@ -87,9 +87,9 @@
     </header>
 
     @php
-    $style = 'position: relative; top: 30px; font-size: 14px;';
+    $style = 'position: relative; top: 30px; font-size: 10px;';
     if ($laporan == 'surat_pengantar') {
-    $style = 'margin-top: 75px; font-size: 14px;';
+    $style = 'margin-top: 75px; font-size: 10px;';
     }
     @endphp
 
