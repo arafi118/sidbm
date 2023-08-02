@@ -180,10 +180,50 @@ class PelaporanController extends Controller
             $data['tgl'] = Tanggal::tahun($tgl);
         }
 
-        $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with('akun2')->orderBy('kode_akun', 'ASC')->get();
+        $akun_lev1 = [];
+        $akun1 = AkunLevel1::where('lev1', '<=', '3')->with('akun2')->orderBy('kode_akun', 'ASC')->get();
+        foreach ($akun1 as $lev1) {
+            $sum_akun1 = 0;
+            $akun_lev1[$lev1->lev1] = [
+                'kode_akun' => $lev1->kode_akun,
+                'nama_akun' => $lev1->nama_akun
+            ];
 
-        $data['debit'] = 0;
-        $data['kredit'] = 0;
+            $akun_lev2 = [];
+            foreach ($lev1->akun2 as $lev2) {
+                $akun_lev2[$lev2->lev2] = [
+                    'kode_akun' => $lev2->kode_akun,
+                    'nama_akun' => $lev2->nama_akun
+                ];
+
+                $akun_lev3 = [];
+                foreach ($lev2->akun3 as $lev3) {
+                    $sum_saldo = 0;
+
+                    foreach ($lev3->rek as $rek) {
+                        $saldo = Keuangan::Saldo($data['tgl_kondisi'], $rek->kode_akun);
+                        if ($rek->kode_akun == '3.2.02.01') {
+                            $saldo = Keuangan::surplus($data['tgl_kondisi']);
+                        }
+
+                        $sum_saldo += $saldo;
+                    }
+
+                    $sum_akun1 += $sum_saldo;
+                    $akun_lev3[$lev3->lev3] = [
+                        'kode_akun' => $lev3->kode_akun,
+                        'nama_akun' => $lev3->nama_akun,
+                        'saldo' => $sum_saldo
+                    ];
+                }
+                $akun_lev2[$lev2->lev2]['lev3'] = $akun_lev3;
+            }
+
+            $akun_lev1[$lev1->lev1]['saldo'] = $sum_akun1;
+            $akun_lev1[$lev1->lev1]['lev2'] = $akun_lev2;
+        }
+
+        $data['neraca'] = $akun_lev1;
 
         $view = view('pelaporan.view.neraca', $data)->render();
         $pdf = PDF::loadHTML($view);
@@ -195,18 +235,19 @@ class PelaporanController extends Controller
         $thn = $data['tahun'];
         $bln = $data['bulan'];
         $hari = $data['hari'];
+        $awal_tahun = $thn . '-01-01';
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
         if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Per ' . $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($awal_tahun) . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
             $data['tgl'] = Tanggal::tglLatin($tgl);
             $data['bulan_lalu'] = date('Y-m-d', strtotime('-1 day', strtotime($data['tgl_kondisi'])));
         } elseif (strlen($bln) > 0) {
-            $data['sub_judul'] = 'Per ' . date('t', strtotime($tgl)) . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($awal_tahun) . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['bulan_lalu'] = date('Y-m-d', strtotime('-1 month', strtotime($data['tgl_kondisi'])));
         } else {
-            $data['sub_judul'] = 'Per 31 Desember' . ' ' . Tanggal::tahun($tgl);
+            $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($awal_tahun) . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
             $data['tgl'] = Tanggal::tahun($tgl);
             $data['bulan_lalu'] = ($thn - 1) . '-12-31';
         }
