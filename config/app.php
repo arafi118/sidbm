@@ -171,6 +171,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Clockwork\Support\Laravel\ClockworkServiceProvider::class
     ])->toArray(),
 
     /*
@@ -190,6 +191,7 @@ return [
         'Inventaris' => \App\Utils\Inventaris::class,
         'Tanggal' => \App\Utils\Tanggal::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Clockwork' => Clockwork\Support\Laravel\Facade::class,
     ])->toArray(),
 
 ];

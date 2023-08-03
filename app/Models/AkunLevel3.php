@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Awobaz\Compoships\Compoships;
 
 class AkunLevel3 extends Model
 {
-    use HasFactory, Compoships;
+    use HasFactory;
 
     protected $table = 'akun_level_3';
     public $timestamps = false;
@@ -18,6 +17,6 @@ class AkunLevel3 extends Model
 
     public function rek()
     {
-        return $this->hasMany(Rekening::class, ['lev1', 'lev2', 'lev3'], ['lev1', 'lev2', 'lev3'])->orderBy('kode_akun', 'ASC');
+        return $this->hasMany(Rekening::class, 'parent_id', 'id')->orderBy('kode_akun', 'ASC');
     }
 }

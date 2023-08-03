@@ -13,6 +13,7 @@
 
         html {
             margin-left: 90px;
+            margin-bottom: 90px;
         }
 
         header {
@@ -23,8 +24,7 @@
         }
 
         table tr td {
-            padding-left: 4px;
-            padding-right: 4px;
+            padding: 2px 4px;
         }
 
     </style>
@@ -87,7 +87,7 @@
     </header>
 
     @php
-    $style = 'position: relative; top: 30px; font-size: 10px;';
+    $style = 'position: relative; top: 60px; font-size: 10px;';
     if ($laporan == 'surat_pengantar') {
     $style = 'margin-top: 75px; font-size: 10px;';
     }
