@@ -4,12 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Awobaz\Compoships\Compoships;
 
 
 class AkunLevel1 extends Model
 {
-    use HasFactory, Compoships;
+    use HasFactory;
 
     protected $table = 'akun_level_1';
     public $timestamps = false;
@@ -19,6 +18,6 @@ class AkunLevel1 extends Model
 
     public function akun2()
     {
-        return $this->hasMany(AkunLevel2::class, 'lev1', 'lev1')->orderBy('kode_akun', 'ASC');
+        return $this->hasMany(AkunLevel2::class, 'parent_id', 'id')->orderBy('kode_akun', 'ASC');
     }
 }

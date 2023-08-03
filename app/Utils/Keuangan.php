@@ -5,6 +5,8 @@ namespace App\Utils;
 use App\Models\Kecamatan;
 use App\Models\Rekening;
 use App\Models\Transaksi;
+use DB;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class Keuangan
 {
@@ -51,88 +53,120 @@ class Keuangan
         return (substr($string, 0, $len) === $startString);
     }
 
-    public static function Saldo($tgl_kondisi, $kode_akun)
+    public function Saldo($tgl_kondisi, $kode_akun)
     {
-        $saldo_awal = self::saldoAwal($tgl_kondisi, $kode_akun);
-        $debit = self::saldoD($tgl_kondisi, $kode_akun);
-        $kredit = self::saldoK($tgl_kondisi, $kode_akun);
+        // $saldo_awal = $this->saldoAwal($tgl_kondisi, $kode_akun);
+        // $debit = $this->saldoD($tgl_kondisi, $kode_akun);
+        // $kredit = $this->saldoK($tgl_kondisi, $kode_akun);
+
+        // $lev1 = explode('.', $kode_akun)[0];
+        // $jenis_mutasi = 'kredit';
+        // if ($lev1 == '1' || $lev1 == '5') $jenis_mutasi = 'debet';
+
+        // if (strtolower($jenis_mutasi) == 'debet') {
+        //     $saldo = ($saldo_awal['debit'] - $saldo_awal['kredit']) + $debit - $kredit;
+        // } elseif (strtolower($jenis_mutasi) == 'kredit') {
+        //     $saldo = ($saldo_awal['kredit'] - $saldo_awal['debit']) + $kredit - $debit;
+        // }
+
+        // return $saldo;
+
+        $thn_kondisi = explode('-', $tgl_kondisi)[0];
+        $awal_tahun = $thn_kondisi . '-01-01';
+        $thn_lalu = $thn_kondisi - 1;
+
+        $rekening = Rekening::select(
+            DB::raw("SUM(tb$thn_lalu) as debit"),
+            DB::raw("SUM(tbk$thn_lalu) as kredit"),
+            DB::raw('(SELECT sum(jumlah) as dbt FROM 
+            transaksi_' . auth()->user()->lokasi . ' as td WHERE 
+            td.rekening_debit=rekening_' . auth()->user()->lokasi . '.kode_akun AND 
+            td.tgl_transaksi BETWEEN "' . $awal_tahun . '" AND "' . $tgl_kondisi . '"
+            ) as saldo_debit'),
+            DB::raw('(SELECT sum(jumlah) as dbt FROM 
+            transaksi_' . auth()->user()->lokasi . ' as td WHERE 
+            td.rekening_kredit=rekening_' . auth()->user()->lokasi . '.kode_akun AND 
+            td.tgl_transaksi BETWEEN "' . $awal_tahun . '" AND "' . $tgl_kondisi . '"
+            ) as saldo_kredit'),
+            'kode_akun'
+        )
+            ->groupBy(DB::raw("kode_akun", "jenis_mutasi"))->where('kode_akun', $kode_akun)->first();
 
         $lev1 = explode('.', $kode_akun)[0];
         $jenis_mutasi = 'kredit';
         if ($lev1 == '1' || $lev1 == '5') $jenis_mutasi = 'debet';
 
         if (strtolower($jenis_mutasi) == 'debet') {
-            $saldo = ($saldo_awal['debit'] - $saldo_awal['kredit']) + $debit - $kredit;
+            $saldo = ($rekening->debit - $rekening->kredit) + $rekening->saldo_debit - $rekening->saldo_kredit;
         } elseif (strtolower($jenis_mutasi) == 'kredit') {
-            $saldo = ($saldo_awal['kredit'] - $saldo_awal['debit']) + $kredit - $debit;
+            $saldo = ($rekening->kredit - $rekening->debit) + $rekening->saldo_kredit - $rekening->saldo_debit;
         }
 
         return $saldo;
     }
 
-    public static function SaldoTrx()
-    {
-        //
-    }
-
-    public static function saldoAwal($tgl_kondisi, $kode_akun)
+    public function saldoAwal($tgl_kondisi, $kode_akun)
     {
         $thn_kondisi = explode('-', $tgl_kondisi)[0];
         $thn_lalu = $thn_kondisi - 1;
 
-        $rek = Rekening::where('kode_akun', $kode_akun);
+        $rek = Rekening::select(
+            DB::raw("SUM(tb$thn_lalu) as debit"),
+            DB::raw("SUM(tbk$thn_lalu) as kredit")
+        )->where('kode_akun', $kode_akun)->first();
+
         return [
-            'debit' => $rek->sum('tb' . $thn_lalu),
-            'kredit' => $rek->sum('tbk' . $thn_lalu)
+            'debit' => $rek->debit,
+            'kredit' => $rek->kredit
         ];
     }
 
     // Sum Saldo Debit
-    public static function saldoD($tgl_kondisi, $kode_akun)
+    public function saldoD($tgl_kondisi, $kode_akun)
     {
         $thn_kondisi = explode('-', $tgl_kondisi)[0];
         $awal_tahun = $thn_kondisi . '-01-01';
 
-        $trx = Transaksi::where('rekening_debit', $kode_akun)->whereBetween('tgl_transaksi', [$tgl_kondisi, $awal_tahun])->sum('jumlah');
+        $trx = Transaksi::where('rekening_debit', $kode_akun)->whereBetween('tgl_transaksi', [$awal_tahun, $tgl_kondisi])->sum('jumlah');
         return $trx;
     }
 
     // Sum Saldo Kredit
-    public static function saldoK($tgl_kondisi, $kode_akun)
+    public function saldoK($tgl_kondisi, $kode_akun)
     {
         $thn_kondisi = explode('-', $tgl_kondisi)[0];
         $awal_tahun = $thn_kondisi . '-01-01';
 
-        $trx = Transaksi::where('rekening_kredit', $kode_akun)->whereBetween('tgl_transaksi', [$tgl_kondisi, $awal_tahun])->sum('jumlah');
+        $trx = Transaksi::where('rekening_kredit', $kode_akun)->whereBetween('tgl_transaksi', [$awal_tahun, $tgl_kondisi])->sum('jumlah');
         return $trx;
     }
 
-    public static function pendapatan($tgl_kondisi)
+    public function pendapatan($tgl_kondisi)
     {
         $saldo = 0;
         $rekening = Rekening::where('lev1', '4')->get();
         foreach ($rekening as $rek) {
-            $saldo += self::Saldo($tgl_kondisi, $rek->kode_akun);
+            $saldo += $this->Saldo($tgl_kondisi, $rek->kode_akun);
         }
 
         return $saldo;
     }
 
-    public static function biaya($tgl_kondisi)
+    public function biaya($tgl_kondisi)
     {
         $saldo = 0;
         $rekening = Rekening::where('lev1', '5')->get();
         foreach ($rekening as $rek) {
-            $saldo += self::Saldo($tgl_kondisi, $rek->kode_akun);
+            $saldo += $this->Saldo($tgl_kondisi, $rek->kode_akun);
         }
 
         return $saldo;
     }
 
-    public static function surplus($tgl_kondisi)
+    public function surplus($tgl_kondisi)
     {
-        $pendapatan = self::pendapatan($tgl_kondisi);
-        $biaya = self::biaya($tgl_kondisi);
+        $pendapatan = $this->pendapatan($tgl_kondisi);
+        $biaya = $this->biaya($tgl_kondisi);
 
         return ($pendapatan - $biaya);
     }
