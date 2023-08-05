@@ -6,7 +6,7 @@ $keuangan = new Keuangan;
 @extends('pelaporan.layout.base')
 
 @section('content')
-<table border="0" width="100%" cellspacing="0" cellpadding="0">
+<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
     <tr>
         <td colspan="3" align="center">
             <div style="font-size: 18px;">

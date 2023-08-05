@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ ucwords(str_replace('_',' ', $laporan)) }} ({{ ucwords($tgl) }})</title>
@@ -13,7 +13,14 @@
 
         html {
             margin-left: 90px;
-            margin-bottom: 90px;
+            margin-right: 60px;
+            margin-bottom: 100px;
+        }
+
+        ul,
+        ol {
+            margin-left: -10px;
+            page-break-inside: auto !important;
         }
 
         header {
@@ -25,6 +32,30 @@
 
         table tr td {
             padding: 2px 4px;
+        }
+
+        br {
+            page-break-before: always;
+        }
+
+        li {
+            text-align: justify;
+        }
+
+        .l {
+            border-left: 1px solid #000;
+        }
+
+        .t {
+            border-top: 1px solid #000;
+        }
+
+        .r {
+            border-right: 1px solid #000;
+        }
+
+        .b {
+            border-bottom: 1px solid #000;
         }
 
     </style>
@@ -87,9 +118,9 @@
     </header>
 
     @php
-    $style = 'position: relative; top: 60px; font-size: 10px;';
+    $style = 'position: relative; top: 60px; font-size: 12px;';
     if ($laporan == 'surat_pengantar') {
-    $style = 'margin-top: 75px; font-size: 10px;';
+    $style = 'margin-top: 75px; font-size: 12px;';
     }
     @endphp
 

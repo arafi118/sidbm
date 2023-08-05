@@ -7,12 +7,13 @@ use App\Models\AkunLevel2;
 use App\Models\AkunLevel3;
 use App\Models\JenisLaporan;
 use App\Models\JenisLaporanPinjaman;
-use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Rekening;
+use App\Models\Transaksi;
 use App\Models\User;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
+use Dompdf\Dompdf;
 use Illuminate\Http\Request;
 use PDF;
 
@@ -65,8 +66,8 @@ class PelaporanController extends Controller
         ]);
 
         $request->hari = ($request->hari) ?: 31;
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
-        $kab = Kabupaten::where('kd_kab', $kec->kd_kab)->first();
+        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten', 'desa')->first();
+        $kab = $kec->kabupaten;
         $dir = User::where([
             ['lokasi', auth()->user()->lokasi],
             ['jabatan', '1'],
@@ -103,7 +104,11 @@ class PelaporanController extends Controller
 
         $file = $request->laporan;
         if ($file == 3) {
-            //
+            $laporan = explode('_', $request->sub_laporan);
+            $file = $laporan[0];
+
+            $data['kode_akun'] = $laporan[1];
+            return $this->$file($data);
         } elseif ($file == 5) {
             //
         } else {
@@ -185,9 +190,7 @@ class PelaporanController extends Controller
         $data['debit'] = 0;
         $data['kredit'] = 0;
 
-        $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')
-            // ->with()
-            ->with('akun2.akun3.rek')->orderBy('kode_akun', 'ASC')->get();
+        $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with('akun2.akun3.rek')->orderBy('kode_akun', 'ASC')->get();
 
         $view = view('pelaporan.view.neraca', $data);
         $pdf = PDF::loadHTML($view);
@@ -208,14 +211,20 @@ class PelaporanController extends Controller
             $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($awal_tahun) . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
             $data['tgl'] = Tanggal::tglLatin($tgl);
             $data['bulan_lalu'] = date('Y-m-d', strtotime('-1 day', strtotime($data['tgl_kondisi'])));
+            $data['header_lalu'] = 'Kemarin';
+            $data['header_sekarang'] = 'Hari Ini';
         } elseif (strlen($bln) > 0) {
             $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($awal_tahun) . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['bulan_lalu'] = date('Y-m-d', strtotime('-1 month', strtotime($data['tgl_kondisi'])));
+            $data['header_lalu'] = 'Bulan Lalu';
+            $data['header_sekarang'] = 'Bulan Ini';
         } else {
             $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($awal_tahun) . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
             $data['tgl'] = Tanggal::tahun($tgl);
             $data['bulan_lalu'] = ($thn - 1) . '-12-31';
+            $data['header_lalu'] = 'Tahun Lalu';
+            $data['header_sekarang'] = 'Tahun Ini';
         }
 
         $pendapatan = AkunLevel2::where([
@@ -350,5 +359,73 @@ class PelaporanController extends Controller
     private function arus_kas(array $data)
     {
         //
+    }
+
+    private function CALK(array $data)
+    {
+        $keuangan = new Keuangan;
+
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        if (strlen($hari) > 0 && strlen($bln) > 0) {
+            $data['tgl'] = Tanggal::tglLatin($tgl);
+            $data['nama_tgl'] = 'Tanggal ' . $hari . ' Bulan ' . Tanggal::namaBulan($bln) . ' Tahun ' . $thn;
+        } elseif (strlen($bln) > 0) {
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['nama_tgl'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' Tahun ' . $thn;
+        } else {
+            $data['tgl'] = Tanggal::tahun($tgl);
+            $data['nama_tgl'] = 'Tahun ' . $thn;
+        }
+
+        $data['sub_judul'] = 'Tahun ' . $thn;
+        $data['debit'] = 0;
+        $data['kredit'] = 0;
+
+        $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with('akun2.akun3.rek')->orderBy('kode_akun', 'ASC')->get();
+
+        $view = view('pelaporan.view.calk', $data);
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    private function jurnal_transaksi(array $data)
+    {
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        if (strlen($hari) > 0 && strlen($bln) > 0) {
+            $data['sub_judul'] = 'Tanggal ' . $hari . ' Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::tglLatin($tgl);
+            $data['transaksi'] = Transaksi::where('tgl_transaksi', $tgl)->withSum('angs', 'jumlah')->with('user', 'rek_debit', 'rek_kredit', 'angs')->withCount('angs')->orderBy('tgl_transaksi', 'ASC')->get();
+        } elseif (strlen($bln) > 0) {
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['transaksi'] = Transaksi::whereBetween('tgl_transaksi', [
+                $thn . '-' . $bln . '-01',
+                $thn . '-' . $bln . '-' . date('t', strtotime($tgl))
+            ])->withSum('angs', 'jumlah')->with('user', 'rek_debit', 'rek_kredit', 'angs')->withCount('angs')->orderBy('tgl_transaksi', 'ASC')->get();
+        } else {
+            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::tahun($tgl);
+            $data['transaksi'] = Transaksi::whereBetween('tgl_transaksi', [
+                $thn . '-01-01',
+                $thn . '-12-31'
+            ])->withSum('angs', 'jumlah')->with('user', 'rek_debit', 'rek_kredit', 'angs')->withCount('angs')->orderBy('tgl_transaksi', 'ASC')->get();
+        }
+
+        $view = view('pelaporan.view.jurnal_transaksi', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    private function BB(array $data)
+    {
+        dd($data);
     }
 }

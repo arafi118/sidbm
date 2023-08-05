@@ -2,7 +2,6 @@
 <div class="my-2">
     <label class="form-label" for="sub_laporan">Nama Sub Laporan</label>
     <select class="form-control" name="sub_laporan" id="sub_laporan">
-        <option value="">---</option>
         @foreach ($rekening as $rek)
         <option value="BB_{{ $rek->kode_akun }}">{{ $rek->kode_akun }}. {{ $rek->nama_akun }}</option>
         @endforeach
@@ -17,7 +16,6 @@
 <div class="my-2">
     <label class="form-label" for="sub_laporan">Nama Sub Laporan</label>
     <select class="form-control" name="sub_laporan" id="sub_laporan">
-        <option value="">---</option>
         @foreach ($jenis_laporan as $jl)
         <option value="{{ $jl->file }}">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}. {{ $jl->nama_laporan }}
         </option>

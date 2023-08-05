@@ -15,4 +15,9 @@ class Kecamatan extends Model
     {
         return $this->belongsTo(Kabupaten::class, 'kd_kab', 'kd_kab');
     }
+
+    public function desa()
+    {
+        return $this->hasMany(Desa::class, 'kd_kec', 'kd_kec');
+    }
 }

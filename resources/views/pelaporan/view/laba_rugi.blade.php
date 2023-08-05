@@ -10,7 +10,7 @@ $saldo2 = 0;
 $saldo_bln_lalu2 = 0;
 @endphp
 
-<table border="0" width="100%" cellspacing="0" cellpadding="0">
+<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
     <tr>
         <td colspan="4" align="center">
             <div style="font-size: 18px;">
@@ -26,9 +26,9 @@ $saldo_bln_lalu2 = 0;
     </tr>
     <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 12px;">
         <td align="center" width="255" height="16">Rekening</td>
-        <td align="center" width="70">s.d. Bulan Lalu</td>
-        <td align="center" width="70">Bulan Ini</td>
-        <td align="center" width="70">s.d. Bulan Ini</td>
+        <td align="center" width="70">s.d. {{ $header_lalu }}</td>
+        <td align="center" width="70">{{ $header_sekarang }}</td>
+        <td align="center" width="70">s.d. {{ $header_sekarang }}</td>
     </tr>
     <tr style="background: rgb(200, 200, 200); font-weight: bold; text-transform: uppercase;">
         <td colspan="4" height="14">4. Pendapatan</td>

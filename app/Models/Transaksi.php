@@ -5,10 +5,11 @@ namespace App\Models;
 use Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use \Awobaz\Compoships\Compoships;
 
 class Transaksi extends Model
 {
-    use HasFactory;
+    use HasFactory, Compoships;
     protected $table;
     public $timestamps = false;
 
@@ -18,5 +19,25 @@ class Transaksi extends Model
     public function __construct()
     {
         $this->table = 'transaksi_' . Auth::user()->lokasi;
+    }
+
+    public function angs()
+    {
+        return $this->hasMany(Transaksi::class, ['idtp', 'tgl_transaksi'], ['idtp', 'tgl_transaksi']);
+    }
+
+    public function rek_debit()
+    {
+        return $this->belongsTo(Rekening::class, 'rekening_debit', 'kode_akun');
+    }
+
+    public function rek_kredit()
+    {
+        return $this->belongsTo(Rekening::class, 'rekening_kredit', 'kode_akun');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
     }
 }
