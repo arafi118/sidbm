@@ -426,6 +426,33 @@ class PelaporanController extends Controller
 
     private function BB(array $data)
     {
-        dd($data);
+        $keuangan = new Keuangan;
+
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        if (strlen($hari) > 0 && strlen($bln) > 0) {
+            $tgl = $thn . '-' . $bln . '-' . $hari;
+            $data['judul'] = 'Laporan Harian';
+            $data['tgl'] = Tanggal::tglLatin($tgl);
+        } elseif (strlen($bln) > 0) {
+            $tgl = $thn . '-' . $bln . '-' . $hari;
+            $data['judul'] = 'Laporan Bulanan';
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        } else {
+            $tgl = $thn . '-' . $bln . '-' . $hari;
+            $data['judul'] = 'Laporan Tahunan';
+            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::tahun($tgl);
+        }
+
+        $data['rek'] = Rekening::where('kode_akun', $data['kode_akun'])->first();
+
+        $view = view('pelaporan.view.buku_besat', $data);
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
     }
 }
