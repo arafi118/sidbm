@@ -32,7 +32,7 @@ class AuthController extends Controller
         $user = User::where([['uname', $username], ['lokasi', $lokasi]])->first();
         if ($user) {
             if ($password === $user->pass) {
-                if (Auth::loginUsingId($user)) {
+                if (Auth::loginUsingId($user->id)) {
                     Session::put('nama_lembaga', str_replace('DBM ', '', $kec->nama_lembaga_sort));
                     Session::put('nama', auth()->user()->namadepan . ' ' . auth()->user()->namabelakang);
                     Session::put('foto', auth()->user()->foto);
