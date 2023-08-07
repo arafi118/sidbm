@@ -42,6 +42,7 @@ class AuthController extends Controller
                     window.open("/piutang_jasa");
                     window.location.href="/dashboard";
                     </script>';
+
                     return '';
                 }
             }
