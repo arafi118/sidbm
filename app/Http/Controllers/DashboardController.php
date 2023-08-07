@@ -15,10 +15,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        dd(Session::all());
-        // if (Session::get('_previous') == url('')) {
-        //     $this->piutang();
-        // }
+        if (Session::get('_previous')->url == url('')) {
+            dd(url(''));
+        }
 
         $title = "Dashboard";
         return view('dashboard.index')->with(compact('title'));
