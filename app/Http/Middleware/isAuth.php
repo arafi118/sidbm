@@ -16,6 +16,7 @@ class isAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
+        dd(Auth::user());
         if (Auth::user()) {
             return $next($request);
         }
