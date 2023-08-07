@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [AuthController::class, 'index'])->middleware('guest')->name('/');
 Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['basic']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/piutang_jasa', [DashboardController::class, 'piutang']);
 
