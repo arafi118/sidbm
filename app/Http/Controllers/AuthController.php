@@ -37,7 +37,6 @@ class AuthController extends Controller
                     $request->session()->put('nama', auth()->user()->namadepan . ' ' . auth()->user()->namabelakang);
                     $request->session()->put('foto', auth()->user()->foto);
 
-                    dd(Auth::user());
                     echo '<script>
                     window.open("/piutang_jasa");
                     window.location.href="/dashboard";
