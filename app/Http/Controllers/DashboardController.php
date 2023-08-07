@@ -15,11 +15,10 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        if (Session::get('_previous') == url('')) {
-            echo '<script>
-                window.open("/piutang_jasa");
-                </script>';
-        }
+        dd(Session::all());
+        // if (Session::get('_previous') == url('')) {
+        //     $this->piutang();
+        // }
 
         $title = "Dashboard";
         return view('dashboard.index')->with(compact('title'));
