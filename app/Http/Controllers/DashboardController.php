@@ -16,7 +16,7 @@ class DashboardController extends Controller
     public function index()
     {
         if (Session::get('_previous')['url'] == url('')) {
-            dd(url(''));
+            $this->piutang();
         }
 
         $title = "Dashboard";
