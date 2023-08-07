@@ -32,21 +32,15 @@ class AuthController extends Controller
         $user = User::where([['uname', $username], ['lokasi', $lokasi]])->first();
         if ($user) {
             if ($password === $user->pass) {
-                if (Auth::login($user)) {
+                if (Auth::loginUsingId($user->id)) {
                     session([
                         'nama_lembaga' => str_replace('DBM ', '', $kec->nama_lembaga_sort),
                         'nama' => $user->namadepan . ' ' . $user->namabelakang,
                         'foto' => $user->foto
                     ]);
 
-                    dd(session()->all());
 
-                    echo '<script>
-                    window.open("/piutang_jasa");
-                    window.location.href="/dashboard";
-                    </script>';
-
-                    return '';
+                    return redirect('/dashboard');
                 }
             }
         }

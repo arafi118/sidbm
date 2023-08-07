@@ -9,11 +9,18 @@ use App\Models\Rekening;
 use App\Models\RencanaAngsuran;
 use App\Models\Transaksi;
 use App\Utils\Keuangan;
+use Session;
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        if (Session::get('_previous') == url('')) {
+            echo '<script>
+                window.open("/piutang_jasa");
+                </script>';
+        }
+
         $title = "Dashboard";
         return view('dashboard.index')->with(compact('title'));
     }
