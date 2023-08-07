@@ -33,9 +33,13 @@ class AuthController extends Controller
         if ($user) {
             if ($password === $user->pass) {
                 if (Auth::login($user)) {
-                    Session::put('nama_lembaga', str_replace('DBM ', '', $kec->nama_lembaga_sort));
-                    Session::put('nama', auth()->user()->namadepan . ' ' . auth()->user()->namabelakang);
-                    Session::put('foto', auth()->user()->foto);
+                    session([
+                        'nama_lembaga' => str_replace('DBM ', '', $kec->nama_lembaga_sort),
+                        'nama' => $user->namadepan . ' ' . $user->namabelakang,
+                        'foto' => $user->foto
+                    ]);
+
+                    dd(session()->all());
 
                     echo '<script>
                     window.open("/piutang_jasa");
