@@ -37,26 +37,21 @@ class PinjamanKelompokController extends Controller
     public function proposal()
     {
         if (request()->ajax()) {
-            $kelompok = Kelompok::leftJoin('pinjaman_kelompok_' . auth()->user()->lokasi . ' as pk', 'pk.id_kel', '=', 'kelompok_' . auth()->user()->lokasi . '.id')
-                ->where('pk.status', 'P')
-                ->get();
+            $pinkel = PinjamanKelompok::where('status', 'P')->with('kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
 
-            return DataTables::of($kelompok)
+            return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
                     $jangka = $row->jangka;
                     $pros = $row->pros_jasa;
 
-                    // $jasa = number_format($pros / $jangka, 2);
-                    return $pros . '% / ' . $jangka . ' bln';
-                })
-                ->addColumn('pinjaman_anggota_count', function ($row) {
-                    return PinjamanAnggota::where('id_pinkel', $row->id)->count();
+                    $jasa = number_format($pros / $jangka, 2);
+                    return $jasa . '% / ' . $jangka . ' bln';
                 })
                 ->editColumn('nama_kelompok', function ($row) {
-                    $jpp = JenisProdukPinjaman::where('id', $row->jenis_pp)->first();
-                    $status = StatusPinjaman::where('kd_status', $row->status)->first()->warna_status;
+                    $jpp = $row->jpp;
+                    $status = $row->sts->warna_status;
 
-                    $nama_kelompok = $row->nama_kelompok . '(' . $jpp->nama_jpp . ')';
+                    $nama_kelompok = $row->kelompok->nama_kelompok . '(' . $jpp->nama_jpp . ')';
                     return '<div>' . $nama_kelompok . ' <small class="float-end badge badge-' . $status . '">Loan ID.' . $row->id . '</small></div>';
                 })
                 ->editColumn('tgl_proposal', function ($row) {
@@ -73,11 +68,9 @@ class PinjamanKelompokController extends Controller
     public function verified()
     {
         if (request()->ajax()) {
-            $kelompok = Kelompok::leftJoin('pinjaman_kelompok_' . auth()->user()->lokasi . ' as pk', 'pk.id_kel', '=', 'kelompok_' . auth()->user()->lokasi . '.id')
-                ->where('pk.status', 'V')
-                ->get();
+            $pinkel = PinjamanKelompok::where('status', 'V')->with('kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
 
-            return DataTables::of($kelompok)
+            return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
                     $jangka = $row->jangka;
                     $pros = $row->pros_jasa;
@@ -85,14 +78,11 @@ class PinjamanKelompokController extends Controller
                     $jasa = number_format($pros / $jangka, 2);
                     return $jasa . '% / ' . $jangka . ' bln';
                 })
-                ->addColumn('pinjaman_anggota_count', function ($row) {
-                    return PinjamanAnggota::where('id_pinkel', $row->id)->count();
-                })
                 ->editColumn('nama_kelompok', function ($row) {
-                    $jpp = JenisProdukPinjaman::where('id', $row->jenis_pp)->first();
-                    $status = StatusPinjaman::where('kd_status', $row->status)->first()->warna_status;
+                    $jpp = $row->jpp;
+                    $status = $row->sts->warna_status;
 
-                    $nama_kelompok = $row->nama_kelompok . '(' . $jpp->nama_jpp . ')';
+                    $nama_kelompok = $row->kelompok->nama_kelompok . '(' . $jpp->nama_jpp . ')';
                     return '<div>' . $nama_kelompok . ' <small class="float-end badge badge-' . $status . '">Loan ID.' . $row->id . '</small></div>';
                 })
                 ->editColumn('tgl_verifikasi', function ($row) {
@@ -109,11 +99,9 @@ class PinjamanKelompokController extends Controller
     public function waiting()
     {
         if (request()->ajax()) {
-            $kelompok = Kelompok::leftJoin('pinjaman_kelompok_' . auth()->user()->lokasi . ' as pk', 'pk.id_kel', '=', 'kelompok_' . auth()->user()->lokasi . '.id')
-                ->where('pk.status', 'W')
-                ->get();
+            $pinkel = PinjamanKelompok::where('status', 'W')->with('kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
 
-            return DataTables::of($kelompok)
+            return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
                     $jangka = $row->jangka;
                     $pros = $row->pros_jasa;
@@ -121,14 +109,11 @@ class PinjamanKelompokController extends Controller
                     $jasa = number_format($pros / $jangka, 2);
                     return $jasa . '% / ' . $jangka . ' bln';
                 })
-                ->addColumn('pinjaman_anggota_count', function ($row) {
-                    return PinjamanAnggota::where('id_pinkel', $row->id)->count();
-                })
                 ->editColumn('nama_kelompok', function ($row) {
-                    $jpp = JenisProdukPinjaman::where('id', $row->jenis_pp)->first();
-                    $status = StatusPinjaman::where('kd_status', $row->status)->first()->warna_status;
+                    $jpp = $row->jpp;
+                    $status = $row->sts->warna_status;
 
-                    $nama_kelompok = $row->nama_kelompok . '(' . $jpp->nama_jpp . ')';
+                    $nama_kelompok = $row->kelompok->nama_kelompok . '(' . $jpp->nama_jpp . ')';
                     return '<div>' . $nama_kelompok . ' <small class="float-end badge badge-' . $status . '">Loan ID.' . $row->id . '</small></div>';
                 })
                 ->editColumn('tgl_tunggu', function ($row) {
@@ -145,11 +130,9 @@ class PinjamanKelompokController extends Controller
     public function aktif()
     {
         if (request()->ajax()) {
-            $kelompok = Kelompok::leftJoin('pinjaman_kelompok_' . auth()->user()->lokasi . ' as pk', 'pk.id_kel', '=', 'kelompok_' . auth()->user()->lokasi . '.id')
-                ->where('pk.status', 'A')
-                ->get();
+            $pinkel = PinjamanKelompok::where('status', 'A')->with('kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
 
-            return DataTables::of($kelompok)
+            return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
                     $jangka = $row->jangka;
                     $pros = $row->pros_jasa;
@@ -157,18 +140,15 @@ class PinjamanKelompokController extends Controller
                     $jasa = number_format($pros / $jangka, 2);
                     return $jasa . '% / ' . $jangka . ' bln';
                 })
-                ->addColumn('pinjaman_anggota_count', function ($row) {
-                    return PinjamanAnggota::where('id_pinkel', $row->id)->count();
-                })
                 ->editColumn('nama_kelompok', function ($row) {
-                    $jpp = JenisProdukPinjaman::where('id', $row->jenis_pp)->first();
-                    $status = StatusPinjaman::where('kd_status', $row->status)->first()->warna_status;
+                    $jpp = $row->jpp;
+                    $status = $row->sts->warna_status;
 
-                    $nama_kelompok = $row->nama_kelompok . '(' . $jpp->nama_jpp . ')';
+                    $nama_kelompok = $row->kelompok->nama_kelompok . '(' . $jpp->nama_jpp . ')';
                     return '<div>' . $nama_kelompok . ' <small class="float-end badge badge-' . $status . '">Loan ID.' . $row->id . '</small></div>';
                 })
-                ->editColumn('tgl_tunggu', function ($row) {
-                    return Tanggal::tglIndo($row->tgl_tunggu);
+                ->editColumn('tgl_cair', function ($row) {
+                    return Tanggal::tglIndo($row->tgl_cair);
                 })
                 ->editColumn('alokasi', function ($row) {
                     return number_format($row->alokasi);
@@ -181,13 +161,11 @@ class PinjamanKelompokController extends Controller
     public function lunas()
     {
         if (request()->ajax()) {
-            $kelompok = Kelompok::leftJoin('pinjaman_kelompok_' . auth()->user()->lokasi . ' as pk', 'pk.id_kel', '=', 'kelompok_' . auth()->user()->lokasi . '.id')
-                ->where('pk.status', 'A')
-                ->whereRaw('pk.alokasi<=(SELECT SUM(realisasi_pokok) FROM real_angsuran_' . auth()->user()->lokasi . ' WHERE loan_id=pk.id)')
-                ->get();
+            $pinkel = PinjamanKelompok::where('status', 'A')
+                ->whereRaw('alokasi<=(SELECT SUM(realisasi_pokok) FROM real_angsuran_' . auth()->user()->lokasi . ' WHERE loan_id=id)')
+                ->with('kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
 
-
-            return DataTables::of($kelompok)
+            return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
                     $jangka = $row->jangka;
                     $pros = $row->pros_jasa;
@@ -195,18 +173,15 @@ class PinjamanKelompokController extends Controller
                     $jasa = number_format($pros / $jangka, 2);
                     return $jasa . '% / ' . $jangka . ' bln';
                 })
-                ->addColumn('pinjaman_anggota_count', function ($row) {
-                    return PinjamanAnggota::where('id_pinkel', $row->id)->count();
-                })
                 ->editColumn('nama_kelompok', function ($row) {
-                    $jpp = JenisProdukPinjaman::where('id', $row->jenis_pp)->first();
-                    $status = StatusPinjaman::where('kd_status', $row->status)->first()->warna_status;
+                    $jpp = $row->jpp;
+                    $status = $row->sts->warna_status;
 
-                    $nama_kelompok = $row->nama_kelompok . '(' . $jpp->nama_jpp . ')';
+                    $nama_kelompok = $row->kelompok->nama_kelompok . '(' . $jpp->nama_jpp . ')';
                     return '<div>' . $nama_kelompok . ' <small class="float-end badge badge-' . $status . '">Loan ID.' . $row->id . '</small></div>';
                 })
-                ->editColumn('tgl_tunggu', function ($row) {
-                    return Tanggal::tglIndo($row->tgl_tunggu);
+                ->editColumn('tgl_cair', function ($row) {
+                    return Tanggal::tglIndo($row->tgl_cair);
                 })
                 ->editColumn('alokasi', function ($row) {
                     return number_format($row->alokasi);

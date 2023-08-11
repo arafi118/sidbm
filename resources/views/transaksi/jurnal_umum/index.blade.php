@@ -188,7 +188,8 @@
         e.preventDefault()
         var sumber_dana = $(this).val()
 
-        if (sumber_dana == '1.2.02.01' || sumber_dana == '1.2.02.02' || sumber_dana == '1.2.02.03') {
+        if (sumber_dana == '1.2.02.01' || sumber_dana == '1.2.02.02' || sumber_dana == '1.2.02.03' ||
+            sumber_dana == '1.2.02.03') {
             simpan.setChoiceByValue('5.3.02.01')
         }
     })

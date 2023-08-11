@@ -108,6 +108,7 @@ class PelaporanController extends Controller
             $file = $laporan[0];
 
             $data['kode_akun'] = $laporan[1];
+            $data['laporan'] = 'buku_besar ' . $laporan[1];
             return $this->$file($data);
         } elseif ($file == 5) {
             //
@@ -358,7 +359,7 @@ class PelaporanController extends Controller
 
     private function arus_kas(array $data)
     {
-        //
+        return 'b';
     }
 
     private function CALK(array $data)
@@ -437,21 +438,35 @@ class PelaporanController extends Controller
             $tgl = $thn . '-' . $bln . '-' . $hari;
             $data['judul'] = 'Laporan Harian';
             $data['tgl'] = Tanggal::tglLatin($tgl);
+            $awal_bulan = $tgl;
         } elseif (strlen($bln) > 0) {
-            $tgl = $thn . '-' . $bln . '-' . $hari;
+            $tgl = $thn . '-' . $bln . '-';
             $data['judul'] = 'Laporan Bulanan';
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $bulan_lalu = date('m', strtotime('-1 month', strtotime($tgl . '01')));
+            $awal_bulan = $thn . '-' . $bulan_lalu . '-' . date('t', strtotime($thn . '-' . $bulan_lalu));
+            if ($bln == 1) {
+                $awal_bulan = $thn . '00-00';
+            }
         } else {
-            $tgl = $thn . '-' . $bln . '-' . $hari;
+            $tgl = $thn . '-';
             $data['judul'] = 'Laporan Tahunan';
             $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tahun($tgl);
+            $awal_bulan = ($thn - 1) . '12-31';
         }
 
         $data['rek'] = Rekening::where('kode_akun', $data['kode_akun'])->first();
+        $data['transaksi'] = Transaksi::where('tgl_transaksi', 'LIKE', '%' . $tgl . '%')->where(function ($query) use ($data) {
+            $query->where('rekening_debit', $data['kode_akun'])->orwhere('rekening_kredit', $data['kode_akun']);
+        })->with('user')->get();
 
-        $view = view('pelaporan.view.buku_besat', $data);
+        $data['saldo'] = $keuangan->saldoAwal($tgl, $data['kode_akun']);
+        $data['d_bulan_lalu'] = $keuangan->saldoD($awal_bulan, $data['kode_akun']);
+        $data['k_bulan_lalu'] = $keuangan->saldoK($awal_bulan, $data['kode_akun']);
+
+        $view = view('pelaporan.view.buku_besar', $data);
         $pdf = PDF::loadHTML($view);
         return $pdf->stream();
     }

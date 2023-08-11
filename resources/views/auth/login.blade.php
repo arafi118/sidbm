@@ -7,7 +7,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/icon/favicon.png">
     <link rel="icon" type="image/png" href="/assets/img/icon/favicon.png">
     <title>
-        p
+        SIDBM &mdash; Jembatan Akuntabilitas Bumdesma
     </title>
     <meta name="keywords" content="">
     <meta name="description" content="">

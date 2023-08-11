@@ -176,8 +176,8 @@
         data: 'nama_kelompok',
         name: 'nama_kelompok'
     }, {
-        data: 'alamat_kelompok',
-        name: 'alamat_kelompok'
+        data: 'kelompok.alamat_kelompok',
+        name: 'kelompok.alamat_kelompok'
     }, {
         data: 'tgl_proposal',
         name: 'tgl_proposal'
@@ -198,8 +198,8 @@
         data: 'nama_kelompok',
         name: 'nama_kelompok'
     }, {
-        data: 'alamat_kelompok',
-        name: 'alamat_kelompok'
+        data: 'kelompok.alamat_kelompok',
+        name: 'kelompok.alamat_kelompok'
     }, {
         data: 'tgl_verifikasi',
         name: 'tgl_verifikasi'
@@ -220,8 +220,8 @@
         data: 'nama_kelompok',
         name: 'nama_kelompok'
     }, {
-        data: 'alamat_kelompok',
-        name: 'alamat_kelompok'
+        data: 'kelompok.alamat_kelompok',
+        name: 'kelompok.alamat_kelompok'
     }, {
         data: 'tgl_tunggu',
         name: 'tgl_tunggu'
@@ -242,8 +242,8 @@
         data: 'nama_kelompok',
         name: 'nama_kelompok'
     }, {
-        data: 'alamat_kelompok',
-        name: 'alamat_kelompok'
+        data: 'kelompok.alamat_kelompok',
+        name: 'kelompok.alamat_kelompok'
     }, {
         data: 'tgl_cair',
         name: 'tgl_cair'
@@ -264,8 +264,8 @@
         data: 'nama_kelompok',
         name: 'nama_kelompok'
     }, {
-        data: 'alamat_kelompok',
-        name: 'alamat_kelompok'
+        data: 'kelompok.alamat_kelompok',
+        name: 'kelompok.alamat_kelompok'
     }, {
         data: 'tgl_cair',
         name: 'tgl_cair'
