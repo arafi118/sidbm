@@ -1,15 +1,25 @@
 @php
 use App\Utils\Tanggal;
+
+$kd_desa = '0';
 @endphp
 
 @extends('pelaporan.layout.base')
 
 @section('content')
+@foreach ($jenis_pp as $jpp)
+@php
+$desa = [];
+$nomor = 1;
+@endphp
+@if ($jpp->id != 1)
+<div class="break"></div>
+@endif
 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
     <tr>
         <td colspan="3" align="center">
             <div style="font-size: 18px;">
-                <b>DAFTAR KELOMPOK AKTIF</b>
+                <b>DAFTAR KELOMPOK AKTIF {{ strtoupper($jpp->nama_jpp) }}</b>
             </div>
             <div style="font-size: 16px;">
                 <b>{{ strtoupper($sub_judul) }}</b>
@@ -32,21 +42,25 @@ use App\Utils\Tanggal;
         <th>Saldo</th>
         <th>Tunggakan</th>
     </tr>
-    @foreach ($jenis_pp as $jpp)
-    @php
-    $desa = [];
-    @endphp
-    <tr style="font-weight: bolder; font-size: 16px;">
-        <td height="15" colspan="8" align="center">{{ $jpp->nama_jpp }}</td>
-    </tr>
 
     @foreach ($jpp->pinjaman_kelompok as $pinkel)
     @if (!in_array($pinkel->kelompok->d->kd_desa, $desa))
+
+    @if (in_array($kd_desa, $desa))
+    <tr>
+        <td colspan="5">Jumlah {{ $nama_desa }}</td>
+        <td align="right">{{ number_format($j_alokasi) }}</td>
+        <td align="right">{{ number_format($j_saldo) }}</td>
+        <td align="right">{{ number_format($j_tunggakan) }}
+    </tr>
+    @endif
+
     <tr style="font-weight: bold;">
         <td colspan="8" align="left">{{ $pinkel->kelompok->d->kode_desa }}. {{ $pinkel->kelompok->d->nama_desa }}</td>
     </tr>
 
     @php
+    $kd_desa = $pinkel->kelompok->d->kd_desa;
     $j_angg = 0;
     $j_alokasi = 0;
     $j_saldo = 0;
@@ -60,13 +74,19 @@ use App\Utils\Tanggal;
     $desa[] = $pinkel->kelompok->d->kd_desa;
     $saldo = $pinkel->alokasi;
     $tunggakan = 0;
+    $sum_pokok = 0;
+    $sum_jasa = 0;
+
     if ($pinkel->saldo) {
     $saldo = $pinkel->alokasi - $pinkel->saldo->sum_pokok;
-
-    $tunggakan = 0;
-    if ($pinkel->target->target_pokok - $pinkel->saldo->sum_pokok > 0) {
-    $tunggakan = $pinkel->target->target_pokok - $pinkel->saldo->sum_pokok;
+    $sum_pokok = $pinkel->saldo->sum_pokok;
+    $sum_jasa = $pinkel->saldo->sum_jasa;
     }
+
+    if ($pinkel->target) {
+    $tunggakan_pokok = $pinkel->target->target_pokok - $sum_pokok;
+    $ = $pinkel->target->target_jasa - $sum_jasa;
+    $tunggakan = $tunggakan_pokok + $tunggakan_jasa;
     }
 
     @endphp
@@ -88,16 +108,7 @@ use App\Utils\Tanggal;
     $j_tunggakan += $tunggakan;
     @endphp
 
-    @if (array_count_values($desa)[$pinkel->kelompok->d->kd_desa] == 1)
-    <tr>
-        <td colspan="5">Jumlah {{ $nama_desa }}</td>
-        <td align="right">{{ number_format($j_alokasi) }}</td>
-        <td align="right">{{ number_format($j_saldo) }}</td>
-        <td align="right">{{ number_format($j_tunggakan) }}
-    </tr>
-    @endif
-
-    @endforeach
     @endforeach
 </table>
+@endforeach
 @endsection

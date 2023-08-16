@@ -81,6 +81,6 @@ class PinjamanKelompok extends Model
 
     public function target()
     {
-        return $this->hasOne(RencanaAngsuran::class, 'loan_id')->orderBy('angsuran_ke', 'DESC');
+        return $this->hasOne(RencanaAngsuran::class, 'loan_id')->orderBy('jatuh_tempo', 'DESC');
     }
 }

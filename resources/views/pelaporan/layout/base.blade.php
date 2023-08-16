@@ -34,8 +34,8 @@
             padding: 2px 4px;
         }
 
-        br {
-            page-break-before: always;
+        .break {
+            page-break-after: always;
         }
 
         li {
