@@ -85,7 +85,7 @@ $nomor = 1;
 
     if ($pinkel->target) {
     $tunggakan_pokok = $pinkel->target->target_pokok - $sum_pokok;
-    $ = $pinkel->target->target_jasa - $sum_jasa;
+    $tunggakan_jasa = $pinkel->target->target_jasa - $sum_jasa;
     $tunggakan = $tunggakan_pokok + $tunggakan_jasa;
     }
 
