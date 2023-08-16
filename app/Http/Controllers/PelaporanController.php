@@ -7,6 +7,7 @@ use App\Models\AkunLevel2;
 use App\Models\AkunLevel3;
 use App\Models\JenisLaporan;
 use App\Models\JenisLaporanPinjaman;
+use App\Models\JenisProdukPinjaman;
 use App\Models\Kecamatan;
 use App\Models\Rekening;
 use App\Models\Transaksi;
@@ -72,7 +73,7 @@ class PelaporanController extends Controller
             ['lokasi', auth()->user()->lokasi],
             ['jabatan', '1'],
             ['level', '1'],
-            ['sejak', '<=', $request->tahun . '-' . $request->bulan . '-' . $request->hari]
+            ['sejak', '<=', date('Y-m-t', strtotime($request->tahun . '-' . $request->bulan . '-01'))]
         ])->first();
 
         $data['logo'] = $kec->logo;
@@ -111,7 +112,9 @@ class PelaporanController extends Controller
             $data['laporan'] = 'buku_besar ' . $laporan[1];
             return $this->$file($data);
         } elseif ($file == 5) {
-            //
+            $file = $request->sub_laporan;
+            $data['laporan'] = $file;
+            return $this->$file($data);
         } else {
             return $this->$file($data);
         }
@@ -215,7 +218,7 @@ class PelaporanController extends Controller
             $data['header_lalu'] = 'Kemarin';
             $data['header_sekarang'] = 'Hari Ini';
         } elseif (strlen($bln) > 0) {
-            $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($awal_tahun) . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
+            $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($thn . '-' . $bln . '-01') . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['bulan_lalu'] = date('Y-m-d', strtotime('-1 month', strtotime($data['tgl_kondisi'])));
             $data['header_lalu'] = 'Bulan Lalu';
@@ -468,6 +471,102 @@ class PelaporanController extends Controller
 
         $view = view('pelaporan.view.buku_besar', $data);
         $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    private function neraca_saldo(array $data)
+    {
+        $keuangan = new Keuangan;
+
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        if (strlen($hari) > 0 && strlen($bln) > 0) {
+            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
+            $data['tgl'] = Tanggal::tglLatin($tgl);
+        } elseif (strlen($bln) > 0) {
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        } else {
+            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::tahun($tgl);
+        }
+
+        $data['keuangan'] = $keuangan;
+        $data['rekening'] = Rekening::orderBy('kode_akun', 'ASC')->get();
+
+        $view = view('pelaporan.view.neraca_saldo', $data);
+        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+        return $pdf->stream();
+    }
+
+    private function kelompok_aktif(array $data)
+    {
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        if (strlen($hari) > 0 && strlen($bln) > 0) {
+            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
+            $data['tgl'] = Tanggal::tglLatin($tgl);
+        } elseif (strlen($bln) > 0) {
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        } else {
+            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::tahun($tgl);
+        }
+
+        $data['jenis_pp'] = JenisProdukPinjaman::with([
+            'pinjaman_kelompok' => function ($query) use ($data) {
+                $query->withCount('pinjaman_anggota')->where('sistem_angsuran', '!=', '12')->where(function ($query) use ($data) {
+                    $query->where([
+                        ['status', 'A'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']]
+                    ])->orwhere([
+                        ['status', 'L'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'L'],
+                        ['tgl_lunas', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'R'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'R'],
+                        ['tgl_lunas', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'H'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'H'],
+                        ['tgl_lunas', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ]);
+                });
+            },
+            'pinjaman_kelompok.saldo' => function ($query) use ($data) {
+                $query->where('tgl_transaksi', '<=', $data['tgl_kondisi']);
+            },
+            'pinjaman_kelompok.target' => function ($query) use ($data) {
+                $query->where('jatuh_tempo', '<=', $data['tgl_kondisi']);
+            },
+            'pinjaman_kelompok.sis_pokok',
+            'pinjaman_kelompok.kelompok',
+            'pinjaman_kelompok.kelompok.d',
+            'pinjaman_kelompok.kelompok.d.sebutan_desa'
+        ])->get();
+
+        $view = view('pelaporan.view.perkembangan_piutang.kelompok_aktif', $data);
+        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
         return $pdf->stream();
     }
 }

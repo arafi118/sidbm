@@ -21,4 +21,9 @@ class Desa extends Model
     {
         return $this->belongsTo(SebutanDesa::class, 'sebutan');
     }
+
+    public function kelompok()
+    {
+        return $this->hasMany(Kelompok::class, 'desa', 'kd_desa');
+    }
 }

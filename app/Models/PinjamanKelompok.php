@@ -73,4 +73,14 @@ class PinjamanKelompok extends Model
     {
         return $this->belongsTo(SistemAngsuran::class, 'sa_jasa');
     }
+
+    public function saldo()
+    {
+        return $this->hasOne(RealAngsuran::class, 'loan_id')->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
+    }
+
+    public function target()
+    {
+        return $this->hasOne(RencanaAngsuran::class, 'loan_id')->orderBy('angsuran_ke', 'DESC');
+    }
 }

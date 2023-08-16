@@ -11,4 +11,14 @@ class JenisProdukPinjaman extends Model
 
     protected $table = 'jenis_produk_pinjaman';
     public $timestamps = false;
+
+    public function pinjaman_kelompok()
+    {
+        return $this->hasMany(PinjamanKelompok::class, 'jenis_pp');
+    }
+
+    public function pinjaman_anggota()
+    {
+        return $this->hasMany(PinjamanAnggota::class, 'jenis_pp');
+    }
 }

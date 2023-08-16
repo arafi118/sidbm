@@ -55,22 +55,6 @@ class Keuangan
 
     public function Saldo($tgl_kondisi, $kode_akun)
     {
-        // $saldo_awal = $this->saldoAwal($tgl_kondisi, $kode_akun);
-        // $debit = $this->saldoD($tgl_kondisi, $kode_akun);
-        // $kredit = $this->saldoK($tgl_kondisi, $kode_akun);
-
-        // $lev1 = explode('.', $kode_akun)[0];
-        // $jenis_mutasi = 'kredit';
-        // if ($lev1 == '1' || $lev1 == '5') $jenis_mutasi = 'debet';
-
-        // if (strtolower($jenis_mutasi) == 'debet') {
-        //     $saldo = ($saldo_awal['debit'] - $saldo_awal['kredit']) + $debit - $kredit;
-        // } elseif (strtolower($jenis_mutasi) == 'kredit') {
-        //     $saldo = ($saldo_awal['kredit'] - $saldo_awal['debit']) + $kredit - $debit;
-        // }
-
-        // return $saldo;
-
         $thn_kondisi = explode('-', $tgl_kondisi)[0];
         $awal_tahun = $thn_kondisi . '-01-01';
         $thn_lalu = $thn_kondisi - 1;
