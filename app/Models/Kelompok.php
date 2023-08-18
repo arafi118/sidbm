@@ -52,7 +52,7 @@ class Kelompok extends Model
 
     public function pinkel()
     {
-        return $this->hasMany(PinjamanKelompok::class, 'id_kel', 'id');
+        return $this->hasMany(PinjamanKelompok::class, 'id_kel', 'id')->orderBy('id', 'ASC');
     }
 
     public function d()

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AkunLevel1;
 use App\Models\AkunLevel2;
 use App\Models\AkunLevel3;
+use App\Models\Desa;
 use App\Models\JenisLaporan;
 use App\Models\JenisLaporanPinjaman;
 use App\Models\JenisProdukPinjaman;
@@ -520,6 +521,160 @@ class PelaporanController extends Controller
             $data['tgl'] = Tanggal::tahun($tgl);
         }
 
+        $data['spp'] = Desa::where('kd_kec', $data['kec']->kd_kec)->with([
+            'sebutan_desa',
+            'kelompok',
+            'kelompok.pinkel' => function ($query) use ($data) {
+                $query->withCount('pinjaman_anggota')->where('jenis_pp', '1')->where('sistem_angsuran', '!=', '12')->where(function ($query) use ($data) {
+                    $query->where([
+                        ['status', 'A'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']]
+                    ])->orwhere([
+                        ['status', 'L'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'L'],
+                        ['tgl_lunas', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'R'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'R'],
+                        ['tgl_lunas', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'H'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'H'],
+                        ['tgl_lunas', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ]);
+                });
+            },
+            'kelompok.pinkel.saldo' => function ($query) use ($data) {
+                $query->where('tgl_transaksi', '<=', $data['tgl_kondisi']);
+            },
+            'kelompok.pinkel.target' => function ($query) use ($data) {
+                $query->where('jatuh_tempo', '<=', $data['tgl_kondisi']);
+            },
+            'kelompok.pinkel.sis_pokok'
+        ])->get();
+
+        $data['uep'] = Desa::where('kd_kec', $data['kec']->kd_kec)->with([
+            'sebutan_desa',
+            'kelompok',
+            'kelompok.pinkel' => function ($query) use ($data) {
+                $query->withCount('pinjaman_anggota')->where('jenis_pp', '2')->where('sistem_angsuran', '!=', '12')->where(function ($query) use ($data) {
+                    $query->where([
+                        ['status', 'A'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']]
+                    ])->orwhere([
+                        ['status', 'L'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'L'],
+                        ['tgl_lunas', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'R'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'R'],
+                        ['tgl_lunas', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'H'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'H'],
+                        ['tgl_lunas', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ]);
+                });
+            },
+            'kelompok.pinkel.saldo' => function ($query) use ($data) {
+                $query->where('tgl_transaksi', '<=', $data['tgl_kondisi']);
+            },
+            'kelompok.pinkel.target' => function ($query) use ($data) {
+                $query->where('jatuh_tempo', '<=', $data['tgl_kondisi']);
+            },
+            'kelompok.pinkel.sis_pokok'
+        ])->get();
+        $data['pl'] = Desa::where('kd_kec', $data['kec']->kd_kec)->with([
+            'sebutan_desa',
+            'kelompok',
+            'kelompok.pinkel' => function ($query) use ($data) {
+                $query->withCount('pinjaman_anggota')->where('jenis_pp', '3')->where('sistem_angsuran', '!=', '12')->where(function ($query) use ($data) {
+                    $query->where([
+                        ['status', 'A'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']]
+                    ])->orwhere([
+                        ['status', 'L'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'L'],
+                        ['tgl_lunas', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'R'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'R'],
+                        ['tgl_lunas', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'H'],
+                        ['tgl_cair', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ])->orwhere([
+                        ['status', 'H'],
+                        ['tgl_lunas', '<=', $data['tgl_kondisi']],
+                        ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ]);
+                });
+            },
+            'kelompok.pinkel.saldo' => function ($query) use ($data) {
+                $query->where('tgl_transaksi', '<=', $data['tgl_kondisi']);
+            },
+            'kelompok.pinkel.target' => function ($query) use ($data) {
+                $query->where('jatuh_tempo', '<=', $data['tgl_kondisi']);
+            },
+            'kelompok.pinkel.sis_pokok'
+        ])->get();
+
+        $view = view('pelaporan.view.perkembangan_piutang.kelompok_aktif', $data);
+        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+        return $pdf->stream();
+    }
+
+    private function _kelompok_aktif(array $data)
+    {
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        if (strlen($hari) > 0 && strlen($bln) > 0) {
+            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
+            $data['tgl'] = Tanggal::tglLatin($tgl);
+        } elseif (strlen($bln) > 0) {
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        } else {
+            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::tahun($tgl);
+        }
+
         $data['jenis_pp'] = JenisProdukPinjaman::with([
             'pinjaman_kelompok' => function ($query) use ($data) {
                 $query->withCount('pinjaman_anggota')->where('sistem_angsuran', '!=', '12')->where(function ($query) use ($data) {
@@ -564,9 +719,5 @@ class PelaporanController extends Controller
             'pinjaman_kelompok.kelompok.d',
             'pinjaman_kelompok.kelompok.d.sebutan_desa'
         ])->get();
-
-        $view = view('pelaporan.view.perkembangan_piutang.kelompok_aktif', $data);
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
-        return $pdf->stream();
     }
 }

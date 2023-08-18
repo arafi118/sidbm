@@ -24,6 +24,6 @@ class Desa extends Model
 
     public function kelompok()
     {
-        return $this->hasMany(Kelompok::class, 'desa', 'kd_desa');
+        return $this->hasMany(Kelompok::class, 'desa', 'kd_desa')->orderBy('desa', 'ASC');
     }
 }
