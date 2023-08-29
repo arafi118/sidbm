@@ -45,7 +45,6 @@
                 <th rowspan="2">Saldo</th>
                 <th rowspan="2">%</th>
                 <th colspan="2">Tunggakan</th>
-                <th rowspan="2">Nb</th>
                 <th>Lancar</th>
                 <th>Diragukan</th>
                 <th>Macet</th>
@@ -83,7 +82,6 @@
                             <td align="center">{{ number_format(floor($j_pross * 100)) }}</td>
                             <td align="right">{{ number_format($j_tunggakan_pokok) }}</td>
                             <td align="right">{{ number_format($j_tunggakan_jasa) }}</td>
-                            <td align="center">&nbsp;</td>
                             <td align="right">{{ number_format($j_kolek1) }}</td>
                             <td align="right">{{ number_format($j_kolek2) }}</td>
                             <td align="right">{{ number_format($j_kolek3) }}</td>
@@ -196,7 +194,6 @@
                     <td align="center">{{ number_format(floor($j_pross * 100)) }}</td>
                     <td align="right">{{ number_format($j_tunggakan_pokok) }}</td>
                     <td align="right">{{ number_format($j_tunggakan_jasa) }}</td>
-                    <td align="center">&nbsp;</td>
                     <td align="right">{{ number_format($j_kolek1) }}</td>
                     <td align="right">{{ number_format($j_kolek2) }}</td>
                     <td align="right">{{ number_format($j_kolek3) }}</td>
@@ -215,20 +212,19 @@
                     <td align="center">{{ number_format(floor($t_pross * 100)) }}</td>
                     <td align="right">{{ number_format($t_tunggakan_pokok) }}</td>
                     <td align="right">{{ number_format($t_tunggakan_jasa) }}</td>
-                    <td align="center">&nbsp;</td>
                     <td align="right">{{ number_format($t_kolek1) }}</td>
                     <td align="right">{{ number_format($t_kolek2) }}</td>
                     <td align="right">{{ number_format($t_kolek3) }}</td>
                 </tr>
                 <tr style="font-weight: bold;">
                     <td align="center" rowspan="2" height="20">Resiko Pinjaman</td>
-                    <td colspan="6" align="center">(Lancar + Diragukan + Macet)</td>
+                    <td colspan="5" align="center">(Lancar + Diragukan + Macet)</td>
                     <td align="center">Lancar * 0%</td>
                     <td align="center">Diragukan * 50%</td>
                     <td align="center">Macet * 100%</td>
                 </tr>
                 <tr>
-                    <td align="center" colspan="6">
+                    <td align="center" colspan="5">
                         {{ number_format(($t_kolek1 * 0) / 100 + ($t_kolek2 * 50) / 100 + ($t_kolek3 * 100) / 100) }}
                     </td>
                     <td align="center">{{ number_format(($t_kolek1 * 0) / 100) }}</td>
