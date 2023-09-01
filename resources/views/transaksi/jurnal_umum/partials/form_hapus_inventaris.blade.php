@@ -1,5 +1,5 @@
 @php
-use App\Utils\Inventaris as Inv;
+    use App\Utils\Inventaris as Inv;
 @endphp
 
 <input type="hidden" name="harsat" id="harsat">
@@ -10,13 +10,13 @@ use App\Utils\Inventaris as Inv;
         <select class="form-control" name="nama_barang" id="nama_barang">
             <option value="">-- Pilih Nama Barang --</option>
             @foreach ($inventaris as $inv)
-            @php
-            $nilai_buku = Inv::nilaiBuku($tgl_transaksi, $inv->id)
-            @endphp
-            <option value="{{ $inv->id }}#{{ $inv->unit }}#{{ $nilai_buku }}">
-                {{ $inv->nama_barang }} ({{ $inv->unit }} unit x
-                {{ number_format($inv->harsat) }}) | NB. {{ number_format($nilai_buku, 2) }}
-            </option>
+                @php
+                    $nilai_buku = Inv::nilaiBuku($tgl_transaksi, $inv);
+                @endphp
+                <option value="{{ $inv->id }}#{{ $inv->unit }}#{{ $nilai_buku }}">
+                    {{ $inv->nama_barang }} ({{ $inv->unit }} unit x
+                    {{ number_format($inv->harsat) }}) | NB. {{ number_format($nilai_buku, 2) }}
+                </option>
             @endforeach
         </select>
         <small class="text-danger" id="msg_nama_barang"></small>
@@ -45,7 +45,8 @@ use App\Utils\Inventaris as Inv;
 <div id="col_nilai_buku" class="col-sm-6">
     <div class="input-group input-group-static my-3">
         <label for="nilai_buku">Nilai Buku</label>
-        <input autocomplete="off" readonly disabled type="text" name="nilai_buku" id="nilai_buku" class="form-control">
+        <input autocomplete="off" readonly disabled type="text" name="nilai_buku" id="nilai_buku"
+            class="form-control">
         <small class="text-danger" id="msg_nilai_buku"></small>
     </div>
 </div>
@@ -68,5 +69,4 @@ use App\Utils\Inventaris as Inv;
     $("#harga_jual").maskMoney({
         allowNegative: true
     });
-
 </script>

@@ -6,16 +6,14 @@ use App\Models\Inventaris as ModelsInventaris;
 
 class Inventaris
 {
-    public static function nilaiBuku($tgl, $id)
+    public static function nilaiBuku($tgl, $inv)
     {
-        $inv = ModelsInventaris::where('id', $id)->first();
-
         $tgl_beli = $inv->tgl_beli;
         $unit = $inv->unit;
-        $harga_satuan = $inv->harsat;
+        $harga_satuan = $inv->harsat * $unit;
         $umur = $inv->umur_ekonomis;
 
-        $penyusutan = $harga_satuan / $umur;
+        $penyusutan = intval($harga_satuan) / $umur;
         $ak_umur = self::bulan($inv->tgl_beli, $tgl);
         $ak_susut = $penyusutan * $ak_umur;
         $nilai = $harga_satuan - $ak_susut;
