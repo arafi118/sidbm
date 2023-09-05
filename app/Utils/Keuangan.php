@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Models\Kecamatan;
+use App\Models\PinjamanKelompok;
 use App\Models\Rekening;
 use App\Models\Transaksi;
 use DB;
@@ -153,5 +154,54 @@ class Keuangan
         $biaya = $this->biaya($tgl_kondisi);
 
         return ($pendapatan - $biaya);
+    }
+
+    public function tingkat_kesehatan($tgl_kondisi, $data = [])
+    {
+        $tgl = explode('-', $tgl_kondisi);
+        $data['tahun'] = $tgl[0];
+        $data['bulan'] = $tgl[0];
+        $data['tanggal'] = $tgl[0];
+        $data['lokasi'] = auth()->user()->lokasi;
+        $data['tgl_kondisi'] = $tgl_kondisi;
+
+        $pinjaman_kelompok = PinjamanKelompok::where('sistem_angsuran', '!=', '12')
+            ->where(function ($query) use ($data) {
+                $query->where([
+                    ['.status', 'A'],
+                    ['.tgl_cair', '<=', $data['tgl_kondisi']]
+                ])->orwhere([
+                    ['.status', 'L'],
+                    ['.tgl_cair', '<=', $data['tgl_kondisi']],
+                    ['.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                ])->orwhere([
+                    ['.status', 'L'],
+                    ['.tgl_lunas', '<=', $data['tgl_kondisi']],
+                    ['.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                ])->orwhere([
+                    ['.status', 'R'],
+                    ['.tgl_cair', '<=', $data['tgl_kondisi']],
+                    ['.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                ])->orwhere([
+                    ['.status', 'R'],
+                    ['.tgl_lunas', '<=', $data['tgl_kondisi']],
+                    ['.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                ])->orwhere([
+                    ['.status', 'H'],
+                    ['.tgl_cair', '<=', $data['tgl_kondisi']],
+                    ['.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                ])->orwhere([
+                    ['.status', 'H'],
+                    ['.tgl_lunas', '<=', $data['tgl_kondisi']],
+                    ['.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                ]);
+            })->with([
+                'saldo' => function ($query) use ($data) {
+                    $query->where('tgl_transaksi', '<=', $data['tgl_kondisi']);
+                },
+                'target' => function ($query) use ($data) {
+                    $query->where('jatuh_tempo', '<=', $data['tgl_kondisi']);
+                }
+            ])->get();
     }
 }

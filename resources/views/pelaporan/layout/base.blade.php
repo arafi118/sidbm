@@ -35,6 +35,10 @@
             padding: 2px 4px;
         }
 
+        table tr td table tr td {
+            padding: 0 !important;
+        }
+
         .break {
             page-break-after: always;
         }

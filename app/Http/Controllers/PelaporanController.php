@@ -1008,7 +1008,7 @@ class PelaporanController extends Controller
         $data['inventaris'] = Rekening::where('kode_akun', 'LIKE', '1.2.01%')
             ->with([
                 'inventaris' => function ($query) use ($data) {
-                    $query->where('jenis', '1')->orwhere('jenis', '3');
+                    $query->where('jenis', '1');
                 }
             ])
             ->get();
@@ -1037,7 +1037,39 @@ class PelaporanController extends Controller
             $data['tgl'] = Tanggal::tahun($tgl);
         }
 
+        $data['inventaris'] = Rekening::where('kode_akun', 'LIKE', '1.2.03%')
+            ->with([
+                'inventaris' => function ($query) use ($data) {
+                    $query->where('jenis', '3');
+                }
+            ])
+            ->get();
+
         $view = view('pelaporan.view.aset_tak_berwujud', $data);
+        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+        return $pdf->stream();
+    }
+
+    private function tingkat_kesehatan(array $data)
+    {
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        if (strlen($hari) > 0 && strlen($bln) > 0) {
+            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
+            $data['tgl'] = Tanggal::tglLatin($tgl);
+        } elseif (strlen($bln) > 0) {
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        } else {
+            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::tahun($tgl);
+        }
+
+
+        $view = view('pelaporan.view.penilaian_kesehatan', $data);
         $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
         return $pdf->stream();
     }
