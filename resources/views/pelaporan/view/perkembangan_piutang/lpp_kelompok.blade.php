@@ -9,6 +9,19 @@
     @foreach ($jenis_pp as $jpp)
         @php
             $kd_desa = [];
+            $t_alokasi = 0;
+            $t_target_pokok = 0;
+            $t_target_jasa = 0;
+            $t_real_bl_pokok = 0;
+            $t_real_bl_jasa = 0;
+            $t_real_pokok = 0;
+            $t_real_jasa = 0;
+            $t_real_bi_pokok = 0;
+            $t_real_bi_jasa = 0;
+            $t_saldo_pokok = 0;
+            $t_saldo_jasa = 0;
+            $t_tunggakan_pokok = 0;
+            $t_tunggakan_jasa = 0;
         @endphp
         @if ($jpp->nama_jpp != 'SPP')
             <div class="break"></div>
@@ -67,6 +80,20 @@
                 @if (array_count_values($kd_desa)[$pinkel->kd_desa] <= '1')
                     @if ($section != $desa && count($kd_desa) > 1)
                         @php
+                            $t_alokasi += $j_alokasi;
+                            $t_target_pokok += $j_target_pokok;
+                            $t_target_jasa += $j_target_jasa;
+                            $t_real_bl_pokok += $j_real_bl_pokok;
+                            $t_real_bl_jasa += $j_real_bl_jasa;
+                            $t_real_pokok += $j_real_pokok;
+                            $t_real_jasa += $j_real_jasa;
+                            $t_real_bi_pokok += $j_real_bi_pokok;
+                            $t_real_bi_jasa += $j_real_bi_jasa;
+                            $t_saldo_pokok += $j_saldo_pokok;
+                            $t_saldo_jasa += $j_saldo_jasa;
+                            $t_tunggakan_pokok += $j_tunggakan_pokok;
+                            $t_tunggakan_jasa += $j_tunggakan_jasa;
+                            
                             $j_pross = 1;
                             if ($j_target_pokok != 0) {
                                 $j_pross = $j_real_bi_pokok / $j_target_pokok;
@@ -153,6 +180,17 @@
                     if ($target_pokok != 0) {
                         $pross = $sum_pokok / $target_pokok;
                     }
+                    
+                    if ($pinkel->tgl_lunas <= $tgl_kondisi && $pinkel->status == 'L') {
+                        $tunggakan_pokok = 0;
+                        $tunggakan_jasa = 0;
+                    } elseif ($pinkel->tgl_lunas <= $tgl_kondisi && $pinkel->status == 'R') {
+                        $tunggakan_pokok = 0;
+                        $tunggakan_jasa = 0;
+                    } elseif ($pinkel->tgl_lunas <= $tgl_kondisi && $pinkel->status == 'H') {
+                        $tunggakan_pokok = 0;
+                        $tunggakan_jasa = 0;
+                    }
                 @endphp
 
                 <tr>
@@ -208,6 +246,20 @@
                 @endphp
             @endforeach
             @php
+                $t_alokasi += $j_alokasi;
+                $t_target_pokok += $j_target_pokok;
+                $t_target_jasa += $j_target_jasa;
+                $t_real_bl_pokok += $j_real_bl_pokok;
+                $t_real_bl_jasa += $j_real_bl_jasa;
+                $t_real_pokok += $j_real_pokok;
+                $t_real_jasa += $j_real_jasa;
+                $t_real_bi_pokok += $j_real_bi_pokok;
+                $t_real_bi_jasa += $j_real_bi_jasa;
+                $t_saldo_pokok += $j_saldo_pokok;
+                $t_saldo_jasa += $j_saldo_jasa;
+                $t_tunggakan_pokok += $j_tunggakan_pokok;
+                $t_tunggakan_jasa += $j_tunggakan_jasa;
+                
                 $j_pross = 1;
                 if ($j_target_pokok != 0) {
                     $j_pross = $j_real_bi_pokok / $j_target_pokok;
@@ -232,6 +284,33 @@
                     <td align="center">{{ number_format(floor($j_pross * 100)) }}</td>
                     <td align="right">{{ number_format($j_tunggakan_pokok) }}</td>
                     <td align="right">{{ number_format($j_tunggakan_jasa) }}</td>
+                </tr>
+
+                @php
+                    $t_pross = 1;
+                    if ($t_target_pokok != 0) {
+                        $t_pross = $t_real_bi_pokok / $t_target_pokok;
+                    }
+                @endphp
+
+                <tr style="background: rgb(230, 230, 230); font-weight: bold;">
+                    <td colspan="4" align="center">
+                        J U M L A H
+                    </td>
+                    <td align="right">{{ number_format($t_alokasi) }}</td>
+                    <td align="right">{{ number_format($t_target_pokok) }}</td>
+                    <td align="right">{{ number_format($t_target_jasa) }}</td>
+                    <td align="right">{{ number_format($t_real_bl_pokok) }}</td>
+                    <td align="right">{{ number_format($t_real_bl_jasa) }}</td>
+                    <td align="right">{{ number_format($t_real_pokok) }}</td>
+                    <td align="right">{{ number_format($t_real_jasa) }}</td>
+                    <td align="right">{{ number_format($t_real_bi_pokok) }}</td>
+                    <td align="right">{{ number_format($t_real_bi_jasa) }}</td>
+                    <td align="right">{{ number_format($t_saldo_pokok) }}</td>
+                    <td align="right">{{ number_format($t_saldo_jasa) }}</td>
+                    <td align="center">{{ number_format(floor($t_pross * 100)) }}</td>
+                    <td align="right">{{ number_format($t_tunggakan_pokok) }}</td>
+                    <td align="right">{{ number_format($t_tunggakan_jasa) }}</td>
                 </tr>
             @endif
         </table>

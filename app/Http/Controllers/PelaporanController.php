@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AkunLevel1;
 use App\Models\AkunLevel2;
 use App\Models\AkunLevel3;
+use App\Models\ArusKas;
 use App\Models\Desa;
 use App\Models\JenisLaporan;
 use App\Models\JenisLaporanPinjaman;
@@ -364,7 +365,62 @@ class PelaporanController extends Controller
 
     private function arus_kas(array $data)
     {
-        return 'b';
+        $keuangan = new Keuangan;
+
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        if (strlen($hari) > 0 && strlen($bln) > 0) {
+            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
+            $data['tgl'] = Tanggal::tglLatin($tgl);
+            $data['jenis'] = 'Harian';
+        } elseif (strlen($bln) > 0) {
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['jenis'] = 'Bulanan';
+        } else {
+            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::tahun($tgl);
+            $data['jenis'] = 'Tahunan';
+        }
+
+        $data['keuangan'] = $keuangan;
+        $data['arus_kas'] = ArusKas::where('sub', '0')->with('child')->get();
+
+        $view = view('pelaporan.view.arus_kas', $data);
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    private function LPM(array $data)
+    {
+        $data['laporan'] = 'Laporan Perubahan Modal';
+        $keuangan = new Keuangan;
+
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        if (strlen($hari) > 0 && strlen($bln) > 0) {
+            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
+            $data['tgl'] = Tanggal::tglLatin($tgl);
+        } elseif (strlen($bln) > 0) {
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        } else {
+            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::tahun($tgl);
+        }
+
+        $data['keuangan'] = $keuangan;
+        $data['rekening'] = Rekening::where('lev1', '3')->get();
+
+        $view = view('pelaporan.view.perubahan_modal', $data);
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
     }
 
     private function CALK(array $data)
