@@ -40,4 +40,9 @@ class Transaksi extends Model
     {
         return $this->belongsTo(User::class, 'id_user');
     }
+
+    public function tr_idtp()
+    {
+        return $this->hasMany(Transaksi::class, 'idtp', 'idtp');
+    }
 }

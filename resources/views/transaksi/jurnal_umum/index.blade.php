@@ -113,18 +113,21 @@
                                 <label class="form-label" for="bulan">Bulanan</label>
                                 <select class="form-control" name="bulan" id="bulan">
                                     <option value="">--</option>
-                                    <option value="01">01. JANUARI</option>
-                                    <option value="02">02. FEBRUARI</option>
-                                    <option value="03">03. MARET</option>
-                                    <option value="04">04. APRIL</option>
-                                    <option value="05">05. MEI</option>
-                                    <option value="06">06. JUNI</option>
-                                    <option value="07">07. JULI</option>
-                                    <option value="08">08. AGUSTUS</option>
-                                    <option value="09">09. SEPTEMBER</option>
-                                    <option value="10">10. OKTOBER</option>
-                                    <option value="11">11. NOVEMBER</option>
-                                    <option value="12">12. DESEMBER</option>
+                                    <option {{ date('m') == '01' ? 'selected' : '' }} value="01">01. JANUARI</option>
+                                    <option {{ date('m') == '02' ? 'selected' : '' }} value="02">02. FEBRUARI</option>
+                                    <option {{ date('m') == '03' ? 'selected' : '' }} value="03">03. MARET</option>
+                                    <option {{ date('m') == '04' ? 'selected' : '' }} value="04">04. APRIL</option>
+                                    <option {{ date('m') == '05' ? 'selected' : '' }} value="05">05. MEI</option>
+                                    <option {{ date('m') == '06' ? 'selected' : '' }} value="06">06. JUNI</option>
+                                    <option {{ date('m') == '07' ? 'selected' : '' }} value="07">07. JULI</option>
+                                    <option {{ date('m') == '08' ? 'selected' : '' }} value="08">08. AGUSTUS</option>
+                                    <option {{ date('m') == '09' ? 'selected' : '' }} value="09">09. SEPTEMBER
+                                    </option>
+                                    <option {{ date('m') == '10' ? 'selected' : '' }} value="10">10. OKTOBER</option>
+                                    <option {{ date('m') == '11' ? 'selected' : '' }} value="11">11. NOVEMBER
+                                    </option>
+                                    <option {{ date('m') == '12' ? 'selected' : '' }} value="12">12. DESEMBER
+                                    </option>
                                 </select>
                                 <small class="text-danger" id="msg_bulan"></small>
                             </div>
@@ -135,7 +138,8 @@
                                 <select class="form-control" name="tanggal" id="tanggal">
                                     <option value="">--</option>
                                     @for ($j = 1; $j <= 31; $j++)
-                                        @php $no=str_pad($j, 2, "0" , STR_PAD_LEFT) @endphp <option value="{{ $no }}">{{ $no }}</option>
+                                        @php $no=str_pad($j, 2, "0" , STR_PAD_LEFT) @endphp
+                                        <option value="{{ $no }}">{{ $no }}</option>
                                     @endfor
                                 </select>
                                 <small class="text-danger" id="msg_tanggal"></small>
@@ -144,10 +148,31 @@
                     </div>
 
                     <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-sm btn-success">
+                        <button type="button" id="BtndetailTransaksi" class="btn btn-sm btn-success"
+                            data-bs-toggle="modal" data-bs-target="#detailTransaksi">
                             Detail Transaksi
                         </button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="detailTransaksi" tabindex="-1" aria-labelledby="detailTransaksiLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="detailTransaksiLabel">
+
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="LayoutdetailTransaksi"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>
@@ -201,6 +226,16 @@
             if (sumber_dana == '1.2.02.03') {
                 simpan.setChoiceByValue('5.1.07.10')
             }
+
+            var tgl_transaksi = $('#tgl_transaksi').val().split('/')
+            var tahun = tgl_transaksi[2];
+            var bulan = tgl_transaksi[1];
+            var hari = tgl_transaksi[0];
+
+            $.get('/trasaksi/saldo/' + sumber_dana + '?tahun=' + tahun + '&bulan=' + bulan + '&hari=' + hari,
+                function(result) {
+                    $('#saldo').html(formatter.format(result.saldo))
+                })
         })
 
         $(document).on('change', '#sumber_dana,#disimpan_ke', function(e) {
@@ -309,5 +344,40 @@
                 $('#col_harga_jual').hide()
             }
         })
+
+        $(document).on('click', '#BtndetailTransaksi', function(e) {
+            var tahun = $('#tahun').val()
+            var bulan = $('#bulan').val()
+            var hari = $('#tanggal').val()
+            var kode_akun = $('#sumber_dana').val()
+
+            $.ajax({
+                url: '/transaksi/detail_transaksi',
+                type: 'get',
+                data: {
+                    tahun,
+                    bulan,
+                    hari,
+                    kode_akun
+                },
+                success: function(result) {
+                    $('#detailTransaksiLabel').html(result.label)
+                    $('#LayoutdetailTransaksi').html(result.view)
+                }
+            })
+        })
+
+        $(document).on('click', '.btn-link', function(e) {
+            var action = $(this).attr('data-action')
+
+            window.open(action)
+        })
+
+        function initializeBootstrapTooltip() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]')),
+                tooltipList = tooltipTriggerList.map(function(e) {
+                    return new bootstrap.Tooltip(e)
+                });
+        }
     </script>
 @endsection

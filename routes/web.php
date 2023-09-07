@@ -63,13 +63,23 @@ Route::resource('/pinjaman_anggota', PinjamanAnggotaController::class);
 
 Route::get('/transaksi/jurnal_umum', [TransaksiController::class, 'jurnalUmum'])->middleware('auth');
 Route::get('/transaksi/jurnal_angsuran', [TransaksiController::class, 'jurnalAngsuran'])->middleware('auth');
+Route::get('/trasaksi/saldo/{kode_akun}', [TransaksiController::class, 'saldo']);
 
 Route::get('/transaksi/ambil_rekening/{id}', [TransaksiController::class, 'rekening'])->middleware('auth');
 Route::get('/transaksi/form_nominal/', [TransaksiController::class, 'form'])->middleware('auth');
 Route::get('/transaksi/form_angsuran/{id_pinkel}', [TransaksiController::class, 'formAngsuran'])->middleware('auth');
 
+Route::get('/transaksi/detail_transaksi/', [TransaksiController::class, 'detailTransaksi']);
 Route::post('/transaksi/angsuran', [TransaksiController::class, 'angsuran'])->middleware('auth');
 Route::get('/transaksi/generate_real/{id_pinkel}', [TransaksiController::class, 'generateReal'])->middleware('auth');
+
+Route::get('/transaksi/dokumen/kuitansi/{id}', [TransaksiController::class, 'kuitansi']);
+Route::get('/transaksi/dokumen/bkk/{id}', [TransaksiController::class, 'bkk']);
+Route::get('/transaksi/dokumen/bkm/{id}', [TransaksiController::class, 'bkm']);
+Route::get('/transaksi/dokumen/bm/{id}', [TransaksiController::class, 'bm']);
+
+Route::get('/transaksi/dokumen/bkm_angsuran/{id}', [TransaksiController::class, 'bkm_angsuran']);
+Route::get('/transaksi/dokumen/bkk_angsuran/{id}', [TransaksiController::class, 'bkk_angsuran']);
 
 Route::resource('/transaksi', TransaksiController::class);
 

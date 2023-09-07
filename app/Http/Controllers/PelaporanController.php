@@ -498,6 +498,7 @@ class PelaporanController extends Controller
         if (strlen($hari) > 0 && strlen($bln) > 0) {
             $tgl = $thn . '-' . $bln . '-' . $hari;
             $data['judul'] = 'Laporan Harian';
+            $data['sub_judul'] = 'Tanggal ' . $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tglLatin($tgl);
             $awal_bulan = $tgl;
         } elseif (strlen($bln) > 0) {

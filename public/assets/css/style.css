@@ -194,3 +194,13 @@ small.text-danger {
 .choices__list--single .choices__item {
     width: 90%;
 }
+
+.tooltip {
+    --bs-tooltip-zindex: 99999999999;
+    z-index: var(--bs-tooltip-zindex) !important;
+}
+
+table.table.midle tbody tr th,
+table.table.midle tbody tr td {
+    vertical-align: middle;
+}
