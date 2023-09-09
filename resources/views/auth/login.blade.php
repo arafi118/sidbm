@@ -28,7 +28,6 @@
         .async-hide {
             opacity: 0 !important
         }
-
     </style>
 </head>
 
@@ -73,7 +72,7 @@
                                     <p class="mb-4 text-sm mx-auto">
                                         Belum punya SI DBM?
                                         <a href="javascript:;" class="text-info text-gradient font-weight-bold">
-                                            Daftar
+                                            Daftar Sekarang
                                         </a>
                                     </p>
                                 </div>
