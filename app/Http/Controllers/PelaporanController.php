@@ -66,7 +66,8 @@ class PelaporanController extends Controller
             'bulan',
             'hari',
             'laporan',
-            'sub_laporan'
+            'sub_laporan',
+            'type'
         ]);
 
         $request->hari = ($request->hari) ?: 31;
@@ -142,8 +143,13 @@ class PelaporanController extends Controller
         }
 
         $view = view('pelaporan.view.cover', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function surat_pengantar(array $data)
@@ -170,8 +176,13 @@ class PelaporanController extends Controller
         }
 
         $view = view('pelaporan.view.surat_pengantar', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function neraca(array $data)
@@ -199,9 +210,14 @@ class PelaporanController extends Controller
 
         $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with('akun2.akun3.rek')->orderBy('kode_akun', 'ASC')->get();
 
-        $view = view('pelaporan.view.neraca', $data);
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+        $view = view('pelaporan.view.neraca', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function laba_rugi(array $data)
@@ -359,8 +375,13 @@ class PelaporanController extends Controller
         $data['bebanNOP'] = $bebNOP_lev1;
 
         $view = view('pelaporan.view.laba_rugi', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function arus_kas(array $data)
@@ -389,9 +410,14 @@ class PelaporanController extends Controller
         $data['keuangan'] = $keuangan;
         $data['arus_kas'] = ArusKas::where('sub', '0')->with('child')->get();
 
-        $view = view('pelaporan.view.arus_kas', $data);
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+        $view = view('pelaporan.view.arus_kas', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function LPM(array $data)
@@ -418,9 +444,14 @@ class PelaporanController extends Controller
         $data['keuangan'] = $keuangan;
         $data['rekening'] = Rekening::where('lev1', '3')->get();
 
-        $view = view('pelaporan.view.perubahan_modal', $data);
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+        $view = view('pelaporan.view.perubahan_modal', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function CALK(array $data)
@@ -449,9 +480,14 @@ class PelaporanController extends Controller
 
         $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with('akun2.akun3.rek')->orderBy('kode_akun', 'ASC')->get();
 
-        $view = view('pelaporan.view.calk', $data);
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+        $view = view('pelaporan.view.calk', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function jurnal_transaksi(array $data)
@@ -482,8 +518,13 @@ class PelaporanController extends Controller
         }
 
         $view = view('pelaporan.view.jurnal_transaksi', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function BB(array $data)
@@ -528,9 +569,14 @@ class PelaporanController extends Controller
         $data['d_bulan_lalu'] = $keuangan->saldoD($awal_bulan, $data['kode_akun']);
         $data['k_bulan_lalu'] = $keuangan->saldoK($awal_bulan, $data['kode_akun']);
 
-        $view = view('pelaporan.view.buku_besar', $data);
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+        $view = view('pelaporan.view.buku_besar', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function neraca_saldo(array $data)
@@ -556,9 +602,14 @@ class PelaporanController extends Controller
         $data['keuangan'] = $keuangan;
         $data['rekening'] = Rekening::orderBy('kode_akun', 'ASC')->get();
 
-        $view = view('pelaporan.view.neraca_saldo', $data);
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
-        return $pdf->stream();
+        $view = view('pelaporan.view.neraca_saldo', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function kelompok_aktif(array $data)
@@ -638,9 +689,14 @@ class PelaporanController extends Controller
             'pinjaman_kelompok.sis_pokok'
         ])->get();
 
-        $view = view('pelaporan.view.perkembangan_piutang.kelompok_aktif', $data);
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
-        return $pdf->stream();
+        $view = view('pelaporan.view.perkembangan_piutang.kelompok_aktif', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function pinjaman_per_kelompok(array $data)
@@ -718,9 +774,14 @@ class PelaporanController extends Controller
             }
         ])->get();
 
-        $view = view('pelaporan.view.perkembangan_piutang.lpp_kelompok', $data);
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
-        return $pdf->stream();
+        $view = view('pelaporan.view.perkembangan_piutang.lpp_kelompok', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function pinjaman_per_desa(array $data)
@@ -798,9 +859,14 @@ class PelaporanController extends Controller
             }
         ])->get();
 
-        $view = view('pelaporan.view.perkembangan_piutang.lpp_desa', $data);
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
-        return $pdf->stream();
+        $view = view('pelaporan.view.perkembangan_piutang.lpp_desa', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function kolek_per_kelompok(array $data)
@@ -878,9 +944,14 @@ class PelaporanController extends Controller
             }
         ])->get();
 
-        $view = view('pelaporan.view.perkembangan_piutang.kolek_kelompok', $data);
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
-        return $pdf->stream();
+        $view = view('pelaporan.view.perkembangan_piutang.kolek_kelompok', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function kolek_per_desa(array $data)
@@ -958,9 +1029,14 @@ class PelaporanController extends Controller
             }
         ])->get();
 
-        $view = view('pelaporan.view.perkembangan_piutang.kolek_desa', $data);
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
-        return $pdf->stream();
+        $view = view('pelaporan.view.perkembangan_piutang.kolek_desa', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function cadangan_penghapusan(array $data)
@@ -1038,9 +1114,14 @@ class PelaporanController extends Controller
             }
         ])->get();
 
-        $view = view('pelaporan.view.perkembangan_piutang.cadangan_penghapusan', $data);
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
-        return $pdf->stream();
+        $view = view('pelaporan.view.perkembangan_piutang.cadangan_penghapusan', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function ati(array $data)
@@ -1070,9 +1151,14 @@ class PelaporanController extends Controller
             ])
             ->get();
 
-        $view = view('pelaporan.view.aset_tetap', $data);
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
-        return $pdf->stream();
+        $view = view('pelaporan.view.aset_tetap', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function atb(array $data)
@@ -1102,9 +1188,14 @@ class PelaporanController extends Controller
             ])
             ->get();
 
-        $view = view('pelaporan.view.aset_tak_berwujud', $data);
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
-        return $pdf->stream();
+        $view = view('pelaporan.view.aset_tak_berwujud', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function tingkat_kesehatan(array $data)
@@ -1126,8 +1217,13 @@ class PelaporanController extends Controller
         }
 
 
-        $view = view('pelaporan.view.penilaian_kesehatan', $data);
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
-        return $pdf->stream();
+        $view = view('pelaporan.view.penilaian_kesehatan', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 }
