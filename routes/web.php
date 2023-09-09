@@ -34,6 +34,7 @@ Route::get('/database/kelompok/generatekode', [KelompokController::class, 'gener
 Route::get('/database/penduduk/register_penduduk', [AnggotaController::class, 'register'])->middleware('auth');
 Route::get('/database/penduduk/cari_nik', [AnggotaController::class, 'cariNik'])->middleware('auth');
 
+Route::get('/database/kelompok/detail_kelompok/{id}', [KelompokController::class, 'detailKelompok'])->middleware('auth');
 Route::resource('/database/desa', DesaController::class);
 Route::resource('/database/kelompok', KelompokController::class);
 Route::resource('/database/penduduk', AnggotaController::class);
@@ -55,6 +56,8 @@ Route::get('/cetak_keterangan_lunas/{perguliran}', [PinjamanKelompokController::
 Route::get('/perguliran/cari_kelompok', [PinjamanKelompokController::class, 'cariKelompok'])->middleware('auth');
 Route::resource('/perguliran', PinjamanKelompokController::class);
 
+Route::get('/perguliran/dokumen/kartu_angsuran/{id}', [PinjamanKelompokController::class, 'kartu_angsuran'])->middleware('auth');
+
 Route::get('/pinjaman_anggota/register/{id_pinkel}', [PinjamanAnggotaController::class, 'create'])->middleware('auth');
 Route::get('/pinjaman_anggota/cari_pemanfaat', [PinjamanAnggotaController::class, 'cariPemanfaat'])->middleware('auth');
 Route::get('/hapus_pemanfaat/{id}', [PinjamanAnggotaController::class, 'hapus'])->middleware('auth');
@@ -63,23 +66,23 @@ Route::resource('/pinjaman_anggota', PinjamanAnggotaController::class);
 
 Route::get('/transaksi/jurnal_umum', [TransaksiController::class, 'jurnalUmum'])->middleware('auth');
 Route::get('/transaksi/jurnal_angsuran', [TransaksiController::class, 'jurnalAngsuran'])->middleware('auth');
-Route::get('/trasaksi/saldo/{kode_akun}', [TransaksiController::class, 'saldo']);
+Route::get('/trasaksi/saldo/{kode_akun}', [TransaksiController::class, 'saldo'])->middleware('auth');
 
 Route::get('/transaksi/ambil_rekening/{id}', [TransaksiController::class, 'rekening'])->middleware('auth');
 Route::get('/transaksi/form_nominal/', [TransaksiController::class, 'form'])->middleware('auth');
 Route::get('/transaksi/form_angsuran/{id_pinkel}', [TransaksiController::class, 'formAngsuran'])->middleware('auth');
 
-Route::get('/transaksi/detail_transaksi/', [TransaksiController::class, 'detailTransaksi']);
+Route::get('/transaksi/detail_transaksi/', [TransaksiController::class, 'detailTransaksi'])->middleware('auth');
 Route::post('/transaksi/angsuran', [TransaksiController::class, 'angsuran'])->middleware('auth');
 Route::get('/transaksi/generate_real/{id_pinkel}', [TransaksiController::class, 'generateReal'])->middleware('auth');
 
-Route::get('/transaksi/dokumen/kuitansi/{id}', [TransaksiController::class, 'kuitansi']);
-Route::get('/transaksi/dokumen/bkk/{id}', [TransaksiController::class, 'bkk']);
-Route::get('/transaksi/dokumen/bkm/{id}', [TransaksiController::class, 'bkm']);
-Route::get('/transaksi/dokumen/bm/{id}', [TransaksiController::class, 'bm']);
+Route::get('/transaksi/dokumen/kuitansi/{id}', [TransaksiController::class, 'kuitansi'])->middleware('auth');
+Route::get('/transaksi/dokumen/bkk/{id}', [TransaksiController::class, 'bkk'])->middleware('auth');
+Route::get('/transaksi/dokumen/bkm/{id}', [TransaksiController::class, 'bkm'])->middleware('auth');
+Route::get('/transaksi/dokumen/bm/{id}', [TransaksiController::class, 'bm'])->middleware('auth');
 
-Route::get('/transaksi/dokumen/bkm_angsuran/{id}', [TransaksiController::class, 'bkm_angsuran']);
-Route::get('/transaksi/dokumen/bkk_angsuran/{id}', [TransaksiController::class, 'bkk_angsuran']);
+Route::get('/transaksi/dokumen/bkm_angsuran/{id}', [TransaksiController::class, 'bkm_angsuran'])->middleware('auth');
+Route::get('/transaksi/dokumen/bkk_angsuran/{id}', [TransaksiController::class, 'bkk_angsuran'])->middleware('auth');
 
 Route::resource('/transaksi', TransaksiController::class);
 

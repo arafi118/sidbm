@@ -291,4 +291,22 @@ class KelompokController extends Controller
     {
         //
     }
+
+    public function detailKelompok($id)
+    {
+        $pinkel = PinjamanKelompok::where('id', $id)->with([
+            'kelompok',
+            'kelompok.d',
+            'jpp',
+            'sis_pokok',
+            'target' => function ($query) {
+                $query->where('angsuran_ke', '1');
+            }
+        ])->firstOrFail();
+
+        return [
+            'label' => 'Detail Kelompok ' . $pinkel->kelompok->nama_kelompok,
+            'view' => view('kelompok.detail_kelompok')->with(compact('pinkel'))->render()
+        ];
+    }
 }

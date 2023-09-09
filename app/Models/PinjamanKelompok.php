@@ -83,4 +83,9 @@ class PinjamanKelompok extends Model
     {
         return $this->hasOne(RencanaAngsuran::class, 'loan_id')->orderBy('jatuh_tempo', 'DESC');
     }
+
+    public function rencana()
+    {
+        return $this->hasMany(RencanaAngsuran::class, 'loan_id')->orderBy('jatuh_tempo', 'ASC');
+    }
 }
