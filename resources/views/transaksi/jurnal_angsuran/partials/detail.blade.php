@@ -73,10 +73,12 @@
                             data-bs-placement="top" title="BKM" data-container="body" data-animation="true">
                             <span class="btn-inner--icon"><i class="fas fa-file-circle-exclamation"></i></span>
                         </button>
-                        <button type="button" class="btn btn-tumblr btn-icon-only btn-tooltip" data-bs-toggle="tooltip"
+                        <button type="button"
+                            data-action="/perguliran/dokumen/kartu_angsuran/{{ $real->loan_id }}/{{ $real->id }}"
+                            class="btn btn-tumblr btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="Cetak Pada Kartu Angsuran" data-container="body"
                             data-animation="true">
-                            <span class="btn-inner--icon"><i class="fas fa-code-pull-request"></i></span>
+                            <span class="btn-inner--icon"><i class="fas fa-file-invoice"></i></span>
                         </button>
                     </div>
                 </td>

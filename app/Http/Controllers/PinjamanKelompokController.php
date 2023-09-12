@@ -643,7 +643,7 @@ class PinjamanKelompokController extends Controller
         return response()->json($param);
     }
 
-    public function kartu_angsuran($id)
+    public function kartuAngsuran($id)
     {
         $data['kec'] = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten')->first();
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
@@ -668,6 +668,34 @@ class PinjamanKelompokController extends Controller
 
         $data['laporan'] = 'Kartu Angsuran ' . $data['pinkel']->kelompok->nama_kelompok;
         return view('perguliran.dokumen.kartu_angsuran', $data);
+    }
+
+    public function cetakPadaKartu($id, $idtp)
+    {
+        $data['kec'] = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten')->first();
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'kelompok',
+            'jpp',
+            'sis_pokok',
+            'real',
+            'rencana' => function ($query) {
+                $query->where('angsuran_ke', '!=', '0');
+            },
+            'target' => function ($query) {
+                $query->where('angsuran_ke', '1');
+            }
+        ])->withCount('pinjaman_anggota')->withCount('rencana')->first();
+        $data['barcode'] = DNS1D::getBarcodePNG($data['pinkel']->kelompok->kd_kelompok, 'C128');
+
+        $data['idtp'] = $idtp;
+        $data['dir'] = User::where([
+            ['lokasi', auth()->user()->lokasi],
+            ['level', '1'],
+            ['jabatan', '1']
+        ])->first();
+
+        $data['laporan'] = 'Kartu Angsuran ' . $data['pinkel']->kelompok->nama_kelompok;
+        return view('perguliran.dokumen.cetak_kartu_angsuran', $data);
     }
 
     public function generate($id_pinj)

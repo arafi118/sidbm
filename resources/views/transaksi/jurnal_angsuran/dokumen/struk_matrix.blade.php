@@ -34,15 +34,18 @@
     @endphp
 @endforeach
 
+
 <style type="text/css">
     .style1 {
+        letter-spacing: 5px;
         font-family: Arial, Helvetica, sans-serif;
         font-size: 10px;
     }
 
     .style2 {
+        letter-spacing: 3px;
         font-family: Arial, Helvetica, sans-serif;
-        font-size: 8px;
+        font-size: 7px;
     }
 
     .top {
@@ -66,17 +69,15 @@
     }
 
     .style26 {
-        font-family: Verdana, Arial, Helvetica, sans-serif
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        letter-spacing: 5px;
     }
 
     .style27 {
         font-family: Verdana, Arial, Helvetica, sans-serif;
-        font-size: 11px;
+        font-size: 7px;
         font-weight: bold;
-    }
-
-    .center {
-        text-align: center;
+        letter-spacing: 5px;
     }
 </style>
 

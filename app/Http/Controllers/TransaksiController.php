@@ -826,13 +826,30 @@ class TransaksiController extends Controller
         ])->first();
         $data['user'] = User::where('id', $data['real']->id_user)->first();
         $data['kec'] = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten')->first();
+        $data['keuangan'] = new Keuangan;
 
         return view('transaksi.jurnal_angsuran.dokumen.struk', $data);
     }
 
     public function strukMatrix($id)
     {
-        //
+        $data['real'] = RealAngsuran::where('id', $id)->with('trx')->firstOrFail();
+        $data['ra'] = RencanaAngsuran::where([
+            ['loan_id', $data['real']->loan_id],
+            ['target_pokok', '>=', $data['real']->sum_pokok]
+        ])->orderBy('jatuh_tempo', 'ASC')->first();
+        $data['pinkel'] = PinjamanKelompok::where('id', $data['real']->loan_id)->with([
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+            'jpp',
+            'sis_pokok'
+        ])->first();
+        $data['user'] = User::where('id', $data['real']->id_user)->first();
+        $data['kec'] = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten')->first();
+        $data['keuangan'] = new Keuangan;
+
+        return view('transaksi.jurnal_angsuran.dokumen.struk_matrix', $data);
     }
 
     public function saldo($kode_akun)
