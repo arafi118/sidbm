@@ -63,7 +63,7 @@
                     <td align="left">{{ $trx->rek_debit->nama_akun }}</td>
                     <td align="right">{{ number_format($trx->angs_sum_jumlah, 2) }}</td>
                     <td align="right">&nbsp;</td>
-                    @if ($trx->user->ins)
+                    @if ($trx->user)
                         <td align="center">{{ $trx->user->ins }}</td>
                     @else
                         <td align="center">&nbsp;</td>
@@ -79,7 +79,11 @@
                         <td align="left">{{ $angs->rek_kredit->nama_akun }}</td>
                         <td align="right">&nbsp;</td>
                         <td align="right">{{ number_format($angs->jumlah, 2) }}</td>
-                        <td align="center">{{ $angs->user->ins }}</td>
+                        @if ($trx->user)
+                            <td align="center">{{ $trx->user->ins }}</td>
+                        @else
+                            <td align="center">&nbsp;</td>
+                        @endif
                     </tr>
                 @endforeach
             @else
@@ -91,7 +95,11 @@
                     <td align="left">{{ $trx->rek_debit->nama_akun }}</td>
                     <td align="right">{{ number_format($trx->jumlah, 2) }}</td>
                     <td align="right">&nbsp;</td>
-                    <td align="center">{{ $trx->user->ins }}</td>
+                    @if ($trx->user)
+                        <td align="center">{{ $trx->user->ins }}</td>
+                    @else
+                        <td align="center">&nbsp;</td>
+                    @endif
                 </tr>
                 <tr style="background: {{ $bg }};">
                     <td height="15" align="center" width="10">&nbsp;</td>
@@ -101,7 +109,11 @@
                     <td align="left">{{ $trx->rek_kredit->nama_akun }}</td>
                     <td align="right">&nbsp;</td>
                     <td align="right">{{ number_format($trx->jumlah, 2) }}</td>
-                    <td align="center">{{ $trx->user->ins }}</td>
+                    @if ($trx->user)
+                        <td align="center">{{ $trx->user->ins }}</td>
+                    @else
+                        <td align="center">&nbsp;</td>
+                    @endif
                 </tr>
             @endif
 
