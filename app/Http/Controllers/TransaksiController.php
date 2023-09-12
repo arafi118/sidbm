@@ -1028,6 +1028,11 @@ class TransaksiController extends Controller
         return view('transaksi.jurnal_angsuran.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
     }
 
+    public function lpp($id)
+    {
+        //
+    }
+
     public function generateReal($id_pinkel)
     {
         $idtp = request()->get('idtp');

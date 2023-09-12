@@ -73,6 +73,7 @@ Route::get('/transaksi/ambil_rekening/{id}', [TransaksiController::class, 'reken
 Route::get('/transaksi/form_nominal/', [TransaksiController::class, 'form'])->middleware('auth');
 Route::get('/transaksi/form_angsuran/{id_pinkel}', [TransaksiController::class, 'formAngsuran'])->middleware('auth');
 
+Route::get('/transaksi/angsuran/lpp/{id}', [TransaksiController::class, 'lpp'])->middleware('auth');
 Route::get('/transaksi/angsuran/detail_angsuran/{id}', [TransaksiController::class, 'detailAngsuran'])->middleware('auth');
 Route::get('/transaksi/angsuran/struk/{id}', [TransaksiController::class, 'struk'])->middleware('auth');
 Route::get('/transaksi/angsuran/struk_matrix/{id}', [TransaksiController::class, 'strukMatrix'])->middleware('auth');

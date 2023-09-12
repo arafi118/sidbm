@@ -78,7 +78,7 @@
                     </div>
                     <div class="col-4">
                         <div class="d-grid">
-                            <button class="btn btn-info btn-sm mb-2">LPP per bulan</button>
+                            <button class="btn btn-info btn-sm mb-2" id=cetakLPP>LPP per bulan</button>
                         </div>
                     </div>
                 </div>
@@ -273,7 +273,14 @@
             e.preventDefault()
             var id_pinj = $('#id').val()
 
-            window.open('/perguliran/dokumen/kartu_angsuran/' + id_pinj)
+            open_window('/perguliran/dokumen/kartu_angsuran/' + id_pinj)
+        })
+
+        $(document).on('click', '#cetakLPP', function(e) {
+            e.preventDefault()
+            var id_pinj = $('#id').val()
+
+            open_window('/transaksi/angsuran/lpp/' + id_pinj)
         })
 
         $(document).on('click', '#btnDetailKelompok', function(e) {
