@@ -46,9 +46,9 @@
                     <div class="row align-items-center justify-content-lg-between">
                         <div class="col-lg-6 mb-lg-0 mb-4">
                             <div class="copyright text-center text-sm text-muted text-lg-start">
-                                © <script>
+                                ©
+                                <script>
                                     document.write(new Date().getFullYear())
-
                                 </script>,
                                 made with <i class="fa fa-heart"></i> by
                                 <a href="https://abt.co.id" class="font-weight-bold" target="_blank">
@@ -172,12 +172,12 @@
         })
 
         $('#cariKelompok').typeahead({
-            source: function (query, process) {
+            source: function(query, process) {
                 var states = [];
                 return $.get('/perguliran/cari_kelompok', {
                     query: query
-                }, function (result) {
-                    var resultList = result.map(function (item) {
+                }, function(result) {
+                    var resultList = result.map(function(item) {
                         states.push({
                             "id": item.id,
                             "name": item.nama_kelompok +
@@ -190,10 +190,10 @@
                     return process(states);
                 })
             },
-            afterSelect: function (item) {
+            afterSelect: function(item) {
                 var path = '{{ Request::path() }}'
                 if (path == 'transaksi/jurnal_angsuran') {
-                    $.get('/transaksi/form_angsuran/' + item.id, function (result) {
+                    $.get('/transaksi/form_angsuran/' + item.id, function(result) {
                         angsuran(true, result)
 
                         makeChart('pokok', ch_pokok, result.sisa_pokok, result.sum_pokok)
@@ -260,6 +260,9 @@
             $('#pokok,#jasa,#denda').trigger('change')
         }
 
+        function open_window(link) {
+            return window.open(link)
+        }
     </script>
 
     <script>
@@ -270,7 +273,6 @@
             }
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
-
     </script>
 
 

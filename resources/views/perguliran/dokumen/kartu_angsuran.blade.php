@@ -100,7 +100,7 @@
             <tr>
                 <td>Nama Kelompok</td>
                 <td align="center">:</td>
-                <td>{{ $pinkel->kelompok->nama_kelompok }}</td>
+                <td style="font-weight: bold;">{{ $pinkel->kelompok->nama_kelompok }}</td>
                 <td>&nbsp;</td>
                 <td align="center">&nbsp;</td>
                 <td>&nbsp;</td>

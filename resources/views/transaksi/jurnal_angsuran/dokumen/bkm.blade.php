@@ -184,7 +184,7 @@
                     </tr>
 
                     @php
-                        $count = 2;
+                        $count = 3;
                     @endphp
 
                     @foreach ($trx->tr_idtp as $tr)
@@ -195,7 +195,7 @@
                             <td width="30%">&nbsp;</td>
                             <td width="2%">&nbsp;</td>
                             <td colspan="3" class="keterangan">
-                                Kredit {{ ucwords($tr->rekening_debit . ' - ' . $tr->rek_debit->nama_akun) }}
+                                Kredit {{ ucwords($tr->rekening_kredit . ' - ' . $tr->rek_kredit->nama_akun) }}
                             </td>
                         </tr>
                     @endforeach
@@ -211,7 +211,7 @@
                     @endfor
                 </table>
 
-                <table width="100%" class="fs-12" style="margin-top: 12px;">
+                <table width="100%" class="fs-12">
                     <tr>
                         <td align="center">Disetujui,</td>
                         <td align="center">Diverifikasi,</td>

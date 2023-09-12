@@ -56,8 +56,7 @@
                     </form>
 
                     <div class="d-flex justify-content-end">
-                        <button type="button" id="btnDetailKelompok" class="btn btn-info btn-sm me-3"
-                            data-bs-toggle="modal" data-bs-target="#DetailKelompok">
+                        <button type="button" id="btnDetailKelompok" class="btn btn-info btn-sm me-3">
                             Detail Kelompok
                         </button>
                         <button type="button" id="SimpanAngsuran" class="btn btn-primary btn-sm">Posting</button>
@@ -74,7 +73,7 @@
                     </div>
                     <div class="col-4">
                         <div class="d-grid">
-                            <button class="btn btn-danger btn-sm mb-2">Detail</button>
+                            <button class="btn btn-danger btn-sm mb-2" id="btnDetailAngsuran">Detail</button>
                         </div>
                     </div>
                     <div class="col-4">
@@ -138,6 +137,26 @@
                 </div>
                 <div class="modal-body">
                     <div id="LayoutDetailKelompok"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="DetailAngsuran" tabindex="-1" aria-labelledby="DetailAngsuranLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="DetailAngsuranLabel">
+
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="LayoutDetailAngsuran"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
@@ -261,9 +280,28 @@
             var id = $('#id').val()
 
             $.get('/database/kelompok/detail_kelompok/' + id, function(result) {
+                $('#DetailKelompok').modal('show')
+
                 $('#DetailKelompokLabel').html(result.label)
                 $('#LayoutDetailKelompok').html(result.view)
             })
+        })
+
+        $(document).on('click', '#btnDetailAngsuran', function(e) {
+            var id = $('#id').val()
+
+            $.get('/transaksi/angsuran/detail_angsuran/' + id, function(result) {
+                $('#DetailAngsuran').modal('show')
+
+                $('#DetailAngsuranLabel').html(result.label)
+                $('#LayoutDetailAngsuran').html(result.view)
+            })
+        })
+
+        $(document).on('click', '.btn-link', function(e) {
+            var action = $(this).attr('data-action')
+
+            open_window(action)
         })
     </script>
 @endsection

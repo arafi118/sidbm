@@ -148,8 +148,7 @@
                     </div>
 
                     <div class="d-flex justify-content-end">
-                        <button type="button" id="BtndetailTransaksi" class="btn btn-sm btn-success"
-                            data-bs-toggle="modal" data-bs-target="#detailTransaksi">
+                        <button type="button" id="BtndetailTransaksi" class="btn btn-sm btn-success">
                             Detail Transaksi
                         </button>
                     </div>
@@ -361,6 +360,8 @@
                     kode_akun
                 },
                 success: function(result) {
+                    $('#detailTransaksi').modal('show')
+
                     $('#detailTransaksiLabel').html(result.label)
                     $('#LayoutdetailTransaksi').html(result.view)
                 }
@@ -370,7 +371,7 @@
         $(document).on('click', '.btn-link', function(e) {
             var action = $(this).attr('data-action')
 
-            window.open(action)
+            open_window(action)
         })
 
         function initializeBootstrapTooltip() {

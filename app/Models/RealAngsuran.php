@@ -19,4 +19,9 @@ class RealAngsuran extends Model
     {
         $this->table = 'real_angsuran_' . Auth::user()->lokasi;
     }
+
+    public function trx()
+    {
+        return $this->hasMany(Transaksi::class, 'idtp', 'id');
+    }
 }

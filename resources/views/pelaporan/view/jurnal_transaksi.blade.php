@@ -63,7 +63,11 @@
                     <td align="left">{{ $trx->rek_debit->nama_akun }}</td>
                     <td align="right">{{ number_format($trx->angs_sum_jumlah, 2) }}</td>
                     <td align="right">&nbsp;</td>
-                    <td align="center">{{ $trx->user->ins }}</td>
+                    @if ($trx->user->ins)
+                        <td align="center">{{ $trx->user->ins }}</td>
+                    @else
+                        <td align="center">&nbsp;</td>
+                    @endif
                 </tr>
 
                 @foreach ($trx->angs as $angs)
