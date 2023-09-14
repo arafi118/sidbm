@@ -55,6 +55,11 @@ class Kelompok extends Model
         return $this->hasMany(PinjamanKelompok::class, 'id_kel', 'id')->orderBy('id', 'ASC');
     }
 
+    public function pinjaman()
+    {
+        return $this->hasOne(PinjamanKelompok::class, 'id_kel', 'id');
+    }
+
     public function d()
     {
         return $this->belongsTo(Desa::class, 'desa', 'kd_desa');

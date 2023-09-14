@@ -96,7 +96,7 @@
 
             <div class="d-flex justify-content-end">
                 <button type="button" id="Excel" class="btn btn-sm btn-success me-2">Excel</button>
-                <button type="button" id="Preview" class="btn btn-sm btn-primary">Preview</button>
+                <button type="button" id="Preview" class="btn btn-sm btn-github">Preview</button>
             </div>
         </div>
     </div>
@@ -133,7 +133,9 @@
             var sub = $('#sub_laporan').val()
 
             var form = $('#FormPelaporan')
-            form.submit()
+            if (file != '') {
+                form.submit()
+            }
         })
 
         $(document).on('click', '#Excel', function(e) {
@@ -144,7 +146,9 @@
             var sub = $('#sub_laporan').val()
 
             var form = $('#FormPelaporan')
-            form.submit()
+            if (file != '') {
+                form.submit()
+            }
         })
     </script>
 @endsection

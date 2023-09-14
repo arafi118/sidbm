@@ -22,14 +22,19 @@ class AnggotaController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $penduduk = Anggota::orderBy('id', 'DESC')->get();
+            $penduduk = Anggota::with([
+                'pinjaman' => function ($query) {
+                    $query->orderBy('id', 'DESC');
+                },
+                'pinjaman.sts'
+            ])->withCount('pinjaman')->orderBy('id', 'DESC')->get();
+
             return DataTables::of($penduduk)
                 ->addColumn('status', function ($row) {
-                    $pinjaman = PinjamanAnggota::where('nia', $row->id)->with('sts')->orderBy('id', 'DESC');
+                    $pinjaman = $row->pinjaman;
 
                     $status = '<span class="badge badge-secondary">n</span>';
-                    if ($pinjaman->count() > 0) {
-                        $pinjaman = $pinjaman->first();
+                    if ($row->pinjaman_count > 0) {
                         $status_pinjaman = $pinjaman->status;
 
                         $badge = $pinjaman->sts->warna_status;
@@ -199,11 +204,17 @@ class AnggotaController extends Controller
     public function show(Anggota $penduduk)
     {
         $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
-        $desa = Desa::where('kd_kec', $kec->kd_kec)->get();
+        $desa = Desa::where('kd_kec', $kec->kd_kec)->with('sebutan_desa')->get();
         $jenis_usaha = Usaha::orderBy('nama_usaha', 'ASC')->get();
         $hubungan = Keluarga::orderBy('kekeluargaan', 'ASC')->get();
 
-        $penduduk = $penduduk->with('pinjaman_anggota')->where('id', $penduduk->id)->first();
+        $penduduk = $penduduk->with([
+            'pinjaman_anggota',
+            'pinjaman_anggota.kelompok',
+            'pinjaman_anggota.pinkel',
+            'pinjaman_anggota.pinkel.sts',
+            'pinjaman_anggota.pinkel.angsuran_pokok',
+        ])->where('id', $penduduk->id)->first();
         $desa_dipilih = $penduduk->desa;
         $jenis_usaha_dipilih = $penduduk->usaha;
         $hubungan_dipilih = $penduduk->hubungan;

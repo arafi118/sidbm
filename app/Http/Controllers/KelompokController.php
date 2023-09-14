@@ -25,14 +25,19 @@ class KelompokController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $kelompok = Kelompok::with('kegiatan')->get();
+            $kelompok = Kelompok::with([
+                'kegiatan',
+                'pinjaman' => function ($query) {
+                    $query->orderBy('tgl_proposal', 'DESC');
+                },
+                'pinjaman.sts'
+            ])->withCount('pinjaman')->get();
             return DataTables::of($kelompok)
                 ->addColumn('status', function ($row) {
-                    $pinjaman = PinjamanKelompok::where('id_kel', $row->id)->with('sts')->orderBy('tgl_proposal', 'desc');
+                    $pinjaman = $row->pinjaman;
 
                     $status = '<span class="badge badge-secondary">n</span>';
-                    if ($pinjaman->count() > 0) {
-                        $pinjaman = $pinjaman->first();
+                    if ($row->pinjaman_count > 0) {
                         $status_pinjaman = $pinjaman->status;
 
                         $badge = $pinjaman->sts->warna_status;
@@ -188,7 +193,7 @@ class KelompokController extends Controller
      */
     public function show(Kelompok $kelompok)
     {
-        $kelompok = $kelompok->with('pinkel')->where('id', $kelompok->id)->first();
+        $kelompok = $kelompok->with(['pinkel', 'pinkel.sts'])->where('id', $kelompok->id)->first();
         $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
         $desa = Desa::where('kd_kec', $kec['kd_kec'])->with('sebutan_desa')->get();
         $jenis_produk_pinjaman = JenisProdukPinjaman::where('lokasi', '0')->orderBy('id', 'ASC')->get();

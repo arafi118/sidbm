@@ -3,38 +3,40 @@
     @method('PUT')
 
     @if ($pinj_a['jumlah_pinjaman'] > 0)
-    @foreach ($pinj_a['pinjaman'] as $pa)
-    <div class="alert alert-danger text-white" role="alert">
-        <span class="text-sm">
-            <b>{{ ucwords(strtolower($pa->anggota->namadepan)) }}</b> memiliki kewajiban angsuran pinjaman dengan
-            <a href="/detail/{{ $pa->pinkel->id }}" target="_blank" class="alert-link text-white">
-                Loan ID. {{ $pa->pinkel->id }}
-            </a>.
-        </span>
-    </div>
-    @endforeach
+        @foreach ($pinj_a['pinjaman'] as $pa)
+            <div class="alert alert-danger text-white" role="alert">
+                <span class="text-sm">
+                    <b>{{ ucwords(strtolower($pa->anggota->namadepan)) }}</b> memiliki kewajiban angsuran pinjaman
+                    dengan
+                    <a href="/detail/{{ $pa->pinkel->id }}" target="_blank" class="alert-link text-white">
+                        Loan ID. {{ $pa->pinkel->id }}
+                    </a>.
+                </span>
+            </div>
+        @endforeach
     @endif
 
     @if ($pinj_a['jumlah_pemanfaat'] > 0)
-    <div class="alert alert-danger text-white" role="alert">
-        <span class="text-sm">
-            Salah satu anggota pemanfaat masih terdaftar pada pinjaman di kecamatan lain
-        </span>
-    </div>
+        <div class="alert alert-danger text-white" role="alert">
+            <span class="text-sm">
+                Salah satu anggota pemanfaat masih terdaftar pada pinjaman di kecamatan lain
+            </span>
+        </div>
     @endif
 
     @if ($pinj_a['jumlah_kelompok'] > 0)
-    @foreach ($pinj_a['kelompok'] as $kel)
-    <div class="alert alert-danger text-white" role="alert">
-        <span class="text-sm">
-            <b>Kelompok {{ ucwords(strtolower($kel->kelompok->nama_kelompok)) }}</b> masih memiliki kewajiban angsuran
-            pinjaman dengan
-            <a href="/detail/{{ $kel->id }}" target="_blank" class="alert-link text-white">
-                Loan ID. {{ $kel->id }}
-            </a>.
-        </span>
-    </div>
-    @endforeach
+        @foreach ($pinj_a['kelompok'] as $kel)
+            <div class="alert alert-danger text-white" role="alert">
+                <span class="text-sm">
+                    <b>Kelompok {{ ucwords(strtolower($kel->kelompok->nama_kelompok)) }}</b> masih memiliki kewajiban
+                    angsuran
+                    pinjaman dengan
+                    <a href="/detail/{{ $kel->id }}" target="_blank" class="alert-link text-white">
+                        Loan ID. {{ $kel->id }}
+                    </a>.
+                </span>
+            </div>
+        @endforeach
     @endif
 
     <div class="card mb-3">
@@ -192,45 +194,45 @@
                     </thead>
                     <tbody>
                         @php
-                        $proposal = 0;
-                        $verifikasi = 0;
-                        $alokasi = 0;
+                            $proposal = 0;
+                            $verifikasi = 0;
+                            $alokasi = 0;
                         @endphp
                         @foreach ($perguliran->pinjaman_anggota as $pinjaman_anggota)
-                        @php
-                        $proposal += $pinjaman_anggota->proposal;
-                        $verifikasi += $pinjaman_anggota->verifikasi;
-                        $alokasi += $pinjaman_anggota->alokasi;
-                        @endphp
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>
-                                {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
-                                ({{ $pinjaman_anggota->id }})
-                            </td>
-                            <td>
-                                {{ number_format($pinjaman_anggota->proposal,2) }}
-                            </td>
-                            <td>
-                                {{ number_format($pinjaman_anggota->verifikasi,2) }}
-                            </td>
-                            <td>
-                                {{ number_format($pinjaman_anggota->alokasi,2) }}
-                            </td>
-                        </tr>
+                            @php
+                                $proposal += $pinjaman_anggota->proposal;
+                                $verifikasi += $pinjaman_anggota->verifikasi;
+                                $alokasi += $pinjaman_anggota->alokasi;
+                            @endphp
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
+                                    ({{ $pinjaman_anggota->id }})
+                                </td>
+                                <td>
+                                    {{ number_format($pinjaman_anggota->proposal, 2) }}
+                                </td>
+                                <td>
+                                    {{ number_format($pinjaman_anggota->verifikasi, 2) }}
+                                </td>
+                                <td>
+                                    {{ number_format($pinjaman_anggota->alokasi, 2) }}
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
                             <th colspan="2">Jumlah</th>
                             <th>
-                                {{ number_format($proposal,2) }}
+                                {{ number_format($proposal, 2) }}
                             </th>
                             <th id="jumlah">
-                                {{ number_format($verifikasi,2) }}
+                                {{ number_format($verifikasi, 2) }}
                             </th>
                             <th>
-                                {{ number_format($alokasi,2) }}
+                                {{ number_format($alokasi, 2) }}
                             </th>
                         </tr>
                     </tfoot>
@@ -260,8 +262,8 @@
                 <div class="col-md-4">
                     <div class="input-group input-group-static my-3">
                         <label for="tgl_cair">Tgl Cair</label>
-                        <input autocomplete="off" type="text" name="tgl_cair" id="tgl_cair" class="form-control date"
-                            value="{{ Tanggal::tglIndo($perguliran->tgl_tunggu) }}">
+                        <input autocomplete="off" type="text" name="tgl_cair" id="tgl_cair"
+                            class="form-control date" value="{{ Tanggal::tglIndo($perguliran->tgl_tunggu) }}">
                         <small class="text-danger" id="msg_tgl_cair"></small>
                     </div>
                 </div>
@@ -278,9 +280,9 @@
                         <label class="form-label" for="sumber_pembayaran">Sumber Pembayaran (Kredit)</label>
                         <select class="form-control" name="sumber_pembayaran" id="sumber_pembayaran">
                             @foreach ($sumber_bayar as $sb)
-                            <option value="{{ $sb->kode_akun }}">
-                                {{ $sb->kode_akun }}. {{ $sb->nama_akun }}
-                            </option>
+                                <option value="{{ $sb->kode_akun }}">
+                                    {{ $sb->kode_akun }}. {{ $sb->nama_akun }}
+                                </option>
                             @endforeach
                         </select>
                         <small class="text-danger" id="msg_sistem_angsuran_jasa"></small>
@@ -291,8 +293,8 @@
             <div class="d-flex justify-content-end mt-3">
                 <button type="button" class="btn btn-warning btn-sm">Kembalikan Ke Proposal</button>
                 <button type="button"
-                    {{ ($pinj_a['jumlah_pinjaman'] > '0' || $pinj_a['jumlah_pemanfaat'] > '0' || $pinj_a['jumlah_kelompok'] > '0') ? 'disabled':'' }}
-                    id="Simpan" class="btn btn-primary ms-1 btn-sm">
+                    {{ $pinj_a['jumlah_pinjaman'] > '0' || $pinj_a['jumlah_pemanfaat'] > '0' || $pinj_a['jumlah_kelompok'] > '0' ? 'disabled' : '' }}
+                    id="Simpan" class="btn btn-github ms-1 btn-sm">
                     Cairkan Sekarang
                 </button>
 
@@ -315,7 +317,7 @@
         dateFormat: "d/m/Y"
     })
 
-    $(document).on('click', '#Simpan', async function (e) {
+    $(document).on('click', '#Simpan', async function(e) {
         e.preventDefault()
         $('small').html('')
 
@@ -347,16 +349,16 @@
                 type: 'POST',
                 url: form.attr('action') + '?save=true',
                 data: form.serialize(),
-                success: function (result) {
+                success: function(result) {
                     Swal.fire('Berhasil', result.msg, 'success').then(() => {
                         window.location.href = '/detail/' + result.id
                     })
                 },
-                error: function (result) {
+                error: function(result) {
                     const respons = result.responseJSON;
 
                     Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error')
-                    $.map(respons, function (res, key) {
+                    $.map(respons, function(res, key) {
                         $('#' + key).parent('.input-group.input-group-static')
                             .addClass(
                                 'is-invalid')
@@ -366,5 +368,4 @@
             })
         }
     })
-
 </script>

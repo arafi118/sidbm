@@ -73,7 +73,7 @@
                     </form>
 
                     <div class="d-flex justify-content-end">
-                        <button type="button" id="SimpanTransaksi" class="btn btn-sm btn-primary">Simpan Transaksi</button>
+                        <button type="button" id="SimpanTransaksi" class="btn btn-sm btn-github">Simpan Transaksi</button>
                     </div>
                 </div>
             </div>
@@ -350,22 +350,24 @@
             var hari = $('#tanggal').val()
             var kode_akun = $('#sumber_dana').val()
 
-            $.ajax({
-                url: '/transaksi/detail_transaksi',
-                type: 'get',
-                data: {
-                    tahun,
-                    bulan,
-                    hari,
-                    kode_akun
-                },
-                success: function(result) {
-                    $('#detailTransaksi').modal('show')
+            if (kode_akun != '') {
+                $.ajax({
+                    url: '/transaksi/detail_transaksi',
+                    type: 'get',
+                    data: {
+                        tahun,
+                        bulan,
+                        hari,
+                        kode_akun
+                    },
+                    success: function(result) {
+                        $('#detailTransaksi').modal('show')
 
-                    $('#detailTransaksiLabel').html(result.label)
-                    $('#LayoutdetailTransaksi').html(result.view)
-                }
-            })
+                        $('#detailTransaksiLabel').html(result.label)
+                        $('#LayoutdetailTransaksi').html(result.view)
+                    }
+                })
+            }
         })
 
         $(document).on('click', '.btn-link', function(e) {

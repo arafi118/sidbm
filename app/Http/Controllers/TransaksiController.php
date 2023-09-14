@@ -13,6 +13,7 @@ use App\Models\Transaksi;
 use App\Models\User;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -1030,7 +1031,32 @@ class TransaksiController extends Controller
 
     public function lpp($id)
     {
-        //
+        $data['bulan'] = date('Y-m-t');
+        $data['kec'] = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten')->first();
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+            'jpp',
+            'jasa',
+            'target' => function ($query) {
+                $query->where('angsuran_ke', '1');
+            }
+        ])->first();
+
+        $tb_ra = 'rencana_angsuran_' . $data['kec']->id;
+        $tb_real = 'real_angsuran_' . $data['kec']->id;
+        $data['rencana'] = RencanaAngsuran::select(
+            '*',
+            DB::raw('(SELECT sum(realisasi_pokok) as rp FROM ' . $tb_real . ' WHERE ' . $tb_real . '.loan_id=' . $id . ' AND ' . $tb_real . '.tgl_transaksi<=' . $tb_ra . '.jatuh_tempo) as sum_pokok'),
+            DB::raw('(SELECT sum(realisasi_jasa) as rj FROM ' . $tb_real . ' WHERE ' . $tb_real . '.loan_id=' . $id . ' AND ' . $tb_real . '.tgl_transaksi<=' . $tb_ra . '.jatuh_tempo) as sum_jasa')
+        )->where([
+            ['loan_id', $id],
+            ['angsuran_ke', '!=', '0']
+        ])->get();
+
+        $data['laporan'] = 'LPP Kelompok ' . $data['pinkel']->kelompok->nama_kelompok;
+        return view('transaksi.jurnal_angsuran.dokumen.lpp', $data);
     }
 
     public function generateReal($id_pinkel)

@@ -112,57 +112,57 @@
                     </thead>
                     <tbody>
                         @php
-                        $proposal = 0;
-                        $verifikasi = 0;
+                            $proposal = 0;
+                            $verifikasi = 0;
                         @endphp
                         @foreach ($perguliran->pinjaman_anggota as $pinjaman_anggota)
-                        @php
-                        $proposal += $pinjaman_anggota->proposal;
-                        $verifikasi += $pinjaman_anggota->verifikasi;
-                        @endphp
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>
-                                {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
-                                ({{ $pinjaman_anggota->id }})
-                            </td>
-                            <td>
-                                <div class="input-group input-group-static">
-                                    <input type="text" disabled readonly class="form-control money idpa_proposal"
-                                        value="{{ number_format($pinjaman_anggota->proposal,2) }}">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="input-group input-group-static">
-                                    <input type="text" id="{{ $pinjaman_anggota->id }}"
-                                        name="idpa_proposal[{{ $pinjaman_anggota->id }}]"
-                                        class="form-control money idpa_proposal"
-                                        value="{{ number_format($pinjaman_anggota->verifikasi,2) }}">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="input-group input-group-static">
-                                    <input type="text" name="idpa[{{ $pinjaman_anggota->id }}]"
-                                        class="form-control money idpa idpa-{{ $pinjaman_anggota->id }}"
-                                        value="{{ number_format($pinjaman_anggota->verifikasi,2) }}">
-                                </div>
-                                <input type="hidden" name="catatan[{{ $pinjaman_anggota->id }}]"
-                                    value="{{ $perguliran->catatan_verifikasi }}">
-                            </td>
-                        </tr>
+                            @php
+                                $proposal += $pinjaman_anggota->proposal;
+                                $verifikasi += $pinjaman_anggota->verifikasi;
+                            @endphp
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
+                                    ({{ $pinjaman_anggota->id }})
+                                </td>
+                                <td>
+                                    <div class="input-group input-group-static">
+                                        <input type="text" disabled readonly class="form-control money idpa_proposal"
+                                            value="{{ number_format($pinjaman_anggota->proposal, 2) }}">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group input-group-static">
+                                        <input type="text" id="{{ $pinjaman_anggota->id }}"
+                                            name="idpa_proposal[{{ $pinjaman_anggota->id }}]"
+                                            class="form-control money idpa_proposal"
+                                            value="{{ number_format($pinjaman_anggota->verifikasi, 2) }}">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group input-group-static">
+                                        <input type="text" name="idpa[{{ $pinjaman_anggota->id }}]"
+                                            class="form-control money idpa idpa-{{ $pinjaman_anggota->id }}"
+                                            value="{{ number_format($pinjaman_anggota->verifikasi, 2) }}">
+                                    </div>
+                                    <input type="hidden" name="catatan[{{ $pinjaman_anggota->id }}]"
+                                        value="{{ $perguliran->catatan_verifikasi }}">
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
                             <th colspan="2">Jumlah</th>
                             <th>
-                                {{ number_format($proposal,2) }}
+                                {{ number_format($proposal, 2) }}
                             </th>
                             <th id="jumlah">
-                                {{ number_format($verifikasi,2) }}
+                                {{ number_format($verifikasi, 2) }}
                             </th>
                             <th>
-                                <span id="_alokasi">{{ number_format($verifikasi,2) }}</span>
+                                <span id="_alokasi">{{ number_format($verifikasi, 2) }}</span>
                                 <input type="hidden" name="__alokasi" id="__alokasi" value="{{ $verifikasi }}">
                             </th>
                         </tr>
@@ -200,8 +200,8 @@
                 <div class="col-md-3">
                     <div class="input-group input-group-static my-3">
                         <label for="alokasi">Alokasi Rp.</label>
-                        <input autocomplete="off" type="text" name="alokasi" id="alokasi" class="form-control money"
-                            value="{{ number_format($perguliran->verifikasi, 2) }}">
+                        <input autocomplete="off" type="text" name="alokasi" id="alokasi"
+                            class="form-control money" value="{{ number_format($perguliran->verifikasi, 2) }}">
                         <small class="text-danger" id="msg_alokasi"></small>
                     </div>
                 </div>
@@ -216,8 +216,8 @@
                 <div class="col-md-3">
                     <div class="input-group input-group-static my-3">
                         <label for="pros_jasa">Prosentase Jasa (%)</label>
-                        <input autocomplete="off" type="number" name="pros_jasa" id="pros_jasa" class="form-control"
-                            value="{{ $perguliran->pros_jasa }}">
+                        <input autocomplete="off" type="number" name="pros_jasa" id="pros_jasa"
+                            class="form-control" value="{{ $perguliran->pros_jasa }}">
                         <small class="text-danger" id="msg_pros_jasa"></small>
                     </div>
                 </div>
@@ -229,9 +229,10 @@
                         <label class="form-label" for="jenis_jasa">Jenis Jasa</label>
                         <select class="form-control" name="jenis_jasa" id="jenis_jasa">
                             @foreach ($jenis_jasa as $jj)
-                            <option {{ ($jj->id == $perguliran->jenis_jasa) ? 'selected':'' }} value="{{ $jj->id }}">
-                                {{ $jj->nama_jj }}
-                            </option>
+                                <option {{ $jj->id == $perguliran->jenis_jasa ? 'selected' : '' }}
+                                    value="{{ $jj->id }}">
+                                    {{ $jj->nama_jj }}
+                                </option>
                             @endforeach
                         </select>
                         <small class="text-danger" id="msg_jenis_jasa"></small>
@@ -242,10 +243,10 @@
                         <label class="form-label" for="sistem_angsuran_pokok">Sistem Angs. Pokok</label>
                         <select class="form-control" name="sistem_angsuran_pokok" id="sistem_angsuran_pokok">
                             @foreach ($sistem_angsuran as $sa)
-                            <option {{ ($sa->id == $perguliran->sistem_angsuran) ? 'selected':'' }}
-                                value="{{ $sa->id }}">
-                                {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
-                            </option>
+                                <option {{ $sa->id == $perguliran->sistem_angsuran ? 'selected' : '' }}
+                                    value="{{ $sa->id }}">
+                                    {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
+                                </option>
                             @endforeach
                         </select>
                         <small class="text-danger" id="msg_sistem_angsuran_pokok"></small>
@@ -256,9 +257,10 @@
                         <label class="form-label" for="sistem_angsuran_jasa">Sistem Angs. Jasa</label>
                         <select class="form-control" name="sistem_angsuran_jasa" id="sistem_angsuran_jasa">
                             @foreach ($sistem_angsuran as $sa)
-                            <option {{ ($sa->id == $perguliran->sa_jasa) ? 'selected':'' }} value="{{ $sa->id }}">
-                                {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
-                            </option>
+                                <option {{ $sa->id == $perguliran->sa_jasa ? 'selected' : '' }}
+                                    value="{{ $sa->id }}">
+                                    {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
+                                </option>
                             @endforeach
                         </select>
                         <small class="text-danger" id="msg_sistem_angsuran_jasa"></small>
@@ -269,15 +271,14 @@
                 <div class="col-12">
                     <div class="input-group input-group-static my-3">
                         <label for="catatan_verifikasi">Catatan Verifikasi</label>
-                        <textarea class="form-control" readonly name="catatan_verifikasi" id="catatan_verifikasi"
-                            rows="3" placeholder="Catatan"
-                            spellcheck="false">{{ $perguliran->catatan_verifikasi }}</textarea>
+                        <textarea class="form-control" readonly name="catatan_verifikasi" id="catatan_verifikasi" rows="3"
+                            placeholder="Catatan" spellcheck="false">{{ $perguliran->catatan_verifikasi }}</textarea>
                         <small class="text-danger" id="msg_catatan_verifikasi"></small>
                     </div>
                 </div>
             </div>
 
-            <button type="button" id="Simpan" class="btn btn-primary float-end btn-sm">
+            <button type="button" id="Simpan" class="btn btn-github float-end btn-sm">
                 Simpan Keputusan Pendanaan
             </button>
         </div>
@@ -300,7 +301,7 @@
         dateFormat: "d/m/Y"
     })
 
-    $('.idpa_proposal').change(function (e) {
+    $('.idpa_proposal').change(function(e) {
 
         var idpa = $(this).attr('id')
         var value = $(this).val()
@@ -315,9 +316,9 @@
                 'status': 'V',
                 '_token': $('[name=_token]').val()
             },
-            success: function (result) {
+            success: function(result) {
                 var total = 0;
-                $('.idpa_proposal').map(function () {
+                $('.idpa_proposal').map(function() {
                     var idpa = $(this).attr('id')
                     var value = $(this).val()
 
@@ -339,9 +340,9 @@
         })
     })
 
-    $(document).on('change', '.idpa', function (e) {
+    $(document).on('change', '.idpa', function(e) {
         var total = 0;
-        $('.idpa').map(function () {
+        $('.idpa').map(function() {
             var value = $(this).val()
             value = value.split(',').join('')
             value = value.split('.00').join('')
@@ -355,7 +356,7 @@
         $('#alokasi').val(formatter.format(total))
     })
 
-    $(document).on('click', '#Simpan', async function (e) {
+    $(document).on('click', '#Simpan', async function(e) {
         e.preventDefault()
         $('small').html('')
 
@@ -386,16 +387,16 @@
                 type: 'POST',
                 url: form.attr('action') + '?save=true',
                 data: form.serialize(),
-                success: function (result) {
+                success: function(result) {
                     Swal.fire('Berhasil', result.msg, 'success').then(() => {
                         window.location.href = '/detail/' + result.id
                     })
                 },
-                error: function (result) {
+                error: function(result) {
                     const respons = result.responseJSON;
 
                     Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error')
-                    $.map(respons, function (res, key) {
+                    $.map(respons, function(res, key) {
                         $('#' + key).parent('.input-group.input-group-static')
                             .addClass(
                                 'is-invalid')
@@ -405,5 +406,4 @@
             })
         }
     })
-
 </script>

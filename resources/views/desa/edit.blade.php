@@ -40,7 +40,8 @@ divdiv<div class="modal-content">
                 <div class="col-md-4">
                     <div class="input-group input-group-static my-3">
                         <label for="kades">Nama Kades/Lurah</label>
-                        <input type="text" name="kades" id="kades" class="form-control" value="{{ $desa->kades }}">
+                        <input type="text" name="kades" id="kades" class="form-control"
+                            value="{{ $desa->kades }}">
                         <small class="text-danger" id="msg_kades"></small>
                     </div>
                 </div>
@@ -55,7 +56,8 @@ divdiv<div class="modal-content">
                 <div class="col-md-4">
                     <div class="input-group input-group-static my-3">
                         <label for="nip">NIP Kades/Lurah</label>
-                        <input type="text" name="nip" id="nip" class="form-control" value="{{ $desa->nip }}">
+                        <input type="text" name="nip" id="nip" class="form-control"
+                            value="{{ $desa->nip }}">
                         <small class="text-danger" id="msg_nip"></small>
                     </div>
                 </div>
@@ -64,7 +66,8 @@ divdiv<div class="modal-content">
                 <div class="col-md-4">
                     <div class="input-group input-group-static my-3">
                         <label for="sekdes">Nama Sekdes</label>
-                        <input type="text" name="sekdes" id="sekdes" class="form-control" value="{{ $desa->sekdes }}">
+                        <input type="text" name="sekdes" id="sekdes" class="form-control"
+                            value="{{ $desa->sekdes }}">
                         <small class="text-danger" id="msg_sekdes"></small>
                     </div>
                 </div>
@@ -89,7 +92,8 @@ divdiv<div class="modal-content">
                 <div class="col-md-4">
                     <div class="input-group input-group-static my-3">
                         <label for="ked">Nama KED/LPMD/BPD</label>
-                        <input type="text" name="ked" id="ked" class="form-control" value="{{ $desa->ked }}">
+                        <input type="text" name="ked" id="ked" class="form-control"
+                            value="{{ $desa->ked }}">
                     </div>
                     <small class="text-danger" id="msg_ked"></small>
                 </div>
@@ -98,9 +102,10 @@ divdiv<div class="modal-content">
                         <label class="form-label" for="sebutan">Sebutan Desa</label>
                         <select class="form-control" name="sebutan" id="sebutan">
                             @foreach ($sebutan as $seb)
-                            <option value="{{ $seb->id }}" {{ ($seb->id == $desa->sebutan) ? 'selected':''; }}>
-                                {{ $seb->sebutan_desa }} [{{ $seb->sebutan_kades }}]
-                            </option>
+                                <option value="{{ $seb->id }}"
+                                    {{ $seb->id == $desa->sebutan ? 'selected' : '' }}>
+                                    {{ $seb->sebutan_desa }} [{{ $seb->sebutan_kades }}]
+                                </option>
                             @endforeach
                         </select>
                         <small class="text-danger" id="msg_sebutan"></small>
@@ -111,10 +116,11 @@ divdiv<div class="modal-content">
                         <label class="form-label" for="jadwal_angsuran_desa">Jadwal Angsuran Desa</label>
                         <select class="form-control" name="jadwal_angsuran_desa" id="jadwal_angsuran_desa">
                             <option value="0">Setiap Tanggal Cair</option>
-                            @for ($i=1; $i<=31; $i++) @php $tgl=sprintf("%02d", $i); @endphp <option value="{{ $tgl }}"
-                                {{ ($desa->jadwal_angsuran_desa == $tgl) ? 'selected':''; }}>
-                                Setiap Tanggal {{ $tgl }}</option>
-                                @endfor
+                            @for ($i = 1; $i <= 31; $i++)
+                                @php $tgl=sprintf("%02d", $i); @endphp <option value="{{ $tgl }}"
+                                    {{ $desa->jadwal_angsuran_desa == $tgl ? 'selected' : '' }}>
+                                    Setiap Tanggal {{ $tgl }}</option>
+                            @endfor
                         </select>
                         <small class="text-danger" id="msg_jadwal_angsuran_desa"></small>
                     </div>
@@ -123,13 +129,12 @@ divdiv<div class="modal-content">
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" id="simpanDesa" class="btn btn-primary">Simpan</button>
+        <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+        <button type="submit" id="simpanDesa" class="btn btn-sm btn-github">Simpan</button>
     </div>
 </div>
 
 <script>
     new Choices($('#sebutan')[0])
     new Choices($('#jadwal_angsuran_desa')[0])
-
 </script>

@@ -24,6 +24,11 @@ class Anggota extends Model
         return $this->hasMany(PinjamanAnggota::class, 'nia');
     }
 
+    public function pinjaman()
+    {
+        return $this->hasOne(PinjamanAnggota::class, 'nia');
+    }
+
     public function getRouteKeyName()
     {
         return 'nik';

@@ -59,7 +59,7 @@
                         <button type="button" id="btnDetailKelompok" class="btn btn-info btn-sm me-3">
                             Detail Kelompok
                         </button>
-                        <button type="button" id="SimpanAngsuran" class="btn btn-primary btn-sm">Posting</button>
+                        <button type="button" id="SimpanAngsuran" class="btn btn-github btn-sm">Posting</button>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 @php
-use App\Models\PinjamanKelompok;
+    use App\Models\PinjamanKelompok;
 @endphp
 
 <div class="row">
@@ -7,18 +7,17 @@ use App\Models\PinjamanKelompok;
         <div class="my-2">
             <select class="form-control" name="kelompok" id="kelompok">
                 @foreach ($kelompok as $kel)
-                @php
-                $pinkel = PinjamanKelompok::where('id_kel', $kel->id)->orderBy('tgl_proposal','DESC');
-                if ($pinkel->count() > 0) {
-                $status = $pinkel->first()->status;
-                if ($status == 'P' || $status == 'V' || $status == 'W') {
-                continue;
-                }
-                }
-                @endphp
-                <option value="{{ $kel->id }}">
-                    {{ $kel->nama_kelompok }} [{{ $kel->d->nama_desa }}] [{{ $kel->ketua }}]
-                </option>
+                    @php
+                        if ($kel->pinjaman_count > 0) {
+                            $status = $kel->pinjaman->status;
+                            if ($status == 'P' || $status == 'V' || $status == 'W') {
+                                continue;
+                            }
+                        }
+                    @endphp
+                    <option {{ $kel->id == $id_kel ? 'selected' : '' }} value="{{ $kel->id }}">
+                        {{ $kel->nama_kelompok }} [{{ $kel->d->nama_desa }}] [{{ $kel->ketua }}]
+                    </option>
                 @endforeach
             </select>
         </div>
@@ -32,5 +31,4 @@ use App\Models\PinjamanKelompok;
 
 <script>
     new Choices($('#kelompok')[0])
-
 </script>

@@ -197,14 +197,22 @@ class PinjamanKelompokController extends Controller
      */
     public function create()
     {
+        $id_kel = request()->get('id_kel');
         $title = 'Registrasi Pinjaman';
-        return view('pinjaman.create')->with(compact('title'));
+        return view('pinjaman.create')->with(compact('title', 'id_kel'));
     }
 
     public function DaftarKelompok()
     {
-        $kelompok = Kelompok::with('d')->get();
-        return view('pinjaman.partials.kelompok')->with(compact('kelompok'));
+        $id_kel = request()->get('id_kel');
+        $kelompok = Kelompok::with([
+            'd',
+            'pinjaman' => function ($query) {
+                $query->orderBy('tgl_proposal', 'DESC');
+            }
+        ])->withCount('pinjaman')->get();
+
+        return view('pinjaman.partials.kelompok')->with(compact('kelompok', 'id_kel'));
     }
 
     public function register($id_kel)

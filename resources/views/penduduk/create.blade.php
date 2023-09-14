@@ -22,9 +22,9 @@
                 <label class="form-label" for="desa">Desa/Kelurahan</label>
                 <select class="form-control" name="desa" id="desa">
                     @foreach ($desa as $ds)
-                    <option {{ ($desa_dipilih == $ds->kd_desa) ? 'selected':''; }} value="{{ $ds->kd_desa }}">
-                        {{ $ds->sebutan_desa->sebutan_desa }} {{ $ds->nama_desa }}
-                    </option>
+                        <option {{ $desa_dipilih == $ds->kd_desa ? 'selected' : '' }} value="{{ $ds->kd_desa }}">
+                            {{ $ds->sebutan_desa->sebutan_desa }} {{ $ds->nama_desa }}
+                        </option>
                     @endforeach
                 </select>
                 <small class="text-danger" id="msg_desa"></small>
@@ -45,8 +45,8 @@
                 <div class="col-5">
                     <div class="input-group input-group-static my-3">
                         <label for="tgl_lahir">Tgl Lahir</label>
-                        <input autocomplete="off" type="text" name="tgl_lahir" id="tgl_lahir" class="form-control date"
-                            value="{{ $value_tanggal }}">
+                        <input autocomplete="off" type="text" name="tgl_lahir" id="tgl_lahir"
+                            class="form-control date" value="{{ $value_tanggal }}">
                         <small class="text-danger" id="msg_tgl_lahir"></small>
                     </div>
                 </div>
@@ -56,8 +56,8 @@
             <div class="my-2">
                 <label class="form-label" for="jenis_kelamin">Jenis Kelamin</label>
                 <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
-                    <option {{ ($jk_dipilih == 'L') ? 'selected':'' }} value="L">Laki Laki</option>
-                    <option {{ ($jk_dipilih == 'P') ? 'selected':'' }} value="P">Perempuan</option>
+                    <option {{ $jk_dipilih == 'L' ? 'selected' : '' }} value="L">Laki Laki</option>
+                    <option {{ $jk_dipilih == 'P' ? 'selected' : '' }} value="P">Perempuan</option>
                 </select>
                 <small class="text-danger" id="msg_desa"></small>
             </div>
@@ -65,7 +65,8 @@
         <div class="col-md-4">
             <div class="input-group input-group-static my-3">
                 <label for="no_telp">No. Telp</label>
-                <input autocomplete="off" type="text" name="no_telp" id="no_telp" class="form-control" value="628">
+                <input autocomplete="off" type="text" name="no_telp" id="no_telp" class="form-control"
+                    value="628">
                 <small class="text-danger" id="msg_no_telp"></small>
             </div>
         </div>
@@ -117,9 +118,9 @@
                 <label class="form-label" for="hubungan">Hubungan</label>
                 <select class="form-control" name="hubungan" id="hubungan">
                     @foreach ($hubungan as $hb)
-                    <option {{ ($hubungan_dipilih == $hb->id) ? 'selected':''; }} value="{{ $hb->id }}">
-                        {{ $hb->kekeluargaan }}
-                    </option>
+                        <option {{ $hubungan_dipilih == $hb->id ? 'selected' : '' }} value="{{ $hb->id }}">
+                            {{ $hb->kekeluargaan }}
+                        </option>
                     @endforeach
                 </select>
                 <small class="text-danger" id="msg_desa"></small>
@@ -127,7 +128,7 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary float-end" id="SimpanPenduduk">Simpan Penduduk</button>
+    <button type="submit" class="btn btn-github btn-sm float-end" id="SimpanPenduduk">Simpan Penduduk</button>
 </form>
 
 <script>
@@ -138,5 +139,4 @@
     $(".date").flatpickr({
         dateFormat: "d/m/Y"
     })
-
 </script>
