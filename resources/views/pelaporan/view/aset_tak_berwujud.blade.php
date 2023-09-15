@@ -17,7 +17,7 @@
         @if ($rek->lev4 != '1')
             <div class="break"></div>
         @endif
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr>
                 <td colspan="3" align="center">
                     <div style="font-size: 18px;">
@@ -33,7 +33,7 @@
             </tr>
 
         </table>
-        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr style="background: rgb(232, 232, 232)">
                 <th rowspan="2" width="10">No</th>
                 <th rowspan="2" width="40">Tgl Beli</th>

@@ -6,7 +6,7 @@
 @extends('pelaporan.layout.base')
 
 @section('content')
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
@@ -22,7 +22,7 @@
         </tr>
 
     </table>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="background: rgb(200, 200, 200)">
             <th colspan="2">Nama Akun</th>
             <th width="100">Jumlah</th>

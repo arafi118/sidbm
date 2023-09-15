@@ -4,7 +4,7 @@
 @extends('pelaporan.layout.base')
 
 @section('content')
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
@@ -21,7 +21,7 @@
 
     </table>
 
-    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="background: rgb(232, 232, 232)">
             <th width="30" height="20">No</th>
             <th>Rekening Modal</th>
@@ -40,7 +40,7 @@
                 $t_saldo += $saldo;
             @endphp
             <tr>
-                <td>{{ $loop->iteration }}</td>
+                <td align="center">{{ $loop->iteration }}</td>
                 <td>{{ $rek->nama_akun }}</td>
                 <td align="right">{{ number_format($saldo) }}</td>
                 <td>&nbsp;</td>

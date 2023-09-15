@@ -72,7 +72,7 @@
 
 <body>
     <main style="position: relative; font-size: 12px;">
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr>
                 <td rowspan="7" align="center" width="400">
                     <div style="font-size: 14px; font-weight: bold;">
@@ -154,7 +154,7 @@
             $baris_angsuran = $pinkel->jangka / 2;
         @endphp
 
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr>
                 <td width="40">&nbsp;</td>
                 <td colspan="9" style="font-weight: bold;" height="30">TABEL KEWAJIBAN PEMBAYARAN ANGSURAN</td>
@@ -213,7 +213,7 @@
 
         </table>
 
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr>
                 <td width="40" rowspan="{{ $pinkel->rencana_count + 16 }}">&nbsp;</td>
                 <td colspan="9" style="font-weight: bold;" height="30">REALISASI PEMBAYARAN ANGSURAN</td>
@@ -275,7 +275,7 @@
             @endfor
         </table>
 
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr>
                 <td width="40" rowspan="5">&nbsp;</td>
                 <td colspan="3" style="font-weight: bold;" height="30">&nbsp;</td>

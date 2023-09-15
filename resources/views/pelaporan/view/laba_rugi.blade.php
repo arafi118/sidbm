@@ -9,7 +9,7 @@
         $saldo_bln_lalu2 = 0;
     @endphp
 
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
             <td colspan="4" align="center">
                 <div style="font-size: 18px;">

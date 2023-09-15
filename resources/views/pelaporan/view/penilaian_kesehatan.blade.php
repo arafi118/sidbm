@@ -216,7 +216,7 @@
         }
     @endphp
 
-    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="background: rgb(232, 232, 232)">
             <th rowspan="2" width="10">No</th>
             <th rowspan="2" width="160">Rasio</th>

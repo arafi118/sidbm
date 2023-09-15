@@ -19,7 +19,7 @@
 @extends('pelaporan.layout.base')
 
 @section('content')
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
             <td colspan="4" align="center">
                 <div style="font-size: 18px;">
@@ -36,16 +36,16 @@
     </table>
 
     <div style="width: 100%; text-align: right;">Kode Akun : {{ $rek->kode_akun }}</div>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="background: rgb(74, 74, 74); font-weight: bold; color: #fff;">
-            <td height="15" align="center" width="10">No</td>
-            <td align="center" width="35">Tanggal</td>
-            <td align="center" width="35">Ref ID.</td>
-            <td align="center" width="175">Keterangan</td>
-            <td align="center">Debit</td>
-            <td align="center">Kredit</td>
-            <td align="center">Saldo</td>
-            <td align="center">Ins</td>
+            <td class="l t" height="15" align="center" width="10">No</td>
+            <td class="t" align="center" width="35">Tanggal</td>
+            <td class="t" align="center" width="35">Ref ID.</td>
+            <td class="t" align="center" width="175">Keterangan</td>
+            <td class="t" align="center">Debit</td>
+            <td class="t" align="center">Kredit</td>
+            <td class="t" align="center">Saldo</td>
+            <td class="r t" align="center">Ins</td>
         </tr>
 
         <tr>

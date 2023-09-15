@@ -10,7 +10,7 @@
 @extends('pelaporan.layout.base')
 
 @section('content')
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
@@ -26,7 +26,7 @@
         </tr>
     </table>
 
-    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="background: rgb(230, 230, 230); font-weight: bold;">
             <th rowspan="2" width="250" height="30">Rekening</th>
             <th colspan="2">Necaca Saldo</th>

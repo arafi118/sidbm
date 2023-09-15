@@ -6,7 +6,7 @@
 @extends('pelaporan.layout.base')
 
 @section('content')
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
@@ -18,7 +18,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="3" height="5"></td>
+            <td colspan="3" height="3"></td>
         </tr>
         <tr style="background: #000; color: #fff;">
             <td width="30">Kode</td>
@@ -26,7 +26,7 @@
             <td align="right">Saldo</td>
         </tr>
         <tr>
-            <td colspan="3" height="2"></td>
+            <td colspan="3" height="1"></td>
         </tr>
 
         @foreach ($akun1 as $lev1)
@@ -87,7 +87,7 @@
                 <td align="right">{{ number_format($sum_akun1, 2) }}</td>
             </tr>
             <tr>
-                <td colspan="3" height="2"></td>
+                <td colspan="3" height="1"></td>
             </tr>
         @endforeach
         <tr style="background: rgb(167, 167, 167); font-weight: bold;">

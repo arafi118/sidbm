@@ -14,7 +14,7 @@
             <div class="break"></div>
         @endif
 
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr>
                 <td colspan="3" align="center">
                     <div style="font-size: 18px;">
@@ -30,7 +30,7 @@
             </tr>
         </table>
 
-        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr style="background: rgb(230, 230, 230); font-weight: bold;">
                 <th height="12" width="20">No</th>
                 <th width="250">Kelompok - Loan ID.</th>

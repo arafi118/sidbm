@@ -16,7 +16,7 @@
 @extends('transaksi.layout.base')
 
 @section('content')
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
@@ -32,7 +32,7 @@
             <td colspan="3" height="5"></td>
         </tr>
     </table>
-    <table border="0" width="90%" align="center" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+    <table border="0" width="90%" align="center" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
             <td width="30">&nbsp;</td>
             <td width="50">Kd. Kelompok</td>
@@ -114,7 +114,7 @@
             </td>
         </tr>
     </table>
-    <table border="0" width="98%" align="center" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+    <table border="0" width="98%" align="center" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="font-weight: bold;">
             <td class=" l t b" rowspan="2" width="10" align="center">KE</td>
             <td class=" l t b" rowspan="2" width="150" align="center">BULAN</td>
