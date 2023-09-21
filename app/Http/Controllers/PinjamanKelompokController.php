@@ -18,11 +18,13 @@ use App\Models\Transaksi;
 use App\Models\User;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
+use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 use DNS1D;
+use Illuminate\Support\Facades\Http;
 
 class PinjamanKelompokController extends Controller
 {
@@ -162,8 +164,9 @@ class PinjamanKelompokController extends Controller
     public function lunas()
     {
         if (request()->ajax()) {
+            $tb_pinkel = 'pinjaman_kelompok_' . auth()->user()->lokasi;
             $pinkel = PinjamanKelompok::where('status', 'A')
-                ->whereRaw('alokasi<=(SELECT SUM(realisasi_pokok) FROM real_angsuran_' . auth()->user()->lokasi . ' WHERE loan_id=id)')
+                ->whereRaw($tb_pinkel . '.alokasi<=(SELECT SUM(realisasi_pokok) FROM real_angsuran_' . auth()->user()->lokasi . ' WHERE loan_id=' . $tb_pinkel . '.id)')
                 ->with('kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
 
             return DataTables::of($pinkel)
@@ -299,6 +302,24 @@ class PinjamanKelompokController extends Controller
      */
     public function show(PinjamanKelompok $perguliran)
     {
+        $perguliran = $perguliran->with([
+            'sis_pokok',
+            'sis_jasa',
+            'jpp',
+            'jasa',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota',
+            'pinjaman_anggota.anggota.pemanfaat' => function ($query) {
+                $query->where('status', 'A');
+            },
+            'pinjaman_anggota.anggota.pemanfaat.kec',
+            'pinjaman_anggota.pinjaman' => function ($query) {
+                $query->where('status', 'A');
+            },
+            'pinjaman_anggota.pinjaman.pinkel',
+            'pinjaman_anggota.pinjaman.kelompok',
+            'pinjaman_anggota.pinjaman.anggota'
+        ])->where('id', $perguliran->id)->first();
         $jenis_jasa = JenisJasa::all();
         $sistem_angsuran = SistemAngsuran::all();
         $sumber_bayar = Rekening::where([
@@ -330,23 +351,23 @@ class PinjamanKelompokController extends Controller
         if ($perguliran->status == 'W') {
             $pinkel_aktif = PinjamanKelompok::where([['id_kel', $perguliran->id_kel], ['status', 'A']]);
 
-            $pinjaman_anggota = PinjamanAnggota::where('id_pinkel', $perguliran->id)->with('anggota')->get();
+            $pinjaman_anggota = $perguliran->pinjaman_anggota;
             $pinj_a['jumlah_pinjaman'] = 0;
             $pinj_a['jumlah_pemanfaat'] = 0;
             $pinj_a['jumlah_kelompok'] = 0;
 
             foreach ($pinjaman_anggota as $pa) {
-                $pinj_aktif = PinjamanAnggota::where('nia', $pa->nia)->where('status', 'A');
+                $pinj_aktif = $pa->pinjaman;
 
-                if ($pinj_aktif->count() > 0) {
+                if ($pinj_aktif) {
                     $pinj_a['jumlah_pinjaman'] += 1;
-                    $pinj_a['pinjaman'][] = $pinj_aktif->with('pinkel', 'kelompok', 'anggota')->first();
+                    $pinj_a['pinjaman'][] = $pinj_aktif;
                 }
 
-                $pemanfaat_aktif = DataPemanfaat::where([['nik', $pa->nik], ['status', 'A']])->with('kecamatan');
-                if ($pemanfaat_aktif->count() > 0) {
+                $pemanfaat_aktif = $pa->anggota->pemanfaat;
+                if ($pemanfaat_aktif) {
                     $pinj_a['jumlah_pemanfaat'] += 1;
-                    $pinj_a['pemanfaat'][$pa->nik] = $pemanfaat_aktif->first();
+                    $pinj_a['pemanfaat'][$pa->anggota->nik] = $pemanfaat_aktif;
                 }
             }
 
@@ -476,6 +497,33 @@ class PinjamanKelompokController extends Controller
             $data['jenis_jasa'] = $data['jenis_jasa_proposal'];
             $data['sistem_angsuran_pokok'] = $data['sistem_angsuran_pokok_proposal'];
             $data['sistem_angsuran_jasa'] = $data['sistem_angsuran_jasa_proposal'];
+        } elseif ($request->status == 'W') {
+            $data = $request->only([
+                '_id',
+                'status',
+                $tgl,
+                $alokasi,
+                'jangka',
+                'pros_jasa',
+                'jenis_jasa',
+                'sistem_angsuran_pokok',
+                'sistem_angsuran_jasa',
+                'tgl_cair',
+                'nomor_spk'
+            ]);
+
+            $table = 'pinjaman_kelompok_' . auth()->user()->lokasi;
+            $validate = Validator::make($data, [
+                $tgl => 'required',
+                $alokasi => 'required',
+                'jangka' => 'required',
+                'pros_jasa' => 'required',
+                'jenis_jasa' => 'required',
+                'sistem_angsuran_pokok' => 'required',
+                'sistem_angsuran_jasa' => 'required',
+                'tgl_cair' => 'required',
+                'nomor_spk' => 'required|unique:' . $table . ',spk_no'
+            ]);
         } elseif ($request->status == 'A') {
             $data = $request->only([
                 '_id',
@@ -556,6 +604,35 @@ class PinjamanKelompokController extends Controller
                 'urutan' => '0',
                 'id_user' => auth()->user()->id,
             ]);
+        } elseif ($request->status == 'W') {
+            if ($request->idpa != null) {
+                foreach ($request->idpa as $idpa => $val) {
+
+                    PinjamanAnggota::where('id', $idpa)->update([
+                        $tgl => Tanggal::tglNasional($data[$tgl]),
+                        $alokasi => str_replace(',', '', str_replace('.00', '', $val)),
+                        'status' => $data['status']
+                    ]);
+
+                    DataPemanfaat::where([['idpa', $idpa], ['lokasi', auth()->user()->lokasi]])->update([
+                        'status' => $data['status']
+                    ]);
+                }
+            }
+
+            $update = [
+                'tgl_dana' => Tanggal::tglNasional($data[$tgl]),
+                $tgl => Tanggal::tglNasional($data[$tgl]),
+                $alokasi => str_replace(',', '', str_replace('.00', '', $data[$alokasi])),
+                'jangka' => $data['jangka'],
+                'pros_jasa' => $data['pros_jasa'],
+                'jenis_jasa' => $data['jenis_jasa'],
+                'sistem_angsuran' => $data['sistem_angsuran_pokok'],
+                'sa_jasa' => $data['sistem_angsuran_jasa'],
+                'tgl_cair' => Tanggal::tglNasional($data['tgl_cair']),
+                'spk_no' => $data['nomor_spk'],
+                'status' => $data['status']
+            ];
         } else {
             if ($request->idpa != null) {
                 foreach ($request->idpa as $idpa => $val) {
@@ -609,6 +686,30 @@ class PinjamanKelompokController extends Controller
         ], Response::HTTP_ACCEPTED);
     }
 
+    public function simpan(Request $request, $id)
+    {
+        $data = $request->only([
+            'spk_no',
+            'tgl_cair',
+            'waktu',
+            'tempat'
+        ]);
+
+        $pinkel = PinjamanKelompok::where('id', $id)->with('kelompok')->first();
+
+        $wt_cair = $data['waktu'] . '_' . $data['tempat'];
+        $pinjaman = PinjamanKelompok::where('id', $id)->update([
+            'spk_no' => $data['spk_no'],
+            'tgl_cair' => Tanggal::tglNasional($data['tgl_cair']),
+            'wt_cair' => $wt_cair
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Pinjaman Kelompok ' . $pinkel->kelompok->nama_kelompok . ' Berhasil Diperbarui'
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -649,6 +750,345 @@ class PinjamanKelompokController extends Controller
         }
 
         return response()->json($param);
+    }
+
+    public function dokumen(Request $request)
+    {
+        $data['tahun'] = date('Y');
+        $data['bulan'] = date('m');
+        $data['hari'] = date('d');
+        $data['type'] = 'pdf';
+
+        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten', 'kabupaten.wilayah', 'desa')->first();
+        $kab = $kec->kabupaten;
+        $dir = User::where([
+            ['lokasi', auth()->user()->lokasi],
+            ['jabatan', '1'],
+            ['level', '1'],
+            ['sejak', '<=', date('Y-m-t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'))]
+        ])->first();
+
+        $data['logo'] = $kec->logo;
+        $data['nama_lembaga'] = $kec->nama_lembaga_sort;
+        $data['nama_kecamatan'] = $kec->sebutan_kec . ' ' . $kec->nama_kec;
+
+        if (Keuangan::startWith($kab->nama_kab, 'KOTA') || Keuangan::startWith($kab->nama_kab, 'KAB')) {
+            $data['nama_kecamatan'] .= ' ' . ucwords(strtolower($kab->nama_kab));
+            $data['nama_kabupaten'] = ucwords(strtolower($kab->nama_kab));
+            $data['kabupaten'] = ucwords(strtolower($kab->nama_kab));
+            $data['nama_kab'] = ucwords(strtolower($kab->nama_kab));
+        } else {
+            $data['nama_kecamatan'] .= ' Kabupaten ' . ucwords(strtolower($kab->nama_kab));
+            $data['nama_kabupaten'] = ' Kabupaten ' . ucwords(strtolower($kab->nama_kab));
+            $data['kabupaten'] = ' Kab. ' . ucwords(strtolower($kab->nama_kab));
+            $data['nama_kab'] = ucwords(strtolower($kab->nama_kab));
+        }
+
+        $data['nomor_usaha'] = 'SK Kemenkumham RI No.' . $kec->nomor_bh;
+        $data['info'] = $kec->alamat_kec . ', Telp.' . $kec->telpon_kec;
+        $data['email'] = $kec->email_kec;
+        $data['kec'] = $kec;
+        $data['kab'] = $kab;
+        $data['dir'] = $dir;
+
+        if (strlen($data['hari']) > 0 && strlen($data['bulan']) > 0) {
+            $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
+        } elseif (strlen($data['bulan']) > 0) {
+            $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . date('t', strtotime($data['tahun'] . '-' . $data['bulan']));
+        } else {
+            $data['tgl_kondisi'] = $data['tahun'] . '-12-31';
+        }
+
+        $file = $request->report;
+        return $this->$file($request->id, $data);
+    }
+
+    public function coverProposal($id)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa'
+        ])->first();
+
+        $data['judul'] = 'DOKUMEN PROPOSAL (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.cover_proposal', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function check($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'kelompok.d'
+        ])->first();
+
+        $data['judul'] = 'Check List (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.check', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function suratPengajuanPinjaman($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa'
+        ])->withCount('pinjaman_anggota')->first();
+
+        $data['judul'] = 'Surat Perngajuran Kredit (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.pengajuan_kredit', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function suratRekomendasi($id, $data)
+    {
+        $keuangan = new Keuangan;
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa'
+        ])->withCount('pinjaman_anggota')->first();
+
+        $data['keuangan'] = $keuangan;
+
+        $data['judul'] = 'Surat Rekomendasi Kredit (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.rekomendasi_kredit', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function profilKelompok($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'kelompok.tk',
+            'kelompok.usaha',
+            'kelompok.kegiatan',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa'
+        ])->first();
+
+        $data['judul'] = 'Profil Kelompok (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.profil_kelompok', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function susunanPengurus($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa'
+        ])->withCount('pinjaman_anggota')->first();
+
+        $data['judul'] = 'Susunan Pengurus (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.pengurus', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function anggotaKelompok($id, $data)
+    {
+        $data['pinjaman'] = PinjamanAnggota::where('id_pinkel', $id)->with([
+            'anggota',
+            'anggota.d'
+        ])->get();
+
+        $data['judul'] = 'Daftar Anggota (Loan ID. ' . $id . ')';
+        $view = view('perguliran.dokumen.anggota', $data)->render();
+        $pdf = PDF::loadHTML($view);
+
+        return $pdf->stream();
+    }
+
+    public function daftarPemanfaat($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'jasa',
+            'kelompok',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota'
+        ])->first();
+
+        $data['dir'] = User::where([
+            ['level', '1'],
+            ['jabatan', '1'],
+            ['lokasi', auth()->user()->lokasi]
+        ])->first();
+
+        $data['judul'] = 'Daftar Pemanfaat (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.pemanfaat', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function  tanggungRenteng($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota'
+        ])->first();
+
+        $data['judul'] = 'Pernyataan Tanggung Renteng (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.tanggung_renteng', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function fotoCopyKTP($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+        ])->first();
+
+        $data['judul'] = 'FC KTP Pemanfaat dan Penjamin (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.ktp', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function pernyataanPeminjam($id, $data)
+    {
+        $keuangan = new Keuangan;
+
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'jasa',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota',
+            'pinjaman_anggota.anggota.d'
+        ])->first();
+
+        $data['keuangan'] = $keuangan;
+
+        $data['judul'] = 'Pernyataan Peminjam (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.pernyataan_peminjam', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function baMusyawarahDesa($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+            'sis_pokok'
+        ])->withCount('pinjaman_anggota')->first();
+
+        $data['judul'] = 'BA Musyawarah (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.ba_musyawarah', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function formVerifikasi($id, $data)
+    {
+        $keuangan = new Keuangan;
+
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'jasa',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.usaha',
+            'kelompok.kegiatan',
+            'kelompok.tk',
+            'kelompok.fk',
+            'kelompok.d.sebutan_desa',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota',
+            'sis_pokok',
+            'user'
+        ])->first();
+
+        $data['user'] = User::where([
+            ['lokasi', auth()->user()->lokasi],
+            ['level', '4']
+        ])->with('j')->orderBy('id')->get();
+
+        $data['keuangan'] = $keuangan;
+
+        $data['judul'] = 'Form Verifikasi (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.form_verifikasi', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function daftarHadirVerifikasi($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota'
+        ])->first();
+
+        $data['judul'] = 'Daftar Hadir Verifikasi (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.daftar_hadir_verifikasi', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function rencaraAngsuran($id, $data)
+    {
+        $data['rencana'] = $this->generate($id)->getData()->rencana;
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'sis_pokok',
+            'jasa'
+        ])->first();
+
+        $data['dir'] = User::where([
+            ['level', '1'],
+            ['jabatan', '1'],
+            ['lokasi', auth()->user()->lokasi]
+        ])->first();
+
+        $data['judul'] = 'Rencana Angsuran (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.rencana_angsuran', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function iptw($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota'
+        ])->first();
+
+        $data['judul'] = 'Daftar Penerima IPTW (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.iptw', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
     }
 
     public function kartuAngsuran($id)
@@ -708,6 +1148,7 @@ class PinjamanKelompokController extends Controller
 
     public function generate($id_pinj)
     {
+        $rencana = [];
         $pinkel = PinjamanKelompok::where('id', $id_pinj)->firstOrFail();
 
         $jangka = $pinkel->jangka;
@@ -865,11 +1306,53 @@ class PinjamanKelompokController extends Controller
                     'id_user' => auth()->user()->id
                 ]);
             }
+        } else {
+            $target_pokok = 0;
+            $target_jasa = 0;
+            for ($x = 1; $x <= $jangka; $x++) {
+                $bulan  = substr($tgl, 5, 2);
+                $tahun  = substr($tgl, 0, 4);
+
+                if ($sa_pokok == 12) {
+                    $tambah = $x * 7;
+                    $penambahan = "+$tambah days";
+                } else {
+                    $penambahan = "+$x month";
+                }
+                $jatuh_tempo = date('Y-m-d', strtotime($penambahan, strtotime($tgl)));
+
+                $pokok = $ra[$x]['pokok'];
+                $jasa = $ra[$x]['jasa'];
+
+                if ($x == 1) {
+                    $target_pokok = $pokok;
+                } elseif ($x >= 2) {
+                    $target_pokok += $pokok;
+                }
+                if ($x == 1) {
+                    $target_jasa = $jasa;
+                } elseif ($x >= 2) {
+                    $target_jasa += $jasa;
+                }
+
+                $rencana[] = [
+                    'loan_id' => $id_pinj,
+                    'angsuran_ke' => $x,
+                    'jatuh_tempo' => $jatuh_tempo,
+                    'wajib_pokok' => $pokok,
+                    'wajib_jasa' => $jasa,
+                    'target_pokok' => $target_pokok,
+                    'target_jasa' => $target_jasa,
+                    'lu' => date('Y-m-d H:i:s'),
+                    'id_user' => auth()->user()->id
+                ];
+            }
         }
 
         return response()->json([
             'success' => true,
-            'ra' => $ra
+            'ra' => $ra,
+            'rencana' => $rencana
         ], Response::HTTP_OK);
     }
 }

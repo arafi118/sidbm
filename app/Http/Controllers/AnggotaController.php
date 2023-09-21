@@ -72,7 +72,7 @@ class AnggotaController extends Controller
     public function create()
     {
         $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
-        $desa = Desa::where('kd_kec', $kec->kd_kec)->get();
+        $desa = Desa::where('kd_kec', $kec->kd_kec)->with('sebutan_desa')->get();
         $jenis_usaha = Usaha::orderBy('nama_usaha', 'ASC')->get();
         $hubungan = Keluarga::orderBy('kekeluargaan', 'ASC')->get();
 

@@ -1,21 +1,30 @@
 @php
-
-function active($curent, ...$_url) {
-$jumlah_url = count(request()->segments());
-$url = request()->segment($jumlah_url);
-
-if ($curent == $url) {
-return 'active bg-gradient-info';
-}
-
-if ($curent == request()->segment(($jumlah_url-1))) {
-if ($curent != '') {
-return 'active bg-gradient-info';
-}
-}
-if (in_array($url, $_url)) return 'active';
-return '';
-}
+    
+    function active($curent, ...$_url)
+    {
+        $jumlah_url = count(request()->segments());
+        $url = request()->segment($jumlah_url);
+    
+        if ($curent == $url) {
+            return 'active bg-gradient-info';
+        }
+    
+        // if ($curent == request()->segment($jumlah_url - 1)) {
+        //     if ($curent != '') {
+        //         return 'active bg-gradient-info';
+        //     }
+        // }
+    
+        if (in_array($url, $_url)) {
+            return 'active';
+        }
+    
+        if (in_array(request()->segment($jumlah_url - 1), $_url)) {
+            return 'active';
+        }
+    
+        return '';
+    }
 @endphp
 
 <nav class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
@@ -40,7 +49,7 @@ return '';
             </li>
             <hr class="horizontal light mt-0">
             <li class="nav-item">
-                <a class="nav-link text-white {{ active('dashboard','dashboard') }}" href="/dashboard">
+                <a class="nav-link text-white {{ active('dashboard', 'dashboard') }}" href="/dashboard">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">dashboard</i>
                     </div>
@@ -77,8 +86,9 @@ return '';
                 <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder text-white">Master Data</h6>
             </li>
             <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#Database" class="nav-link text-white
-                    {{ active('','desa','kelompok','register_kelompok','penduduk','register_penduduk') }}"
+                <a data-bs-toggle="collapse" href="#Database"
+                    class="nav-link text-white
+                    {{ active('', 'desa', 'kelompok', 'register_kelompok', 'penduduk', 'register_penduduk') }}"
                     aria-controls="Database" role="button" aria-expanded="false">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons-round opacity-10">archive</i>
@@ -94,7 +104,7 @@ return '';
                             </a>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link text-white {{ active('','kelompok','register_kelompok') }}"
+                            <a class="nav-link text-white {{ active('', 'kelompok', 'register_kelompok') }}"
                                 data-bs-toggle="collapse" aria-expanded="false" href="#dataKelompok">
                                 <span class="sidenav-mini-icon"> K </span>
                                 <span class="sidenav-normal ms-2  ps-1"> Kelompok <b class="caret"></b></span>
@@ -119,7 +129,7 @@ return '';
                             </div>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link text-white {{ active('','penduduk','register_penduduk') }}"
+                            <a class="nav-link text-white {{ active('', 'penduduk', 'register_penduduk') }}"
                                 data-bs-toggle="collapse" aria-expanded="false" href="#dataPenduduk">
                                 <span class="sidenav-mini-icon"> P </span>
                                 <span class="sidenav-normal  ms-2  ps-1"> Penduduk <b class="caret"></b></span>
@@ -155,8 +165,7 @@ return '';
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ active('perguliran') . ' ' . active('detail') . ' ' . active('lunas') }}"
-                    href="/perguliran">
+                <a class="nav-link text-white {{ active('perguliran', 'detail', 'lunas') }}" href="/perguliran">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">event_note</i>
                     </div>
@@ -165,7 +174,7 @@ return '';
             </li>
             <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#MenuTransaksi"
-                    class="nav-link text-white {{ active('','jurnal_umum','jurnal_angsuran','tutup_buku') }}"
+                    class="nav-link text-white {{ active('', 'jurnal_umum', 'jurnal_angsuran', 'tutup_buku') }}"
                     aria-controls="MenuTransaksi" role="button" aria-expanded="false">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons-round opacity-10">assessment</i>

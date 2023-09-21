@@ -38,4 +38,14 @@ class PinjamanAnggota extends Model
     {
         return $this->belongsTo(Anggota::class, 'nia', 'id');
     }
+
+    public function pinjaman()
+    {
+        return $this->hasOne(PinjamanAnggota::class, 'nia', 'nia');
+    }
+
+    public function pemanfaat()
+    {
+        return $this->hasOne(DataPemanfaat::class, 'nia', 'nia');
+    }
 }

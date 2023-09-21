@@ -163,7 +163,7 @@
     })
 
     var kd_desa = $('#desa').val()
-    $.get('/database/kelompok/generateKode?kode=' + kd_desa, function(result) {
+    $.get('/database/kelompok/generatekode?kode=' + kd_desa, function(result) {
         $('#kode_kelompok').val(result.kd_kelompok)
     })
 </script>

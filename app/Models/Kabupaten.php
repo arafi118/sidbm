@@ -10,4 +10,9 @@ class Kabupaten extends Model
     use HasFactory;
 
     protected $table = 'kabupaten';
+
+    public function wilayah()
+    {
+        return $this->belongsTo(Wilayah::class, 'kd_prov', 'kode');
+    }
 }

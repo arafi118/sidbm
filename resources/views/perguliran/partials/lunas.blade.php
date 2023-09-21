@@ -1,31 +1,37 @@
 @extends('layouts.base')
 
 @section('content')
-@php
-$saldo_pokok = $ra->target_pokok - $real->sum_pokok;
-$saldo_jasa = $ra->target_jasa - $real->sum_jasa;
-
-$keterangan1 = 'Belum Lunas';
-$keterangan2 = 'Belum Lunas';
-
-if ($saldo_pokok <= 0) { $saldo_pokok=0; $keterangan1='Lunas' ; } if ($saldo_jasa <=0) { $saldo_jasa=0;
-    $keterangan2='Lunas' ; } @endphp <div class="card mb-3">
-    <div class="card-body p-3">
-        <h5 class="mb-1">
-            Kelompok {{ $perguliran->kelompok->nama_kelompok }} Loan ID. {{ $perguliran->id }}
-            ({{ $perguliran->jpp->nama_jpp }})
-        </h5>
-        <p class="mb-0">
-            <span
-                class="badge badge-{{ $perguliran->sts->warna_status }}">{{ $perguliran->kelompok->kd_kelompok }}</span>
-            <span
-                class="badge badge-{{ $perguliran->sts->warna_status }}">{{ $perguliran->kelompok->alamat_kelompok }}</span>
-            <span class="badge badge-{{ $perguliran->sts->warna_status }}">
-                {{ $perguliran->kelompok->d->sebutan_desa->sebutan_desa }}
-                {{ $perguliran->kelompok->d->nama_desa }}
-            </span>
-        </p>
-    </div>
+    @php
+        $saldo_pokok = $ra->target_pokok - $real->sum_pokok;
+        $saldo_jasa = $ra->target_jasa - $real->sum_jasa;
+        
+        $keterangan1 = 'Belum Lunas';
+        $keterangan2 = 'Belum Lunas';
+        
+        if ($saldo_pokok <= 0) {
+            $saldo_pokok = 0;
+            $keterangan1 = 'Lunas';
+        }
+        if ($saldo_jasa <= 0) {
+            $saldo_jasa = 0;
+            $keterangan2 = 'Lunas';
+    } @endphp <div class="card mb-3">
+        <div class="card-body p-3">
+            <h5 class="mb-1">
+                Kelompok {{ $perguliran->kelompok->nama_kelompok }} Loan ID. {{ $perguliran->id }}
+                ({{ $perguliran->jpp->nama_jpp }})
+            </h5>
+            <p class="mb-0">
+                <span
+                    class="badge badge-{{ $perguliran->sts->warna_status }}">{{ $perguliran->kelompok->kd_kelompok }}</span>
+                <span
+                    class="badge badge-{{ $perguliran->sts->warna_status }}">{{ $perguliran->kelompok->alamat_kelompok }}</span>
+                <span class="badge badge-{{ $perguliran->sts->warna_status }}">
+                    {{ $perguliran->kelompok->d->sebutan_desa->sebutan_desa }}
+                    {{ $perguliran->kelompok->d->nama_desa }}
+                </span>
+            </p>
+        </div>
     </div>
 
     <div class="card">
@@ -98,12 +104,12 @@ if ($saldo_pokok <= 0) { $saldo_pokok=0; $keterangan1='Lunas' ; } if ($saldo_jas
                     </div>
 
                     <div class="d-flex justify-content-end" style="gap: .5em;">
-                        <button class="btn btn-success" type="button" id="TombolLunaskan" disabled>
-                            <i class="fa fa-gavel"></i> Validasi Lunas
-                        </button>
-                        <button class="btn btn-danger"
+                        <button class="btn btn-warning btn-sm"
                             onclick="window.open('/cetak_keterangan_lunas/{{ $perguliran->id }}')" type="button">
                             <i class="fa fa-print"></i> Cetak Keterangan Pelunasan
+                        </button>
+                        <button class="btn btn-danger btn-sm" type="button" id="TombolLunaskan" disabled>
+                            <i class="fa fa-gavel"></i> Validasi Lunas
                         </button>
                     </div>
                 </div>
@@ -124,12 +130,11 @@ if ($saldo_pokok <= 0) { $saldo_pokok=0; $keterangan1='Lunas' ; } if ($saldo_jas
             <a href="/perguliran" class="btn btn-info float-end btn-sm mb-0">Kembali</a>
         </div>
     </div>
+@endsection
 
-    @endsection
-
-    @section('script')
+@section('script')
     <script>
-        $(document).on('click', '.checkbox', function (e) {
+        $(document).on('click', '.checkbox', function(e) {
             var checkbox = $('#checkboxLunaskan')
 
             if (checkbox[0].checked == true) {
@@ -139,7 +144,7 @@ if ($saldo_pokok <= 0) { $saldo_pokok=0; $keterangan1='Lunas' ; } if ($saldo_jas
             }
         })
 
-        $(document).on('click', '#TombolLunaskan', function (e) {
+        $(document).on('click', '#TombolLunaskan', function(e) {
             e.preventDefault()
 
             Swal.fire({
@@ -157,7 +162,7 @@ if ($saldo_pokok <= 0) { $saldo_pokok=0; $keterangan1='Lunas' ; } if ($saldo_jas
                         type: 'post',
                         url: form.attr('action'),
                         data: form.serialize(),
-                        success: function (result) {
+                        success: function(result) {
                             Swal.fire('Berhasil', result.msg, 'success').then(() => {
                                 window.location.href = '/perguliran'
                             })
@@ -166,6 +171,5 @@ if ($saldo_pokok <= 0) { $saldo_pokok=0; $keterangan1='Lunas' ; } if ($saldo_jas
                 }
             })
         })
-
     </script>
-    @endsection
+@endsection

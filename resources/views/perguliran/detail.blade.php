@@ -1,5 +1,7 @@
 @php
     use App\Utils\Tanggal;
+    $waktu = date('H:i');
+    $tempat = '';
 @endphp
 
 @extends('layouts.base')
@@ -65,7 +67,7 @@
     {{-- Modal Cetak Dokumen Proposal --}}
     <div class="modal fade" id="CetakDokumenProposal" tabindex="-1" aria-labelledby="CetakDokumenProposalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="CetakDokumenProposalLabel">Cetak Dokumen Proposal</h1>
@@ -76,123 +78,208 @@
                         <div class="col-lg-6">
                             <div class="input-group input-group-outline my-3">
                                 <label class="form-label" for="tglProposal">Tanggal Proposal</label>
-                                <input autocomplete="off" type="test" name="tglProposal" id="tglProposal"
-                                    class="form-control" disabled
+                                <input autocomplete="off" type="text" name="tglProposal" id="tglProposal"
+                                    class="form-control" readonly
                                     value="{{ Tanggal::tglIndo($perguliran->tgl_proposal) }}">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="input-group input-group-outline my-3">
                                 <label class="form-label" for="tglVerifikasi">Tanggal Verifikasi</label>
-                                <input autocomplete="off" type="test" name="tglVerifikasi" id="tglVerifikasi"
-                                    class="form-control" disabled
+                                <input autocomplete="off" type="text" name="tglVerifikasi" id="tglVerifikasi"
+                                    class="form-control" readonly
                                     value="{{ Tanggal::tglIndo($perguliran->tgl_verifikasi) }}">
                             </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="cover">
+                    <form action="/perguliran/dokumen?status=P" target="_blank" method="post">
+                        @csrf
+
+                        <input type="hidden" name="id" value="{{ $perguliran->id }}">
+                        <div class="row">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="coverProposal">
                                     1. Cover
                                 </button>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="check">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="check">
                                     2. Check List
                                 </button>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="suratPengajuanPinjaman">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="suratPengajuanPinjaman">
                                     3. Surat Pengajuan Pinjaman
                                 </button>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="suratRekomendasi">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="suratRekomendasi">
                                     4. Surat Rekomendasi Kredit
                                 </button>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="profilKelompok">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="profilKelompok">
                                     5. Profil Kelompok
                                 </button>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="susunanPengurus">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="susunanPengurus">
                                     6. Susunan Pengurus
                                 </button>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="anggotaKelompok">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="anggotaKelompok">
                                     7. Daftar Anggota Kelompok
                                 </button>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="daftarPemanfaat">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="daftarPemanfaat">
                                     8. Daftar Pemanfaat
                                 </button>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="tanggungRenteng">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="tanggungRenteng">
                                     9. Pernyataan Tanggung Renteng
                                 </button>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="fotoCopyKTP">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="fotoCopyKTP">
                                     10. FC KTP Pemanfaat & Penjamin
                                 </button>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="pernyataanPeminjam">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="pernyataanPeminjam">
                                     11. Surat Pernyataan Peminjam
                                 </button>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="baMusyawarahDesa">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="baMusyawarahDesa">
                                     12. BA Musyawarah Kelompok
                                 </button>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="formVerifikasi">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="formVerifikasi">
                                     13. Form Verifikasi
                                 </button>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="daftarHadirVerifikasi">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="daftarHadirVerifikasi">
                                     14. Daftar Hadir Verifikasi
                                 </button>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="rencaraAngsuran">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="rencaraAngsuran">
                                     15. Rencana Angsuran
                                 </button>
                             </div>
-                            <div class="d-grid">
-                                <button class="btn btn-outline-success btn-sm text-start" type="submit" id="report"
-                                    name="report" value="iptw">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="iptw">
                                     16. Penerima IPTW
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @php
+        $readonly = 'readonly';
+        if ($perguliran->status == 'W') {
+            $readonly = '';
+        }
+        
+        $wt_cair = explode('_', $perguliran->wt_cair);
+        if (count($wt_cair) == 1) {
+            $waktu = $wt_cair[0];
+        }
+        
+        if (count($wt_cair) == 2) {
+            $waktu = $wt_cair[0];
+            $tempat = $wt_cair[1];
+        }
+    @endphp
+
+    {{-- Modal Cetak Dokumen Pencairan --}}
+    <div class="modal fade" id="CetakDokumenPencairan" tabindex="-1" aria-labelledby="CetakDokumenPencairanLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="CetakDokumenPencairanLabel">Cetak Dokumen Proposal</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/perguliran/simpan_data/{{ $perguliran->id }}" method="post" id="simpanData">
+                        @csrf
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="input-group input-group-outline my-3">
+                                    <label class="form-label" for="spk_no">Nomor SPK</label>
+                                    <input autocomplete="off" type="text" name="spk_no" id="spk_no"
+                                        class="form-control save" {{ $readonly }} value="{{ $perguliran->spk_no }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="input-group input-group-outline my-3">
+                                    <label class="form-label" for="tempat">Tempat</label>
+                                    <input autocomplete="off" type="text" name="tempat" id="tempat"
+                                        class="form-control save" {{ $readonly }} value="{{ $tempat }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="input-group input-group-outline my-3">
+                                    <label class="form-label" for="tgl_cair">Tanggal Cair</label>
+                                    <input autocomplete="off" type="text" name="tgl_cair" id="tgl_cair"
+                                        class="form-control save" {{ $readonly }}
+                                        value="{{ Tanggal::tglIndo($perguliran->tgl_cair) }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="input-group input-group-outline my-3">
+                                    <label class="form-label" for="waktu">Waktu</label>
+                                    <input autocomplete="off" type="text" name="waktu" id="waktu"
+                                        class="form-control save" {{ $readonly }} value="{{ $waktu }}">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form action="/perguliran/dokumen?status=A" target="_blank" method="post">
+                        @csrf
+
+                        <input type="hidden" name="id" value="{{ $perguliran->id }}">
+                        <div class="row">
+                            <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="coverProposal">
+                                    1. Cover
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
@@ -453,6 +540,19 @@
             })
         })
 
+        $(document).on('change', '.save', function() {
+            var form = $('#simpanData')
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function(result) {
+                    if (result.success) {
+                        Swal.fire('Berhasil', result.msg, 'success')
+                    }
+                }
+            })
+        })
         $(".money").maskMoney();
     </script>
 @endsection

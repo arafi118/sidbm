@@ -29,6 +29,16 @@ class Anggota extends Model
         return $this->hasOne(PinjamanAnggota::class, 'nia');
     }
 
+    public function d()
+    {
+        return $this->belongsTo(Desa::class, 'desa', 'kd_desa');
+    }
+
+    public function pemanfaat()
+    {
+        return $this->hasOne(DataPemanfaat::class, 'nik', 'nik');
+    }
+
     public function getRouteKeyName()
     {
         return 'nik';

@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use Carbon\Carbon;
+use App\Utils\Keuangan;
 
 class Tanggal
 {
@@ -33,6 +34,20 @@ class Tanggal
         $tgl = new Carbon($tanggal_baru);
 
         return $tgl->isoFormat('YYYY-MM-DD');
+    }
+
+    public static function tglRomawi($tanggal)
+    {
+        $keuangan = new Keuangan;
+        $array_tgl = explode('-', $tanggal);
+        $tahun = $array_tgl[0];
+        $bulan = $array_tgl[1];
+        $hari = $array_tgl[2];
+
+        $bulan_rom = $keuangan->romawi($bulan);
+        $hari_rom = $keuangan->romawi($hari);
+
+        return $hari . '/' . $bulan_rom . '/' . $tahun;
     }
 
     public static function tglLatin($tanggal)

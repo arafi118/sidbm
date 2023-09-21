@@ -93,4 +93,9 @@ class PinjamanKelompok extends Model
     {
         return $this->hasMany(Transaksi::class, 'id_pinj', 'id')->orderBy('tgl_transaksi', 'ASC')->orderBy('idtp', 'ASC');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

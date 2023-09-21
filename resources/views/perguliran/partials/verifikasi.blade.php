@@ -268,12 +268,20 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">
+                <div class="col-md-6">
                     <div class="input-group input-group-static my-3">
-                        <label for="catatan_verifikasi">Catatan Verifikasi</label>
-                        <textarea class="form-control" readonly name="catatan_verifikasi" id="catatan_verifikasi" rows="3"
-                            placeholder="Catatan" spellcheck="false">{{ $perguliran->catatan_verifikasi }}</textarea>
-                        <small class="text-danger" id="msg_catatan_verifikasi"></small>
+                        <label for="tgl_cair">Tanggal Cair</label>
+                        <input autocomplete="off" type="text" name="tgl_cair" id="tgl_cair"
+                            class="form-control date" value="{{ Tanggal::tglIndo($perguliran->tgl_verifikasi) }}">
+                        <small class="text-danger" id="msg_tgl_cair"></small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group input-group-static my-3">
+                        <label for="nomor_spk">Nomor SPK</label>
+                        <input autocomplete="off" type="text" name="nomor_spk" id="nomor_spk"
+                            class="form-control" value="{{ $perguliran->nomor_spk }}">
+                        <small class="text-danger" id="msg_nomor_spk"></small>
                     </div>
                 </div>
             </div>

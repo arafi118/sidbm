@@ -193,7 +193,11 @@ class KelompokController extends Controller
      */
     public function show(Kelompok $kelompok)
     {
-        $kelompok = $kelompok->with(['pinkel', 'pinkel.sts'])->where('id', $kelompok->id)->first();
+        $kelompok = $kelompok->with([
+            'pinkel',
+            'pinkel.sts',
+            'pinkel.saldo'
+        ])->where('id', $kelompok->id)->first();
         $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
         $desa = Desa::where('kd_kec', $kec['kd_kec'])->with('sebutan_desa')->get();
         $jenis_produk_pinjaman = JenisProdukPinjaman::where('lokasi', '0')->orderBy('id', 'ASC')->get();
