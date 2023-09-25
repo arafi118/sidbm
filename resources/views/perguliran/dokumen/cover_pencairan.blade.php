@@ -8,7 +8,7 @@
     }
 @endphp
 
-<title>COVER PROPOSAL ({{ $pinkel->kelompok->nama_kelompok . ' - Loan ID. ' . $pinkel->id }})</title>
+<title>COVER PENCAIRAN ({{ $pinkel->kelompok->nama_kelompok . ' - Loan ID. ' . $pinkel->id }})</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 <style>
@@ -35,6 +35,9 @@
                 <div style="margin: 0px; font-size: 24px;">
                     {{ strtoupper('Pinjaman Kelompok ' . $pinkel->jpp->nama_jpp) }}
                 </div>
+                <div style="margin: 0px;">
+                    Nomor SPK : {{ $pinkel->spk_no }}
+                </div>
             </td>
         </tr>
         <tr>
@@ -60,8 +63,8 @@
         </tr>
         <tr>
             <td align="center">
-                <div style="font-weight: bold;">Pengajuan Rp. {{ number_format($pinkel->proposal) }}</div>
-                <div style="font-weight: bold;">Tanggal Proposal {{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</div>
+                <div style="font-weight: bold;">Alokasi Rp. {{ number_format($pinkel->alokasi) }}</div>
+                <div style="font-weight: bold;">Tanggal Pencairan {{ Tanggal::tglLatin($pinkel->tgl_cair) }}</div>
                 <div style="font-weight: bold;">Tenor {{ $pinkel->jangka }} Bulan</div>
             </td>
         </tr>

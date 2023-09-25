@@ -291,7 +291,9 @@
             </div>
 
             <div class="d-flex justify-content-end mt-3">
-                <button type="button" class="btn btn-warning btn-sm">Kembalikan Ke Proposal</button>
+                <button type="button" id="kembaliProposal" class="btn btn-warning btn-sm">
+                    Kembalikan Ke Proposal
+                </button>
                 <button type="button"
                     {{ $pinj_a['jumlah_pinjaman'] > '0' || $pinj_a['jumlah_pemanfaat'] > '0' || $pinj_a['jumlah_kelompok'] > '0' ? 'disabled' : '' }}
                     id="Simpan" class="btn btn-github ms-1 btn-sm">
@@ -301,6 +303,10 @@
             </div>
         </div>
     </div>
+</form>
+
+<form action="/perguliran/kembali_proposal/{{ $perguliran->id }}" method="post" id="formKembaliProposal">
+    @csrf
 </form>
 
 <script>

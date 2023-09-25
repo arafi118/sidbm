@@ -153,45 +153,45 @@
                 </thead>
                 <tbody>
                     @php
-                    $proposal = 0;
-                    $verifikasi = 0;
-                    $alokasi = 0;
+                        $proposal = 0;
+                        $verifikasi = 0;
+                        $alokasi = 0;
                     @endphp
                     @foreach ($perguliran->pinjaman_anggota as $pinjaman_anggota)
-                    @php
-                    $proposal += $pinjaman_anggota->proposal;
-                    $verifikasi += $pinjaman_anggota->verifikasi;
-                    $alokasi += $pinjaman_anggota->alokasi;
-                    @endphp
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>
-                            {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
-                            ({{ $pinjaman_anggota->id }})
-                        </td>
-                        <td>
-                            {{ number_format($pinjaman_anggota->proposal,2) }}
-                        </td>
-                        <td>
-                            {{ number_format($pinjaman_anggota->verifikasi,2) }}
-                        </td>
-                        <td>
-                            {{ number_format($pinjaman_anggota->alokasi,2) }}
-                        </td>
-                    </tr>
+                        @php
+                            $proposal += $pinjaman_anggota->proposal;
+                            $verifikasi += $pinjaman_anggota->verifikasi;
+                            $alokasi += $pinjaman_anggota->alokasi;
+                        @endphp
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>
+                                {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
+                                ({{ $pinjaman_anggota->id }})
+                            </td>
+                            <td>
+                                {{ number_format($pinjaman_anggota->proposal, 2) }}
+                            </td>
+                            <td>
+                                {{ number_format($pinjaman_anggota->verifikasi, 2) }}
+                            </td>
+                            <td>
+                                {{ number_format($pinjaman_anggota->alokasi, 2) }}
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
                         <th colspan="2">Jumlah</th>
                         <th>
-                            {{ number_format($proposal,2) }}
+                            {{ number_format($proposal, 2) }}
                         </th>
                         <th id="jumlah">
-                            {{ number_format($verifikasi,2) }}
+                            {{ number_format($verifikasi, 2) }}
                         </th>
                         <th>
-                            {{ number_format($alokasi,2) }}
+                            {{ number_format($alokasi, 2) }}
                         </th>
                     </tr>
                 </tfoot>
@@ -201,29 +201,37 @@
 </div>
 
 <div class="card card-body p-2 pb-0 mb-3">
-    <div class="row">
-        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
-            <div class="d-grid">
-                <button type="button" class="btn btn-outline-info btn-sm mb-2">Kartu Angsuran</button>
+    <form action="/perguliran/dokumen?status=A" target="_blank" method="post">
+        @csrf
+
+        <input type="hidden" name="id" value="{{ $perguliran->id }}">
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                <div class="d-grid">
+                    <a href="/perguliran/dokumen/kartu_angsuran/{{ $perguliran->id }}" target="_blank"
+                        class="btn btn-outline-info btn-sm mb-2">Kartu Angsuran</a>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-outline-info btn-sm mb-2" name="report"
+                        value="rencanaAngsuran">Rencana Angsuran</button>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-outline-info btn-sm mb-2" name="report"
+                        value="rekeningKoran">Rekening Koran</button>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                <div class="d-grid">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenPencairan"
+                        class="btn btn-info btn-sm mb-2">Cetak Dokumen Pencairan</button>
+                </div>
             </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
-            <div class="d-grid">
-                <button type="button" class="btn btn-outline-info btn-sm mb-2">Riwayat Angsuran</button>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
-            <div class="d-grid">
-                <button type="button" class="btn btn-outline-info btn-sm mb-2">Rekening Koran</button>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
-            <div class="d-grid">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenPencairan"
-                    class="btn btn-info btn-sm mb-2">Cetak Dokumen Pencairan</button>
-            </div>
-        </div>
-    </div>
+    </form>
 </div>
 
 <div class="card mb-3">
@@ -245,13 +253,13 @@
                 </thead>
                 <tbody>
                     @foreach ($perguliran->real as $real)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ Tanggal::tglIndo($real->tgl_transaksi) }}</td>
-                        <td>{{ number_format($real->realisasi_pokok) }}</td>
-                        <td>{{ number_format($real->realisasi_jasa) }}</td>
-                        <td>{{ number_format($real->saldo_pokok) }}</td>
-                    </tr>
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ Tanggal::tglIndo($real->tgl_transaksi) }}</td>
+                            <td>{{ number_format($real->realisasi_pokok) }}</td>
+                            <td>{{ number_format($real->realisasi_jasa) }}</td>
+                            <td>{{ number_format($real->saldo_pokok) }}</td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>

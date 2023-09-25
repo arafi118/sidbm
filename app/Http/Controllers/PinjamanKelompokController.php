@@ -706,7 +706,32 @@ class PinjamanKelompokController extends Controller
 
         return response()->json([
             'success' => true,
-            'msg' => 'Pinjaman Kelompok ' . $pinkel->kelompok->nama_kelompok . ' Berhasil Diperbarui'
+            'msg' => 'Pinjaman Kelompok ' . $pinkel->kelompok->nama_kelompok . ' Berhasil Diperbarui',
+            'tgl_cair' => $data['tgl_cair']
+        ]);
+    }
+
+    public function kembaliProposal(Request $request, PinjamanKelompok $id)
+    {
+        $pinkel = PinjamanKelompok::where('id', $id->id)->update([
+            'status' => 'P'
+        ]);
+
+        $pinjaman = PinjamanAnggota::where('id_pinkel', $id->id)->update([
+            'status' => 'P'
+        ]);
+
+        $pemanfaat = DataPemanfaat::where([
+            ['id_pinkel', $id->id],
+            ['lokasi', auth()->user()->lokasi]
+        ])->update([
+            'status' => 'P'
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Pinjaman Kelompok ' . $id->kelompok->nama_kelompok . ' Loan ID. ' . $id->id . ' berhasil dikembalikan menjadi status P (Pengajuan/Proposal)',
+            'id_pinkel' => $id->id
         ]);
     }
 
@@ -803,7 +828,7 @@ class PinjamanKelompokController extends Controller
         return $this->$file($request->id, $data);
     }
 
-    public function coverProposal($id)
+    public function coverProposal($id, $data)
     {
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'jpp',
@@ -812,7 +837,7 @@ class PinjamanKelompokController extends Controller
             'kelompok.d.sebutan_desa'
         ])->first();
 
-        $data['judul'] = 'DOKUMEN PROPOSAL (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $data['judul'] = 'DOKUMEN PROPOSAL';
         $view = view('perguliran.dokumen.cover_proposal', $data)->render();
         $pdf = PDF::loadHTML($view);
         return $pdf->stream();
@@ -916,7 +941,7 @@ class PinjamanKelompokController extends Controller
     {
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'jpp',
-            'jasa',
+            'sis_pokok',
             'kelompok',
             'pinjaman_anggota',
             'pinjaman_anggota.anggota'
@@ -1053,7 +1078,7 @@ class PinjamanKelompokController extends Controller
         return $pdf->stream();
     }
 
-    public function rencaraAngsuran($id, $data)
+    public function rencanaAngsuran($id, $data)
     {
         $data['rencana'] = $this->generate($id)->getData()->rencana;
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
@@ -1075,6 +1100,29 @@ class PinjamanKelompokController extends Controller
         return $pdf->stream();
     }
 
+    public function rekeningKoran($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'sis_pokok',
+            'jasa'
+        ])->first();
+
+        $data['dir'] = User::where([
+            ['level', '1'],
+            ['jabatan', '1'],
+            ['lokasi', auth()->user()->lokasi]
+        ])->first();
+
+        $data['transaksi'] = Transaksi::where('id_pinj', $id)->orderBy('tgl_transaksi', 'ASC')->with('user')->orderBy('idtp', 'ASC')->get();
+
+        $data['judul'] = 'Rekening Koran (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.rekening_koran', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
     public function iptw($id, $data)
     {
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
@@ -1087,6 +1135,161 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Daftar Penerima IPTW (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.iptw', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function coverPencairan($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa'
+        ])->first();
+
+        $data['judul'] = 'DOKUMEN PENCAIRAN';
+        $view = view('perguliran.dokumen.cover_pencairan', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function spk($id, $data)
+    {
+        $keuangan = new Keuangan;
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'jasa',
+            'sis_pokok',
+            'sis_jasa',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa'
+        ])->first();
+
+        $data['dir'] = User::where([
+            ['level', '1'],
+            ['jabatan', '1'],
+            ['lokasi', auth()->user()->lokasi]
+        ])->first();
+
+        $data['keuangan'] = $keuangan;
+
+        $data['judul'] = 'Surat Perjanjian Kredit (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.spk', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function suratKelayakan($id, $data)
+    {
+        $keuangan = new Keuangan;
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa'
+        ])->withCount('pinjaman_anggota')->first();
+
+        $data['dir'] = User::where([
+            ['level', '1'],
+            ['jabatan', '1'],
+            ['lokasi', auth()->user()->lokasi]
+        ])->first();
+
+        $data['keuangan'] = $keuangan;
+
+        $data['judul'] = 'Surat Kelayakan (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.surat_kelayakan', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function suratKuasa($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota',
+            'pinjaman_anggota.anggota.d',
+            'pinjaman_anggota.anggota.d.sebutan_desa',
+        ])->withCount('pinjaman_anggota')->first();
+
+        $data['judul'] = 'Surat Kuasa (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.surat_kuasa', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function BaPencairan($id, $data)
+    {
+        $keuangan = new Keuangan;
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'jasa',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.usaha',
+            'kelompok.kegiatan',
+            'kelompok.tk',
+            'kelompok.fk',
+            'kelompok.d.sebutan_desa',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota',
+            'sis_pokok'
+        ])->withCount('pinjaman_anggota')->first();
+
+        $data['user'] = User::where([
+            ['lokasi', auth()->user()->lokasi],
+            ['level', '4']
+        ])->with('j')->orderBy('id')->get();
+
+        $data['keuangan'] = $keuangan;
+
+        $data['judul'] = 'Berita Acara Pencairan (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.ba_pencairan', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function daftarHadirPencairan($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota'
+        ])->first();
+
+        $data['judul'] = 'Daftar Hadir Pencairan (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.daftar_hadir_pencairan', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function tandaTerima($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'sis_pokok',
+            'kelompok',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota'
+        ])->first();
+
+        $data['dir'] = User::where([
+            ['level', '1'],
+            ['jabatan', '1'],
+            ['lokasi', auth()->user()->lokasi]
+        ])->first();
+
+        $data['judul'] = 'Tanda Terima (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.tanda_terima', $data)->render();
         $pdf = PDF::loadHTML($view);
         return $pdf->stream();
     }
@@ -1116,6 +1319,136 @@ class PinjamanKelompokController extends Controller
 
         $data['laporan'] = 'Kartu Angsuran ' . $data['pinkel']->kelompok->nama_kelompok;
         return view('perguliran.dokumen.kartu_angsuran', $data);
+    }
+
+    public function pemberitahuanDesa($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota'
+        ])->first();
+
+        $data['dir'] = User::where([
+            ['level', '1'],
+            ['jabatan', '1'],
+            ['lokasi', auth()->user()->lokasi]
+        ])->first();
+
+        $data['judul'] = 'Pemberitahuan Ke Desa (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.pemberitahuan_desa', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function tanggungRentengKematian($id, $data)
+    {
+        $keuangan = new Keuangan;
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa'
+        ])->first();
+
+        $data['dir'] = User::where([
+            ['level', '1'],
+            ['jabatan', '1'],
+            ['lokasi', auth()->user()->lokasi]
+        ])->first();
+
+        $data['keuangan'] = $keuangan;
+
+        $data['judul'] = 'Tanggung Renteng Kematian (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.tanggung_renteng_kematian', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function pernyataanTanggungRenteng($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota',
+            'pinjaman_anggota.anggota.d',
+            'pinjaman_anggota.anggota.d.sebutan_desa',
+        ])->first();
+
+        $data['judul'] = 'Pernyataan Tanggung Renteng (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.pernyataan_tanggung_renteng', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function kuitansi($id, $data)
+    {
+        $keuangan = new Keuangan;
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa'
+        ])->first();
+
+        $data['dir'] = User::where([
+            ['level', '1'],
+            ['jabatan', '1'],
+            ['lokasi', auth()->user()->lokasi]
+        ])->first();
+
+        $data['skr'] = User::where([
+            ['level', '1'],
+            ['jabatan', '2'],
+            ['lokasi', auth()->user()->lokasi]
+        ])->first();
+
+        $data['bp'] = User::where([
+            ['level', '3'],
+            ['jabatan', '1'],
+            ['lokasi', auth()->user()->lokasi]
+        ])->first();
+
+        $data['keuangan'] = $keuangan;
+
+        $data['judul'] = 'Kuitansi Pencairan (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.kuitansi', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function suratTagihan($id, $data)
+    {
+        $keuangan = new Keuangan;
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+            'sis_pokok'
+        ])->first();
+
+        $data['real'] = RealAngsuran::where('loan_id', $id)->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC')->first();
+        $data['ra'] = RencanaAngsuran::where([
+            ['loan_id', $id],
+            ['jatuh_tempo', '<=', date('Y-m-d')]
+        ])->orderBy('jatuh_tempo', 'DESC')->first();
+
+        $data['dir'] = User::where([
+            ['level', '1'],
+            ['jabatan', '1'],
+            ['lokasi', auth()->user()->lokasi]
+        ])->first();
+
+        $data['keuangan'] = $keuangan;
+
+        $data['judul'] = 'Surat Tagihan (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.tagihan', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
     }
 
     public function cetakPadaKartu($id, $idtp)

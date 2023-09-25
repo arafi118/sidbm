@@ -49,8 +49,21 @@
             padding: 2px 4px;
         }
 
-        table tr td table tr td {
+        table.p tr th,
+        table.p tr td {
+            padding: 4px 4px;
+        }
+
+        table tr td table:not(.padding) tr td {
             padding: 0 !important;
+        }
+
+        table tr.m td:first-child {
+            margin-left: 24px;
+        }
+
+        table tr.m td:last-child {
+            margin-right: 24px;
         }
 
         .break {

@@ -217,3 +217,9 @@ table.table.midle tbody tr td {
     height: 100vh;
     background-color: var(--bs-backdrop-bg);
 }
+
+.flatpickr-calendar.open {
+    z-index: 9999999;
+    margin-left: 0;
+    margin-top: 4px;
+}

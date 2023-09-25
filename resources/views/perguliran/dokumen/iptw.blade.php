@@ -3,6 +3,11 @@
     $proposal = 0;
     $jasa = 0;
     $iptw = 0;
+    
+    $alokasi_pinjaman = $pinkel->proposal;
+    if (Request::get('status') == 'A') {
+        $alokasi_pinjaman = $pinkel->alokasi;
+    }
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
@@ -42,7 +47,7 @@
             <td>Alokasi</td>
             <td>:</td>
             <td>
-                <b>Rp. {{ number_format($pinkel->alokasi) }}</b>
+                <b>Rp. {{ number_format($alokasi_pinjaman) }}</b>
             </td>
         </tr>
         <tr>
@@ -72,6 +77,9 @@
         @foreach ($pinkel->pinjaman_anggota as $pa)
             @php
                 $_proposal = $pa->proposal;
+                if (Request::get('status') == 'A') {
+                    $_proposal = $pa->alokasi;
+                }
                 $_jasa = ($_proposal * $pinkel->pros_jasa) / 100;
                 $_iptw = ($_jasa * $kec->iptw) / 100;
                 

@@ -119,4 +119,45 @@ class Tanggal
 
         return $hari;
     }
+
+    public static function namaHari($tanggal)
+    {
+        $hari = date('D', strtotime($tanggal));
+
+        switch ($hari) {
+            case 'Sun':
+                $nama = "Minggu";
+                break;
+
+            case 'Mon':
+                $nama = "Senin";
+                break;
+
+            case 'Tue':
+                $nama = "Selasa";
+                break;
+
+            case 'Wed':
+                $nama = "Rabu";
+                break;
+
+            case 'Thu':
+                $nama = "Kamis";
+                break;
+
+            case 'Fri':
+                $nama = "Jumat";
+                break;
+
+            case 'Sat':
+                $nama = "Sabtu";
+                break;
+
+            default:
+                $nama = "Tidak di ketahui";
+                break;
+        }
+
+        return $nama;
+    }
 }

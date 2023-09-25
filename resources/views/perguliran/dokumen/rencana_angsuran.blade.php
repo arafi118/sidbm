@@ -1,7 +1,17 @@
 @php
     use App\Utils\Tanggal;
     $jumlah_angsuran = 0;
-    $saldo_pokok = $pinkel->alokasi;
+    
+    $alokasi = $pinkel->proposal;
+    $tgl = $pinkel->tgl_proposal;
+    $tanggal = 'Tanggal Proposal';
+    if (Request::get('status') == 'A') {
+        $alokasi = $pinkel->alokasi;
+        $tgl = $pinkel->tgl_cair;
+        $tanggal = 'Tanggal Cair';
+    }
+    
+    $saldo_pokok = $alokasi;
     $saldo_jasa = ($saldo_pokok * $pinkel->pros_jasa) / 100;
 @endphp
 
@@ -15,7 +25,7 @@
                     <b>RENCANA ANGSURAN PINJAMAN SPP</b>
                 </div>
                 <div style="font-size: 16px;">
-                    <b>KELOMPOK ANUGRAH - PUJIYATI</b>
+                    <b>KELOMPOK {{ strtoupper($pinkel->kelompok->nama_kelompok) }}</b>
                 </div>
             </td>
         </tr>
@@ -28,7 +38,7 @@
             <td width="90">Loan ID.</td>
             <td width="5" align="center">:</td>
             <td>
-                <b>{{ $pinkel->id }}</b>
+                <b>{{ $pinkel->kelompok->nama_kelompok }} &mdash; {{ $pinkel->id }}</b>
             </td>
             <td width="90">Jangka waktu</td>
             <td width="5" align="center">:</td>
@@ -49,10 +59,10 @@
             </td>
         </tr>
         <tr>
-            <td>Tanggal Proposal</td>
+            <td>{{ $tanggal }}</td>
             <td align="center">:</td>
             <td>
-                <b>{{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</b>
+                <b>{{ Tanggal::tglLatin($tgl) }}</b>
             </td>
             <td>Jenis Jasa</td>
             <td align="center">:</td>
@@ -64,12 +74,12 @@
             <td>Alokasi Pinjaman</td>
             <td align="center">:</td>
             <td>
-                <b>Rp. {{ number_format($pinkel->proposal) }}</b>
+                <b>Rp. {{ number_format($alokasi) }}</b>
             </td>
             <td>Prosentase Jasa</td>
             <td align="center">:</td>
             <td>
-                <b>{{ $pinkel->pros_jasa / $pinkel->jangka }}% per bulan</b>
+                <b>{{ round($pinkel->pros_jasa / $pinkel->jangka, 2) }}% per bulan</b>
             </td>
         </tr>
 
@@ -122,7 +132,7 @@
         <tr>
             <td align="center" colspan="5">&nbsp;</td>
             <td align="center" colspan="3">
-                {{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_proposal) }}
+                {{ $kec->nama_kec }}, {{ Tanggal::tglLatin($tgl) }}
             </td>
         </tr>
         <tr>

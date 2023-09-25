@@ -184,7 +184,7 @@
                             </div>
                             <div class="col-md-3 d-grid">
                                 <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="rencaraAngsuran">
+                                    value="rencanaAngsuran">
                                     15. Rencana Angsuran
                                 </button>
                             </div>
@@ -253,7 +253,7 @@
                                 <div class="input-group input-group-outline my-3">
                                     <label class="form-label" for="tgl_cair">Tanggal Cair</label>
                                     <input autocomplete="off" type="text" name="tgl_cair" id="tgl_cair"
-                                        class="form-control save" {{ $readonly }}
+                                        class="form-control date save" {{ $readonly }}
                                         value="{{ Tanggal::tglIndo($perguliran->tgl_cair) }}">
                                 </div>
                             </div>
@@ -272,10 +272,94 @@
 
                         <input type="hidden" name="id" value="{{ $perguliran->id }}">
                         <div class="row">
-                            <div class="col-md-3 d-grid">
+                            <div class="col-md-4 d-grid">
                                 <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="coverProposal">
+                                    value="coverPencairan">
                                     1. Cover
+                                </button>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="spk">
+                                    2. Surat Perjanjian Kredit
+                                </button>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="suratKelayakan">
+                                    3. Surat Kelayakan
+                                </button>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="suratKuasa">
+                                    4. Surat Kuasa
+                                </button>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="BaPencairan">
+                                    5. Berita Acara Pencairan
+                                </button>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="daftarHadirPencairan">
+                                    6. Daftar Hadir Pencairan
+                                </button>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="tandaTerima">
+                                    7. Tanda Terima
+                                </button>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="kartuAngsuran">
+                                    8. Kartu Angsuran
+                                </button>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="rencanaAngsuran">
+                                    9. Rencana Angsuran
+                                </button>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="pemberitahuanDesa">
+                                    10. Pemberitahuan Ke Desa
+                                </button>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="iptw">
+                                    11. Penerima IPTW
+                                </button>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="tanggungRentengKematian">
+                                    12. Tanggung Renteng Kematian
+                                </button>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="pernyataanTanggungRenteng">
+                                    13. Pernyataan Tanggung Renteng
+                                </button>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="kuitansi">
+                                    14. Kuitansi
+                                </button>
+                            </div>
+                            <div class="col-md-4 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="suratTagihan">
+                                    15. Surat Tagihan
                                 </button>
                             </div>
                         </div>
@@ -548,11 +632,39 @@
                 data: form.serialize(),
                 success: function(result) {
                     if (result.success) {
+                        $('[name=tgl_cair]').val(result.tgl_cair)
                         Swal.fire('Berhasil', result.msg, 'success')
                     }
                 }
             })
         })
+
+        $(document).on('click', '#kembaliProposal', function() {
+            Swal.fire({
+                title: 'Peringatan',
+                text: 'Anda yakin ingin mengembalikan pinjaman menjadi P (Pengajuan/Proposal)?',
+                showCancelButton: true,
+                confirmButtonText: 'Kembalikan',
+                cancelButtonText: 'Batal',
+                icon: 'warning'
+            }).then((result) => {
+                var form = $('#formKembaliProposal')
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(result) {
+                        if (result.success) {
+                            Swal.fire('Berhasil', result.msg, 'success').then(() => {
+                                window.location.href = '/detail/' + result.id_pinkel
+                            })
+                        }
+                    }
+                })
+
+            })
+        })
+
         $(".money").maskMoney();
     </script>
 @endsection

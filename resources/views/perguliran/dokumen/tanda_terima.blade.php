@@ -9,10 +9,10 @@
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
-                    <b>DAFTAR PENERIMA</b>
+                    <b>TANDA TERIMA</b>
                 </div>
                 <div style="font-size: 16px;">
-                    <b>PINJAMAN/PEMANFAAT {{ $pinkel->jpp->nama_jpp }}</b>
+                    <b>PINJAMAN KELOMPOK {{ $pinkel->jpp->nama_jpp }}</b>
                 </div>
             </td>
         </tr>
@@ -27,7 +27,7 @@
             <td>{{ $pinkel->kelompok->nama_kelompok }} - {{ $pinkel->id }}</td>
             <td width="70">Alokasi Pinjaman</td>
             <td width="5" align="right">:</td>
-            <td>Rp. {{ number_format($pinkel->proposal) }}</td>
+            <td>Rp. {{ number_format($pinkel->alokasi) }}</td>
         </tr>
         <tr>
             <td>Alamat</td>
@@ -38,9 +38,9 @@
             <td>{{ $pinkel->sis_pokok->nama_sistem }}</td>
         </tr>
         <tr>
-            <td>Tanggal Proposal</td>
+            <td>Tanggal Pencairan</td>
             <td align="right">:</td>
-            <td>{{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
+            <td>{{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
             <td>Prosentase Jasa</td>
             <td align="right">:</td>
             <td>{{ $pinkel->pros_jasa }}% / {{ $pinkel->jangka }} bulan</td>
@@ -60,7 +60,6 @@
             <th width="60">Nik</th>
             <th width="80">Nama Anggota</th>
             <th width="10">JK</th>
-            <th width="50">Nomor HP</th>
             <th>Alamat</th>
             <th width="70">Penjamin</th>
             <th width="60">Pengajuan</th>
@@ -68,7 +67,7 @@
         </tr>
 
         @php
-            $proposal = 0;
+            $alokasi = 0;
         @endphp
         @foreach ($pinkel->pinjaman_anggota as $pa)
             <tr>
@@ -76,20 +75,19 @@
                 <td>{{ $pa->anggota->nik }}</td>
                 <td>{{ $pa->anggota->namadepan }}</td>
                 <td align="center">{{ $pa->anggota->jk }}</td>
-                <td align="center">{{ $pa->anggota->hp }}</td>
                 <td>{{ $pa->anggota->alamat }}</td>
                 <td>{{ $pa->anggota->penjamin }}</td>
-                <td align="right">{{ number_format($pa->proposal) }}</td>
+                <td align="right">{{ number_format($pa->alokasi) }}</td>
                 <td>&nbsp;</td>
             </tr>
             @php
-                $proposal += $pa->proposal;
+                $alokasi += $pa->alokasi;
             @endphp
         @endforeach
 
         <tr style="font-weight: bold;">
-            <td height="15" colspan="7" align="center">JUMLAH</td>
-            <td align="right">{{ number_format($proposal) }}</td>
+            <td height="15" colspan="6" align="center">JUMLAH</td>
+            <td align="right">{{ number_format($alokasi) }}</td>
             <td>&nbsp;</td>
         </tr>
     </table>
