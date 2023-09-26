@@ -102,7 +102,7 @@ class PelaporanController extends Controller
         if (strlen($data['hari']) > 0 && strlen($data['bulan']) > 0) {
             $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
         } elseif (strlen($data['bulan']) > 0) {
-            $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . date('t', strtotime($data['tahun'] . '-' . $data['bulan']));
+            $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . date('t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'));
         } else {
             $data['tgl_kondisi'] = $data['tahun'] . '-12-31';
         }
@@ -191,13 +191,14 @@ class PelaporanController extends Controller
 
         $thn = $data['tahun'];
         $bln = $data['bulan'];
-        $hari = $data['hari'];
+        $hari = ($data['hari']);
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
         if (strlen($hari) > 0 && strlen($bln) > 0) {
             $data['sub_judul'] = 'Per ' . $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tglLatin($tgl);
         } elseif (strlen($bln) > 0) {
+            $tgl .= '01';
             $data['sub_judul'] = 'Per ' . date('t', strtotime($tgl)) . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
         } else {
@@ -1146,7 +1147,12 @@ class PelaporanController extends Controller
         $data['inventaris'] = Rekening::where('kode_akun', 'LIKE', '1.2.01%')
             ->with([
                 'inventaris' => function ($query) use ($data) {
-                    $query->where('jenis', '1');
+                    $query->where([
+                        ['jenis', '1'],
+                        ['status', '!=', '0'],
+                        ['lokasi', auth()->user()->lokasi],
+                        ['tgl_beli', '<=', $data['tgl_kondisi']]
+                    ]);
                 }
             ])
             ->get();

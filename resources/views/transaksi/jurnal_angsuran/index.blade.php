@@ -14,7 +14,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="input-group input-group-static my-3">
-                                    <label for="tgl_transaksi">Tgl Transaksi</label>
+                                    <label for="tgl_transaksi">Tanggal Transaksi</label>
                                     <input autocomplete="off" type="text" name="tgl_transaksi" id="tgl_transaksi"
                                         class="form-control date" value="{{ date('d/m/Y') }}">
                                     <small class="text-danger" id="msg_tgl_transaksi"></small>

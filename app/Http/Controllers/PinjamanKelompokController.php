@@ -384,7 +384,9 @@ class PinjamanKelompokController extends Controller
     public function detail(PinjamanKelompok $perguliran)
     {
         $title = 'Detal Pinjaman Kelompok ' . $perguliran->kelompok->nama_kelompok;
-        return view('perguliran.detail')->with(compact('title', 'perguliran'));
+        $real = RealAngsuran::where('loan_id', $perguliran->id)->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC')->first();
+        $sistem_angsuran = SistemAngsuran::all();
+        return view('perguliran.detail')->with(compact('title', 'perguliran', 'real', 'sistem_angsuran'));
     }
 
     public function pelunasan(PinjamanKelompok $perguliran)
@@ -732,6 +734,145 @@ class PinjamanKelompokController extends Controller
             'success' => true,
             'msg' => 'Pinjaman Kelompok ' . $id->kelompok->nama_kelompok . ' Loan ID. ' . $id->id . ' berhasil dikembalikan menjadi status P (Pengajuan/Proposal)',
             'id_pinkel' => $id->id
+        ]);
+    }
+
+    public function rescedule(Request $request)
+    {
+        $id = $request->id;
+        $tgl_resceduling = $request->tgl_resceduling;
+        $pengajuan = $request->_pengajuan;
+        $sis_pokok = $request->sistem_angsuran_pokok;
+        $sis_jasa = $request->sistem_angsuran_jasa;
+        $jangka = $request->jangka;
+        $pros_jasa = $request->pros_jasa;
+
+        $last_idtp = Transaksi::where('idtp', '!=', '0')->max('idtp');
+        $pinkel = PinjamanKelompok::where('id', $id)->with([
+            'kelompok',
+            'sis_pokok',
+            'sis_jasa',
+            'pinjaman_anggota'
+        ])->withCount('pinjaman_anggota')->first();
+
+        if ($pinkel->jenis_pp == '1') {
+            $rekening_1 = '1.1.01.01';
+            $rekening_2 = '1.1.03.01';
+        } elseif ($pinkel->jenis_pp == '2') {
+            $rekening_1 = '1.1.01.01';
+            $rekening_2 = '1.1.03.02';
+        } else {
+            $rekening_1 = '1.1.01.01';
+            $rekening_2 = '1.1.03.03';
+        }
+
+        $trx_resc = Transaksi::create([
+            'tgl_transaksi' => Tanggal::tglNasional($tgl_resceduling),
+            'rekening_debit' => $rekening_2,
+            'rekening_kredit' => $rekening_1,
+            'idtp' => $last_idtp + 1,
+            'id_pinj' => $pinkel->id,
+            'id_pinj_i' => '0',
+            'keterangan_transaksi' => 'Angs. Resc. ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')',
+            'relasi' => $pinkel->kelompok->nama_kelompok,
+            'jumlah' => $pengajuan,
+            'urutan' => '0',
+            'id_user' => auth()->user()->id
+        ]);
+
+        $update_pinkel = PinjamanKelompok::where('id', $id)->update([
+            'tgl_lunas' => Tanggal::tglNasional($tgl_resceduling),
+            'status' => 'R',
+            'lu' => date('Y-m-d H:i:s'),
+            'user_id' => auth()->user()->id
+        ]);
+
+        $update_pinj_a = PinjamanAnggota::where('id_pinkel', $id)->update([
+            'tgl_lunas' => Tanggal::tglNasional($tgl_resceduling),
+            'status' => 'R',
+            'lu' => date('Y-m-d H:i:s'),
+            'user_id' => auth()->user()->id
+        ]);
+
+        $pinjaman = PinjamanKelompok::create([
+            'id_kel' => $pinkel->id_kel,
+            'jenis_pp' => $pinkel->jenis_pp,
+            'tgl_proposal' => Tanggal::tglNasional($tgl_resceduling),
+            'tgl_verifikasi' => Tanggal::tglNasional($tgl_resceduling),
+            'tgl_dana' => Tanggal::tglNasional($tgl_resceduling),
+            'tgl_tunggu' => Tanggal::tglNasional($tgl_resceduling),
+            'tgl_cair' => Tanggal::tglNasional($tgl_resceduling),
+            'tgl_lunas' => Tanggal::tglNasional($tgl_resceduling),
+            'proposal' => $pengajuan,
+            'verifikasi' => $pengajuan,
+            'alokasi' => $pengajuan,
+            'spk_no' => $request->get('spk'),
+            'sumber' => $pinkel->sumber,
+            'jenis_jasa' => $pinkel->jenis_jasa,
+            'jangka' => $jangka,
+            'pros_jasa' => $pros_jasa,
+            'sistem_angsuran' => $sis_pokok,
+            'sa_jasa' => $sis_jasa,
+            'status' => 'A',
+            'catatan_verifikasi' => $pinkel->catatan_verifikasi,
+            'wt_cair' => $pinkel->wt_cair,
+            'lu' => date('Y-m-d H:i:s'),
+            'user_id' => auth()->user()->id
+        ]);
+
+        $trx_cair = Transaksi::create([
+            'tgl_transaksi' => Tanggal::tglNasional($tgl_resceduling),
+            'rekening_debit' => $rekening_1,
+            'rekening_kredit' => $rekening_2,
+            'idtp' => '0',
+            'id_pinj' => $pinjaman->id,
+            'id_pinj_i' => '0',
+            'keterangan_transaksi' => 'Pencairan Resc ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinjaman->id . ')',
+            'relasi' => $pinkel->kelompok->nama_kelompok,
+            'jumlah' => $pengajuan,
+            'urutan' => '0',
+            'id_user' => auth()->user()->id
+        ]);
+
+        foreach ($pinkel->pinjaman_anggota as $pa) {
+            $pinjaman_anggota = [
+                'jenis_pinjaman' => $pa->jenis_pinjaman,
+                'id_kel' => $pa->id_kel,
+                'id_pinkel' => $pinjaman->id,
+                'jenis_pp' => $pa->jenis_pp,
+                'nia' => $pa->nia,
+                'tgl_proposal' => Tanggal::tglNasional($tgl_resceduling),
+                'tgl_verifikasi' => Tanggal::tglNasional($tgl_resceduling),
+                'tgl_dana' => Tanggal::tglNasional($tgl_resceduling),
+                'tgl_tunggu' => Tanggal::tglNasional($tgl_resceduling),
+                'tgl_cair' => Tanggal::tglNasional($tgl_resceduling),
+                'tgl_lunas' => Tanggal::tglNasional($tgl_resceduling),
+                'proposal' => $pengajuan / $pinkel->pinjaman_anggota_count,
+                'verifikasi' => $pengajuan / $pinkel->pinjaman_anggota_count,
+                'alokasi' => $pengajuan / $pinkel->pinjaman_anggota_count,
+                'kom_pokok' => $pa->kom_pokok,
+                'kom_jasa' => $pa->kom_jasa,
+                'spk_no' => $pinjaman->spk_no,
+                'sumber' => $pa->sumber,
+                'pros_jasa' => $pros_jasa,
+                'jenis_jasa' => $pa->jenis_jasa,
+                'jangka' => $jangka,
+                'sistem_angsuran' => $sis_pokok,
+                'sa_jasa' => $sis_jasa,
+                'status' => 'A',
+                'catatan_verifikasi' => $pinjaman->catatan_verifikasi,
+                'lu' => $pinjaman->lu,
+                'user_id' => $pinjaman->user_id,
+            ];
+
+            $pinj_a = PinjamanAnggota::create($pinjaman_anggota);
+        }
+
+
+        return response()->json([
+            'success' => true,
+            'status' => 'A',
+            'id' => $pinjaman->id
         ]);
     }
 

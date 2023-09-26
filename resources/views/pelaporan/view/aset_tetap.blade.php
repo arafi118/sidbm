@@ -77,8 +77,8 @@
                     <td align="center">{{ $inv->id }}</td>
                     <td align="center">{{ $inv->status }}</td>
                     <td align="center">{{ $inv->unit }}</td>
-                    <td align="right">{{ number_format($inv->harsat) }}</td>
-                    <td align="right">{{ number_format($inv->harsat * $inv->unit) }}</td>
+                    <td align="right">{{ number_format($inv->harsat, 2) }}</td>
+                    <td align="right">{{ number_format($inv->harsat * $inv->unit, 2) }}</td>
 
                     @if ($rek->lev4 == '1')
                         @php
@@ -98,10 +98,10 @@
                             }
                         @endphp
                         <td colspan="6"></td>
-                        <td align="right">{{ number_format($nilai_buku) }}</td>
+                        <td align="right">{{ number_format($nilai_buku, 2) }}</td>
                     @else
                         @php
-                            $satuan_susut = $inv->harsat <= 0 ? 0 : (float) (($inv->harsat / $inv->umur_ekonomis) * $inv->unit);
+                            $satuan_susut = $inv->harsat <= 0 ? 0 : round(($inv->harsat / $inv->umur_ekonomis) * $inv->unit, 2);
                             $pakai_lalu = Inventaris::bulan($inv->tgl_beli, $tahun - 1 . '-12-31');
                             $nilai_buku = Inventaris::nilaiBuku($tgl_kondisi, $inv);
                             
@@ -109,6 +109,13 @@
                                 $umur = Inventaris::bulan($inv->tgl_beli, $inv->tgl_validasi);
                             } else {
                                 $umur = Inventaris::bulan($inv->tgl_beli, $tgl_kondisi);
+                            }
+                            
+                            $_satuan_susut = $satuan_susut;
+                            if ($umur >= $inv->umur_ekonomis) {
+                                $harga = $inv->harsat * $inv->unit;
+                                $_susut = $satuan_susut * ($inv->umur_ekonomis - 1);
+                                $satuan_susut = $harga - $_susut - 1;
                             }
                             
                             $susut = $satuan_susut * $umur;
@@ -150,6 +157,10 @@
                                 $penyusutan = 0;
                             }
                             
+                            if ($akum_umur == $inv->umur_ekonomis && $umur_pakai > '0') {
+                                $penyusutan = $_satuan_susut * ($umur_pakai - 1) + $satuan_susut;
+                            }
+                            
                             $t_unit += $inv->unit;
                             $t_harga += $inv->harsat * $inv->unit;
                             $t_penyusutan += $penyusutan;
@@ -166,12 +177,12 @@
                         @endphp
 
                         <td align="center">{{ $inv->umur_ekonomis }}</td>
-                        <td align="right">{{ number_format($satuan_susut) }}</td>
+                        <td align="right">{{ number_format($_satuan_susut, 2) }}</td>
                         <td align="center">{{ $umur_pakai }}</td>
-                        <td align="right">{{ number_format($penyusutan) }}</td>
+                        <td align="right">{{ number_format($penyusutan, 2) }}</td>
                         <td align="center">{{ $akum_umur }}</td>
-                        <td align="right">{{ number_format($akum_susut) }}</td>
-                        <td align="right">{{ number_format($nilai_buku) }}</td>
+                        <td align="right">{{ number_format($akum_susut, 2) }}</td>
+                        <td align="right">{{ number_format($nilai_buku, 2) }}</td>
                     @endif
                 </tr>
             @endforeach
@@ -181,29 +192,29 @@
                 </td>
                 <td align="center">{{ $j_unit }}</td>
                 <td>&nbsp;</td>
-                <td align="right">{{ number_format($j_harga) }}</td>
+                <td align="right">{{ number_format($j_harga, 2) }}</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td align="right" colspan="2">{{ number_format($j_penyusutan) }}</td>
-                <td align="right" colspan="2">{{ number_format($j_akum_susut) }}</td>
-                <td align="right">{{ number_format($j_nilai_buku) }}</td>
+                <td align="right" colspan="2">{{ number_format($j_penyusutan, 2) }}</td>
+                <td align="right" colspan="2">{{ number_format($j_akum_susut, 2) }}</td>
+                <td align="right">{{ number_format($j_nilai_buku, 2) }}</td>
             </tr>
             <tr>
                 <td height="15" colspan="5">
                     Jumlah
                 </td>
-                <td align="center">{{ number_format($t_unit) }}</td>
+                <td align="center">{{ number_format($t_unit, 2) }}</td>
                 <td>&nbsp;</td>
-                <td align="right">{{ number_format($t_harga) }}</td>
+                <td align="right">{{ number_format($t_harga, 2) }}</td>
                 @if ($rek->lev4 == '1')
                     <td colspan="6">&nbsp;</td>
                 @else
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td align="right" colspan="2">{{ number_format($t_penyusutan) }}</td>
-                    <td align="right" colspan="2">{{ number_format($t_akum_susut) }}</td>
+                    <td align="right" colspan="2">{{ number_format($t_penyusutan, 2) }}</td>
+                    <td align="right" colspan="2">{{ number_format($t_akum_susut, 2) }}</td>
                 @endif
-                <td align="right">{{ number_format($t_nilai_buku) }}</td>
+                <td align="right">{{ number_format($t_nilai_buku, 2) }}</td>
             </tr>
         </table>
     @endforeach

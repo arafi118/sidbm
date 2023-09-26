@@ -1,6 +1,6 @@
 @php
-$saldo_pokok = ($ra->target_pokok - $real->sum_pokok > 0) ? $ra->target_pokok - $real->sum_pokok:0;
-$saldo_jasa = ($ra->target_jasa - $real->sum_jasa > 0) ? $ra->target_jasa - $real->sum_jasa:0;
+    $saldo_pokok = $ra->target_pokok - $real->sum_pokok > 0 ? $ra->target_pokok - $real->sum_pokok : 0;
+    $saldo_jasa = $ra->target_jasa - $real->sum_jasa > 0 ? $ra->target_jasa - $real->sum_jasa : 0;
 @endphp
 
 <div class="row">
@@ -10,7 +10,7 @@ $saldo_jasa = ($ra->target_jasa - $real->sum_jasa > 0) ? $ra->target_jasa - $rea
                 <div class="row">
                     <div class="col-12">
                         <div class="input-group input-group-static my-3">
-                            <label for="tgl_transaksi">Tgl Transaksi</label>
+                            <label for="tgl_transaksi">Tanggal Transaksi</label>
                             <input autocomplete="off" type="text" name="tgl_transaksi" id="tgl_transaksi"
                                 class="form-control date" value="{{ date('d/m/Y') }}">
                             <small class="text-danger" id="msg_tgl_transaksi"></small>
@@ -20,7 +20,7 @@ $saldo_jasa = ($ra->target_jasa - $real->sum_jasa > 0) ? $ra->target_jasa - $rea
                         <div class="input-group input-group-static my-3">
                             <label for="pokok">Pokok</label>
                             <input autocomplete="off" type="text" name="pokok" id="pokok" class="form-control"
-                                value="{{ number_format($saldo_pokok,2) }}">
+                                value="{{ number_format($saldo_pokok, 2) }}">
                             <small class="text-danger" id="msg_pokok"></small>
                         </div>
                     </div>
@@ -28,7 +28,7 @@ $saldo_jasa = ($ra->target_jasa - $real->sum_jasa > 0) ? $ra->target_jasa - $rea
                         <div class="input-group input-group-static my-3">
                             <label for="jasa">Jasa</label>
                             <input autocomplete="off" type="text" name="jasa" id="jasa" class="form-control"
-                                value="{{ number_format($saldo_jasa,2) }}">
+                                value="{{ number_format($saldo_jasa, 2) }}">
                             <small class="text-danger" id="msg_jasa"></small>
                         </div>
                     </div>
@@ -86,8 +86,8 @@ $saldo_jasa = ($ra->target_jasa - $real->sum_jasa > 0) ? $ra->target_jasa - $rea
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#Jasa" role="tab" aria-controls="Jasa"
-                        aria-selected="false">
+                    <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#Jasa" role="tab"
+                        aria-controls="Jasa" aria-selected="false">
                         Jasa
                     </a>
                 </li>
@@ -109,7 +109,7 @@ $saldo_jasa = ($ra->target_jasa - $real->sum_jasa > 0) ? $ra->target_jasa - $rea
 </div>
 
 @php
-$alokasi_jasa = $pinkel->alokasi * ($pinkel->pros_jasa/100)
+    $alokasi_jasa = $pinkel->alokasi * ($pinkel->pros_jasa / 100);
 @endphp
 
 <script>
@@ -161,5 +161,4 @@ $alokasi_jasa = $pinkel->alokasi * ($pinkel->pros_jasa/100)
             }
         }
     });
-
 </script>

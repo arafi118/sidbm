@@ -11,6 +11,7 @@ use App\Models\Rekening;
 use App\Models\RencanaAngsuran;
 use App\Models\Transaksi;
 use App\Models\User;
+use App\Utils\Inventaris as UtilsInventaris;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
 use DB;
@@ -278,7 +279,7 @@ class TransaksiController extends Controller
                     'id_user' => auth()->user()->id,
                 ];
 
-                // $transaksi = Transaksi::create($insert);
+                $transaksi = Transaksi::create($insert);
                 $msg = 'Transaksi ' . $insert['keterangan_transaksi'] . ' berhasil disimpan';
             }
         }
@@ -572,6 +573,7 @@ class TransaksiController extends Controller
 
     public function form()
     {
+        $keuangan = new Keuangan;
         $tgl_transaksi = Tanggal::tglNasional(request()->get('tgl_transaksi'));
         $jenis_transaksi = request()->get('jenis_transaksi');
         $sumber_dana = request()->get('sumber_dana');
@@ -693,7 +695,26 @@ class TransaksiController extends Controller
                     $files = "BM";
                 }
 
-                return view('transaksi.jurnal_umum.partials.form_nominal')->with(compact('relasi', 'keterangan_transaksi'));
+                $susut = 0;
+                if (Keuangan::startWith($disimpan_ke, '5.1.07.10')) {
+                    $tanggal = date('Y-m-t', strtotime($tgl_transaksi));
+                    if ($sumber_dana == '1.2.02.01') {
+                        $kategori = '2';
+                    } elseif ($sumber_dana == '1.2.02.02') {
+                        $kategori = '3';
+                    } else {
+                        $kategori = '4';
+                    }
+
+                    $penyusutan = UtilsInventaris::penyusutan($tanggal, $kategori);
+                    $saldo = UtilsInventaris::saldoSusut($tanggal, $sumber_dana);
+
+                    $susut = $penyusutan - $saldo;
+                    if ($susut < 0) $susut *= -1;
+                    $keterangan_transaksi .= ' (' . Tanggal::namaBulan($tgl_transaksi) . ')';
+                }
+
+                return view('transaksi.jurnal_umum.partials.form_nominal')->with(compact('relasi', 'keterangan_transaksi', 'susut'));
             }
         }
     }

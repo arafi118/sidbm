@@ -266,7 +266,8 @@
         </div>
 
         <div class="d-flex justify-content-end mt-3">
-            <button type="button" class="btn btn-warning btn-sm">Resceduling Pinjaman</button>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#Rescedule"
+                class="btn btn-warning btn-sm">Resceduling Pinjaman</button>
             <button type="button" class="btn btn-danger btn-sm ms-1">Penghapusan Pinjaman</button>
         </div>
     </div>

@@ -223,3 +223,7 @@ table.table.midle tbody tr td {
     margin-left: 0;
     margin-top: 4px;
 }
+
+.swal2-input {
+    padding: 0 0.75em;
+}
