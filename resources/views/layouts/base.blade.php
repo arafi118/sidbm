@@ -277,29 +277,51 @@
         })
 
         var notif;
-        $(document).ajaxStart(function() {
-            let timerInterval
-            notif = Swal.fire({
-                title: 'Loading...',
-                html: 'Permintaan anda sedang diproses oleh sistem.',
-                timer: 10000,
-                timerProgressBar: true,
-                didOpen: () => {
-                    Swal.showLoading()
-                    const b = Swal.getHtmlContainer().querySelector('b')
-                    timerInterval = setInterval(() => {
-                        b.textContent = Swal.getTimerLeft()
-                    }, 100)
-                },
-                willClose: () => {
-                    clearInterval(timerInterval)
-                }
-            })
+
+        $.ajaxSetup({
+            xhr: () => {
+                var xhr = new window.XMLHttpRequest();
+                console.log(xhr);
+                xhr.upload.addEventListener("progress", function(evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = (evt.loaded / evt.total) * 100;
+                        console.log(percentComplete);
+                    }
+                }, false);
+
+                xhr.addEventListener("progress", function(evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = (evt.loaded / evt.total) * 100;
+                        console.log(percentComplete);
+                    }
+                }, false);
+                return xhr;
+            },
         });
 
-        $(document).ajaxStop(function() {
-            notif.close();
-        });
+        // $(document).ajaxStart(function() {
+        //     let timerInterval
+        //     notif = Swal.fire({
+        //         title: 'Loading...',
+        //         html: 'Permintaan anda sedang diproses oleh sistem.',
+        //         timer: 10000,
+        //         timerProgressBar: true,
+        //         didOpen: () => {
+        //             Swal.showLoading()
+        //             const b = Swal.getHtmlContainer().querySelector('b')
+        //             timerInterval = setInterval(() => {
+        //                 b.textContent = Swal.getTimerLeft()
+        //             }, 100)
+        //         },
+        //         willClose: () => {
+        //             clearInterval(timerInterval)
+        //         }
+        //     })
+        // });
+
+        // $(document).ajaxStop(function() {
+        //     notif.close();
+        // });
     </script>
 
     <script>

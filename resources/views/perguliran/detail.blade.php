@@ -426,107 +426,103 @@
     </div>
 
     {{-- Modal Rescedule Pinjaman --}}
-    @if ($perguliran->status == 'A')
-        <div class="modal fade" id="Rescedule" tabindex="-1" aria-labelledby="ResceduleLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="ResceduleLabel">
-                            Resceduling <span class="badge badge-info">Loan ID. {{ $perguliran->id }}</span>
-                        </h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal fade" id="Rescedule" tabindex="-1" aria-labelledby="ResceduleLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ResceduleLabel">
+                        Resceduling <span class="badge badge-info">Loan ID. {{ $perguliran->id }}</span>
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-justify">
+                        Fitur ini dapat Anda gunakan jika Anda akan menjadwal ulang (<b>Resceduling</b>) Pinjaman.
+                        Dengan klik tombol <b>Simpan Perubahan</b> maka pinjaman ini akan berstatus R, dan akan membuat
+                        pinjaman baru dengan Alokasi sebesar saldo yang ada, yaitu <b>Rp.
+                            {{ number_format($perguliran->alokasi - $sum_pokok) }}</b> ;
                     </div>
-                    <div class="modal-body">
-                        <div class="text-justify">
-                            Fitur ini dapat Anda gunakan jika Anda akan menjadwal ulang (<b>Resceduling</b>) Pinjaman.
-                            Dengan klik tombol <b>Simpan Perubahan</b> maka pinjaman ini akan berstatus R, dan akan membuat
-                            pinjaman baru dengan Alokasi sebesar saldo yang ada, yaitu <b>Rp.
-                                {{ number_format($perguliran->alokasi - $sum_pokok) }}</b> ;
-                        </div>
 
-                        <form action="/perguliran/rescedule" method="post" id="formRescedule">
-                            @csrf
+                    <form action="/perguliran/rescedule" method="post" id="formRescedule">
+                        @csrf
 
-                            <input type="hidden" name="id" id="id" value="{{ $perguliran->id }}">
-                            <input type="hidden" name="_pengajuan" id="_pengajuan"
-                                value="{{ $perguliran->alokasi - $sum_pokok }}">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="input-group input-group-static my-3">
-                                        <label for="tgl_resceduling">Tgl Resceduling</label>
-                                        <input autocomplete="off" type="text" name="tgl_resceduling"
-                                            id="tgl_resceduling" class="form-control date" value="{{ date('d/m/Y') }}">
-                                        <small class="text-danger" id="msg_tgl_resceduling"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group input-group-static my-3">
-                                        <label for="pengajuan">Pengajuan Rp.</label>
-                                        <input autocomplete="off" type="text" name="pengajuan" id="pengajuan"
-                                            class="form-control money" disabled
-                                            value="{{ number_format($perguliran->alokasi - $sum_pokok, 2) }}">
-                                        <small class="text-danger" id="msg_pengajuan"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="my-2">
-                                        <label class="form-label" for="sistem_angsuran_pokok">Sistem Angs. Pokok</label>
-                                        <select class="form-control" name="sistem_angsuran_pokok"
-                                            id="sistem_angsuran_pokok">
-                                            @foreach ($sistem_angsuran as $sa)
-                                                <option {{ $perguliran->sistem_angsuran == $sa->id ? 'selected' : '' }}
-                                                    value="{{ $sa->id }}">
-                                                    {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <small class="text-danger" id="msg_sistem_angsuran_pokok"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="my-2">
-                                        <label class="form-label" for="sistem_angsuran_jasa">Sistem Angs. Jasa</label>
-                                        <select class="form-control" name="sistem_angsuran_jasa"
-                                            id="sistem_angsuran_jasa">
-                                            @foreach ($sistem_angsuran as $sa)
-                                                <option {{ $perguliran->sa_jasa == $sa->id ? 'selected' : '' }}
-                                                    value="{{ $sa->id }}">
-                                                    {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <small class="text-danger" id="msg_sistem_angsuran_jasa"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group input-group-static my-3">
-                                        <label for="jangka">Jangka</label>
-                                        <input autocomplete="off" type="number" name="jangka" id="jangka"
-                                            class="form-control" value="{{ $perguliran->jangka }}">
-                                        <small class="text-danger" id="msg_jangka"></small>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group input-group-static my-3">
-                                        <label for="pros_jasa">Prosentase Jasa (%)</label>
-                                        <input autocomplete="off" type="number" name="pros_jasa" id="pros_jasa"
-                                            class="form-control" value="{{ $perguliran->pros_jasa }}">
-                                        <small class="text-danger" id="msg_pros_jasa"></small>
-                                    </div>
+                        <input type="hidden" name="id" id="id" value="{{ $perguliran->id }}">
+                        <input type="hidden" name="_pengajuan" id="_pengajuan"
+                            value="{{ $perguliran->alokasi - $sum_pokok }}">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group input-group-static my-3">
+                                    <label for="tgl_resceduling">Tgl Resceduling</label>
+                                    <input autocomplete="off" type="text" name="tgl_resceduling" id="tgl_resceduling"
+                                        class="form-control date" value="{{ date('d/m/Y') }}">
+                                    <small class="text-danger" id="msg_tgl_resceduling"></small>
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
-                        <button type="button" id="SimpanRescedule" class="btn btn-github btn-sm">
-                            Simpan Perubahan
-                        </button>
-                    </div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-static my-3">
+                                    <label for="pengajuan">Pengajuan Rp.</label>
+                                    <input autocomplete="off" type="text" name="pengajuan" id="pengajuan"
+                                        class="form-control money" disabled
+                                        value="{{ number_format($perguliran->alokasi - $sum_pokok, 2) }}">
+                                    <small class="text-danger" id="msg_pengajuan"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="my-2">
+                                    <label class="form-label" for="sistem_angsuran_pokok">Sistem Angs. Pokok</label>
+                                    <select class="form-control" name="sistem_angsuran_pokok" id="sistem_angsuran_pokok">
+                                        @foreach ($sistem_angsuran as $sa)
+                                            <option {{ $perguliran->sistem_angsuran == $sa->id ? 'selected' : '' }}
+                                                value="{{ $sa->id }}">
+                                                {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <small class="text-danger" id="msg_sistem_angsuran_pokok"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="my-2">
+                                    <label class="form-label" for="sistem_angsuran_jasa">Sistem Angs. Jasa</label>
+                                    <select class="form-control" name="sistem_angsuran_jasa" id="sistem_angsuran_jasa">
+                                        @foreach ($sistem_angsuran as $sa)
+                                            <option {{ $perguliran->sa_jasa == $sa->id ? 'selected' : '' }}
+                                                value="{{ $sa->id }}">
+                                                {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <small class="text-danger" id="msg_sistem_angsuran_jasa"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-static my-3">
+                                    <label for="jangka">Jangka</label>
+                                    <input autocomplete="off" type="number" name="jangka" id="jangka"
+                                        class="form-control" value="{{ $perguliran->jangka }}">
+                                    <small class="text-danger" id="msg_jangka"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-static my-3">
+                                    <label for="pros_jasa">Prosentase Jasa (%)</label>
+                                    <input autocomplete="off" type="number" name="pros_jasa" id="pros_jasa"
+                                        class="form-control" value="{{ $perguliran->pros_jasa }}">
+                                    <small class="text-danger" id="msg_pros_jasa"></small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" id="SimpanRescedule" class="btn btn-github btn-sm">
+                        Simpan Perubahan
+                    </button>
                 </div>
             </div>
         </div>
-    @endif
+    </div>
 
     <form action="/perguliran/{{ $perguliran->id }}" method="post" id="FormDeleteProposal">
         @csrf
