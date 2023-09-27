@@ -194,6 +194,9 @@
                 var path = '{{ Request::path() }}'
                 if (path == 'transaksi/jurnal_angsuran') {
                     $.get('/transaksi/form_angsuran/' + item.id, function(result) {
+                        var ch_pokok = document.getElementById('chartP').getContext("2d");
+                        var ch_jasa = document.getElementById('chartJ').getContext("2d");
+
                         angsuran(true, result)
 
                         makeChart('pokok', ch_pokok, result.sisa_pokok, result.sum_pokok)

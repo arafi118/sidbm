@@ -876,6 +876,84 @@ class PinjamanKelompokController extends Controller
         ]);
     }
 
+    public function hapus(Request $request)
+    {
+        $last_idtp = Transaksi::where('idtp', '!=', '0')->max('idtp');
+        $data = $request->only([
+            'id',
+            'saldo',
+            'tgl_penghapusan',
+            'alasan_penghapusan'
+        ]);
+
+        $pinkel = PinjamanKelompok::where('id', $data['id'])->with([
+            'saldo',
+            'target',
+            'kelompok'
+        ])->withCount('real')->firstOrFail();
+
+        $tunggakan_pokok = 0;
+        $tunggakan_jasa = 0;
+        if ($pinkel->real_count > 0) {
+            $pokok = $data['saldo'];
+            $jasa = $pinkel->saldo->saldo_jasa;
+            $sum_pokok = $pinkel->saldo->sum_pokok + $pokok;
+            $sum_jasa = $pinkel->saldo->sum_jasa + $jasa;
+            $saldo_pokok = $pinkel->saldo->saldo_pokok - $pokok;
+            $saldo_jasa = $pinkel->saldo->saldo_jasa - $jasa;
+        } else {
+            $pokok = $data['saldo'];
+            $jasa = $pinkel->target->target_jasa;
+            $sum_pokok = $pokok;
+            $sum_jasa = $jasa;
+            $saldo_pokok = $pinkel->target->saldo_pokok - $pokok;
+            $saldo_jasa = $pinkel->target->saldo_jasa - $jasa;
+        }
+
+        if ($pinkel->jenis_pp == '1') {
+            $rekening_debit = '1.1.04.01';
+            $rekening_kredit = '1.1.03.01';
+        } elseif ($pinkel->jenis_pp == '2') {
+            $rekening_debit = '1.1.04.02';
+            $rekening_kredit = '1.1.03.02';
+        } else {
+            $rekening_debit = '1.1.04.03';
+            $rekening_kredit = '1.1.03.03';
+        }
+
+        $pinj_kelompok = PinjamanKelompok::where('id', $pinkel->id)->update([
+            'tgl_lunas' => Tanggal::tglNasional($data['tgl_penghapusan']),
+            'catatan_verifikasi' => $data['alasan_penghapusan'],
+            'status' => 'H'
+        ]);
+
+        $pinj_anggota = PinjamanAnggota::where('id_pinkel', $pinkel->id)->update([
+            'tgl_lunas' => Tanggal::tglNasional($data['tgl_penghapusan']),
+            'catatan_verifikasi' => $data['alasan_penghapusan'],
+            'status' => 'H'
+        ]);
+
+        $trx = Transaksi::create([
+            'tgl_transaksi' => Tanggal::tglNasional($data['tgl_penghapusan']),
+            'rekening_debit' => $rekening_debit,
+            'rekening_kredit' => $rekening_kredit,
+            'idtp' => $last_idtp + 1,
+            'id_pinj' => $pinkel->id,
+            'id_pinj_i' => '0',
+            'keterangan_transaksi' => 'Penghapusan Pinjaman Kelompok ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')',
+            'relasi' => $pinkel->kelompok->nama_kelompok,
+            'jumlah' => $data['saldo'],
+            'urutan' => '0',
+            'id_user' => auth()->user()->id
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Penghapusan Pinjaman Kelompok ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ') berhasil',
+            'id' => $pinkel->id
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

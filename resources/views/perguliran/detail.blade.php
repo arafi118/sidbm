@@ -7,6 +7,11 @@
     if ($real) {
         $sum_pokok = $real->sum_pokok;
     }
+    
+    $saldo_pokok = $perguliran->alokasi - $sum_pokok;
+    if ($saldo_pokok < 0) {
+        $saldo_pokok = 0;
+    }
 @endphp
 
 @extends('layouts.base')
@@ -438,21 +443,20 @@
                 <div class="modal-body">
                     <div class="text-justify">
                         Fitur ini dapat Anda gunakan jika Anda akan menjadwal ulang (<b>Resceduling</b>) Pinjaman.
-                        Dengan klik tombol <b>Simpan Perubahan</b> maka pinjaman ini akan berstatus R, dan akan membuat
-                        pinjaman baru dengan Alokasi sebesar saldo yang ada, yaitu <b>Rp.
-                            {{ number_format($perguliran->alokasi - $sum_pokok) }}</b> ;
+                        Dengan klik tombol <b>Rescedule Pinjaman</b> maka pinjaman ini akan berstatus <b>R</b>, dan akan
+                        membuat pinjaman baru dengan Alokasi sebesar saldo yang ada, yaitu
+                        <b>Rp. {{ number_format($saldo_pokok) }}</b> ;
                     </div>
 
                     <form action="/perguliran/rescedule" method="post" id="formRescedule">
                         @csrf
 
                         <input type="hidden" name="id" id="id" value="{{ $perguliran->id }}">
-                        <input type="hidden" name="_pengajuan" id="_pengajuan"
-                            value="{{ $perguliran->alokasi - $sum_pokok }}">
+                        <input type="hidden" name="_pengajuan" id="_pengajuan" value="{{ $saldo_pokok }}">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group input-group-static my-3">
-                                    <label for="tgl_resceduling">Tgl Resceduling</label>
+                                    <label for="tgl_resceduling">Tanggal Resceduling</label>
                                     <input autocomplete="off" type="text" name="tgl_resceduling" id="tgl_resceduling"
                                         class="form-control date" value="{{ date('d/m/Y') }}">
                                     <small class="text-danger" id="msg_tgl_resceduling"></small>
@@ -462,8 +466,7 @@
                                 <div class="input-group input-group-static my-3">
                                     <label for="pengajuan">Pengajuan Rp.</label>
                                     <input autocomplete="off" type="text" name="pengajuan" id="pengajuan"
-                                        class="form-control money" disabled
-                                        value="{{ number_format($perguliran->alokasi - $sum_pokok, 2) }}">
+                                        class="form-control money" disabled value="{{ number_format($saldo_pokok, 2) }}">
                                     <small class="text-danger" id="msg_pengajuan"></small>
                                 </div>
                             </div>
@@ -517,7 +520,60 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
                     <button type="button" id="SimpanRescedule" class="btn btn-github btn-sm">
-                        Simpan Perubahan
+                        Rescedule Pinjaman
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Penghapusan Pinjaman --}}
+    <div class="modal fade" id="Penghapusan" tabindex="-1" aria-labelledby="PenghapusanLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="PenghapusanLabel">
+                        Penghapusan Piutang <span class="badge badge-info">Loan ID. {{ $perguliran->id }}</span>
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/perguliran/hapus" method="post" id="FormPenghapusanPinjaman">
+                        @csrf
+
+                        <input type="hidden" name="id" id="id" value="{{ $perguliran->id }}">
+                        <input type="hidden" name="saldo" id="saldo" value="{{ $saldo_pokok }}">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group input-group-static my-3">
+                                    <label for="tgl_penghapusan">Tanggal Penghapusan</label>
+                                    <input autocomplete="off" type="text" name="tgl_penghapusan" id="tgl_penghapusan"
+                                        class="form-control date" value="{{ date('d/m/Y') }}">
+                                    <small class="text-danger" id="msg_tgl_penghapusan"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-static my-3">
+                                    <label for="alokasi">Alokasi Rp.</label>
+                                    <input autocomplete="off" type="text" name="alokasi" id="alokasi"
+                                        class="form-control money" disabled value="{{ number_format($saldo_pokok, 2) }}">
+                                    <small class="text-danger" id="msg_alokasi"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="input-group input-group-static my-3">
+                                    <label for="alasan_penghapusan">Alasan Penghapusan</label>
+                                    <textarea class="form-control" name="alasan_penghapusan" id="alasan_penghapusan"></textarea>
+                                    <small class="text-danger" id="msg_alasan_penghapusan"></small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" id="SimpanHapus" class="btn btn-github btn-sm">
+                        Hapus Pinjaman
                     </button>
                 </div>
             </div>
@@ -759,20 +815,21 @@
                 cancelButtonText: 'Batal',
                 icon: 'warning'
             }).then((result) => {
-                var form = $('#formKembaliProposal')
-                $.ajax({
-                    type: form.attr('method'),
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function(result) {
-                        if (result.success) {
-                            Swal.fire('Berhasil', result.msg, 'success').then(() => {
-                                window.location.href = '/detail/' + result.id_pinkel
-                            })
+                if (result.isConfirmed) {
+                    var form = $('#formKembaliProposal')
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        success: function(result) {
+                            if (result.success) {
+                                Swal.fire('Berhasil', result.msg, 'success').then(() => {
+                                    window.location.href = '/detail/' + result.id_pinkel
+                                })
+                            }
                         }
-                    }
-                })
-
+                    })
+                }
             })
         })
 
@@ -812,7 +869,35 @@
                     }
                 })
             }
+        })
 
+        $(document).on('click', '#SimpanHapus', function(e) {
+            e.preventDefault()
+
+            Swal.fire({
+                title: 'Peringatan',
+                text: 'Anda yakin ingin melakukan penghapusan untuk pinjaman ini?',
+                showCancelButton: true,
+                confirmButtonText: 'Hapus Pinjaman',
+                cancelButtonText: 'Batal',
+                icon: 'warning'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#FormPenghapusanPinjaman')
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        success: function(result) {
+                            if (result.success) {
+                                Swal.fire('Berhasil', result.msg, 'success').then(() => {
+                                    window.location.href = '/perguliran'
+                                })
+                            }
+                        }
+                    })
+                }
+            })
         })
 
         $(".money").maskMoney();

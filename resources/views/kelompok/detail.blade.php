@@ -35,7 +35,7 @@
                             @foreach ($kelompok->pinkel as $pinkel)
                                 <li class="list-group-item">
                                     @php
-                                        $link = 'detail/' . $pinkel->id;
+                                        $link = '/detail' . '/' . $pinkel->id;
                                         if ($pinkel->status == 'P') {
                                             $tgl = $pinkel->tgl_proposal;
                                             $jumlah = $pinkel->proposal;
@@ -50,13 +50,17 @@
                                             $jumlah = $pinkel->alokasi;
                                         
                                             if ($pinkel->alokasi <= $pinkel->saldo->sum_pokok) {
-                                                $link = 'lunas/' . $pinkel->id;
+                                                $link = '/lunas' . '/' . $pinkel->id;
                                             }
+                                        }
+                                        
+                                        if ($pinkel->status == 'R' || $pinkel->status == 'H') {
+                                            $link = '#';
                                         }
                                         $status = $pinkel->status;
                                         
                                     @endphp
-                                    <blockquote data-link="/{{ $link }}" class="blockquote text-white mb-1 pointer">
+                                    <blockquote data-link="{{ $link }}" class="blockquote text-white mb-1 pointer">
                                         <p class="text-dark ms-3">
                                             <span class="badge badge-{{ $pinkel->sts->warna_status }}">
                                                 Loan ID. {{ $pinkel->id }}

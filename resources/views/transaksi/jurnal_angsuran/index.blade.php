@@ -198,7 +198,7 @@
 
         var id_pinkel = '{{ Request::get('pinkel') ?: 0 }}'
 
-        if (id_pinkel != 0) {
+        if (id_pinkel > 0) {
             var ch_pokok = document.getElementById('chartP').getContext("2d");
             var ch_jasa = document.getElementById('chartJ').getContext("2d");
 
