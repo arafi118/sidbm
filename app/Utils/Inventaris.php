@@ -253,13 +253,8 @@ class Inventaris
 
         $lev1 = explode('.', $kode_akun)[0];
         $jenis_mutasi = 'kredit';
-        if ($lev1 == '1' || $lev1 == '5') $jenis_mutasi = 'debet';
 
-        if (strtolower($jenis_mutasi) == 'debet') {
-            $saldo = ($rekening->debit - $rekening->kredit) + $rekening->saldo_debit - $rekening->saldo_kredit;
-        } elseif (strtolower($jenis_mutasi) == 'kredit') {
-            $saldo = ($rekening->kredit - $rekening->debit) + $rekening->saldo_kredit - $rekening->saldo_debit;
-        }
+        $saldo = $rekening->kredit + $rekening->saldo_kredit;
 
         return $saldo;
     }

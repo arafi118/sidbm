@@ -121,6 +121,11 @@
                     $files = 'bm';
                     $kuitansi = false;
                 }
+                
+                $ins = '';
+                if (isset($trx->user->ins)) {
+                    $ins = $trx->user->ins;
+                }
             @endphp
 
             <tr>
@@ -132,7 +137,7 @@
                 <td align="right">{{ number_format($debit) }}</td>
                 <td align="right">{{ number_format($kredit) }}</td>
                 <td align="right">{{ number_format($total_saldo) }}</td>
-                <td align="center">{{ $trx->user->ins }}</td>
+                <td align="center">{{ $ins }}</td>
                 <td align="right">
                     <div class="btn-group">
                         @if ($kuitansi)

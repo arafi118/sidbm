@@ -19,6 +19,8 @@
             $j_penyusutan = 0;
             $j_akum_susut = 0;
             $j_nilai_buku = 0;
+            
+            $no = 1;
         @endphp
         @if ($rek->lev4 != '1')
             <div class="break"></div>
@@ -39,18 +41,18 @@
             </tr>
 
         </table>
-        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
             <tr style="background: rgb(232, 232, 232)">
                 <th rowspan="2" width="10">No</th>
                 <th rowspan="2" width="40">Tgl Beli</th>
-                <th rowspan="2" width="150">Nama Barang</th>
+                <th rowspan="2">Nama Barang</th>
                 <th rowspan="2" width="10">Id</th>
                 <th rowspan="2" width="30">Kondisi</th>
                 <th rowspan="2" width="15">Unit</th>
                 <th rowspan="2" width="55">Harga Satuan</th>
                 <th rowspan="2" width="55">Harga Perolehan</th>
                 <th rowspan="2" width="20">Umur Eko.</th>
-                <th rowspan="2">Satuan Susut</th>
+                <th rowspan="2" width="55">Satuan Susut</th>
                 <th colspan="2" width="55">Tahun Ini</th>
                 <th colspan="2" width="55">s.d. Tahun Ini</th>
                 <th rowspan="2" width="55">Nilai Buku</th>
@@ -71,15 +73,6 @@
                     }
                 @endphp
                 <tr style="color: rgb({{ $warna }})">
-                    <td align="center">{{ $loop->iteration }}</td>
-                    <td align="center">{{ Tanggal::tglIndo($inv->tgl_beli) }}</td>
-                    <td>{{ $nama_barang }}</td>
-                    <td align="center">{{ $inv->id }}</td>
-                    <td align="center">{{ $inv->status }}</td>
-                    <td align="center">{{ $inv->unit }}</td>
-                    <td align="right">{{ number_format($inv->harsat, 2) }}</td>
-                    <td align="right">{{ number_format($inv->harsat * $inv->unit, 2) }}</td>
-
                     @if ($rek->lev4 == '1')
                         @php
                             $t_unit += $inv->unit;
@@ -97,6 +90,14 @@
                                 $j_nilai_buku += $inv->harsat * $inv->unit;
                             }
                         @endphp
+                        <td align="center">{{ $no++ }}</td>
+                        <td align="center">{{ Tanggal::tglIndo($inv->tgl_beli) }}</td>
+                        <td>{{ $nama_barang }}</td>
+                        <td align="center">{{ $inv->id }}</td>
+                        <td align="center">{{ $inv->status }}</td>
+                        <td align="center">{{ $inv->unit }}</td>
+                        <td align="right">{{ number_format($inv->harsat, 2) }}</td>
+                        <td align="right">{{ number_format($inv->harsat * $inv->unit, 2) }}</td>
                         <td colspan="6"></td>
                         <td align="right">{{ number_format($nilai_buku, 2) }}</td>
                     @else
@@ -167,22 +168,34 @@
                             $t_akum_susut += $akum_susut;
                             $t_nilai_buku += $nilai_buku;
                             
-                            if ($inv->status == 'Dijual' || $inv->status == 'Hilang' || $inv->status == 'Dihapus') {
+                            $tahun_validasi = substr($inv->tgl_validasi, 0, 4);
+                        @endphp
+
+                        @if (($rek->lev4 == 1 || $rek->lev4 == 4) && $nilai_buku == 0 && $tahun_validasi < $tahun)
+                            @php
                                 $j_unit += $inv->unit;
                                 $j_harga += $inv->harsat * $inv->unit;
                                 $j_penyusutan += $penyusutan;
                                 $j_akum_susut += $akum_susut;
                                 $j_nilai_buku += $nilai_buku;
-                            }
-                        @endphp
-
-                        <td align="center">{{ $inv->umur_ekonomis }}</td>
-                        <td align="right">{{ number_format($_satuan_susut, 2) }}</td>
-                        <td align="center">{{ $umur_pakai }}</td>
-                        <td align="right">{{ number_format($penyusutan, 2) }}</td>
-                        <td align="center">{{ $akum_umur }}</td>
-                        <td align="right">{{ number_format($akum_susut, 2) }}</td>
-                        <td align="right">{{ number_format($nilai_buku, 2) }}</td>
+                            @endphp
+                        @else
+                            <td align="center">{{ $no++ }}</td>
+                            <td align="center">{{ Tanggal::tglIndo($inv->tgl_beli) }}</td>
+                            <td>{{ $nama_barang }}</td>
+                            <td align="center">{{ $inv->id }}</td>
+                            <td align="center">{{ $inv->status }}</td>
+                            <td align="center">{{ $inv->unit }}</td>
+                            <td align="right">{{ number_format($inv->harsat, 2) }}</td>
+                            <td align="right">{{ number_format($inv->harsat * $inv->unit, 2) }}</td>
+                            <td align="center">{{ $inv->umur_ekonomis }}</td>
+                            <td align="right">{{ number_format($_satuan_susut, 2) }}</td>
+                            <td align="center">{{ $umur_pakai }}</td>
+                            <td align="right">{{ number_format($penyusutan, 2) }}</td>
+                            <td align="center">{{ $akum_umur }}</td>
+                            <td align="right">{{ number_format($akum_susut, 2) }}</td>
+                            <td align="right">{{ number_format($nilai_buku, 2) }}</td>
+                        @endif
                     @endif
                 </tr>
             @endforeach
