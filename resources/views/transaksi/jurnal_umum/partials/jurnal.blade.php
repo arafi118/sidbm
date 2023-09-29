@@ -164,11 +164,13 @@
                                 <span class="btn-inner--icon"><i class="fas fa-file-circle-exclamation"></i></span>
                             </button>
                         @endif
-                        <button type="button" class="btn btn-tumblr btn-icon-only btn-tooltip" data-bs-toggle="tooltip"
+                        <button type="button" data-idt="{{ $trx->idt }}"
+                            class="btn btn-tumblr btn-icon-only btn-tooltip btn-reversal" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="Reversal" data-container="body" data-animation="true">
                             <span class="btn-inner--icon"><i class="fas fa-code-pull-request"></i></span>
                         </button>
-                        <button type="button" class="btn btn-github btn-icon-only btn-tooltip" data-bs-toggle="tooltip"
+                        <button type="button" data-idt="{{ $trx->idt }}"
+                            class="btn btn-github btn-icon-only btn-tooltip btn-delete" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="Hapus" data-container="body" data-animation="true">
                             <span class="btn-inner--icon"><i class="fas fa-trash-can"></i></span>
                         </button>

@@ -247,21 +247,17 @@
                 data: form.serialize(),
                 success: function(result) {
                     if (result.success) {
-                        $.get('/transaksi/generate_real/' + result.id_pinkel + '?idtp=' + result.idtp +
-                            '&tgl_transaksi=' + result.tgl_transaksi,
-                            function(res) {
-                                Swal.fire('Berhasil!', result.msg, 'success').then(() => {
-                                    $.get('/transaksi/form_angsuran/' + result.id_pinkel,
-                                        function(result) {
-                                            angsuran(true, result)
+                        Swal.fire('Berhasil!', result.msg, 'success').then(() => {
+                            $.get('/transaksi/form_angsuran/' + result.id_pinkel,
+                                function(result) {
+                                    angsuran(true, result)
 
-                                            makeChart('pokok', ch_pokok, result
-                                                .sisa_pokok, result.sum_pokok)
-                                            makeChart('jasa', ch_jasa, result.sisa_jasa,
-                                                result.sum_jasa)
-                                        })
+                                    makeChart('pokok', ch_pokok, result
+                                        .sisa_pokok, result.sum_pokok)
+                                    makeChart('jasa', ch_jasa, result.sisa_jasa,
+                                        result.sum_jasa)
                                 })
-                            })
+                        })
                     } else {
                         Swal.fire('Peringatan', result.msg, 'warning')
                     }

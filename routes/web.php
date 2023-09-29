@@ -79,6 +79,10 @@ Route::get('/transaksi/ambil_rekening/{id}', [TransaksiController::class, 'reken
 Route::get('/transaksi/form_nominal/', [TransaksiController::class, 'form'])->middleware('auth');
 Route::get('/transaksi/form_angsuran/{id_pinkel}', [TransaksiController::class, 'formAngsuran'])->middleware('auth');
 
+Route::get('/transaksi/data/{idt}', [TransaksiController::class, 'data'])->middleware('auth');
+Route::post('/transaksi/reversal', [TransaksiController::class, 'reversal'])->middleware('auth');
+Route::post('/transaksi/hapus', [TransaksiController::class, 'hapus'])->middleware('auth');
+
 Route::get('/transaksi/angsuran/lpp/{id}', [TransaksiController::class, 'lpp'])->middleware('auth');
 Route::get('/transaksi/angsuran/detail_angsuran/{id}', [TransaksiController::class, 'detailAngsuran'])->middleware('auth');
 Route::get('/transaksi/angsuran/struk/{id}', [TransaksiController::class, 'struk'])->middleware('auth');
@@ -86,6 +90,7 @@ Route::get('/transaksi/angsuran/struk_matrix/{id}', [TransaksiController::class,
 Route::get('/transaksi/detail_transaksi/', [TransaksiController::class, 'detailTransaksi'])->middleware('auth');
 Route::post('/transaksi/angsuran', [TransaksiController::class, 'angsuran'])->middleware('auth');
 Route::get('/transaksi/generate_real/{id_pinkel}', [TransaksiController::class, 'generateReal'])->middleware('auth');
+Route::get('/transaksi/regenerate_real/{id_pinkel}', [TransaksiController::class, 'regenerateReal'])->middleware('auth');
 
 Route::get('/transaksi/dokumen/kuitansi/{id}', [TransaksiController::class, 'kuitansi'])->middleware('auth');
 Route::get('/transaksi/dokumen/bkk/{id}', [TransaksiController::class, 'bkk'])->middleware('auth');

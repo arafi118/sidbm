@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Inventaris;
 use App\Models\JenisTransaksi;
 use App\Models\Kecamatan;
+use App\Models\PinjamanAnggota;
 use App\Models\PinjamanKelompok;
 use App\Models\RealAngsuran;
 use App\Models\Rekening;
@@ -311,6 +312,10 @@ class TransaksiController extends Controller
             return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
         }
 
+        $request->pokok = str_replace(',', '', str_replace('.00', '', $request->pokok));
+        $request->jasa = str_replace(',', '', str_replace('.00', '', $request->jasa));
+        $request->denda = str_replace(',', '', str_replace('.00', '', $request->denda));
+
         if ($request->pokok <= 0 && $request->jasa <= 0 && $request->denda <= 0) {
             return response()->json([
                 'success' => false,
@@ -487,6 +492,8 @@ class TransaksiController extends Controller
 
             $denda = Transaksi::create($trx_denda);
         }
+
+        $this->regenerateReal($pinkel->id);
 
         return response()->json([
             'success' => true,
@@ -805,7 +812,7 @@ class TransaksiController extends Controller
         $data['rek'] = Rekening::where('kode_akun', $data['kode_akun'])->first();
         $data['transaksi'] = Transaksi::where('tgl_transaksi', 'LIKE', '%' . $tgl . '%')->where(function ($query) use ($data) {
             $query->where('rekening_debit', $data['kode_akun'])->orwhere('rekening_kredit', $data['kode_akun']);
-        })->with('user')->get();
+        })->with('user')->orderBy('idt', 'ASC')->get();
 
         $data['keuangan'] = $keuangan;
         $data['saldo'] = $keuangan->saldoAwal($tgl, $data['kode_akun']);
@@ -816,6 +823,108 @@ class TransaksiController extends Controller
             'label' => '<i class="fas fa-book"></i> ' . $data['rek']->kode_akun . ' - ' . $data['rek']->nama_akun . ' ' . $data['sub_judul'],
             'view' => view('transaksi.jurnal_umum.partials.jurnal', $data)->render()
         ];
+    }
+
+    public function data($idt)
+    {
+        $trx = Transaksi::where('idt', $idt)->first();
+        return response()->json([
+            'idt' => $trx->idt,
+            'idtp' => $trx->idtp,
+            'id_pinj' => $trx->id_pinj,
+            'jumlah' => number_format($trx->jumlah)
+        ]);
+    }
+
+    public function reversal(Request $request)
+    {
+        $last_idtp = Transaksi::where('idtp', '!=', '0')->max('idtp');
+        $idt = $request->rev_idt;
+        $idtp = $request->rev_idtp;
+        $id_pinj = $request->rev_id_pinj;
+
+        $angsuran = false;
+        if ($idtp != '0') {
+            $transaksi = Transaksi::where('idtp', $idtp)->orderBy('idtp', 'ASC')->get();
+            foreach ($transaksi as $trx) {
+                $reversal = Transaksi::create([
+                    'tgl_transaksi' => date('Y-m-d'),
+                    'rekening_debit' => $trx->rekening_debit,
+                    'rekening_kredit' => $trx->rekening_kredit,
+                    'idtp' => $last_idtp + 1,
+                    'id_pinj' => $trx->id_pinj,
+                    'id_pinj_i' => $trx->id_pinj_i,
+                    'keterangan_transaksi' => 'KOREKSI idt (' . $idt . ') : ' . $trx->keterangan_transaksi,
+                    'relasi' => $trx->relasi,
+                    'jumlah' => ($trx->jumlah * -1),
+                    'urutan' => $trx->urutan,
+                    'id_user' => auth()->user()->id
+                ]);
+            }
+
+            $angsuran = true;
+        } else {
+            $trx = Transaksi::where('idt', $idt)->first();
+
+            $reversal = Transaksi::create([
+                'tgl_transaksi' => date('Y-m-d'),
+                'rekening_debit' => $trx->rekening_debit,
+                'rekening_kredit' => $trx->rekening_kredit,
+                'idtp' => $trx->idtp,
+                'id_pinj' => $trx->id_pinj,
+                'id_pinj_i' => $trx->id_pinj_i,
+                'keterangan_transaksi' => 'KOREKSI idt (' . $idt . ') : ' . $trx->keterangan_transaksi,
+                'relasi' => $trx->relasi,
+                'jumlah' => ($trx->jumlah * -1),
+                'urutan' => $trx->urutan,
+                'id_user' => auth()->user()->id
+            ]);
+        }
+
+        if ($angsuran) {
+            $this->regenerateReal($id_pinj);
+        }
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Transaksi Reversal untuk id ' . $idt . ' dengan nominal berhasil.',
+            'idtp' => $last_idtp + 1,
+            'tgl_transaksi' => date('Y-m-d'),
+            'id_pinkel' => $id_pinj
+        ]);
+    }
+
+    public function hapus(Request $request)
+    {
+        $idt = $request->del_idt;
+        $idtp = $request->del_idtp;
+        $id_pinj = $request->del_id_pinj;
+
+        if ($idtp != '0') {
+            $trx = Transaksi::where('idtp', $idtp)->delete();
+
+            $this->regenerateReal($id_pinj);
+        } else {
+            if ($id_pinj != '0') {
+                $pinkel = PinjamanKelompok::where('id', $id_pinj)->update([
+                    'status' => 'W'
+                ]);
+
+                $pinj_anggota = PinjamanAnggota::where('id_pinkel', $id_pinj)->update([
+                    'status' => 'W'
+                ]);
+
+                $real = RealAngsuran::where('loan_id', $id_pinj)->delete();
+                $trx = Transaksi::where('idtp', $idtp)->delete();
+            }
+
+            $trx = Transaksi::where('idt', $idt)->delete();
+        }
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Transaksi Berhasil Dihapus.'
+        ]);
     }
 
     public function detailAngsuran($id)
@@ -1180,6 +1289,106 @@ class TransaksiController extends Controller
         }
 
         RealAngsuran::create($insert);
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    public function regenerateReal($id_pinkel)
+    {
+        $keuangan = new Keuangan;
+        if ($id_pinkel == 0) {
+            return response()->json([
+                'success' => false,
+                'msg' => 'Error'
+            ]);
+        }
+
+        $pinkel = PinjamanKelompok::where('id', $id_pinkel)->first();
+        $transaksi = Transaksi::select(
+            'idtp',
+            'tgl_transaksi'
+        )->where([
+            ['id_pinj', $pinkel->id],
+            ['idtp', '!=', '0']
+        ])->with([
+            'tr_idtp'
+        ])->groupBy('idtp', 'tgl_transaksi')->orderBy('idtp', 'ASC')->orderBy('tgl_transaksi', 'ASC')->get();
+
+        $alokasi_pokok = intval($pinkel->alokasi);
+        $alokasi_jasa = intval($pinkel->alokasi * ($pinkel->pros_jasa / 100));
+
+        $rek_pokok = ['1.1.03.01', '1.1.03.02', '1.1.03.03'];
+        $rek_jasa = ['1.1.03.04', '1.1.03.05', '1.1.03.06', '4.1.01.01', '4.1.01.02', '4.1.01.03'];
+
+        $sum_pokok = 0;
+        $sum_jasa = 0;
+
+        // dd($transaksi);
+        RealAngsuran::where('loan_id', $pinkel->id)->delete();
+        foreach ($transaksi as $trx) {
+            $tgl_transaksi = $trx->tgl_transaksi;
+
+            $insert = [
+                'id' => $trx->idtp,
+                'loan_id' => $pinkel->id,
+                'tgl_transaksi' => $tgl_transaksi,
+                'realisasi_pokok' => 0,
+                'realisasi_jasa' => 0,
+                'sum_pokok' => $sum_pokok,
+                'sum_jasa' => $sum_jasa,
+                'saldo_pokok' => $alokasi_pokok - $sum_pokok,
+                'saldo_jasa' => $alokasi_jasa - $sum_jasa,
+                'tunggakan_pokok' => 0,
+                'tunggakan_jasa' => 0,
+                'lu' => date('Y-m-d H:i:s'),
+                'id_user' => auth()->user()->id,
+            ];
+
+            if ($trx->relationLoaded('tr_idtp')) {
+                $ra = RencanaAngsuran::where([
+                    ['loan_id', $id_pinkel],
+                    ['jatuh_tempo', '<=', $tgl_transaksi],
+                    ['angsuran_ke', '!=', '0']
+                ])->orderBy('jatuh_tempo', 'DESC');
+
+                if ($ra->count() > 0) {
+                    $ra = $ra->first();
+                } else {
+                    $ra->target_pokok = 0;
+                    $ra->target_jasa = 0;
+                }
+
+                foreach ($trx->tr_idtp as $tr) {
+                    if (in_array($tr->rekening_kredit, $rek_pokok)) {
+                        $sum_pokok += intval($tr->jumlah);
+
+                        $tunggakan_pokok = $ra->target_pokok - $sum_pokok;
+                        if ($tunggakan_pokok <= 0) $tunggakan_pokok = 0;
+
+                        $insert['realisasi_pokok'] = $tr->jumlah;
+                        $insert['sum_pokok'] = $sum_pokok;
+                        $insert['saldo_pokok'] = $alokasi_pokok - $sum_pokok;
+                        $insert['tunggakan_pokok'] = $tunggakan_pokok;
+                    }
+
+                    if (in_array($tr->rekening_kredit, $rek_jasa)) {
+                        $sum_jasa += intval($tr->jumlah);
+
+                        $tunggakan_jasa = $ra->target_jasa - $sum_jasa;
+                        if ($tunggakan_jasa <= 0) $tunggakan_jasa = 0;
+
+                        $insert['realisasi_jasa'] = $tr->jumlah;
+                        $insert['sum_jasa'] = $sum_jasa;
+                        $insert['saldo_jasa'] = $alokasi_jasa - $sum_jasa;
+                        $insert['tunggakan_jasa'] = $tunggakan_jasa;
+                    }
+                }
+
+                RealAngsuran::create($insert);
+            }
+        }
+
         return response()->json([
             'success' => true
         ]);
