@@ -9,6 +9,7 @@ use App\Models\Rekening;
 use App\Models\RencanaAngsuran;
 use App\Models\Transaksi;
 use App\Utils\Keuangan;
+use Cookie;
 use Session;
 
 class DashboardController extends Controller
@@ -181,5 +182,10 @@ class DashboardController extends Controller
                 Rekening::where('kode_akun', $key)->update($update);
             }
         }
+    }
+
+    public function setting(Request $request)
+    {
+        //
     }
 }
