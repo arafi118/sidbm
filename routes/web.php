@@ -105,3 +105,5 @@ Route::resource('/transaksi', TransaksiController::class)->middleware('auth');
 Route::get('/pelaporan', [PelaporanController::class, 'index'])->middleware('auth');
 Route::get('/pelaporan/sub_laporan/{file}', [PelaporanController::class, 'subLaporan'])->middleware('auth');
 Route::post('/pelaporan/preview', [PelaporanController::class, 'preview'])->middleware('auth');
+
+Route::get('/sync/{lokasi}', [DashboardController::class, 'sync'])->middleware('auth');

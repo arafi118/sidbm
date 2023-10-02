@@ -34,4 +34,9 @@ class Rekening extends Model
     {
         return $this->hasMany(Inventaris::class, 'kategori', 'lev4');
     }
+
+    public function saldo()
+    {
+        return $this->hasOne(Saldo::class, 'kode_akun', 'kode_akun');
+    }
 }

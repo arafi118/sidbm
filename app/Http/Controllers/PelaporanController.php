@@ -209,7 +209,11 @@ class PelaporanController extends Controller
         $data['debit'] = 0;
         $data['kredit'] = 0;
 
-        $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with('akun2.akun3.rek')->orderBy('kode_akun', 'ASC')->get();
+        $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with([
+            'akun2',
+            'akun2.akun3',
+            'akun2.akun3.rek',
+        ])->orderBy('kode_akun', 'ASC')->get();
 
         $view = view('pelaporan.view.neraca', $data)->render();
 

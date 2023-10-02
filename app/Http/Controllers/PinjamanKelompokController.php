@@ -594,14 +594,14 @@ class PinjamanKelompokController extends Controller
             $keterangan .= ' (' . $perguliran->jpp->nama_jpp . ')';
 
             Transaksi::create([
-                'tgl_transaksi' => Tanggal::tglNasional($data[$tgl]),
-                'rekening_debit' => $request->debet,
-                'rekening_kredit' => $request->sumber_pembayaran,
+                'tgl_transaksi' => (string) Tanggal::tglNasional($data[$tgl]),
+                'rekening_debit' => (string) $request->debet,
+                'rekening_kredit' => (string) $request->sumber_pembayaran,
                 'idtp' => '0',
                 'id_pinj' => $perguliran->id,
                 'id_pinj_i' => '0',
-                'keterangan_transaksi' => $keterangan,
-                'relasi' => $perguliran->kelompok->nama_kelompok,
+                'keterangan_transaksi' => (string) $keterangan,
+                'relasi' => (string) $perguliran->kelompok->nama_kelompok,
                 'jumlah' => str_replace(',', '', str_replace('.00', '', $data[$alokasi])),
                 'urutan' => '0',
                 'id_user' => auth()->user()->id,
@@ -767,14 +767,14 @@ class PinjamanKelompokController extends Controller
         }
 
         $trx_resc = Transaksi::create([
-            'tgl_transaksi' => Tanggal::tglNasional($tgl_resceduling),
-            'rekening_debit' => $rekening_2,
-            'rekening_kredit' => $rekening_1,
+            'tgl_transaksi' => (string) Tanggal::tglNasional($tgl_resceduling),
+            'rekening_debit' => (string) $rekening_2,
+            'rekening_kredit' => (string) $rekening_1,
             'idtp' => $last_idtp + 1,
             'id_pinj' => $pinkel->id,
             'id_pinj_i' => '0',
-            'keterangan_transaksi' => 'Angs. Resc. ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')',
-            'relasi' => $pinkel->kelompok->nama_kelompok,
+            'keterangan_transaksi' => (string) 'Angs. Resc. ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')',
+            'relasi' => (string) $pinkel->kelompok->nama_kelompok,
             'jumlah' => $pengajuan,
             'urutan' => '0',
             'id_user' => auth()->user()->id
@@ -821,14 +821,14 @@ class PinjamanKelompokController extends Controller
         ]);
 
         $trx_cair = Transaksi::create([
-            'tgl_transaksi' => Tanggal::tglNasional($tgl_resceduling),
-            'rekening_debit' => $rekening_1,
-            'rekening_kredit' => $rekening_2,
+            'tgl_transaksi' => (string) Tanggal::tglNasional($tgl_resceduling),
+            'rekening_debit' => (string) $rekening_1,
+            'rekening_kredit' => (string) $rekening_2,
             'idtp' => '0',
             'id_pinj' => $pinjaman->id,
             'id_pinj_i' => '0',
-            'keterangan_transaksi' => 'Pencairan Resc ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinjaman->id . ')',
-            'relasi' => $pinkel->kelompok->nama_kelompok,
+            'keterangan_transaksi' => (string) 'Pencairan Resc ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinjaman->id . ')',
+            'relasi' => (string) $pinkel->kelompok->nama_kelompok,
             'jumlah' => $pengajuan,
             'urutan' => '0',
             'id_user' => auth()->user()->id
@@ -934,14 +934,14 @@ class PinjamanKelompokController extends Controller
         ]);
 
         $trx = Transaksi::create([
-            'tgl_transaksi' => Tanggal::tglNasional($data['tgl_penghapusan']),
-            'rekening_debit' => $rekening_debit,
-            'rekening_kredit' => $rekening_kredit,
+            'tgl_transaksi' => (string) Tanggal::tglNasional($data['tgl_penghapusan']),
+            'rekening_debit' => (string) $rekening_debit,
+            'rekening_kredit' => (string) $rekening_kredit,
             'idtp' => $last_idtp + 1,
             'id_pinj' => $pinkel->id,
             'id_pinj_i' => '0',
-            'keterangan_transaksi' => 'Penghapusan Pinjaman Kelompok ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')',
-            'relasi' => $pinkel->kelompok->nama_kelompok,
+            'keterangan_transaksi' => (string) 'Penghapusan Pinjaman Kelompok ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')',
+            'relasi' => (string) $pinkel->kelompok->nama_kelompok,
             'jumlah' => $data['saldo'],
             'urutan' => '0',
             'id_user' => auth()->user()->id

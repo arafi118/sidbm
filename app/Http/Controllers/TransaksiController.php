@@ -117,14 +117,14 @@ class TransaksiController extends Controller
             $kategori = $inv->kategori;
 
             $trx_penghapusan = [
-                'tgl_transaksi' => Tanggal::tglNasional($request->tgl_transaksi),
-                'rekening_debit' => $request->disimpan_ke,
-                'rekening_kredit' => $request->sumber_dana,
+                'tgl_transaksi' => (string) Tanggal::tglNasional($request->tgl_transaksi),
+                'rekening_debit' => (string) $request->disimpan_ke,
+                'rekening_kredit' => (string) $request->sumber_dana,
                 'idtp' => '0',
                 'id_pinj' => '0',
                 'id_pinj_i' => '0',
-                'keterangan_transaksi' => 'Penghapusan ' . $request->unit . ' unit ' . $barang . ' karena ' . $status,
-                'relasi' => $request->relasi,
+                'keterangan_transaksi' => (string) 'Penghapusan ' . $request->unit . ' unit ' . $barang . ' karena ' . $status,
+                'relasi' => (string) $request->relasi,
                 'jumlah' => $nilai_buku,
                 'urutan' => '0',
                 'id_user' => auth()->user()->id,
@@ -154,14 +154,14 @@ class TransaksiController extends Controller
             ];
 
             $trx_penjualan = [
-                'tgl_transaksi' => Tanggal::tglNasional($request->tgl_transaksi),
+                'tgl_transaksi' => (string) Tanggal::tglNasional($request->tgl_transaksi),
                 'rekening_debit' => '1.1.01.01',
                 'rekening_kredit' => '4.2.01.04',
                 'idtp' => '0',
                 'id_pinj' => '0',
                 'id_pinj_i' => '0',
-                'keterangan_transaksi' => 'Penjualan ' . $request->unit . ' unit ' . $barang,
-                'relasi' => $request->relasi,
+                'keterangan_transaksi' => (string) 'Penjualan ' . $request->unit . ' unit ' . $barang,
+                'relasi' => (string) $request->relasi,
                 'jumlah' => str_replace(',', '', str_replace('.00', '', $request->harga_jual)),
                 'urutan' => '0',
                 'id_user' => auth()->user()->id,
@@ -213,14 +213,14 @@ class TransaksiController extends Controller
                 $rek_simpan = Rekening::where('kode_akun', $request->disimpan_ke)->first();
 
                 $insert = [
-                    'tgl_transaksi' => Tanggal::tglNasional($request->tgl_transaksi),
-                    'rekening_debit' => $request->disimpan_ke,
-                    'rekening_kredit' => $request->sumber_dana,
+                    'tgl_transaksi' => (string) Tanggal::tglNasional($request->tgl_transaksi),
+                    'rekening_debit' => (string) $request->disimpan_ke,
+                    'rekening_kredit' => (string) $request->sumber_dana,
                     'idtp' => 0,
                     'id_pinj' => 0,
                     'id_pinj_i' => 0,
-                    'keterangan_transaksi' => '(' . $rek_simpan->nama_akun . ') ' . $request->nama_barang,
-                    'relasi' => $request->relasi,
+                    'keterangan_transaksi' => (string) '(' . $rek_simpan->nama_akun . ') ' . $request->nama_barang,
+                    'relasi' => (string) $request->relasi,
                     'jumlah' => str_replace(',', '', str_replace('.00', '', $request->harga_satuan)),
                     'urutan' => 0,
                     'id_user' => auth()->user()->id,
@@ -266,15 +266,17 @@ class TransaksiController extends Controller
                     return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
                 }
 
+                $relasi = '';
+                if ($request->relasi) $relasi = $request->relasi;
                 $insert = [
-                    'tgl_transaksi' => Tanggal::tglNasional($request->tgl_transaksi),
-                    'rekening_debit' => $request->disimpan_ke,
-                    'rekening_kredit' => $request->sumber_dana,
+                    'tgl_transaksi' => (string) Tanggal::tglNasional($request->tgl_transaksi),
+                    'rekening_debit' => (string) $request->disimpan_ke,
+                    'rekening_kredit' => (string) $request->sumber_dana,
                     'idtp' => 0,
                     'id_pinj' => 0,
                     'id_pinj_i' => 0,
-                    'keterangan_transaksi' => $request->keterangan,
-                    'relasi' => $request->relasi,
+                    'keterangan_transaksi' => (string) $request->keterangan,
+                    'relasi' => (string) $relasi,
                     'jumlah' => str_replace(',', '', str_replace('.00', '', $request->nominal)),
                     'urutan' => 0,
                     'id_user' => auth()->user()->id,
@@ -387,14 +389,14 @@ class TransaksiController extends Controller
         $idtp = $last_idtp + 1;
         if ($request->pokok > 0) {
             $trx_pokok = [
-                'tgl_transaksi' => $tgl_transaksi,
-                'rekening_debit' => $kas_umum,
-                'rekening_kredit' => $poko_kredit,
+                'tgl_transaksi' => (string) $tgl_transaksi,
+                'rekening_debit' => (string) $kas_umum,
+                'rekening_kredit' => (string) $poko_kredit,
                 'idtp' => $idtp,
                 'id_pinj' => $pinkel->id,
                 'id_pinj_i' => '0',
-                'keterangan_transaksi' => 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] (P)',
-                'relasi' => $pinkel->kelompok->nama_kelompok,
+                'keterangan_transaksi' => (string) 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] (P)',
+                'relasi' => (string) $pinkel->kelompok->nama_kelompok,
                 'jumlah' => str_replace(',', '', str_replace('.00', '', $request->pokok)),
                 'urutan' => '0',
                 'id_user' => auth()->user()->id
@@ -414,14 +416,14 @@ class TransaksiController extends Controller
                 }
 
                 $trx_jasa = [
-                    'tgl_transaksi' => $tgl_transaksi,
-                    'rekening_debit' => $kas_umum,
-                    'rekening_kredit' => $jasa_kredit,
+                    'tgl_transaksi' => (string) $tgl_transaksi,
+                    'rekening_debit' => (string) $kas_umum,
+                    'rekening_kredit' => (string) $jasa_kredit,
                     'idtp' => $idtp,
                     'id_pinj' => $pinkel->id,
                     'id_pinj_i' => '0',
-                    'keterangan_transaksi' => 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] (J)',
-                    'relasi' => $pinkel->kelompok->nama_kelompok,
+                    'keterangan_transaksi' => (string) 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] (J)',
+                    'relasi' => (string) $pinkel->kelompok->nama_kelompok,
                     'jumlah' => str_replace(',', '', str_replace('.00', '', $request->jasa)),
                     'urutan' => '0',
                     'id_user' => auth()->user()->id
@@ -431,14 +433,14 @@ class TransaksiController extends Controller
             } else {
                 $angs_jasa = ($request->jasa - $tunggakan_jasa > 0) ? ($request->jasa - $tunggakan_jasa) : $request->jasa;
                 $trx_jasa = [
-                    'tgl_transaksi' => $tgl_transaksi,
-                    'rekening_debit' => $kas_umum,
-                    'rekening_kredit' => $jasa_kredit,
+                    'tgl_transaksi' => (string) $tgl_transaksi,
+                    'rekening_debit' => (string) $kas_umum,
+                    'rekening_kredit' => (string) $jasa_kredit,
                     'idtp' => $idtp,
                     'id_pinj' => $pinkel->id,
                     'id_pinj_i' => '0',
-                    'keterangan_transaksi' => 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
-                    'relasi' => $pinkel->kelompok->nama_kelompok,
+                    'keterangan_transaksi' => (string) 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
+                    'relasi' => (string) $pinkel->kelompok->nama_kelompok,
                     'jumlah' => str_replace(',', '', str_replace('.00', '', $angs_jasa)),
                     'urutan' => '0',
                     'id_user' => auth()->user()->id
@@ -457,14 +459,14 @@ class TransaksiController extends Controller
 
                     $piutang_jasa = $request->jasa - $angs_jasa;
                     $trx_jasa = [
-                        'tgl_transaksi' => $tgl_transaksi,
-                        'rekening_debit' => $kas_umum,
-                        'rekening_kredit' => $piutang_kredit,
+                        'tgl_transaksi' => (string) $tgl_transaksi,
+                        'rekening_debit' => (string) $kas_umum,
+                        'rekening_kredit' => (string) $piutang_kredit,
                         'idtp' => $idtp,
                         'id_pinj' => $pinkel->id,
                         'id_pinj_i' => '0',
-                        'keterangan_transaksi' => 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
-                        'relasi' => $pinkel->kelompok->nama_kelompok,
+                        'keterangan_transaksi' => (string) 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
+                        'relasi' => (string) $pinkel->kelompok->nama_kelompok,
                         'jumlah' => str_replace(',', '', str_replace('.00', '', $piutang_jasa)),
                         'urutan' => '0',
                         'id_user' => auth()->user()->id
@@ -477,14 +479,14 @@ class TransaksiController extends Controller
 
         if ($request->denda > 0) {
             $trx_denda = [
-                'tgl_transaksi' => $tgl_transaksi,
-                'rekening_debit' => $kas_umum,
-                'rekening_kredit' => $dend_kredit,
+                'tgl_transaksi' => (string) $tgl_transaksi,
+                'rekening_debit' => (string) $kas_umum,
+                'rekening_kredit' => (string) $dend_kredit,
                 'idtp' => $idtp,
                 'id_pinj' => $pinkel->id,
                 'id_pinj_i' => '0',
-                'keterangan_transaksi' => 'Denda. ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . ']',
-                'relasi' => $pinkel->kelompok->nama_kelompok,
+                'keterangan_transaksi' => (string) 'Denda. ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . ']',
+                'relasi' => (string) $pinkel->kelompok->nama_kelompok,
                 'jumlah' => str_replace(',', '', str_replace('.00', '', $request->denda)),
                 'urutan' => '0',
                 'id_user' => auth()->user()->id
@@ -848,14 +850,14 @@ class TransaksiController extends Controller
             $transaksi = Transaksi::where('idtp', $idtp)->orderBy('idtp', 'ASC')->get();
             foreach ($transaksi as $trx) {
                 $reversal = Transaksi::create([
-                    'tgl_transaksi' => date('Y-m-d'),
-                    'rekening_debit' => $trx->rekening_debit,
-                    'rekening_kredit' => $trx->rekening_kredit,
+                    'tgl_transaksi' => (string) date('Y-m-d'),
+                    'rekening_debit' => (string) $trx->rekening_debit,
+                    'rekening_kredit' => (string) $trx->rekening_kredit,
                     'idtp' => $last_idtp + 1,
                     'id_pinj' => $trx->id_pinj,
                     'id_pinj_i' => $trx->id_pinj_i,
-                    'keterangan_transaksi' => 'KOREKSI idt (' . $idt . ') : ' . $trx->keterangan_transaksi,
-                    'relasi' => $trx->relasi,
+                    'keterangan_transaksi' => (string) 'KOREKSI idt (' . $idt . ') : ' . $trx->keterangan_transaksi,
+                    'relasi' => (string) $trx->relasi,
                     'jumlah' => ($trx->jumlah * -1),
                     'urutan' => $trx->urutan,
                     'id_user' => auth()->user()->id
@@ -867,14 +869,14 @@ class TransaksiController extends Controller
             $trx = Transaksi::where('idt', $idt)->first();
 
             $reversal = Transaksi::create([
-                'tgl_transaksi' => date('Y-m-d'),
-                'rekening_debit' => $trx->rekening_debit,
-                'rekening_kredit' => $trx->rekening_kredit,
+                'tgl_transaksi' => (string) date('Y-m-d'),
+                'rekening_debit' => (string) $trx->rekening_debit,
+                'rekening_kredit' => (string) $trx->rekening_kredit,
                 'idtp' => $trx->idtp,
                 'id_pinj' => $trx->id_pinj,
                 'id_pinj_i' => $trx->id_pinj_i,
-                'keterangan_transaksi' => 'KOREKSI idt (' . $idt . ') : ' . $trx->keterangan_transaksi,
-                'relasi' => $trx->relasi,
+                'keterangan_transaksi' => (string) 'KOREKSI idt (' . $idt . ') : ' . $trx->keterangan_transaksi,
+                'relasi' => (string) $trx->relasi,
                 'jumlah' => ($trx->jumlah * -1),
                 'urutan' => $trx->urutan,
                 'id_user' => auth()->user()->id
