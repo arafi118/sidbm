@@ -32,6 +32,11 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
     <link id="pagestyle" href="/assets/css/material-dashboard.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        .tox-promotion {
+            display: none;
+        }
+    </style>
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -152,6 +157,7 @@
     <script src="/assets/js/plugins/sweetalert.min.js"></script>
     <script src="/assets/js/plugins/flatpickr.min.js"></script>
     <script src="/assets/js/plugins/chartjs.min.js"></script>
+    <script src="{{ asset('vendor/tinymce/tinymce.min.js') }}"></script>
 
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
@@ -325,6 +331,17 @@
         // $(document).ajaxStop(function() {
         //     notif.close();
         // });
+    </script>
+
+    <script>
+        tinymce.init({
+            selector: '.tiny-mce-editor',
+            plugins: 'table visualblocks',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align | table | removeformat',
+            font_family_formats: 'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace;',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'ARAFII'
+        });
     </script>
 
     <script>
