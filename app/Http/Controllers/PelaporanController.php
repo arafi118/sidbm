@@ -71,7 +71,7 @@ class PelaporanController extends Controller
         ]);
 
         $request->hari = ($request->hari) ?: 31;
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten', 'desa')->first();
+        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten', 'desa', 'ttd')->first();
         $kab = $kec->kabupaten;
         $dir = User::where([
             ['lokasi', auth()->user()->lokasi],
@@ -1236,4 +1236,14 @@ class PelaporanController extends Controller
             return $view;
         }
     }
+
+    // public function extractCommonWords($string, $kec)
+    // {
+    //     //
+    // }
+
+    // public function keyword($kec)
+    // {
+    //     return [];
+    // }
 }

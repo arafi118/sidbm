@@ -38,8 +38,9 @@
         }
 
         table tr th,
-        table tr td {
-            padding: 2px 4px;
+        table tr td,
+        table tr td table.p tr td {
+            padding: 2px 4px !important;
         }
 
         table tr td table tr td {

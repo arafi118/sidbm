@@ -20,4 +20,9 @@ class Kecamatan extends Model
     {
         return $this->hasMany(Desa::class, 'kd_kec', 'kd_kec');
     }
+
+    public function ttd()
+    {
+        return $this->belongsTo(TandaTanganLaporan::class, 'id', 'lokasi');
+    }
 }

@@ -68,11 +68,29 @@
             @endforeach
             @if ($ak->id == 1 or $ak->id == 16 or $ak->id == 46 or $ak->id == 61)
             @else
-                <tr style="background: rgb(150, 150, 150); font-weight: bold;">
-                    <td width="30" align="center">&nbsp;</td>
-                    <td>Jumlah {{ $ak->nama_akun }}</td>
-                    <td align="right">{{ number_format($j_saldo) }}</td>
-                </tr>
+                @if ($ak->id == 64)
+                    <tr>
+                        <td colspan="5" style="padding: 0px !important;">
+                            <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                                style="font-size: 11px;">
+                                <tr style="background: rgb(150, 150, 150); font-weight: bold;">
+                                    <td width="30" align="center">&nbsp;</td>
+                                    <td>Jumlah {{ $ak->nama_akun }}</td>
+                                    <td width="100" align="right">{{ number_format($j_saldo) }}</td>
+                                </tr>
+                            </table>
+
+                            <div style="margin-top: 24px;"></div>
+                            {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
+                        </td>
+                    </tr>
+                @else
+                    <tr style="background: rgb(150, 150, 150); font-weight: bold;">
+                        <td width="30" align="center">&nbsp;</td>
+                        <td>Jumlah {{ $ak->nama_akun }}</td>
+                        <td align="right">{{ number_format($j_saldo) }}</td>
+                    </tr>
+                @endif
                 @php
                     $array_saldo[] = $j_saldo;
                     $j_saldo = 0;

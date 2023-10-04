@@ -168,7 +168,6 @@
         integrity="sha512-fD9DI5bZwQxOi7MhYWnnNPlvXdp/2Pj3XSTRrFs5FQa4mizyGLnJcN6tuvUS6LbmgN1ut+XGSABKvjN0H6Aoow=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script src="/assets/js/plugins/world.js"></script>
     @yield('script')
 
     <script>
@@ -336,21 +335,35 @@
     <script>
         tinymce.init({
             selector: '.tiny-mce-editor',
-            plugins: 'table visualblocks',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align | table | removeformat',
+            plugins: 'table visualblocks fullscreen',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align | table fullscreen | removeformat',
             font_family_formats: 'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace;',
             tinycomments_mode: 'embedded',
             tinycomments_author: 'ARAFII'
         });
-    </script>
 
-    <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
             var options = {
                 damping: '0.5'
             }
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+        }
+
+        function Toastr(icon, text) {
+            font = "1.2rem Nimrod MT";
+
+            canvas = document.createElement("canvas");
+            context = canvas.getContext("2d");
+            context.font = font;
+            width = context.measureText(text).width;
+            formattedWidth = Math.ceil(width) + 100;
+
+            Toast.fire({
+                icon: icon,
+                title: text,
+                width: formattedWidth
+            })
         }
     </script>
 

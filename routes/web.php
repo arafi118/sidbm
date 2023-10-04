@@ -8,6 +8,7 @@ use App\Http\Controllers\KelompokController;
 use App\Http\Controllers\PelaporanController;
 use App\Http\Controllers\PinjamanAnggotaController;
 use App\Http\Controllers\PinjamanKelompokController;
+use App\Http\Controllers\SopController;
 use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,11 @@ Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 Route::get('/piutang_jasa', [DashboardController::class, 'piutang'])->middleware('auth');
+
+Route::get('/pengaturan/sop', [SopController::class, 'index'])->middleware('auth');
+Route::get('/pengaturan/ttd_pelaporan', [SopController::class, 'ttdPelaporan'])->middleware('auth');
+
+Route::post('/pengaturan/sop/simpanttdpelaporan', [SopController::class, 'simpanTtdPelaporan'])->middleware('auth');
 
 Route::get('/database/kelompok/register_kelompok', [KelompokController::class, 'register'])->middleware('auth');
 Route::get('/database/kelompok/generatekode', [KelompokController::class, 'generateKode'])->middleware('auth');

@@ -227,3 +227,23 @@ table.table.midle tbody tr td {
 .swal2-input {
     padding: 0 0.75em;
 }
+
+.sidenav {
+    z-index: 1 !important;
+}
+
+.swal2-container {
+    padding: 0.4em;
+}
+
+.swal2-toast {
+    max-width: inherit;
+}
+
+body.swal2-toast-shown .swal2-container {
+    width: unset;
+}
+
+.swal2-popup.swal2-toast .swal2-title {
+    margin: 9px 5px auto;
+}

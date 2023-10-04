@@ -9,12 +9,6 @@
             return 'active bg-gradient-info';
         }
     
-        // if ($curent == request()->segment($jumlah_url - 1)) {
-        //     if ($curent != '') {
-        //         return 'active bg-gradient-info';
-        //     }
-        // }
-    
         if (in_array($url, $_url)) {
             return 'active';
         }
@@ -57,7 +51,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#pengaturanMenu" class="nav-link text-white"
+                <a data-bs-toggle="collapse" href="#pengaturanMenu"
+                    class="nav-link text-white {{ active('', 'sop', 'coa', 'ttd_pelaporan', 'ttd_spk') }}"
                     aria-controls="pengaturanMenu" role="button" aria-expanded="false">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons-round opacity-10">settings_applications</i>
@@ -67,15 +62,32 @@
                 <div class="collapse" id="pengaturanMenu">
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="/pengaturan/sop">
+                            <a class="nav-link text-white {{ active('sop') }}" href="/pengaturan/sop">
                                 <span class="sidenav-mini-icon"> P </span>
                                 <span class="sidenav-normal  ms-2  ps-1"> Personalisasi SOP </span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="pengaturan/coa">
+                            <a class="nav-link text-white {{ active('coa') }}" href="/pengaturan/coa">
                                 <span class="sidenav-mini-icon"> C </span>
                                 <span class="sidenav-normal  ms-2  ps-1"> Cart Of Account </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white {{ active('ttd_pelaporan') }}"
+                                href="/pengaturan/ttd_pelaporan">
+                                <span class="sidenav-mini-icon">
+                                    <i class="material-icons-round opacity-10">border_color</i>
+                                </span>
+                                <span class="sidenav-normal  ms-2  ps-1"> Ttd Pelaporan </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white {{ active('ttd_spk') }}" href="/pengaturan/ttd_spk">
+                                <span class="sidenav-mini-icon">
+                                    <i class="material-icons-round opacity-10">border_color</i>
+                                </span>
+                                <span class="sidenav-normal  ms-2  ps-1"> Ttd SPK </span>
                             </a>
                         </li>
                     </ul>

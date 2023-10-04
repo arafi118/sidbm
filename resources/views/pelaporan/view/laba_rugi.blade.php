@@ -195,14 +195,25 @@
             <td colspan="4" height="2"></td>
         </tr>
 
-        <tr style="background: rgb(200, 200, 200); font-weight: bold;">
-            <td align="left">C. Laba Rugi Setelah Taksiran Pajak (A + B) </td>
-            <td align="right">{{ number_format($saldo_bln_lalu1 + $saldo_bln_lalu2 - $pph['bulan_lalu'], 2) }}</td>
-            <td align="right">
-                {{ number_format($saldo1 - $saldo_bln_lalu1 + ($saldo2 - $saldo_bln_lalu2) - ($pph['sekarang'] - $pph['bulan_lalu']), 2) }}
-            </td>
-            <td align="right">{{ number_format($saldo1 + $saldo2 - $pph['sekarang'], 2) }}</td>
-        </tr>
+        <tr>
+            <td colspan="4" style="padding: 0px !important;">
+                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 11px;">
+                    <tr style="background: rgb(200, 200, 200); font-weight: bold;">
+                        <td width="255" align="left">C. Laba Rugi Setelah Taksiran Pajak (A + B) </td>
+                        <td width="70" align="right">
+                            {{ number_format($saldo_bln_lalu1 + $saldo_bln_lalu2 - $pph['bulan_lalu'], 2) }}</td>
+                        <td width="70" align="right">
+                            {{ number_format($saldo1 - $saldo_bln_lalu1 + ($saldo2 - $saldo_bln_lalu2) - ($pph['sekarang'] - $pph['bulan_lalu']), 2) }}
+                        </td>
+                        <td width="70" align="right">{{ number_format($saldo1 + $saldo2 - $pph['sekarang'], 2) }}
+                        </td>
+                    </tr>
+                </table>
 
+                <div style="margin-top: 24px;"></div>
+                {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
+            </td>
+        </tr>
     </table>
 @endsection

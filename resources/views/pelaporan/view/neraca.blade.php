@@ -81,7 +81,7 @@
                 @endforeach
             @endforeach
             <tr style="background: rgb(167, 167, 167); font-weight: bold;">
-                <td height="20" colspan="2" align="left">
+                <td height="15" colspan="2" align="left">
                     <b>Jumlah {{ $lev1->nama_akun }}</b>
                 </td>
                 <td align="right">{{ number_format($sum_akun1, 2) }}</td>
@@ -90,11 +90,22 @@
                 <td colspan="3" height="1"></td>
             </tr>
         @endforeach
-        <tr style="background: rgb(167, 167, 167); font-weight: bold;">
-            <td height="20" colspan="2" align="left">
-                <b>Jumlah Liabilitas + Ekuitas </b>
+
+        <tr>
+            <td colspan="3" style="padding: 0px !important;">
+                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 11px;">
+                    <tr style="background: rgb(167, 167, 167); font-weight: bold;">
+                        <td height="15" width="330" align="left">
+                            <b>Jumlah Liabilitas + Ekuitas </b>
+                        </td>
+                        <td align="right">{{ number_format($kredit, 2) }}</td>
+                    </tr>
+                </table>
+
+                <div style="margin-top: 24px;"></div>
+                {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
             </td>
-            <td align="right">{{ number_format($kredit, 2) }}</td>
         </tr>
     </table>
 @endsection

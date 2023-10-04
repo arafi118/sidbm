@@ -5,6 +5,8 @@
     $tgl_trx = [];
     
     $number = 1;
+    $debit = 0;
+    $kredit = 0;
 @endphp
 
 @extends('pelaporan.layout.base')
@@ -33,8 +35,8 @@
             <td align="center" width="35">Ref ID.</td>
             <td align="center" width="35">Kd. Rek</td>
             <td align="center" width="175">Keterangan</td>
-            <td align="center" width="60">Debit</td>
-            <td align="center" width="60">Kredit</td>
+            <td align="center" width="70">Debit</td>
+            <td align="center" width="70">Kredit</td>
             <td align="center">Ins</td>
         </tr>
 
@@ -85,7 +87,15 @@
                             <td align="center">&nbsp;</td>
                         @endif
                     </tr>
+
+                    @php
+                        $kredit += $angs->jumlah;
+                    @endphp
                 @endforeach
+
+                @php
+                    $debit += $trx->angs_sum_jumlah;
+                @endphp
             @else
                 <tr style="background: {{ $bg }};">
                     <td height="15" align="center" width="10">{{ $number }}.</td>
@@ -115,6 +125,11 @@
                         <td align="center">&nbsp;</td>
                     @endif
                 </tr>
+
+                @php
+                    $debit += $trx->jumlah;
+                    $kredit += $trx->jumlah;
+                @endphp
             @endif
 
             @php
@@ -122,5 +137,23 @@
             @endphp
         @endforeach
 
+        <tr>
+            <td colspan="8">
+                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 11px;">
+                    <tr style="background: rgb(233, 233, 233); font-weight: bold; color: #000;">
+                        <td height="15" align="center" width="321">
+                            <b>Total Transaksi</b>
+                        </td>
+                        <td align="right" width="70">{{ number_format($debit, 2) }}</td>
+                        <td align="right" width="70">{{ number_format($kredit, 2) }}</td>
+                        <td align="center">&nbsp;</td>
+                    </tr>
+                </table>
+
+                <div style="margin-top: 24px;"></div>
+                {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
+            </td>
+        </tr>
     </table>
 @endsection
