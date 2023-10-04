@@ -68,8 +68,9 @@
                     @php
                         $sum_nc_debit += $debit;
                         $sum_nc_kredit += $kredit;
-                    @endphp <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    @endphp
+                    <td align="right">{{ number_format(0) }}</td>
+                    <td align="right">{{ number_format(0) }}</td>
                     <td align="right">{{ number_format($debit) }}</td>
                     <td align="right">{{ number_format($kredit) }}</td>
                 @else
@@ -79,8 +80,8 @@
                     @endphp
                     <td align="right">{{ number_format($debit) }}</td>
                     <td align="right">{{ number_format($kredit) }}</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td align="right">{{ number_format(0) }}</td>
+                    <td align="right">{{ number_format(0) }}</td>
                 @endif
 
             </tr>
@@ -104,4 +105,7 @@
             <td align="right">{{ number_format($sum_nc_kredit + ($sum_rl_kredit - $sum_rl_debit)) }}</td>
         </tr>
     </table>
+
+    <div style="margin-top: 24px;"></div>
+    {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
 @endsection
