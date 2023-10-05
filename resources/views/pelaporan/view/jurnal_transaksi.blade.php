@@ -30,14 +30,14 @@
             <td colspan="7" height="5"></td>
         </tr>
         <tr style="background: rgb(74, 74, 74); font-weight: bold; color: #fff;">
-            <td height="15" align="center" width="10">No</td>
-            <td align="center" width="35">Tanggal</td>
-            <td align="center" width="35">Ref ID.</td>
-            <td align="center" width="35">Kd. Rek</td>
-            <td align="center" width="175">Keterangan</td>
-            <td align="center" width="70">Debit</td>
-            <td align="center" width="70">Kredit</td>
-            <td align="center">Ins</td>
+            <td height="15" align="center" width="4%">No</td>
+            <td align="center" width="10%">Tanggal</td>
+            <td align="center" width="8%">Ref ID.</td>
+            <td align="center" width="8%">Kd. Rek</td>
+            <td align="center" width="35%">Keterangan</td>
+            <td align="center" width="15%">Debit</td>
+            <td align="center" width="15%">Kredit</td>
+            <td align="center" width="5%">Ins</td>
         </tr>
 
         @foreach ($transaksi as $trx)
@@ -58,7 +58,7 @@
 
             @if ($trx->idtp != '0')
                 <tr style="background: {{ $bg }};">
-                    <td height="15" align="center" width="10">{{ $number }}.</td>
+                    <td height="15" align="center">{{ $number }}.</td>
                     <td align="center">{{ Tanggal::tglIndo($trx->tgl_transaksi) }}</td>
                     <td align="left">{{ $trx->idtp }}.0</td>
                     <td align="center">{{ $trx->rekening_debit }}</td>
@@ -74,7 +74,7 @@
 
                 @foreach ($trx->angs as $angs)
                     <tr style="background: {{ $bg }};">
-                        <td height="15" align="center" width="10">&nbsp;</td>
+                        <td height="15" align="center">&nbsp;</td>
                         <td align="center">&nbsp;</td>
                         <td align="left">{{ $trx->idtp }}.{{ $angs->idt }}</td>
                         <td align="center">{{ $angs->rekening_kredit }}</td>
@@ -98,7 +98,7 @@
                 @endphp
             @else
                 <tr style="background: {{ $bg }};">
-                    <td height="15" align="center" width="10">{{ $number }}.</td>
+                    <td height="15" align="center">{{ $number }}.</td>
                     <td align="center">{{ Tanggal::tglIndo($trx->tgl_transaksi) }}</td>
                     <td align="left">{{ $trx->idt }}</td>
                     <td align="center">{{ $trx->rekening_debit }}</td>
@@ -112,7 +112,7 @@
                     @endif
                 </tr>
                 <tr style="background: {{ $bg }};">
-                    <td height="15" align="center" width="10">&nbsp;</td>
+                    <td height="15" align="center">&nbsp;</td>
                     <td align="center">&nbsp;</td>
                     <td align="left">{{ $trx->idt }}</td>
                     <td align="center">{{ $trx->rekening_kredit }}</td>
@@ -138,16 +138,16 @@
         @endforeach
 
         <tr>
-            <td colspan="8">
+            <td colspan="8" style="padding: 0px !important;">
                 <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                     style="font-size: 11px;">
                     <tr style="background: rgb(233, 233, 233); font-weight: bold; color: #000;">
-                        <td height="15" align="center" width="321">
+                        <td height="15" align="center">
                             <b>Total Transaksi</b>
                         </td>
-                        <td align="right" width="70">{{ number_format($debit, 2) }}</td>
-                        <td align="right" width="70">{{ number_format($kredit, 2) }}</td>
-                        <td align="center">&nbsp;</td>
+                        <td align="right" width="15%">{{ number_format($debit, 2) }}</td>
+                        <td align="right" width="15%">{{ number_format($kredit, 2) }}</td>
+                        <td align="center" width="5%">&nbsp;</td>
                     </tr>
                 </table>
 

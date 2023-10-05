@@ -38,23 +38,23 @@
 
         </table>
 
-        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; table-layout: fixed;">
             <tr>
-                <th rowspan="2">Nama Desa</th>
-                <th rowspan="2">Alokasi</th>
-                <th rowspan="2">Saldo</th>
-                <th rowspan="2">%</th>
-                <th colspan="2">Tunggakan</th>
-                <th>Lancar</th>
-                <th>Diragukan</th>
-                <th>Macet</th>
+                <th class="t l b" rowspan="2" width="24%">Nama Desa</th>
+                <th class="t l b" rowspan="2" width="10%">Alokasi</th>
+                <th class="t l b" rowspan="2" width="10%">Saldo</th>
+                <th class="t l b" rowspan="2" width="4%">%</th>
+                <th class="t l b" colspan="2" width="20%">Tunggakan</th>
+                <th class="t l b" width="10%">Lancar</th>
+                <th class="t l b" width="10%">Diragukan</th>
+                <th class="t l b r" width="10%">Macet</th>
             </tr>
             <tr>
-                <th>Pokok</th>
-                <th>Jasa</th>
-                <th>(Menunggak 1-3)</th>
-                <th>(Menunggak 4-5)</th>
-                <th>(Menunggak 6+)</th>
+                <th class="t l b" width="10%">Pokok</th>
+                <th class="t l b" width="10%">Jasa</th>
+                <th class="t l b">(Menunggak 1-3)</th>
+                <th class="t l b">(Menunggak 4-5)</th>
+                <th class="t l b r">(Menunggak 6+)</th>
             </tr>
 
             @foreach ($jpp->pinjaman_kelompok as $pinkel)
@@ -76,15 +76,15 @@
                             $t_kolek3 += $j_kolek3;
                         @endphp
                         <tr>
-                            <td align="left">{{ $nomor++ }}. {{ $nama_desa }}</td>
-                            <td align="right">{{ number_format($j_alokasi) }}</td>
-                            <td align="right">{{ number_format($j_saldo) }}</td>
-                            <td align="center">{{ number_format(floor($j_pross * 100)) }}</td>
-                            <td align="right">{{ number_format($j_tunggakan_pokok) }}</td>
-                            <td align="right">{{ number_format($j_tunggakan_jasa) }}</td>
-                            <td align="right">{{ number_format($j_kolek1) }}</td>
-                            <td align="right">{{ number_format($j_kolek2) }}</td>
-                            <td align="right">{{ number_format($j_kolek3) }}</td>
+                            <td class="t l b" align="left">{{ $nomor++ }}. {{ $nama_desa }}</td>
+                            <td class="t l b" align="right">{{ number_format($j_alokasi) }}</td>
+                            <td class="t l b" align="right">{{ number_format($j_saldo) }}</td>
+                            <td class="t l b" align="center">{{ number_format(floor($j_pross * 100)) }}</td>
+                            <td class="t l b" align="right">{{ number_format($j_tunggakan_pokok) }}</td>
+                            <td class="t l b" align="right">{{ number_format($j_tunggakan_jasa) }}</td>
+                            <td class="t l b" align="right">{{ number_format($j_kolek1) }}</td>
+                            <td class="t l b" align="right">{{ number_format($j_kolek2) }}</td>
+                            <td class="t l b r" align="right">{{ number_format($j_kolek3) }}</td>
                         </tr>
                     @endif
 
@@ -199,15 +199,15 @@
                     $t_kolek3 += $j_kolek3;
                 @endphp
                 <tr>
-                    <td align="left">{{ $nomor++ }}. {{ $nama_desa }}</td>
-                    <td align="right">{{ number_format($j_alokasi) }}</td>
-                    <td align="right">{{ number_format($j_saldo) }}</td>
-                    <td align="center">{{ number_format(floor($j_pross * 100)) }}</td>
-                    <td align="right">{{ number_format($j_tunggakan_pokok) }}</td>
-                    <td align="right">{{ number_format($j_tunggakan_jasa) }}</td>
-                    <td align="right">{{ number_format($j_kolek1) }}</td>
-                    <td align="right">{{ number_format($j_kolek2) }}</td>
-                    <td align="right">{{ number_format($j_kolek3) }}</td>
+                    <td class="t l b" align="left">{{ $nomor++ }}. {{ $nama_desa }}</td>
+                    <td class="t l b" align="right">{{ number_format($j_alokasi) }}</td>
+                    <td class="t l b" align="right">{{ number_format($j_saldo) }}</td>
+                    <td class="t l b" align="center">{{ number_format(floor($j_pross * 100)) }}</td>
+                    <td class="t l b" align="right">{{ number_format($j_tunggakan_pokok) }}</td>
+                    <td class="t l b" align="right">{{ number_format($j_tunggakan_jasa) }}</td>
+                    <td class="t l b" align="right">{{ number_format($j_kolek1) }}</td>
+                    <td class="t l b" align="right">{{ number_format($j_kolek2) }}</td>
+                    <td class="t l b r" align="right">{{ number_format($j_kolek3) }}</td>
                 </tr>
 
                 @php
@@ -216,31 +216,48 @@
                         $t_pross = $t_saldo / $t_alokasi;
                     }
                 @endphp
-                <tr style="font-weight: bold;">
-                    <td align="center" height="20">J U M L A H</td>
-                    <td align="right">{{ number_format($t_alokasi) }}</td>
-                    <td align="right">{{ number_format($t_saldo) }}</td>
-                    <td align="center">{{ number_format(floor($t_pross * 100)) }}</td>
-                    <td align="right">{{ number_format($t_tunggakan_pokok) }}</td>
-                    <td align="right">{{ number_format($t_tunggakan_jasa) }}</td>
-                    <td align="right">{{ number_format($t_kolek1) }}</td>
-                    <td align="right">{{ number_format($t_kolek2) }}</td>
-                    <td align="right">{{ number_format($t_kolek3) }}</td>
-                </tr>
-                <tr style="font-weight: bold;">
-                    <td align="center" rowspan="2" height="20">Resiko Pinjaman</td>
-                    <td colspan="5" align="center">(Lancar + Diragukan + Macet)</td>
-                    <td align="center">Lancar * 0%</td>
-                    <td align="center">Diragukan * 50%</td>
-                    <td align="center">Macet * 100%</td>
-                </tr>
                 <tr>
-                    <td align="center" colspan="5">
-                        {{ number_format(($t_kolek1 * 0) / 100 + ($t_kolek2 * 50) / 100 + ($t_kolek3 * 100) / 100) }}
+                    <td colspan="9" style="padding: 0px !important;">
+                        <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                            style="font-size: 11px; table-layout: fixed;">
+                            <tr style="font-weight: bold;">
+                                <td class="t l b" width="24%" align="center" height="20">J U M L A H</td>
+                                <td class="t l b" width="10%" align="right">{{ number_format($t_alokasi) }}</td>
+                                <td class="t l b" width="10%" align="right">{{ number_format($t_saldo) }}</td>
+                                <td class="t l b" width="4%" align="center">
+                                    {{ number_format(floor($t_pross * 100)) }}</td>
+                                <td class="t l b" width="10%" align="right">{{ number_format($t_tunggakan_pokok) }}
+                                </td>
+                                <td class="t l b" width="10%" align="right">{{ number_format($t_tunggakan_jasa) }}
+                                </td>
+                                <td class="t l b" width="10%" align="right">{{ number_format($t_kolek1) }}</td>
+                                <td class="t l b" width="10%" align="right">{{ number_format($t_kolek2) }}</td>
+                                <td class="t l b r" width="10%" align="right">{{ number_format($t_kolek3) }}</td>
+                            </tr>
+                            <tr style="font-weight: bold;">
+                                <td class="t l b" align="center" rowspan="2" height="20">Resiko Pinjaman</td>
+                                <td class="t l b" colspan="5" align="center">(Lancar + Diragukan + Macet)</td>
+                                <td class="t l b" align="center">Lancar * 0%</td>
+                                <td class="t l b" align="center">Diragukan * 50%</td>
+                                <td class="t l b r" align="center">Macet * 100%</td>
+                            </tr>
+                            <tr>
+                                <td class="t l b" align="center" colspan="5">
+                                    {{ number_format(($t_kolek1 * 0) / 100 + ($t_kolek2 * 50) / 100 + ($t_kolek3 * 100) / 100) }}
+                                </td>
+                                <td class="t l b" align="center">{{ number_format(($t_kolek1 * 0) / 100) }}</td>
+                                <td class="t l b" align="center">{{ number_format(($t_kolek2 * 50) / 100) }}</td>
+                                <td class="t l b r" align="center">{{ number_format(($t_kolek3 * 100) / 100) }}</td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="9">
+                                    <div style="margin-top: 24px;"></div>
+                                    {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
+                                </td>
+                            </tr>
+                        </table>
                     </td>
-                    <td align="center">{{ number_format(($t_kolek1 * 0) / 100) }}</td>
-                    <td align="center">{{ number_format(($t_kolek2 * 50) / 100) }}</td>
-                    <td align="center">{{ number_format(($t_kolek3 * 100) / 100) }}</td>
                 </tr>
             @endif
         </table>

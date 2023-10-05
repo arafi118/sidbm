@@ -8,7 +8,16 @@
 @section('content')
     @foreach ($jenis_pp as $jpp)
         @php
+            if ($jpp->pinjaman_kelompok->isEmpty()) {
+                break;
+            }
+        @endphp
+        @php
             $kd_desa = [];
+            $t_angg = 0;
+            $t_alokasi = 0;
+            $t_saldo = 0;
+            $t_tunggakan = 0;
         @endphp
         @if ($jpp->nama_jpp != 'SPP')
             <div class="break"></div>
@@ -30,16 +39,16 @@
             </tr>
         </table>
 
-        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr style="background: rgb(230, 230, 230); font-weight: bold;">
-                <th height="12" width="20">No</th>
-                <th width="250">Kelompok - Loan ID.</th>
-                <th width="50">Angg.</th>
-                <th width="50">Tgl Cair</th>
-                <th>Tempo</th>
-                <th width="100">Alokasi</th>
-                <th width="100">Saldo</th>
-                <th width="100">Tunggakan</th>
+                <th class="t l b" height="20" width="3%">No</th>
+                <th class="t l b">Kelompok - Loan ID.</th>
+                <th class="t l b" width="5%">Angg.</th>
+                <th class="t l b" width="8%">Tgl Cair</th>
+                <th class="t l b" width="8%">Tempo</th>
+                <th class="t l b" width="12%">Alokasi</th>
+                <th class="t l b" width="12%">Saldo</th>
+                <th class="t l b r" width="12%">Tunggakan</th>
             </tr>
 
             @foreach ($jpp->pinjaman_kelompok as $pinkel)
@@ -49,16 +58,23 @@
                 @endphp
                 @if (array_count_values($kd_desa)[$pinkel->kd_desa] <= '1')
                     @if ($section != $desa && count($kd_desa) > 1)
+                        @php
+                            $t_angg += $j_angg;
+                            $t_alokasi += $j_alokasi;
+                            $t_saldo += $j_saldo;
+                            $t_tunggakan += $j_tunggakan;
+                        @endphp
                         <tr>
-                            <td colspan="5">Jumlah {{ $nama_desa }}</td>
-                            <td align="right">{{ number_format($j_alokasi) }}</td>
-                            <td align="right">{{ number_format($j_saldo) }}</td>
-                            <td align="right">{{ number_format($j_tunggakan) }}
+                            <td class="t l b" colspan="5">Jumlah {{ $nama_desa }}</td>
+                            <td class="t l b" align="right">{{ number_format($j_alokasi) }}</td>
+                            <td class="t l b" align="right">{{ number_format($j_saldo) }}</td>
+                            <td class="t l b r" align="right">{{ number_format($j_tunggakan) }}
                         </tr>
                     @endif
 
                     <tr style="font-weight: bold;">
-                        <td colspan="8" align="left">{{ $pinkel->kode_desa }}. {{ $pinkel->nama_desa }}</td>
+                        <td class="t l b r" colspan="8" align="left">{{ $pinkel->kode_desa }}. {{ $pinkel->nama_desa }}
+                        </td>
                     </tr>
 
                     @php
@@ -95,14 +111,14 @@
                     $tunggakan = $tunggakan_pokok + $tunggakan_jasa;
                 @endphp
                 <tr>
-                    <td align="center">{{ $nomor++ }}</td>
-                    <td align="left">{{ $pinkel->nama_kelompok }} - {{ $pinkel->id }}</td>
-                    <td align="center">{{ $pinkel->pinjaman_anggota_count }}</td>
-                    <td align="center">{{ Tanggal::tglIndo($pinkel->tgl_cair) }}</td>
-                    <td align="center">{{ $pinkel->jangka }}/{{ $pinkel->sis_pokok->sistem }}</td>
-                    <td align="right">{{ number_format($pinkel->alokasi) }}</td>
-                    <td align="right">{{ number_format($saldo) }}</td>
-                    <td align="right">{{ number_format($tunggakan) }}
+                    <td class="t l b" align="center">{{ $nomor++ }}</td>
+                    <td class="t l b" align="left">{{ $pinkel->nama_kelompok }} - {{ $pinkel->id }}</td>
+                    <td class="t l b" align="center">{{ $pinkel->pinjaman_anggota_count }}</td>
+                    <td class="t l b" align="center">{{ Tanggal::tglIndo($pinkel->tgl_cair) }}</td>
+                    <td class="t l b" align="center">{{ $pinkel->jangka }}/{{ $pinkel->sis_pokok->sistem }}</td>
+                    <td class="t l b" align="right">{{ number_format($pinkel->alokasi) }}</td>
+                    <td class="t l b" align="right">{{ number_format($saldo) }}</td>
+                    <td class="t l b r" align="right">{{ number_format($tunggakan) }}
                 </tr>
 
                 @php
@@ -112,6 +128,39 @@
                     $j_tunggakan += $tunggakan;
                 @endphp
             @endforeach
+
+            @if (count($kd_desa) > 0)
+                @php
+                    $t_angg += $j_angg;
+                    $t_alokasi += $j_alokasi;
+                    $t_saldo += $j_saldo;
+                    $t_tunggakan += $j_tunggakan;
+                @endphp
+
+                <tr>
+                    <td class="t l b" colspan="5">Jumlah {{ $nama_desa }}</td>
+                    <td class="t l b" align="right">{{ number_format($j_alokasi) }}</td>
+                    <td class="t l b" align="right">{{ number_format($j_saldo) }}</td>
+                    <td class="t l b r" align="right">{{ number_format($j_tunggakan) }}
+                </tr>
+
+                <tr>
+                    <td colspan="8" style="padding: 0px !important;">
+                        <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                            style="font-size: 11px;">
+                            <tr style="background: rgb(74, 74, 74); font-weight: bold; color: #fff;" class="t l b r">
+                                <td height="15" colspan="5" align="center">J U M L A H</td>
+                                <td align="right" width="12%">{{ number_format($t_alokasi) }}</td>
+                                <td align="right" width="12%">{{ number_format($t_saldo) }}</td>
+                                <td align="right" width="12%">{{ number_format($t_tunggakan) }}
+                            </tr>
+                        </table>
+
+                        <div style="margin-top: 24px;"></div>
+                        {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
+                    </td>
+                </tr>
+            @endif
         </table>
     @endforeach
 @endsection

@@ -21,9 +21,9 @@
             <td colspan="3" height="3"></td>
         </tr>
         <tr style="background: #000; color: #fff;">
-            <td width="30">Kode</td>
-            <td width="300">Nama Akun</td>
-            <td align="right">Saldo</td>
+            <td width="10%">Kode</td>
+            <td width="70%">Nama Akun</td>
+            <td align="right" width="20%">Saldo</td>
         </tr>
         <tr>
             <td colspan="3" height="1"></td>
@@ -96,10 +96,10 @@
                 <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                     style="font-size: 11px;">
                     <tr style="background: rgb(167, 167, 167); font-weight: bold;">
-                        <td height="15" width="330" align="left">
+                        <td height="15" width="80%" align="left">
                             <b>Jumlah Liabilitas + Ekuitas </b>
                         </td>
-                        <td align="right">{{ number_format($kredit, 2) }}</td>
+                        <td align="right" width="20%">{{ number_format($kredit, 2) }}</td>
                     </tr>
                 </table>
 

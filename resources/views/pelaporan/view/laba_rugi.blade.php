@@ -24,10 +24,10 @@
             <td colspan="4" height="5"></td>
         </tr>
         <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 12px;">
-            <td align="center" width="255" height="16">Rekening</td>
-            <td align="center" width="70">s.d. {{ $header_lalu }}</td>
-            <td align="center" width="70">{{ $header_sekarang }}</td>
-            <td align="center" width="70">s.d. {{ $header_sekarang }}</td>
+            <td align="center" width="55%" height="16">Rekening</td>
+            <td align="center" width="15%">s.d. {{ $header_lalu }}</td>
+            <td align="center" width="15%">{{ $header_sekarang }}</td>
+            <td align="center" width="15%">s.d. {{ $header_sekarang }}</td>
         </tr>
         <tr style="background: rgb(200, 200, 200); font-weight: bold; text-transform: uppercase;">
             <td colspan="4" height="14">4. Pendapatan</td>
@@ -200,13 +200,13 @@
                 <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                     style="font-size: 11px;">
                     <tr style="background: rgb(200, 200, 200); font-weight: bold;">
-                        <td width="255" align="left">C. Laba Rugi Setelah Taksiran Pajak (A + B) </td>
-                        <td width="70" align="right">
+                        <td width="55%" align="left">C. Laba Rugi Setelah Taksiran Pajak (A + B) </td>
+                        <td width="15%" align="right">
                             {{ number_format($saldo_bln_lalu1 + $saldo_bln_lalu2 - $pph['bulan_lalu'], 2) }}</td>
-                        <td width="70" align="right">
+                        <td width="15%" align="right">
                             {{ number_format($saldo1 - $saldo_bln_lalu1 + ($saldo2 - $saldo_bln_lalu2) - ($pph['sekarang'] - $pph['bulan_lalu']), 2) }}
                         </td>
-                        <td width="70" align="right">{{ number_format($saldo1 + $saldo2 - $pph['sekarang'], 2) }}
+                        <td width="15%" align="right">{{ number_format($saldo1 + $saldo2 - $pph['sekarang'], 2) }}
                         </td>
                     </tr>
                 </table>

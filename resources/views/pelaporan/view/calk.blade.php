@@ -346,6 +346,12 @@
         </li>
     </ol>
 
-    <div style="margin-top: 24px;"></div>
-    {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+        <tr>
+            <td>
+                <div style="margin-top: 24px;"></div>
+                {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
+            </td>
+        </tr>
+    </table>
 @endsection

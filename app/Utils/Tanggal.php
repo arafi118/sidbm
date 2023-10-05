@@ -7,7 +7,7 @@ use App\Utils\Keuangan;
 
 class Tanggal
 {
-    public static function tglIndo($tanggal)
+    public static function tglIndo($tanggal, $format = 'DD/MM/YYYY')
     {
         $array_tgl = explode('-', $tanggal);
         $tahun = $array_tgl[0];
@@ -23,7 +23,7 @@ class Tanggal
         }
         $tgl = new Carbon($tanggal);
 
-        return $tgl->isoFormat('DD/MM/YYYY');
+        return $tgl->isoFormat($format);
     }
 
     public static function tglNasional($tanggal)

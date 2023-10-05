@@ -21,12 +21,12 @@
 
     </table>
 
-    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="background: rgb(232, 232, 232)">
-            <th width="30" height="20">No</th>
-            <th>Rekening Modal</th>
-            <th width="100">&nbsp;</th>
-            <th width="100">&nbsp;</th>
+            <th class="l t" width="5%" height="20">No</th>
+            <th class="l t" width="55%">Rekening Modal</th>
+            <th class="l t" width="20%">&nbsp;</th>
+            <th class="l r t" width="20%">&nbsp;</th>
         </tr>
 
         @foreach ($rekening as $rek)
@@ -40,17 +40,24 @@
                 $t_saldo += $saldo;
             @endphp
             <tr>
-                <td align="center">{{ $loop->iteration }}</td>
-                <td>{{ $rek->nama_akun }}</td>
-                <td align="right">{{ number_format($saldo) }}</td>
-                <td>&nbsp;</td>
+                <td class="l t" align="center">{{ $loop->iteration }}</td>
+                <td class="l t">{{ $rek->nama_akun }}</td>
+                <td class="l t" align="right">{{ number_format($saldo) }}</td>
+                <td class="l t r">&nbsp;</td>
             </tr>
         @endforeach
 
         <tr>
-            <td colspan="2">&nbsp;</td>
-            <td align="right">{{ number_format($t_saldo) }}</td>
-            <td>&nbsp;</td>
+            <td class="l t b" colspan="2" height="15">&nbsp;</td>
+            <td class="l t b" align="right">{{ number_format($t_saldo) }}</td>
+            <td class="l t r b">&nbsp;</td>
+        </tr>
+
+        <tr>
+            <td colspan="4">
+                <div style="margin-top: 24px;"></div>
+                {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
+            </td>
         </tr>
     </table>
 @endsection
