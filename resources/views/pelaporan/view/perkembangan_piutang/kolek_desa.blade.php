@@ -8,6 +8,12 @@
 @section('content')
     @foreach ($jenis_pp as $jpp)
         @php
+            if ($jpp->pinjaman_kelompok->isEmpty()) {
+                break;
+            }
+        @endphp
+
+        @php
             $kd_desa = [];
             $nomor = 1;
             $t_alokasi = 0;

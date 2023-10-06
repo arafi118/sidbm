@@ -245,47 +245,52 @@
                         $t_pross = $t_saldo / $t_alokasi;
                     }
                 @endphp
+
+                <tr>
+                    <td colspan="11" style="padding: 0px !important;">
+                        <table border="0" width="100%" cellspacing="0" cellpadding="0"
+                            style="font-size: 11px; table-layout: fixed;">
+                            <tr style="font-weight: bold;">
+                                <td width="25%" class="t l b" align="center" height="20">J U M L A H</td>
+                                <td width="10%" class="t l b" align="right">{{ number_format($t_alokasi) }}</td>
+                                <td width="10%" class="t l b" align="right">{{ number_format($t_saldo) }}</td>
+                                <td width="2%" class="t l b" align="center">
+                                    {{ number_format(floor($t_pross * 100)) }}</td>
+                                <td width="10%" class="t l b" align="right">{{ number_format($t_tunggakan_pokok) }}
+                                </td>
+                                <td width="10%" class="t l b" align="right">{{ number_format($t_tunggakan_jasa) }}
+                                </td>
+                                <td width="3%" class="t l b" align="center">&nbsp;</td>
+                                <td width="10%" class="t l b" align="right">{{ number_format($t_kolek1) }}</td>
+                                <td width="10%" class="t l b" align="right">{{ number_format($t_kolek2) }}</td>
+                                <td width="10%" class="t l b r" align="right">{{ number_format($t_kolek3) }}</td>
+                            </tr>
+                            <tr style="font-weight: bold;">
+                                <td class="t l b" align="center" rowspan="2" height="20">Resiko Pinjaman</td>
+                                <td class="t l b" colspan="6" align="center">(Lancar + Diragukan + Macet)</td>
+                                <td class="t l b" align="center">Lancar * 0%</td>
+                                <td class="t l b" align="center">Diragukan * 50%</td>
+                                <td class="t l b r" align="center">Macet * 100%</td>
+                            </tr>
+                            <tr>
+                                <td class="t l b" align="center" colspan="6">
+                                    {{ number_format(($t_kolek1 * 0) / 100 + ($t_kolek2 * 50) / 100 + ($t_kolek3 * 100) / 100) }}
+                                </td>
+                                <td class="t l b" align="center">{{ number_format(($t_kolek1 * 0) / 100) }}</td>
+                                <td class="t l b" align="center">{{ number_format(($t_kolek2 * 50) / 100) }}</td>
+                                <td class="t l b r" align="center">{{ number_format(($t_kolek3 * 100) / 100) }}</td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="10">
+                                    <div style="margin-top: 24px;"></div>
+                                    {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
             @endif
         </table>
-
-        @if (count($kd_desa) > 0)
-            <table border="0" width="100%" cellspacing="0" cellpadding="0"
-                style="font-size: 11px; table-layout: fixed;">
-                <tr style="font-weight: bold;">
-                    <td width="25%" class="t l b" align="center" height="20">J U M L A H</td>
-                    <td width="10%" class="t l b" align="right">{{ number_format($t_alokasi) }}</td>
-                    <td width="10%" class="t l b" align="right">{{ number_format($t_saldo) }}</td>
-                    <td width="2%" class="t l b" align="center">{{ number_format(floor($t_pross * 100)) }}</td>
-                    <td width="10%" class="t l b" align="right">{{ number_format($t_tunggakan_pokok) }}</td>
-                    <td width="10%" class="t l b" align="right">{{ number_format($t_tunggakan_jasa) }}</td>
-                    <td width="3%" class="t l b" align="center">&nbsp;</td>
-                    <td width="10%" class="t l b" align="right">{{ number_format($t_kolek1) }}</td>
-                    <td width="10%" class="t l b" align="right">{{ number_format($t_kolek2) }}</td>
-                    <td width="10%" class="t l b r" align="right">{{ number_format($t_kolek3) }}</td>
-                </tr>
-                <tr style="font-weight: bold;">
-                    <td class="t l b" align="center" rowspan="2" height="20">Resiko Pinjaman</td>
-                    <td class="t l b" colspan="6" align="center">(Lancar + Diragukan + Macet)</td>
-                    <td class="t l b" align="center">Lancar * 0%</td>
-                    <td class="t l b" align="center">Diragukan * 50%</td>
-                    <td class="t l b r" align="center">Macet * 100%</td>
-                </tr>
-                <tr>
-                    <td class="t l b" align="center" colspan="6">
-                        {{ number_format(($t_kolek1 * 0) / 100 + ($t_kolek2 * 50) / 100 + ($t_kolek3 * 100) / 100) }}
-                    </td>
-                    <td class="t l b" align="center">{{ number_format(($t_kolek1 * 0) / 100) }}</td>
-                    <td class="t l b" align="center">{{ number_format(($t_kolek2 * 50) / 100) }}</td>
-                    <td class="t l b r" align="center">{{ number_format(($t_kolek3 * 100) / 100) }}</td>
-                </tr>
-
-                <tr>
-                    <td colspan="10">
-                        <div style="margin-top: 24px;"></div>
-                        {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
-                    </td>
-                </tr>
-            </table>
-        @endif
     @endforeach
 @endsection

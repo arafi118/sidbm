@@ -33,27 +33,27 @@
             </tr>
 
         </table>
-        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; table-layout: fixed;">
             <tr style="background: rgb(232, 232, 232)">
-                <th rowspan="2" width="10">No</th>
-                <th rowspan="2" width="40">Tgl Beli</th>
-                <th rowspan="2" width="150">Nama Barang</th>
-                <th rowspan="2" width="10">Id</th>
-                <th rowspan="2" width="30">Kondisi</th>
-                <th rowspan="2" width="15">Unit</th>
-                <th rowspan="2" width="55">Harga Satuan</th>
-                <th rowspan="2" width="55">Harga Perolehan</th>
-                <th rowspan="2" width="20">Umur Eko.</th>
-                <th rowspan="2">Amortisasi</th>
-                <th colspan="2" width="55">Tahun Ini</th>
-                <th colspan="2" width="55">s.d. Tahun Ini</th>
-                <th rowspan="2" width="55">Nilai Buku</th>
+                <th class="t l b" rowspan="2" width="2%">No</th>
+                <th class="t l b" rowspan="2" width="7%">Tgl Beli</th>
+                <th class="t l b" rowspan="2" width="21%">Nama Barang</th>
+                <th class="t l b" rowspan="2" width="2%">Id</th>
+                <th class="t l b" rowspan="2" width="5%">Kondisi</th>
+                <th class="t l b" rowspan="2" width="3%">Unit</th>
+                <th class="t l b" rowspan="2" width="8%">Harga Satuan</th>
+                <th class="t l b" rowspan="2" width="8%">Harga Perolehan</th>
+                <th class="t l b" rowspan="2" width="4%">Umur Eko.</th>
+                <th class="t l b" rowspan="2" width="8%">Amortisasi</th>
+                <th class="t l b" colspan="2" width="12%">Tahun Ini</th>
+                <th class="t l b" colspan="2" width="12%">s.d. Tahun Ini</th>
+                <th class="t l b r" rowspan="2" width="8%">Nilai Buku</th>
             </tr>
             <tr style="background: rgb(232, 232, 232)">
-                <th width="15">Umur</th>
-                <th>Biaya</th>
-                <th width="15">Umur</th>
-                <th>Biaya</th>
+                <th class="t l b" width="4%">Umur</th>
+                <th class="t l b" width="8%">Biaya</th>
+                <th class="t l b" width="4%">Umur</th>
+                <th class="t l b r" width="8%">Biaya</th>
             </tr>
             @foreach ($rek->inventaris as $inv)
                 @php
@@ -120,40 +120,56 @@
                     $t_nilai_buku += $nilai_buku;
                 @endphp
                 <tr style="color: rgb({{ $warna }})">
-                    <td align="center">{{ $loop->iteration }}</td>
-                    <td align="center">{{ Tanggal::tglIndo($inv->tgl_beli) }}</td>
-                    <td>{{ $nama_barang }}</td>
-                    <td align="center">{{ $inv->id }}</td>
-                    <td align="center">{{ $inv->status }}</td>
-                    <td align="center">{{ $inv->unit }}</td>
-                    <td align="right">{{ number_format($inv->harsat) }}</td>
-                    <td align="right">{{ number_format($inv->harsat * $inv->unit) }}</td>
-                    <td align="center">{{ $inv->umur_ekonomis }}</td>
-                    <td align="right">{{ number_format($satuan_susut) }}</td>
-                    <td align="center">{{ $umur_pakai }}</td>
-                    <td align="right">{{ number_format($penyusutan) }}</td>
-                    <td align="center">{{ $akum_umur }}</td>
-                    <td align="right">{{ number_format($akum_susut) }}</td>
-                    <td align="right">{{ number_format($nilai_buku) }}</td>
+                    <td class="t l b" align="center">{{ $loop->iteration }}</td>
+                    <td class="t l b" align="center">{{ Tanggal::tglIndo($inv->tgl_beli) }}</td>
+                    <td class="t l b">{{ $nama_barang }}</td>
+                    <td class="t l b" align="center">{{ $inv->id }}</td>
+                    <td class="t l b" align="center">{{ $inv->status }}</td>
+                    <td class="t l b" align="center">{{ $inv->unit }}</td>
+                    <td class="t l b" align="right">{{ number_format($inv->harsat) }}</td>
+                    <td class="t l b" align="right">{{ number_format($inv->harsat * $inv->unit) }}</td>
+                    <td class="t l b" align="center">{{ $inv->umur_ekonomis }}</td>
+                    <td class="t l b" align="right">{{ number_format($satuan_susut) }}</td>
+                    <td class="t l b" align="center">{{ $umur_pakai }}</td>
+                    <td class="t l b" align="right">{{ number_format($penyusutan) }}</td>
+                    <td class="t l b" align="center">{{ $akum_umur }}</td>
+                    <td class="t l b" align="right">{{ number_format($akum_susut) }}</td>
+                    <td class="t l b r" align="right">{{ number_format($nilai_buku) }}</td>
                 </tr>
             @endforeach
 
             <tr>
-                <td height="15" colspan="5">
-                    Jumlah
+                <td colspan="15" style="padding: 0px !important">
+                    <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                        style="font-size: 10px; table-layout: fixed;">
+                        <tr>
+                            <td class="t l b" width="37%" height="15">
+                                Jumlah
+                            </td>
+                            <td class="t l b" width="3%" align="center">{{ number_format($t_unit) }}</td>
+                            <td class="t l b" width="8%">&nbsp;</td>
+                            <td class="t l b" width="8%" align="right">{{ number_format($t_harga) }}</td>
+                            @if ($rek->lev4 == '1')
+                                <td class="t l b" width="36%">&nbsp;</td>
+                            @else
+                                <td class="t l b" width="4%">&nbsp;</td>
+                                <td class="t l b" width="8%">&nbsp;</td>
+                                <td class="t l b" width="12%" align="right">{{ number_format($t_penyusutan) }}
+                                </td>
+                                <td class="t l b" width="12%" align="right">{{ number_format($t_akum_susut) }}
+                                </td>
+                            @endif
+                            <td class="t l b r" width="8%" align="right">{{ number_format($t_nilai_buku) }}</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="{{ $rek->lev4 == '1' ? 6 : 9 }}">
+                                <div style="margin-top: 24px;"></div>
+                                {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
+                            </td>
+                        </tr>
+                    </table>
                 </td>
-                <td align="center">{{ number_format($t_unit) }}</td>
-                <td>&nbsp;</td>
-                <td align="right">{{ number_format($t_harga) }}</td>
-                @if ($rek->lev4 == '1')
-                    <td colspan="6">&nbsp;</td>
-                @else
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td align="right" colspan="2">{{ number_format($t_penyusutan) }}</td>
-                    <td align="right" colspan="2">{{ number_format($t_akum_susut) }}</td>
-                @endif
-                <td align="right">{{ number_format($t_nilai_buku) }}</td>
             </tr>
         </table>
     @endforeach

@@ -1226,6 +1226,23 @@ class PelaporanController extends Controller
             $data['tgl'] = Tanggal::tahun($tgl);
         }
 
+        $data['dir'] = User::where([
+            ['level', '1'],
+            ['jabatan', '1'],
+            ['lokasi', auth()->user()->lokasi]
+        ])->first();
+
+        $data['pengawas'] = User::where([
+            ['level', '3'],
+            ['jabatan', '1'],
+            ['lokasi', auth()->user()->lokasi]
+        ])->first();
+
+        $data['bendahara'] = User::where([
+            ['level', '1'],
+            ['jabatan', '3'],
+            ['lokasi', auth()->user()->lokasi]
+        ])->first();
 
         $view = view('pelaporan.view.penilaian_kesehatan', $data)->render();
 

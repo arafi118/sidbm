@@ -8,6 +8,12 @@
 @section('content')
     @foreach ($jenis_pp as $jpp)
         @php
+            if ($jpp->pinjaman_kelompok->isEmpty()) {
+                break;
+            }
+        @endphp
+
+        @php
             $kd_desa = [];
             $nomor = 1;
             $t_alokasi = 0;
@@ -205,11 +211,14 @@
                     <td align="right">{{ number_format(($t_kolek3 * 100) / 100) }}</td>
                 </tr>
                 <tr>
-                    <th colspan="3">Total</th>
+                    <th colspan="3" height="15">Total</th>
                     <th>{{ number_format($t_kolek1 + $t_kolek2 + $t_kolek3) }}</th>
                     <th>{{ number_format(($t_kolek1 * 0) / 100 + ($t_kolek2 * 50) / 100 + ($t_kolek3 * 100) / 100) }}</th>
                 </tr>
             </table>
+
+            <div style="margin-top: 24px;"></div>
+            {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
         @endif
     @endforeach
 @endsection

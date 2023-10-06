@@ -1,4 +1,5 @@
 @php
+    use App\Utils\Tanggal;
     use App\Utils\Keuangan;
     $keuangan = new Keuangan();
 @endphp
@@ -45,7 +46,11 @@
         $laba_bersih = @round((($surplus - ($tk['sum_kolek'] - $ckp)) / $aset_produktif) * 100, 2);
         $beban_operasional = @round(($biaya / $pendapatan) * 100);
         $saldo_piuang = @round(($tk['saldo_pokok'] / $aset_ekonomi) * 100);
-        $kekayaan_bersih = @round((($aset_ekonomi - $tk['sum_kolek']) / $modal_awal) * 100);
+        if ($modal_awal == 0) {
+            $kekayaan_bersih = @round(($aset_ekonomi - $tk['sum_kolek']) * 100);
+        } else {
+            $kekayaan_bersih = @round((($aset_ekonomi - $tk['sum_kolek']) / $modal_awal) * 100);
+        }
         
         // Skor Baris 1
         if ($saldo_piutang_berisiko < 5) {
@@ -522,6 +527,41 @@
             <td align="center">{{ '<= 37.5' }}</td>
             <td align="center">{{ $skor }}</td>
             <td align="center">{{ $status }}</td>
+        </tr>
+    </table>
+
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+        <tr>
+            <td colspan="4">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="3" width="75%">&nbsp;</td>
+            <td align="center" width="25%">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($tgl_kondisi) }}</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td align="center">Disetujui</td>
+            <td align="center">Diperiksa Oleh:</td>
+            <td align="center">Dibuat Oleh:</td>
+        </tr>
+        <tr>
+            <td colspan="4" height="40">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td align="center">{{ $dir->namadepan }} {{ $dir->namabelakang }}</td>
+            @if ($pengawas)
+                <td align="center">{{ $pengawas->namadepan }} {{ $pengawas->namabelakang }}</td>
+            @else
+                <td align="center">(...............................................)</td>
+            @endif
+            <td align="center">{{ $bendahara->namadepan }} {{ $bendahara->namabelakang }}</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td align="center">{{ $kec->sebutan_level_1 }}</td>
+            <td align="center">Pengawas</td>
+            <td align="center">{{ $kec->sebutan_level_3 }}</td>
         </tr>
     </table>
 @endsection
