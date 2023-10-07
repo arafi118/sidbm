@@ -36,7 +36,8 @@ class AuthController extends Controller
                     session([
                         'nama_lembaga' => str_replace('DBM ', '', $kec->nama_lembaga_sort),
                         'nama' => $user->namadepan . ' ' . $user->namabelakang,
-                        'foto' => $user->foto
+                        'foto' => $user->foto,
+                        'logo' => $kec->logo
                     ]);
 
 

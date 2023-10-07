@@ -31,6 +31,7 @@ Route::get('/piutang_jasa', [DashboardController::class, 'piutang'])->middleware
 
 Route::get('/pengaturan/sop', [SopController::class, 'index'])->middleware('auth');
 Route::get('/pengaturan/ttd_pelaporan', [SopController::class, 'ttdPelaporan'])->middleware('auth');
+Route::get('/pengaturan/ttd_spk', [SopController::class, 'ttdSpk'])->middleware('auth');
 
 Route::post('/pengaturan/sop/simpanttdpelaporan', [SopController::class, 'simpanTtdPelaporan'])->middleware('auth');
 

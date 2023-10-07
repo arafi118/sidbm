@@ -54,6 +54,11 @@
             padding: 4px 4px;
         }
 
+        table.p0 tr th,
+        table.p0 tr td {
+            padding: 0px !important;
+        }
+
         table tr td table:not(.padding) tr td {
             padding: 0 !important;
         }

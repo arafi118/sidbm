@@ -17,6 +17,7 @@ use App\Models\StatusPinjaman;
 use App\Models\Transaksi;
 use App\Models\User;
 use App\Utils\Keuangan;
+use App\Utils\Pinjaman;
 use App\Utils\Tanggal;
 use PDF;
 use Illuminate\Http\Request;
@@ -1003,7 +1004,7 @@ class PinjamanKelompokController extends Controller
         $data['hari'] = date('d');
         $data['type'] = 'pdf';
 
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten', 'kabupaten.wilayah', 'desa')->first();
+        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten', 'kabupaten.wilayah', 'desa', 'ttd')->first();
         $kab = $kec->kabupaten;
         $dir = User::where([
             ['lokasi', auth()->user()->lokasi],
@@ -1393,6 +1394,7 @@ class PinjamanKelompokController extends Controller
         ])->first();
 
         $data['keuangan'] = $keuangan;
+        $data['ttd'] = Pinjaman::keyword($data['kec']->ttd->tanda_tangan_spk, $data);
 
         $data['judul'] = 'Surat Perjanjian Kredit (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.spk', $data)->render();

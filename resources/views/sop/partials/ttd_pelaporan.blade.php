@@ -16,29 +16,9 @@
             </form>
 
             <div class="d-flex justify-content-end mt-3">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#kataKunci" class="btn btn-info btn-sm">
-                    Kata Kunci
-                </button>
                 <button type="button" id="simpanTtdPelaporan" class="btn btn-github btn-sm ms-2">
                     Simpan Perubahan
                 </button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="kataKunci" tabindex="-1" aria-labelledby="kataKunciLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="kataKunciLabel">Kata Kunci</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
-                </div>
             </div>
         </div>
     </div>

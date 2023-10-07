@@ -201,5 +201,8 @@
                 periksa bagi yang berwenang.
             </li>
         </ol>
+
+        <div style="margin-top: 24px;"></div>
+        {!! $ttd !!}
     </div>
 @endsection

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Kecamatan;
 use App\Models\TandaTanganLaporan;
+use App\Utils\Pinjaman;
+use DOMDocument;
 use Illuminate\Http\Request;
 
 class SopController extends Controller
@@ -24,6 +26,15 @@ class SopController extends Controller
         return view('sop.partials.ttd_pelaporan')->with(compact('title', 'kec'));
     }
 
+    public function ttdSpk()
+    {
+        $title = "Pengaturan Tanda Tangan SPK";
+        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('ttd')->first();
+        $keyword = Pinjaman::keyword();
+
+        return view('sop.partials.ttd_spk')->with(compact('title', 'kec', 'keyword'));
+    }
+
     public function simpanTtdPelaporan(Request $request)
     {
         $data = $request->only([
@@ -31,8 +42,15 @@ class SopController extends Controller
             'tanda_tangan'
         ]);
 
-        $data['tanda_tangan'] = preg_replace('/<table[^>]*>/', '<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">', $data['tanda_tangan'], 1);
+        if ($data['field'] == 'tanda_tangan_pelaporan') {
+            $data['tanda_tangan'] = preg_replace('/<table[^>]*>/', '<table class="p0" border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">', $data['tanda_tangan'], 1);
+        } else {
+            $data['tanda_tangan'] = preg_replace('/<table[^>]*>/', '<table class="p0" border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">', $data['tanda_tangan'], 1);
+        }
         $data['tanda_tangan'] = preg_replace('/height:\s*[^;]+;?/', '', $data['tanda_tangan']);
+
+        $data['tanda_tangan'] = str_replace('colgroup', 'tr', $data['tanda_tangan']);
+        $data['tanda_tangan'] = preg_replace('/<col([^>]*)>/', '<td$1>&nbsp;</td>', $data['tanda_tangan']);
 
         $ttd = TandaTanganLaporan::where('lokasi', auth()->user()->lokasi)->count();
         if ($ttd <= 0) {
@@ -50,6 +68,7 @@ class SopController extends Controller
 
             $tanda_tangan = TandaTanganLaporan::create($insert);
         } else {
+            // dd($data['tanda_tangan']);
             $tanda_tangan = TandaTanganLaporan::where('lokasi', auth()->user()->lokasi)->update([
                 $data['field'] => json_encode($data['tanda_tangan'])
             ]);

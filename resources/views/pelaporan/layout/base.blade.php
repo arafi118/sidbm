@@ -47,6 +47,11 @@
             padding: 0 !important;
         }
 
+        table.p0 tr th,
+        table.p0 tr td {
+            padding: 0px !important;
+        }
+
         .break {
             page-break-after: always;
         }
