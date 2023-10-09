@@ -1,6 +1,9 @@
 @php
     use App\Utils\Keuangan;
     $keuangan = new Keuangan();
+    
+    $calk = json_decode($kec->calk, true);
+    $peraturan_desa = $calk['peraturan_desa'];
 @endphp
 
 @extends('pelaporan.layout.base')
@@ -67,7 +70,7 @@
             <p style="text-align: justify">
                 {{ $kec->nama_lembaga_sort }} didirikan di {{ $kec->nama_kec }} berdasarkan PERATURAN BERSAMA
                 KEPALA DESA
-                NOMOR ........ TAHUN 20.... dan mendapatkan Sertifikat Badan Hukum dari Menteri Hukum dan Hak
+                NOMOR {{ $peraturan_desa }} dan mendapatkan Sertifikat Badan Hukum dari Menteri Hukum dan Hak
                 Asasi Manusia
                 No. {{ $kec->nomor_bh }} tanggal ............. . {{ $kec->nama_lembaga_sort }}
                 menjalankan usaha
@@ -79,22 +82,24 @@
                 <tr>
                     <td style="padding: 0px; 4px;" width="60">Pengawas</td>
                     <td style="padding: 0px; 4px;">:</td>
-                    <td style="padding: 0px; 4px;">.................................</td>
+                    <td style="padding: 0px; 4px;">
+                        {{ $pengawas ? $pengawas->namadepan . ' ' . $pengawas->namabelakang : '......................................' }}
+                    </td>
                 </tr>
                 <tr>
                     <td style="padding: 0px; 4px;">Direktur</td>
                     <td style="padding: 0px; 4px;">:</td>
-                    <td style="padding: 0px; 4px;">.................................</td>
+                    <td style="padding: 0px; 4px;">{{ $dir->namadepan . ' ' . $dir->namabelakang }}</td>
                 </tr>
                 <tr>
                     <td style="padding: 0px; 4px;">Sekretaris</td>
                     <td style="padding: 0px; 4px;">:</td>
-                    <td style="padding: 0px; 4px;">.................................</td>
+                    <td style="padding: 0px; 4px;">{{ $sekr->namadepan . ' ' . $sekr->namabelakang }}</td>
                 </tr>
                 <tr>
                     <td style="padding: 0px; 4px;">Bendahara</td>
                     <td style="padding: 0px; 4px;">:</td>
-                    <td style="padding: 0px; 4px;">.................................</td>
+                    <td style="padding: 0px; 4px;">{{ $bend->namadepan . ' ' . $bend->namabelakang }}</td>
                 </tr>
                 <tr>
                     <td style="padding: 0px; 4px;">Unit Usaha</td>
@@ -291,19 +296,20 @@
                             <table style="margin-left: 10px;">
                                 <tr>
                                     <td>1. </td>
-                                    <td>Kegiatan sosial kemasyarakatan dan bantuan rumah tangga miskin .....%</td>
+                                    <td>Kegiatan sosial kemasyarakatan dan bantuan rumah tangga miskin
+                                        {{ $calk['D']['1']['d']['1'] }}%</td>
                                 </tr>
                                 <tr>
                                     <td>2. </td>
                                     <td>
                                         Pengembangan kapasitas kelompok simpan pinjam perempuan/usaha ekonomi produktif
-                                        .....%
+                                        {{ $calk['D']['1']['d']['2'] }}%
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>3. </td>
                                     <td>
-                                        Pelatihan masyarakat, dan kelompok pemanfaat umum .....%
+                                        Pelatihan masyarakat, dan kelompok pemanfaat umum {{ $calk['D']['1']['d']['1'] }}%
                                     </td>
                                 </tr>
                             </table>
@@ -314,16 +320,16 @@
                     <div>Laba Ditahan</div>
                     <ol style="list-style: lower-latin;">
                         <li>
-                            Laba Ditahan untuk Peningkatan Modal DBM Usaha ....................., .....% Rp.
-                            .........................
+                            Laba Ditahan untuk Peningkatan Modal DBM Usaha Rp.
+                            {{ number_format($calk['D']['2']['a'], 2) }}
                         </li>
                         <li>
-                            Laba Ditahan untuk Penambahan Investasi Usaha ....................., .....% Rp.
-                            .........................
+                            Laba Ditahan untuk Penambahan Investasi Usaha Rp.
+                            {{ number_format($calk['D']['2']['b'], 2) }}
                         </li>
                         <li>
-                            Laba Ditahan untuk Pendirian Unit Usaha ....................., .....% Rp.
-                            .........................
+                            Laba Ditahan untuk Pendirian Unit Usaha Rp.
+                            {{ number_format($calk['D']['2']['c'], 2) }}
                         </li>
                     </ol>
                 </li>

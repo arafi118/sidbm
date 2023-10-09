@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kecamatan;
+use App\Models\PinjamanAnggota;
 use App\Models\PinjamanKelompok;
 use App\Models\RealAngsuran;
 use App\Models\Rekening;
@@ -10,7 +11,11 @@ use App\Models\RencanaAngsuran;
 use App\Models\Saldo;
 use App\Models\Transaksi;
 use App\Utils\Keuangan;
+use App\Utils\Tanggal;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Cookie;
+use DB;
 use Session;
 
 class DashboardController extends Controller
@@ -21,8 +26,60 @@ class DashboardController extends Controller
             $this->piutang();
         }
 
-        $title = "Dashboard";
-        return view('dashboard.index')->with(compact('title'));
+        $tgl = date('Y-m-d');
+        $pinj_anggota = PinjamanAnggota::where([
+            ['status', 'A'],
+            ['tgl_cair', '<=', $tgl]
+        ])->count();
+
+        $pinkel = PinjamanKelompok::where([
+            ['status', 'A'],
+            ['tgl_cair', '<=', $tgl]
+        ])->count();
+
+        $data['pinjaman_anggota'] = $pinj_anggota;
+        $data['pinjaman_kelompok'] = $pinkel;
+
+        $tb = 'pinjaman_kelompok_' . auth()->user()->lokasi;
+        $pinj = PinjamanKelompok::select([
+            DB::raw("(SELECT count(*) FROM $tb WHERE status='P') as p"),
+            DB::raw("(SELECT count(*) FROM $tb WHERE status='V') as v"),
+            DB::raw("(SELECT count(*) FROM $tb WHERE status='W') as w"),
+        ])->first();
+
+        $data['proposal'] = $pinj->p;
+        $data['verifikasi'] = $pinj->v;
+        $data['waiting'] = $pinj->w;
+
+        $tb = 'transaksi_' . auth()->user()->lokasi;
+        $trx = Transaksi::select([
+            DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_debit LIKE '1.1.01.%' AND rekening_kredit='1.1.03.01' AND tgl_transaksi<='$tgl') as pokok_spp"),
+            DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_debit LIKE '1.1.01.%' AND rekening_kredit='1.1.03.02' AND tgl_transaksi<='$tgl') as pokok_uep"),
+            DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_debit LIKE '1.1.01.%' AND rekening_kredit='1.1.03.03' AND tgl_transaksi<='$tgl') as pokok_pl"),
+            DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_debit LIKE '1.1.01.%' AND rekening_kredit='4.1.01.01' AND tgl_transaksi<='$tgl') as jasa_spp"),
+            DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_debit LIKE '1.1.01.%' AND rekening_kredit='4.1.01.02' AND tgl_transaksi<='$tgl') as jasa_uep"),
+            DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_debit LIKE '1.1.01.%' AND rekening_kredit='4.1.01.03' AND tgl_transaksi<='$tgl') as jasa_pl"),
+        ])->first();
+
+        $data['pokok_spp'] = $trx->pokok_spp;
+        $data['pokok_uep'] = $trx->pokok_uep;
+        $data['pokok_pl'] = $trx->pokok_pl;
+        $data['jasa_spp'] = $trx->jasa_spp;
+        $data['jasa_uep'] = $trx->jasa_uep;
+        $data['jasa_pl'] = $trx->jasa_pl;
+
+        // $saldo = Saldo::where([
+        //     ['lokasi', auth()->user()->lokasi],
+        //     ['id', '>', '4000000000000'],
+        //     ['tahun', date('Y')]
+        // ])->orderBy('id', 'ASC')->orderBy('bulan', 'ASC')->get();
+
+        // dd($saldo[1]);
+
+        $rekening = Rekening::where('lev1', '>=', '4')->get();
+
+        $data['title'] = "Dashboard";
+        return view('dashboard.index')->with($data);
     }
 
     public function piutang()
@@ -183,6 +240,111 @@ class DashboardController extends Controller
                 Rekening::where('kode_akun', $key)->update($update);
             }
         }
+    }
+
+    public function jatuhTempo(Request $request)
+    {
+        $tgl = Tanggal::tglNasional($request->tgl);
+
+        $jatuh_tempo = '00';
+        $pinjaman = PinjamanKelompok::where('status', 'A')->whereDay('tgl_cair', date('d', strtotime($tgl)))->with([
+            'target' => function ($query) use ($tgl) {
+                $query->where([
+                    ['jatuh_tempo', $tgl],
+                    ['angsuran_ke', '!=', '0']
+                ]);
+            },
+            'saldo' => function ($query) use ($tgl) {
+                $query->where('tgl_transaksi', '<=', $tgl);
+            }
+        ])->get();
+
+        foreach ($pinjaman as $pinkel) {
+            if ($pinkel->target) {
+                $sum_pokok = 0;
+                $sum_jasa = 0;
+
+                if ($pinkel->saldo) {
+                    $sum_pokok = $pinkel->saldo->sum_pokok;
+                    $sum_jasa = $pinkel->saldo->sum_jasa;
+                }
+
+                $nunggak_pokok = $pinkel->target->target_pokok - $sum_pokok;
+                $nunggak_jasa = $pinkel->target->target_jasa - $sum_jasa;
+
+                if ($nunggak_pokok > 0 && $nunggak_jasa > 0) {
+                    $jatuh_tempo++;
+                }
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'jatuh_tempo' => $jatuh_tempo
+        ]);
+    }
+
+    public function nunggak(Request $request)
+    {
+        $tgl = Tanggal::tglNasional($request->tgl);
+        $pinjaman = PinjamanKelompok::where('status', 'A')->whereDay('tgl_cair', '<=', $tgl)->with([
+            'target' => function ($query) use ($tgl) {
+                $query->where([
+                    ['jatuh_tempo', '<=', $tgl]
+                ]);
+            },
+            'saldo' => function ($query) use ($tgl) {
+                $query->where('tgl_transaksi', '<=', $tgl);
+            }
+        ])->orderBy('tgl_cair', 'ASC')->orderBy('id', 'ASC')->get();
+
+        $nunggak = "00";
+        foreach ($pinjaman as $pinkel) {
+            $real_pokok = 0;
+            $real_jasa = 0;
+            $sum_pokok = 0;
+            $sum_jasa = 0;
+            $saldo_pokok = $pinkel->alokasi;
+            $saldo_jasa = $pinkel->alokasi / $pinkel->pros_jasa;
+            if ($pinkel->saldo) {
+                $real_pokok = $pinkel->saldo->realisasi_pokok;
+                $real_jasa = $pinkel->saldo->realisasi_jasa;
+                $sum_pokok = $pinkel->saldo->sum_pokok;
+                $sum_jasa = $pinkel->saldo->sum_jasa;
+                $saldo_pokok = $pinkel->saldo->saldo_pokok;
+                $saldo_jasa = $pinkel->saldo->saldo_jasa;
+            }
+
+            $target_pokok = 0;
+            $target_jasa = 0;
+            if ($pinkel->target) {
+                $target_pokok = $pinkel->target->target_pokok;
+                $target_jasa = $pinkel->target->target_jasa;
+            }
+
+            $tunggakan_pokok = $target_pokok - $sum_pokok;
+            if ($tunggakan_pokok < 0) {
+                $tunggakan_pokok = 0;
+            }
+            $tunggakan_jasa = $target_jasa - $sum_jasa;
+            if ($tunggakan_jasa < 0) {
+                $tunggakan_jasa = 0;
+            }
+
+            if ($tunggakan_pokok != 0 && $tunggakan_jasa != 0) {
+                $nunggak++;
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'nunggak' => $nunggak
+        ]);
+    }
+
+    public function lineChart(Request $request)
+    {
+        $tgl = Tanggal::tglNasional($request->tgl);
     }
 
     public function setting(Request $request)

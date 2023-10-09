@@ -247,3 +247,13 @@ body.swal2-toast-shown .swal2-container {
 .swal2-popup.swal2-toast .swal2-title {
     margin: 9px 5px auto;
 }
+
+.spinner-border.sm {
+    --bs-spinner-width: 1rem;
+    --bs-spinner-height: 1rem;
+}
+
+.spinner-border.xs {
+    --bs-spinner-width: .5rem;
+    --bs-spinner-height: .5rem;
+}

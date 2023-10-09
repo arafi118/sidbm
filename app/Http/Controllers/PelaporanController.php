@@ -485,6 +485,30 @@ class PelaporanController extends Controller
 
         $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with('akun2.akun3.rek')->orderBy('kode_akun', 'ASC')->get();
 
+        $data['dir'] = User::where([
+            ['level', '1'],
+            ['jabatan', '1'],
+            ['lokasi', auth()->user()->lokasi],
+        ])->first();
+
+        $data['sekr'] = User::where([
+            ['level', '1'],
+            ['jabatan', '2'],
+            ['lokasi', auth()->user()->lokasi],
+        ])->first();
+
+        $data['bend'] = User::where([
+            ['level', '1'],
+            ['jabatan', '3'],
+            ['lokasi', auth()->user()->lokasi],
+        ])->first();
+
+        $data['pengawas'] = User::where([
+            ['level', '3'],
+            ['jabatan', '1'],
+            ['lokasi', auth()->user()->lokasi],
+        ])->first();
+
         $view = view('pelaporan.view.calk', $data)->render();
 
         if ($data['type'] == 'pdf') {

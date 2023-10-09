@@ -1,6 +1,12 @@
 @extends('layouts.base')
 
 @section('content')
+    <form action="" method="post" id="defaultForm">
+        @csrf
+
+        <input type="hidden" name="tgl" id="tgl" value="{{ date('d/m/Y') }}">
+    </form>
+
     <div class="row">
         <div class="col-sm-4">
             <div class="card">
@@ -9,10 +15,12 @@
                         <div class="col-7 text-start">
                             <p class="text-sm mb-1 text-capitalize font-weight-bold">Pemanfaat</p>
                             <h5 class="font-weight-bolder mb-0">
-                                12 Kelompok
+                                {{ $pinjaman_kelompok }} Kelompok
                             </h5>
-                            <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">55 <span
-                                    class="font-weight-normal text-secondary">pemanfaat Aktif</span></span>
+                            <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">
+                                {{ $pinjaman_anggota }}
+                                <span class="font-weight-normal text-secondary">pemanfaat Aktif</span>
+                            </span>
                         </div>
                         <div class="col-5">
                             <div class="dropdown text-end">
@@ -30,14 +38,16 @@
                         <div class="col-7 text-start">
                             <p class="text-sm mb-1 text-capitalize font-weight-bold">Proposal Pinjaman</p>
                             <h5 class="font-weight-bolder mb-0">
-                                19 Proposal
+                                {{ $proposal }} Proposal
                             </h5>
-                            <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">12 <span
-                                    class="font-weight-normal text-secondary">verifikasi</span></span>
+                            <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">
+                                {{ $verifikasi }}
+                                <span class="font-weight-normal text-secondary">verifikasi</span>
+                            </span>
                         </div>
                         <div class="col-5">
                             <div class="dropdown text-end">
-                                <span class="text-xs text-secondary">2 waiting</span>
+                                <span class="text-xs text-secondary">{{ $waiting }} waiting</span>
                             </div>
                         </div>
                     </div>
@@ -51,10 +61,19 @@
                         <div class="col-7 text-start">
                             <p class="text-sm mb-1 text-capitalize font-weight-bold">Jatuh Tempo</p>
                             <h5 class="font-weight-bolder mb-0">
-                                0 Hari Ini
+                                <span id="jatuh_tempo">
+                                    <div class="spinner-border sm text-info" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </span> Hari Ini
                             </h5>
-                            <span class="font-weight-normal text-secondary text-sm"><span
-                                    class="font-weight-bolder text-success">13</span> menunggak</span>
+                            <span class="font-weight-normal text-secondary text-sm">
+                                <span class="font-weight-bolder text-success" id="nunggak">
+                                    <div class="spinner-border xs text-info" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </span> menunggak
+                            </span>
                         </div>
                         <div class="col-5">
                             <div class="dropdown text-end">
@@ -121,7 +140,9 @@
                     <div class="w-60">
                         <div class="text-sm">
                             Total Angsuran
-                            <div><b>Rp. 123.123.123,00</b></div>
+                            <div>
+                                <b>Rp. <span id="total_angsur"></span></b>
+                            </div>
                         </div>
                     </div>
                     <div class="w-40 text-end">
@@ -171,6 +192,35 @@
 
 @section('script')
     <script>
+        $.ajax({
+            type: 'post',
+            url: '/dashboard/jatuh_tempo',
+            data: $('#defaultForm').serialize(),
+            success: function(result) {
+                if (result.success) {
+                    $('#jatuh_tempo').html(result.jatuh_tempo)
+                }
+            }
+        })
+
+        $.ajax({
+            type: 'post',
+            url: '/dashboard/nunggak',
+            data: $('#defaultForm').serialize(),
+            success: function(result) {
+                if (result.success) {
+                    $('#nunggak').html(result.nunggak)
+                }
+            }
+        })
+    </script>
+
+    <script>
+        var formatter = new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        })
+
         var ctx1 = document.getElementById("chart-line").getContext("2d");
         var ctx2 = document.getElementById("chart-pie").getContext("2d");
 
@@ -287,7 +337,14 @@
         new Chart(ctx2, {
             type: "pie",
             data: {
-                labels: ['Facebook', 'Direct', 'Organic', 'Referral'],
+                labels: [
+                    'SPP Pokok',
+                    'SPP Jasa',
+                    'UEP Pokok',
+                    'UEP Jasa',
+                    'PL Pokok',
+                    'PL Jasa'
+                ],
                 datasets: [{
                     label: "Projects",
                     weight: 9,
@@ -295,8 +352,22 @@
                     tension: 0.9,
                     pointRadius: 2,
                     borderWidth: 1,
-                    backgroundColor: ['#17c1e8', '#e91e63', '#3A416F', '#a8b8d8'],
-                    data: [15, 20, 12, 60],
+                    backgroundColor: [
+                        '#1a73e8',
+                        '#4caf50',
+                        '#344767',
+                        '#7b809a',
+                        '#f44335',
+                        '#fb8c00',
+                    ],
+                    data: [
+                        "{{ $pokok_spp }}",
+                        "{{ $jasa_spp }}",
+                        "{{ $pokok_uep }}",
+                        "{{ $jasa_uep }}",
+                        "{{ $pokok_pl }}",
+                        "{{ $jasa_pl }}",
+                    ],
                     fill: false
                 }],
             },
@@ -340,5 +411,10 @@
                 },
             },
         });
+
+        var total_angsur =
+            "{{ $pokok_spp + $jasa_spp + $pokok_uep + $jasa_uep + $pokok_pl + $jasa_pl }}"
+
+        $('#total_angsur').html(formatter.format(total_angsur))
     </script>
 @endsection
