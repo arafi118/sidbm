@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AkunLevel1;
 use App\Models\Kecamatan;
 use App\Models\PinjamanAnggota;
 use App\Models\PinjamanKelompok;
@@ -68,15 +69,7 @@ class DashboardController extends Controller
         $data['jasa_uep'] = $trx->jasa_uep;
         $data['jasa_pl'] = $trx->jasa_pl;
 
-        // $saldo = Saldo::where([
-        //     ['lokasi', auth()->user()->lokasi],
-        //     ['id', '>', '4000000000000'],
-        //     ['tahun', date('Y')]
-        // ])->orderBy('id', 'ASC')->orderBy('bulan', 'ASC')->get();
-
-        // dd($saldo[1]);
-
-        $rekening = Rekening::where('lev1', '>=', '4')->get();
+        $saldo = $this->_saldo($tgl);
 
         $data['title'] = "Dashboard";
         return view('dashboard.index')->with($data);
@@ -389,5 +382,70 @@ class DashboardController extends Controller
                 Saldo::create($saldo);
             }
         }
+    }
+
+    private function _saldo($tgl)
+    {
+        $data = [
+            '4' => [
+                '01' => 0,
+                '02' => 0,
+                '03' => 0,
+                '04' => 0,
+                '05' => 0,
+                '06' => 0,
+                '07' => 0,
+                '08' => 0,
+                '09' => 0,
+                '10' => 0,
+                '11' => 0,
+                '12' => 0,
+            ],
+            '5' => [
+                '01' => 0,
+                '02' => 0,
+                '03' => 0,
+                '04' => 0,
+                '05' => 0,
+                '06' => 0,
+                '07' => 0,
+                '08' => 0,
+                '09' => 0,
+                '10' => 0,
+                '11' => 0,
+                '12' => 0,
+            ],
+        ];
+
+        $akun1 = AkunLevel1::where('lev1', '>=', '4')->with([
+            'akun2',
+            'akun2.akun3',
+            'akun2.akun3.rek',
+            'akun2.akun3.rek.kom_saldo' => function ($query) use ($tgl) {
+                $tahun = date('Y', strtotime($tgl));
+                $query->where('tahun', $tahun)->orderBy('kode_akun', 'ASC')->orderBy('bulan', 'ASC');
+            },
+        ])->get();
+
+        foreach ($akun1 as $lev1) {
+            $kom_saldo[$lev1->lev1] = $data[$lev1->lev1];
+            foreach ($lev1->akun2 as $lev2) {
+                foreach ($lev2->akun3 as $lev3) {
+                    foreach ($lev3->rek as $rek) {
+                        foreach ($rek->kom_saldo as $saldo) {
+                            if ($lev1->lev1 == '5') {
+                                $_saldo = $saldo->debit - $saldo->kredit;
+                            } else {
+                                $_saldo = $saldo->kredit - $saldo->debit;
+                            }
+
+                            $kom_saldo[$lev1->lev1][$saldo->bulan] += $_saldo;
+                        }
+                    }
+                }
+            }
+        }
+
+        dd($kom_saldo);
     }
 }

@@ -4,7 +4,7 @@
     @php
         $saldo1 = 0;
         $saldo_bln_lalu1 = 0;
-        
+
         $saldo2 = 0;
         $saldo_bln_lalu2 = 0;
     @endphp
@@ -38,6 +38,11 @@
                 <td colspan="4" height="14">{{ $p['kode_akun'] }}. {{ $p['nama_akun'] }}</td>
             </tr>
 
+            @php
+                $jum_bulan_lalu = 0;
+                $jum_saldo = 0;
+            @endphp
+
             @foreach ($p['rek'] as $rek)
                 @php
                     $bg = 'rgb(230, 230, 230)';
@@ -56,8 +61,18 @@
                 @php
                     $saldo_bln_lalu1 += $rek['saldo_bln_lalu'];
                     $saldo1 += $rek['saldo'];
+
+                    $jum_bulan_lalu += $rek['saldo_bln_lalu'];
+                    $jum_saldo += $rek['saldo'];
                 @endphp
             @endforeach
+
+            <tr style="background: rgb(150, 150, 150); font-weight: bold;">
+                <td align="left" height="14">Jumlah {{ $p['kode_akun'] }}. {{ $p['nama_akun'] }}</td>
+                <td align="right">{{ number_format($jum_bulan_lalu, 2) }}</td>
+                <td align="right">{{ number_format($jum_saldo - $jum_bulan_lalu, 2) }}</td>
+                <td align="right">{{ number_format($jum_saldo, 2) }}</td>
+            </tr>
         @endforeach
 
         <tr>
@@ -71,6 +86,11 @@
             <tr style="background: rgb(150, 150, 150); font-weight: bold;">
                 <td colspan="4" height="14">{{ $b['kode_akun'] }}. {{ $b['nama_akun'] }}</td>
             </tr>
+
+            @php
+                $jum_bulan_lalu = 0;
+                $jum_saldo = 0;
+            @endphp
 
             @foreach ($b['rek'] as $rek)
                 @php
@@ -90,8 +110,17 @@
                 @php
                     $saldo_bln_lalu1 -= $rek['saldo_bln_lalu'];
                     $saldo1 -= $rek['saldo'];
+
+                    $jum_bulan_lalu += $rek['saldo_bln_lalu'];
+                    $jum_saldo += $rek['saldo'];
                 @endphp
             @endforeach
+            <tr style="background: rgb(150, 150, 150); font-weight: bold;">
+                <td align="left" height="14">Jumlah {{ $b['kode_akun'] }}. {{ $b['nama_akun'] }}</td>
+                <td align="right">{{ number_format($jum_bulan_lalu, 2) }}</td>
+                <td align="right">{{ number_format($jum_saldo - $jum_bulan_lalu, 2) }}</td>
+                <td align="right">{{ number_format($jum_saldo, 2) }}</td>
+            </tr>
         @endforeach
 
         <tr style="background: rgb(200, 200, 200); font-weight: bold;">
@@ -109,6 +138,11 @@
             <tr style="background: rgb(150, 150, 150); font-weight: bold;">
                 <td colspan="4" height="14">{{ $pNOP['kode_akun'] }}. {{ $pNOP['nama_akun'] }}</td>
             </tr>
+
+            @php
+                $jum_bulan_lalu = 0;
+                $jum_saldo = 0;
+            @endphp
 
             @foreach ($pNOP['rek'] as $rek)
                 @php
@@ -128,14 +162,29 @@
                 @php
                     $saldo_bln_lalu2 += $rek['saldo_bln_lalu'];
                     $saldo2 += $rek['saldo'];
+
+                    $jum_bulan_lalu += $rek['saldo_bln_lalu'];
+                    $jum_saldo += $rek['saldo'];
                 @endphp
             @endforeach
+
+            <tr style="background: rgb(150, 150, 150); font-weight: bold;">
+                <td align="left" height="14">Jumlah {{ $pNOP['kode_akun'] }}. {{ $pNOP['nama_akun'] }}</td>
+                <td align="right">{{ number_format($jum_bulan_lalu, 2) }}</td>
+                <td align="right">{{ number_format($jum_saldo - $jum_bulan_lalu, 2) }}</td>
+                <td align="right">{{ number_format($jum_saldo, 2) }}</td>
+            </tr>
         @endforeach
 
         @foreach ($bebanNOP as $bNOP)
             <tr style="background: rgb(150, 150, 150); font-weight: bold;">
                 <td colspan="4" height="14">{{ $bNOP['kode_akun'] }}. {{ $bNOP['nama_akun'] }}</td>
             </tr>
+
+            @php
+                $jum_bulan_lalu = 0;
+                $jum_saldo = 0;
+            @endphp
 
             @foreach ($bNOP['rek'] as $rek)
                 @php
@@ -155,8 +204,18 @@
                 @php
                     $saldo_bln_lalu2 -= $rek['saldo_bln_lalu'];
                     $saldo2 -= $rek['saldo'];
+
+                    $jum_bulan_lalu += $rek['saldo_bln_lalu'];
+                    $jum_saldo += $rek['saldo'];
                 @endphp
             @endforeach
+
+            <tr style="background: rgb(150, 150, 150); font-weight: bold;">
+                <td align="left" height="14">Jumlah {{ $bNOP['kode_akun'] }}. {{ $bNOP['nama_akun'] }}</td>
+                <td align="right">{{ number_format($jum_bulan_lalu, 2) }}</td>
+                <td align="right">{{ number_format($jum_saldo - $jum_bulan_lalu, 2) }}</td>
+                <td align="right">{{ number_format($jum_saldo, 2) }}</td>
+            </tr>
         @endforeach
 
         <tr style="background: rgb(200, 200, 200); font-weight: bold;">
