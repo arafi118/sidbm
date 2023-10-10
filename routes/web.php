@@ -118,3 +118,8 @@ Route::get('/pelaporan/sub_laporan/{file}', [PelaporanController::class, 'subLap
 Route::post('/pelaporan/preview', [PelaporanController::class, 'preview'])->middleware('auth');
 
 Route::get('/sync/{lokasi}', [DashboardController::class, 'sync'])->middleware('auth');
+Route::get('/link', function () {
+    $target = '/home/dbm/public_html/apps/storage/app/public';
+    $shortcut = '/home/dbm/public_html/apps/public/storage';
+    symlink($target, $shortcut);
+});
