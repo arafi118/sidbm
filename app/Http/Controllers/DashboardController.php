@@ -69,7 +69,7 @@ class DashboardController extends Controller
         $data['jasa_uep'] = $trx->jasa_uep;
         $data['jasa_pl'] = $trx->jasa_pl;
 
-        $saldo = $this->_saldo($tgl);
+        // $saldo = $this->_saldo($tgl);
 
         $data['title'] = "Dashboard";
         return view('dashboard.index')->with($data);
