@@ -119,7 +119,7 @@ Route::post('/pelaporan/preview', [PelaporanController::class, 'preview'])->midd
 
 Route::get('/sync/{lokasi}', [DashboardController::class, 'sync'])->middleware('auth');
 Route::get('/link', function () {
-    $target = '/home/dbm/public_html/apps/storage/app/public';
+    $target = '/home/dbm/public_html/apps/storage/app';
     $shortcut = '/home/dbm/public_html/apps/public/storage';
     symlink($target, $shortcut);
 });
