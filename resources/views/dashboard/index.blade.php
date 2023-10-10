@@ -188,6 +188,12 @@
             </div>
         </div>
     </div>
+
+    @php
+        $p = $saldo[4];
+        $b = $saldo[5];
+        $surplus = $saldo['surplus'];
+    @endphp
 @endsection
 
 @section('script')
@@ -228,7 +234,20 @@
         new Chart(ctx1, {
             type: "line",
             data: {
-                labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                labels: [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "Mei",
+                    "Jun",
+                    "Jul",
+                    "Agu",
+                    "Sep",
+                    "Okt",
+                    "Nov",
+                    "Des",
+                ],
                 datasets: [{
                         label: "Pendapatan",
                         tension: 0,
@@ -239,7 +258,20 @@
                         borderWidth: 2,
                         backgroundColor: "transparent",
                         fill: true,
-                        data: [50, 100, 200, 190, 400, 350, 500, 450, 700],
+                        data: [
+                            "{{ $p['01'] }}",
+                            "{{ $p['02'] }}",
+                            "{{ $p['03'] }}",
+                            "{{ $p['04'] }}",
+                            "{{ $p['05'] }}",
+                            "{{ $p['06'] }}",
+                            "{{ $p['07'] }}",
+                            "{{ $p['08'] }}",
+                            "{{ $p['09'] }}",
+                            "{{ $p['10'] }}",
+                            "{{ $p['11'] }}",
+                            "{{ $p['12'] }}"
+                        ],
                         maxBarThickness: 6
                     },
                     {
@@ -253,7 +285,20 @@
                         borderWidth: 2,
                         backgroundColor: "transparent",
                         fill: true,
-                        data: [10, 30, 40, 120, 150, 220, 280, 250, 280],
+                        data: [
+                            "{{ $b['01'] }}",
+                            "{{ $b['02'] }}",
+                            "{{ $b['03'] }}",
+                            "{{ $b['04'] }}",
+                            "{{ $b['05'] }}",
+                            "{{ $b['06'] }}",
+                            "{{ $b['07'] }}",
+                            "{{ $b['08'] }}",
+                            "{{ $b['09'] }}",
+                            "{{ $b['10'] }}",
+                            "{{ $b['11'] }}",
+                            "{{ $b['12'] }}"
+                        ],
                         maxBarThickness: 6
                     },
                     {
@@ -267,7 +312,20 @@
                         borderWidth: 2,
                         backgroundColor: "transparent",
                         fill: true,
-                        data: [15, 35, 23, 6, 74, 57, 87, 22, 54],
+                        data: [
+                            "{{ $surplus['01'] }}",
+                            "{{ $surplus['02'] }}",
+                            "{{ $surplus['03'] }}",
+                            "{{ $surplus['04'] }}",
+                            "{{ $surplus['05'] }}",
+                            "{{ $surplus['06'] }}",
+                            "{{ $surplus['07'] }}",
+                            "{{ $surplus['08'] }}",
+                            "{{ $surplus['09'] }}",
+                            "{{ $surplus['10'] }}",
+                            "{{ $surplus['11'] }}",
+                            "{{ $surplus['12'] }}"
+                        ],
                         maxBarThickness: 6
                     }
                 ],

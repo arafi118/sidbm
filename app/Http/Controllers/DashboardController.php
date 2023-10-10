@@ -69,7 +69,7 @@ class DashboardController extends Controller
         $data['jasa_uep'] = $trx->jasa_uep;
         $data['jasa_pl'] = $trx->jasa_pl;
 
-        // $saldo = $this->_saldo($tgl);
+        $data['saldo'] = $this->_saldo($tgl);
 
         $data['title'] = "Dashboard";
         return view('dashboard.index')->with($data);
@@ -446,6 +446,21 @@ class DashboardController extends Controller
             }
         }
 
-        dd($kom_saldo);
+        $kom_saldo['surplus'] = [
+            '01' => $kom_saldo['4']['01'] - $kom_saldo['5']['01'],
+            '02' => $kom_saldo['4']['02'] - $kom_saldo['5']['02'],
+            '03' => $kom_saldo['4']['03'] - $kom_saldo['5']['03'],
+            '04' => $kom_saldo['4']['04'] - $kom_saldo['5']['04'],
+            '05' => $kom_saldo['4']['05'] - $kom_saldo['5']['05'],
+            '06' => $kom_saldo['4']['06'] - $kom_saldo['5']['06'],
+            '07' => $kom_saldo['4']['07'] - $kom_saldo['5']['07'],
+            '08' => $kom_saldo['4']['08'] - $kom_saldo['5']['08'],
+            '09' => $kom_saldo['4']['09'] - $kom_saldo['5']['09'],
+            '10' => $kom_saldo['4']['10'] - $kom_saldo['5']['10'],
+            '11' => $kom_saldo['4']['11'] - $kom_saldo['5']['11'],
+            '12' => $kom_saldo['4']['12'] - $kom_saldo['5']['12'],
+        ];
+
+        return $kom_saldo;
     }
 }
