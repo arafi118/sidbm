@@ -33,7 +33,7 @@ if (isset($_POST['copy'])) {
         mysqli_query($koneksi, "INSERT INTO dbm_laravel.tanda_tangan_laporan (`id`, `lokasi`, `tanda_tangan_pelaporan`, `tanda_tangan_spk`) VALUES (NULL, '$lokasi', '', '')");
     }
 
-    echo "<script>location.reload();</script>";
+    echo "<script>location.href = '/migrasi.php';</script>";
 } else {
 ?>
 
