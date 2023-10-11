@@ -56,7 +56,7 @@
         </div>
         <div class="col-sm-4 mt-sm-0 mt-4">
             <div class="card">
-                <div class="card-body p-3 position-relative">
+                <div class="card-body p-3 position-relative pointer" id="btnjatuhTempo">
                     <div class="row">
                         <div class="col-7 text-start">
                             <p class="text-sm mb-1 text-capitalize font-weight-bold">Jatuh Tempo</p>
@@ -189,6 +189,91 @@
         </div>
     </div>
 
+    {{-- Modal Cetak Dokumen Pencairan --}}
+    <div class="modal fade" id="jatuhTempo" tabindex="-1" aria-labelledby="jatuhTempoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="jatuhTempoLabel">Jatuh Tempo</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="nav-wrapper position-relative end-0">
+                        <ul class="nav nav-pills nav-fill p-1" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="#hari_ini"
+                                    role="tab" aria-controls="hari_ini" aria-selected="true">
+                                    Hari Ini
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#menunggak" role="tab"
+                                    aria-controls="menunggak" aria-selected="false">
+                                    Menunggak
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#tagihan" role="tab"
+                                    aria-controls="tagihan" aria-selected="false">
+                                    Tagihan
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content mt-2">
+                            <div class="tab-pane fade show active" id="hari_ini" role="tabpanel"
+                                aria-labelledby="hari_ini">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-flush table-hover table-click" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th align="center">No</th>
+                                                        <th align="center">Nama Kelompok</th>
+                                                        <th align="center">Tgl Cair</th>
+                                                        <th align="center">Alokasi</th>
+                                                        <th align="center">Tunggakan Pokok</th>
+                                                        <th align="center">Tunggakan Jasa</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="TbHariIni"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="menunggak" role="tabpanel" aria-labelledby="menunggak">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-flush table-hover table-click" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th align="center">No</th>
+                                                        <th align="center">Nama Kelompok</th>
+                                                        <th align="center">Tgl Cair</th>
+                                                        <th align="center">Alokasi</th>
+                                                        <th align="center">Tunggakan Pokok</th>
+                                                        <th align="center">Tunggakan Jasa</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="TbMenunggak"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @php
         $p = $saldo[4];
         $b = $saldo[5];
@@ -205,6 +290,10 @@
             success: function(result) {
                 if (result.success) {
                     $('#jatuh_tempo').html(result.jatuh_tempo)
+
+                    if (result.jatuh_tempo != '00') {
+                        $('#TbHariIni').html(result.hari_ini)
+                    }
                 }
             }
         })
@@ -216,6 +305,10 @@
             success: function(result) {
                 if (result.success) {
                     $('#nunggak').html(result.nunggak)
+
+                    if (result.nunggak != '00') {
+                        $('#TbMenunggak').html(result.table)
+                    }
                 }
             }
         })
@@ -474,5 +567,11 @@
             "{{ $pokok_spp + $jasa_spp + $pokok_uep + $jasa_uep + $pokok_pl + $jasa_pl }}"
 
         $('#total_angsur').html(formatter.format(total_angsur))
+
+        $(document).on('click', '#btnjatuhTempo', function(e) {
+            e.preventDefault()
+
+            $('#jatuhTempo').modal('show')
+        })
     </script>
 @endsection
