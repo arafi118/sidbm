@@ -1,4 +1,5 @@
 <?php
+ini_set('display_errors', '1');
 $koneksi = mysqli_connect('localhost', 'dbm_sidbm', 'dbm_sidbm', 'information_schema');
 
 if (isset($_POST['copy'])) {
