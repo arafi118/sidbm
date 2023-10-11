@@ -351,36 +351,38 @@ class DashboardController extends Controller
         $tahun = request()->get('tahun') ?: date('Y');
         $bulan = request()->get('bulan') ?: date('m');
 
-        $cek_saldo = Saldo::where([
-            ['bulan', $bulan],
-            ['tahun', $tahun],
-        ])->count();
+        for ($i = 1; $i <= $bulan; $i++) {
+            $cek_saldo = Saldo::where([
+                ['bulan', $i],
+                ['tahun', $tahun],
+            ])->count();
 
-        if ($cek_saldo <= 0) {
-            $date = $tahun . '-' . $bulan . '-01';
-            $tgl_kondisi = date('Y-m-t', strtotime($date));
-            $rekening = Rekening::withSum([
-                'trx_debit' => function ($query) use ($tgl_kondisi) {
-                    $query->where('tgl_transaksi', '<=', $tgl_kondisi);
+            if ($cek_saldo <= 0) {
+                $date = $tahun . '-' . $i . '-01';
+                $tgl_kondisi = date('Y-m-t', strtotime($date));
+                $rekening = Rekening::withSum([
+                    'trx_debit' => function ($query) use ($tgl_kondisi) {
+                        $query->where('tgl_transaksi', '<=', $tgl_kondisi);
+                    }
+                ], 'jumlah')->withSum([
+                    'trx_kredit' => function ($query) use ($tgl_kondisi) {
+                        $query->where('tgl_transaksi', '<=', $tgl_kondisi);
+                    }
+                ], 'jumlah')->get();
+
+                foreach ($rekening as $rek) {
+                    $saldo = [
+                        'id' => str_replace('.', '', $rek->kode_akun) . $lokasi . $tahun . $i,
+                        'kode_akun' => $rek->kode_akun,
+                        'lokasi' => $lokasi,
+                        'tahun' => $tahun,
+                        'bulan' => $i,
+                        'debit' => $rek->trx_debit_sum_jumlah,
+                        'kredit' => $rek->trx_kredit_sum_jumlah
+                    ];
+
+                    Saldo::create($saldo);
                 }
-            ], 'jumlah')->withSum([
-                'trx_kredit' => function ($query) use ($tgl_kondisi) {
-                    $query->where('tgl_transaksi', '<=', $tgl_kondisi);
-                }
-            ], 'jumlah')->get();
-
-            foreach ($rekening as $rek) {
-                $saldo = [
-                    'id' => str_replace('.', '', $rek->kode_akun) . $lokasi . $tahun . $bulan,
-                    'kode_akun' => $rek->kode_akun,
-                    'lokasi' => $lokasi,
-                    'tahun' => $tahun,
-                    'bulan' => $bulan,
-                    'debit' => $rek->trx_debit_sum_jumlah,
-                    'kredit' => $rek->trx_kredit_sum_jumlah
-                ];
-
-                Saldo::create($saldo);
             }
         }
     }
