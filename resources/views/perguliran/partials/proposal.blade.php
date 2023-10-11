@@ -124,7 +124,7 @@
                                             class="btn btn-icon btn-sm btn-danger HapusPinjamanAnggota">
                                             <i class="fas fa-trash"></i>
                                         </button>
-                                        <button type="button"
+                                        {{-- <button type="button"
                                             class="btn btn-icon btn-sm btn-success dropdown-toggle dropdown-toggle-split"
                                             data-bs-toggle="dropdown" aria-expanded="false">
                                             <i class="fas fa-th"></i>
@@ -137,7 +137,7 @@
                                                 <hr class="dropdown-divider">
                                             </li>
                                             <li><a class="dropdown-item" href="#">Separated link</a></li>
-                                        </ul>
+                                        </ul> --}}
                                     </div>
                                 </td>
                             </tr>
