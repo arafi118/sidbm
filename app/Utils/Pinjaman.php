@@ -6,7 +6,7 @@ class Pinjaman
 {
     public static function keyword($text = false, $data = [])
     {
-        if (!$text) {
+        if ($text === false) {
             return [
                 [
                     'key' => '{kepala_lembaga}',

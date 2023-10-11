@@ -1,14 +1,14 @@
 @php
     use App\Utils\Tanggal;
-    
+
     $waktu = date('H:i');
     $tempat = 'Kantor DBM';
-    
+
     $wt_cair = explode('_', $pinkel->wt_cair);
     if (count($wt_cair) == 1) {
         $waktu = $wt_cair[0];
     }
-    
+
     if (count($wt_cair) == 2) {
         $waktu = $wt_cair[0];
         $tempat = $wt_cair[1];
