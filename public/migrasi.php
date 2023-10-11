@@ -28,7 +28,7 @@ if (isset($_POST['copy'])) {
     mysqli_query($koneksi, "ALTER TABLE dbm_laravel.rekening_$lokasi ADD `parent_id` VARCHAR(50) NULL FIRST");
     mysqli_query($koneksi, "UPDATE dbm_laravel.rekening_$lokasi SET parent_id=CONCAT(lev1, lev2, lev3) WHERE 1");
 
-    $query = mysqli_query($koneksi, "SELECT * FROM dbm_laravel.tanda_tangan_pelaporan WHERE lokasi='$lokasi'");
+    $query = mysqli_query($koneksi, "SELECT * FROM dbm_laravel.tanda_tangan_laporan WHERE lokasi='$lokasi'");
     if (mysqli_num_rows($query) <= 0) {
         mysqli_query($koneksi, "INSERT INTO dbm_laravel.tanda_tangan_laporan (`id`, `lokasi`, `tanda_tangan_pelaporan`, `tanda_tangan_spk`) VALUES (NULL, '$lokasi', '', '')");
     }
