@@ -46,7 +46,7 @@
                         <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
                             <div class="card card-plain">
                                 <div class="card-header text-center">
-                                    <h4 class="font-weight-bolder">Sign In</h4>
+                                    <h4 class="font-weight-bolder">Sign In &mdash; Aplikasi ID. {{ $kec->id }}</h4>
                                     <p class="mb-0">Masukkan <b>Username</b> dan <b>Password</b> yang anda miliki</p>
                                 </div>
                                 <div class="card-body">

@@ -12,7 +12,8 @@ class AuthController extends Controller
 {
     public function index()
     {
-        return view('auth.login');
+        $kec = Kecamatan::where('web_kec', explode('//', request()->url(''))[1])->orwhere('web_alternatif', explode('//', request()->url(''))[1])->first();
+        return view('auth.login')->with(compact('kec'));
     }
 
     public function login(Request $request)
