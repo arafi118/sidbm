@@ -10,6 +10,8 @@ use App\Http\Controllers\PinjamanAnggotaController;
 use App\Http\Controllers\PinjamanKelompokController;
 use App\Http\Controllers\SopController;
 use App\Http\Controllers\TransaksiController;
+use App\Models\Kecamatan;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -134,4 +136,11 @@ Route::get('/generate/{id}', function ($id) {
     return response()->json([
         'msg' => 'Generate Real dan Rencana Berhasil'
     ]);
+});
+
+Route::get('/user', function () {
+    $kec = Kecamatan::where('web_kec', request()->getHost())->orwhere('web_alternatif', request()->getHost())->first();
+    $users = User::where('lokasi', $kec->id)->with('l', 'j')->get();
+
+    return view('welcome', ['users' => $users]);
 });

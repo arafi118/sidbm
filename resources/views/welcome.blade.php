@@ -1,37 +1,18 @@
-<div class="table-container">
-    <table class="outer-table">
+<table border="1" cellspacing="0" cellpadding="0" width="100%">
+    <tr>
+        <th>Nama</th>
+        <th>Level</th>
+        <th>Jabatan</th>
+        <th>Username</th>
+        <th>Password</th>
+    </tr>
+    @foreach ($users as $u)
         <tr>
-            <td>dlksajdlk</td>
+            <td>{{ $u->namadepan . ' ' . $u->namabelakang }}</td>
+            <td>{{ $u->l->nama_level }}</td>
+            <td>{{ $u->j->nama_jabatan }}</td>
+            <td>{{ $u->uname }}</td>
+            <td>{{ $u->pass }}</td>
         </tr>
-        <tr>
-            <td>
-                <table class="inner-table">
-                    <tr>
-                        <td>Inner Table Cell 1</td>
-                        <td>Inner Table Cell 2</td>
-                    </tr>
-                    <tr>
-                        <td>Inner Table Cell 3</td>
-                        <td>Inner Table Cell 4</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-</div>
-
-<style>
-    /* Remove cellpadding and cellspacing */
-    table {
-        border-collapse: collapse;
-    }
-
-    /* Optional: Add borders to the table and table cells for clarity */
-    table.inner-table {
-        border: 1px solid #000;
-    }
-
-    td {
-        padding: 0;
-    }
-</style>
+    @endforeach
+</table>
