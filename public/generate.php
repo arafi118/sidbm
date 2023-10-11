@@ -1,5 +1,6 @@
 <?php
 ini_set('display_errors', '1');
+
 $koneksi = mysqli_connect('localhost', 'dbm_sidbm', 'dbm_sidbm', 'dbm_laravel');
 
 if (isset($_GET['lokasi']) && isset($_GET['where'])) {
