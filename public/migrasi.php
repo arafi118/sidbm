@@ -15,15 +15,25 @@ if (isset($_POST['copy'])) {
     mysqli_query($koneksi, "DROP TABLE IF EXISTS dbm_laravel.rencana_angsuran_" . $lokasi);
     mysqli_query($koneksi, "DROP TABLE IF EXISTS dbm_laravel.transaksi_" . $lokasi);
 
-    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.anggota_$lokasi AS SELECT * FROM dbm_sidbm.anggota_$lokasi");
-    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.inventaris_$lokasi AS SELECT * FROM dbm_sidbm.inventaris_$lokasi");
-    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.kelompok_$lokasi AS SELECT * FROM dbm_sidbm.kelompok_$lokasi");
-    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.pinjaman_anggota_$lokasi AS SELECT * FROM dbm_sidbm.pinjaman_anggota_$lokasi");
-    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.pinjaman_kelompok_$lokasi AS SELECT * FROM dbm_sidbm.pinjaman_kelompok_$lokasi");
-    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.real_angsuran_$lokasi AS SELECT * FROM dbm_sidbm.real_angsuran_$lokasi");
-    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.rekening_$lokasi AS SELECT * FROM dbm_sidbm.rekening_$lokasi");
-    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.rencana_angsuran_$lokasi AS SELECT * FROM dbm_sidbm.rencana_angsuran_$lokasi");
-    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.transaksi_$lokasi AS SELECT * FROM dbm_sidbm.transaksi_$lokasi");
+    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.anggota_$lokasi AS SELECT * FROM dbm_sidbm.anggota_$lokasi WHERE 1 = 0");
+    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.inventaris_$lokasi AS SELECT * FROM dbm_sidbm.inventaris_$lokasi WHERE 1 = 0");
+    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.kelompok_$lokasi AS SELECT * FROM dbm_sidbm.kelompok_$lokasi WHERE 1 = 0");
+    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.pinjaman_anggota_$lokasi AS SELECT * FROM dbm_sidbm.pinjaman_anggota_$lokasi WHERE 1 = 0");
+    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.pinjaman_kelompok_$lokasi AS SELECT * FROM dbm_sidbm.pinjaman_kelompok_$lokasi WHERE 1 = 0");
+    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.real_angsuran_$lokasi AS SELECT * FROM dbm_sidbm.real_angsuran_$lokasi WHERE 1 = 0");
+    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.rekening_$lokasi AS SELECT * FROM dbm_sidbm.rekening_$lokasi WHERE 1 = 0");
+    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.rencana_angsuran_$lokasi AS SELECT * FROM dbm_sidbm.rencana_angsuran_$lokasi WHERE 1 = 0");
+    mysqli_query($koneksi, "CREATE TABLE dbm_laravel.transaksi_$lokasi AS SELECT * FROM dbm_sidbm.transaksi_$lokasi WHERE 1 = 0");
+
+    mysqli_query($koneksi, "INSERT dbm_laravel.anggota_$lokasi SELECT * FROM dbm_sidbm.anggota_$lokasi");
+    mysqli_query($koneksi, "INSERT dbm_laravel.inventaris_$lokasi SELECT * FROM dbm_sidbm.inventaris_$lokasi");
+    mysqli_query($koneksi, "INSERT dbm_laravel.kelompok_$lokasi SELECT * FROM dbm_sidbm.kelompok_$lokasi");
+    mysqli_query($koneksi, "INSERT dbm_laravel.pinjaman_anggota_$lokasi SELECT * FROM dbm_sidbm.pinjaman_anggota_$lokasi");
+    mysqli_query($koneksi, "INSERT dbm_laravel.pinjaman_kelompok_$lokasi SELECT * FROM dbm_sidbm.pinjaman_kelompok_$lokasi");
+    mysqli_query($koneksi, "INSERT dbm_laravel.real_angsuran_$lokasi SELECT * FROM dbm_sidbm.real_angsuran_$lokasi");
+    mysqli_query($koneksi, "INSERT dbm_laravel.rekening_$lokasi SELECT * FROM dbm_sidbm.rekening_$lokasi");
+    mysqli_query($koneksi, "INSERT dbm_laravel.rencana_angsuran_$lokasi SELECT * FROM dbm_sidbm.rencana_angsuran_$lokasi");
+    mysqli_query($koneksi, "INSERT dbm_laravel.transaksi_$lokasi SELECT * FROM dbm_sidbm.transaksi_$lokasi");
 
     mysqli_query($koneksi, "ALTER TABLE dbm_laravel.rekening_$lokasi ADD `parent_id` VARCHAR(50) NULL FIRST");
     mysqli_query($koneksi, "UPDATE dbm_laravel.rekening_$lokasi SET parent_id=CONCAT(lev1, lev2, lev3) WHERE 1");
