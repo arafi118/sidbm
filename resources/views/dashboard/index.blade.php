@@ -226,15 +226,15 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-flush table-hover table-click" width="100%">
+                                            <table class="table table-striped midle" width="100%">
                                                 <thead>
                                                     <tr>
-                                                        <th align="center">No</th>
-                                                        <th align="center">Nama Kelompok</th>
-                                                        <th align="center">Tgl Cair</th>
-                                                        <th align="center">Alokasi</th>
-                                                        <th align="center">Tunggakan Pokok</th>
-                                                        <th align="center">Tunggakan Jasa</th>
+                                                        <td align="center">No</td>
+                                                        <td align="center">Nama Kelompok</td>
+                                                        <td align="center">Tgl Cair</td>
+                                                        <td align="center">Alokasi</td>
+                                                        <td align="center">Tunggakan Pokok</td>
+                                                        <td align="center">Tunggakan Jasa</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="TbHariIni"></tbody>
@@ -247,15 +247,15 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-flush table-hover table-click" width="100%">
+                                            <table class="table table-striped midle" width="100%">
                                                 <thead>
                                                     <tr>
-                                                        <th align="center">No</th>
-                                                        <th align="center">Nama Kelompok</th>
-                                                        <th align="center">Tgl Cair</th>
-                                                        <th align="center">Alokasi</th>
-                                                        <th align="center">Tunggakan Pokok</th>
-                                                        <th align="center">Tunggakan Jasa</th>
+                                                        <td align="center">No</td>
+                                                        <td align="center">Nama Kelompok</td>
+                                                        <td align="center">Tgl Cair</td>
+                                                        <td align="center">Alokasi</td>
+                                                        <td align="center">Tunggakan Pokok</td>
+                                                        <td align="center">Tunggakan Jasa</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="TbMenunggak"></tbody>
