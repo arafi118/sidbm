@@ -123,3 +123,15 @@ Route::get('/link', function () {
     $shortcut = '/home/dbm/public_html/apps/public/storage';
     symlink($target, $shortcut);
 });
+
+Route::get('/generate/{id}', function ($id) {
+    $pinjaman = new PinjamanKelompokController;
+    $transaksi = new TransaksiController;
+
+    $pinjaman->generate($id);
+    $transaksi->regenerateReal($id);
+
+    return response()->json([
+        'msg' => 'Generate Real dan Rencana Berhasil'
+    ]);
+});

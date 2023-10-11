@@ -1909,4 +1909,214 @@ class PinjamanKelompokController extends Controller
             'rencana' => $rencana
         ], Response::HTTP_OK);
     }
+
+    public function generateRA($id_pinj)
+    {
+        $rencana = [];
+        $pinkel = PinjamanKelompok::where('id', $id_pinj)->firstOrFail();
+
+        $jangka = $pinkel->jangka;
+        $sa_pokok = $pinkel->sistem_angsuran;
+        $sa_jasa = $pinkel->sa_jasa;
+        $pros_jasa = $pinkel->pros_jasa;
+
+        if ($pinkel->status == 'P') {
+            $alokasi = $pinkel->proposal;
+            $tgl = $pinkel->tgl_proposal;
+        } elseif ($pinkel->status == 'V') {
+            $alokasi = $pinkel->verifikasi;
+            $tgl = $pinkel->tgl_verifikasi;
+        } elseif ($pinkel->status == 'W') {
+            $alokasi = $pinkel->alokasi;
+            $tgl = $pinkel->tgl_tunggu;
+        } else {
+            $alokasi = $pinkel->alokasi;
+            $tgl = $pinkel->tgl_cair;
+        }
+
+        if (request()->get('status')) {
+            $status = request()->get('status');
+            if ($status == 'P') {
+                $alokasi = $pinkel->proposal;
+                $tgl = $pinkel->tgl_proposal;
+            } elseif ($status == 'V') {
+                $alokasi = $pinkel->verifikasi;
+                $tgl = $pinkel->tgl_verifikasi;
+            } elseif ($status == 'W') {
+                $alokasi = $pinkel->alokasi;
+                $tgl = $pinkel->tgl_tunggu;
+            } else {
+                $alokasi = $pinkel->alokasi;
+                $tgl = $pinkel->tgl_cair;
+            }
+        }
+
+        $sistem_pokok = $pinkel->sis_pokok->sistem;
+        $sistem_jasa = $pinkel->sis_jasa->sistem;
+
+        if ($sa_pokok == 11) {
+            $tempo_pokok        = ($jangka) - 24 / $sistem_pokok;
+        } else if ($sa_pokok == 14) {
+            $tempo_pokok        = ($jangka) - 3 / $sistem_pokok;
+        } else if ($sa_pokok == 15) {
+            $tempo_pokok        = ($jangka) - 2 / $sistem_pokok;
+        } else if ($sa_pokok == 20) {
+            $tempo_pokok        = ($jangka) - 12 / $sistem_pokok;
+        } else {
+            $tempo_pokok        = floor($jangka / $sistem_pokok);
+        }
+
+        if ($sa_jasa == 11) {
+            $tempo_jasa        = ($jangka) - 24 / $sistem_jasa;
+        } else if ($sa_jasa == 14) {
+            $tempo_jasa        = ($jangka) - 3 / $sistem_jasa;
+        } else if ($sa_jasa == 15) {
+            $tempo_jasa        = ($jangka) - 2 / $sistem_jasa;
+        } else if ($sa_jasa == 20) {
+            $tempo_jasa        = ($jangka) - 12 / $sistem_jasa;
+        } else {
+            $tempo_jasa        = floor($jangka / $sistem_jasa);
+        }
+
+        $ra = [];
+
+        // Rencana Angsuran Pokok
+        for ($i = 1; $i <= $jangka; $i++) {
+            $sisa = $i % $sistem_pokok;
+            $ke = $i / $sistem_pokok;
+            $wajib_pokok = Keuangan::bulatkan($alokasi / $tempo_pokok);
+            $sum_pokok = $wajib_pokok * ($tempo_pokok - 1);
+
+            if ($sisa == 0 and $ke != $tempo_pokok) {
+                $angsuran_pokok = $wajib_pokok;
+            } elseif ($sisa == 0 and $ke == $tempo_pokok) {
+                $angsuran_pokok = $alokasi - $sum_pokok;
+            } else {
+                $angsuran_pokok = 0;
+            }
+
+            $ra[$i]['pokok'] = $angsuran_pokok;
+        }
+
+        // Rencana Angsuran Jasa
+        for ($j = 1; $j <= $jangka; $j++) {
+            $sisa = $j % $sistem_jasa;
+            $ke = $j / $sistem_jasa;
+            $sum_jasa = $alokasi * ($pros_jasa / 100);
+            $wajib_jasa = Keuangan::bulatkan($sum_jasa / $tempo_jasa);
+
+            if ($sisa == 0) {
+                $angsuran_jasa = $wajib_jasa;
+            } else {
+                $angsuran_jasa = 0;
+            }
+
+            $ra[$j]['jasa'] = $angsuran_jasa;
+        }
+        $ra['alokasi'] = $alokasi;
+
+        RencanaAngsuran::where('loan_id', $id_pinj)->delete();
+
+        RencanaAngsuran::create([
+            'loan_id' => $id_pinj,
+            'angsuran_ke' => '0',
+            'jatuh_tempo' => $tgl,
+            'wajib_pokok' => '0',
+            'wajib_jasa' => '0',
+            'target_pokok' => '0',
+            'target_jasa' => '0',
+            'lu' => date('Y-m-d H:i:s'),
+            'id_user' => auth()->user()->id
+        ]);
+
+        $target_pokok = 0;
+        $target_jasa = 0;
+        for ($x = 1; $x <= $jangka; $x++) {
+            $bulan  = substr($tgl, 5, 2);
+            $tahun  = substr($tgl, 0, 4);
+
+            if ($sa_pokok == 12) {
+                $tambah = $x * 7;
+                $penambahan = "+$tambah days";
+            } else {
+                $penambahan = "+$x month";
+            }
+            $jatuh_tempo = date('Y-m-d', strtotime($penambahan, strtotime($tgl)));
+
+            $pokok = $ra[$x]['pokok'];
+            $jasa = $ra[$x]['jasa'];
+
+            if ($x == 1) {
+                $target_pokok = $pokok;
+            } elseif ($x >= 2) {
+                $target_pokok += $pokok;
+            }
+            if ($x == 1) {
+                $target_jasa = $jasa;
+            } elseif ($x >= 2) {
+                $target_jasa += $jasa;
+            }
+
+            RencanaAngsuran::create([
+                'loan_id' => $id_pinj,
+                'angsuran_ke' => $x,
+                'jatuh_tempo' => $jatuh_tempo,
+                'wajib_pokok' => $pokok,
+                'wajib_jasa' => $jasa,
+                'target_pokok' => $target_pokok,
+                'target_jasa' => $target_jasa,
+                'lu' => date('Y-m-d H:i:s'),
+                'id_user' => auth()->user()->id
+            ]);
+        }
+        if (request()->get('save')) {
+        } else {
+            $target_pokok = 0;
+            $target_jasa = 0;
+            for ($x = 1; $x <= $jangka; $x++) {
+                $bulan  = substr($tgl, 5, 2);
+                $tahun  = substr($tgl, 0, 4);
+
+                if ($sa_pokok == 12) {
+                    $tambah = $x * 7;
+                    $penambahan = "+$tambah days";
+                } else {
+                    $penambahan = "+$x month";
+                }
+                $jatuh_tempo = date('Y-m-d', strtotime($penambahan, strtotime($tgl)));
+
+                $pokok = $ra[$x]['pokok'];
+                $jasa = $ra[$x]['jasa'];
+
+                if ($x == 1) {
+                    $target_pokok = $pokok;
+                } elseif ($x >= 2) {
+                    $target_pokok += $pokok;
+                }
+                if ($x == 1) {
+                    $target_jasa = $jasa;
+                } elseif ($x >= 2) {
+                    $target_jasa += $jasa;
+                }
+
+                $rencana[] = [
+                    'loan_id' => $id_pinj,
+                    'angsuran_ke' => $x,
+                    'jatuh_tempo' => $jatuh_tempo,
+                    'wajib_pokok' => $pokok,
+                    'wajib_jasa' => $jasa,
+                    'target_pokok' => $target_pokok,
+                    'target_jasa' => $target_jasa,
+                    'lu' => date('Y-m-d H:i:s'),
+                    'id_user' => auth()->user()->id
+                ];
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'ra' => $ra,
+            'rencana' => $rencana
+        ], Response::HTTP_OK);
+    }
 }
