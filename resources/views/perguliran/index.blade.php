@@ -1,336 +1,335 @@
 @extends('layouts.base')
 
 @section('content')
-<div class="nav-wrapper position-relative end-0">
-    <ul class="nav nav-pills nav-fill p-1" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="#Proposal" role="tab"
-                aria-controls="Proposal" aria-selected="true">
-                <span class="material-icons align-middle mb-1">
-                    note_add
-                </span>
-                Proposal (P)
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#Verified" role="tab" aria-controls="Verified"
-                aria-selected="false">
-                <span class="material-icons align-middle mb-1">
-                    event_available
-                </span>
-                Verified (V)
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#Waiting" role="tab" aria-controls="Waiting"
-                aria-selected="false">
-                <span class="material-icons align-middle mb-1">
-                    history
-                </span>
-                Waiting (W)
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#Aktif" role="tab" aria-controls="Aktif"
-                aria-selected="false">
-                <span class="material-icons align-middle mb-1">
-                    import_export
-                </span>
-                Aktif (A)
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#Lunas" role="tab" aria-controls="Lunas"
-                aria-selected="false">
-                <span class="material-icons align-middle mb-1">
-                    cloud_done
-                </span>
-                Lunas (L)
-            </a>
-        </li>
-    </ul>
+    <div class="nav-wrapper position-relative end-0">
+        <ul class="nav nav-pills nav-fill p-1" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="#Proposal" role="tab"
+                    aria-controls="Proposal" aria-selected="true">
+                    <span class="material-icons align-middle mb-1">
+                        note_add
+                    </span>
+                    Proposal (P)
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#Verified" role="tab"
+                    aria-controls="Verified" aria-selected="false">
+                    <span class="material-icons align-middle mb-1">
+                        event_available
+                    </span>
+                    Verified (V)
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#Waiting" role="tab"
+                    aria-controls="Waiting" aria-selected="false">
+                    <span class="material-icons align-middle mb-1">
+                        history
+                    </span>
+                    Waiting (W)
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#Aktif" role="tab" aria-controls="Aktif"
+                    aria-selected="false">
+                    <span class="material-icons align-middle mb-1">
+                        import_export
+                    </span>
+                    Aktif (A)
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#Lunas" role="tab" aria-controls="Lunas"
+                    aria-selected="false">
+                    <span class="material-icons align-middle mb-1">
+                        cloud_done
+                    </span>
+                    Lunas (L)
+                </a>
+            </li>
+        </ul>
 
-    <div class="tab-content mt-2">
-        <div class="tab-pane fade show active" id="Proposal" role="tabpanel" aria-labelledby="Proposal">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-flush table-hover table-click" width="100%" id="TbProposal">
-                            <thead>
-                                <tr>
-                                    <th>Kelompok</th>
-                                    <th>Alamat</th>
-                                    <th>Tgl Pengajuan</th>
-                                    <th>Pengajuan</th>
-                                    <th>Jasa/Jangka</th>
-                                    <th>
-                                        <i class="material-icons opacity-10">people</i>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+        <div class="tab-content mt-2">
+            <div class="tab-pane fade show active" id="Proposal" role="tabpanel" aria-labelledby="Proposal">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-flush table-hover table-click" width="100%" id="TbProposal">
+                                <thead>
+                                    <tr>
+                                        <th>Kelompok</th>
+                                        <th>Alamat</th>
+                                        <th>Tgl Pengajuan</th>
+                                        <th>Pengajuan</th>
+                                        <th>Jasa/Jangka</th>
+                                        <th>
+                                            <i class="material-icons opacity-10">people</i>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="tab-pane fade" id="Verified" role="tabpanel" aria-labelledby="Verified">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-flush table-hover table-click" width="100%" id="TbVerified">
-                            <thead>
-                                <tr>
-                                    <th>Kelompok</th>
-                                    <th>Alamat</th>
-                                    <th>Tgl Verified</th>
-                                    <th>Verifikasi</th>
-                                    <th>Jasa/Jangka</th>
-                                    <th>
-                                        <i class="material-icons opacity-10">people</i>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+            <div class="tab-pane fade" id="Verified" role="tabpanel" aria-labelledby="Verified">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-flush table-hover table-click" width="100%" id="TbVerified">
+                                <thead>
+                                    <tr>
+                                        <th>Kelompok</th>
+                                        <th>Alamat</th>
+                                        <th>Tgl Verified</th>
+                                        <th>Verifikasi</th>
+                                        <th>Jasa/Jangka</th>
+                                        <th>
+                                            <i class="material-icons opacity-10">people</i>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="tab-pane fade" id="Waiting" role="tabpanel" aria-labelledby="Waiting">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-flush table-hover table-click" width="100%" id="TbWaiting">
-                            <thead>
-                                <tr>
-                                    <th>Kelompok</th>
-                                    <th>Alamat</th>
-                                    <th>Tgl Waiting</th>
-                                    <th>Alokasi</th>
-                                    <th>Jasa/Jangka</th>
-                                    <th>
-                                        <i class="material-icons opacity-10">people</i>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+            <div class="tab-pane fade" id="Waiting" role="tabpanel" aria-labelledby="Waiting">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-flush table-hover table-click" width="100%" id="TbWaiting">
+                                <thead>
+                                    <tr>
+                                        <th>Kelompok</th>
+                                        <th>Alamat</th>
+                                        <th>Tgl Waiting</th>
+                                        <th>Alokasi</th>
+                                        <th>Jasa/Jangka</th>
+                                        <th>
+                                            <i class="material-icons opacity-10">people</i>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="tab-pane fade" id="Aktif" role="tabpanel" aria-labelledby="Aktif">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-flush table-hover table-click" width="100%" id="TbAktif">
-                            <thead>
-                                <tr>
-                                    <th>Kelompok</th>
-                                    <th>Alamat</th>
-                                    <th>Tgl Cair</th>
-                                    <th>Alokasi</th>
-                                    <th>Jasa/Jangka</th>
-                                    <th>
-                                        <i class="material-icons opacity-10">people</i>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+            <div class="tab-pane fade" id="Aktif" role="tabpanel" aria-labelledby="Aktif">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-flush table-hover table-click" width="100%" id="TbAktif">
+                                <thead>
+                                    <tr>
+                                        <th>Kelompok</th>
+                                        <th>Alamat</th>
+                                        <th>Tgl Cair</th>
+                                        <th>Alokasi</th>
+                                        <th>Jasa/Jangka</th>
+                                        <th>
+                                            <i class="material-icons opacity-10">people</i>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="tab-pane fade" id="Lunas" role="tabpanel" aria-labelledby="Lunas">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-flush table-hover table-click" width="100%" id="TbLunas">
-                            <thead>
-                                <tr>
-                                    <th>Kelompok</th>
-                                    <th>Alamat</th>
-                                    <th>Tgl Cair</th>
-                                    <th>Verifikasi</th>
-                                    <th>Jasa/Jangka</th>
-                                    <th>
-                                        <i class="material-icons opacity-10">people</i>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+            <div class="tab-pane fade" id="Lunas" role="tabpanel" aria-labelledby="Lunas">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-flush table-hover table-click" width="100%" id="TbLunas">
+                                <thead>
+                                    <tr>
+                                        <th>Kelompok</th>
+                                        <th>Alamat</th>
+                                        <th>Tgl Cair</th>
+                                        <th>Verifikasi</th>
+                                        <th>Jasa/Jangka</th>
+                                        <th>
+                                            <i class="material-icons opacity-10">people</i>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 @section('script')
-<script>
-    var tbProposal = CreateTable('#TbProposal', '/perguliran/proposal', [{
-        data: 'nama_kelompok',
-        name: 'nama_kelompok'
-    }, {
-        data: 'kelompok.alamat_kelompok',
-        name: 'kelompok.alamat_kelompok'
-    }, {
-        data: 'tgl_proposal',
-        name: 'tgl_proposal'
-    }, {
-        data: 'proposal',
-        name: 'proposal'
-    }, {
-        data: 'jasa',
-        name: 'jasa',
-        orderable: false,
-        searchable: false
-    }, {
-        data: 'pinjaman_anggota_count',
-        name: 'pinjaman_anggota_count'
-    }])
+    <script>
+        var tbProposal = CreateTable('#TbProposal', '/perguliran/proposal', [{
+            data: 'nama_kelompok',
+            name: 'nama_kelompok'
+        }, {
+            data: 'kelompok.alamat_kelompok',
+            name: 'kelompok.alamat_kelompok'
+        }, {
+            data: 'tgl_proposal',
+            name: 'tgl_proposal'
+        }, {
+            data: 'proposal',
+            name: 'proposal'
+        }, {
+            data: 'jasa',
+            name: 'jasa',
+            orderable: false,
+            searchable: false
+        }, {
+            data: 'pinjaman_anggota_count',
+            name: 'pinjaman_anggota_count'
+        }])
 
-    var tbVerified = CreateTable('#TbVerified', '/perguliran/verified', [{
-        data: 'nama_kelompok',
-        name: 'nama_kelompok'
-    }, {
-        data: 'kelompok.alamat_kelompok',
-        name: 'kelompok.alamat_kelompok'
-    }, {
-        data: 'tgl_verifikasi',
-        name: 'tgl_verifikasi'
-    }, {
-        data: 'verifikasi',
-        name: 'verifikasi'
-    }, {
-        data: 'jasa',
-        name: 'jasa',
-        orderable: false,
-        searchable: false
-    }, {
-        data: 'pinjaman_anggota_count',
-        name: 'pinjaman_anggota_count'
-    }])
+        var tbVerified = CreateTable('#TbVerified', '/perguliran/verified', [{
+            data: 'nama_kelompok',
+            name: 'nama_kelompok'
+        }, {
+            data: 'kelompok.alamat_kelompok',
+            name: 'kelompok.alamat_kelompok'
+        }, {
+            data: 'tgl_verifikasi',
+            name: 'tgl_verifikasi'
+        }, {
+            data: 'verifikasi',
+            name: 'verifikasi'
+        }, {
+            data: 'jasa',
+            name: 'jasa',
+            orderable: false,
+            searchable: false
+        }, {
+            data: 'pinjaman_anggota_count',
+            name: 'pinjaman_anggota_count'
+        }])
 
-    var tbWaiting = CreateTable('#TbWaiting', '/perguliran/waiting', [{
-        data: 'nama_kelompok',
-        name: 'nama_kelompok'
-    }, {
-        data: 'kelompok.alamat_kelompok',
-        name: 'kelompok.alamat_kelompok'
-    }, {
-        data: 'tgl_tunggu',
-        name: 'tgl_tunggu'
-    }, {
-        data: 'alokasi',
-        name: 'alokasi'
-    }, {
-        data: 'jasa',
-        name: 'jasa',
-        orderable: false,
-        searchable: false
-    }, {
-        data: 'pinjaman_anggota_count',
-        name: 'pinjaman_anggota_count'
-    }])
+        var tbWaiting = CreateTable('#TbWaiting', '/perguliran/waiting', [{
+            data: 'nama_kelompok',
+            name: 'nama_kelompok'
+        }, {
+            data: 'kelompok.alamat_kelompok',
+            name: 'kelompok.alamat_kelompok'
+        }, {
+            data: 'tgl_tunggu',
+            name: 'tgl_tunggu'
+        }, {
+            data: 'alokasi',
+            name: 'alokasi'
+        }, {
+            data: 'jasa',
+            name: 'jasa',
+            orderable: false,
+            searchable: false
+        }, {
+            data: 'pinjaman_anggota_count',
+            name: 'pinjaman_anggota_count'
+        }])
 
-    var tbAktif = CreateTable('#TbAktif', '/perguliran/aktif', [{
-        data: 'nama_kelompok',
-        name: 'nama_kelompok'
-    }, {
-        data: 'kelompok.alamat_kelompok',
-        name: 'kelompok.alamat_kelompok'
-    }, {
-        data: 'tgl_cair',
-        name: 'tgl_cair'
-    }, {
-        data: 'alokasi',
-        name: 'alokasi'
-    }, {
-        data: 'jasa',
-        name: 'jasa',
-        orderable: false,
-        searchable: false
-    }, {
-        data: 'pinjaman_anggota_count',
-        name: 'pinjaman_anggota_count'
-    }])
+        var tbAktif = CreateTable('#TbAktif', '/perguliran/aktif', [{
+            data: 'nama_kelompok',
+            name: 'nama_kelompok'
+        }, {
+            data: 'kelompok.alamat_kelompok',
+            name: 'kelompok.alamat_kelompok'
+        }, {
+            data: 'tgl_cair',
+            name: 'tgl_cair'
+        }, {
+            data: 'alokasi',
+            name: 'alokasi'
+        }, {
+            data: 'jasa',
+            name: 'jasa',
+            orderable: false,
+            searchable: false
+        }, {
+            data: 'pinjaman_anggota_count',
+            name: 'pinjaman_anggota_count'
+        }])
 
-    var tbLunas = CreateTable('#TbLunas', '/perguliran/lunas', [{
-        data: 'nama_kelompok',
-        name: 'nama_kelompok'
-    }, {
-        data: 'kelompok.alamat_kelompok',
-        name: 'kelompok.alamat_kelompok'
-    }, {
-        data: 'tgl_cair',
-        name: 'tgl_cair'
-    }, {
-        data: 'alokasi',
-        name: 'alokasi'
-    }, {
-        data: 'jasa',
-        name: 'jasa',
-        orderable: false,
-        searchable: false
-    }, {
-        data: 'pinjaman_anggota_count',
-        name: 'pinjaman_anggota_count'
-    }])
+        var tbLunas = CreateTable('#TbLunas', '/perguliran/lunas', [{
+            data: 'nama_kelompok',
+            name: 'nama_kelompok'
+        }, {
+            data: 'kelompok.alamat_kelompok',
+            name: 'kelompok.alamat_kelompok'
+        }, {
+            data: 'tgl_cair',
+            name: 'tgl_cair'
+        }, {
+            data: 'alokasi',
+            name: 'alokasi'
+        }, {
+            data: 'jasa',
+            name: 'jasa',
+            orderable: false,
+            searchable: false
+        }, {
+            data: 'pinjaman_anggota_count',
+            name: 'pinjaman_anggota_count'
+        }])
 
-    function CreateTable(tabel, url, column) {
-        var table = $(tabel).DataTable({
-            language: {
-                paginate: {
-                    previous: "&laquo;",
-                    next: "&raquo;"
-                }
-            },
-            processing: true,
-            serverSide: true,
-            ajax: url,
-            columns: column,
-            order: [
-                [2, 'desc']
-            ]
+        function CreateTable(tabel, url, column) {
+            var table = $(tabel).DataTable({
+                language: {
+                    paginate: {
+                        previous: "&laquo;",
+                        next: "&raquo;"
+                    }
+                },
+                processing: true,
+                serverSide: true,
+                ajax: url,
+                columns: column,
+                order: [
+                    [2, 'desc']
+                ]
+            })
+
+            return table
+        }
+
+        $('#TbProposal').on('click', 'tbody tr', function(e) {
+            var data = tbProposal.row(this).data();
+
+            window.location.href = '/detail/' + data.id
         })
 
-        return table
-    }
+        $('#TbVerified').on('click', 'tbody tr', function(e) {
+            var data = tbVerified.row(this).data();
 
-    $('#TbProposal').on('click', 'tbody tr', function (e) {
-        var data = tbProposal.row(this).data();
+            window.location.href = '/detail/' + data.id
+        })
 
-        window.location.href = '/detail/' + data.id
-    })
+        $('#TbWaiting').on('click', 'tbody tr', function(e) {
+            var data = tbWaiting.row(this).data();
 
-    $('#TbVerified').on('click', 'tbody tr', function (e) {
-        var data = tbVerified.row(this).data();
+            window.location.href = '/detail/' + data.id
+        })
 
-        window.location.href = '/detail/' + data.id
-    })
+        $('#TbAktif').on('click', 'tbody tr', function(e) {
+            var data = tbAktif.row(this).data();
 
-    $('#TbWaiting').on('click', 'tbody tr', function (e) {
-        var data = tbWaiting.row(this).data();
+            window.location.href = '/detail/' + data.id
+        })
 
-        window.location.href = '/detail/' + data.id
-    })
+        $('#TbLunas').on('click', 'tbody tr', function(e) {
+            var data = tbLunas.row(this).data();
 
-    $('#TbAktif').on('click', 'tbody tr', function (e) {
-        var data = tbAktif.row(this).data();
-
-        window.location.href = '/detail/' + data.id
-    })
-
-    $('#TbLunas').on('click', 'tbody tr', function (e) {
-        var data = tbLunas.row(this).data();
-
-        window.location.href = '/lunas/' + data.id
-    })
-
-</script>
+            window.location.href = '/lunas/' + data.id
+        })
+    </script>
 @endsection

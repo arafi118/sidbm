@@ -257,3 +257,7 @@ body.swal2-toast-shown .swal2-container {
     --bs-spinner-width: .5rem;
     --bs-spinner-height: .5rem;
 }
+
+.moving-tab .nav-link.active {
+    color: #fff !important;
+}

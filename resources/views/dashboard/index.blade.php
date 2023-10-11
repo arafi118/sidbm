@@ -189,8 +189,10 @@
         </div>
     </div>
 
+
+
     {{-- Modal Cetak Dokumen Pencairan --}}
-    <div class="modal fade" id="jatuhTempo" tabindex="-1" aria-labelledby="jatuhTempoLabel" aria-hidden="true">
+    <div class="modal fade" id="jatuhTempo" aria-labelledby="jatuhTempoLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
@@ -201,20 +203,20 @@
                     <div class="nav-wrapper position-relative end-0">
                         <ul class="nav nav-pills nav-fill p-1" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="#hari_ini"
-                                    role="tab" aria-controls="hari_ini" aria-selected="true">
+                                <a class="nav-link mb-0 px-0 py-1 active text-danger" data-bs-toggle="tab"
+                                    href="#hari_ini" role="tab" aria-controls="hari_ini" aria-selected="true">
                                     Hari Ini
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#menunggak" role="tab"
-                                    aria-controls="menunggak" aria-selected="false">
+                                <a class="nav-link mb-0 px-0 py-1 text-warning" data-bs-toggle="tab" href="#menunggak"
+                                    role="tab" aria-controls="menunggak" aria-selected="false">
                                     Menunggak
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#tagihan" role="tab"
-                                    aria-controls="tagihan" aria-selected="false">
+                                <a class="nav-link mb-0 px-0 py-1 text-info" data-bs-toggle="tab" href="#tagihan"
+                                    role="tab" aria-controls="tagihan" aria-selected="false">
                                     Tagihan
                                 </a>
                             </li>
@@ -261,6 +263,27 @@
                                                 <tbody id="TbMenunggak"></tbody>
                                             </table>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tagihan" role="tabpanel" aria-labelledby="tagihan">
+                                <div class="card">
+                                    <div class="card-body">
+                                        {{-- <div class="table-responsive">
+                                            <table class="table table-striped midle" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <td align="center">No</td>
+                                                        <td align="center">Nama Kelompok</td>
+                                                        <td align="center">Tgl Cair</td>
+                                                        <td align="center">Alokasi</td>
+                                                        <td align="center">Tunggakan Pokok</td>
+                                                        <td align="center">Tunggakan Jasa</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="TbHariIni"></tbody>
+                                            </table>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>
