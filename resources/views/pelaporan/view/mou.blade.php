@@ -53,6 +53,13 @@
         table.p0 tr td {
             padding: 0px !important;
         }
+
+        ul,
+        ol {
+            margin-left: -10px;
+            page-break-inside: auto !important;
+            margin-right: 0px !important;
+        }
     </style>
 </head>
 
@@ -189,28 +196,28 @@
                 </td>
             </tr>
             <tr>
-                <td width="20">1.1</td>
+                <td style="vertical-align: text-top;" width="20">1.1</td>
                 <td align="justify">
                     Pihak Pertama adalah sebuah Software Company yang telah me-release software akuntansi yang diberikan
                     nama SI DBM.
                 </td>
             </tr>
             <tr>
-                <td>1.2</td>
+                <td style="vertical-align: text-top;">1.2</td>
                 <td align="justify">
                     Pihak Kedua adalah sebuah Bumdesama Lkd yang menyelenggarakan kegiatan penyaluran dana bergulir bagi
                     kelompok-kelompok yang membutuhkan modal usaha dalam rangka pengentasan kemiskinan.
                 </td>
             </tr>
             <tr>
-                <td>1.3</td>
+                <td style="vertical-align: text-top;">1.3</td>
                 <td align="justify">
                     Pihak kedua akan menggunakan Software Akuntansi "SI DBM" dalam pengelolaan keuangan maupun
                     pengelolaan dana bergulir.
                 </td>
             </tr>
             <tr>
-                <td>1.4</td>
+                <td style="vertical-align: text-top;">1.4</td>
                 <td align="justify">
                     SI DBM yang digunakan dalam perjanjian ini adalah versi 4.0 dengan sistem manajemen keuangan double
                     entry berbasis accrual berpedoman kepada Kepmendesa Nomor 136/2022.
@@ -218,7 +225,7 @@
             </tr>
         </table>
 
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr>
                 <td colspan="2">&nbsp;</td>
             </tr>
@@ -231,37 +238,19 @@
                 </td>
             </tr>
             <tr>
-                <td width="20">2.1</td>
+                <td width="20" style="vertical-align: text-top;">2.1</td>
                 <td align="justify">
                     Pihak Pertama berkewajiban untuk :
-                </td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td>
-                    <ol>
-                        <li>
-                            Menyediakan aplikasi SI DBM Full Version yang dapat diakses secara online 24 jam dalam
-                            sehari dan 7 hari dalam seminggu oleh Pihak Kedua melalui nama domain yang telah diberikan
-                            sebagaimana point (b).
-                        </li>
-                        <li>
-                            Memberikan domain dan hosting dengan spesifikasi sebagai berikut :
-                            <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
-                                style="font-size: 11px;">
-                                <tr>
-                                    <td width="80">Nama Domain</td>
-                                    <td width="10">:</td>
-                                    <td>{{ $kec->web_kec }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Space</td>
-                                    <td>:</td>
-                                    <td>100GB</td>
-                                </tr>
-                            </table>
-                        </li>
-                    </ol>
+                    <div>
+                        <ul>
+                            <li style="padding: 0px; margin: 0px;">
+                                Menyediakan aplikasi SI DBM Full Version yang dapat diakses secara online 24 jam dalam
+                                sehari dan 7 hari dalam seminggu oleh Pihak Kedua melalui nama domain yang telah
+                                diberikan
+                                sebagaimana point (b).
+                            </li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
         </table>

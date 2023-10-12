@@ -84,7 +84,7 @@
             <div class="input-group input-group-static my-3">
                 <label for="no_kk">No. KK</label>
                 <input autocomplete="off" type="text" name="no_kk" id="no_kk" class="form-control"
-                    value="{{ substr($nik, 0, 6) }}">
+                    value="{{ substr($nik, 0, 6) }}" maxlength="16" minlength="16">
                 <small class="text-danger" id="msg_no_kk"></small>
             </div>
         </div>

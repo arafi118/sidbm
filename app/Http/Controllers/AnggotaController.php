@@ -145,6 +145,8 @@ class AnggotaController extends Controller
             'hubungan'
         ]);
 
+
+
         $rules = [
             'nik' => 'required|unique:anggota_' . auth()->user()->lokasi . ',nik|min:16|max:16',
             'nama_lengkap' => 'required',
@@ -156,7 +158,7 @@ class AnggotaController extends Controller
             'alamat' => 'required',
             'no_kk' => 'required',
             'jenis_usaha' => 'required',
-            'nik_penjamin' => 'required',
+            'nik_penjamin' => 'required|min:16|max:16',
             'penjamin' => 'required',
             'hubungan' => 'required'
         ];
@@ -264,7 +266,7 @@ class AnggotaController extends Controller
             'alamat' => 'required',
             'no_kk' => 'required',
             'jenis_usaha' => 'required',
-            'nik_penjamin' => 'required',
+            'nik_penjamin' => 'required|min:16|max:16',
             'penjamin' => 'required',
             'hubungan' => 'required'
         ];
