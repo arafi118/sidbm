@@ -190,8 +190,9 @@ class PinjamanAnggotaController extends Controller
             'status',
         ]);
 
+        $nominal =  ($data[$jumlah] == '') ? 0 : str_replace(',', '', str_replace('.00', '', $data[$jumlah]));
         PinjamanAnggota::where('id', $pinjaman_anggotum->id)->update([
-            $jumlah => str_replace(',', '', str_replace('.00', '', $data[$jumlah])),
+            $jumlah => $nominal,
         ]);
 
         $jumlah = PinjamanAnggota::where('id_pinkel', $pinjaman_anggotum->id_pinkel)->sum($jumlah);
