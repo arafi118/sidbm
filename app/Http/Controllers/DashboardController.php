@@ -274,7 +274,7 @@ class DashboardController extends Controller
                     $table .= '<tr>';
 
                     $table .= '<td align="center">' . $no++ . '</td>';
-                    $table .= '<td>' . $pinkel->kelompok->nama_kelompok . '</td>';
+                    $table .= '<td>' . $pinkel->kelompok->nama_kelompok . ' Loan Id. ' . $pinkel->id . '</td>';
                     $table .= '<td>' . Tanggal::tglIndo($pinkel->tgl_cair) . '</td>';
                     $table .= '<td align="right">' . number_format($pinkel->alokasi) . '</td>';
                     $table .= '<td align="right">' . number_format($nunggak_pokok) . '</td>';
@@ -347,7 +347,7 @@ class DashboardController extends Controller
                 $table .= '<tr>';
 
                 $table .= '<td align="center">' . $no++ . '</td>';
-                $table .= '<td>' . $pinkel->kelompok->nama_kelompok . '</td>';
+                $table .= '<td>' . $pinkel->kelompok->nama_kelompok . ' Loan Id. ' . $pinkel->id . '</td>';
                 $table .= '<td>' . Tanggal::tglIndo($pinkel->tgl_cair) . '</td>';
                 $table .= '<td align="right">' . number_format($pinkel->alokasi) . '</td>';
                 $table .= '<td align="right">' . number_format($tunggakan_pokok) . '</td>';

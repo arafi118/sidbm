@@ -335,8 +335,14 @@
         var total = 0;
         $('.idpa').map(function() {
             var value = $(this).val()
-            value = value.split(',').join('')
-            value = value.split('.00').join('')
+            if (value == '') {
+                value = 0
+            } else {
+                value = value.split(',').join('')
+                value = value.split('.00').join('')
+            }
+
+            console.log(value);
             value = parseFloat(value)
 
             total += value
@@ -344,7 +350,7 @@
 
         $('#__verifikasi').val(total)
         $('#_verifikasi').html(formatter.format(total))
-        $('#verifikasi').html(formatter.format(total))
+        $('#verifikasi').val(formatter.format(total))
     })
 
     $(document).on('click', '#Simpan', async function(e) {
