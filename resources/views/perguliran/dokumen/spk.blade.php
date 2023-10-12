@@ -176,7 +176,6 @@
         </div>
     </div>
 
-    <div class="break"></div>
     <div style="text-align: center;">
         <b style="font-size: 14px;">PASAL 3</b>
 
