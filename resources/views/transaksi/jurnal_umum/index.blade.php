@@ -102,7 +102,8 @@
                                         $th_pakai = explode('-', $tgl_pakai)[0];
                                     @endphp
                                     @for ($i = $th_pakai; $i <= date('Y'); $i++)
-                                        <option value="{{ $i }}">{{ $i }}</option>
+                                        <option value="{{ $i }}" {{ date('Y') == $i ? 'selected' : '' }}>
+                                            {{ $i }}</option>
                                     @endfor
                                 </select>
                                 <small class="text-danger" id="msg_tahun"></small>
