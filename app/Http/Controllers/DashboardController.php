@@ -14,7 +14,6 @@ use App\Models\Transaksi;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Cookie;
 use DB;
 use Session;
@@ -24,7 +23,7 @@ class DashboardController extends Controller
     public function index()
     {
         if (Session::get('_previous')['url'] == url('')) {
-            $this->piutang();
+            // $this->piutang();
             $this->sync(auth()->user()->lokasi);
         }
 
