@@ -352,8 +352,13 @@
         var total = 0;
         $('.idpa').map(function() {
             var value = $(this).val()
-            value = value.split(',').join('')
-            value = value.split('.00').join('')
+            if (value == '') {
+                value = 0
+            } else {
+                value = value.split(',').join('')
+                value = value.split('.00').join('')
+            }
+
             value = parseFloat(value)
 
             total += value
