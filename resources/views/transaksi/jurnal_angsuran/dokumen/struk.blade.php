@@ -1,24 +1,33 @@
 @php
     use App\Utils\Tanggal;
-    
+
     $keterangan = '';
     $denda = 0;
     $idt = 0;
-    
-    $tunggakan_pokok = $ra->target_pokok - $real->sum_pokok;
+
+    $target_pokok = 0;
+    $target_jasa = 0;
+    $angsuran_ke = 0;
+    if ($ra) {
+        $target_pokok = $ra->target_pokok;
+        $target_jasa = $ra->target_jasa;
+        $angsuran_ke = $ra->angsuran_ke;
+    }
+
+    $tunggakan_pokok = $target_pokok - $real->sum_pokok;
     if ($tunggakan_pokok < 0) {
         $tunggakan_pokok = 0;
     }
-    $tunggakan_jasa = $ra->target_jasa - $real->sum_jasa;
+    $tunggakan_jasa = $target_jasa - $real->sum_jasa;
     if ($tunggakan_jasa < 0) {
         $tunggakan_jasa = 0;
     }
-    
+
     $jum_angsuran = $pinkel->jangka / $pinkel->sis_pokok->sistem;
-    
-    $pokok_bulan_depan = $ra->target_pokok;
-    $jasa_bulan_depan = $ra->target_jasa;
-    if ($ra->angsuran_ke >= $jum_angsuran) {
+
+    $pokok_bulan_depan = $target_pokok;
+    $jasa_bulan_depan = $target_jasa;
+    if ($angsuran_ke >= $jum_angsuran) {
         $pokok_bulan_depan = $pinkel->alokasi - $real->sum_pokok;
         $jasa_bulan_depan = ($pinkel->alokasi * $pinkel->pros_jasa) / 100 - $real->sum_jasa;
     }
@@ -29,7 +38,7 @@
         if ($trx->rekening_kredit == '4.1.01.04' || $trx->rekening_kredit == '4.1.01.05' || $trx->rekening_kredit == '4.1.01.06') {
             $denda += $trx->jumlah;
         }
-        
+
         $idt = $trx->idt;
     @endphp
 @endforeach

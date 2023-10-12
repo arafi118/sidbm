@@ -101,7 +101,7 @@
                                         $tgl_pakai = $kec->tgl_pakai;
                                         $th_pakai = explode('-', $tgl_pakai)[0];
                                     @endphp
-                                    @for ($i = $th_pakai; $i <= $th_pakai; $i++)
+                                    @for ($i = $th_pakai; $i <= date('Y'); $i++)
                                         <option value="{{ $i }}">{{ $i }}</option>
                                     @endfor
                                 </select>
