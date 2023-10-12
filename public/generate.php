@@ -240,6 +240,11 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
 
             $ra = mysqli_fetch_array(mysqli_query($koneksi, "select * from rencana_angsuran_$lokasi WHERE loan_id='$id_pinj' AND jatuh_tempo<='$tgl_transaksi' 
                                     ORDER BY jatuh_tempo DESC, id DESC LIMIT 1"));
+
+            if (!$ra) {
+                $ra['target_pokok'] = 0;
+                $ra['target_jasa'] = 0;
+            }
             $targetp = $ra['target_pokok'];
             $targetj = $ra['target_jasa'];
             $tunggakan_pokok = $targetp - $sum_pokok;
