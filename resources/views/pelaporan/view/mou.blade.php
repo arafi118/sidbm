@@ -425,7 +425,8 @@
             <ol style="text-align: justify;">
                 <li>
                     Pihak Kedua membayar biaya instalasi dan migrasi data pada server sebesar Rp.
-                    {{ number_format($jumlah) }} ({{ $keu->terbilang($jumlah) }}) serta dikenai PPn sebesar 10% dengan
+                    {{ number_format($jumlah) }} ({{ $keu->terbilang($jumlah) }} Rupiah) serta dikenai PPn sebesar 10%
+                    dengan
                     tahapan pembayaran 30% sebelum migrasi data
                     dan
                     tahap kedua 70% dibayarkan maksimal 1 (satu) minggu setelah Bimbingan Teknis.
@@ -433,7 +434,7 @@
                 <li>
                     Pihak Kedua membayar biaya domain dan hosting dengan spesifikasi sebagaimana pasal 2 ayat 1 point
                     (b)
-                    sebesar Rp {{ number_format($nominal) }} ({{ $keu->terbilang($nominal) }}) per tahun yang
+                    sebesar Rp {{ number_format($nominal) }} ({{ $keu->terbilang($nominal) }} Rupiah) per tahun yang
                     dibayarkan setiap awal masa aktif.
                 </li>
                 <li>
