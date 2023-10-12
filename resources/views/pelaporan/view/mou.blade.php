@@ -520,7 +520,7 @@
             </tr>
             <tr>
                 <td align="center">
-                    <b>SANTOTO, S.Ag</b>
+                    <b>SANTOSO, S.Ag</b>
                 </td>
                 <td align="center">
                     <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
