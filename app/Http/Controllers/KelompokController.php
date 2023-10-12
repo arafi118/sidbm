@@ -298,7 +298,12 @@ class KelompokController extends Controller
      */
     public function destroy(Kelompok $kelompok)
     {
-        //
+        Kelompok::where('id', $kelompok->id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Kelompok ' . $kelompok->nama_kelompok . ' berhasil Dihapus'
+        ]);
     }
 
     public function detailKelompok($id)

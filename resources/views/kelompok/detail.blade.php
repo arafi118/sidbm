@@ -102,10 +102,29 @@
                                     </blockquote>
                                 </li>
                             @endif
+
+                            @if ($status == '')
+                                <li class="list-group-item">
+                                    <blockquote data-link="/database/kelompok/{{ $kelompok->kd_kelompok }}"
+                                        class="blockquote text-white mb-1 pointer" id="deleteKelompok">
+                                        <p class="text-dark ms-3">
+                                            <span class="badge badge-danger">
+                                                Hapus Kelompok
+                                            </span>
+                                        </p>
+                                    </blockquote>
+                                </li>
+                            @endif
                         </ul>
                     </div>
                 </div>
             </div>
+
+            <form action="" method="post" id="formDelete">
+                @method('DELETE')
+                @csrf
+            </form>
+
             <div class="tab-pane fade" id="ProfilKelompok" role="tabpanel" aria-labelledby="ProfilKelompok">
                 <div class="card">
                     <div class="card-body">
@@ -150,7 +169,8 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="my-2">
-                                        <label class="form-label" for="jenis_produk_pinjaman">Jenis Produk Pinjaman</label>
+                                        <label class="form-label" for="jenis_produk_pinjaman">Jenis Produk
+                                            Pinjaman</label>
                                         <select class="form-control" name="jenis_produk_pinjaman"
                                             id="jenis_produk_pinjaman">
                                             @foreach ($jenis_produk_pinjaman as $jpp)
@@ -340,11 +360,45 @@
             })
         })
 
+        $(document).on('click', '#deleteKelompok', function(e) {
+            e.preventDefault()
+
+            var action = $(this).attr('data-link')
+
+            Swal.fire({
+                title: 'Hapus Kelompok Ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#formDelete')
+                    $.ajax({
+                        url: action,
+                        method: form.attr('method'),
+                        data: form.serialize(),
+                        success: function(result) {
+                            if (result.success) {
+                                Swal.fire('Berhasil!', result.msg, 'success').then(() => {
+                                    window.location.href = '/database/kelompok'
+                                })
+                            } else {
+                                Swal.fire('Peringatan', 'Kelompok gagal dihapus', 'warning')
+                            }
+                        }
+                    })
+                }
+            })
+        })
+
         $(document).on('click', '.blockquote', function(e) {
             e.preventDefault()
 
             var link = $(this).attr('data-link')
-            window.location.href = link
+            if ($(this).attr('id') != 'deleteKelompok') {
+                window.location.href = link
+            }
         })
     </script>
 @endsection
