@@ -610,7 +610,6 @@ class PinjamanKelompokController extends Controller
         } elseif ($request->status == 'W') {
             if ($request->idpa != null) {
                 foreach ($request->idpa as $idpa => $val) {
-
                     PinjamanAnggota::where('id', $idpa)->update([
                         $tgl => Tanggal::tglNasional($data[$tgl]),
                         $alokasi => str_replace(',', '', str_replace('.00', '', $val)),
@@ -641,9 +640,12 @@ class PinjamanKelompokController extends Controller
                 foreach ($request->idpa as $idpa => $val) {
                     $catatan = $request->catatan[$idpa];
 
+                    $val = str_replace(',', '', str_replace('.00', '', $val));
+                    if ($val == '') $val = 0;
+                    // echo $val . ', ';
                     PinjamanAnggota::where('id', $idpa)->update([
                         $tgl => Tanggal::tglNasional($data[$tgl]),
-                        $alokasi => str_replace(',', '', str_replace('.00', '', $val)),
+                        $alokasi => $val,
                         'catatan_verifikasi' => $catatan,
                         'status' => $data['status']
                     ]);
