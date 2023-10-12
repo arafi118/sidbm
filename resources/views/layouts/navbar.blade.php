@@ -8,19 +8,18 @@
                         <i class="material-icons">home</i>
                     </a>
                 </li>
-                @for ($i=1; $i<=count(request()->segments()); $i++)
+                @for ($i = 1; $i <= count(request()->segments()); $i++)
                     <li class="breadcrumb-item text-sm text-dark active" aria-current="page">
-                        {{ ucwords(str_replace('_',' ', Request::segment($i))) }}
+                        {{ ucwords(str_replace('_', ' ', Request::segment($i))) }}
                     </li>
-                    @endfor
+                @endfor
             </ol>
             <h6 class="font-weight-bolder mb-0">
-                @if (
-                Request::segment(count(request()->segments()) - 1) == 'detail' ||
-                Request::segment(count(request()->segments()) - 1) == 'lunas')
-                Loan ID. {{ ucwords(str_replace('_',' ',Request::segment(count(request()->segments())))) }}
+                @if (Request::segment(count(request()->segments()) - 1) == 'detail' ||
+                        Request::segment(count(request()->segments()) - 1) == 'lunas')
+                    Loan ID. {{ ucwords(str_replace('_', ' ', Request::segment(count(request()->segments())))) }}
                 @else
-                {{ ucwords(str_replace('_',' ',Request::segment(count(request()->segments())))) }}
+                    {{ ucwords(str_replace('_', ' ', Request::segment(count(request()->segments())))) }}
                 @endif
             </h6>
         </nav>
@@ -38,17 +37,16 @@
                 <div class="input-group input-group-outline">
                     <label class="form-label">Cari Kelompok</label>
                     @if (Request::get('pinkel'))
-                    <input type="text" id="cariKelompok" name="cariKelompok" class="form-control"
-                        value="{{ $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] [' . $pinkel->kelompok->ketua . ']' }}">
+                        <input type="text" id="cariKelompok" name="cariKelompok" class="form-control"
+                            value="{{ $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] [' . $pinkel->kelompok->ketua . ']' }}">
                     @else
-                    <input type="text" id="cariKelompok" name="cariKelompok" class="form-control">
+                        <input type="text" id="cariKelompok" name="cariKelompok" class="form-control">
                     @endif
                 </div>
             </div>
             <ul class="navbar-nav justify-content-end align-items-center">
                 <li class="nav-item">
-                    <a href="/pages/authentication/signin/illustration.html"
-                        class="nav-link text-body p-0 position-relative" target="_blank">
+                    <a href="/pelaporan/mou" class="nav-link text-body p-0 position-relative" target="_blank">
                         <i class="material-icons me-sm-1">
                             library_books
                         </i>

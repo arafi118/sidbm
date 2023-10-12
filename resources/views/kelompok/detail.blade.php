@@ -32,6 +32,9 @@
                         </h5>
 
                         <ul class="list-group list-group-flush mt-2">
+                            @php
+                                $status = '';
+                            @endphp
                             @foreach ($kelompok->pinkel as $pinkel)
                                 <li class="list-group-item">
                                     @php
@@ -48,17 +51,17 @@
                                         } else {
                                             $tgl = $pinkel->tgl_cair;
                                             $jumlah = $pinkel->alokasi;
-                                        
+
                                             if ($pinkel->alokasi <= $pinkel->saldo->sum_pokok) {
                                                 $link = '/lunas' . '/' . $pinkel->id;
                                             }
                                         }
-                                        
+
                                         if ($pinkel->status == 'R' || $pinkel->status == 'H') {
                                             $link = '#';
                                         }
                                         $status = $pinkel->status;
-                                        
+
                                     @endphp
                                     <blockquote data-link="{{ $link }}" class="blockquote text-white mb-1 pointer">
                                         <p class="text-dark ms-3">

@@ -35,6 +35,7 @@ if (isset($_POST['copy'])) {
     mysqli_query($koneksi, "INSERT dbm_laravel.rencana_angsuran_$lokasi SELECT * FROM dbm_sidbm.rencana_angsuran_$lokasi");
     mysqli_query($koneksi, "INSERT dbm_laravel.transaksi_$lokasi SELECT * FROM dbm_sidbm.transaksi_$lokasi");
 
+    mysqli_query($koneksi, "ALTER TABLE dbm_laravel.anggota_$lokasi CHANGE `usaha` `usaha` VARCHAR(50) NULL DEFAULT '0'");
     mysqli_query($koneksi, "ALTER TABLE dbm_laravel.rekening_$lokasi ADD `parent_id` VARCHAR(50) NULL FIRST");
     mysqli_query($koneksi, "UPDATE dbm_laravel.rekening_$lokasi SET parent_id=CONCAT(lev1, lev2, lev3) WHERE 1");
 

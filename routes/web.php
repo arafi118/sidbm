@@ -119,6 +119,8 @@ Route::get('/pelaporan', [PelaporanController::class, 'index'])->middleware('aut
 Route::get('/pelaporan/sub_laporan/{file}', [PelaporanController::class, 'subLaporan'])->middleware('auth');
 Route::post('/pelaporan/preview', [PelaporanController::class, 'preview'])->middleware('auth');
 
+Route::get('/pelaporan/mou', [PelaporanController::class, 'mou'])->middleware('auth');
+
 Route::get('/sync/{lokasi}', [DashboardController::class, 'sync'])->middleware('auth');
 Route::get('/link', function () {
     $target = '/home/dbm/public_html/apps/storage/app/public';
