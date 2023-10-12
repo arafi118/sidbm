@@ -516,7 +516,7 @@ class PinjamanKelompokController extends Controller
             ]);
 
             $table = 'pinjaman_kelompok_' . auth()->user()->lokasi;
-            $validate = Validator::make($data, [
+            $validate = [
                 $tgl => 'required',
                 $alokasi => 'required',
                 'jangka' => 'required',
@@ -525,8 +525,14 @@ class PinjamanKelompokController extends Controller
                 'sistem_angsuran_pokok' => 'required',
                 'sistem_angsuran_jasa' => 'required',
                 'tgl_cair' => 'required',
-                'nomor_spk' => 'required|unique:' . $table . ',spk_no'
-            ]);
+                'nomor_spk' => 'required'
+            ];
+
+            if ($request->nomor_spk != $perguliran->spk_no) {
+                $validate['nomor_spk'] = 'required|unique:' . $table . ',spk_no';
+            }
+
+            $validate = Validator::make($data, $validate);
         } elseif ($request->status == 'A') {
             $data = $request->only([
                 '_id',
