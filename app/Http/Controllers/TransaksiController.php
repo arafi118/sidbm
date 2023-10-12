@@ -221,7 +221,7 @@ class TransaksiController extends Controller
                     'id_pinj_i' => 0,
                     'keterangan_transaksi' => (string) '(' . $rek_simpan->nama_akun . ') ' . $request->nama_barang,
                     'relasi' => (string) $request->relasi,
-                    'jumlah' => str_replace(',', '', str_replace('.00', '', $request->harga_satuan)),
+                    'jumlah' => str_replace(',', '', str_replace('.00', '', $request->harga_satuan)) * $request->jumlah,
                     'urutan' => 0,
                     'id_user' => auth()->user()->id,
                 ];
