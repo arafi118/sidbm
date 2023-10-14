@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-sm-4">
             <div class="card">
-                <div class="card-body p-3 position-relative">
+                <div class="card-body p-3 position-relative pointer" id="btnAktif">
                     <div class="row">
                         <div class="col-7 text-start">
                             <p class="text-sm mb-1 text-capitalize font-weight-bold">Pemanfaat</p>
@@ -33,7 +33,7 @@
         </div>
         <div class="col-sm-4 mt-sm-0 mt-4">
             <div class="card">
-                <div class="card-body p-3 position-relative">
+                <div class="card-body p-3 position-relative pointer" id="btnpinjaman">
                     <div class="row">
                         <div class="col-7 text-start">
                             <p class="text-sm mb-1 text-capitalize font-weight-bold">Proposal Pinjaman</p>
@@ -191,7 +191,7 @@
 
 
 
-    {{-- Modal Cetak Dokumen Pencairan --}}
+    {{-- Modal Jatuh Dempo --}}
     <div class="modal fade" id="jatuhTempo" aria-labelledby="jatuhTempoLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
             <div class="modal-content">
@@ -233,7 +233,7 @@
                                                     <tr>
                                                         <td align="center">No</td>
                                                         <td align="center">Nama Kelompok</td>
-                                                        <td align="center">Tgl Cair</td>
+                                                        <td align="center">Tanggal Cair</td>
                                                         <td align="center">Alokasi</td>
                                                         <td align="center">Tunggakan Pokok</td>
                                                         <td align="center">Tunggakan Jasa</td>
@@ -254,7 +254,7 @@
                                                     <tr>
                                                         <td align="center">No</td>
                                                         <td align="center">Nama Kelompok</td>
-                                                        <td align="center">Tgl Cair</td>
+                                                        <td align="center">Tanggal Cair</td>
                                                         <td align="center">Alokasi</td>
                                                         <td align="center">Tunggakan Pokok</td>
                                                         <td align="center">Tunggakan Jasa</td>
@@ -297,6 +297,188 @@
         </div>
     </div>
 
+    {{-- Modal Pinjaman --}}
+    <div class="modal fade" id="pinjaman" aria-labelledby="pinjamanLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="pinjamanLabel">Pinjaman</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="nav-wrapper position-relative end-0">
+                        <ul class="nav nav-pills nav-fill p-1" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1 active text-info" data-bs-toggle="tab" href="#proposal"
+                                    role="tab" aria-controls="proposal" aria-selected="true">
+                                    Proposal
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1 text-danger" data-bs-toggle="tab" href="#verifikasi"
+                                    role="tab" aria-controls="verifikasi" aria-selected="false">
+                                    Verifikasi
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1 text-warning" data-bs-toggle="tab" href="#waiting"
+                                    role="tab" aria-controls="waiting" aria-selected="false">
+                                    Waiting
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content mt-2">
+                            <div class="tab-pane fade show active" id="proposal" role="tabpanel"
+                                aria-labelledby="proposal">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped midle" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <td align="center">No</td>
+                                                        <td align="center">Tanggal Proposal</td>
+                                                        <td align="center">Nama Kelompok</td>
+                                                        <td align="center">Alokasi</td>
+                                                        <td align="center">Anggota</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbProposal"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="verifikasi" role="tabpanel" aria-labelledby="verifikasi">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped midle" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <td align="center">No</td>
+                                                        <td align="center">Tanggal Verifikasi</td>
+                                                        <td align="center">Nama Kelompok</td>
+                                                        <td align="center">Alokasi</td>
+                                                        <td align="center">Anggota</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbVerifikasi"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="waiting" role="tabpanel" aria-labelledby="waiting">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped midle" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <td align="center">No</td>
+                                                        <td align="center">Tanggal Tunggu</td>
+                                                        <td align="center">Nama Kelompok</td>
+                                                        <td align="center">Alokasi</td>
+                                                        <td align="center">Anggota</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbWaiting"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Pinjaman --}}
+    <div class="modal fade" id="aktif" aria-labelledby="aktifLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="aktifLabel">Pinjaman Aktif</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="nav-wrapper position-relative end-0">
+                        <ul class="nav nav-pills nav-fill p-1" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1 active text-info" data-bs-toggle="tab" href="#kelompok"
+                                    role="tab" aria-controls="kelompok" aria-selected="true">
+                                    Kelompok
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1 text-danger" data-bs-toggle="tab" href="#pemanfaat"
+                                    role="tab" aria-controls="pemanfaat" aria-selected="false">
+                                    Pemanfaat
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content mt-2">
+                            <div class="tab-pane fade show active" id="kelompok" role="tabpanel"
+                                aria-labelledby="kelompok">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped midle" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <td align="center">No</td>
+                                                        <td align="center">Tanggal Cair</td>
+                                                        <td align="center">Nama Kelompok</td>
+                                                        <td align="center">Alokasi</td>
+                                                        <td align="center">Saldo</td>
+                                                        <td align="center">Anggota</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbKelompok"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pemanfaat" role="tabpanel" aria-labelledby="pemanfaat">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped midle" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <td align="center">No</td>
+                                                        <td align="center">Nama Kelompok</td>
+                                                        <td align="center">Nik</td>
+                                                        <td align="center">Nama Anggota</td>
+                                                        <td align="center">Alamat</td>
+                                                        <td align="center">Tanggal Cair</td>
+                                                        <td align="center">Alokasi</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbPemanfaat"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
     @php
         $p = $saldo[4];
         $b = $saldo[5];
@@ -333,6 +515,36 @@
                         $('#TbMenunggak').html(result.table)
                     }
                 }
+            }
+        })
+
+        $.get('/dashboard/pinjaman?status=P', function(result) {
+            if (result.success) {
+                $('#tbProposal').html(result.table)
+            }
+        })
+
+        $.get('/dashboard/pinjaman?status=V', function(result) {
+            if (result.success) {
+                $('#tbVerifikasi').html(result.table)
+            }
+        })
+
+        $.get('/dashboard/pinjaman?status=W', function(result) {
+            if (result.success) {
+                $('#tbWaiting').html(result.table)
+            }
+        })
+
+        $.get('/dashboard/pinjaman?status=A', function(result) {
+            if (result.success) {
+                $('#tbKelompok').html(result.table)
+            }
+        })
+
+        $.get('/dashboard/pemanfaat?status=A', function(result) {
+            if (result.success) {
+                $('#tbPemanfaat').html(result.table)
             }
         })
     </script>
@@ -595,6 +807,18 @@
             e.preventDefault()
 
             $('#jatuhTempo').modal('show')
+        })
+
+        $(document).on('click', '#btnpinjaman', function(e) {
+            e.preventDefault()
+
+            $('#pinjaman').modal('show')
+        })
+
+        $(document).on('click', '#btnAktif', function(e) {
+            e.preventDefault()
+
+            $('#aktif').modal('show')
         })
     </script>
 @endsection

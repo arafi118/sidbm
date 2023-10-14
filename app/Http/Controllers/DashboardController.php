@@ -75,6 +75,108 @@ class DashboardController extends Controller
         return view('dashboard.index')->with($data);
     }
 
+    public function pinjaman()
+    {
+        $status = request()->get('status');
+        if ($status == 'P') {
+            $tgl = 'tgl_proposal';
+            $alokasi = 'proposal';
+        } else if ($status == 'V') {
+            $tgl = 'tgl_verifikasi';
+            $alokasi = 'verifikasi';
+        } else if ($status == 'W') {
+            $tgl = 'tgl_tunggu';
+            $alokasi = 'alokasi';
+        } else {
+            $tgl = 'tgl_cair';
+            $alokasi = 'alokasi';
+        }
+
+        $table = '';
+
+        $no = 1;
+        $pinjaman = PinjamanKelompok::where('status', $status)->with('saldo', 'kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
+        foreach ($pinjaman as $pinkel) {
+            $status = $pinkel->sts->warna_status;
+
+            $table .= '<tr>';
+            if ($pinkel->status == 'A') {
+                $table .= '<td align="center">' . $no . '</td>';
+                $table .= '<td align="center">' . Tanggal::tglIndo($pinkel->tgl_cair) . '</td>';
+                $table .= '<td class="text-start d-flex justify-content-between">' . $pinkel->kelompok->nama_kelompok . '(' . $pinkel->jpp->nama_jpp . ') <span class="badge badge-' . $status . '">Loan ID. ' . $pinkel->id . '</span></td>';
+                $table .= '<td align="right">' . number_format($pinkel->alokasi) . '</td>';
+                if ($pinkel->saldo) {
+                    $table .= '<td align="right">' . number_format($pinkel->saldo->saldo_pokok) . '</td>';
+                } else {
+                    $table .= '<td align="right">' . number_format(0) . '</td>';
+                }
+                $table .= '<td align="center">' . $pinkel->pinjaman_anggota_count . '</td>';
+            } else {
+                $table .= '<td align="center">' . $no . '</td>';
+                $table .= '<td align="center">' . Tanggal::tglIndo($pinkel->$tgl) . '</td>';
+                $table .= '<td class="text-start d-flex justify-content-between">' . $pinkel->kelompok->nama_kelompok . '(' . $pinkel->jpp->nama_jpp . ') <span class="badge badge-' . $status . '">Loan ID. ' . $pinkel->id . '</span></td>';
+                $table .= '<td align="right">' . number_format($pinkel->$alokasi) . '</td>';
+                $table .= '<td align="center">' . $pinkel->pinjaman_anggota_count . '</td>';
+            }
+            $table .= '</tr>';
+
+            $no++;
+        }
+
+        return response()->json([
+            'success' => true,
+            'table' => $table
+        ]);
+    }
+
+    public function pemanfaat()
+    {
+        $status = request()->get('status');
+        if ($status == 'P') {
+            $tgl = 'tgl_proposal';
+            $alokasi = 'proposal';
+        } else if ($status == 'V') {
+            $tgl = 'tgl_verifikasi';
+            $alokasi = 'verifikasi';
+        } else if ($status == 'W') {
+            $tgl = 'tgl_tunggu';
+            $alokasi = 'alokasi';
+        } else {
+            $tgl = 'tgl_cair';
+            $alokasi = 'alokasi';
+        }
+
+        $table = '';
+
+        $no = 1;
+        $pinjaman = PinjamanAnggota::where('status', $status)->with([
+            'anggota',
+            'anggota.d',
+            'anggota.d.sebutan_desa',
+            'kelompok'
+        ])->get();
+        foreach ($pinjaman as $pinkel) {
+            $table .= '<tr>';
+
+            $table .= '<td align="center">' . $no . '</td>';
+            $table .= '<td>' . $pinkel->kelompok->nama_kelompok . ' - Loan ID. ' . $pinkel->id_pinkel . '</td>';
+            $table .= '<td align="center">' . $pinkel->anggota->nik . '</td>';
+            $table .= '<td>' . $pinkel->anggota->namadepan . '</td>';
+            $table .= '<td>' . $pinkel->anggota->d->sebutan_desa->sebutan_desa . ' ' . $pinkel->anggota->d->nama_desa . ' ' . $pinkel->anggota->alamat . '</td>';
+            $table .= '<td align="center">' . Tanggal::tglIndo($pinkel->$tgl) . '</td>';
+            $table .= '<td align="right">' . number_format($pinkel->$alokasi) . '</td>';
+
+            $table .= '</tr>';
+
+            $no++;
+        }
+
+        return response()->json([
+            'success' => true,
+            'table' => $table
+        ]);
+    }
+
     public function piutang()
     {
         $thn = date('Y');

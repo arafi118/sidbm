@@ -33,7 +33,8 @@ Route::get('/piutang_jasa', [DashboardController::class, 'piutang'])->middleware
 
 Route::post('/dashboard/jatuh_tempo', [DashboardController::class, 'jatuhTempo'])->middleware('auth');
 Route::post('/dashboard/nunggak', [DashboardController::class, 'nunggak'])->middleware('auth');
-Route::post('/dashboard/line', [DashboardController::class, 'lineChart'])->middleware('auth');
+Route::get('/dashboard/pinjaman', [DashboardController::class, 'pinjaman'])->middleware('auth');
+Route::get('/dashboard/pemanfaat', [DashboardController::class, 'pemanfaat'])->middleware('auth');
 
 Route::get('/pengaturan/sop', [SopController::class, 'index'])->middleware('auth');
 Route::get('/pengaturan/ttd_pelaporan', [SopController::class, 'ttdPelaporan'])->middleware('auth');
