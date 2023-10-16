@@ -111,6 +111,8 @@ if (isset($_POST['copy'])) {
     <?php
     if (isset($_SESSION['success'])) {
         echo "<div>$_SESSION[success]</div>";
+
+        unset($_SESSION['success']);
     }
     ?>
 
