@@ -1,10 +1,7 @@
 <?php
-
-use PhpParser\Node\Stmt\Echo_;
-
 ini_set('display_errors', '1');
 session_start();
-$koneksi = mysqli_connect('localhost', 'dbm_sidbm', 'dbm_sidbm', 'information_schema');
+$koneksi = mysqli_connect('103.177.95.90', 'dbm_sidbm', 'dbm_sidbm', 'information_schema');
 
 if (isset($_POST['copy'])) {
     $lokasi = htmlspecialchars($_POST['lokasi']);
@@ -106,7 +103,7 @@ if (isset($_POST['copy'])) {
     mysqli_query($koneksi, "UPDATE inventaris_$lokasi SET kategori='3', jenis='3' WHERE kategori='7' AND jenis='5'");
 
     $_SESSION['success'] = "Copy Tabel Lokasi <b>$lokasi</b> Berhasil.";
-    echo "<script>location.href = '/migrasi.php';</script>";
+    // echo "<script>location.href = '/migrasi.php';</script>";
 } else {
 ?>
 
