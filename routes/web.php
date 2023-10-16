@@ -147,3 +147,5 @@ Route::get('/user', function () {
 
     return view('welcome', ['users' => $users]);
 });
+
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');

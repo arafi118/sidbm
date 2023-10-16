@@ -1,5 +1,9 @@
 <?php
+
+use PhpParser\Node\Stmt\Echo_;
+
 ini_set('display_errors', '1');
+session_start();
 $koneksi = mysqli_connect('localhost', 'dbm_sidbm', 'dbm_sidbm', 'information_schema');
 
 if (isset($_POST['copy'])) {
@@ -44,9 +48,73 @@ if (isset($_POST['copy'])) {
         mysqli_query($koneksi, "INSERT INTO dbm_laravel.tanda_tangan_laporan (`id`, `lokasi`, `tanda_tangan_pelaporan`, `tanda_tangan_spk`) VALUES (NULL, '$lokasi', '', '')");
     }
 
+    $trigger_create = "
+        CREATE TRIGGER `create_saldo_debit` AFTER INSERT ON `transaksi_$lokasi` FOR EACH ROW BEGIN
+
+            INSERT INTO saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
+                VALUES (CONCAT(REPLACE(NEW.rekening_debit, '.',''), 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi)), NEW.rekening_debit, 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_debit), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_debit)) ON DUPLICATE KEY UPDATE 
+                debit= (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_debit),
+                kredit=(SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_debit);
+
+            INSERT INTO saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
+                VALUES (CONCAT(REPLACE(NEW.rekening_kredit, '.',''), 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi)), NEW.rekening_kredit, 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_kredit), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_kredit)) ON DUPLICATE KEY UPDATE 
+                debit= (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_kredit),
+                kredit=(SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_kredit);
+    
+        END
+    ";
+
+    $trigger_update = "
+        CREATE TRIGGER `update_saldo_debit` AFTER UPDATE ON `transaksi_$lokasi` FOR EACH ROW BEGIN
+
+            INSERT INTO saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
+                VALUES (CONCAT(REPLACE(NEW.rekening_debit, '.',''), 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi)), NEW.rekening_debit, 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_debit), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_debit)) ON DUPLICATE KEY UPDATE 
+                debit= (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_debit),
+                kredit=(SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_debit);
+
+            INSERT INTO saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
+                VALUES (CONCAT(REPLACE(NEW.rekening_kredit, '.',''), 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi)), NEW.rekening_kredit, 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_kredit), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_kredit)) ON DUPLICATE KEY UPDATE 
+                debit= (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_kredit),
+                kredit=(SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_kredit);
+
+        END
+    ";
+
+    $trigger_delete = "
+        CREATE TRIGGER `delete_saldo_debit` AFTER DELETE ON `transaksi_$lokasi` FOR EACH ROW BEGIN
+
+            INSERT INTO saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
+                VALUES (CONCAT(REPLACE(OLD.rekening_debit, '.',''), 1, YEAR(OLD.tgl_transaksi), MONTH(OLD.tgl_transaksi)), OLD.rekening_debit, 1, YEAR(OLD.tgl_transaksi), MONTH(OLD.tgl_transaksi), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=OLD.rekening_debit), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=OLD.rekening_debit)) ON DUPLICATE KEY UPDATE 
+                debit= (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=OLD.rekening_debit),
+                kredit=(SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=OLD.rekening_debit);
+
+            INSERT INTO saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
+                VALUES (CONCAT(REPLACE(OLD.rekening_kredit, '.',''), 1, YEAR(OLD.tgl_transaksi), MONTH(OLD.tgl_transaksi)), OLD.rekening_kredit, 1, YEAR(OLD.tgl_transaksi), MONTH(OLD.tgl_transaksi), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=OLD.rekening_kredit), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=OLD.rekening_kredit)) ON DUPLICATE KEY UPDATE 
+                debit= (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=OLD.rekening_kredit),
+                kredit=(SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=OLD.rekening_kredit);
+
+        END
+    ";
+
+    mysqli_query($koneksi, $trigger_create);
+    mysqli_query($koneksi, $trigger_update);
+    mysqli_query($koneksi, $trigger_delete);
+
+    mysqli_query($koneksi, "UPDATE inventaris_$lokasi SET kategori='1', jenis='1' WHERE kategori='1' AND jenis='3'");
+    mysqli_query($koneksi, "UPDATE inventaris_$lokasi SET kategori='1', jenis='3' WHERE kategori='5' AND jenis='5'");
+    mysqli_query($koneksi, "UPDATE inventaris_$lokasi SET kategori='2', jenis='3' WHERE kategori='6' AND jenis='5'");
+    mysqli_query($koneksi, "UPDATE inventaris_$lokasi SET kategori='3', jenis='3' WHERE kategori='7' AND jenis='5'");
+
+    $_SESSION['success'] = "Copy Tabel Lokasi <b>$lokasi</b> Berhasil.";
     echo "<script>location.href = '/migrasi.php';</script>";
 } else {
 ?>
+
+    <?php
+    if (isset($_SESSION['success'])) {
+        echo '<div>$_SESSION[success]</div>';
+    }
+    ?>
 
     <form action="" method="post">
         <input type="text" name="lokasi" id="lokasi">

@@ -6,6 +6,7 @@ use App\Models\Kecamatan;
 use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Session;
 
 class AuthController extends Controller
@@ -34,6 +35,7 @@ class AuthController extends Controller
         if ($user) {
             if ($password === $user->pass) {
                 if (Auth::loginUsingId($user->id)) {
+                    $request->session()->regenerate();
                     session([
                         'nama_lembaga' => str_replace('DBM ', '', $kec->nama_lembaga_sort),
                         'nama' => $user->namadepan . ' ' . $user->namabelakang,
@@ -41,12 +43,21 @@ class AuthController extends Controller
                         'logo' => $kec->logo
                     ]);
 
-
-                    return redirect('/dashboard');
+                    return redirect('/dashboard')->with('pesan', 'Halo ' . $user->namadepan . ' ' . $user->namabelakang);
                 }
             }
         }
 
         return redirect()->back();
+    }
+
+    public function logout(Request $request)
+    {
+        FacadesAuth::logout();
+
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        return redirect('/')->with('pesan', 'Anda berhasil logout');
     }
 }

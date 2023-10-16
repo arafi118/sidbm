@@ -23,7 +23,8 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
@@ -74,7 +75,7 @@
         <div class="card shadow-lg">
             <div class="card-header pb-0 pt-3">
                 <div class="float-start">
-                    <h5 class="mt-3 mb-0"></h5>
+                    <h5 class="mt-3 mb-0">Pengaturan Tampilan</h5>
                     <p></p>
                 </div>
                 <div class="float-end mt-4">
@@ -146,6 +147,10 @@
             </div>
         </div>
     </div>
+
+    <form action="/logout" method="post" id="formLogout">
+        @csrf
+    </form>
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.js"></script>
@@ -284,6 +289,23 @@
             }
         })
 
+        $(document).on('click', '#logout', function(e) {
+            e.preventDefault()
+
+            Swal.fire({
+                title: 'Logout',
+                text: 'Dengan klik tombol logout maka anda tidak bisa membuka halaman ini lagi sebelum melakukan login ulang, Logout?',
+                showCancelButton: true,
+                confirmButtonText: 'Logout',
+                cancelButtonText: 'Batal',
+                icon: 'info'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#formLogout').submit()
+                }
+            })
+        })
+
         var notif;
 
         $.ajaxSetup({
@@ -370,6 +392,12 @@
 
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script async src="/assets/js/material-dashboard.min.js"></script>
+
+    @if (session('pesan'))
+        <script>
+            Toastr('success', "{{ session('pesan') }}")
+        </script>
+    @endif
 </body>
 
 </html>

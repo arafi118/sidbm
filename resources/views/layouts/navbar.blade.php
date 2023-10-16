@@ -67,6 +67,13 @@
                         </i>
                     </a>
                 </li>
+                <li class="nav-item ps-3">
+                    <a href="javascript:;" class="nav-link text-body p-0" id="logout">
+                        <i class="material-icons fixed-plugin-button-nav cursor-pointer">
+                            exit_to_app
+                        </i>
+                    </a>
+                </li>
                 <li class="nav-item d-xl-none d-flex align-items-center ps-3">
                     <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
                         <div class="sidenav-toggler-inner">
