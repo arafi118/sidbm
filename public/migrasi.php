@@ -47,49 +47,49 @@ if (isset($_POST['copy'])) {
     }
 
     $trigger_create = "
-        CREATE TRIGGER `dbm_laravel.create_saldo_debit` AFTER INSERT ON `dbm_laravel.transaksi_$lokasi` FOR EACH ROW BEGIN
+        CREATE TRIGGER `create_saldo_debit` AFTER INSERT ON `transaksi_$lokasi` FOR EACH ROW BEGIN
 
-            INSERT INTO dbm_laravel.saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
-                VALUES (CONCAT(REPLACE(NEW.rekening_debit, '.',''), 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi)), NEW.rekening_debit, 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi), (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_debit=NEW.rekening_debit), (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_debit)) ON DUPLICATE KEY UPDATE 
-                debit= (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_debit=NEW.rekening_debit),
-                kredit=(SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_debit);
+            INSERT INTO saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
+                VALUES (CONCAT(REPLACE(NEW.rekening_debit, '.',''), 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi)), NEW.rekening_debit, 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_debit), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_debit)) ON DUPLICATE KEY UPDATE 
+                debit= (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_debit),
+                kredit=(SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_debit);
 
-            INSERT INTO dbm_laravel.saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
-                VALUES (CONCAT(REPLACE(NEW.rekening_kredit, '.',''), 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi)), NEW.rekening_kredit, 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi), (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_debit=NEW.rekening_kredit), (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_kredit)) ON DUPLICATE KEY UPDATE 
-                debit= (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_debit=NEW.rekening_kredit),
-                kredit=(SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_kredit);
+            INSERT INTO saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
+                VALUES (CONCAT(REPLACE(NEW.rekening_kredit, '.',''), 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi)), NEW.rekening_kredit, 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_kredit), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_kredit)) ON DUPLICATE KEY UPDATE 
+                debit= (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_kredit),
+                kredit=(SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_kredit);
     
         END
     ";
 
     $trigger_update = "
-        CREATE TRIGGER `dbm_laravel.update_saldo_debit` AFTER UPDATE ON `dbm_laravel.transaksi_$lokasi` FOR EACH ROW BEGIN
+        CREATE TRIGGER `update_saldo_debit` AFTER UPDATE ON `transaksi_$lokasi` FOR EACH ROW BEGIN
 
-            INSERT INTO dbm_laravel.saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
-                VALUES (CONCAT(REPLACE(NEW.rekening_debit, '.',''), 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi)), NEW.rekening_debit, 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi), (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_debit=NEW.rekening_debit), (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_debit)) ON DUPLICATE KEY UPDATE 
-                debit= (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_debit=NEW.rekening_debit),
-                kredit=(SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_debit);
+            INSERT INTO saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
+                VALUES (CONCAT(REPLACE(NEW.rekening_debit, '.',''), 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi)), NEW.rekening_debit, 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_debit), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_debit)) ON DUPLICATE KEY UPDATE 
+                debit= (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_debit),
+                kredit=(SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_debit);
 
-            INSERT INTO dbm_laravel.saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
-                VALUES (CONCAT(REPLACE(NEW.rekening_kredit, '.',''), 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi)), NEW.rekening_kredit, 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi), (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_debit=NEW.rekening_kredit), (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_kredit)) ON DUPLICATE KEY UPDATE 
-                debit= (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_debit=NEW.rekening_kredit),
-                kredit=(SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_kredit);
+            INSERT INTO saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
+                VALUES (CONCAT(REPLACE(NEW.rekening_kredit, '.',''), 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi)), NEW.rekening_kredit, 1, YEAR(NEW.tgl_transaksi), MONTH(NEW.tgl_transaksi), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_kredit), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_kredit)) ON DUPLICATE KEY UPDATE 
+                debit= (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=NEW.rekening_kredit),
+                kredit=(SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=NEW.rekening_kredit);
 
         END
     ";
 
     $trigger_delete = "
-        CREATE TRIGGER `dbm_laravel.delete_saldo_debit` AFTER DELETE ON `dbm_laravel.transaksi_$lokasi` FOR EACH ROW BEGIN
+        CREATE TRIGGER `delete_saldo_debit` AFTER DELETE ON `transaksi_$lokasi` FOR EACH ROW BEGIN
 
-            INSERT INTO dbm_laravel.saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
-                VALUES (CONCAT(REPLACE(OLD.rekening_debit, '.',''), 1, YEAR(OLD.tgl_transaksi), MONTH(OLD.tgl_transaksi)), OLD.rekening_debit, 1, YEAR(OLD.tgl_transaksi), MONTH(OLD.tgl_transaksi), (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_debit=OLD.rekening_debit), (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_debit=OLD.rekening_debit)) ON DUPLICATE KEY UPDATE 
-                debit= (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_debit=OLD.rekening_debit),
-                kredit=(SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_kredit=OLD.rekening_debit);
+            INSERT INTO saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
+                VALUES (CONCAT(REPLACE(OLD.rekening_debit, '.',''), 1, YEAR(OLD.tgl_transaksi), MONTH(OLD.tgl_transaksi)), OLD.rekening_debit, 1, YEAR(OLD.tgl_transaksi), MONTH(OLD.tgl_transaksi), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=OLD.rekening_debit), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=OLD.rekening_debit)) ON DUPLICATE KEY UPDATE 
+                debit= (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=OLD.rekening_debit),
+                kredit=(SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=OLD.rekening_debit);
 
-            INSERT INTO dbm_laravel.saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
-                VALUES (CONCAT(REPLACE(OLD.rekening_kredit, '.',''), 1, YEAR(OLD.tgl_transaksi), MONTH(OLD.tgl_transaksi)), OLD.rekening_kredit, 1, YEAR(OLD.tgl_transaksi), MONTH(OLD.tgl_transaksi), (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_debit=OLD.rekening_kredit), (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_kredit=OLD.rekening_kredit)) ON DUPLICATE KEY UPDATE 
-                debit= (SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_debit=OLD.rekening_kredit),
-                kredit=(SELECT SUM(jumlah) FROM dbm_laravel.transaksi_$lokasi WHERE rekening_kredit=OLD.rekening_kredit);
+            INSERT INTO saldo (`id`, `kode_akun`, `lokasi`, `tahun`, `bulan`, `debit`, `kredit`)
+                VALUES (CONCAT(REPLACE(OLD.rekening_kredit, '.',''), 1, YEAR(OLD.tgl_transaksi), MONTH(OLD.tgl_transaksi)), OLD.rekening_kredit, 1, YEAR(OLD.tgl_transaksi), MONTH(OLD.tgl_transaksi), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=OLD.rekening_kredit), (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=OLD.rekening_kredit)) ON DUPLICATE KEY UPDATE 
+                debit= (SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_debit=OLD.rekening_kredit),
+                kredit=(SELECT SUM(jumlah) FROM transaksi_$lokasi WHERE rekening_kredit=OLD.rekening_kredit);
 
         END
     ";
