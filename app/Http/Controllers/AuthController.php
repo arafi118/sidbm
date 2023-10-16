@@ -43,7 +43,7 @@ class AuthController extends Controller
                         'logo' => $kec->logo
                     ]);
 
-                    return redirect('/dashboard')->with('pesan', 'Halo ' . $user->namadepan . ' ' . $user->namabelakang);
+                    return redirect('/dashboard')->with('pesan', 'Selamat Datang ' . $user->namadepan . ' ' . $user->namabelakang);
                 }
             }
         }
@@ -53,11 +53,12 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        $user = auth()->user()->namadepan . ' ' . auth()->user()->namabelakang;
         FacadesAuth::logout();
 
         request()->session()->invalidate();
         request()->session()->regenerateToken();
 
-        return redirect('/')->with('pesan', 'Anda berhasil logout');
+        return redirect('/')->with('pesan', 'Terima Kasih ' . $user);
     }
 }
