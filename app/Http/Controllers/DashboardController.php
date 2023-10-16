@@ -485,6 +485,7 @@ class DashboardController extends Controller
             $cek_saldo = Saldo::where([
                 ['bulan', $i],
                 ['tahun', $tahun],
+                ['lokasi', $lokasi],
             ])->count();
 
             if ($cek_saldo <= 0) {
