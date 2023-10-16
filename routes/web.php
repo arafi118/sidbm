@@ -10,6 +10,7 @@ use App\Http\Controllers\PinjamanAnggotaController;
 use App\Http\Controllers\PinjamanKelompokController;
 use App\Http\Controllers\SopController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\UserController;
 use App\Models\Kecamatan;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -121,6 +122,8 @@ Route::get('/pelaporan/sub_laporan/{file}', [PelaporanController::class, 'subLap
 Route::post('/pelaporan/preview', [PelaporanController::class, 'preview'])->middleware('auth');
 
 Route::get('/pelaporan/mou', [PelaporanController::class, 'mou'])->middleware('auth');
+
+Route::resource('/profil', UserController::class);
 
 Route::get('/sync/{lokasi}', [DashboardController::class, 'sync'])->middleware('auth');
 Route::get('/link', function () {
