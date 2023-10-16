@@ -22,7 +22,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        if (Session::get('_previous')['url'] == url('')) {
+        if (Session::get('pesan')) {
             // $this->piutang();
             $this->sync(auth()->user()->lokasi);
         }
