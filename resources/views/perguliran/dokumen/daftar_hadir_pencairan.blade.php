@@ -10,7 +10,7 @@
         $tempat = $wt_cair[1];
     }
 
-    $no = 1;
+    $no = 0;
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
