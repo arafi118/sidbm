@@ -94,9 +94,9 @@ if (isset($_POST['copy'])) {
         END
     ";
 
-    mysqli_query($trigger, $trigger_create);
-    mysqli_query($trigger, $trigger_update);
-    mysqli_query($trigger, $trigger_delete);
+    // mysqli_query($trigger, $trigger_create);
+    // mysqli_query($trigger, $trigger_update);
+    // mysqli_query($trigger, $trigger_delete);
 
     mysqli_query($koneksi, "UPDATE dbm_laravel.inventaris_$lokasi SET kategori='1', jenis='1' WHERE kategori='1' AND jenis='3'");
     mysqli_query($koneksi, "UPDATE dbm_laravel.inventaris_$lokasi SET kategori='1', jenis='3' WHERE kategori='5' AND jenis='5'");

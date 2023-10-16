@@ -1,5 +1,6 @@
 @php
     use App\Utils\Tanggal;
+    $no = 1;
 @endphp
 
 @extends('perguliran.dokumen.layout.base')

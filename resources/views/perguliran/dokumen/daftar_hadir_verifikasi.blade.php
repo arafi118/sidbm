@@ -1,3 +1,7 @@
+@php
+    $no = 1;
+@endphp
+
 @extends('perguliran.dokumen.layout.base')
 
 @section('content')

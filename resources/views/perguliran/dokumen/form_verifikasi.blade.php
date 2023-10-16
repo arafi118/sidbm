@@ -209,10 +209,10 @@
             </td>
             <td align="right">{{ number_format($proposal) }}</td>
             <td align="right">
-                {!! $pa->status != 'P' ? number_format($verifikasi) : '&nbsp;' !!}
+                {!! $pinkel->status != 'P' ? number_format($verifikasi) : '&nbsp;' !!}
             </td>
             <td align="right">
-                {!! $pa->status == 'W' || $pa->status == 'A' ? number_format($alokasi) : '&nbsp;' !!}
+                {!! $pinkel->status == 'W' || $pinkel->status == 'A' ? number_format($alokasi) : '&nbsp;' !!}
             </td>
             <td align="right">&nbsp;</td>
         </tr>
