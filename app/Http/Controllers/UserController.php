@@ -8,6 +8,7 @@ use App\Utils\Tanggal;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -95,7 +96,10 @@ class UserController extends Controller
             }
 
             if ($request->inisial != $profil->ins) {
-                $rules['inisial'] = 'required|unique:users,ins';
+                $rules['inisial'] = [
+                    'required',
+                    Rule::unique('users', 'ins')->where('lokasi', $profil->lokasi)
+                ];
             }
 
             $validate = Validator::make($data, $rules);

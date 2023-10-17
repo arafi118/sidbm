@@ -244,7 +244,7 @@
                             cancelButtonText: 'Tidak'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                $('#logout').trigger('click')
+                                $('#formLogout').submit()
                             }
                         })
                     }
