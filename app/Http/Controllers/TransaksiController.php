@@ -406,13 +406,13 @@ class TransaksiController extends Controller
         }
 
         if ($request->jasa > 0) {
-            if ($pinkel->jenis_pp == '1') {
-                $jasa_kredit = '1.1.03.04';
-            } elseif ($pinkel->jenis_pp == '2') {
-                $jasa_kredit = '1.1.03.05';
-            } else {
-                $jasa_kredit = '1.1.03.06';
-            }
+            // if ($pinkel->jenis_pp == '1') {
+            //     $jasa_kredit = '1.1.03.04';
+            // } elseif ($pinkel->jenis_pp == '2') {
+            //     $jasa_kredit = '1.1.03.05';
+            // } else {
+            //     $jasa_kredit = '1.1.03.06';
+            // }
 
             $trx_jasa = [
                 'tgl_transaksi' => (string) $tgl_transaksi,
