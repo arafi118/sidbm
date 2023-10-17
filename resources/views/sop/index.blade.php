@@ -99,47 +99,4 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="TtdPelaporan" tabindex="-1" aria-labelledby="TtdPelaporanLabel" aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="TtdPelaporanLabel">Pengaturan Tanda Tangan Pelaporan</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="TtdSpk" tabindex="-1" aria-labelledby="TtdSpkLabel" aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="TtdSpkLabel">Pengaturan Tanda Tangan SPK</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="/pengaturan/sop/simpanttdpelaporan" method="post" id="formTtdSpk">
-                        @csrf
-
-                        <input type="hidden" name="field" id="field" value="tanda_tangan_spk">
-                        <textarea class="tiny-mce-editor" name="tanda_tangan" id="tanda_tangan">
-                    
-                        </textarea>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" id="simpanTtdSpk" class="btn btn-github btn-sm">
-                        Simpan Perubahan
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
