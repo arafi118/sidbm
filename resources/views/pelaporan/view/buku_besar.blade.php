@@ -1,7 +1,7 @@
 @php
     use App\Utils\Tanggal;
     $total_saldo = 0;
-    
+
     if ($rek->jenis_mutasi == 'debet') {
         $saldo_awal_tahun = $saldo['debit'] - $saldo['kredit'];
         $saldo_awal_bulan = $d_bulan_lalu - $k_bulan_lalu;
@@ -11,7 +11,7 @@
         $saldo_awal_bulan = $k_bulan_lalu - $d_bulan_lalu;
         $total_saldo = $saldo_awal_tahun + $saldo_awal_bulan;
     }
-    
+
     $total_debit = 0;
     $total_kredit = 0;
 @endphp
@@ -74,24 +74,24 @@
                 $number = $loop->iteration;
                 if ($trx->rekening_debit == $rek->kode_akun) {
                     $ref = substr($trx->rekening_kredit, 0, 3);
-                    $debit = $trx->jumlah;
+                    $debit = intval($trx->jumlah);
                     $kredit = 0;
                 } else {
                     $ref = substr($trx->rekening_debit, 0, 3);
                     $debit = 0;
-                    $kredit = $trx->jumlah;
+                    $kredit = intval($trx->jumlah);
                 }
-                
+
                 if ($rek->jenis_mutasi == 'debet') {
                     $_saldo = $debit - $kredit;
                 } else {
                     $_saldo = $kredit - $debit;
                 }
-                
+
                 $total_saldo += $_saldo;
                 $total_debit += $debit;
                 $total_kredit += $kredit;
-                
+
                 $bg = 'rgb(230, 230, 230)';
                 if ($number % 2 == 0) {
                     $bg = 'rgba(255, 255, 255)';
