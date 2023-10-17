@@ -529,21 +529,21 @@ class PelaporanController extends Controller
         if (strlen($hari) > 0 && strlen($bln) > 0) {
             $data['sub_judul'] = 'Tanggal ' . $hari . ' Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tglLatin($tgl);
-            $data['transaksi'] = Transaksi::where('tgl_transaksi', $tgl)->withSum('angs', 'jumlah')->with('user', 'rek_debit', 'rek_kredit', 'angs')->withCount('angs')->orderBy('tgl_transaksi', 'ASC')->get();
+            $data['transaksi'] = Transaksi::where('tgl_transaksi', $tgl)->withSum('angs', 'jumlah')->with('user', 'rek_debit', 'rek_kredit', 'angs')->withCount('angs')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
         } elseif (strlen($bln) > 0) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['transaksi'] = Transaksi::whereBetween('tgl_transaksi', [
                 $thn . '-' . $bln . '-01',
                 $thn . '-' . $bln . '-' . date('t', strtotime($tgl))
-            ])->withSum('angs', 'jumlah')->with('user', 'rek_debit', 'rek_kredit', 'angs')->withCount('angs')->orderBy('tgl_transaksi', 'ASC')->get();
+            ])->withSum('angs', 'jumlah')->with('user', 'rek_debit', 'rek_kredit', 'angs')->withCount('angs')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
         } else {
             $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tahun($tgl);
             $data['transaksi'] = Transaksi::whereBetween('tgl_transaksi', [
                 $thn . '-01-01',
                 $thn . '-12-31'
-            ])->withSum('angs', 'jumlah')->with('user', 'rek_debit', 'rek_kredit', 'angs')->withCount('angs')->orderBy('tgl_transaksi', 'ASC')->get();
+            ])->withSum('angs', 'jumlah')->with('user', 'rek_debit', 'rek_kredit', 'angs')->withCount('angs')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
         }
 
         $view = view('pelaporan.view.jurnal_transaksi', $data)->render();
@@ -592,7 +592,7 @@ class PelaporanController extends Controller
         $data['rek'] = Rekening::where('kode_akun', $data['kode_akun'])->first();
         $data['transaksi'] = Transaksi::where('tgl_transaksi', 'LIKE', '%' . $tgl . '%')->where(function ($query) use ($data) {
             $query->where('rekening_debit', $data['kode_akun'])->orwhere('rekening_kredit', $data['kode_akun']);
-        })->with('user')->orderBy('tgl_transaksi', 'ASC')->get();
+        })->with('user')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
 
         $data['saldo'] = $keuangan->saldoAwal($tgl, $data['kode_akun']);
         $data['d_bulan_lalu'] = $keuangan->saldoD($awal_bulan, $data['kode_akun']);
