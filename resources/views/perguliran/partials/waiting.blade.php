@@ -263,7 +263,7 @@
                     <div class="input-group input-group-static my-3">
                         <label for="tgl_cair">Tgl Cair</label>
                         <input autocomplete="off" type="text" name="tgl_cair" id="tgl_cair"
-                            class="form-control date" value="{{ Tanggal::tglIndo($perguliran->tgl_tunggu) }}">
+                            class="form-control date" value="{{ Tanggal::tglIndo($perguliran->tgl_cair) }}">
                         <small class="text-danger" id="msg_tgl_cair"></small>
                     </div>
                 </div>
