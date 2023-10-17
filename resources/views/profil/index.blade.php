@@ -10,10 +10,17 @@
             <div class="card card-body" id="profile">
                 <div class="row justify-content-center align-items-center">
                     <div class="col-sm-auto col-4">
-                        <div class="avatar avatar-xl position-relative">
+                        <div class="avatar avatar-xl position-relative pointer" id="fileUpload">
                             <img src="../../../assets/img/bruce-mars.jpg" alt="bruce"
                                 class="w-100 rounded-circle shadow-sm">
                         </div>
+
+                        <form action="/profil/{{ $user->id }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+
+                            <input type="file" name="logo" id="logo" class="d-none">
+                        </form>
                     </div>
                     <div class="col-sm-auto col-8 my-auto">
                         <div class="h-100">
@@ -296,6 +303,18 @@
                     })
                 }
             })
+        })
+
+        $(document).on('click', '#fileUpload', function(e) {
+            e.preventDefault()
+
+            $('#logo').trigger('click')
+        })
+
+        $(document).on('change', '#logo', function(e) {
+            e.preventDefault()
+
+            var file = $(this).get(0).files[0]
         })
     </script>
 @endsection

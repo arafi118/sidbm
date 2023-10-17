@@ -164,6 +164,21 @@ class UserController extends Controller
                 'success' => true,
                 'msg' => 'Username dan Password berhasil diperbarui. Silahkan login dengan Username dan Password yang baru.'
             ]);
+        } else {
+            $data = $request->only([
+                'logo'
+            ]);
+
+            $validate = Validator::make($data, [
+                'logo' => 'required|image|mimes:,jpeg|max:4096'
+            ]);
+
+            if ($request->file('logo')->isValid()) {
+                $extension = $request->file('image')->getClientOriginalExtension();
+
+                $filename = time() . '_' . $profil->lokasi . '_' . date('Ymd') . $extension;
+                $path = $request->file('logo')->storeAs('profil', $filename, 'public');
+            }
         }
     }
 

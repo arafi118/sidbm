@@ -1162,6 +1162,7 @@ class PinjamanKelompokController extends Controller
             'anggota.d'
         ])->get();
 
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with('kelompok')->first();
         $data['judul'] = 'Daftar Anggota (Loan ID. ' . $id . ')';
         $view = view('perguliran.dokumen.anggota', $data)->render();
         $pdf = PDF::loadHTML($view);
