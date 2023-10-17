@@ -294,7 +294,8 @@ class PinjamanKelompokController extends Controller
         return response()->json([
             'msg' => 'Proposal Pinjaman Kelompok ' . $kel->nama_kelompok . ' berhasil dibuat',
             'kode_kelompok' => $kel->kd_kelompok + 1,
-            'desa' => $kel->desa
+            'desa' => $kel->desa,
+            'id' => $pinjaman_kelompok->id
         ], Response::HTTP_ACCEPTED);
     }
 

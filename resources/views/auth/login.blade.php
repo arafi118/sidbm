@@ -28,6 +28,10 @@
         .async-hide {
             opacity: 0 !important
         }
+
+        .swal2-container {
+            height: unset !important;
+        }
     </style>
 </head>
 

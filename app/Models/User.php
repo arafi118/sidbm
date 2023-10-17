@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use HasFactory;
+    public $timestamps = false;
 
     public function j()
     {
@@ -18,5 +19,15 @@ class User extends Authenticatable
     public function l()
     {
         return $this->belongsTo(Level::class, 'level');
+    }
+
+    public function p()
+    {
+        return $this->belongsTo(Pendidikan::class, 'pendidikan', 'id');
+    }
+
+    public function kec()
+    {
+        return $this->belongsTo(Kecamatan::class, 'lokasi', 'id');
     }
 }

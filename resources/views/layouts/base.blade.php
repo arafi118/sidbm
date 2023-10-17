@@ -37,6 +37,10 @@
         .tox-promotion {
             display: none;
         }
+
+        .swal2-container {
+            height: unset !important;
+        }
     </style>
 </head>
 
