@@ -1,22 +1,22 @@
 @php
-    
+
     function active($curent, ...$_url)
     {
         $jumlah_url = count(request()->segments());
         $url = request()->segment($jumlah_url);
-    
+
         if ($curent == $url) {
             return 'active bg-gradient-info';
         }
-    
+
         if (in_array($url, $_url)) {
             return 'active';
         }
-    
+
         if (in_array(request()->segment($jumlah_url - 1), $_url)) {
             return 'active';
         }
-    
+
         return '';
     }
 @endphp
@@ -37,8 +37,8 @@
         <ul class="navbar-nav">
             <li class="nav-item mb-2 mt-0">
                 <a href="/profil" class="nav-link text-white">
-                    <img src="{{ asset('storage/logo/' . Session::get('logo')) }}" class="avatar">
-                    <span class="nav-link-text ms-2 ps-1">{{ Session::get('nama') }}</span>
+                    <img src="{{ asset('storage/profil/' . Session::get('foto')) }}" class="avatar" id="profil_avatar">
+                    <span class="nav-link-text ms-2 ps-1 nama_user">{{ Session::get('nama') }}</span>
                 </a>
             </li>
             <hr class="horizontal light mt-0">

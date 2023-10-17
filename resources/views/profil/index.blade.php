@@ -11,11 +11,12 @@
                 <div class="row justify-content-center align-items-center">
                     <div class="col-sm-auto col-4">
                         <div class="avatar avatar-xl position-relative pointer" id="fileUpload">
-                            <img src="../../../assets/img/bruce-mars.jpg" alt="bruce"
-                                class="w-100 rounded-circle shadow-sm">
+                            <img src="{{ asset('/storage/profil/' . $user->foto) }}" alt="bruce"
+                                class="w-100 rounded-circle shadow-sm" id="preview">
                         </div>
 
-                        <form action="/profil/{{ $user->id }}" method="post" enctype="multipart/form-data">
+                        <form action="/profil/{{ $user->id }}" method="post" enctype="multipart/form-data"
+                            id="formUpload">
                             @csrf
                             @method('PUT')
 
@@ -24,7 +25,7 @@
                     </div>
                     <div class="col-sm-auto col-8 my-auto">
                         <div class="h-100">
-                            <h5 class="mb-1 font-weight-bolder">
+                            <h5 class="mb-1 font-weight-bolder nama_user">
                                 {{ Session::get('nama') }}
                             </h5>
                             <p class="mb-0 font-weight-normal text-sm">
@@ -242,18 +243,10 @@
                 data: form.serialize(),
                 success: function(result) {
                     if (result.success) {
-                        Swal.fire({
-                            title: 'Berhasil',
-                            icon: 'success',
-                            text: result.msg,
-                            showCancelButton: true,
-                            confirmButtonText: 'Logout',
-                            cancelButtonText: 'Tidak'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                $('#formLogout').submit()
-                            }
-                        })
+                        Swal.fire('Berhasil', result.msg,
+                            'success')
+
+                        $('.nama_user').html(result.user.namadepan + ' ' + result.user.namabelakang)
                     }
                 },
                 error: function(result) {
@@ -314,7 +307,33 @@
         $(document).on('change', '#logo', function(e) {
             e.preventDefault()
 
-            var file = $(this).get(0).files[0]
+            var logo = $(this).get(0).files[0]
+            if (logo) {
+
+
+                var form = $('#formUpload')
+                var formData = new FormData(document.querySelector('#formUpload'));
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: formData,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(result) {
+                        if (result.success) {
+                            var reader = new FileReader();
+
+                            reader.onload = function() {
+                                $("#preview").attr("src", reader.result);
+                                $("#profil_avatar").attr("src", reader.result);
+                            }
+
+                            reader.readAsDataURL(logo);
+                        }
+                    }
+                })
+            }
         })
     </script>
 @endsection

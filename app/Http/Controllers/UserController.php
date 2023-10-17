@@ -7,8 +7,10 @@ use App\Models\User;
 use App\Utils\Tanggal;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Session;
 
 class UserController extends Controller
 {
@@ -120,9 +122,10 @@ class UserController extends Controller
                 'sejak' => Tanggal::tglNasional($request->menjabat_sejak)
             ]);
 
+            Session::put('nama', $request->nama_depan . ' ' . $request->nama_belakang);
             return response()->json([
                 'success' => true,
-                'msg' => 'Data Diri berhasil diperbarui. Silahkan Login ulang untuk melihat perubahan yang terjadi.',
+                'msg' => 'Data Diri berhasil diperbarui.',
                 'user' => User::where('id', $profil->id)->first()
             ]);
         } elseif ($type == 'data_user') {
@@ -174,11 +177,30 @@ class UserController extends Controller
             ]);
 
             if ($request->file('logo')->isValid()) {
-                $extension = $request->file('image')->getClientOriginalExtension();
+                $extension = $request->file('logo')->getClientOriginalExtension();
 
-                $filename = time() . '_' . $profil->lokasi . '_' . date('Ymd') . $extension;
+                $filename = time() . '_' . $profil->lokasi . '_' . date('Ymd') . '.' . $extension;
                 $path = $request->file('logo')->storeAs('profil', $filename, 'public');
+
+                if (Storage::exists('profil/' . $profil->foto)) {
+                    Storage::delete('profil/' . $profil->foto);
+                }
+
+                $user = User::where('id', $profil->id)->update([
+                    'foto' => str_replace('profil/', '', $path)
+                ]);
+
+                Session::put('foto', str_replace('profil/', '', $path));
+                return response()->json([
+                    'success' => true,
+                    'path' => $path
+                ]);
             }
+
+            return response()->json([
+                'success' => false,
+                'msg' => 'Logo gagal diperbarui'
+            ]);
         }
     }
 
