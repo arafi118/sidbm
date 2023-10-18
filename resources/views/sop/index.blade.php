@@ -51,52 +51,137 @@
         <div class="col-lg-9 mt-lg-0 mt-4">
             <div class="card" id="lembaga">
                 <div class="card-header">
-                    <h5></h5>
+                    <h5 class="mb-0">Identitas Lembaga</h5>
                 </div>
                 <div class="card-body pt-0">
-                    {{--  --}}
+                    @include('sop.partials._lembaga')
                 </div>
             </div>
             <div class="card mt-4" id="pengelola">
                 <div class="card-header">
-                    <h5></h5>
+                    <h5 class="mb-0">Sebutan Pengelola Bumdesma</h5>
                 </div>
                 <div class="card-body pt-0">
-                    {{--  --}}
+                    @include('sop.partials._pengelola')
                 </div>
             </div>
             <div class="card mt-4" id="pinjaman">
                 <div class="card-header">
-                    <h5></h5>
+                    <h5 class="mb-0">Sistem Pinjaman</h5>
                 </div>
                 <div class="card-body pt-0">
-                    {{--  --}}
+                    @include('sop.partials._pinjaman')
                 </div>
             </div>
             <div class="card mt-4" id="asuransi">
                 <div class="card-header">
-                    <h5></h5>
+                    <h5 class="mb-0">Pengaturan Asuransi</h5>
                 </div>
                 <div class="card-body pt-0">
-                    {{--  --}}
+                    @include('sop.partials._asuransi')
                 </div>
             </div>
             <div class="card mt-4" id="redaksi_spk">
                 <div class="card-header">
-                    <h5></h5>
+                    <h5 class="mb-0">Redaksi Dokumen SPK</h5>
                 </div>
                 <div class="card-body pt-0">
-                    {{--  --}}
+                    @include('sop.partials._spk')
                 </div>
             </div>
             <div class="card mt-4" id="logo">
                 <div class="card-header">
-                    <h5></h5>
+                    <h5 class="mb-0">Upload Logo</h5>
                 </div>
                 <div class="card-body pt-0">
-                    {{--  --}}
+                    @include('sop.partials._logo')
                 </div>
             </div>
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script>
+        new Choices($('#pembulatan')[0])
+        new Choices($('#jenis_asuransi')[0])
+
+        var quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+
+        $(document).on('click', '.btn-simpan', async function(e) {
+            e.preventDefault()
+
+            if ($(this).attr('id') == 'SimpanSPK') {
+                await $('#spk').val(quill.container.firstChild.innerHTML)
+            }
+
+            var form = $($(this).attr('data-target'))
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function(result) {
+                    if (result.success) {
+                        Toastr('success', result.msg)
+
+                        if (result.nama_lembaga) {
+                            $('#nama_lembaga_sort').html(result.nama_lembaga)
+                        }
+                    }
+                },
+                error: function(result) {
+                    const respons = result.responseJSON;
+
+                    Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error')
+                    $.map(respons, function(res, key) {
+                        $('#' + key).parent('.input-group.input-group-static').addClass(
+                            'is-invalid')
+                        $('#msg_' + key).html(res)
+                    })
+                }
+            })
+        })
+
+        $(document).on('click', '#EditLogo', function(e) {
+            e.preventDefault()
+
+            $('#logo_kec').trigger('click')
+        })
+
+        $(document).on('change', '#logo_kec', function(e) {
+            e.preventDefault()
+
+            var logo = $(this).get(0).files[0]
+            if (logo) {
+                var form = $('#FormLogo')
+                var formData = new FormData(document.querySelector('#FormLogo'));
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: formData,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(result) {
+                        if (result.success) {
+                            var reader = new FileReader();
+
+                            reader.onload = function() {
+                                $("#previewLogo").attr("src", reader.result);
+                                $(".colored-shadow").css('background-image',
+                                    "url(" + reader.result + ")")
+                            }
+
+                            reader.readAsDataURL(logo);
+                            Toastr('success', result.msg)
+                        } else {
+                            Toastr('error', result.msg)
+                        }
+                    }
+                })
+            }
+        })
+    </script>
 @endsection

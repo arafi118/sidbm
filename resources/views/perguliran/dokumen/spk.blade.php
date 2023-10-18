@@ -171,7 +171,7 @@
                     {{ $pinkel->sis_jasa->nama_sistem }} ({{ $pinkel->sis_jasa->deskripsi_sistem }}) sebagaimana jadwal
                     angsuran terlampir yang tidak terpisahkan dari Surat Perjanjian Kredit (SPK).
                 </li>
-                {!! $kec->redaksi_spk !!}
+                {!! json_decode($kec->redaksi_spk, true) !!}
             </ol>
         </div>
     </div>

@@ -10,6 +10,7 @@ class Kecamatan extends Model
     use HasFactory;
 
     protected $table = 'kecamatan';
+    public $timestamps = false;
 
     public function kabupaten()
     {

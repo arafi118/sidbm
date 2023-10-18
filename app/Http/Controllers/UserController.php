@@ -173,7 +173,7 @@ class UserController extends Controller
             ]);
 
             $validate = Validator::make($data, [
-                'logo' => 'required|image|mimes:,jpeg|max:4096'
+                'logo' => 'required|image|mimes:jpg,png,jpeg|max:4096'
             ]);
 
             if ($request->file('logo')->isValid()) {

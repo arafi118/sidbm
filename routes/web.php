@@ -41,6 +41,13 @@ Route::get('/pengaturan/sop', [SopController::class, 'index'])->middleware('auth
 Route::get('/pengaturan/ttd_pelaporan', [SopController::class, 'ttdPelaporan'])->middleware('auth');
 Route::get('/pengaturan/ttd_spk', [SopController::class, 'ttdSpk'])->middleware('auth');
 
+Route::put('/pengaturan/lembaga/{kec}', [SopController::class, 'lembaga'])->middleware('auth');
+Route::put('/pengaturan/pengelola/{kec}', [SopController::class, 'pengelola'])->middleware('auth');
+Route::put('/pengaturan/pinjaman/{kec}', [SopController::class, 'pinjaman'])->middleware('auth');
+Route::put('/pengaturan/asuransi/{kec}', [SopController::class, 'asuransi'])->middleware('auth');
+Route::put('/pengaturan/spk/{kec}', [SopController::class, 'spk'])->middleware('auth');
+Route::put('/pengaturan/logo/{kec}', [SopController::class, 'logo'])->middleware('auth');
+
 Route::post('/pengaturan/sop/simpanttdpelaporan', [SopController::class, 'simpanTtdPelaporan'])->middleware('auth');
 
 Route::get('/database/kelompok/register_kelompok', [KelompokController::class, 'register'])->middleware('auth');
