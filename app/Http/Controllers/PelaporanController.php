@@ -570,7 +570,7 @@ class PelaporanController extends Controller
             $data['judul'] = 'Laporan Harian';
             $data['sub_judul'] = 'Tanggal ' . $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tglLatin($tgl);
-            $awal_bulan = $tgl;
+            $awal_bulan = date('Y-m-d', strtotime('-1 day', strtotime($tgl)));
         } elseif (strlen($bln) > 0) {
             $tgl = $thn . '-' . $bln . '-';
             $data['judul'] = 'Laporan Bulanan';
