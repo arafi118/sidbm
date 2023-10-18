@@ -20,7 +20,7 @@ if (isset($_POST['copy'])) {
     mysqli_query($koneksi, "DROP TABLE IF EXISTS dbm_laravel.transaksi_" . $lokasi);
 
     mysqli_query($koneksi, "DELETE FROM dbm_laravel.users WHERE lokasi='$lokasi'");
-    mysqli_query($koneksi, "DELETE FROM dbm_laravel.kecamaatan WHERE id='$lokasi'");
+    mysqli_query($koneksi, "DELETE FROM dbm_laravel.kecamatan WHERE id='$lokasi'");
     mysqli_query($koneksi, "DELETE FROM dbm_laravel.desa WHERE kd_desa='$kec[kd_desa]'");
 
     mysqli_query($koneksi, "CREATE TABLE dbm_laravel.anggota_$lokasi LIKE dbm_sidbm.anggota_$lokasi");
