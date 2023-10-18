@@ -5,8 +5,9 @@ $koneksi = mysqli_connect('localhost', 'dbm_sidbm', 'dbm_sidbm', 'information_sc
 $trigger = mysqli_connect('localhost', 'dbm_sidbm', 'dbm_sidbm', 'dbm_laravel');
 
 if (isset($_POST['copy'])) {
-    $kec = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM dbm_sidbm.kecamatan WHERE id='$id'"));
     $lokasi = htmlspecialchars($_POST['lokasi']);
+
+    $kec = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM dbm_sidbm.kecamatan WHERE id='$lokasi'"));
 
     mysqli_query($koneksi, "DROP TABLE IF EXISTS dbm_laravel.anggota_" . $lokasi);
     mysqli_query($koneksi, "DROP TABLE IF EXISTS dbm_laravel.inventaris_" . $lokasi);
