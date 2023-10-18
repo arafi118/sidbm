@@ -5,6 +5,7 @@ $koneksi = mysqli_connect('localhost', 'dbm_sidbm', 'dbm_sidbm', 'information_sc
 $trigger = mysqli_connect('localhost', 'dbm_sidbm', 'dbm_sidbm', 'dbm_laravel');
 
 if (isset($_POST['copy'])) {
+    $kec = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM dbm_sidbm.kecamatan WHERE id='$id'"));
     $lokasi = htmlspecialchars($_POST['lokasi']);
 
     mysqli_query($koneksi, "DROP TABLE IF EXISTS dbm_laravel.anggota_" . $lokasi);
@@ -16,6 +17,10 @@ if (isset($_POST['copy'])) {
     mysqli_query($koneksi, "DROP TABLE IF EXISTS dbm_laravel.rekening_" . $lokasi);
     mysqli_query($koneksi, "DROP TABLE IF EXISTS dbm_laravel.rencana_angsuran_" . $lokasi);
     mysqli_query($koneksi, "DROP TABLE IF EXISTS dbm_laravel.transaksi_" . $lokasi);
+
+    mysqli_query($koneksi, "DELETE FROM dbm_laravel.users WHERE lokasi='$lokasi'");
+    mysqli_query($koneksi, "DELETE FROM dbm_laravel.kecamaatan WHERE id='$lokasi'");
+    mysqli_query($koneksi, "DELETE FROM dbm_laravel.desa WHERE kd_desa='$kec[kd_desa]'");
 
     mysqli_query($koneksi, "CREATE TABLE dbm_laravel.anggota_$lokasi LIKE dbm_sidbm.anggota_$lokasi");
     mysqli_query($koneksi, "CREATE TABLE dbm_laravel.inventaris_$lokasi LIKE dbm_sidbm.inventaris_$lokasi");
@@ -36,6 +41,10 @@ if (isset($_POST['copy'])) {
     mysqli_query($koneksi, "INSERT dbm_laravel.rekening_$lokasi SELECT * FROM dbm_sidbm.rekening_$lokasi");
     mysqli_query($koneksi, "INSERT dbm_laravel.rencana_angsuran_$lokasi SELECT * FROM dbm_sidbm.rencana_angsuran_$lokasi");
     mysqli_query($koneksi, "INSERT dbm_laravel.transaksi_$lokasi SELECT * FROM dbm_sidbm.transaksi_$lokasi");
+
+    mysqli_query($koneksi, "INSERT INTO dbm_laravel.users SELECT * FROM dbm_sidbm.users WHERE dbm_sidbm.lokasi='$lokasi'");
+    mysqli_query($koneksi, "INSERT INTO dbm_laravel.kecamatan SELECT * FROM dbm_sidbm.kecamatan WHERE dbm_sidbm.id='$lokasi'");
+    mysqli_query($koneksi, "INSERT INTO dbm_laravel.desa SELECT * FROM dbm_sidbm.desa WHERE dbm_sidbm.kd_kec='$kec[kd_kec]'");
 
     mysqli_query($koneksi, "ALTER TABLE dbm_laravel.anggota_$lokasi CHANGE `usaha` `usaha` VARCHAR(50) NULL DEFAULT '0'");
     mysqli_query($koneksi, "ALTER TABLE dbm_laravel.rekening_$lokasi ADD `parent_id` VARCHAR(50) NULL FIRST");
