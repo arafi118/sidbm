@@ -43,9 +43,9 @@ if (isset($_POST['copy'])) {
     mysqli_query($koneksi, "INSERT dbm_laravel.rencana_angsuran_$lokasi SELECT * FROM dbm_sidbm.rencana_angsuran_$lokasi");
     mysqli_query($koneksi, "INSERT dbm_laravel.transaksi_$lokasi SELECT * FROM dbm_sidbm.transaksi_$lokasi");
 
-    mysqli_query($koneksi, "INSERT INTO dbm_laravel.users SELECT * FROM dbm_sidbm.users WHERE dbm_sidbm.lokasi='$lokasi'");
-    mysqli_query($koneksi, "INSERT INTO dbm_laravel.kecamatan SELECT * FROM dbm_sidbm.kecamatan WHERE dbm_sidbm.id='$lokasi'");
-    mysqli_query($koneksi, "INSERT INTO dbm_laravel.desa SELECT * FROM dbm_sidbm.desa WHERE dbm_sidbm.kd_kec='$kec[kd_kec]'");
+    mysqli_query($koneksi, "INSERT INTO dbm_laravel.users SELECT * FROM dbm_sidbm.users WHERE lokasi='$lokasi'");
+    mysqli_query($koneksi, "INSERT INTO dbm_laravel.kecamatan SELECT * FROM dbm_sidbm.kecamatan WHERE id='$lokasi'");
+    mysqli_query($koneksi, "INSERT INTO dbm_laravel.desa SELECT * FROM dbm_sidbm.desa WHERE kd_kec='$kec[kd_kec]'");
 
     mysqli_query($koneksi, "ALTER TABLE dbm_laravel.anggota_$lokasi CHANGE `usaha` `usaha` VARCHAR(50) NULL DEFAULT '0'");
     mysqli_query($koneksi, "ALTER TABLE dbm_laravel.rekening_$lokasi ADD `parent_id` VARCHAR(50) NULL FIRST");
