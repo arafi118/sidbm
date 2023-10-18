@@ -576,8 +576,8 @@ class PelaporanController extends Controller
             $data['judul'] = 'Laporan Bulanan';
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $bulan_lalu = date('m', strtotime('-1 month', strtotime($thn . '-' . $bln . '-01')));
-            $awal_bulan = $thn . '-' . $bulan_lalu . '-' . date('t', strtotime($thn . '-' . $bulan_lalu . '-01'));
+            $bulan_lalu = date('m', strtotime('-1 month', strtotime($tgl . '01')));
+            $awal_bulan = $thn . '-' . $bulan_lalu . '-' . date('t', strtotime($thn . '-' . $bulan_lalu));
             if ($bln == 1) {
                 $awal_bulan = $thn . '00-00';
             }
