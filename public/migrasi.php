@@ -21,7 +21,7 @@ if (isset($_POST['copy'])) {
 
     mysqli_query($koneksi, "DELETE FROM dbm_laravel.users WHERE lokasi='$lokasi'");
     mysqli_query($koneksi, "DELETE FROM dbm_laravel.kecamatan WHERE id='$lokasi'");
-    mysqli_query($koneksi, "DELETE FROM dbm_laravel.desa WHERE kd_desa='$kec[kd_desa]'");
+    mysqli_query($koneksi, "DELETE FROM dbm_laravel.desa WHERE kd_kec='$kec[kd_kec]'");
 
     mysqli_query($koneksi, "CREATE TABLE dbm_laravel.anggota_$lokasi LIKE dbm_sidbm.anggota_$lokasi");
     mysqli_query($koneksi, "CREATE TABLE dbm_laravel.inventaris_$lokasi LIKE dbm_sidbm.inventaris_$lokasi");
@@ -114,7 +114,7 @@ if (isset($_POST['copy'])) {
     mysqli_query($koneksi, "UPDATE dbm_laravel.inventaris_$lokasi SET kategori='3', jenis='3' WHERE kategori='7' AND jenis='5'");
 
     $_SESSION['success'] = "Copy Tabel Lokasi <b>$lokasi</b> Berhasil.";
-    echo "<script>location.href = '/migrasi.php';</script>";
+    // echo "<script>location.href = '/migrasi.php';</script>";
 } else {
 ?>
 
