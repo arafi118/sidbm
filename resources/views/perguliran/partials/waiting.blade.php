@@ -208,7 +208,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
                                     {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
-                                    ({{ $pinjaman_anggota->id }})
+                                    ({{ $pinjaman_anggota->nia }})
                                 </td>
                                 <td>
                                     {{ number_format($pinjaman_anggota->proposal, 2) }}

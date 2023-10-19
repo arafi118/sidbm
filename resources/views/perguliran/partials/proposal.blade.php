@@ -94,7 +94,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
                                     {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
-                                    ({{ $pinjaman_anggota->id }})
+                                    ({{ $pinjaman_anggota->nia }})
                                 </td>
                                 <td>
                                     <div class="input-group input-group-static">

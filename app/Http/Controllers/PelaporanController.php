@@ -34,20 +34,9 @@ class PelaporanController extends Controller
     public function subLaporan($file)
     {
         if ($file == 3) {
-            $rekening = Rekening::where('lev1', '<=', '3')->orwhere(function ($query) {
-                $query->where([
-                    ['lev1', '4'],
-                    ['lev2', '<', '2']
-                ]);
-            })->orderBy('kode_akun', 'ASC')->get();
-            $akun = AkunLevel3::where('lev1', '5')->orwhere(function ($query) {
-                $query->where([
-                    ['lev1', '4'],
-                    ['lev2', '>=', '2']
-                ]);
-            })->orderBy('kode_akun', 'ASC')->get();
+            $rekening = Rekening::orderBy('kode_akun', 'ASC')->get();
 
-            return view('pelaporan.partials.sub_laporan')->with(compact('file', 'rekening', 'akun'));
+            return view('pelaporan.partials.sub_laporan')->with(compact('file', 'rekening'));
         }
 
         if ($file == 5) {
