@@ -484,8 +484,7 @@ class DashboardController extends Controller
         for ($i = 1; $i <= $bulan; $i++) {
             $cek_saldo = Saldo::where([
                 ['bulan', $i],
-                ['tahun', $tahun],
-                ['lokasi', $lokasi],
+                ['tahun', $tahun]
             ])->count();
 
             if ($cek_saldo <= 0) {
@@ -503,9 +502,8 @@ class DashboardController extends Controller
 
                 foreach ($rekening as $rek) {
                     $saldo = [
-                        'id' => str_replace('.', '', $rek->kode_akun) . $lokasi . $tahun . $i,
+                        'id' => str_replace('.', '', $rek->kode_akun) . $tahun . $i,
                         'kode_akun' => $rek->kode_akun,
-                        'lokasi' => $lokasi,
                         'tahun' => $tahun,
                         'bulan' => $i,
                         'debit' => $rek->trx_debit_sum_jumlah,
