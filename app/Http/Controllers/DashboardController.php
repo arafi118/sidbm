@@ -500,18 +500,19 @@ class DashboardController extends Controller
                     }
                 ], 'jumlah')->get();
 
+                $saldo = [];
                 foreach ($rekening as $rek) {
-                    $saldo = [
-                        'id' => str_replace('.', '', $rek->kode_akun) . $tahun . $i,
+                    $saldo[] = [
+                        'id' => str_replace('.', '', $rek->kode_akun) . $tahun . str_pad($i, 2, "0", STR_PAD_LEFT),
                         'kode_akun' => $rek->kode_akun,
                         'tahun' => $tahun,
                         'bulan' => $i,
                         'debit' => $rek->trx_debit_sum_jumlah,
                         'kredit' => $rek->trx_kredit_sum_jumlah
                     ];
-
-                    Saldo::create($saldo);
                 }
+
+                Saldo::insert($saldo);
             }
         }
     }
