@@ -180,7 +180,7 @@ class UserController extends Controller
                 $extension = $request->file('logo')->getClientOriginalExtension();
 
                 $filename = time() . '_' . $profil->lokasi . '_' . date('Ymd') . '.' . $extension;
-                $path = $request->file('logo')->storeAs('public/profil', $filename);
+                $path = $request->file('logo')->storeAs('public/profil/', $filename);
 
                 if (Storage::exists('profil/' . $profil->foto)) {
                     Storage::delete('profil/' . $profil->foto);
