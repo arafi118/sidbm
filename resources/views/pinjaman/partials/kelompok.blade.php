@@ -16,7 +16,11 @@
                         }
                     @endphp
                     <option {{ $kel->id == $id_kel ? 'selected' : '' }} value="{{ $kel->id }}">
-                        {{ $kel->nama_kelompok }} [{{ $kel->d->nama_desa }}] [{{ $kel->ketua }}]
+                        @if (isset($kel->d))
+                            {{ $kel->nama_kelompok }} [{{ $kel->d->nama_desa }}] [{{ $kel->ketua }}]
+                        @else
+                            {{ $kel->nama_kelompok }} [] [{{ $kel->ketua }}]
+                        @endif
                     </option>
                 @endforeach
             </select>
