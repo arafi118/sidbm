@@ -6,8 +6,8 @@
         @foreach ($pinj_a['pinjaman'] as $pa)
             <div class="alert alert-danger text-white" role="alert">
                 <span class="text-sm">
-                    <b>{{ ucwords(strtolower($pa->anggota->namadepan)) }}</b> memiliki kewajiban angsuran pinjaman
-                    dengan
+                    <b>{{ ucwords(strtolower($pa->anggota->namadepan)) }} ({{ ucwords(strtolower($pa->nia)) }})</b>
+                    memiliki kewajiban angsuran pinjaman dengan
                     <a href="/detail/{{ $pa->pinkel->id }}" target="_blank" class="alert-link text-white">
                         Loan ID. {{ $pa->pinkel->id }}
                     </a>.
@@ -29,8 +29,7 @@
             <div class="alert alert-danger text-white" role="alert">
                 <span class="text-sm">
                     <b>Kelompok {{ ucwords(strtolower($kel->kelompok->nama_kelompok)) }}</b> masih memiliki kewajiban
-                    angsuran
-                    pinjaman dengan
+                    angsuran pinjaman dengan
                     <a href="/detail/{{ $kel->id }}" target="_blank" class="alert-link text-white">
                         Loan ID. {{ $kel->id }}
                     </a>.
