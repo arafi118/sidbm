@@ -918,10 +918,10 @@ class TransaksiController extends Controller
                 ]);
 
                 $real = RealAngsuran::where('loan_id', $id_pinj)->delete();
-                $trx = Transaksi::where('idtp', $idtp)->delete();
+                $trx = Transaksi::where('id_pinj', $id_pinj)->delete();
+            } else {
+                $trx = Transaksi::where('idt', $idt)->delete();
             }
-
-            $trx = Transaksi::where('idt', $idt)->delete();
         }
 
         return response()->json([
