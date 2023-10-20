@@ -1,7 +1,7 @@
 @php
     use App\Utils\Tanggal;
     $jumlah_angsuran = 0;
-    
+
     $alokasi = $pinkel->proposal;
     $tgl = $pinkel->tgl_proposal;
     $tanggal = 'Tanggal Proposal';
@@ -10,7 +10,7 @@
         $tgl = $pinkel->tgl_cair;
         $tanggal = 'Tanggal Cair';
     }
-    
+
     $saldo_pokok = $alokasi;
     $saldo_jasa = ($saldo_pokok * $pinkel->pros_jasa) / 100;
 @endphp
@@ -91,11 +91,11 @@
         <tr style="background: rgb(232, 232, 232)">
             <th class="l t b" height="20" width="10" align="center">Ke</th>
             <th class="l t b" width="50" align="center">Tanggal</th>
-            <th class="l t b" width="70" align="center">Pokok</th>
-            <th class="l t b" width="70" align="center">Jasa</th>
+            <th class="l t b" width="60" align="center">Pokok</th>
+            <th class="l t b" width="60" align="center">Jasa</th>
             <th class="l t b" align="center">Jumlah</th>
-            <th class="l t b" width="70" align="center">Total Target</th>
-            <th class="l t b" width="70" align="center">Saldo Pokok</th>
+            <th class="l t b" width="60" align="center">Total Target</th>
+            <th class="l t b" width="60" align="center">Saldo Pokok</th>
             <th class="l t b r" align="center">Saldo Jasa</th>
         </tr>
         @foreach ($rencana as $ra)

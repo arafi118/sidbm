@@ -1,10 +1,12 @@
 @php
     use App\Utils\Tanggal;
+    $waktu = '';
+    $tempat = '';
     $wt_cair = explode('_', $pinkel->wt_cair);
     if (count($wt_cair) == 1) {
         $waktu = $wt_cair[0];
     }
-    
+
     if (count($wt_cair) == 2) {
         $waktu = $wt_cair[0];
         $tempat = $wt_cair[1];
@@ -18,7 +20,7 @@
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
-                    <b>SURAT PERNYATAAN KESANGUPAN TANGGUNG RENTENG</b>
+                    <b>SURAT PERNYATAAN KESANGGUPAN TANGGUNG RENTENG</b>
                 </div>
             </td>
         </tr>
@@ -138,7 +140,7 @@
             <td align="center">Ketua Kelompok,</td>
         </tr>
         <tr>
-            <td colspan="2" height="30"></td>
+            <td colspan="2" height="50">&nbsp;</td>
         </tr>
         <tr>
             <td align="center">

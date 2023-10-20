@@ -19,15 +19,21 @@
         }
 
         html {
-            /* margin-left: 90px; */
-            /* margin-right: 0px; */
-            margin-bottom: 100px;
+            margin: 75.59px;
+            margin-left: 94.48px;
         }
 
         ul,
         ol {
             margin-left: -10px;
             page-break-inside: auto !important;
+        }
+
+        main {
+            position: relative;
+            top: 60px;
+            font-size: 12px;
+            padding-bottom: 75.59px;
         }
 
         header {
@@ -128,11 +134,7 @@
         </table>
     </header>
 
-    @php
-        $style = 'position: relative; top: 60px; font-size: 12px;';
-    @endphp
-
-    <main style="{{ $style }}">
+    <main>
         @yield('content')
     </main>
 

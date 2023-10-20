@@ -58,13 +58,13 @@
         <tr style="background: rgb(232, 232, 232)">
             <th height="20" width="10">No</th>
             <th width="60">Nik</th>
-            <th width="80">Nama Anggota</th>
+            <th width="60">Nama Anggota</th>
             <th width="10">JK</th>
             <th width="50">Nomor HP</th>
             <th>Alamat</th>
-            <th width="70">Penjamin</th>
-            <th width="60">Pengajuan</th>
-            <th width="30">Ttd</th>
+            <th width="60">Penjamin</th>
+            <th width="50">Pengajuan</th>
+            <th width="20">Ttd</th>
         </tr>
 
         @php

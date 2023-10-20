@@ -1,7 +1,7 @@
 @php
     use App\Utils\Tanggal;
     use App\Utils\Keuangan;
-    
+
     $keuangan = new Keuangan();
 @endphp
 
@@ -11,9 +11,8 @@
     }
 
     html {
-        /* margin-left: 90px; */
-        /* margin-right: 0px; */
-        margin-bottom: 100px;
+        margin: 75.59px;
+        margin-left: 94.48px;
     }
 
     ul,

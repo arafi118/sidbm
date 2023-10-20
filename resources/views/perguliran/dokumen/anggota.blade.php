@@ -42,7 +42,7 @@
             </tr>
         @endforeach
 
-        @for ($i = $no + 1; $i <= 46; $i++)
+        @for ($i = $no + 1; $i <= 40; $i++)
             <tr>
                 <td align="center">{{ $i }}.</td>
                 <td>&nbsp;</td>
