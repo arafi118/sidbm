@@ -201,7 +201,7 @@
                     <tr>
                         <td width="30%">Telah Terima Dari</td>
                         <td width="2%">:</td>
-                        <td colspan="3" class="keterangan">{{ $trx->relasi }}</td>
+                        <td colspan="3" class="keterangan">{{ $dari }}</td>
                     </tr>
                     <tr>
                         <td width="30%">Uang Sebanyak</td>
