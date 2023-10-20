@@ -15,7 +15,7 @@ class Inventaris
         $harga_satuan = $inv->harsat * $unit;
         $umur = $inv->umur_ekonomis;
 
-        $penyusutan = $harga_satuan / $umur;
+        $penyusutan = $inv->harsat <= 0 ? 0 : round($harga_satuan / $inv->umur_ekonomis, 2);
         $ak_umur = self::bulan($inv->tgl_beli, $tgl);
         $ak_susut = $penyusutan * $ak_umur;
         $nilai = $harga_satuan - $ak_susut;
