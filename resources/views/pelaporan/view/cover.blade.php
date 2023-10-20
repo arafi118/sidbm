@@ -26,15 +26,15 @@
             </td>
         </tr>
         <tr>
-            <td height="140">&nbsp;</td>
+            <td height="130">&nbsp;</td>
         </tr>
         <tr>
             <td align="center">
-                <img src="../storage/app/public/logo/{{ $logo }}" width="300" alt="{{ $logo }}">
+                <img src="../storage/app/public/logo/{{ $logo }}" width="290" alt="{{ $logo }}">
             </td>
         </tr>
         <tr>
-            <td height="260">&nbsp;</td>
+            <td height="240">&nbsp;</td>
         </tr>
     </table>
     <table style="border: 1px solid #000;" width="100%">
