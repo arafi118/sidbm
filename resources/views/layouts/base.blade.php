@@ -215,6 +215,8 @@
 
                         makeChart('pokok', ch_pokok, result.sisa_pokok, result.sum_pokok)
                         makeChart('jasa', ch_jasa, result.sisa_jasa, result.sum_jasa)
+
+                        $('#loan-id').html(item.id)
                     })
                 } else {
                     window.location.href = '/transaksi/jurnal_angsuran?pinkel=' + item.id

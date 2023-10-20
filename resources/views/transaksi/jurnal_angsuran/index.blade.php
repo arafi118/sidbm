@@ -57,7 +57,7 @@
 
                     <div class="d-flex justify-content-end">
                         <button type="button" id="btnDetailKelompok" class="btn btn-info btn-sm me-3">
-                            Detail Kelompok
+                            Detail Kelompok <span class="badge badge-info" id="loan-id"></span>
                         </button>
                         <button type="button" id="SimpanAngsuran" class="btn btn-github btn-sm">Posting</button>
                     </div>
@@ -207,6 +207,8 @@
 
                 makeChart('pokok', ch_pokok, result.sisa_pokok, result.sum_pokok)
                 makeChart('jasa', ch_jasa, result.sisa_jasa, result.sum_jasa)
+
+                $('#loan-id').html(id_pinkel)
             })
         }
 
