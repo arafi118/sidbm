@@ -68,6 +68,7 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
+        $keuangan = new Keuangan;
 
         if (Keuangan::startWith($request->sumber_dana, '1.2.02') && Keuangan::startWith($request->disimpan_ke, '5.3.02.01') && $request->jenis_transaksi == '2') {
             $data = $request->only([
@@ -169,17 +170,17 @@ class TransaksiController extends Controller
             ];
 
             if ($request->unit < $jumlah_barang) {
-                Transaksi::create($trx_penghapusan);
+                $transaksi = Transaksi::create($trx_penghapusan);
                 Inventaris::where('id', $id_inv)->update($update_inventaris);
                 Inventaris::create($insert_inventaris);
             } else {
-                Transaksi::create($trx_penghapusan);
+                $transaksi = Transaksi::create($trx_penghapusan);
                 Inventaris::where('id', $id_inv)->update($update_sts_inventaris);
             }
 
             $msg = 'Penghapusan ' . $request->unit . ' unit ' . $barang . ' karena ' . $status;
             if ($status == 'dijual') {
-                Transaksi::create($trx_penjualan);
+                $transaksi = Transaksi::create($trx_penjualan);
                 $msg = 'Penjualan ' . $request->unit . ' unit ' . $barang;
             }
         } else {
@@ -288,8 +289,13 @@ class TransaksiController extends Controller
             }
         }
 
+        $trx = Transaksi::where('idt', $transaksi->idt)->with([
+            'rek_debit', 'rek_kredit'
+        ])->first();
+        $view = view('transaksi.jurnal_umum.partials.notifikasi')->with(compact('trx', 'keuangan'))->render();
         return response()->json([
-            'msg' => $msg
+            'msg' => $msg,
+            'view' => $view
         ]);
     }
 

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-lg-9 mb-3">
+        <div class="col-lg-9 mb-4">
             <div class="card">
                 <div class="card-body py-2">
                     <form action="/transaksi" method="post" id="FormTransaksi">
@@ -78,7 +78,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 mb-3">
+        <div class="col-lg-3 mb-4">
             <div class="card">
                 <div class="card-body p-3 pb-0">
                     <div class="d-flex justify-content-between">
@@ -157,6 +157,8 @@
             </div>
         </div>
     </div>
+
+    <div id="notifikasi"></div>
 
     <div class="modal fade" id="detailTransaksi" tabindex="-1" aria-labelledby="detailTransaksiLabel"
         aria-hidden="true">
@@ -285,6 +287,7 @@
         $(document).on('click', '#SimpanTransaksi', function(e) {
             e.preventDefault()
             $('small').html('')
+            $('#notifikasi').html('')
 
             var form = $('#FormTransaksi')
             $.ajax({
@@ -294,6 +297,8 @@
                 success: function(result) {
                     Swal.fire('Berhasil', result.msg, 'success').then(() => {
                         jenis_transaksi.setChoiceByValue('')
+
+                        $('#notifikasi').html(result.view)
                     })
                 },
                 error: function(result) {
