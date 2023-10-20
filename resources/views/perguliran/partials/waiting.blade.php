@@ -3,17 +3,31 @@
     @method('PUT')
 
     @if ($pinj_a['jumlah_pinjaman'] > 0)
-        @foreach ($pinj_a['pinjaman'] as $pa)
-            <div class="alert alert-danger text-white" role="alert">
-                <span class="text-sm">
-                    <b>{{ ucwords(strtolower($pa->anggota->namadepan)) }} ({{ ucwords(strtolower($pa->nia)) }})</b>
-                    memiliki kewajiban angsuran pinjaman dengan
-                    <a href="/detail/{{ $pa->pinkel->id }}" target="_blank" class="alert-link text-white">
-                        Loan ID. {{ $pa->pinkel->id }}
-                    </a>.
-                </span>
-            </div>
-        @endforeach
+        <div class="alert alert-danger text-white" role="alert">
+            <span class="text-sm">
+                <b>Anggota Kelompok</b>
+                terdeteksi memiliki kewajiban angsuran pinjaman dengan
+                <a href="/detail/{{ $pa->pinkel->id }}" target="_blank" class="alert-link text-white">
+                    Loan ID. {{ $pa->pinkel->id }}
+                </a>.
+            </span>
+        </div>
+        <table class="table table-striped table-danger">
+            <thead>
+                <tr class="bg-danger">
+                    <th>No</th>
+                    <th>Nama</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($pinj_a['pinjaman'] as $pa)
+                    <tr>
+                        <td align="center">{{ $loop->iteration }}</td>
+                        <td align="center">{{ ucwords(strtolower($pa->anggota->namadepan)) }} ({{ $pa->nia }})</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     @endif
 
     @if ($pinj_a['jumlah_pemanfaat'] > 0)
