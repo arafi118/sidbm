@@ -70,6 +70,16 @@ class TransaksiController extends Controller
     {
         $keuangan = new Keuangan;
 
+        $tgl_transaksi = Tanggal::tglNasional($request->tgl_transaksi);
+        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
+
+        if (strtotime($tgl_transaksi) < strtotime($kec->tgl_pakai)) {
+            return response()->json([
+                'success' => false,
+                'msg' => 'Tanggal transaksi tidak boleh sebelum Tanggal Pakai Aplikasi'
+            ]);
+        }
+
         if (Keuangan::startWith($request->sumber_dana, '1.2.02') && Keuangan::startWith($request->disimpan_ke, '5.3.02.01') && $request->jenis_transaksi == '2') {
             $data = $request->only([
                 'tgl_transaksi',
@@ -294,6 +304,7 @@ class TransaksiController extends Controller
         ])->first();
         $view = view('transaksi.jurnal_umum.partials.notifikasi')->with(compact('trx', 'keuangan'))->render();
         return response()->json([
+            'success' => true,
             'msg' => $msg,
             'view' => $view
         ]);
@@ -386,12 +397,12 @@ class TransaksiController extends Controller
             $dend_kredit = '4.1.01.06';
         }
 
-        // if (strtotime($tgl_transaksi) < strtotime($kec->tgl_registrasi)) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'msg' => 'Tanggal transaksi tidak boleh sebelum Tanggal Registrasi Aplikasi'
-        //     ]);
-        // }
+        if (strtotime($tgl_transaksi) < strtotime($kec->tgl_pakai)) {
+            return response()->json([
+                'success' => false,
+                'msg' => 'Tanggal transaksi tidak boleh sebelum Tanggal Pakai Aplikasi'
+            ]);
+        }
 
         $idtp = $last_idtp + 1;
         if ($request->pokok > 0) {

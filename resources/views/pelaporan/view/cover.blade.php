@@ -7,7 +7,8 @@
     }
 
     html {
-        margin: 75.59px 75.59px 113.38px 113.38px;
+        margin: 75.59px;
+        margin-left: 94.48px;
     }
 
     body {

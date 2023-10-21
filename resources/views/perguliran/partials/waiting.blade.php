@@ -354,7 +354,6 @@
             cancelButtonText: 'Batal',
             icon: 'warning'
         }).then((result) => {
-            console.log(result)
             if (result.isConfirmed) {
                 return true
             }
@@ -369,9 +368,13 @@
                 url: form.attr('action') + '?save=true',
                 data: form.serialize(),
                 success: function(result) {
-                    Swal.fire('Berhasil', result.msg, 'success').then(() => {
-                        window.location.href = '/detail/' + result.id
-                    })
+                    if (result.success) {
+                        Swal.fire('Berhasil', result.msg, 'success').then(() => {
+                            window.location.href = '/detail/' + result.id
+                        })
+                    } else {
+                        Swal.fire('Error', result.msg, 'error')
+                    }
                 },
                 error: function(result) {
                     const respons = result.responseJSON;

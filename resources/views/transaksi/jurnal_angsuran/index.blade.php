@@ -261,7 +261,7 @@
                                 })
                         })
                     } else {
-                        Swal.fire('Peringatan', result.msg, 'warning')
+                        Swal.fire('Error', result.msg, 'warning')
                     }
                 }
             })

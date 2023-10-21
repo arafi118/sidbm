@@ -436,6 +436,7 @@ class PinjamanKelompokController extends Controller
      */
     public function update(Request $request, PinjamanKelompok $perguliran)
     {
+        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
         if ($request->status == 'P') {
             $tgl = 'tgl_proposal';
             $alokasi = 'proposal';
@@ -584,6 +585,14 @@ class PinjamanKelompokController extends Controller
         }
 
         if ($request->status == 'A') {
+            if (strtotime(Tanggal::tglNasional($data[$tgl])) < strtotime($kec->tgl_pakai)) {
+
+                return response()->json([
+                    'success' => false,
+                    'msg' => 'Tanggal pencairan tidak boleh sebelum tanggal pakai aplikasi.',
+                ], Response::HTTP_ACCEPTED);
+            }
+
             $update = [
                 $tgl => Tanggal::tglNasional($data[$tgl]),
                 $alokasi => str_replace(',', '', str_replace('.00', '', $data[$alokasi])),
@@ -696,6 +705,7 @@ class PinjamanKelompokController extends Controller
         }
 
         return response()->json([
+            'success' => true,
             'msg' => $msg,
             'id' => $perguliran->id
         ], Response::HTTP_ACCEPTED);

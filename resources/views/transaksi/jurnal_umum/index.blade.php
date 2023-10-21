@@ -295,11 +295,15 @@
                 url: form.attr('action'),
                 data: form.serialize(),
                 success: function(result) {
-                    Swal.fire('Berhasil', result.msg, 'success').then(() => {
-                        jenis_transaksi.setChoiceByValue('')
+                    if (result.success) {
+                        Swal.fire('Berhasil', result.msg, 'success').then(() => {
+                            jenis_transaksi.setChoiceByValue('')
 
-                        $('#notifikasi').html(result.view)
-                    })
+                            $('#notifikasi').html(result.view)
+                        })
+                    } else {
+                        Swal.fire('Error', result.msg, 'error')
+                    }
                 },
                 error: function(result) {
                     const respons = result.responseJSON;
