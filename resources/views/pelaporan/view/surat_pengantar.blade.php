@@ -3,22 +3,22 @@
 @section('content')
     <table border="0">
         <tr>
-            <td>Nomor</td>
-            <td width="150">: ______________________</td>
-            <td width="257" align="right">{{ $kec->nama_kec }}, {{ $tgl }}</td>
+            <td width="5%">Nomor</td>
+            <td width="65%">: ______________________</td>
+            <td width="30%" align="right">{{ $kec->nama_kec }}, {{ $tgl }}</td>
         </tr>
         <tr>
-            <td width="65">Lampiran</td>
-            <td width="150">: 1 Bendel</td>
+            <td>Lampiran</td>
+            <td>: 1 Bendel</td>
         </tr>
         <tr>
-            <td width="65">Perihal</td>
-            <td width="150">: Laporan Keuangan</td>
+            <td>Perihal</td>
+            <td>: Laporan Keuangan</td>
         </tr>
         <tr>
-            <td width="65">&nbsp;</td>
-            <td width="150" style="padding-left: 8px;">
-                <u>Sampai Dengan {{ $sub_judul }}</u>
+            <td>&nbsp;</td>
+            <td style="padding-left: 8px;">
+                &nbsp; <u>Sampai Dengan {{ $sub_judul }}</u>
             </td>
         </tr>
         <tr>

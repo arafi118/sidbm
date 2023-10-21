@@ -1,7 +1,7 @@
 @php
     use App\Utils\Keuangan;
     $keuangan = new Keuangan();
-    
+
     $calk = json_decode($kec->calk, true);
     $peraturan_desa = $calk['peraturan_desa'];
 @endphp
@@ -200,9 +200,9 @@
                                         if ($rek->kode_akun == '3.2.02.01') {
                                             $saldo = $keuangan->surplus($tgl_kondisi);
                                         }
-                                        
+
                                         $sum_saldo += $saldo;
-                                        
+
                                         $akun_lev4[] = [
                                             'kode_akun' => $rek->kode_akun,
                                             'nama_akun' => $rek->nama_akun,
@@ -216,13 +216,13 @@
                                     if ($loop->iteration % 2 == 0) {
                                         $bg = 'rgba(255, 255, 255)';
                                     }
-                                    
+
                                     if ($lev1->lev1 == '1') {
                                         $debit += $sum_saldo;
                                     } else {
                                         $kredit += $sum_saldo;
                                     }
-                                    
+
                                     $sum_akun1 += $sum_saldo;
                                 @endphp
 
@@ -336,28 +336,36 @@
             </ol>
         </li>
         <li>
-            <div style="text-transform: uppercase;">
-                Penutup
-            </div>
-            <div style="text-align: justify">
-                Laporan Keuangan {{ $kec->nama_lembaga_sort }} ini disajikan dengan berpedoman pada Keputusan Kementerian
-                Desa Nomor 136/2022 Tentang Panduan Penyusunan Pelaporan Bumdes. Dimana yang dimaksud Bumdes yang
-                dimaksud dalam Keputusan Kementerian Desa adalah meliputi Bumdes, Bumdesma dan Bumdesma Lkd. Catatan atas
-                Laporan Keuangan (CaLK) ini merupakan bagian tidak terpisahkan dari Laporan Keuangan Badan Usaha Milik Desa
-                Bersama {{ $kec->nama_lembaga_sort }} untuk Laporan Operasi {{ $nama_tgl }}. Selanjutnya Catatan atas
-                Laporan Keuangan ini diharapkan untuk dapat berguna bagi pihak-pihak yang berkepentingan (stakeholders)
-                serta memenuhi prinsip-prinsip transparansi, akuntabilitas, pertanggungjawaban, independensi, dan fairness
-                dalam pengelolaan keuangan {{ $kec->nama_lembaga_sort }}.
-            </div>
+            <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+                <tr>
+                    <td align="justify">
+                        <div style="text-transform: uppercase;">
+                            Penutup
+                        </div>
+                        <div style="text-align: justify">
+                            Laporan Keuangan {{ $kec->nama_lembaga_sort }} ini disajikan dengan berpedoman pada Keputusan
+                            Kementerian Desa Nomor 136/2022 Tentang Panduan Penyusunan Pelaporan Bumdes. Dimana yang
+                            dimaksud Bumdes yang dimaksud dalam Keputusan Kementerian Desa adalah meliputi Bumdes, Bumdesma
+                            dan Bumdesma Lkd. Catatan atas Laporan Keuangan (CaLK) ini merupakan bagian tidak terpisahkan
+                            dari Laporan Keuangan Badan Usaha Milik Desa Bersama {{ $kec->nama_lembaga_sort }} untuk
+                            Laporan Operasi {{ $nama_tgl }}. Selanjutnya Catatan atas Laporan Keuangan ini diharapkan
+                            untuk dapat berguna bagi pihak-pihak yang berkepentingan (stakeholders) serta memenuhi
+                            prinsip-prinsip transparansi, akuntabilitas, pertanggungjawaban, independensi, dan fairness
+                            dalam pengelolaan keuangan {{ $kec->nama_lembaga_sort }}.
+                        </div>
+
+                        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;"
+                            class="p">
+                            <tr>
+                                <td>
+                                    <div style="margin-top: 24px;"></div>
+                                    {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
         </li>
     </ol>
-
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
-        <tr>
-            <td>
-                <div style="margin-top: 24px;"></div>
-                {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
-            </td>
-        </tr>
-    </table>
 @endsection

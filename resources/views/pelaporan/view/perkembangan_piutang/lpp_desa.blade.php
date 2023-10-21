@@ -6,6 +6,12 @@
 @extends('pelaporan.layout.base')
 
 @section('content')
+    <style>
+        html {
+            margin-left: 40px;
+            margin-right: 40px;
+        }
+    </style>
     @foreach ($jenis_pp as $jpp)
         @php
             if ($jpp->pinjaman_kelompok->isEmpty()) {
@@ -98,7 +104,7 @@
                             $t_tunggakan_pokok += $j_tunggakan_pokok;
                             $t_tunggakan_jasa += $j_tunggakan_jasa;
                             $t_kel += $kel;
-                            
+
                             $j_pross = 1;
                             if ($j_target_pokok != 0) {
                                 $j_pross = $j_real_bi_pokok / $j_target_pokok;
@@ -161,14 +167,14 @@
                         $saldo_pokok = $pinkel->saldo->saldo_pokok;
                         $saldo_jasa = $pinkel->saldo->saldo_jasa;
                     }
-                    
+
                     $target_pokok = 0;
                     $target_jasa = 0;
                     if ($pinkel->target) {
                         $target_pokok = $pinkel->target->target_pokok;
                         $target_jasa = $pinkel->target->target_jasa;
                     }
-                    
+
                     $tunggakan_pokok = $target_pokok - $sum_pokok;
                     if ($tunggakan_pokok < 0) {
                         $tunggakan_pokok = 0;
@@ -177,12 +183,12 @@
                     if ($tunggakan_jasa < 0) {
                         $tunggakan_jasa = 0;
                     }
-                    
+
                     $pross = 1;
                     if ($target_pokok != 0) {
                         $pross = $sum_pokok / $target_pokok;
                     }
-                    
+
                     if ($pinkel->tgl_lunas <= $tgl_kondisi && $pinkel->status == 'L') {
                         $tunggakan_pokok = 0;
                         $tunggakan_jasa = 0;
@@ -193,7 +199,7 @@
                         $tunggakan_pokok = 0;
                         $tunggakan_jasa = 0;
                     }
-                    
+
                     $j_alokasi += $pinkel->alokasi;
                     $j_target_pokok += $target_pokok;
                     $j_target_jasa += $target_jasa;
@@ -225,7 +231,7 @@
                 $t_tunggakan_pokok += $j_tunggakan_pokok;
                 $t_tunggakan_jasa += $j_tunggakan_jasa;
                 $t_kel += $kel;
-                
+
                 $j_pross = 1;
                 if ($j_target_pokok != 0) {
                     $j_pross = $j_real_bi_pokok / $j_target_pokok;

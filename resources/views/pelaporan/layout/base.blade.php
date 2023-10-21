@@ -19,9 +19,8 @@
         }
 
         html {
-            /* margin-left: 90px; */
-            /* margin-right: 0px; */
-            margin-bottom: 100px;
+            margin: 75.59px;
+            margin-left: 94.48px;
         }
 
         ul,
@@ -137,9 +136,9 @@
     </header>
 
     @php
-        $style = 'position: relative; top: 60px; font-size: 12px;';
+        $style = 'position: relative; top: 60px; font-size: 12px; padding-bottom: 75.59px;';
         if ($laporan == 'surat_pengantar') {
-            $style = 'margin-top: 75px; font-size: 12px;';
+            $style = 'margin-top: 75px; font-size: 12px; padding-bottom: 75.59px;';
         }
     @endphp
 
