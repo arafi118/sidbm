@@ -107,6 +107,10 @@
         .b {
             border-bottom: 1px solid #000;
         }
+
+        .page:before {
+            content: counter(page);
+        }
     </style>
 </head>
 
@@ -122,8 +126,8 @@
     </header>
 
     <footer>
-        <div style="text-align: right; font-size: 8px;">
-            Page 1 - MOU SI DBM
+        <div style="text-align: right; font-size: 8px;" id="page-number">
+            Page <span class="page"></span> - MOU SI DBM
         </div>
     </footer>
 
