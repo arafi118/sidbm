@@ -129,6 +129,7 @@ Route::get('/pelaporan/sub_laporan/{file}', [PelaporanController::class, 'subLap
 Route::post('/pelaporan/preview', [PelaporanController::class, 'preview'])->middleware('auth');
 
 Route::get('/pelaporan/mou', [PelaporanController::class, 'mou'])->middleware('auth');
+Route::get('/pelaporan/ts', [PelaporanController::class, 'ts'])->middleware('auth');
 
 Route::resource('/profil', UserController::class);
 

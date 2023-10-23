@@ -52,13 +52,27 @@
                         </i>
                     </a>
                 </li>
-                <li class="nav-item ps-3">
-                    <a href="/pages/authentication/signin/illustration.html"
-                        class="nav-link text-body p-0 position-relative" target="_blank">
-                        <i class="material-icons me-sm-1">
+                <li class="nav-item dropdown ps-3">
+                    <a href="javascript:;" class="nav-link text-body p-0 position-relative" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="material-icons cursor-pointer me-sm-1">
                             chat_bubble
                         </i>
                     </a>
+                    <ul class="dropdown-menu dropdown-menu-end p-2 me-sm-n4" aria-labelledby="dropdownMenuButton">
+                        <li class="mb-2">
+                            <a class="dropdown-item border-radius-md" href="/pelaporan/ts" target="_blank">
+                                <div class="d-flex align-items-center py-1">
+                                    <span class="material-icons">contact_phone</span>
+                                    <div class="ms-2">
+                                        <h6 class="text-sm font-weight-normal my-auto">
+                                            Technical Support
+                                        </h6>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item ps-3">
                     <a href="javascript:;" class="nav-link text-body p-0">

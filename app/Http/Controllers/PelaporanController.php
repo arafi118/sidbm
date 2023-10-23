@@ -1300,6 +1300,15 @@ class PelaporanController extends Controller
         return $pdf->stream();
     }
 
+    public function ts()
+    {
+        $data['kec'] = Kecamatan::where('id', auth()->user()->lokasi)->first();
+
+        $view = view('pelaporan.view.ts', $data)->render();
+        $pdf = PDF::loadHTML($view)->setPaper([0, 0, 595.28, 352], 'potrait');
+        return $pdf->stream();
+    }
+
     // public function extractCommonWords($string, $kec)
     // {
     //     //
