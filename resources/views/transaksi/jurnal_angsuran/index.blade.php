@@ -2,49 +2,9 @@
 
 @section('content')
     <div class="row">
-        {{-- <div class="col-12 mb-4">
-            <div class="card card-body p-2 pb-0">
-                <div class="row">
-                    <div class="col-md-3 d-grid">
-                        <button type="button" data-action="/transaksi/angsuran/struk/"
-                            class="btn btn-linkedin btn-tooltip btn-sm btn-link mb-2" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Struk" data-container="body" data-animation="true">
-                            <span class="btn-inner--icon">
-                                <i class="fas fa-file"></i> Struk
-                            </span>
-                        </button>
-                    </div>
-                    <div class="col-md-3 d-grid">
-                        <button type="button" data-action="/transaksi/angsuran/struk_matrix/"
-                            class="btn btn-linkedin btn-tooltip btn-sm btn-link mb-2" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Struk Dot Matrix" data-container="body" data-animation="true">
-                            <span class="btn-inner--icon">
-                                <i class="fas fa-file"></i> Struk Dot Matrix
-                            </span>
-                        </button>
-                    </div>
-                    <div class="col-md-3 d-grid">
-                        <button type="button" data-action="/transaksi/dokumen/bkm_angsuran/"
-                            class="btn btn-instagram btn-tooltip btn-sm btn-link mb-2" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="BKM" data-container="body" data-animation="true">
-                            <span class="btn-inner--icon">
-                                <i class="fas fa-file-circle-exclamation"></i> BKM
-                            </span>
-                        </button>
-                    </div>
-                    <div class="col-md-3 d-grid">
-                        <button type="button" data-action="/perguliran/dokumen/kartu_angsuran/"
-                            class="btn btn-tumblr btn-tooltip btn-sm btn-link mb-2" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Cetak Pada Kartu Angsuran" data-container="body"
-                            data-animation="true">
-                            <span class="btn-inner--icon">
-                                <i class="fas fa-file-invoice"></i> Cetak Pada Kartu
-                            </span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
+        <div class="col-12" id="notif">
+
+        </div>
         <div class="col-md-8 mb-3">
             <div class="card mb-3">
                 <div class="card-body py-2">
@@ -283,6 +243,7 @@
         })
 
         $(document).on('click', '#SimpanAngsuran', function(e) {
+            $('#notif').html('')
             e.preventDefault()
 
             var form = $('#FormAngsuran')
@@ -293,6 +254,8 @@
                 success: function(result) {
                     if (result.success) {
                         Swal.fire('Berhasil!', result.msg, 'success').then(() => {
+                            $('#notif').html(result.view)
+
                             $.get('/transaksi/form_angsuran/' + result.id_pinkel,
                                 function(result) {
                                     angsuran(true, result)

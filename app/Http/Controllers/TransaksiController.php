@@ -515,12 +515,20 @@ class TransaksiController extends Controller
 
         $this->regenerateReal($pinkel->id);
 
+        $trx = Transaksi::where('idtp', $idtp)->first();
+        $view = view('transaksi.jurnal_angsuran.partials.notif', [
+            'idtp' => $idtp,
+            'id_pinkel' => $pinkel->id,
+            'idt' => $trx->idt
+        ])->render();
+
         return response()->json([
             'success' => true,
             'msg' => 'Angsuran kelompok ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] berhasil diposting',
             'id_pinkel' => $pinkel->id,
             'idtp' => $idtp,
-            'tgl_transaksi' => $tgl_transaksi
+            'tgl_transaksi' => $tgl_transaksi,
+            'view' => $view
         ]);
     }
 
