@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-12 mb-4">
+        {{-- <div class="col-12 mb-4">
             <div class="card card-body p-2 pb-0">
                 <div class="row">
                     <div class="col-md-3 d-grid">
@@ -44,7 +44,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="col-md-8 mb-3">
             <div class="card mb-3">
                 <div class="card-body py-2">
@@ -90,8 +90,8 @@
                             <div class="col-sm-6">
                                 <div class="input-group input-group-static my-3">
                                     <label for="total">Total Bayar</label>
-                                    <input autocomplete="off" readonly disabled type="text" name="total"
-                                        id="total" class="form-control">
+                                    <input autocomplete="off" readonly disabled type="text" name="total" id="total"
+                                        class="form-control">
                                     <small class="text-danger" id="msg_total"></small>
                                 </div>
                             </div>
