@@ -243,7 +243,7 @@
                 @php
                     $jumlah++;
                 @endphp
-                <tr {{ $real->idtp != $idtp ? 'style="opacity: 0;"' : '' }}>
+                <tr {!! $real->id != $idtp ? 'style="opacity: 0;"' : '' !!}>
                     <td align="center">{{ $loop->iteration }}</td>
                     <td align="center">{{ Tanggal::tglIndo($real->tgl_transaksi) }}</td>
                     <td align="right">{{ number_format($real->realisasi_pokok) }}</td>
