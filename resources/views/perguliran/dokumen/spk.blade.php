@@ -204,7 +204,13 @@
             </li>
         </ol>
 
-        <div style="margin-top: 24px;"></div>
-        {!! $ttd !!}
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;" class="p">
+            <tr>
+                <td>
+                    <div style="margin-top: 24px;"></div>
+                    {!! $ttd !!}
+                </td>
+            </tr>
+        </table>
     </div>
 @endsection
