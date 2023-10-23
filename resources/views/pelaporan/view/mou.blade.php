@@ -21,9 +21,8 @@
         }
 
         html {
-            /* margin-left: 90px; */
-            /* margin-right: 0px; */
-            margin-bottom: 100px;
+            margin: 75.59px;
+            margin-left: 94.48px;
         }
 
         ul,
@@ -45,7 +44,7 @@
         footer {
             font-size: 12px;
             position: fixed;
-            bottom: -40px;
+            bottom: 0;
             left: 0;
             right: 0;
             border-top: 1px solid rgb(180, 180, 180);
@@ -55,6 +54,7 @@
             top: 40px;
             font-size: 12px;
             position: relative;
+            padding-bottom: 37.79px;
         }
 
         table tr th,

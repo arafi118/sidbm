@@ -136,9 +136,9 @@
     </header>
 
     @php
-        $style = 'position: relative; top: 60px; font-size: 12px; padding-bottom: 75.59px;';
+        $style = 'position: relative; top: 60px; font-size: 12px; padding-bottom: 37.79px;';
         if ($laporan == 'surat_pengantar') {
-            $style = 'margin-top: 75px; font-size: 12px; padding-bottom: 75.59px;';
+            $style = 'margin-top: 75px; font-size: 12px; padding-bottom: 37.79px;';
         }
     @endphp
 

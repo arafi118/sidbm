@@ -33,7 +33,7 @@
             position: relative;
             top: 60px;
             font-size: 12px;
-            padding-bottom: 75.59px;
+            padding-bottom: 37.79px;
         }
 
         header {
