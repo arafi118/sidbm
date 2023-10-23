@@ -45,13 +45,19 @@ class PinjamanAnggotaController extends Controller
             $jumlah_pinjaman_anggota_a = $pinjaman_anggota_a->count();
             $pinjaman_anggota_a = $pinjaman_anggota_a->with('sts')->orderby('tgl_cair', 'desc')->first();
 
-            $data_pemanfaat = DataPemanfaat::where('nik', request()->get('value'))->where(function (Builder $query) {
+            $data_pemanfaat = DataPemanfaat::where([
+                ['nik', request()->get('value')],
+                ['lokasi', '!=', auth()->user()->lokasi]
+            ])->where(function (Builder $query) {
                 $query->where('status', 'P')->orwhere('status', 'V')->orwhere('status', 'W');
             });
             $jumlah_data_pemanfaat = $data_pemanfaat->count();
             $data_pemanfaat = $data_pemanfaat->with('sts', 'kec')->first();
 
-            $data_pemanfaat_a = DataPemanfaat::where('nik', request()->get('nik'))->where('status', 'A');
+            $data_pemanfaat_a = DataPemanfaat::where([
+                ['nik', request()->get('value')],
+                ['lokasi', '!=', auth()->user()->lokasi]
+            ])->where('status', 'A');
             $jumlah_data_pemanfaat_a = $data_pemanfaat_a->count();
             $data_pemanfaat_a = $data_pemanfaat_a->with('sts', 'kec')->first();
 
