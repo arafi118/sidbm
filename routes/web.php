@@ -154,7 +154,7 @@ Route::get('/generate/{id}', function ($id) {
 
 Route::get('/user', function () {
     $kec = Kecamatan::where('web_kec', request()->getHost())->orwhere('web_alternatif', request()->getHost())->with('kabupaten')->first();
-    $users = User::where('lokasi', $kec->id)->with('l', 'j')->get();
+    $users = User::where('lokasi', $kec->id)->with('l', 'j')->orderBy('level', 'ASC')->get();
 
     return view('welcome', ['users' => $users, 'kec' => $kec]);
 });
