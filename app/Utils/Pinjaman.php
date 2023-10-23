@@ -89,7 +89,7 @@ class Pinjaman
                 '{nip}' => $desa->nip,
                 '{sekdes}' => $desa->sekdes,
                 '{ked}' => $desa->ked,
-                '{desa}' => $desa->sebutan_desa->sebutan_desa . ' ' . $desa->nama_desa,
+                '{desa}' => $desa->nama_desa,
                 '{sebutan_kades}' => $desa->sebutan_desa->sebutan_kades,
                 '1' => '1',
                 '0' => '0'
