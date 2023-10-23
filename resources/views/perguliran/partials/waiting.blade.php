@@ -14,7 +14,7 @@
                 <tr class="bg-danger">
                     <th align="center">No</th>
                     <th align="center">Nama</th>
-                    <th align="center">Loan ID.</th>
+                    <th>Loan ID.</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,8 +22,9 @@
                     <tr>
                         <td align="center">{{ $loop->iteration }}</td>
                         <td align="left">{{ ucwords(strtolower($pa->anggota->namadepan)) }} ({{ $pa->nia }})</td>
-                        <td align="center">
-                            <a href="/detail/{{ $pa->id_pinkel }}" target="_blank" class="btn btn-xs btn-danger">
+                        <td>
+                            <a href="/detail/{{ $pa->id_pinkel }}" target="_blank"
+                                class="text-danger text-gradient font-weight-bold">
                                 Loan ID. {{ $pa->id_pinkel }}
                             </a>.
                         </td>
