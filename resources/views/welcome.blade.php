@@ -1,3 +1,4 @@
+<div>Kecamatan {{ $kec->nama_kec }}, {{ $kec->kabupaten->nama_kab }}</div>
 <table border="1" cellspacing="0" cellpadding="0" width="100%">
     <tr>
         <th>Nama</th>
@@ -16,3 +17,6 @@
         </tr>
     @endforeach
 </table>
+<div style="text-align: right;">
+    <a href="https://{{ $kec->web_kec }}">{{ $kec->web_kec }}</a>
+</div>
