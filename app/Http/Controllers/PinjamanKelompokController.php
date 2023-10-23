@@ -1644,9 +1644,9 @@ class PinjamanKelompokController extends Controller
             ['lokasi', auth()->user()->lokasi]
         ])->first();
 
-        $data['skr'] = User::where([
+        $data['bend'] = User::where([
             ['level', '1'],
-            ['jabatan', '2'],
+            ['jabatan', '3'],
             ['lokasi', auth()->user()->lokasi]
         ])->first();
 

@@ -112,7 +112,7 @@
                     {{ $kec->sebutan_level_1 }}
                 </td>
                 <td align="center" colspan="3">
-                    {{ $kec->sebutan_level_2 }}
+                    {{ $kec->sebutan_level_3 }}
                 </td>
                 <td align="center" colspan="3">
                     Ketua Kelompok
@@ -126,7 +126,7 @@
                     <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
                 </td>
                 <td align="center" colspan="3">
-                    <b>{{ $skr->namadepan }} {{ $skr->namabelakang }}</b>
+                    <b>{{ $bend->namadepan }} {{ $bend->namabelakang }}</b>
                 </td>
                 <td align="center" colspan="3">
                     <b>{{ $pinkel->kelompok->ketua }}</b>
