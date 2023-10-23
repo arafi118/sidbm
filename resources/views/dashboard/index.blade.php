@@ -7,8 +7,8 @@
         <input type="hidden" name="tgl" id="tgl" value="{{ date('d/m/Y') }}">
     </form>
 
-    <div class="alert alert-warning">
-        <b>Mohon maaf, untuk sementara fitur yang berkaitan dengan upload file/gambar tidak bisa digunakan.</b>
+    <div class="alert alert-warning text-white">
+        Mohon maaf, untuk sementara fitur yang berkaitan dengan upload file/gambar tidak bisa digunakan.
     </div>
 
     <div class="row">
