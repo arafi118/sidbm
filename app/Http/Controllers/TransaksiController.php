@@ -1058,7 +1058,7 @@ class TransaksiController extends Controller
         }
 
         $logo = $kec->logo;
-        if (!(Storage::exists('logo/' . $kec->logo)) || empty($logo)) {
+        if (empty($logo)) {
             $gambar = '/storage/logo/1.png';
         } else {
             $gambar = '/storage/logo/' . $logo;
