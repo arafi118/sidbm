@@ -12,18 +12,18 @@
         <table class="table table-striped table-danger">
             <thead>
                 <tr class="bg-danger">
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>Loan ID.</th>
+                    <th align="center">No</th>
+                    <th align="center">Nama</th>
+                    <th align="center">Loan ID.</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($pinj_a['pinjaman'] as $pa)
                     <tr>
                         <td align="center">{{ $loop->iteration }}</td>
-                        <td align="center">{{ ucwords(strtolower($pa->anggota->namadepan)) }} ({{ $pa->nia }})</td>
+                        <td align="left">{{ ucwords(strtolower($pa->anggota->namadepan)) }} ({{ $pa->nia }})</td>
                         <td align="center">
-                            <a href="/detail/{{ $pa->id_pinkel }}" target="_blank" class="btn btn-sm btn-danger">
+                            <a href="/detail/{{ $pa->id_pinkel }}" target="_blank" class="btn btn-xs btn-danger">
                                 Loan ID. {{ $pa->id_pinkel }}
                             </a>.
                         </td>
