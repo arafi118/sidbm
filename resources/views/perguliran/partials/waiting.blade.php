@@ -12,7 +12,7 @@
         <table class="table table-striped table-danger">
             <thead>
                 <tr class="bg-danger">
-                    <th align="center">No</th>
+                    <th align="center" width="10">No</th>
                     <th align="center">Nama</th>
                     <th>Loan ID.</th>
                 </tr>
