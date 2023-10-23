@@ -34,7 +34,7 @@
                 <td width="90">Telah Diterima Dari</td>
                 <td width="10" align="center">:</td>
                 <td class="b">
-                    <b>{{ $kec->sebutan_level_2 }} {{ $kec->nama_lembaga_sort }}</b>
+                    <b>{{ $kec->sebutan_level_3 }} {{ $kec->nama_lembaga_sort }}</b>
                 </td>
             </tr>
             <tr>
