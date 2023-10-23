@@ -23,8 +23,8 @@
                         <td align="center">{{ $loop->iteration }}</td>
                         <td align="center">{{ ucwords(strtolower($pa->anggota->namadepan)) }} ({{ $pa->nia }})</td>
                         <td align="center">
-                            <a href="/detail/{{ $pa->pinkel_id }}" target="_blank" class="alert-link text-white">
-                                Loan ID. {{ $pa->pinkel_id }}
+                            <a href="/detail/{{ $pa->id_pinkel }}" target="_blank" class="btn btn-sm btn-danger">
+                                Loan ID. {{ $pa->id_pinkel }}
                             </a>.
                         </td>
                     </tr>
