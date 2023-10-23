@@ -196,7 +196,8 @@
                             "id": item.id,
                             "name": item.nama_kelompok +
                                 ' [' + item.nama_desa + ']' +
-                                ' [' + item.ketua + ']',
+                                ' [' + item.ketua + ']' +
+                                ' [' + item.kd_kelompok + ']',
                             "value": item.id
                         });
                     });
