@@ -6,10 +6,7 @@
         <div class="alert alert-danger text-white" role="alert">
             <span class="text-sm">
                 <b>Anggota Kelompok</b>
-                terdeteksi memiliki kewajiban angsuran pinjaman dengan
-                <a href="/detail/{{ $pa->pinkel->id }}" target="_blank" class="alert-link text-white">
-                    Loan ID. {{ $pa->pinkel->id }}
-                </a>.
+                terdeteksi memiliki kewajiban angsuran pinjaman
             </span>
         </div>
         <table class="table table-striped table-danger">
@@ -17,6 +14,7 @@
                 <tr class="bg-danger">
                     <th>No</th>
                     <th>Nama</th>
+                    <th>Loan ID.</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,6 +22,11 @@
                     <tr>
                         <td align="center">{{ $loop->iteration }}</td>
                         <td align="center">{{ ucwords(strtolower($pa->anggota->namadepan)) }} ({{ $pa->nia }})</td>
+                        <td align="center">
+                            <a href="/detail/{{ $pa->pinkel_id }}" target="_blank" class="alert-link text-white">
+                                Loan ID. {{ $pa->pinkel_id }}
+                            </a>.
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
