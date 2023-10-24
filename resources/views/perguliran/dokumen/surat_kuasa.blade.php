@@ -106,12 +106,12 @@
             @endphp
             <tr>
                 <td width="25%">
-                    @if (isset($pinkel->pinjaman_anggota[$i]))
-                        {{ $i }}. {{ $pinkel->pinjaman_anggota[$i]->anggota->namadepan }}
+                    @if (isset($pinkel->pinjaman_anggota[$j]))
+                        {{ $i }}. {{ $pinkel->pinjaman_anggota[$j]->anggota->namadepan }}
                     @endif
                 </td>
                 <td width="25%">
-                    @if (isset($pinkel->pinjaman_anggota[$i]))
+                    @if (isset($pinkel->pinjaman_anggota[$j]))
                         ................................
                     @endif
                 </td>
