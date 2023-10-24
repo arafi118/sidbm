@@ -7,10 +7,6 @@
         <input type="hidden" name="tgl" id="tgl" value="{{ date('d/m/Y') }}">
     </form>
 
-    <div class="alert alert-warning text-white">
-        Mohon maaf, untuk sementara fitur yang berkaitan dengan upload file/gambar tidak bisa digunakan.
-    </div>
-
     <div class="row">
         <div class="col-sm-4">
             <div class="card">
@@ -150,7 +146,7 @@
                         </div>
                     </div>
                     <div class="w-40 text-end">
-                        <a class="btn bg-light mb-0 text-end" href="javascript:;">Detail</a>
+                        <button type="button" id="btnDetailAngsuran" class="btn bg-light mb-0 text-end">Detail</button>
                     </div>
                 </div>
             </div>
@@ -476,6 +472,24 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Detail Angsuran --}}
+    <div class="modal fade" id="detailAngsuran" aria-labelledby="detailAngsuranLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="detailAngsuranLabel">Pinjaman detailAngsuran</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
