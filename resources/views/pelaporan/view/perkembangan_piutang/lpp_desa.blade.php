@@ -185,7 +185,7 @@
                     }
 
                     $pross = 1;
-                    if ($target_pokok != 0) {
+                    if (!($target_pokok == 0 || $sum_pokok == 0)) {
                         $pross = $sum_pokok / $target_pokok;
                     }
 
