@@ -1052,7 +1052,7 @@ class TransaksiController extends Controller
         $dibayar = ucwords($trx->relasi);
         if ($trx->rekening_kredit == '1.1.01.01' or $keuangan->startWith($trx->rekening_kredit, '1.1')) {
             $jenis = 'BKK';
-            $dari = $trx->sebutan_level_3 . " " . ucwords($trx->nama_lembaga_sort);
+            $dari = $kec->sebutan_level_3 . " " . ucwords($kec->nama_lembaga_sort);
             $oleh = ucwords($trx->relasi);
             $dibayar = ucwords($user->namadepan . ' ' . $user->namabelakang);
         }
