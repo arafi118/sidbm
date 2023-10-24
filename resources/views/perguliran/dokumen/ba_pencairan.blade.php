@@ -23,7 +23,7 @@
                     <b>BERITA ACARA PENCAIRAN</b>
                 </div>
                 <div style="font-size: 16px;">
-                    <b>PINJAMAN KELOMPOK UEP</b>
+                    <b>PINJAMAN KELOMPOK {{ $pinkel->jpp->nama_jpp }}</b>
                 </div>
             </td>
         </tr>
