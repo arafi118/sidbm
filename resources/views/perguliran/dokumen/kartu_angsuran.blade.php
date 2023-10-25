@@ -247,21 +247,26 @@
             @foreach ($pinkel->real as $real)
                 @php
                     $jumlah++;
+                    $nomor = $loop->iteration;
+
+                    $b = $nomor + 3 == $rowspan ? 'b' : '';
                 @endphp
                 <tr>
-                    <td class="l" align="center">{{ $loop->iteration }}</td>
-                    <td class="l" align="center">{{ Tanggal::tglIndo($real->tgl_transaksi) }}</td>
-                    <td class="l" align="right">{{ number_format($real->realisasi_pokok) }}</td>
-                    <td class="l" align="right">
+                    <td class="l {{ $b }}" align="center">{{ $nomor }}</td>
+                    <td class="l {{ $b }}" align="center">{{ Tanggal::tglIndo($real->tgl_transaksi) }}
+                    </td>
+                    <td class="l {{ $b }}" align="right">{{ number_format($real->realisasi_pokok) }}
+                    </td>
+                    <td class="l {{ $b }}" align="right">
                         {{ number_format($real->tunggakan_pokok < 0 ? 0 : $real->tunggakan_pokok) }}
                     </td>
-                    <td class="l" align="right">{{ number_format($real->realisasi_jasa) }}</td>
-                    <td class="l" align="right">
+                    <td class="l {{ $b }}" align="right">{{ number_format($real->realisasi_jasa) }}</td>
+                    <td class="l {{ $b }}" align="right">
                         {{ number_format($real->tunggakan_jasa < 0 ? 0 : $real->tunggakan_jasa) }}
                     </td>
-                    <td class="l" align="right">{{ number_format($real->saldo_pokok) }}</td>
-                    <td class="l" align="right">{{ number_format($real->saldo_jasa) }}</td>
-                    <td class="l r" align="center">{{ $real->id }}</td>
+                    <td class="l {{ $b }}" align="right">{{ number_format($real->saldo_pokok) }}</td>
+                    <td class="l {{ $b }}" align="right">{{ number_format($real->saldo_jasa) }}</td>
+                    <td class="l {{ $b }} r" align="center">{{ $real->id }}</td>
                 </tr>
             @endforeach
 
