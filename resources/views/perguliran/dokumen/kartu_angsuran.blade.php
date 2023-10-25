@@ -6,6 +6,10 @@
     if ($pinkel->real_count >= 16) {
         $rowspan = $pinkel->real_count + 3;
     }
+
+    if ($pinkel->real_count == 0) {
+        $rowspan = 20;
+    }
 @endphp
 
 <!DOCTYPE html>
@@ -156,7 +160,7 @@
         </table>
 
         @php
-            $baris_angsuran = $pinkel->jangka / 2;
+            $baris_angsuran = ceil($pinkel->jangka / 2);
         @endphp
 
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
@@ -201,18 +205,33 @@
 
                     <td>&nbsp;</td>
 
-                    <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="center">
-                        {{ $pinkel->rencana[$i + $baris_angsuran]->angsuran_ke }}
-                    </td>
-                    <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="center">
-                        {{ Tanggal::tglIndo($pinkel->rencana[$i + $baris_angsuran]->jatuh_tempo) }}
-                    </td>
-                    <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="right">
-                        {{ number_format($pinkel->rencana[$i + $baris_angsuran]->wajib_pokok) }}
-                    </td>
-                    <td class="l {{ $j == $baris_angsuran ? 'b' : '' }} r" align="right">
-                        {{ number_format($pinkel->rencana[$i + $baris_angsuran]->wajib_jasa) }}
-                    </td>
+                    @if (isset($pinkel->rencana[$i + $baris_angsuran]))
+                        <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="center">
+                            {{ $pinkel->rencana[$i + $baris_angsuran]->angsuran_ke }}
+                        </td>
+                        <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="center">
+                            {{ Tanggal::tglIndo($pinkel->rencana[$i + $baris_angsuran]->jatuh_tempo) }}
+                        </td>
+                        <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="right">
+                            {{ number_format($pinkel->rencana[$i + $baris_angsuran]->wajib_pokok) }}
+                        </td>
+                        <td class="l {{ $j == $baris_angsuran ? 'b' : '' }} r" align="right">
+                            {{ number_format($pinkel->rencana[$i + $baris_angsuran]->wajib_jasa) }}
+                        </td>
+                    @else
+                        <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="center">
+
+                        </td>
+                        <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="center">
+
+                        </td>
+                        <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="right">
+
+                        </td>
+                        <td class="l {{ $j == $baris_angsuran ? 'b' : '' }} r" align="right">
+
+                        </td>
+                    @endif
                 </tr>
             @endfor
 
