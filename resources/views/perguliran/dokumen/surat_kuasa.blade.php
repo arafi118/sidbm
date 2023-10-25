@@ -99,64 +99,73 @@
             </td>
         </tr>
     </table>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
-        @for ($i = 1; $i <= $batas_pemanfaat; $i++)
-            @php
-                $j = $i - 1;
-            @endphp
-            <tr>
-                <td width="25%">
-                    @if (isset($pinkel->pinjaman_anggota[$j]))
-                        {{ $i }}. {{ $pinkel->pinjaman_anggota[$j]->anggota->namadepan }}
-                    @endif
-                </td>
-                <td width="25%">
-                    @if (isset($pinkel->pinjaman_anggota[$j]))
-                        ................................
-                    @endif
-                </td>
-                <td width="25%">
-                    @if (isset($pinkel->pinjaman_anggota[$j + $batas_pemanfaat]))
-                        {{ $i + $batas_pemanfaat }}.
-                        {{ $pinkel->pinjaman_anggota[$j + $batas_pemanfaat]->anggota->namadepan }}
-                    @endif
-                </td>
-                <td width="25%">
-                    @if (isset($pinkel->pinjaman_anggota[$j + $batas_pemanfaat]))
-                        ................................
-                    @endif
-                </td>
-            </tr>
-        @endfor
-    </table>
 
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
-            <td colspan="3">&nbsp;</td>
-        </tr>
-        <tr>
-            <td colspan="3" align="center">
-                Pengurus kelompok Selaku Penerima Kuasa :
+            <td style="padding: 0px !important;">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;"
+                    class="p">
+                    @for ($i = 1; $i <= $batas_pemanfaat; $i++)
+                        @php
+                            $j = $i - 1;
+                        @endphp
+                        <tr>
+                            <td width="25%">
+                                @if (isset($pinkel->pinjaman_anggota[$j]))
+                                    {{ $i }}. {{ $pinkel->pinjaman_anggota[$j]->anggota->namadepan }}
+                                @endif
+                            </td>
+                            <td width="25%">
+                                @if (isset($pinkel->pinjaman_anggota[$j]))
+                                    ................................
+                                @endif
+                            </td>
+                            <td width="25%">
+                                @if (isset($pinkel->pinjaman_anggota[$j + $batas_pemanfaat]))
+                                    {{ $i + $batas_pemanfaat }}.
+                                    {{ $pinkel->pinjaman_anggota[$j + $batas_pemanfaat]->anggota->namadepan }}
+                                @endif
+                            </td>
+                            <td width="25%">
+                                @if (isset($pinkel->pinjaman_anggota[$j + $batas_pemanfaat]))
+                                    ................................
+                                @endif
+                            </td>
+                        </tr>
+                    @endfor
+                </table>
+
+                <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;"
+                    class="p">
+                    <tr>
+                        <td colspan="3">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" align="center">
+                            Pengurus kelompok Selaku Penerima Kuasa :
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" height="50"></td>
+                    </tr>
+                    <tr>
+                        <td align="center" width="33%">
+                            {{ $pinkel->kelompok->ketua }}
+                        </td>
+                        <td align="center" width="33%">
+                            {{ $pinkel->kelompok->sekretaris }}
+                        </td>
+                        <td align="center" width="33%">
+                            {{ $pinkel->kelompok->bendahara }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">Ketua</td>
+                        <td align="center">Sekretaris</td>
+                        <td align="center">Bendahara</td>
+                    </tr>
+                </table>
             </td>
-        </tr>
-        <tr>
-            <td colspan="3" height="50"></td>
-        </tr>
-        <tr>
-            <td align="center" width="33%">
-                {{ $pinkel->kelompok->ketua }}
-            </td>
-            <td align="center" width="33%">
-                {{ $pinkel->kelompok->sekretaris }}
-            </td>
-            <td align="center" width="33%">
-                {{ $pinkel->kelompok->bendahara }}
-            </td>
-        </tr>
-        <tr>
-            <td align="center">Ketua</td>
-            <td align="center">Sekretaris</td>
-            <td align="center">Bendahara</td>
         </tr>
     </table>
 @endsection
