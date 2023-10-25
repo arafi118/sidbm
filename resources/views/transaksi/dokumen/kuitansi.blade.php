@@ -207,8 +207,7 @@
                         <td width="30%">Uang Sebanyak</td>
                         <td width="2%">:</td>
                         <td colspan="3" class="keterangan fw-medium terbilang jajargenjang">
-                            <h4
-                                <?= strlen($keuangan->terbilang($trx->jumlah)) > 40 ? 'style="font-size: 10px;"' : '' ?>>
+                            <h4 <?= strlen($keuangan->terbilang($trx->jumlah)) > 30 ? 'style="font-size: 8px;"' : '' ?>>
                                 <span><?php echo ucwords($keuangan->terbilang($trx->jumlah)); ?> Rupiah</span>
                             </h4>
                         </td>
