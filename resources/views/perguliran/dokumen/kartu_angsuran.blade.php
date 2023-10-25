@@ -244,7 +244,7 @@
                     $jumlah++;
                 @endphp
                 <tr>
-                    <td class="l" align="center">{{ $loop->iteration }}</td>
+                    <td class="l" align="center">{{ $loop->iteration }}..</td>
                     <td class="l" align="center">{{ Tanggal::tglIndo($real->tgl_transaksi) }}</td>
                     <td class="l" align="right">{{ number_format($real->realisasi_pokok) }}</td>
                     <td class="l" align="right">
