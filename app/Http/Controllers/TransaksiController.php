@@ -595,10 +595,9 @@ class TransaksiController extends Controller
 
             $label2 = 'Pilih Biaya';
         } elseif ($id == 3) {
-            $rek1 = Rekening::where('lev1', '1')->orwhere('kode_akun', 'like', '5.1.01%')->orwhere('kode_akun', 'like', '5.1.02%')
-                ->orwhere('kode_akun', 'like', '5.1.06%')->orwhere('kode_akun', 'like', '5.4.01%')->orderBy('kode_akun', 'ASC')->get();
+            $rek1 = Rekening::all();
 
-            $rek2 = Rekening::where('lev1', '1')->orwhere('kode_akun', 'like', '2.1.03%')->orwhere('lev1', 'like', '2.1.02%')->orderBy('kode_akun', 'ASC')->get();
+            $rek2 = Rekening::all();
 
             $label2 = 'Pilih Brangkas Tujuan';
         }
