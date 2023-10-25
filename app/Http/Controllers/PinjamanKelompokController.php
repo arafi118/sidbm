@@ -41,7 +41,7 @@ class PinjamanKelompokController extends Controller
     public function proposal()
     {
         if (request()->ajax()) {
-            $pinkel = PinjamanKelompok::where('status', 'P')->with('kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
+            $pinkel = PinjamanKelompok::where('status', 'P')->with('kelompok', 'kelompok.d', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
 
             return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
@@ -64,6 +64,9 @@ class PinjamanKelompokController extends Controller
                 ->editColumn('proposal', function ($row) {
                     return number_format($row->proposal);
                 })
+                ->editColumn('kelompok.alamat_kelompok', function ($row) {
+                    return $row->kelompok->alamat_kelompok . ' ' . $row->kelompok->d->nama_desa;
+                })
                 ->rawColumns(['nama_kelompok'])
                 ->make(true);
         }
@@ -72,7 +75,7 @@ class PinjamanKelompokController extends Controller
     public function verified()
     {
         if (request()->ajax()) {
-            $pinkel = PinjamanKelompok::where('status', 'V')->with('kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
+            $pinkel = PinjamanKelompok::where('status', 'V')->with('kelompok', 'kelompok.d', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
 
             return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
@@ -95,6 +98,9 @@ class PinjamanKelompokController extends Controller
                 ->editColumn('verifikasi', function ($row) {
                     return number_format($row->verifikasi);
                 })
+                ->editColumn('kelompok.alamat_kelompok', function ($row) {
+                    return $row->kelompok->alamat_kelompok . ' ' . $row->kelompok->d->nama_desa;
+                })
                 ->rawColumns(['nama_kelompok'])
                 ->make(true);
         }
@@ -103,7 +109,7 @@ class PinjamanKelompokController extends Controller
     public function waiting()
     {
         if (request()->ajax()) {
-            $pinkel = PinjamanKelompok::where('status', 'W')->with('kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
+            $pinkel = PinjamanKelompok::where('status', 'W')->with('kelompok', 'kelompok.d', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
 
             return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
@@ -126,6 +132,9 @@ class PinjamanKelompokController extends Controller
                 ->editColumn('alokasi', function ($row) {
                     return number_format($row->alokasi);
                 })
+                ->editColumn('kelompok.alamat_kelompok', function ($row) {
+                    return $row->kelompok->alamat_kelompok . ' ' . $row->kelompok->d->nama_desa;
+                })
                 ->rawColumns(['nama_kelompok'])
                 ->make(true);
         }
@@ -134,7 +143,7 @@ class PinjamanKelompokController extends Controller
     public function aktif()
     {
         if (request()->ajax()) {
-            $pinkel = PinjamanKelompok::where('status', 'A')->with('kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
+            $pinkel = PinjamanKelompok::where('status', 'A')->with('kelompok', 'kelompok.d', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
 
             return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
@@ -156,6 +165,9 @@ class PinjamanKelompokController extends Controller
                 })
                 ->editColumn('alokasi', function ($row) {
                     return number_format($row->alokasi);
+                })
+                ->editColumn('kelompok.alamat_kelompok', function ($row) {
+                    return $row->kelompok->alamat_kelompok . ' ' . $row->kelompok->d->nama_desa;
                 })
                 ->rawColumns(['nama_kelompok'])
                 ->make(true);

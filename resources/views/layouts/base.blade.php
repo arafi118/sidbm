@@ -40,6 +40,10 @@
         .swal2-container {
             height: unset !important;
         }
+
+        .dataTables_filter .form-control {
+            border: 1px solid #d2d6da !important;
+        }
     </style>
 </head>
 
