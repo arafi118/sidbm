@@ -630,7 +630,7 @@ class PinjamanKelompokController extends Controller
                 'id_pinj' => $perguliran->id,
                 'id_pinj_i' => '0',
                 'keterangan_transaksi' => (string) $keterangan,
-                'relasi' => (string) $perguliran->kelompok->nama_kelompok,
+                'relasi' => (string) $perguliran->kelompok->nama_kelompok . " [" . $perguliran->id . "] " . $perguliran->kelompok->ketua,
                 'jumlah' => str_replace(',', '', str_replace('.00', '', $data[$alokasi])),
                 'urutan' => '0',
                 'id_user' => auth()->user()->id,
