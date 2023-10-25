@@ -229,7 +229,6 @@
                         class="p">
                         <tr>
                             <td>
-                                <div style="margin-top: 24px;"></div>
                                 {!! $ttd !!}
                             </td>
                         </tr>
