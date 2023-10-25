@@ -215,9 +215,9 @@
 
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr>
-                <td width="40" rowspan="{{ $pinkel->rencana_count + 16 }}">&nbsp;</td>
+                <td width="40" rowspan="{{ $pinkel->real_count + 16 }}">&nbsp;</td>
                 <td colspan="9" style="font-weight: bold;" height="30">REALISASI PEMBAYARAN ANGSURAN</td>
-                <td width="40" rowspan="{{ $pinkel->rencana_count + 16 }}">&nbsp;</td>
+                <td width="40" rowspan="{{ $pinkel->real_count + 16 }}">&nbsp;</td>
             </tr>
             <tr>
                 <th class="l t b" rowspan="2">No</th>
@@ -244,7 +244,7 @@
                     $jumlah++;
                 @endphp
                 <tr>
-                    <td class="l" align="center">{{ $loop->iteration }}..</td>
+                    <td class="l" align="center">{{ $loop->iteration }}</td>
                     <td class="l" align="center">{{ Tanggal::tglIndo($real->tgl_transaksi) }}</td>
                     <td class="l" align="right">{{ number_format($real->realisasi_pokok) }}</td>
                     <td class="l" align="right">

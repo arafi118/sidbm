@@ -1552,7 +1552,7 @@ class PinjamanKelompokController extends Controller
             'target' => function ($query) {
                 $query->where('angsuran_ke', '1');
             }
-        ])->withCount('pinjaman_anggota')->withCount('rencana')->first();
+        ])->withCount('pinjaman_anggota')->withCount('real')->first();
         $data['barcode'] = DNS1D::getBarcodePNG($data['pinkel']->kelompok->kd_kelompok, 'C128');
 
         $data['dir'] = User::where([
