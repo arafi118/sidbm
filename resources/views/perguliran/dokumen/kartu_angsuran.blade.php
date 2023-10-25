@@ -1,6 +1,11 @@
 @php
     use App\Utils\Tanggal;
     use App\Models\RencanaAngsuran;
+
+    $rowspan = $pinkel->real_count + 16;
+    if ($pinkel->real_count >= 16) {
+        $rowspan = $pinkel->real_count;
+    }
 @endphp
 
 <!DOCTYPE html>
@@ -215,9 +220,9 @@
 
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr>
-                <td width="40" rowspan="{{ $pinkel->real_count + 16 }}">&nbsp;</td>
+                <td width="40" rowspan="{{ $rowspan }}">&nbsp;</td>
                 <td colspan="9" style="font-weight: bold;" height="30">REALISASI PEMBAYARAN ANGSURAN</td>
-                <td width="40" rowspan="{{ $pinkel->real_count + 16 }}">&nbsp;</td>
+                <td width="40" rowspan="{{ $rowspan }}">&nbsp;</td>
             </tr>
             <tr>
                 <th class="l t b" rowspan="2">No</th>
