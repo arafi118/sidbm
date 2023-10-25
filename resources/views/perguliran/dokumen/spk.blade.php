@@ -180,35 +180,60 @@
     </div>
 
     <div style="text-align: center;">
-        <b style="font-size: 14px;">PASAL 3</b>
-
-        <ol style="text-align: justify;">
-            <li>
-                Pihak kedua dan pemberi kuasa sadar dan mengerti bahwa mengembalikan kredit secara lancar sesuai
-                jadwal yang disepakati, merupakan kewajiban hukum sekaligus menunjukkan budi pekerti luhur untuk
-                mengembangkan semangat tolong menolong dengan saudaranya sesama warga desa lain.
-                Pengembalian kredit secara lancar akan memperluas kesempatan untuk memeproleh kredit berikutnya
-                serta membuka peluang bagi orang lain mendapatkan giliran pelayanan.
-            </li>
-            <li>
-                Apabila terjadi saling selisih berkenaan dengan hak serta kewajiban yang timbul atas perjanjian
-                utang-piutang ini, akan diselesaikan secara musyawarah untuk mencapai kata sepakat. Apabila tidak
-                dapat dicapai kata sepakat, kedua belah pihak setuju untuk menunjuk Pengadilan Negeri {{ $nama_kab }}
-                sebagai upaya hukum menyelesaikan persengketaan tersebut.
-            </li>
-            <li>
-                Pihak kedua menyatakan secara sadar dan sukarela telah menanda tangani akad atau perjanjian kredit
-                ini, setelah terlebih dahulu membacakan isi perjanjian ini kepada para pemberi kuasa dengan
-                sejelas-jelasnya dan tidak seorangpun diantaranya menyatakan keberatan, serta untuk menjadikan
-                periksa bagi yang berwenang.
-            </li>
-        </ol>
-
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;" class="p">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;"class="p0">
             <tr>
-                <td>
-                    <div style="margin-top: 24px;"></div>
-                    {!! $ttd !!}
+                <td style="padding: 0px !important;">
+                    <table class="p0" border="0" width="100%" cellspacing="0" cellpadding="0"
+                        style="font-size: 12px;">
+                        <tr>
+                            <td style="padding: 0px !important;">
+                                <div style="text-align: center;">
+                                    <b style="font-size: 14px; text-align: center;">PASAL 3</b>
+                                </div>
+
+                                <ol style="text-align: justify;">
+                                    <li>
+                                        Pihak kedua dan pemberi kuasa sadar dan mengerti bahwa mengembalikan kredit secara
+                                        lancar sesuai
+                                        jadwal yang disepakati, merupakan kewajiban hukum sekaligus menunjukkan budi pekerti
+                                        luhur untuk
+                                        mengembangkan semangat tolong menolong dengan saudaranya sesama warga desa lain.
+                                        Pengembalian kredit secara lancar akan memperluas kesempatan untuk memeproleh kredit
+                                        berikutnya
+                                        serta membuka peluang bagi orang lain mendapatkan giliran pelayanan.
+                                    </li>
+                                    <li>
+                                        Apabila terjadi saling selisih berkenaan dengan hak serta kewajiban yang timbul atas
+                                        perjanjian
+                                        utang-piutang ini, akan diselesaikan secara musyawarah untuk mencapai kata sepakat.
+                                        Apabila tidak
+                                        dapat dicapai kata sepakat, kedua belah pihak setuju untuk menunjuk Pengadilan
+                                        Negeri {{ $nama_kab }}
+                                        sebagai upaya hukum menyelesaikan persengketaan tersebut.
+                                    </li>
+                                    <li>
+                                        Pihak kedua menyatakan secara sadar dan sukarela telah menanda tangani akad atau
+                                        perjanjian kredit
+                                        ini, setelah terlebih dahulu membacakan isi perjanjian ini kepada para pemberi kuasa
+                                        dengan
+                                        sejelas-jelasnya dan tidak seorangpun diantaranya menyatakan keberatan, serta untuk
+                                        menjadikan
+                                        periksa bagi yang berwenang.
+                                    </li>
+                                </ol>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;"
+                        class="p">
+                        <tr>
+                            <td>
+                                <div style="margin-top: 24px;"></div>
+                                {!! $ttd !!}
+                            </td>
+                        </tr>
+                    </table>
                 </td>
             </tr>
         </table>
