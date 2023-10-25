@@ -132,37 +132,6 @@
                     <b>{{ $pinkel->kelompok->ketua }}</b>
                 </td>
             </tr>
-            <tr>
-                <td colspan="9">&nbsp;</td>
-            </tr>
-            <tr>
-                <td align="center" colspan="9">Mengetahui,</td>
-            </tr>
-            <tr>
-                <td align="center" colspan="4">
-                    {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }}
-                </td>
-                <td>&nbsp;</td>
-                <td align="center" colspan="4">
-                    {{ $kec->nama_bp_long }}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="9" height="40">&nbsp;</td>
-            </tr>
-            <tr>
-                <td align="center" colspan="4">
-                    <b>{{ $pinkel->kelompok->d->kades }}</b>
-                </td>
-                <td>&nbsp;</td>
-                <td align="center" colspan="4">
-                    @if ($bp)
-                        <b>{{ $bp->namadepan }} {{ $bp->namabelakang }}</b>
-                    @else
-                        <b>.........................................</b>
-                    @endif
-                </td>
-            </tr>
         </table>
     </div>
 @endsection
