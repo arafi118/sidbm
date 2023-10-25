@@ -4,7 +4,7 @@
 
     $rowspan = $pinkel->real_count + 16;
     if ($pinkel->real_count >= 16) {
-        $rowspan = $pinkel->real_count;
+        $rowspan = $pinkel->real_count + 3;
     }
 @endphp
 
