@@ -56,29 +56,32 @@
     </table>
     <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="background: rgb(232, 232, 232)">
-            <th height="20" width="10">No</th>
-            <th width="60">Nik</th>
-            <th width="80">Nama Anggota</th>
-            <th width="10">JK</th>
-            <th>Alamat</th>
-            <th width="70">Penjamin</th>
-            <th width="60">Pengajuan</th>
-            <th width="30">Ttd</th>
+            <th width="3%" height="15">No</th>
+            <th width="15%">Nik</th>
+            <th width="22%">Nama Anggota</th>
+            <th width="3%">JK</th>
+            <th width="20%">Alamat</th>
+            <th width="12%">Penjamin</th>
+            <th width="12%">Pengajuan</th>
+            <th width="13%">Ttd</th>
         </tr>
 
         @php
             $alokasi = 0;
         @endphp
         @foreach ($pinkel->pinjaman_anggota as $pa)
+            @php
+                $no = $loop->iteration;
+            @endphp
             <tr>
-                <td height="15" align="center">{{ $loop->iteration }}</td>
+                <td height="15" align="center">{{ $no }}</td>
                 <td>{{ $pa->anggota->nik }}</td>
                 <td>{{ $pa->anggota->namadepan }}</td>
                 <td align="center">{{ $pa->anggota->jk }}</td>
                 <td>{{ $pa->anggota->alamat }}</td>
                 <td>{{ $pa->anggota->penjamin }}</td>
                 <td align="right">{{ number_format($pa->alokasi) }}</td>
-                <td>&nbsp;</td>
+                <td>{{ $no }}.</td>
             </tr>
             @php
                 $alokasi += $pa->alokasi;
