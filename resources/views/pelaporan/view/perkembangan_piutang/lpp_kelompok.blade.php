@@ -91,7 +91,7 @@
                 @php
                     $kd_desa[] = $pinkel->kd_desa;
                     $desa = $pinkel->kd_desa;
-                    
+
                 @endphp
                 @if (array_count_values($kd_desa)[$pinkel->kd_desa] <= '1')
                     @if ($section != $desa && count($kd_desa) > 1)
@@ -109,7 +109,7 @@
                             $t_saldo_jasa += $j_saldo_jasa;
                             $t_tunggakan_pokok += $j_tunggakan_pokok;
                             $t_tunggakan_jasa += $j_tunggakan_jasa;
-                            
+
                             $j_pross = 1;
                             if ($j_target_pokok != 0) {
                                 $j_pross = $j_real_bi_pokok / $j_target_pokok;
@@ -167,7 +167,7 @@
                     $sum_pokok = 0;
                     $sum_jasa = 0;
                     $saldo_pokok = $pinkel->alokasi;
-                    $saldo_jasa = $pinkel->alokasi / $pinkel->pros_jasa;
+                    $saldo_jasa = $pinkel->pros_jasa == 0 ? 0 : $pinkel->alokasi / $pinkel->pros_jasa;
                     if ($pinkel->saldo) {
                         $real_pokok = $pinkel->saldo->realisasi_pokok;
                         $real_jasa = $pinkel->saldo->realisasi_jasa;
@@ -176,14 +176,14 @@
                         $saldo_pokok = $pinkel->saldo->saldo_pokok;
                         $saldo_jasa = $pinkel->saldo->saldo_jasa;
                     }
-                    
+
                     $target_pokok = 0;
                     $target_jasa = 0;
                     if ($pinkel->target) {
                         $target_pokok = $pinkel->target->target_pokok;
                         $target_jasa = $pinkel->target->target_jasa;
                     }
-                    
+
                     $tunggakan_pokok = $target_pokok - $sum_pokok;
                     if ($tunggakan_pokok < 0) {
                         $tunggakan_pokok = 0;
@@ -192,12 +192,12 @@
                     if ($tunggakan_jasa < 0) {
                         $tunggakan_jasa = 0;
                     }
-                    
+
                     $pross = 1;
                     if ($target_pokok != 0) {
                         $pross = $sum_pokok / $target_pokok;
                     }
-                    
+
                     if ($pinkel->tgl_lunas <= $tgl_kondisi && $pinkel->status == 'L') {
                         $tunggakan_pokok = 0;
                         $tunggakan_jasa = 0;
@@ -278,7 +278,7 @@
                 $t_saldo_jasa += $j_saldo_jasa;
                 $t_tunggakan_pokok += $j_tunggakan_pokok;
                 $t_tunggakan_jasa += $j_tunggakan_jasa;
-                
+
                 $j_pross = 1;
                 if ($j_target_pokok != 0) {
                     $j_pross = $j_real_bi_pokok / $j_target_pokok;
