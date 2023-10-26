@@ -627,9 +627,8 @@ class TransaksiController extends Controller
 
             $inventaris = Inventaris::where([
                 ['jenis', $jenis],
-                ['kategori', $kategori],
-                ['tgl_beli', '!=', '']
-            ])->where(function ($query) {
+                ['kategori', $kategori]
+            ])->whereNotNull('tgl_beli')->where(function ($query) {
                 $query->where('status', 'Baik')->orwhere('status', 'Rusak');
             })->get();
             return view('transaksi.jurnal_umum.partials.form_hapus_inventaris')->with(compact('inventaris', 'tgl_transaksi'));
