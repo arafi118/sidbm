@@ -1,7 +1,7 @@
 @php
     use App\Utils\Tanggal;
     $total_saldo = 0;
-    
+
     if ($rek->jenis_mutasi == 'debet') {
         $saldo_awal_tahun = $saldo['debit'] - $saldo['kredit'];
         $saldo_awal_bulan = $d_bulan_lalu - $k_bulan_lalu;
@@ -11,7 +11,7 @@
         $saldo_awal_bulan = $k_bulan_lalu - $d_bulan_lalu;
         $total_saldo = $saldo_awal_tahun + $saldo_awal_bulan;
     }
-    
+
     $total_debit = 0;
     $total_kredit = 0;
 @endphp
@@ -69,18 +69,19 @@
                     $debit = 0;
                     $kredit = $trx->jumlah;
                 }
-                
+
                 if ($rek->jenis_mutasi == 'debet') {
                     $_saldo = $debit - $kredit;
                 } else {
                     $_saldo = $kredit - $debit;
                 }
-                
+
                 $total_saldo += $_saldo;
                 $total_debit += $debit;
                 $total_kredit += $kredit;
-                
+
                 $kuitansi = false;
+                $files = 'bm';
                 if ($keuangan->startWith($trx->rekening_debit, '1.1.01') && !$keuangan->startWith($trx->rekening_kredit, '1.1.01')) {
                     $files = 'bkm';
                     $kuitansi = true;
@@ -121,7 +122,7 @@
                     $files = 'bm';
                     $kuitansi = false;
                 }
-                
+
                 $ins = '';
                 if (isset($trx->user->ins)) {
                     $ins = $trx->user->ins;
