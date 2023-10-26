@@ -391,18 +391,31 @@ class PelaporanController extends Controller
             $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
             $data['tgl'] = Tanggal::tglLatin($tgl);
             $data['jenis'] = 'Harian';
+            $tgl_lalu = date('Y-m-d', strtotime('-1 days', strtotime($data['tgl_kondisi'])));
         } elseif (strlen($bln) > 0) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['jenis'] = 'Bulanan';
+
+            $bulan_lalu = $bln - 1;
+            if ($bulan_lalu <= 0) {
+                $bulan_lalu = 12;
+                $thn -= 1;
+            }
+
+            $tgl_lalu = $thn . '-' . $bulan_lalu . '-' . date('t', strtotime($thn . '-' . $bulan_lalu . '-01'));
         } else {
             $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tahun($tgl);
             $data['jenis'] = 'Tahunan';
+
+            $tgl_lalu = ($thn - 1) . '-00-00';
         }
 
         $data['keuangan'] = $keuangan;
-        $data['arus_kas'] = ArusKas::where('sub', '0')->with('child')->get();
+        $data['arus_kas'] = ArusKas::where('sub', '0')->with('child')->orderBy('id', 'ASC')->get();
+
+        $data['saldo_bulan_lalu'] = $keuangan->saldoKas($tgl_lalu);
 
         $view = view('pelaporan.view.arus_kas', $data)->render();
 

@@ -129,6 +129,17 @@ class Keuangan
         return $saldo;
     }
 
+    public function saldoKas($tgl_kondisi)
+    {
+        $saldo = 0;
+        $rekening = Rekening::where('kode_akun', 'like', '1.1.01%')->orwhere('kode_akun', 'like', '1.1.02%')->get();
+        foreach ($rekening as $rek) {
+            $saldo += $this->Saldo($tgl_kondisi, $rek->kode_akun);
+        }
+
+        return $saldo;
+    }
+
     public function saldoAwal($tgl_kondisi, $kode_akun)
     {
         $thn_kondisi = explode('-', $tgl_kondisi)[0];

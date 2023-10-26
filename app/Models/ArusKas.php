@@ -12,6 +12,6 @@ class ArusKas extends Model
 
     public function child()
     {
-        return $this->hasMany(ArusKas::class, 'sub', 'id');
+        return $this->hasMany(ArusKas::class, 'sub', 'id')->orderBy('id', 'ASC');
     }
 }

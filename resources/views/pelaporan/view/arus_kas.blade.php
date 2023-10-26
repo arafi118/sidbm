@@ -36,7 +36,7 @@
                 } else {
                     $bg = '100, 100, 100';
                 }
-                
+
                 $section = false;
             @endphp
             <tr>
@@ -45,7 +45,12 @@
             <tr style="background: rgb({{ $bg }})">
                 <td width="5%" align="center">{{ $keuangan->romawi($ak->super_sub) }}</td>
                 <td width="80%">{{ $ak->nama_akun }}</td>
-                <td width="15%"></td>
+                <td width="15%" align="right">
+                    @if ($ak->id == 1)
+                        {{ number_format($saldo_bulan_lalu, 2) }}
+                    @else
+                    @endif
+                </td>
             </tr>
 
             @foreach ($ak->child as $child)
@@ -56,14 +61,14 @@
                     } else {
                         $bg = '200, 200, 200';
                     }
-                    
+
                     $section = true;
                     $j_saldo += $arus_kas;
                 @endphp
                 <tr style="background: rgb({{ $bg }})">
                     <td align="center">&nbsp;</td>
                     <td>{{ $child->nama_akun }}</td>
-                    <td align="right">{{ number_format($arus_kas) }}</td>
+                    <td align="right">{{ number_format($arus_kas, 2) }}</td>
                 </tr>
             @endforeach
             @if ($ak->id == 1 or $ak->id == 16 or $ak->id == 46 or $ak->id == 61)
@@ -76,7 +81,7 @@
                                 <tr style="background: rgb(150, 150, 150); font-weight: bold;">
                                     <td width="5%" align="center">&nbsp;</td>
                                     <td width="80%">Jumlah {{ $ak->nama_akun }}</td>
-                                    <td width="15%" align="right">{{ number_format($j_saldo) }}</td>
+                                    <td width="15%" align="right">{{ number_format($j_saldo, 2) }}</td>
                                 </tr>
                             </table>
 
@@ -88,7 +93,7 @@
                     <tr style="background: rgb(150, 150, 150); font-weight: bold;">
                         <td align="center">&nbsp;</td>
                         <td>Jumlah {{ $ak->nama_akun }}</td>
-                        <td align="right">{{ number_format($j_saldo) }}</td>
+                        <td align="right">{{ number_format($j_saldo, 2) }}</td>
                     </tr>
                 @endif
                 @php
@@ -97,29 +102,49 @@
                 @endphp
             @endif
 
-            @if ($ak['id'] == 22)
+            @if ($ak->id == 22)
+                @php
+                    $total1 = $array_saldo[0] - ($array_saldo[1] + $array_saldo[2]);
+                @endphp
                 <tr style="background: rgb(100, 100, 100)">
                     <td align="center">&nbsp;</td>
                     <td>Kas Bersih yang diperoleh dari aktivitas Operasi (A-B-C)</td>
-                    <td align="right">{{ number_format($array_saldo[0] - ($array_saldo[1] + $array_saldo[2])) }}</td>
+                    <td align="right">{{ number_format($array_saldo[0] - ($array_saldo[1] + $array_saldo[2]), 2) }}</td>
                 </tr>
             @endif
 
-            @if ($ak['id'] == 52)
+            @if ($ak->id == 52)
+                @php
+                    $total2 = $array_saldo[3] - $array_saldo[4];
+                @endphp
                 <tr style="background: rgb(100, 100, 100)">
                     <td align="center">&nbsp;</td>
                     <td>Kas Bersih yang diperoleh dari aktivitas Investasi (A-B)</td>
-                    <td align="right">{{ number_format($array_saldo[3] - $array_saldo[4]) }}</td>
+                    <td align="right">{{ number_format($array_saldo[3] - $array_saldo[4], 2) }}</td>
                 </tr>
             @endif
 
-            @if ($ak['id'] == 66)
+            @if ($ak->id == 66)
+                @php
+                    $total3 = $array_saldo[5] - $array_saldo[6];
+                @endphp
                 <tr style="background: rgb(100, 100, 100)">
                     <td align="center">&nbsp;</td>
                     <td>Kas Bersih yang diperoleh dari aktivitas Pendanaan (A-B)</td>
-                    <td align="right">{{ number_format($array_saldo[5] - $array_saldo[6]) }}</td>
+                    <td align="right">{{ number_format($array_saldo[5] - $array_saldo[6], 2) }}</td>
                 </tr>
             @endif
         @endforeach
+
+        <tr style="background: rgb(100, 100, 100)">
+            <td align="center">&nbsp;</td>
+            <td>Kenaikan (Penurunan) Kas</td>
+            <td align="right">{{ number_format($total1 + $total2 + $total3, 2) }}</td>
+        </tr>
+        <tr style="background: rgb(100, 100, 100)">
+            <td align="center">&nbsp;</td>
+            <td>SALDO AKHIR KAS SETARA KAS</td>
+            <td align="right">{{ number_format($total1 + $total2 + $total3 + $saldo_bulan_lalu, 2) }}</td>
+        </tr>
     </table>
 @endsection
