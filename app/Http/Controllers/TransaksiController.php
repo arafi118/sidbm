@@ -636,6 +636,7 @@ class TransaksiController extends Controller
             if (Keuangan::startWith($disimpan_ke, '1.2.01') || Keuangan::startWith($disimpan_ke, '1.2.03')) {
                 $kuitansi = false;
                 $relasi = false;
+                $files = 'bm';
                 if (Keuangan::startWith($disimpan_ke, '1.1.01') && !Keuangan::startWith($sumber_dana, '1.1.01')) {
                     $file = "c_bkm";
                     $files = "BKM";
@@ -697,6 +698,7 @@ class TransaksiController extends Controller
 
                 $kuitansi = false;
                 $relasi = false;
+                $files = 'bm';
                 if (Keuangan::startWith($disimpan_ke, '1.1.01') && !Keuangan::startWith($sumber_dana, '1.1.01')) {
                     $file = "c_bkm";
                     $files = "BKM";

@@ -2,6 +2,7 @@
     use App\Utils\Tanggal;
 
     $kuitansi = false;
+    $files = 'bm';
     if ($keuangan->startWith($trx->rekening_debit, '1.1.01') && !$keuangan->startWith($trx->rekening_kredit, '1.1.01')) {
         $files = 'bkm';
         $kuitansi = true;
