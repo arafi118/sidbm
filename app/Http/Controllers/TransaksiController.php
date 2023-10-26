@@ -627,7 +627,8 @@ class TransaksiController extends Controller
 
             $inventaris = Inventaris::where([
                 ['jenis', $jenis],
-                ['kategori', $kategori]
+                ['kategori', $kategori],
+                ['tgl_beli', '!=', '']
             ])->where(function ($query) {
                 $query->where('status', 'Baik')->orwhere('status', 'Rusak');
             })->get();

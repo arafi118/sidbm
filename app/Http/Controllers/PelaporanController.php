@@ -1181,7 +1181,8 @@ class PelaporanController extends Controller
                         ['jenis', '1'],
                         ['status', '!=', '0'],
                         ['lokasi', auth()->user()->lokasi],
-                        ['tgl_beli', '<=', $data['tgl_kondisi']]
+                        ['tgl_beli', '<=', $data['tgl_kondisi']],
+                        ['tgl_beli', '!=', '']
                     ]);
                 }
             ])
