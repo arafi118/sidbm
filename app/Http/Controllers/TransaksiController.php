@@ -1342,7 +1342,7 @@ class TransaksiController extends Controller
             ['idtp', '!=', '0']
         ])->with([
             'tr_idtp'
-        ])->groupBy('idtp', 'tgl_transaksi')->orderBy('idtp', 'ASC')->orderBy('tgl_transaksi', 'ASC')->get();
+        ])->groupBy('idtp', 'tgl_transaksi')->orderBy('tgl_transaksi', 'ASC')->orderBy('idtp', 'ASC')->get();
 
         $alokasi_pokok = intval($pinkel->alokasi);
         $alokasi_jasa = intval($pinkel->alokasi * ($pinkel->pros_jasa / 100));
