@@ -168,13 +168,13 @@
                     $sum_jasa = 0;
                     $saldo_pokok = $pinkel->alokasi;
                     $saldo_jasa = $pinkel->pros_jasa == 0 ? 0 : $pinkel->alokasi / $pinkel->pros_jasa;
-                    if ($pinkel->saldo2) {
-                        $real_pokok = $pinkel->saldo2->realisasi_pokok;
-                        $real_jasa = $pinkel->saldo2->realisasi_jasa;
-                        $sum_pokok = $pinkel->saldo2->sum_pokok;
-                        $sum_jasa = $pinkel->saldo2->sum_jasa;
-                        $saldo_pokok = $pinkel->saldo2->saldo_pokok;
-                        $saldo_jasa = $pinkel->saldo2->saldo_jasa;
+                    if ($pinkel->saldo) {
+                        $real_pokok = $pinkel->saldo->realisasi_pokok;
+                        $real_jasa = $pinkel->saldo->realisasi_jasa;
+                        $sum_pokok = $pinkel->saldo->sum_pokok;
+                        $sum_jasa = $pinkel->saldo->sum_jasa;
+                        $saldo_pokok = $pinkel->saldo->saldo_pokok;
+                        $saldo_jasa = $pinkel->saldo->saldo_jasa;
                     }
 
                     $target_pokok = 0;

@@ -799,7 +799,7 @@ class PelaporanController extends Controller
                     ->orderBy($tb_kel . '.desa', 'ASC')
                     ->orderBy($tb_pinkel . '.id', 'ASC');
             },
-            'pinjaman_kelompok.saldo2' => function ($query) use ($data) {
+            'pinjaman_kelompok.saldo' => function ($query) use ($data) {
                 $query->where('tgl_transaksi', '<=', $data['tgl_kondisi']);
             },
             'pinjaman_kelompok.target' => function ($query) use ($data) {
