@@ -55,7 +55,7 @@
                             if ($rek->kode_akun == '3.2.02.01') {
                                 $saldo = $keuangan->surplus($tgl_kondisi);
                             }
-                            
+
                             $sum_saldo += $saldo;
                         @endphp
                     @endforeach
@@ -64,19 +64,23 @@
                         if ($loop->iteration % 2 == 0) {
                             $bg = 'rgba(255, 255, 255)';
                         }
-                        
+
                         if ($lev1->lev1 == '1') {
                             $debit += $sum_saldo;
                         } else {
                             $kredit += $sum_saldo;
                         }
-                        
+
                         $sum_akun1 += $sum_saldo;
                     @endphp
                     <tr style="background: {{ $bg }};">
                         <td>{{ $lev3->kode_akun }}.</td>
                         <td>{{ $lev3->nama_akun }}</td>
-                        <td align="right">{{ number_format($sum_saldo, 2) }}</td>
+                        @if ($sum_saldo < 0)
+                            <td align="right">(-) {{ number_format($sum_saldo * -1, 2) }}</td>
+                        @else
+                            <td align="right">{{ number_format($sum_saldo, 2) }}</td>
+                        @endif
                     </tr>
                 @endforeach
             @endforeach
