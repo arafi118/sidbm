@@ -9,21 +9,25 @@ class Tanggal
 {
     public static function tglIndo($tanggal, $format = 'DD/MM/YYYY')
     {
-        $array_tgl = explode('-', $tanggal);
-        $tahun = $array_tgl[0];
-        $bulan = $array_tgl[1];
-        $hari = $array_tgl[2];
+        if ($tanggal != '') {
+            $array_tgl = explode('-', $tanggal);
+            $tahun = $array_tgl[0];
+            $bulan = $array_tgl[1];
+            $hari = $array_tgl[2];
 
-        if (strlen($hari) > 0 && strlen($bulan) > 0) {
-            $tanggal = $tahun . '-' . $bulan . '-' . $hari;
-        } elseif (strlen($bulan) > 0) {
-            $tanggal = $tahun . '-' . $bulan . '-01';
-        } else {
-            $tanggal = $tahun . '-12-31';
+            if (strlen($hari) > 0 && strlen($bulan) > 0) {
+                $tanggal = $tahun . '-' . $bulan . '-' . $hari;
+            } elseif (strlen($bulan) > 0) {
+                $tanggal = $tahun . '-' . $bulan . '-01';
+            } else {
+                $tanggal = $tahun . '-12-31';
+            }
+            $tgl = new Carbon($tanggal);
+
+            return $tgl->isoFormat($format);
         }
-        $tgl = new Carbon($tanggal);
 
-        return $tgl->isoFormat($format);
+        return date('d/m/Y');
     }
 
     public static function tglNasional($tanggal)
