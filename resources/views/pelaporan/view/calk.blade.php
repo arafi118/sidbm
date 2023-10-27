@@ -229,14 +229,22 @@
                                 <tr style="background: {{ $bg }};">
                                     <td>{{ $lev3->kode_akun }}.</td>
                                     <td>{{ $lev3->nama_akun }}</td>
-                                    <td align="right">{{ number_format($sum_saldo, 2) }}</td>
+                                    @if ($sum_saldo < 0)
+                                        <td align="right">(-) {{ number_format($sum_saldo * -1, 2) }}</td>
+                                    @else
+                                        <td align="right">{{ number_format($sum_saldo, 2) }}</td>
+                                    @endif
                                 </tr>
 
                                 @foreach ($akun_lev4 as $lev4)
                                     <tr style="background: {{ $bg }};">
                                         <td>{{ $lev4['kode_akun'] }}.</td>
                                         <td>{{ $lev4['nama_akun'] }}</td>
-                                        <td align="right">{{ number_format($lev4['saldo'], 2) }}</td>
+                                        @if ($lev4['saldo'] < 0)
+                                            <td align="right">(-) {{ number_format($lev4['saldo'] * -1, 2) }}</td>
+                                        @else
+                                            <td align="right">{{ number_format($lev4['saldo'], 2) }}</td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             @endforeach
