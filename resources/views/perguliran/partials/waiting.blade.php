@@ -332,7 +332,13 @@
         maximumFractionDigits: 2,
     })
 
-    new Choices($('#sumber_pembayaran')[0])
+    new Choices($('#sumber_pembayaran')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
 
     $(".money").maskMoney();
 

@@ -2,12 +2,12 @@
     use App\Utils\Tanggal;
     $waktu = date('H:i');
     $tempat = '';
-    
+
     $sum_pokok = 0;
     if ($real) {
         $sum_pokok = $real->sum_pokok;
     }
-    
+
     $saldo_pokok = $perguliran->alokasi - $sum_pokok;
     if ($saldo_pokok < 0) {
         $saldo_pokok = 0;
@@ -219,12 +219,12 @@
         if ($perguliran->status == 'W') {
             $readonly = '';
         }
-        
+
         $wt_cair = explode('_', $perguliran->wt_cair);
         if (count($wt_cair) == 1) {
             $waktu = $wt_cair[0];
         }
-        
+
         if (count($wt_cair) == 2) {
             $waktu = $wt_cair[0];
             $tempat = $wt_cair[1];
@@ -588,8 +588,20 @@
 
 @section('script')
     <script>
-        new Choices($('#sistem_angsuran_pokok')[0])
-        new Choices($('#sistem_angsuran_jasa')[0])
+        new Choices($('#sistem_angsuran_pokok')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        new Choices($('#sistem_angsuran_jasa')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
 
         $(".date").flatpickr({
             dateFormat: "d/m/Y"

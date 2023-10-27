@@ -135,6 +135,18 @@
 </div>
 
 <script>
-    new Choices($('#sebutan')[0])
-    new Choices($('#jadwal_angsuran_desa')[0])
+    new Choices($('#sebutan')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
+    new Choices($('#jadwal_angsuran_desa')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
 </script>

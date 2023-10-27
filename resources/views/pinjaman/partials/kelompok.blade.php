@@ -34,5 +34,11 @@
 </div>
 
 <script>
-    new Choices($('#kelompok')[0])
+    new Choices($('#kelompok')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
 </script>

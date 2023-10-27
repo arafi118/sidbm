@@ -227,7 +227,13 @@
 
 @section('script')
     <script>
-        new Choices($('#pendidikan')[0])
+        new Choices($('#pendidikan')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
 
         $(".date").flatpickr({
             dateFormat: "d/m/Y"

@@ -103,8 +103,20 @@
 
 @section('script')
     <script>
-        new Choices($('#pembulatan')[0])
-        new Choices($('#jenis_asuransi')[0])
+        new Choices($('#pembulatan')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        new Choices($('#jenis_asuransi')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
 
         var quill = new Quill('#editor', {
             theme: 'snow'

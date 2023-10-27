@@ -24,8 +24,8 @@
         <div class="col-md-3">
             <div class="input-group input-group-static my-3">
                 <label for="jangka_proposal">Jangka</label>
-                <input autocomplete="off" type="number" name="jangka_proposal" id="jangka_proposal" class="form-control"
-                    value="{{ $perguliran->jangka }}">
+                <input autocomplete="off" type="number" name="jangka_proposal" id="jangka_proposal"
+                    class="form-control" value="{{ $perguliran->jangka }}">
                 <small class="text-danger" id="msg_jangka_proposal"></small>
             </div>
         </div>
@@ -45,9 +45,9 @@
                 <label class="form-label" for="jenis_jasa_proposal">Jenis Jasa</label>
                 <select class="form-control" name="jenis_jasa_proposal" id="jenis_jasa_proposal">
                     @foreach ($jenis_jasa as $jj)
-                    <option {{ ($jj->id == $perguliran->jenis_jasa) ? 'selected':'' }} value="{{ $jj->id }}">
-                        {{ $jj->nama_jj }}
-                    </option>
+                        <option {{ $jj->id == $perguliran->jenis_jasa ? 'selected' : '' }} value="{{ $jj->id }}">
+                            {{ $jj->nama_jj }}
+                        </option>
                     @endforeach
                 </select>
                 <small class="text-danger" id="msg_jenis_jasa_proposal"></small>
@@ -58,9 +58,9 @@
                 <label class="form-label" for="jenis_produk_pinjaman">Jenis Produk Pinjaman</label>
                 <select class="form-control" name="jenis_produk_pinjaman" id="jenis_produk_pinjaman">
                     @foreach ($jenis_pp as $jpp)
-                    <option {{ ($jenis_pp_dipilih == $jpp->id) ? 'selected':''; }} value="{{ $jpp->id }}">
-                        {{ $jpp->nama_jpp }} ({{ $jpp->deskripsi_jpp }})
-                    </option>
+                        <option {{ $jenis_pp_dipilih == $jpp->id ? 'selected' : '' }} value="{{ $jpp->id }}">
+                            {{ $jpp->nama_jpp }} ({{ $jpp->deskripsi_jpp }})
+                        </option>
                     @endforeach
                 </select>
                 <small class="text-danger" id="msg_jenis_produk_pinjaman"></small>
@@ -74,9 +74,10 @@
                 <label class="form-label" for="sistem_angsuran_pokok_proposal">Sistem Angs. Pokok</label>
                 <select class="form-control" name="sistem_angsuran_pokok_proposal" id="sistem_angsuran_pokok_proposal">
                     @foreach ($sistem_angsuran as $sa)
-                    <option {{ ($sa->id == $perguliran->sistem_angsuran) ? 'selected':'' }} value="{{ $sa->id }}">
-                        {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
-                    </option>
+                        <option {{ $sa->id == $perguliran->sistem_angsuran ? 'selected' : '' }}
+                            value="{{ $sa->id }}">
+                            {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
+                        </option>
                     @endforeach
                 </select>
                 <small class="text-danger" id="msg_sistem_angsuran_pokok_proposal"></small>
@@ -87,9 +88,9 @@
                 <label class="form-label" for="sistem_angsuran_jasa_proposal">Sistem Angs. Jasa</label>
                 <select class="form-control" name="sistem_angsuran_jasa_proposal" id="sistem_angsuran_jasa_proposal">
                     @foreach ($sistem_angsuran as $sa)
-                    <option {{ ($sa->id == $perguliran->sa_jasa) ? 'selected':'' }} value="{{ $sa->id }}">
-                        {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
-                    </option>
+                        <option {{ $sa->id == $perguliran->sa_jasa ? 'selected' : '' }} value="{{ $sa->id }}">
+                            {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
+                        </option>
                     @endforeach
                 </select>
                 <small class="text-danger" id="msg_sistem_angsuran_jasa_proposal"></small>
@@ -109,15 +110,38 @@
 </form>
 
 <script>
-    new Choices($('#jenis_jasa_proposal')[0])
-    new Choices($('#sistem_angsuran_pokok_proposal')[0])
-    new Choices($('#sistem_angsuran_jasa_proposal')[0])
-    new Choices($('#jenis_produk_pinjaman')[0])
+    new Choices($('#jenis_jasa_proposal')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
+    new Choices($('#sistem_angsuran_pokok_proposal')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
+    new Choices($('#sistem_angsuran_jasa_proposal')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
+    new Choices($('#jenis_produk_pinjaman')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
 
     $(".money").maskMoney();
 
     $(".date").flatpickr({
         dateFormat: "d/m/Y"
     })
-
 </script>

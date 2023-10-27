@@ -132,9 +132,27 @@
 </form>
 
 <script>
-    new Choices($('#desa')[0])
-    new Choices($('#jenis_kelamin')[0])
-    new Choices($('#hubungan')[0])
+    new Choices($('#desa')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
+    new Choices($('#jenis_kelamin')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
+    new Choices($('#hubungan')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
 
     $(".date").flatpickr({
         dateFormat: "d/m/Y"

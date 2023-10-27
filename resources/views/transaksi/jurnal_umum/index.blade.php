@@ -204,12 +204,48 @@
             maximumFractionDigits: 2,
         })
 
-        var jenis_transaksi = new Choices($('#jenis_transaksi')[0])
-        var sumber = new Choices($('#sumber_dana')[0])
-        var simpan = new Choices($('#disimpan_ke')[0])
-        new Choices($('#tahun')[0])
-        new Choices($('#bulan')[0])
-        new Choices($('#tanggal')[0])
+        var jenis_transaksi = new Choices($('#jenis_transaksi')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        var sumber = new Choices($('#sumber_dana')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        var simpan = new Choices($('#disimpan_ke')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        new Choices($('#tahun')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        new Choices($('#bulan')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        new Choices($('#tanggal')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
 
         $(".date").flatpickr({
             dateFormat: "d/m/Y"

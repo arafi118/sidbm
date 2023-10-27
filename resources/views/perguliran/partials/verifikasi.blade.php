@@ -299,9 +299,27 @@
         maximumFractionDigits: 2,
     })
 
-    new Choices($('#jenis_jasa')[0])
-    new Choices($('#sistem_angsuran_pokok')[0])
-    new Choices($('#sistem_angsuran_jasa')[0])
+    new Choices($('#jenis_jasa')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
+    new Choices($('#sistem_angsuran_pokok')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
+    new Choices($('#sistem_angsuran_jasa')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
 
     $(".money").maskMoney();
 

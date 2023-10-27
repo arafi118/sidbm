@@ -7,8 +7,8 @@
         <div class="col-md-4">
             <div class="input-group input-group-static my-3">
                 <label for="nik">NIK</label>
-                <input autocomplete="off" maxlength="16" type="text" name="nik" id="nik" class="form-control"
-                    value="{{ $data_anggota->nik }}">
+                <input autocomplete="off" maxlength="16" type="text" name="nik" id="nik"
+                    class="form-control" value="{{ $data_anggota->nik }}">
                 <small class="text-danger" id="msg_nik"></small>
             </div>
         </div>
@@ -25,9 +25,9 @@
                 <label class="form-label" for="desa">Desa/Kelurahan</label>
                 <select class="form-control" name="desa" id="desa">
                     @foreach ($desa as $ds)
-                    <option {{ ($desa_dipilih == $ds->kd_desa) ? 'selected':''; }} value="{{ $ds->kd_desa }}">
-                        {{ $ds->sebutan_desa->sebutan_desa }} {{ $ds->nama_desa }}
-                    </option>
+                        <option {{ $desa_dipilih == $ds->kd_desa ? 'selected' : '' }} value="{{ $ds->kd_desa }}">
+                            {{ $ds->sebutan_desa->sebutan_desa }} {{ $ds->nama_desa }}
+                        </option>
                     @endforeach
                 </select>
                 <small class="text-danger" id="msg_desa"></small>
@@ -40,16 +40,16 @@
                 <div class="col-7">
                     <div class="input-group input-group-static my-3">
                         <label for="tempat_lahir">Tempat Lahir</label>
-                        <input autocomplete="off" type="text" name="tempat_lahir" id="tempat_lahir" class="form-control"
-                            value="{{ $data_anggota->tempat_lahir }}">
+                        <input autocomplete="off" type="text" name="tempat_lahir" id="tempat_lahir"
+                            class="form-control" value="{{ $data_anggota->tempat_lahir }}">
                         <small class="text-danger" id="msg_tempat_lahir"></small>
                     </div>
                 </div>
                 <div class="col-5">
                     <div class="input-group input-group-static my-3">
                         <label for="tgl_lahir">Tgl Lahir</label>
-                        <input autocomplete="off" type="text" name="tgl_lahir" id="tgl_lahir" class="form-control date"
-                            value="{{ $data_anggota->tgl_lahir }}">
+                        <input autocomplete="off" type="text" name="tgl_lahir" id="tgl_lahir"
+                            class="form-control date" value="{{ $data_anggota->tgl_lahir }}">
                         <small class="text-danger" id="msg_tgl_lahir"></small>
                     </div>
                 </div>
@@ -59,8 +59,8 @@
             <div class="my-2">
                 <label class="form-label" for="jenis_kelamin">Jenis Kelamin</label>
                 <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
-                    <option {{ ($jk_dipilih == 'L') ? 'selected':'' }} value="L">Laki Laki</option>
-                    <option {{ ($jk_dipilih == 'P') ? 'selected':'' }} value="P">Perempuan</option>
+                    <option {{ $jk_dipilih == 'L' ? 'selected' : '' }} value="L">Laki Laki</option>
+                    <option {{ $jk_dipilih == 'P' ? 'selected' : '' }} value="P">Perempuan</option>
                 </select>
                 <small class="text-danger" id="msg_desa"></small>
             </div>
@@ -124,9 +124,9 @@
                 <label class="form-label" for="hubungan">Hubungan</label>
                 <select class="form-control" name="hubungan" id="hubungan">
                     @foreach ($hubungan as $hb)
-                    <option {{ ($hubungan_dipilih == $hb->id) ? 'selected':''; }} value="{{ $hb->id }}">
-                        {{ $hb->kekeluargaan }}
-                    </option>
+                        <option {{ $hubungan_dipilih == $hb->id ? 'selected' : '' }} value="{{ $hb->id }}">
+                            {{ $hb->kekeluargaan }}
+                        </option>
                     @endforeach
                 </select>
                 <small class="text-danger" id="msg_desa"></small>
@@ -138,12 +138,29 @@
 </form>
 
 <script>
-    new Choices($('#desa')[0])
-    new Choices($('#jenis_kelamin')[0])
-    new Choices($('#hubungan')[0])
+    new Choices($('#desa')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
+    new Choices($('#jenis_kelamin')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
+    new Choices($('#hubungan')[0], {
+        shouldSort: false,
+        fuseOptions: {
+            threshold: 0.1,
+            distance: 1000
+        }
+    })
 
     $(".date").flatpickr({
         dateFormat: "d/m/Y"
     })
-
 </script>

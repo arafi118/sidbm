@@ -110,11 +110,41 @@
 
 @section('script')
     <script>
-        new Choices($('#tahun')[0])
-        new Choices($('#bulan')[0])
-        new Choices($('#hari')[0])
-        new Choices($('#laporan')[0])
-        new Choices($('#sub_laporan')[0])
+        new Choices($('#tahun')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        new Choices($('#bulan')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        new Choices($('#hari')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        new Choices($('#laporan')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        new Choices($('#sub_laporan')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
 
         $(document).on('change', '#laporan', function(e) {
             e.preventDefault()

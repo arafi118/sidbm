@@ -317,12 +317,48 @@
 
 @section('script')
     <script>
-        new Choices($('#desa')[0])
-        new Choices($('#jenis_produk_pinjaman')[0])
-        new Choices($('#jenis_usaha')[0])
-        new Choices($('#jenis_kegiatan')[0])
-        new Choices($('#tingkat_kelompok')[0])
-        new Choices($('#fungsi_kelompok')[0])
+        new Choices($('#desa')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        new Choices($('#jenis_produk_pinjaman')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        new Choices($('#jenis_usaha')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        new Choices($('#jenis_kegiatan')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        new Choices($('#tingkat_kelompok')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+        new Choices($('#fungsi_kelompok')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
 
         $(".date").flatpickr({
             dateFormat: "d/m/Y"
