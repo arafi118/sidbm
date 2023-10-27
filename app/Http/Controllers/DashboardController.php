@@ -399,7 +399,8 @@ class DashboardController extends Controller
         $pinjaman = PinjamanKelompok::where('status', 'A')->whereDay('tgl_cair', '<=', $tgl)->with([
             'target' => function ($query) use ($tgl) {
                 $query->where([
-                    ['jatuh_tempo', '<=', $tgl]
+                    ['jatuh_tempo', '<=', $tgl],
+                    ['angsuran_ke', '!=', '0']
                 ]);
             },
             'saldo' => function ($query) use ($tgl) {
@@ -417,7 +418,7 @@ class DashboardController extends Controller
             $sum_pokok = 0;
             $sum_jasa = 0;
             $saldo_pokok = $pinkel->alokasi;
-            $saldo_jasa = $pinkel->alokasi / $pinkel->pros_jasa;
+            $saldo_jasa = $pinkel->pros_jasa == 0 ? 0 : $pinkel->alokasi / $pinkel->pros_jasa;
             if ($pinkel->saldo) {
                 $real_pokok = $pinkel->saldo->realisasi_pokok;
                 $real_jasa = $pinkel->saldo->realisasi_jasa;
