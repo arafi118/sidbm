@@ -234,7 +234,7 @@ class PinjamanKelompokController extends Controller
     public function register($id_kel)
     {
         $kelompok = Kelompok::where('id', $id_kel)->first();
-        $kec = Kecamatan::where('id', auth()->user()->id)->first();
+        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
         $jenis_jasa = JenisJasa::all();
         $sistem_angsuran = SistemAngsuran::all();
         $jenis_pp = JenisProdukPinjaman::where('lokasi', '0')->get();

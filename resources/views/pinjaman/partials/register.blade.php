@@ -35,14 +35,16 @@
                 <div class="col-md-3">
                     <div class="input-group input-group-static my-3">
                         <label for="jangka">Jangka</label>
-                        <input autocomplete="off" type="number" name="jangka" id="jangka" class="form-control">
+                        <input autocomplete="off" type="number" name="jangka" id="jangka" class="form-control"
+                            value="{{ $kec->def_jangka }}">
                         <small class="text-danger" id="msg_jangka"></small>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group input-group-static my-3">
                         <label for="pros_jasa">Prosentase Jasa (%)</label>
-                        <input autocomplete="off" type="number" name="pros_jasa" id="pros_jasa" class="form-control">
+                        <input autocomplete="off" type="number" name="pros_jasa" id="pros_jasa" class="form-control"
+                            value="{{ $kec->def_jasa }}">
                         <small class="text-danger" id="msg_pros_jasa"></small>
                     </div>
                 </div>
