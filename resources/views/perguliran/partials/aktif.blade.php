@@ -138,6 +138,13 @@
             </div>
         </div>
 
+        <div class="d-grid">
+            <button type="button" id="BtnTambahPemanfaat" data-bs-toggle="modal" data-bs-target="#TambahPemanfaat"
+                class="btn btn-success btn-sm mb-1">
+                Tambah Pemanfaat
+            </button>
+        </div>
+
         <hr class="horizontal dark">
 
         <div class="table-responsive">
