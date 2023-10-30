@@ -22,12 +22,12 @@ class AnggotaController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $penduduk = Anggota::with([
+            $penduduk = Anggota::query()->with([
                 'pinjaman' => function ($query) {
                     $query->orderBy('id', 'DESC');
                 },
                 'pinjaman.sts'
-            ])->withCount('pinjaman')->orderBy('id', 'DESC')->get();
+            ])->withCount('pinjaman')->orderBy('id', 'DESC');
 
             return DataTables::of($penduduk)
                 ->addColumn('status', function ($row) {
