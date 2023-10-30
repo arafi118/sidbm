@@ -92,7 +92,7 @@
                         <td>4.</td>
                         <td>Tempat</td>
                         <td>:</td>
-                        <td>Rp {{ $tempat }}</td>
+                        <td>{{ $tempat }}</td>
                     </tr>
                     <tr>
                         <td>5.</td>
