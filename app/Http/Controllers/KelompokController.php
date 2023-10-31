@@ -31,13 +31,13 @@ class KelompokController extends Controller
                     $query->orderBy('tgl_proposal', 'DESC');
                 },
                 'pinjaman.sts'
-            ])->withCount('pinjaman')->get();
+            ]);
             return DataTables::of($kelompok)
                 ->addColumn('status', function ($row) {
                     $pinjaman = $row->pinjaman;
 
                     $status = '<span class="badge badge-secondary">n</span>';
-                    if ($row->pinjaman_count > 0) {
+                    if ($row->pinjaman) {
                         $status_pinjaman = $pinjaman->status;
 
                         $badge = $pinjaman->sts->warna_status;

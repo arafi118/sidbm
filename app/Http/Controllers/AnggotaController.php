@@ -27,14 +27,14 @@ class AnggotaController extends Controller
                     $query->orderBy('id', 'DESC');
                 },
                 'pinjaman.sts'
-            ])->withCount('pinjaman')->orderBy('id', 'DESC');
+            ])->orderBy('id', 'DESC');
 
             return DataTables::of($penduduk)
                 ->addColumn('status', function ($row) {
                     $pinjaman = $row->pinjaman;
 
                     $status = '<span class="badge badge-secondary">n</span>';
-                    if ($row->pinjaman_count > 0) {
+                    if ($row->pinjaman) {
                         $status_pinjaman = $pinjaman->status;
 
                         $badge = $pinjaman->sts->warna_status;

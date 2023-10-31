@@ -19,7 +19,7 @@ class DesaController extends Controller
     {
         if (request()->ajax()) {
             $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
-            $data = Desa::where('kd_kec', $kec->kd_kec)->get();
+            $data = Desa::where('kd_kec', $kec->kd_kec);
             return DataTables::of($data)
                 ->make(true);
         }

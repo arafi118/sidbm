@@ -41,7 +41,8 @@ class PinjamanKelompokController extends Controller
     public function proposal()
     {
         if (request()->ajax()) {
-            $pinkel = PinjamanKelompok::where('status', 'P')->with('kelompok', 'kelompok.d', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
+            $pinkel = PinjamanKelompok::where('status', 'P')
+                ->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota');
 
             return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
@@ -67,6 +68,9 @@ class PinjamanKelompokController extends Controller
                 ->editColumn('kelompok.alamat_kelompok', function ($row) {
                     return $row->kelompok->alamat_kelompok . ' ' . $row->kelompok->d->nama_desa;
                 })
+                ->addColumn('pinjaman_anggota_count', function ($row) {
+                    return count($row->pinjaman_anggota);
+                })
                 ->rawColumns(['nama_kelompok'])
                 ->make(true);
         }
@@ -75,7 +79,8 @@ class PinjamanKelompokController extends Controller
     public function verified()
     {
         if (request()->ajax()) {
-            $pinkel = PinjamanKelompok::where('status', 'V')->with('kelompok', 'kelompok.d', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
+            $pinkel = PinjamanKelompok::where('status', 'V')
+                ->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota');
 
             return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
@@ -101,6 +106,9 @@ class PinjamanKelompokController extends Controller
                 ->editColumn('kelompok.alamat_kelompok', function ($row) {
                     return $row->kelompok->alamat_kelompok . ' ' . $row->kelompok->d->nama_desa;
                 })
+                ->addColumn('pinjaman_anggota_count', function ($row) {
+                    return count($row->pinjaman_anggota);
+                })
                 ->rawColumns(['nama_kelompok'])
                 ->make(true);
         }
@@ -109,7 +117,8 @@ class PinjamanKelompokController extends Controller
     public function waiting()
     {
         if (request()->ajax()) {
-            $pinkel = PinjamanKelompok::where('status', 'W')->with('kelompok', 'kelompok.d', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
+            $pinkel = PinjamanKelompok::where('status', 'W')
+                ->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota');
 
             return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
@@ -135,6 +144,9 @@ class PinjamanKelompokController extends Controller
                 ->editColumn('kelompok.alamat_kelompok', function ($row) {
                     return $row->kelompok->alamat_kelompok . ' ' . $row->kelompok->d->nama_desa;
                 })
+                ->addColumn('pinjaman_anggota_count', function ($row) {
+                    return count($row->pinjaman_anggota);
+                })
                 ->rawColumns(['nama_kelompok'])
                 ->make(true);
         }
@@ -143,7 +155,8 @@ class PinjamanKelompokController extends Controller
     public function aktif()
     {
         if (request()->ajax()) {
-            $pinkel = PinjamanKelompok::where('status', 'A')->with('kelompok', 'kelompok.d', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
+            $pinkel = PinjamanKelompok::where('status', 'A')
+                ->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota');
 
             return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
@@ -168,6 +181,9 @@ class PinjamanKelompokController extends Controller
                 })
                 ->editColumn('kelompok.alamat_kelompok', function ($row) {
                     return $row->kelompok->alamat_kelompok . ' ' . $row->kelompok->d->nama_desa;
+                })
+                ->addColumn('pinjaman_anggota_count', function ($row) {
+                    return count($row->pinjaman_anggota);
                 })
                 ->rawColumns(['nama_kelompok'])
                 ->make(true);
