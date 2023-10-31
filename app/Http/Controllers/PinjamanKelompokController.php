@@ -340,7 +340,10 @@ class PinjamanKelompokController extends Controller
             'pinjaman_anggota',
             'pinjaman_anggota.anggota',
             'pinjaman_anggota.anggota.pemanfaat' => function ($query) {
-                $query->where('status', 'A');
+                $query->where([
+                    ['status', 'A'],
+                    ['lokasi', '!=', auth()->user()->lokasi]
+                ]);
             },
             'pinjaman_anggota.anggota.pemanfaat.kec',
             'pinjaman_anggota.pinjaman' => function ($query) {
