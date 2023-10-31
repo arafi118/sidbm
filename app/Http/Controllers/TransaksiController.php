@@ -312,7 +312,6 @@ class TransaksiController extends Controller
 
     public function angsuran(Request $request)
     {
-        $last_idtp = Transaksi::where('idtp', '!=', '0')->max('idtp');
         $data = $request->only([
             'id',
             'tgl_transaksi',
@@ -404,6 +403,7 @@ class TransaksiController extends Controller
             ]);
         }
 
+        $last_idtp = Transaksi::where('idtp', '!=', '0')->max('idtp');
         $idtp = $last_idtp + 1;
         if ($request->pokok > 0) {
             $trx_pokok = [
