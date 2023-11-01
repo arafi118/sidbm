@@ -108,7 +108,7 @@
             <td width="60%">&nbsp;</td>
             <td width="60">Pada Tanggal</td>
             <td width="2">:</td>
-            <td>{{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
+            <td>{{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
         </tr>
     </table>
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
