@@ -191,16 +191,16 @@
                                     @php
                                         if ($pinkel->status == 'P') {
                                             $tgl = $pinkel->tgl_proposal;
-                                            $jumlah = $pinkel->proposal;
+                                            $jumlah = $pinj->proposal;
                                         } elseif ($pinkel->status == 'V') {
                                             $tgl = $pinkel->tgl_verifikasi;
-                                            $jumlah = $pinkel->verifikasi;
+                                            $jumlah = $pinj->verifikasi;
                                         } elseif ($pinkel->status == 'W') {
                                             $tgl = $pinkel->tgl_cair;
-                                            $jumlah = $pinkel->alokasi;
+                                            $jumlah = $pinj->alokasi;
                                         } else {
                                             $tgl = $pinkel->tgl_cair;
-                                            $jumlah = $pinkel->alokasi;
+                                            $jumlah = $pinj->alokasi;
                                         }
                                     @endphp
                                     <blockquote data-link="/detail/{{ $pinkel->id }}"
