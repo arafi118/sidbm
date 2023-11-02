@@ -131,6 +131,7 @@
                 success: function(result) {
                     if (result.success) {
                         var saldo = result.saldo
+                        var id = result.id
                         Swal.fire('Berhasil', result.msg, 'success').then(() => {
                             if (!result.lunas) {
                                 Swal.fire({
@@ -142,7 +143,7 @@
                                     window.location.href = '/master/unpaid/'
                                 })
                             } else {
-                                window.location.href = '/master/unpaid/'
+                                window.location.href = '/master/' + id + '/paid'
                             }
                         })
                     }
