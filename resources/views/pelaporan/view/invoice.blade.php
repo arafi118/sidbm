@@ -221,10 +221,18 @@
             </tr>
             @if (count($inv->trx) > 0)
                 @foreach ($inv->trx as $trx)
+                    @php
+                        $keterangan = '';
+                        if ($trx->rekening_debit == '111.1001') {
+                            $keterangan = 'Via Kas';
+                        } elseif ($trx->rekening_debit == '121.1001') {
+                            $keterangan = 'Via Transfer Bank';
+                        }
+                    @endphp
                     <tr>
                         <td align="center">{{ $trx->idt }}/SI-DBM</td>
                         <td align="center">{{ Tanggal::tglIndo($trx->tgl_transaksi) }}</td>
-                        <td align="center">{{ $trx->keterangan_transaksi }}</td>
+                        <td align="center">{{ $trx->keterangan_transaksi }} {{ $keterangan }}</td>
                         <td align="right">{{ number_format($trx->jumlah, 2) }}</td>
                     </tr>
 

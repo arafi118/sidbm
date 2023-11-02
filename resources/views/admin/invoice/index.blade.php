@@ -191,9 +191,9 @@
                                 cancelButtonText: 'Tidak'
                             }).then((res) => {
                                 if (res.isConfirmed) {
-                                    $('#nomor_invoice').val(result.nomor)
+                                    window.location.reload()
                                 } else {
-                                    window.location.href = '/master/' + id + '/unpaid'
+                                    window.location.href = '/master/unpaid'
                                 }
                             })
                         })

@@ -28,7 +28,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             session([
-                'nama' => auth()->guard('master')->user()->nama_lengkap
+                'admin' => auth()->guard('master')->user()->nama_lengkap
             ]);
 
             return redirect()->intended('/master')->with('pesan', 'Selamat Datang ' . auth()->guard('master')->user()->nama_lengkap);

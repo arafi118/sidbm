@@ -79,12 +79,14 @@ class InvoiceController extends Controller
         $nomor_invoice .= $nomor_urut;
 
         $batas_waktu = date('Y-m-d', strtotime('+1 month', strtotime($tanggal)));
+
+        $inv = AdminInvoice::where('status', 'UNPAID')->orderBy('idv', 'DESC')->first();
         return response()->json([
             'success' => true,
             'msg' => 'Invoice ' . $jp->nama_jp . ' No. ' . $request->nomor_invoice . ' berhasil disimpan.',
             'nomor' => $nomor_invoice,
             'batas_waktu' => Tanggal::tglIndo($batas_waktu),
-            'id' => $invoice->idv
+            'id' => $inv->idv
         ]);
     }
 
@@ -214,7 +216,7 @@ class InvoiceController extends Controller
         $lunas = false;
         if (($invoice->trx_sum_jumlah + $jumlah) >= $invoice->jumlah) {
             $lunas = true;
-            $inv = Invoice::where('idv', $invoice->idv)->update([
+            $inv = AdminInvoice::where('idv', $invoice->idv)->update([
                 'tgl_lunas' => Tanggal::tglNasional($request->tgl_terima),
                 'status' => 'PAID'
             ]);
@@ -236,7 +238,8 @@ class InvoiceController extends Controller
             'msg' => 'Pembayaran Invoice Berhasil Disimpan.',
             'lunas' => $lunas,
             'saldo' => number_format($saldo),
-            '_saldo' => $saldo
+            '_saldo' => $saldo,
+            'id' => $invoice->idv
         ]);
     }
 
