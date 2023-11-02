@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -34,6 +35,8 @@ Route::group(['prefix' => 'master', 'as' => 'master.'], function () {
     Route::post('/login', [AdminAuthController::class, 'login'])->middleware('master.quest');
 
     Route::get('/', [AdminController::class, 'index'])->middleware('master');
+
+    Route::resource('/users', AdminUserController::class)->middleware('master');
 
     Route::get('/buat_invoice', [InvoiceController::class, 'index'])->middleware('master');
     Route::get('/nomor_invoice', [InvoiceController::class, 'InvoiceNo'])->middleware('master');
