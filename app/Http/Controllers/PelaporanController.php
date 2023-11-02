@@ -538,7 +538,7 @@ class PelaporanController extends Controller
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['transaksi'] = Transaksi::whereBetween('tgl_transaksi', [
                 $thn . '-' . $bln . '-01',
-                $thn . '-' . $bln . '-' . date('t', strtotime($tgl))
+                $thn . '-' . $bln . '-' . date('t', strtotime($thn . '-' . $bln . '-01'))
             ])->withSum('angs', 'jumlah')->with('user', 'rek_debit', 'rek_kredit', 'angs')->withCount('angs')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
         } else {
             $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
