@@ -31,7 +31,7 @@ class KelompokController extends Controller
                     $query->orderBy('tgl_proposal', 'DESC');
                 },
                 'pinjaman.sts'
-            ]);
+            ])->get();
             return DataTables::of($kelompok)
                 ->addColumn('status', function ($row) {
                     $pinjaman = $row->pinjaman;

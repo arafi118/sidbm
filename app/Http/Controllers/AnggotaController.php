@@ -27,7 +27,7 @@ class AnggotaController extends Controller
                     $query->orderBy('id', 'DESC');
                 },
                 'pinjaman.sts'
-            ])->orderBy('id', 'DESC');
+            ])->get();
 
             return DataTables::of($penduduk)
                 ->addColumn('status', function ($row) {
