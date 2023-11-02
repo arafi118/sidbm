@@ -757,16 +757,19 @@ class TransaksiController extends Controller
 
     public function formAngsuran($id_pinkel)
     {
-        $pinkel = PinjamanKelompok::where('id', $id_pinkel)->with('kelompok')->firstOrFail();
+        $pinkel = PinjamanKelompok::where('id', $id_pinkel)->with('kelompok')->withSum([
+            'rencana' => function ($query) {
+                $query->where('jatuh_tempo', '<=', date('Y-m-t'));
+            }
+        ], 'wajib_pokok')->withSum([
+            'rencana' => function ($query) {
+                $query->where('jatuh_tempo', '<=', date('Y-m-t'));
+            }
+        ], 'wajib_jasa')->firstOrFail();
         $real = RealAngsuran::where([
             ['loan_id', $id_pinkel],
             ['tgl_transaksi', '<=', date('Y-m-d')]
         ])->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
-        $ra = RencanaAngsuran::where([
-            ['loan_id', $id_pinkel],
-            ['jatuh_tempo', '<=', date('Y-m-d')],
-            ['angsuran_ke', '!=', '0']
-        ])->orderBy('jatuh_tempo', 'DESC');
 
         $alokasi_jasa = $pinkel->alokasi * ($pinkel->pros_jasa / 100);
 
@@ -777,15 +780,11 @@ class TransaksiController extends Controller
             $real->sum_jasa = 0;
         }
 
-        if ($ra->count() > 0) {
-            $ra = $ra->first();
-        } else {
-            $ra->target_pokok = 0;
-            $ra->target_jasa = 0;
-        }
+        $target_pokok = $pinkel->rencana_sum_wajib_pokok;
+        $target_jasa = $pinkel->rencana_sum_wajib_jasa;
 
-        $saldo_pokok = ($ra->target_pokok - $real->sum_pokok > 0) ? $ra->target_pokok - $real->sum_pokok : 0;
-        $saldo_jasa = ($ra->target_jasa - $real->sum_jasa > 0) ? $ra->target_jasa - $real->sum_jasa : 0;
+        $saldo_pokok = ($target_pokok - $real->sum_pokok > 0) ? $target_pokok - $real->sum_pokok : 0;
+        $saldo_jasa = ($target_jasa - $real->sum_jasa > 0) ? $target_jasa - $real->sum_jasa : 0;
 
         $sisa_pokok = $pinkel->alokasi - $real->sum_pokok;
         $sisa_jasa = $alokasi_jasa - $real->sum_jasa;
@@ -803,6 +802,59 @@ class TransaksiController extends Controller
             'alokasi_pokok' => $pinkel->alokasi,
             'alokasi_jasa' => $alokasi_jasa,
             'pinkel' => $pinkel
+        ]);
+    }
+
+    public function targetAngsuran($id_pinkel)
+    {
+        if (request()->get('tanggal')) {
+            $tanggal = request()->get('tanggal');
+            $tahun = date('Y', strtotime(Tanggal::tglNasional($tanggal)));
+            $bulan = date('m', strtotime(Tanggal::tglNasional($tanggal)));
+            $hari = date('t', strtotime(Tanggal::tglNasional($tanggal)));
+
+            $pinkel = PinjamanKelompok::where('id', $id_pinkel)->with('kelompok')->withSum([
+                'rencana' => function ($query) use ($tahun, $bulan, $hari) {
+                    $query->where('jatuh_tempo', '<=', $tahun . '-' . $bulan . '-' . $hari);
+                }
+            ], 'wajib_pokok')->withSum([
+                'rencana' => function ($query) use ($tahun, $bulan, $hari) {
+                    $query->where('jatuh_tempo', '<=', $tahun . '-' . $bulan . '-' . $hari);
+                }
+            ], 'wajib_jasa')->firstOrFail();
+        } else {
+            $pinkel = PinjamanKelompok::where('id', $id_pinkel)->with('kelompok')->withSum([
+                'rencana' => function ($query) {
+                    $query->where('jatuh_tempo', '<=', date('Y-m-t'));
+                }
+            ], 'wajib_pokok')->withSum([
+                'rencana' => function ($query) {
+                    $query->where('jatuh_tempo', '<=', date('Y-m-t'));
+                }
+            ], 'wajib_jasa')->firstOrFail();
+        }
+
+        $real = RealAngsuran::where([
+            ['loan_id', $id_pinkel],
+            ['tgl_transaksi', '<=', date('Y-m-d')]
+        ])->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
+
+        if ($real->count() > 0) {
+            $real = $real->first();
+        } else {
+            $real->sum_pokok = 0;
+            $real->sum_jasa = 0;
+        }
+
+        $target_pokok = $pinkel->rencana_sum_wajib_pokok;
+        $target_jasa = $pinkel->rencana_sum_wajib_jasa;
+
+        $saldo_pokok = ($target_pokok - $real->sum_pokok > 0) ? $target_pokok - $real->sum_pokok : 0;
+        $saldo_jasa = ($target_jasa - $real->sum_jasa > 0) ? $target_jasa - $real->sum_jasa : 0;
+
+        return response()->json([
+            'saldo_pokok' => $saldo_pokok,
+            'saldo_jasa' => $saldo_jasa
         ]);
     }
 

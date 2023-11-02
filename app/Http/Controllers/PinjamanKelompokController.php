@@ -368,7 +368,7 @@ class PinjamanKelompokController extends Controller
             ['lev4', $perguliran->jenis_pp]
         ])->first();
 
-        if ($perguliran->status == 'A') {
+        if ($perguliran->status == 'A' || $perguliran->status == 'L') {
             $view = 'aktif';
         } elseif ($perguliran->status == 'W') {
             $view = 'waiting';

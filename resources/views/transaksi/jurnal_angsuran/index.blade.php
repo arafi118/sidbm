@@ -215,6 +215,18 @@
             })
         }
 
+        $(document).on('change', '#tgl_transaksi', function(e) {
+            var tanggal = $(this).val()
+            var id_pinj = $('#id').val()
+
+            $.get('/transaksi/angsuran/target/' + id_pinj, {
+                tanggal
+            }, function(result) {
+                $('#pokok').val(formatter.format(result.saldo_pokok))
+                $('#jasa').val(formatter.format(result.saldo_jasa))
+            })
+        })
+
         $(document).on('change', '#pokok,#jasa,#denda', function(e) {
             var pokok = $('#pokok').val()
             var jasa = $('#jasa').val()

@@ -126,6 +126,7 @@ Route::get('/trasaksi/saldo/{kode_akun}', [TransaksiController::class, 'saldo'])
 Route::get('/transaksi/ambil_rekening/{id}', [TransaksiController::class, 'rekening'])->middleware('auth');
 Route::get('/transaksi/form_nominal/', [TransaksiController::class, 'form'])->middleware('auth');
 Route::get('/transaksi/form_angsuran/{id_pinkel}', [TransaksiController::class, 'formAngsuran'])->middleware('auth');
+Route::get('/transaksi/angsuran/target/{id_pinkel}', [TransaksiController::class, 'targetAngsuran'])->middleware('auth');
 
 Route::get('/transaksi/data/{idt}', [TransaksiController::class, 'data'])->middleware('auth');
 Route::post('/transaksi/reversal', [TransaksiController::class, 'reversal'])->middleware('auth');

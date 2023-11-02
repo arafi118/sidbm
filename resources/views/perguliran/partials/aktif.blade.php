@@ -138,12 +138,14 @@
             </div>
         </div>
 
-        <div class="d-grid">
-            <button type="button" id="BtnTambahPemanfaat" data-bs-toggle="modal" data-bs-target="#TambahPemanfaat"
-                class="btn btn-success btn-sm mb-1">
-                Tambah Pemanfaat
-            </button>
-        </div>
+        @if ($perguliran->status == 'A')
+            <div class="d-grid">
+                <button type="button" id="BtnTambahPemanfaat" data-bs-toggle="modal" data-bs-target="#TambahPemanfaat"
+                    class="btn btn-success btn-sm mb-1">
+                    Tambah Pemanfaat
+                </button>
+            </div>
+        @endif
 
         <hr class="horizontal dark">
 
@@ -272,11 +274,13 @@
             </table>
         </div>
 
-        <div class="d-flex justify-content-end mt-3">
-            <button type="button" data-bs-toggle="modal" data-bs-target="#Rescedule"
-                class="btn btn-warning btn-sm">Resceduling Pinjaman</button>
-            <button type="button" data-bs-toggle="modal" data-bs-target="#Penghapusan"
-                class="btn btn-danger btn-sm ms-1">Penghapusan Pinjaman</button>
-        </div>
+        @if ($perguliran->status == 'A')
+            <div class="d-flex justify-content-end mt-3">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#Rescedule"
+                    class="btn btn-warning btn-sm">Resceduling Pinjaman</button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#Penghapusan"
+                    class="btn btn-danger btn-sm ms-1">Penghapusan Pinjaman</button>
+            </div>
+        @endif
     </div>
 </div>

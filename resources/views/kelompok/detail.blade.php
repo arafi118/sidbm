@@ -64,6 +64,10 @@
                                         if ($pinkel->status == 'R' || $pinkel->status == 'H') {
                                             $link = '#';
                                         }
+
+                                        if ($pinkel->status == 'L') {
+                                            $link = '/detail' . '/' . $pinkel->id;
+                                        }
                                         $status = $pinkel->status;
 
                                     @endphp
