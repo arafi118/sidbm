@@ -5,7 +5,7 @@
         <div class="col-lg-8 mb-4">
             <div class="card">
                 <div class="card-body">
-
+                    <embed src="/pelaporan/invoice/{{ $invoice->idv }}" type="application/pdf" width="100%" height="600px" />
                 </div>
             </div>
         </div>

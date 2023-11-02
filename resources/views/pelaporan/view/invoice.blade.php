@@ -87,6 +87,19 @@
             font-style: italic;
             color: rgb(21, 85, 92);
         }
+
+        footer {
+            width: 100%;
+            position: fixed;
+            bottom: -12px;
+            left: 0;
+            text-align: center;
+            border-top: 1px solid #000;
+        }
+
+        footer * {
+            font-size: 10px !important;
+        }
     </style>
 </head>
 
@@ -122,13 +135,13 @@
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top: 16px;" class="top">
             <tr class="top">
                 <td width="70%">
-                    <div style="font-size: 14px; font-weight: bold;">INVOICE #{{ $inv->nomor }}</div>
+                    <div style="font-size: 16px; font-weight: bold;">INVOICE #{{ $inv->nomor }}</div>
                     <div style="margin-top: 2px; font-size: 10px">Tanggal Invoice :
                         {{ Tanggal::tglIndo($inv->tgl_invoice) }}</div>
                     <div style="font-size: 10px">Jatuh Tempo : {{ Tanggal::tglIndo($batas_waktu) }}</div>
                 </td>
                 <td width="30%" align="center">
-                    <div style="font-size: 14px; font-weight: bold; color: #ff0000">{{ $status }}</div>
+                    <div style="font-size: 16px; font-weight: bold; color: #ff0000">{{ $status }}</div>
                     <img src="../public/assets/img/lunas.png" alt="" height="68"
                         style="margin-top: 8px; {{ $inv->status == 'UNPAID' ? 'visibility: hidden; opacity:0;' : '' }}">
                 </td>
@@ -156,7 +169,7 @@
                 <th style="background: rgb(130, 164, 176)">TOTAL</th>
             </tr>
             <tr style="background: rgb(232, 232, 232)">
-                <td height="50" align="center" style="font-size: 11px;">
+                <td height="70" align="center" style="font-size: 11px;">
                     <div>
                         {{ $inv->jp->nama_jp }} SI DBM {{ $inv->kec->sebutan_kec }} {{ $inv->kec->nama_kec }}
                     </div>
@@ -241,8 +254,51 @@
                 <th width="15%" align="right">{{ number_format($inv->jumlah - $total, 2) }}</th>
             </tr>
         </table>
+
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top: 48px;">
+            <tr>
+                <td width="60%">&nbsp;</td>
+                <td width="40%" align="center">
+                    <div>Direktur Utama</div>
+                    <div>PT. Asta Brata Teknologi</div>
+                </td>
+            </tr>
+            <tr>
+                <td height="60">&nbsp;</td>
+                <td height="60" align="center" style="position: relative;">
+                    <img style="position: absolute; top: -32px; left: 28px;" src="../public/assets/img/ttd.png"
+                        width="220" alt="">
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td align="center" style="font-weight: bold;">S A N T O S O</td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="font-weight: bold;">
+                        Pembayaran Transfer Via :
+                    </div>
+                    <ul style="padding-left: 16px; margin-top: 0px;">
+                        <li>
+                            <div>Bank Mandiri Nomor Rekening : 185-000-417-4733</div>
+                            <div>an. Santoso</div>
+                        </li>
+                        <li>
+                            <div>Bank BRI Nomor Rekening : 0048-01-057317-50-5</div>
+                            <div>an. Santoso</div>
+                        </li>
+                    </ul>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
     </main>
 
+    <footer>
+        <div>www.sidbm.net</div>
+        <div>&copy; {{ date('Y') }}</div>
+    </footer>
 </body>
 
 </html>

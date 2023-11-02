@@ -58,9 +58,29 @@
                         <i class="material-icons cursor-pointer me-sm-1">
                             chat_bubble
                         </i>
+                        <span
+                            class="position-absolute top-5 start-100 translate-middle badge rounded-pill bg-danger border border-white small py-1 px-2">
+                            <span class="small">{{ $jumlah }}</span>
+                            <span class="visually-hidden">Notifikasi</span>
+                        </span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end p-2 me-sm-n4" aria-labelledby="dropdownMenuButton">
                         <li class="mb-2">
+                            @if ($jumlah > 0)
+                                @foreach ($inv as $in)
+                                    <a class="dropdown-item border-radius-md"
+                                        href="/pelaporan/invoice/{{ $in->idv }}" target="_blank">
+                                        <div class="d-flex align-items-center py-1">
+                                            <span class="material-icons">event</span>
+                                            <div class="ms-2">
+                                                <h6 class="text-sm font-weight-normal my-auto">
+                                                    {{ $in->jp->nama_jp }}
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            @endif
                             <a class="dropdown-item border-radius-md" href="/pelaporan/ts" target="_blank">
                                 <div class="d-flex align-items-center py-1">
                                     <span class="material-icons">contact_phone</span>

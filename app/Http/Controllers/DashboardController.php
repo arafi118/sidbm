@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminInvoice;
 use App\Models\AkunLevel1;
 use App\Models\Kecamatan;
 use App\Models\PinjamanAnggota;
@@ -596,5 +597,24 @@ class DashboardController extends Controller
         ];
 
         return $kom_saldo;
+    }
+
+    public function unpaid()
+    {
+        $invoice = AdminInvoice::where([
+            ['lokasi', auth()->user()->lokasi],
+            ['status', 'UNPAID']
+        ])->orderBy('tgl_invoice', 'DESC');
+
+        $jumlah = 0;
+        if ($invoice->count() > 0) {
+            $jumlah = $invoice->count();
+            $inv = $invoice->first();
+        }
+
+        return response()->json([
+            'success' => true,
+            'invoice' => $jumlah
+        ]);
     }
 }

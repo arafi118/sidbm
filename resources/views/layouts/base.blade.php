@@ -1,3 +1,16 @@
+@php
+    use App\Models\AdminInvoice;
+    $invoice = AdminInvoice::where([['lokasi', auth()->user()->lokasi], ['status', 'UNPAID']])
+        ->with('jp')
+        ->orderBy('tgl_invoice', 'DESC');
+
+    $jumlah = 0;
+    $inv = $invoice->take(5)->get();
+    if ($invoice->count() > 0) {
+        $jumlah = $invoice->count();
+    }
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 

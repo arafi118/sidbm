@@ -196,4 +196,6 @@ Route::get('/trigger/{lokasi}', function ($lokasi) {
     echo $data;
 });
 
+Route::get('/unpaid', [DashboardController::class, 'unpaid'])->middleware('auth');
+
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
