@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminInvoice;
 use App\Models\AkunLevel1;
 use App\Models\AkunLevel2;
 use App\Models\AkunLevel3;
@@ -1322,6 +1323,15 @@ class PelaporanController extends Controller
 
         $view = view('pelaporan.view.ts', $data)->render();
         $pdf = PDF::loadHTML($view)->setPaper([0, 0, 595.28, 352], 'potrait');
+        return $pdf->stream();
+    }
+
+    public function invoice(AdminInvoice $invoice)
+    {
+        $data['inv'] = AdminInvoice::where('idv', $invoice->idv)->with('jp', 'trx', 'kec', 'kec.kabupaten')->first();
+
+        $view = view('pelaporan.view.invoice', $data)->render();
+        $pdf = PDF::loadHTML($view)->setPaper('A4', 'potrait');
         return $pdf->stream();
     }
 

@@ -65,6 +65,14 @@ class Tanggal
         return $thn;
     }
 
+    public static function bulan($tanggal)
+    {
+        $tgl = explode('-', $tanggal);
+        $bln = $tgl[1];
+
+        return $bln;
+    }
+
     public static function namaBulan($tanggal)
     {
         $tgl = explode('-', $tanggal);
