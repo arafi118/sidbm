@@ -241,7 +241,7 @@
                                         <td>{{ $lev4['kode_akun'] }}.</td>
                                         <td>{{ $lev4['nama_akun'] }}</td>
                                         @if ($lev4['saldo'] < 0)
-                                            <td align="right">(-) {{ number_format($lev4['saldo'] * -1, 2) }}</td>
+                                            <td align="right">({{ number_format($lev4['saldo'] * -1, 2) }})</td>
                                         @else
                                             <td align="right">{{ number_format($lev4['saldo'], 2) }}</td>
                                         @endif
