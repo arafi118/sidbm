@@ -82,7 +82,8 @@
             <div>
                 Regristasikan terlebih dahulu Nomor Bapak/Ibu dengan cara ketik :
             </div>
-            <div style="text-align: center; font-weight: bold;">DBM {{ $kec->id }} Nama Lengkap Tegalrejo</div>
+            <div style="text-align: center; font-weight: bold;">DBM {{ $kec->id }} Nama Lengkap {{ $kec->nama_kec }}
+            </div>
         </li>
         <li style="text-align: justify;">
             Jika permasalahan berkaitan dengan transaksi, sertakan ID Transaksi yang dimaksud. Dan jika berkaitan dengan
