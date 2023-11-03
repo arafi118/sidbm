@@ -32,7 +32,7 @@
             <div class="input-group input-group-static my-3">
                 <label for="peraturan_desa">Peraturan Desa Nomor</label>
                 <input autocomplete="off" type="text" name="peraturan_desa" id="peraturan_desa" class="form-control"
-                    value="">
+                    value="{{ $peraturan_desa }}">
                 <small class="text-danger" id="msg_peraturan_desa"></small>
             </div>
         </div>
