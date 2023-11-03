@@ -58,11 +58,13 @@
                         <i class="material-icons cursor-pointer me-sm-1">
                             chat_bubble
                         </i>
-                        <span
-                            class="position-absolute top-5 start-100 translate-middle badge rounded-pill bg-danger border border-white small py-1 px-2">
-                            <span class="small">{{ $jumlah }}</span>
-                            <span class="visually-hidden">Notifikasi</span>
-                        </span>
+                        @if ($jumlah > 0)
+                            <span
+                                class="position-absolute top-5 start-100 translate-middle badge rounded-pill bg-danger border border-white small py-1 px-2">
+                                <span class="small">{{ $jumlah }}</span>
+                                <span class="visually-hidden">Notifikasi</span>
+                            </span>
+                        @endif
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end p-2 me-sm-n4" aria-labelledby="dropdownMenuButton">
                         <li class="mb-2">

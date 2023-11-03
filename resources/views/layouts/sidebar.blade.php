@@ -90,6 +90,12 @@
                                 <span class="sidenav-normal  ms-2  ps-1"> Ttd SPK </span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white {{ active('invoice') }}" href="/pengaturan/invoice">
+                                <span class="sidenav-mini-icon"> IN </span>
+                                <span class="sidenav-normal  ms-2  ps-1"> Invoice </span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>

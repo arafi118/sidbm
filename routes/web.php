@@ -77,6 +77,9 @@ Route::put('/pengaturan/asuransi/{kec}', [SopController::class, 'asuransi'])->mi
 Route::put('/pengaturan/spk/{kec}', [SopController::class, 'spk'])->middleware('auth');
 Route::put('/pengaturan/logo/{kec}', [SopController::class, 'logo'])->middleware('auth');
 
+Route::get('/pengaturan/invoice', [SopController::class, 'invoice'])->middleware('auth');
+Route::get('/pengaturan/{inv}/invoice', [SopController::class, 'detailInvoice'])->middleware('auth');
+
 Route::post('/pengaturan/sop/simpanttdpelaporan', [SopController::class, 'simpanTtdPelaporan'])->middleware('auth');
 
 Route::get('/database/kelompok/register_kelompok', [KelompokController::class, 'register'])->middleware('auth');

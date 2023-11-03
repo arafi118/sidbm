@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminInvoice;
 use App\Models\Kecamatan;
 use App\Models\TandaTanganLaporan;
 use App\Utils\Pinjaman;
+use App\Utils\Tanggal;
 use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Session;
+use Yajra\DataTables\DataTables;
 
 class SopController extends Controller
 {
@@ -291,5 +294,47 @@ class SopController extends Controller
             'success' => true,
             'msg' => ucwords(str_replace('_', ' ', $data['field'])) . ' Berhasil diperbarui'
         ]);
+    }
+
+    public function invoice()
+    {
+        if (request()->ajax()) {
+            $invoice = AdminInvoice::where('lokasi', auth()->user()->lokasi)->with('jp')->withSum('trx', 'jumlah')->get();
+
+            return DataTables::of($invoice)
+                ->editColumn('tgl_invoice', function ($row) {
+                    return Tanggal::tglIndo($row->tgl_invoice);
+                })
+                ->editColumn('jumlah', function ($row) {
+                    return number_format($row->jumlah);
+                })
+                ->editColumn('status', function ($row) {
+                    if ($row->status == 'PAID') {
+                        return '<span class="badge badge-success">' . $row->status . '</span>';
+                    }
+
+                    return '<span class="badge badge-danger">' . $row->status . '</span>';
+                })
+                ->addColumn('saldo', function ($row) {
+                    if ($row->trx_sum_jumlah) {
+                        return number_format($row->jumlah - $row->trx_sum_jumlah);
+                    }
+
+                    return number_format($row->jumlah);
+                })
+                ->rawColumns(['status'])
+                ->make(true);
+        }
+
+        $title = 'Daftar Invoice';
+        return view('sop.invoice')->with(compact('title'));
+    }
+
+    public function detailInvoice($inv)
+    {
+        $inv = AdminInvoice::where('idv', $inv)->with('jp')->first();
+
+        $title = 'Invoice #' . $inv->nomor . ' - ' . $inv->jp->nama_jp;
+        return view('sop.detail_invoice')->with(compact('title', 'inv'));
     }
 }
