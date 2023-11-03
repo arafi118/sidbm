@@ -493,12 +493,12 @@ class DashboardController extends Controller
                 $date = $tahun . '-' . $i . '-01';
                 $tgl_kondisi = date('Y-m-t', strtotime($date));
                 $rekening = Rekening::withSum([
-                    'trx_debit' => function ($query) use ($tgl_kondisi) {
-                        $query->where('tgl_transaksi', '<=', $tgl_kondisi);
+                    'trx_debit' => function ($query) use ($tgl_kondisi, $tahun) {
+                        $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
                     }
                 ], 'jumlah')->withSum([
-                    'trx_kredit' => function ($query) use ($tgl_kondisi) {
-                        $query->where('tgl_transaksi', '<=', $tgl_kondisi);
+                    'trx_kredit' => function ($query) use ($tgl_kondisi, $tahun) {
+                        $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
                     }
                 ], 'jumlah')->get();
 
