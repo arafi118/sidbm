@@ -234,7 +234,7 @@ class PelaporanController extends Controller
         } elseif (strlen($bln) > 0) {
             $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($thn . '-' . $bln . '-01') . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $data['bulan_lalu'] = date('Y-m-d', strtotime('-1 month', strtotime($data['tgl_kondisi'])));
+            $data['bulan_lalu'] = date('Y-m-t', strtotime('-1 month', strtotime($thn . '-' . $bln . '-10')));
             $data['header_lalu'] = 'Bulan Lalu';
             $data['header_sekarang'] = 'Bulan Ini';
         } else {
@@ -245,6 +245,7 @@ class PelaporanController extends Controller
             $data['header_sekarang'] = 'Tahun Ini';
         }
 
+        // dd($data['tgl_kondisi'], $data['bulan_lalu']);
         $pendapatan = AkunLevel2::where([
             ['lev1', '4'],
             ['lev2', '1']
