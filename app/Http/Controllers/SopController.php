@@ -330,6 +330,60 @@ class SopController extends Controller
         return view('sop.invoice')->with(compact('title'));
     }
 
+    public function calk(Request $request, Kecamatan $kec)
+    {
+        $data = $request->only([
+            'peraturan_desa',
+            'bantuan_rumah_tangga',
+            'pengembangan_kapasitas',
+            'pelatihan_masyarakat',
+            'peningkatan_modal',
+            'penambahan_investasi',
+            'pendirian_unit_usaha',
+        ]);
+
+        $validate = Validator::make($data, [
+            'peraturan_desa' => 'required',
+            'bantuan_rumah_tangga' => 'required',
+            'pengembangan_kapasitas' => 'required',
+            'pelatihan_masyarakat' => 'required',
+            'peningkatan_modal' => 'required',
+            'penambahan_investasi' => 'required',
+            'pendirian_unit_usaha' => 'required'
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
+        }
+
+        $data = [
+            'peraturan_desa' => $request->peraturan_desa,
+            "D" => [
+                "1" => [
+                    "d" => [
+                        "1" => $request->bantuan_rumah_tangga,
+                        "2" => $request->pengembangan_kapasitas,
+                        "3" => $request->pelatihan_masyarakat
+                    ]
+                ],
+                "2" => [
+                    "a" => str_replace(',', '', $request->peningkatan_modal),
+                    "b" => str_replace(',', '', $request->penambahan_investasi),
+                    "c" => str_replace(',', '', $request->pendirian_unit_usaha)
+                ]
+            ]
+        ];
+
+        $kec = Kecamatan::where('id', $kec->id)->update([
+            'calk' => json_encode($data)
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Pengaturan CALK Berhasil Diperbarui.',
+        ]);
+    }
+
     public function detailInvoice($inv)
     {
         $inv = AdminInvoice::where('idv', $inv)->with('jp')->first();
