@@ -290,11 +290,14 @@
                             <div>Bagian Desa;</div>
                             <table style="margin-left: 10px;">
                                 @foreach ($kec->desa as $desa)
+                                    @php
+                                        $laba = $desa->laba_th_lalu + $desa->laba_th_lalu;
+                                    @endphp
                                     <tr>
                                         <td>{{ $loop->iteration }}.</td>
                                         <td>{{ $desa->sebutan_desa->sebutan_desa }} {{ $desa->nama_desa }}</td>
                                         <td>:</td>
-                                        <td>........................................</td>
+                                        <td>{{ number_format($laba, 2) }}</td>
                                     </tr>
                                 @endforeach
                             </table>
@@ -317,7 +320,7 @@
                                 <tr>
                                     <td>3. </td>
                                     <td>
-                                        Pelatihan masyarakat, dan kelompok pemanfaat umum {{ $calk['D']['1']['d']['1'] }}%
+                                        Pelatihan masyarakat, dan kelompok pemanfaat umum {{ $calk['D']['1']['d']['3'] }}%
                                     </td>
                                 </tr>
                             </table>
