@@ -327,6 +327,7 @@
                                 <tr>
                                     <td class="b" colspan="3" align="center">Desa</td>
                                     <td class="b" align="center">Laba Th Lalu</td>
+                                    <td class="b" align="center">Laba Th Ini</td>
                                     <td class="b" align="center">Laba s.d Th Ini</td>
                                 </tr>
 
@@ -344,6 +345,8 @@
                                         <td>{{ $desa->sebutan_desa->sebutan_desa }} {{ $desa->nama_desa }}</td>
                                         <td>:</td>
                                         <td width="70" align="right">{{ number_format($laba_th_lalu, 2) }}</td>
+                                        <td width="70" align="right">
+                                            {{ number_format($laba_th_ini - $laba_th_lalu, 2) }}</td>
                                         <td width="70" align="right">{{ number_format($laba_th_ini, 2) }}</td>
                                     </tr>
                                 @endforeach
