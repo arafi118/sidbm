@@ -57,6 +57,13 @@
             </tr>
             @foreach ($rek->inventaris as $inv)
                 @php
+                    $nama_barang = $inv->nama_barang;
+                    $warna = '0, 0, 0';
+                    if (!($inv->status == 'Baik') && $tgl_kondisi >= $inv->tgl_validasi) {
+                        $nama_barang .= ' (' . $inv->status . ' ' . Tanggal::tglIndo($inv->tgl_validasi) . ')';
+                        $warna = '255, 0, 0';
+                    }
+
                     $satuan_susut = $inv->harsat <= 0 ? 0 : round(($inv->harsat * $inv->unit) / $inv->umur_ekonomis, 2);
                     $pakai_lalu = Inventaris::bulan($inv->tgl_beli, $tahun - 1 . '-12-31');
                     $nilai_buku = Inventaris::nilaiBuku($tgl_kondisi, $inv);
