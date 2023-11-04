@@ -57,67 +57,73 @@
             </tr>
             @foreach ($rek->inventaris as $inv)
                 @php
-                    $nama_barang = $inv->nama_barang;
-                    $warna = '0, 0, 0';
-                    if (!($inv->status == 'Baik') && $tgl_kondisi >= $inv->tgl_validasi) {
-                        $nama_barang .= ' (' . $inv->status . ' ' . Tanggal::tglIndo($inv->tgl_validasi) . ')';
-                        $warna = '255, 0, 0';
-                    }
-                    
-                    $satuan_susut = $inv->harsat <= 0 ? 0 : (float) (($inv->harsat / $inv->umur_ekonomis) * $inv->unit);
+                    $satuan_susut = $inv->harsat <= 0 ? 0 : round(($inv->harsat * $inv->unit) / $inv->umur_ekonomis, 2);
                     $pakai_lalu = Inventaris::bulan($inv->tgl_beli, $tahun - 1 . '-12-31');
                     $nilai_buku = Inventaris::nilaiBuku($tgl_kondisi, $inv);
-                    
+
                     if (!($inv->status == 'Baik') && $tgl_kondisi >= $inv->tgl_validasi) {
                         $umur = Inventaris::bulan($inv->tgl_beli, $inv->tgl_validasi);
                     } else {
                         $umur = Inventaris::bulan($inv->tgl_beli, $tgl_kondisi);
                     }
-                    
+
+                    $_satuan_susut = $satuan_susut;
+                    if ($umur >= $inv->umur_ekonomis) {
+                        $harga = $inv->harsat * $inv->unit;
+                        $_susut = $satuan_susut * ($inv->umur_ekonomis - 1);
+                        $satuan_susut = $harga - $_susut - 1;
+                    }
+
                     $susut = $satuan_susut * $umur;
                     if ($umur >= $inv->umur_ekonomis && $inv->harsat * $inv->unit > 0) {
                         $akum_umur = $inv->umur_ekonomis;
                         $_akum_susut = $inv->harsat * $inv->unit;
                         $akum_susut = $_akum_susut - 1;
-                        $nilai_buku = 1;
+                        $nilai_buku = 0;
                     } else {
                         $akum_umur = $umur;
                         $akum_susut = $susut;
-                    
+
                         if ($nilai_buku < 0) {
-                            $nilai_buku = 1;
+                            $nilai_buku = 0;
                         }
                     }
-                    
+
                     $umur_pakai = $akum_umur - $pakai_lalu;
                     $penyusutan = $satuan_susut * $umur_pakai;
-                    
+
                     if (($inv->status == 'Hilang' and $tgl_kondisi >= $inv->tgl_validasi) || ($inv->status == 'Dijual' && $tgl_kondisi >= $inv->tgl_validasi) || ($inv->status == 'Hapus' && $tgl_kondisi >= $inv->tgl_validasi)) {
                         $akum_susut = $inv->harsat * $inv->unit;
                         $nilai_buku = 0;
                         $penyusutan = 0;
                         $umur_pakai = 0;
                     }
-                    
+
                     if ($inv->status == 'Rusak' and $tgl_kondisi >= $inv->tgl_validasi) {
                         $akum_susut = $inv->harsat * $inv->unit - 1;
-                        $nilai_buku = 1;
+                        $nilai_buku = 0;
                         $penyusutan = 0;
                         $umur_pakai = 0;
                     }
-                    
+
                     if ($umur_pakai >= 0 && $inv->harsat * $inv->unit > 0) {
                         $penyusutan = $penyusutan;
                     } else {
                         $umur_pakai = 0;
                         $penyusutan = 0;
                     }
-                    
+
+                    if ($akum_umur == $inv->umur_ekonomis && $umur_pakai > '0') {
+                        $penyusutan = $_satuan_susut * ($umur_pakai - 1) + $satuan_susut;
+                    }
+
                     $t_unit += $inv->unit;
                     $t_harga += $inv->harsat * $inv->unit;
                     $t_penyusutan += $penyusutan;
                     $t_akum_susut += $akum_susut;
                     $t_nilai_buku += $nilai_buku;
+
+                    $tahun_validasi = substr($inv->tgl_validasi, 0, 4);
                 @endphp
                 <tr style="color: rgb({{ $warna }})">
                     <td class="t l b" align="center">{{ $loop->iteration }}</td>
