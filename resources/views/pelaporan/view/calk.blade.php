@@ -355,20 +355,23 @@
                                 <tr>
                                     <td>1. </td>
                                     <td>Kegiatan sosial kemasyarakatan dan bantuan rumah tangga miskin
-                                        {{ $calk[0]['th_lalu'] }}, {{ $calk[0]['th_ini'] }}</td>
+                                        {{ number_format($calk[0]['th_lalu'], 2) }},
+                                        {{ number_format($calk[0]['th_ini'], 2) }}</td>
                                 </tr>
                                 <tr>
                                     <td>2. </td>
                                     <td>
                                         Pengembangan kapasitas kelompok simpan pinjam perempuan/usaha ekonomi produktif
-                                        {{ $calk[1]['th_lalu'] }}, {{ $calk[1]['th_ini'] }}
+                                        {{ number_format($calk[1]['th_lalu'], 2) }},
+                                        {{ number_format($calk[1]['th_ini'], 2) }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>3. </td>
                                     <td>
                                         Pelatihan masyarakat, dan kelompok pemanfaat umum
-                                        {{ $calk[2]['th_lalu'] }}, {{ $calk[2]['th_ini'] }}
+                                        {{ number_format($calk[2]['th_lalu'], 2) }},
+                                        {{ number_format($calk[2]['th_ini'], 2) }}
                                     </td>
                                 </tr>
                             </table>
@@ -379,13 +382,13 @@
                     <div>Laba Ditahan</div>
                     <ol style="list-style: lower-latin;">
                         <li>
-                            Laba Ditahan untuk Peningkatan Modal DBM Usaha Rp. {{ $calk[3]['th_ini'] }}
+                            Laba Ditahan untuk Peningkatan Modal DBM Usaha Rp. {{ number_format($calk[3]['th_ini'], 2) }}
                         </li>
                         <li>
-                            Laba Ditahan untuk Penambahan Investasi Usaha Rp. {{ $calk[4]['th_ini'] }}
+                            Laba Ditahan untuk Penambahan Investasi Usaha Rp. {{ number_format($calk[4]['th_ini'], 2) }}
                         </li>
                         <li>
-                            Laba Ditahan untuk Pendirian Unit Usaha Rp. {{ $calk[5]['th_ini'] }}
+                            Laba Ditahan untuk Pendirian Unit Usaha Rp. {{ number_format($calk[5]['th_ini'], 2) }}
                         </li>
                     </ol>
                 </li>
