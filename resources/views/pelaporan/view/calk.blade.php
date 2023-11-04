@@ -4,6 +4,41 @@
 
     $calk = json_decode($kec->calk, true);
     $peraturan_desa = $calk['peraturan_desa'];
+
+    $calk = [
+        '0' => [
+            'th_lalu' => 0,
+            'th_ini' => 0,
+        ],
+        '1' => [
+            'th_lalu' => 0,
+            'th_ini' => 0,
+        ],
+        '2' => [
+            'th_lalu' => 0,
+            'th_ini' => 0,
+        ],
+        '3' => [
+            'th_lalu' => 0,
+            'th_ini' => 0,
+        ],
+        '4' => [
+            'th_lalu' => 0,
+            'th_ini' => 0,
+        ],
+        '5' => [
+            'th_lalu' => 0,
+            'th_ini' => 0,
+        ],
+    ];
+
+    $i = 0;
+    foreach ($saldo_calk as $_saldo) {
+        $saldo["$i"]['th_lalu'] = intval($_saldo->debit);
+        $saldo["$i"]['th_ini'] = intval($_saldo->kredit);
+
+        $i++;
+    }
 @endphp
 
 @extends('pelaporan.layout.base')
@@ -288,14 +323,28 @@
                         </li>
                         <li>
                             <div>Bagian Desa;</div>
-                            <table style="margin-left: 10px;">
+                            <table style="margin-left: 10px;" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td class="b" colspan="3" align="center">Desa</td>
+                                    <td class="b" align="center">Laba Th Lalu</td>
+                                    <td class="b" align="center">Laba s.d Th Ini</td>
+                                </tr>
+
                                 @foreach ($kec->desa as $desa)
+                                    @php
+                                        $laba_th_lalu = 0;
+                                        $laba_th_ini = 0;
+                                        if ($desa->saldo) {
+                                            $laba_th_lalu = $desa->saldo->debit;
+                                            $laba_th_ini = $desa->saldo->kredit;
+                                        }
+                                    @endphp
                                     <tr>
                                         <td>{{ $loop->iteration }}.</td>
                                         <td>{{ $desa->sebutan_desa->sebutan_desa }} {{ $desa->nama_desa }}</td>
                                         <td>:</td>
-                                        <td width="60" align="right">{{ number_format($desa->laba_th_lalu, 2) }}</td>
-                                        <td width="60" align="right">{{ number_format($desa->laba_saat_ini, 2) }}</td>
+                                        <td width="70" align="right">{{ number_format($laba_th_lalu, 2) }}</td>
+                                        <td width="70" align="right">{{ number_format($laba_th_ini, 2) }}</td>
                                     </tr>
                                 @endforeach
                             </table>
@@ -306,19 +355,20 @@
                                 <tr>
                                     <td>1. </td>
                                     <td>Kegiatan sosial kemasyarakatan dan bantuan rumah tangga miskin
-                                        {{ $calk['D']['1']['d']['1'] }}%</td>
+                                        {{ $calk[0]['th_lalu'] }}, {{ $calk[0]['th_ini'] }}</td>
                                 </tr>
                                 <tr>
                                     <td>2. </td>
                                     <td>
                                         Pengembangan kapasitas kelompok simpan pinjam perempuan/usaha ekonomi produktif
-                                        {{ $calk['D']['1']['d']['2'] }}%
+                                        {{ $calk[1]['th_lalu'] }}, {{ $calk[1]['th_ini'] }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>3. </td>
                                     <td>
-                                        Pelatihan masyarakat, dan kelompok pemanfaat umum {{ $calk['D']['1']['d']['3'] }}%
+                                        Pelatihan masyarakat, dan kelompok pemanfaat umum
+                                        {{ $calk[2]['th_lalu'] }}, {{ $calk[2]['th_ini'] }}
                                     </td>
                                 </tr>
                             </table>
@@ -329,16 +379,13 @@
                     <div>Laba Ditahan</div>
                     <ol style="list-style: lower-latin;">
                         <li>
-                            Laba Ditahan untuk Peningkatan Modal DBM Usaha Rp.
-                            {{ number_format($calk['D']['2']['a'], 2) }}
+                            Laba Ditahan untuk Peningkatan Modal DBM Usaha Rp. {{ $calk[3]['th_ini'] }}
                         </li>
                         <li>
-                            Laba Ditahan untuk Penambahan Investasi Usaha Rp.
-                            {{ number_format($calk['D']['2']['b'], 2) }}
+                            Laba Ditahan untuk Penambahan Investasi Usaha Rp. {{ $calk[4]['th_ini'] }}
                         </li>
                         <li>
-                            Laba Ditahan untuk Pendirian Unit Usaha Rp.
-                            {{ number_format($calk['D']['2']['c'], 2) }}
+                            Laba Ditahan untuk Pendirian Unit Usaha Rp. {{ $calk[5]['th_ini'] }}
                         </li>
                     </ol>
                 </li>

@@ -1,3 +1,8 @@
+@php
+    $calk = json_decode($kec->calk, true);
+    $peraturan_desa = $calk['peraturan_desa'];
+@endphp
+
 <form action="/pengaturan/lembaga/{{ $kec->id }}" method="post" id="FormLembaga">
     @csrf
     @method('PUT')
@@ -58,7 +63,7 @@
                 <small class="text-danger" id="msg_alamat"></small>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="input-group input-group-static my-3">
                 <label for="web_utama">Web Utama</label>
                 <input autocomplete="off" type="text" name="web_utama" id="web_utama" class="form-control"
@@ -66,12 +71,20 @@
                 <small class="text-danger" id="msg_web_utama"></small>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="input-group input-group-static my-3">
                 <label for="web_alternatif">Web Alternatif</label>
                 <input autocomplete="off" type="text" name="web_alternatif" id="web_alternatif" class="form-control"
                     value="{{ $kec->web_alternatif }}" readonly>
                 <small class="text-danger" id="msg_web_alternatif"></small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="input-group input-group-static my-3">
+                <label for="peraturan_desa">Peraturan Desa Nomor</label>
+                <input autocomplete="off" type="text" name="peraturan_desa" id="peraturan_desa"
+                    class="form-control" value="{{ $peraturan_desa }}">
+                <small class="text-danger" id="msg_peraturan_desa"></small>
             </div>
         </div>
     </div>

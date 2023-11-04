@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AdminInvoice;
 use App\Models\AkunLevel1;
+use App\Models\Desa;
 use App\Models\Kecamatan;
 use App\Models\PinjamanAnggota;
 use App\Models\PinjamanKelompok;
@@ -482,6 +483,76 @@ class DashboardController extends Controller
     {
         $tahun = request()->get('tahun') ?: date('Y');
         $bulan = request()->get('bulan') ?: date('m');
+
+        if (Saldo::count() <= 0) {
+            $saldo_desa = [];
+            $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('desa')->first();
+            foreach ($kec->desa as $desa) {
+                $saldo_desa[] = [
+                    'id' => $desa->kd_desa,
+                    'kode_akun' => $desa->kode_desa,
+                    'tahun' => $tahun,
+                    'bulan' => 0,
+                    'debit' => 0,
+                    'kredit' => 0
+                ];
+            }
+
+            Saldo::insert($saldo_desa);
+
+            $_saldo = [
+                [
+                    'id' => 1,
+                    'kode_akun' => $kec->kd_kec,
+                    'tahun' => $tahun,
+                    'bulan' => 0,
+                    'debit' => 0,
+                    'kredit' => 0
+                ],
+                [
+                    'id' => 2,
+                    'kode_akun' => $kec->kd_kec,
+                    'tahun' => $tahun,
+                    'bulan' => 0,
+                    'debit' => 0,
+                    'kredit' => 0
+                ],
+                [
+                    'id' => 3,
+                    'kode_akun' => $kec->kd_kec,
+                    'tahun' => $tahun,
+                    'bulan' => 0,
+                    'debit' => 0,
+                    'kredit' => 0
+                ],
+                [
+                    'id' => 4,
+                    'kode_akun' => $kec->kd_kec,
+                    'tahun' => $tahun,
+                    'bulan' => 0,
+                    'debit' => 0,
+                    'kredit' => 0
+                ],
+                [
+                    'id' => 5,
+                    'kode_akun' => $kec->kd_kec,
+                    'tahun' => $tahun,
+                    'bulan' => 0,
+                    'debit' => 0,
+                    'kredit' => 0
+                ],
+                [
+                    'id' => 6,
+                    'kode_akun' => $kec->kd_kec,
+                    'tahun' => $tahun,
+                    'bulan' => 0,
+                    'debit' => 0,
+                    'kredit' => 0
+                ]
+            ];
+
+            Saldo::insert($_saldo);
+        }
 
         for ($i = 1; $i <= $bulan; $i++) {
             $cek_saldo = Saldo::where([

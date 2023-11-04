@@ -33,6 +33,7 @@ class SopController extends Controller
             'telpon',
             'email',
             'alamat',
+            'peraturan_desa',
         ]);
 
         $validate = Validator::make($data, [
@@ -40,12 +41,31 @@ class SopController extends Controller
             'nomor_badan_hukum' => 'required',
             'telpon' => 'required',
             'email' => 'required',
-            'alamat' => 'required'
+            'alamat' => 'required',
+            'peraturan_desa' => 'required'
         ]);
 
         if ($validate->fails()) {
             return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
         }
+
+        $calk = [
+            'peraturan_desa' => $request->peraturan_desa,
+            "D" => [
+                "1" => [
+                    "d" => [
+                        "1" => 0,
+                        "2" => 0,
+                        "3" => 0
+                    ]
+                ],
+                "2" => [
+                    "a" => 0,
+                    "b" => 0,
+                    "c" => 0
+                ]
+            ]
+        ];
 
         $kecamatan = Kecamatan::where('id', $kec->id)->update([
             'nama_lembaga_sort' => ucwords(strtolower($data['nama_bumdesma'])),
@@ -53,7 +73,8 @@ class SopController extends Controller
             'nomor_bh' => $data['nomor_badan_hukum'],
             'telpon_kec' => $data['telpon'],
             'email_kec' => $data['email'],
-            'alamat_kec' => $data['alamat']
+            'alamat_kec' => $data['alamat'],
+            'calk' => json_encode($calk),
         ]);
 
         Session::put('nama_lembaga', ucwords(strtolower($data['nama_bumdesma'])));

@@ -14,6 +14,7 @@ use App\Models\JenisProdukPinjaman;
 use App\Models\Kecamatan;
 use App\Models\Kelompok;
 use App\Models\Rekening;
+use App\Models\Saldo;
 use App\Models\Transaksi;
 use App\Models\User;
 use App\Utils\Keuangan;
@@ -61,7 +62,7 @@ class PelaporanController extends Controller
         ]);
 
         $request->hari = ($request->hari) ?: 31;
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten', 'desa', 'ttd')->first();
+        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten', 'desa', 'desa.saldo', 'ttd')->first();
         $kab = $kec->kabupaten;
         $dir = User::where([
             ['lokasi', auth()->user()->lokasi],
@@ -513,6 +514,7 @@ class PelaporanController extends Controller
             ['lokasi', auth()->user()->lokasi],
         ])->first();
 
+        $data['saldo_calk'] = Saldo::where('kode_akun', $data['kec']->kd_kec)->get();
         $view = view('pelaporan.view.calk', $data)->render();
 
         if ($data['type'] == 'pdf') {
@@ -1285,6 +1287,44 @@ class PelaporanController extends Controller
         }
     }
 
+    private function e_budgeting(array $data)
+    {
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        if (strlen($hari) > 0 && strlen($bln) > 0) {
+            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
+            $data['tgl'] = Tanggal::tglLatin($tgl);
+        } elseif (strlen($bln) > 0) {
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        } else {
+            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::tahun($tgl);
+        }
+
+        // $data['akun1'] = AkunLevel1::where('lev1', '>=', '4')->with([
+        //     'akun2',
+        //     'akun2.akun3',
+        //     'akun2.akun3.rek',
+        //     'akun2.akun3.rek.kom_saldo' => function ($query) use ($data) {
+        //         $tahun = date('Y', strtotime($data['tgl_kondisi']));
+        //         $query->where('tahun', $tahun)->orderBy('kode_akun', 'ASC')->orderBy('bulan', 'ASC');
+        //     },
+        // ])->get();
+
+        $view = view('pelaporan.view.e_budgeting', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
     public function mou()
     {
         $keuangan = new Keuangan;
@@ -1335,14 +1375,4 @@ class PelaporanController extends Controller
         $pdf = PDF::loadHTML($view)->setPaper('A4', 'potrait');
         return $pdf->stream();
     }
-
-    // public function extractCommonWords($string, $kec)
-    // {
-    //     //
-    // }
-
-    // public function keyword($kec)
-    // {
-    //     return [];
-    // }
 }
