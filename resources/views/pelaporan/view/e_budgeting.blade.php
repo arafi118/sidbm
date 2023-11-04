@@ -1,4 +1,6 @@
 @php
+    use App\Utils\Tanggal;
+
     $pendapatan1 = 0;
     $pendapatan2 = 0;
     $pendapatan3 = 0;
@@ -37,9 +39,11 @@
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 12px;">
             <th rowspan="2" class="t l b" width="30%">Rekening</th>
-            <th colspan="2" class="t l b" width="20%" height="16">Januari</th>
-            <th colspan="2" class="t l b" width="20%">Februari</th>
-            <th colspan="2" class="t l b" width="20%">Maret</th>
+            @foreach ($bulan_tampil as $bt)
+                <th colspan="2" class="t l b" width="20%" height="16">
+                    {{ Tanggal::namaBulan(date('Y') . '-' . $bt . '-01') }}
+                </th>
+            @endforeach
             <th rowspan="2" class="t l b r" width="10%">Total</th>
         </tr>
         <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 12px;">
