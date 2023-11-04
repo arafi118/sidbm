@@ -44,4 +44,14 @@ class Rekening extends Model
     {
         return $this->hasMany(Saldo::class, 'kode_akun', 'kode_akun');
     }
+
+    public function kom_eb()
+    {
+        return $this->hasMany(Ebudgeting::class, 'kode_akun', 'kode_akun');
+    }
+
+    public function eb()
+    {
+        return $this->hasOne(Ebudgeting::class, 'kode_akun', 'kode_akun');
+    }
 }

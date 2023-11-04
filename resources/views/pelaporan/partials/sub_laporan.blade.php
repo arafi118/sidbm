@@ -20,6 +20,18 @@
         </select>
         <small class="text-danger" id="msg_sub_laporan"></small>
     </div>
+@elseif ($file == 14)
+    <div class="my-2">
+        <label class="form-label" for="sub_laporan">Nama Sub Laporan</label>
+        <select class="form-control" name="sub_laporan" id="sub_laporan">
+            @foreach ($data as $dt)
+                <option value="EB_{{ $dt['id'] }}">
+                    {{ $dt['title'] }}
+                </option>
+            @endforeach
+        </select>
+        <small class="text-danger" id="msg_sub_laporan"></small>
+    </div>
 @else
     <div class="my-2">
         <label class="form-label" for="sub_laporan">Nama Sub Laporan</label>

@@ -47,6 +47,29 @@ class PelaporanController extends Controller
             return view('pelaporan.partials.sub_laporan')->with(compact('file', 'jenis_laporan'));
         }
 
+        if ($file == 14) {
+            $data = [
+                0 => [
+                    'title' => '01. Januari - Maret',
+                    'id' => '1,2,3'
+                ],
+                1 => [
+                    'title' => '02. April - Juni',
+                    'id' => '4,5,6'
+                ],
+                2 => [
+                    'title' => '03. Juli - September',
+                    'id' => '7,8,9'
+                ],
+                3 => [
+                    'title' => '04. Oktober - Desember',
+                    'id' => '10,11,12'
+                ]
+            ];
+
+            return view('pelaporan.partials.sub_laporan')->with(compact('file', 'data'));
+        }
+
         return view('pelaporan.partials.sub_laporan')->with(compact('file'));
     }
 
@@ -109,6 +132,13 @@ class PelaporanController extends Controller
         } elseif ($file == 5) {
             $file = $request->sub_laporan;
             $data['laporan'] = $file;
+            return $this->$file($data);
+        } elseif ($file == 14) {
+            $laporan = explode('_', $request->sub_laporan);
+            $file = $laporan[0];
+
+            $data['sub'] = $laporan[1];
+            $data['laporan'] = 'E - Budgeting ';
             return $this->$file($data);
         } else {
             return $this->$file($data);
@@ -1287,33 +1317,45 @@ class PelaporanController extends Controller
         }
     }
 
-    private function e_budgeting(array $data)
+    private function EB(array $data)
     {
         $thn = $data['tahun'];
         $bln = $data['bulan'];
         $hari = $data['hari'];
 
+        $title = [
+            '1,2,3' => 'Januari - Maret',
+            '4,5,6' => 'April - Juni',
+            '7,8,9' => 'Juli - September',
+            '10,11,12' => 'Oktober - Desember'
+        ];
+
         $tgl = $thn . '-' . $bln . '-' . $hari;
         if (strlen($hari) > 0 && strlen($bln) > 0) {
             $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
         } elseif (strlen($bln) > 0) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
         } else {
             $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tahun($tgl);
         }
 
-        // $data['akun1'] = AkunLevel1::where('lev1', '>=', '4')->with([
-        //     'akun2',
-        //     'akun2.akun3',
-        //     'akun2.akun3.rek',
-        //     'akun2.akun3.rek.kom_saldo' => function ($query) use ($data) {
-        //         $tahun = date('Y', strtotime($data['tgl_kondisi']));
-        //         $query->where('tahun', $tahun)->orderBy('kode_akun', 'ASC')->orderBy('bulan', 'ASC');
-        //     },
-        // ])->get();
+        $data['tgl'] = $title[$data['sub']] . ' ' . $thn;
+
+        $bulan = explode(',', $data['sub']);
+        $awal = $bulan[0];
+        $akhir = end($bulan);
+
+        $data['bulan_tampil'] = $bulan;
+        $data['akun1'] = AkunLevel1::where('lev1', '>=', '4')->with([
+            'akun2',
+            'akun2.akun3',
+            'akun2.akun3.rek',
+            'akun2.akun3.rek.kom_saldo' => function ($query) use ($data, $awal, $akhir) {
+                $tahun = date('Y', strtotime($data['tgl_kondisi']));
+                $query->where('tahun', $tahun)->orderBy('bulan', 'ASC')->orderBy('kode_akun', 'ASC');
+            },
+            'akun2.akun3.rek.kom_saldo.eb'
+        ])->get();
 
         $view = view('pelaporan.view.e_budgeting', $data)->render();
 

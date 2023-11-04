@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdminInvoice;
+use App\Models\AkunLevel1;
 use App\Models\Kecamatan;
 use App\Models\TandaTanganLaporan;
 use App\Utils\Pinjaman;
@@ -23,6 +24,18 @@ class SopController extends Controller
         $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('ttd')->first();
 
         return view('sop.index')->with(compact('title', 'kec'));
+    }
+
+    public function coa()
+    {
+        $title = "Chart Of Account (CoA)";
+        $akun1 = AkunLevel1::with([
+            'akun2',
+            'akun2.akun3',
+            'akun2.akun3.rek'
+        ])->get();
+
+        return view('sop.coa')->with(compact('title', 'akun1'));
     }
 
     public function lembaga(Request $request, Kecamatan $kec)

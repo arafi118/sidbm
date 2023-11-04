@@ -33,7 +33,8 @@ if (isset($_POST['copy'])) {
     mysqli_query($koneksi, "CREATE TABLE dbm_laravel.rencana_angsuran_$lokasi LIKE dbm_sidbm.rencana_angsuran_$lokasi");
     mysqli_query($koneksi, "CREATE TABLE dbm_laravel.transaksi_$lokasi LIKE dbm_sidbm.transaksi_$lokasi");
 
-    mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS dbm_laravel.saldo_$lokasi LIKE dbm_sidbm.saldo");
+    mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS dbm_laravel.saldo_$lokasi LIKE dbm_laravel.saldo");
+    mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS dbm_laravel.ebudgeting_$lokasi LIKE dbm_laravel.ebudgeting");
 
     mysqli_query($koneksi, "INSERT dbm_laravel.anggota_$lokasi SELECT * FROM dbm_sidbm.anggota_$lokasi");
     mysqli_query($koneksi, "INSERT dbm_laravel.inventaris_$lokasi SELECT * FROM dbm_sidbm.inventaris_$lokasi");

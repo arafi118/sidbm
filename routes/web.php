@@ -67,6 +67,7 @@ Route::get('/dashboard/pinjaman', [DashboardController::class, 'pinjaman'])->mid
 Route::get('/dashboard/pemanfaat', [DashboardController::class, 'pemanfaat'])->middleware('auth');
 
 Route::get('/pengaturan/sop', [SopController::class, 'index'])->middleware('auth');
+Route::get('/pengaturan/coa', [SopController::class, 'coa'])->middleware('auth');
 Route::get('/pengaturan/ttd_pelaporan', [SopController::class, 'ttdPelaporan'])->middleware('auth');
 Route::get('/pengaturan/ttd_spk', [SopController::class, 'ttdSpk'])->middleware('auth');
 
@@ -155,6 +156,10 @@ Route::get('/transaksi/dokumen/bm/{id}', [TransaksiController::class, 'bm'])->mi
 
 Route::get('/transaksi/dokumen/bkm_angsuran/{id}', [TransaksiController::class, 'bkmAngsuran'])->middleware('auth');
 Route::get('/transaksi/dokumen/bkk_angsuran/{id}', [TransaksiController::class, 'bkkAngsuran'])->middleware('auth');
+
+Route::get('/transaksi/ebudgeting', [TransaksiController::class, 'ebudgeting'])->middleware('auth');
+Route::post('/transaksi/anggaran', [TransaksiController::class, 'formAnggaran'])->middleware('auth');
+Route::post('/transaksi/simpan_anggaran', [TransaksiController::class, 'simpanAnggaran'])->middleware('auth');
 
 Route::resource('/transaksi', TransaksiController::class)->middleware('auth');
 

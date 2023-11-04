@@ -192,7 +192,7 @@
             </li>
             <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#MenuTransaksi"
-                    class="nav-link text-white {{ active('', 'jurnal_umum', 'jurnal_angsuran', 'tutup_buku') }}"
+                    class="nav-link text-white {{ active('', 'jurnal_umum', 'jurnal_angsuran', 'ebudgeting', 'tutup_buku') }}"
                     aria-controls="MenuTransaksi" role="button" aria-expanded="false">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons-round opacity-10">assessment</i>
@@ -212,6 +212,12 @@
                                 href="/transaksi/jurnal_angsuran">
                                 <span class="sidenav-mini-icon"> JA </span>
                                 <span class="sidenav-normal  ms-2  ps-1"> Jurnal Angsuran </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white {{ active('ebudgeting') }}" href="/transaksi/ebudgeting">
+                                <span class="sidenav-mini-icon"> EB </span>
+                                <span class="sidenav-normal  ms-2  ps-1"> E - Budgeting </span>
                             </a>
                         </li>
                         <li class="nav-item">

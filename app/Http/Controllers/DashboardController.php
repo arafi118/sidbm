@@ -482,7 +482,7 @@ class DashboardController extends Controller
     public function sync($lokasi)
     {
         $tahun = request()->get('tahun') ?: date('Y');
-        $bulan = request()->get('bulan') ?: date('m');
+        $bulan = request()->get('bulan') ?: 12;
 
         if (Saldo::count() <= 0) {
             $saldo_desa = [];

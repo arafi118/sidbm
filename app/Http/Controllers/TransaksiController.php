@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AkunLevel1;
+use App\Models\Ebudgeting;
 use App\Models\Inventaris;
 use App\Models\JenisTransaksi;
 use App\Models\Kecamatan;
@@ -53,6 +55,58 @@ class TransaksiController extends Controller
         }
 
         return view('transaksi.jurnal_angsuran.index')->with(compact('title', 'pinkel'));
+    }
+
+    public function ebudgeting()
+    {
+        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
+
+        $title = 'E - Budgeting';
+        return view('transaksi.ebudgeting.index')->with(compact('title', 'kec'));
+    }
+
+    public function formAnggaran(Request $request)
+    {
+        $data = $request->only(['tahun', 'bulan']);
+
+        $validate = Validator::make($data, [
+            'tahun' => 'required',
+            'bulan' => 'required'
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
+        }
+
+        $cek = Ebudgeting::where([
+            ['tahun', $request->tahun],
+            ['bulan', $request->bulan]
+        ])->orderBy('bulan', 'ASC')->orderBy('kode_akun', 'ASC');
+
+        $jumlah = $cek->count();
+
+        if ($jumlah > 0) {
+            $akun1 = AkunLevel1::where('lev1', '>=', '4')->with([
+                'akun2',
+                'akun2.akun3',
+                'akun2.akun3.rek',
+                'akun2.akun3.rek.eb',
+            ])->orderBy('kode_akun', 'ASC')->get();
+        } else {
+            $akun1 = AkunLevel1::where('lev1', '>=', '4')->with([
+                'akun2',
+                'akun2.akun3',
+                'akun2.akun3.rek'
+            ])->orderBy('kode_akun', 'ASC')->get();
+        }
+
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+
+        return response()->json([
+            'success' => true,
+            'view' => view('transaksi.ebudgeting.create')->with(compact('akun1', 'jumlah', 'tahun', 'bulan'))->render()
+        ]);
     }
 
     /**
@@ -529,6 +583,42 @@ class TransaksiController extends Controller
             'idtp' => $idtp,
             'tgl_transaksi' => $tgl_transaksi,
             'view' => $view
+        ]);
+    }
+
+    public function simpanAnggaran(Request $request)
+    {
+        $data = $request->only(['tahun', 'bulan', 'jumlah']);
+        $validate = Validator::make($data, [
+            'tahun' => 'required',
+            'bulan' => 'required'
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
+        }
+
+        $insert = [];
+        foreach ($request->jumlah as $kode_akun => $nominal) {
+            $insert[] = [
+                'kode_akun' => $kode_akun,
+                'tahun' => $request->tahun,
+                'bulan' => $request->bulan,
+                'jumlah' => str_replace(',', '', $nominal)
+            ];
+        }
+
+        Ebudgeting::where([
+            ['tahun', $request->tahun],
+            ['bulan', $request->bulan],
+        ])->delete();
+        Ebudgeting::insert($insert);
+
+        $nama_bulan = Tanggal::namaBulan($request->tahun . '-' . $request->bulan . '-01');
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Rencana Anggaran bulan ' . $nama_bulan . ' berhasil disimpan.'
         ]);
     }
 
