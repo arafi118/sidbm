@@ -290,14 +290,12 @@
                             <div>Bagian Desa;</div>
                             <table style="margin-left: 10px;">
                                 @foreach ($kec->desa as $desa)
-                                    @php
-                                        $laba = $desa->laba_th_lalu + $desa->laba_th_lalu;
-                                    @endphp
                                     <tr>
                                         <td>{{ $loop->iteration }}.</td>
                                         <td>{{ $desa->sebutan_desa->sebutan_desa }} {{ $desa->nama_desa }}</td>
                                         <td>:</td>
-                                        <td>{{ number_format($laba, 2) }}</td>
+                                        <td width="60" align="right">{{ number_format($desa->laba_th_lalu, 2) }}</td>
+                                        <td width="60" align="right">{{ number_format($desa->laba_saat_ini, 2) }}</td>
                                     </tr>
                                 @endforeach
                             </table>
