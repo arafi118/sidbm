@@ -171,10 +171,10 @@
     <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
             <th width="10" align="center">No</th>
-            <th align="center">Nama Anggota</th>
-            <th align="center">Proposal (Rp.)</th>
-            <th align="center">Rekomendasi TV</th>
-            <th align="center">Rekomendasi TP</th>
+            <th width="20%" align="center">Nama Anggota</th>
+            <th width="15%" align="center">Proposal (Rp.)</th>
+            <th width="15%" align="center">Rekom TV</th>
+            <th width="15%" align="center">Rekom TP</th>
             <th align="center">Catatan</th>
         </tr>
 
@@ -199,7 +199,9 @@
                 <td align="right">
                     {!! $pa->status == 'W' || $pa->status == 'A' ? number_format($pa->alokasi) : '&nbsp;' !!}
                 </td>
-                <td align="right">&nbsp;</td>
+                <td align="right">
+                    {{ $pa->catatan_verifikasi }}
+                </td>
             </tr>
         @endforeach
 

@@ -31,6 +31,7 @@ class PinjamanAnggotaController extends Controller
         $pinkel = PinjamanKelompok::where('id', $id_pinkel);
 
         if ($pinkel->count() >= '0') {
+            $pinkel = $pinkel->first();
             $nia = request()->get('id');
 
             $anggota = Anggota::where('id', $nia)->where('nik', request()->get('value'))->first();
@@ -61,14 +62,22 @@ class PinjamanAnggotaController extends Controller
             $jumlah_data_pemanfaat_a = $data_pemanfaat_a->count();
             $data_pemanfaat_a = $data_pemanfaat_a->with('sts', 'kec')->first();
 
+            $catatan = '';
             $enable_alokasi = true;
             if ($jumlah_pinjaman_anggota > 0 || $jumlah_data_pemanfaat > 0) $enable_alokasi = false;
+
+            if ($jumlah_pinjaman_anggota_a > 0) {
+                $catatan = 'Memiliki pinjaman aktif dengan Loan ID. ' . $pinjaman_anggota_a->id_pinkel;
+            }
+
+            if ($pinkel->id == $pinjaman_anggota_a->id_pinkel) $enable_alokasi = false;
 
             $view = view('pinjaman.anggota.register')->with(compact('anggota', 'pinjaman_anggota', 'jumlah_pinjaman_anggota', 'pinjaman_anggota_a', 'jumlah_pinjaman_anggota_a', 'data_pemanfaat', 'jumlah_data_pemanfaat', 'data_pemanfaat_a', 'jumlah_data_pemanfaat_a'))->render();
             return [
                 'nia' => $nia,
                 'enable_alokasi' => $enable_alokasi,
-                'html' => $view
+                'html' => $view,
+                'catatan' => $catatan
             ];
         }
     }
@@ -81,7 +90,8 @@ class PinjamanAnggotaController extends Controller
         $data = $request->only([
             'id_pinkel',
             'nia_pemanfaat',
-            'alokasi_pengajuan'
+            'alokasi_pengajuan',
+            'catatan_pinjaman'
         ]);
 
         $validate = Validator::make($data, [
@@ -122,7 +132,7 @@ class PinjamanAnggotaController extends Controller
             'sistem_angsuran' => $pinkel->sistem_angsuran,
             'sa_jasa' => $pinkel->sa_jasa,
             'status' => $pinkel->status,
-            'catatan_verifikasi' => $pinkel->catatan_verifikasi,
+            'catatan_verifikasi' => $request->catatan_pinjaman,
             'lu' => date('Y-m-d H:i:s'),
             'user_id' => auth()->user()->id,
         ];

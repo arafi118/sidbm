@@ -399,6 +399,7 @@
 
                         <input type="hidden" name="id_pinkel" id="id_pinkel" value="{{ $perguliran->id }}">
                         <input type="hidden" name="nia_pemanfaat" id="nia_pemanfaat">
+                        <input type="hidden" name="catatan_pinjaman" id="catatan_pinjaman">
                         <div class="row">
                             <div class="col-6 mb-3">
                                 <div class="input-group input-group-static">
@@ -689,6 +690,7 @@
                         }
 
                         $('#nia_pemanfaat').val(result.nia)
+                        $('#catatan_pinjaman').val(result.catatan)
                         $('#LayoutTambahPemanfaat').html(result.html)
                     }
                 });

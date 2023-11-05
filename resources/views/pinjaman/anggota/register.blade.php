@@ -50,7 +50,8 @@
             <div class="alert alert-warning text-white" role="alert">
                 <span class="text-sm">
                     Yang bersangkutan memiliki Pinjaman Aktif pada kelompok
-                    <b>{{ $pinjaman_anggota_a->kelompok->nama_kelompok . ' ' . $pinjaman_anggota_a->kelompok->alamat_kelompok }}</b>,
+                    <b>{{ $pinjaman_anggota_a->kelompok->nama_kelompok . ' ' . $pinjaman_anggota_a->kelompok->alamat_kelompok }}
+                        - Loan ID. {{ $pinjaman_anggota_a->id_pinkel }}</b>,
                     dengan alokasi sebesar <b>Rp. {{ number_format($pinjaman_anggota_a->pinkel->alokasi) }}</b>!
                 </span>
             </div>

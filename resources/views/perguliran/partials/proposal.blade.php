@@ -115,7 +115,7 @@
                                     <div class="input-group input-group-static">
                                         <input type="text" class="form-control"
                                             name="catatan[{{ $pinjaman_anggota->id }}]"
-                                            value="{{ $perguliran->catatan_verifikasi }}">
+                                            value="{{ $pinjaman_anggota->catatan_verifikasi }}">
                                     </div>
                                 </td>
                                 <td>
