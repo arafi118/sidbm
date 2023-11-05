@@ -70,10 +70,44 @@
     --bs-highlight-bg: #fcf8e3;
 }
 
-.navbar-vertical .navbar-nav>.nav-item .nav-link.active+.collapse .nav-item .nav-link.active+.collapse .nav-item .nav-link.active,
-.navbar-vertical .navbar-nav>.nav-item .nav-link.active+.collapsing .nav-item .nav-link.active+.collapse .nav-item .nav-link.active {
-    background-image: linear-gradient(195deg, #49a3f1, #1a73e8);
+.sidenav[data-color=primary] .navbar-nav>.nav-item.nav-item-link .nav-link.active {
+    background-image: linear-gradient(195deg, #e91e63, #e91e63);
 }
+
+.sidenav[data-color=secondary] .navbar-nav>.nav-item.nav-item-link .nav-link.active {
+    background-image: linear-gradient(195deg, #7b809a, #7b809a);
+}
+
+.sidenav[data-color=success] .navbar-nav>.nav-item.nav-item-link .nav-link.active {
+    background-image: linear-gradient(195deg, #4caf50, #4caf50);
+}
+
+.sidenav[data-color=info] .navbar-nav>.nav-item.nav-item-link .nav-link.active {
+    background-image: linear-gradient(195deg, #1a73e8, #1a73e8);
+}
+
+.sidenav[data-color=warning] .navbar-nav>.nav-item.nav-item-link .nav-link.active {
+    background-image: linear-gradient(195deg, #fb8c00, #fb8c00);
+}
+
+
+.sidenav[data-color=danger] .navbar-nav>.nav-item.nav-item-link .nav-link.active {
+    background-image: linear-gradient(195deg, #f44335, #f44335);
+}
+
+
+.sidenav[data-color=light] .navbar-nav>.nav-item.nav-item-link .nav-link.active {
+    background-image: linear-gradient(195deg, #f0f2f5, #f0f2f5);
+}
+
+.sidenav[data-color=dark] .navbar-nav>.nav-item.nav-item-link .nav-link.active+.collapse .nav-item.active .nav-link.active {
+    background-image: linear-gradient(195deg, #344767, #344767);
+}
+
+.sidenav[data-color=white] .navbar-nav>.nav-item.nav-item-link .nav-link.active+.collapse .nav-item.active .nav-link.active {
+    background-image: linear-gradient(195deg, #fff, #fff);
+}
+
 
 .navbar-brand {
     white-space: wrap;
