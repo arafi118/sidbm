@@ -199,7 +199,7 @@
                 <td align="right">
                     {!! $pa->status == 'W' || $pa->status == 'A' ? number_format($pa->alokasi) : '&nbsp;' !!}
                 </td>
-                <td align="right">
+                <td>
                     {{ $pa->catatan_verifikasi }}
                 </td>
             </tr>
