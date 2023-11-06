@@ -1319,6 +1319,7 @@ class PelaporanController extends Controller
 
     private function EB(array $data)
     {
+        $keuangan = new Keuangan;
         $thn = $data['tahun'];
         $bln = $data['bulan'];
         $hari = $data['hari'];
@@ -1358,6 +1359,7 @@ class PelaporanController extends Controller
             'akun2.akun3.rek.kom_saldo.eb'
         ])->get();
 
+        $data['keuangan'] = $keuangan;
         $view = view('pelaporan.view.e_budgeting', $data)->render();
 
         if ($data['type'] == 'pdf') {

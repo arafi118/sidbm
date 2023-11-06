@@ -27,7 +27,8 @@
                     <b>LAPORAN PENGGUNAAN DANA (E-BUDGETING)</b>
                 </div>
                 <div style="font-size: 16px;">
-                    <b style="text-transform: uppercase;">Triwulan {{ str_pad($triwulan, '2', '0', STR_PAD_LEFT) }} Tahun
+                    <b style="text-transform: uppercase;">Triwulan
+                        {{ $keuangan->romawi(str_pad($triwulan, '2', '0', STR_PAD_LEFT)) }} Tahun
                         Anggaran {{ $tahun }}</b>
                 </div>
             </td>
@@ -96,7 +97,7 @@
 
                             @foreach ($rek->kom_saldo as $saldo)
                                 @php
-                                    if ($bulan_lalu != 0 && $_saldo != 0) {
+                                    if ($bulan_lalu != 0 && $saldo_bula_lalu != 0) {
                                         $saldo_bula_lalu = $_saldo;
                                     }
 
