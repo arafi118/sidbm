@@ -1346,6 +1346,7 @@ class PelaporanController extends Controller
         $akhir = end($bulan);
 
         $data['bulan_tampil'] = $bulan;
+        $data['triwulan'] = array_search($data['sub'], array_keys($title)) + 1;
         $data['akun1'] = AkunLevel1::where('lev1', '>=', '4')->with([
             'akun2',
             'akun2.akun3',

@@ -27,7 +27,7 @@
                     <b>LAPORAN PENGGUNAAN DANA (E-BUDGETING)</b>
                 </div>
                 <div style="font-size: 16px;">
-                    <b>TAHUN ANGGARAN {{ $tahun }}</b>
+                    <b>Triwulan {{ str_pad($triwulan, '2', '0', STR_PAD_LEFT) }} Tahun Anggaran {{ $tahun }}</b>
                 </div>
             </td>
         </tr>
