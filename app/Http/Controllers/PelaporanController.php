@@ -505,7 +505,7 @@ class PelaporanController extends Controller
         $tgl = $thn . '-' . $bln . '-' . $hari;
         if (strlen($hari) > 0 && strlen($bln) > 0) {
             $data['tgl'] = Tanggal::tglLatin($tgl);
-            $data['nama_tgl'] = 'Tanggal ' . $hari . ' Bulan ' . Tanggal::namaBulan($bln) . ' Tahun ' . $thn;
+            $data['nama_tgl'] = 'Tanggal ' . $hari . ' Bulan ' . Tanggal::namaBulan($tgl) . ' Tahun ' . $thn;
         } elseif (strlen($bln) > 0) {
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['nama_tgl'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' Tahun ' . $thn;
