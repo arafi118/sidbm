@@ -97,8 +97,8 @@
 
                             @foreach ($rek->kom_saldo as $saldo)
                                 @php
-                                    if ($bulan_lalu != 0 && $saldo_bula_lalu != 0) {
-                                        $saldo_bula_lalu = $_saldo;
+                                    if ($bulan_lalu != 0) {
+                                        $saldo_bula_lalu = $saldo_lalu;
                                     }
 
                                     $bulan_lalu = $saldo->bulan;
@@ -113,7 +113,7 @@
                                     }
 
                                     $t_rencana += $rencana;
-
+                                    $saldo_lalu = $_saldo;
                                 @endphp
 
                                 @if (in_array($saldo->bulan, $bulan_tampil))
