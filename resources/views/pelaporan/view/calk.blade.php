@@ -44,6 +44,12 @@
 @extends('pelaporan.layout.base')
 
 @section('content')
+    <style>
+        ol,
+        ul {
+            margin-left: unset;
+        }
+    </style>
     <table border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
             <td colspan="3" align="center">
@@ -136,61 +142,81 @@
                     <td style="padding: 0px; 4px;">:</td>
                     <td style="padding: 0px; 4px;">{{ $bend->namadepan . ' ' . $bend->namabelakang }}</td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <td style="padding: 0px; 4px;">Unit Usaha</td>
                     <td style="padding: 0px; 4px;">:</td>
                     <td style="padding: 0px; 4px;">.................................</td>
-                </tr>
+                </tr> --}}
             </table>
             </p>
         </li>
-        <li>
+        <li style="margin-top: 12px;">
             <div style="text-transform: uppercase;">
                 Ikhtisar Kebijakan Akutansi
             </div>
             <ol>
-                <li>Pernyataan Kepatuhan</li>
                 <li>
-                    Laporan keuangan disusun menggunakan Standar Akuntansi Keuangan
-                    Perusahaan Jasa Keuangan
-                </li>
-                <li>Dasar Penyusunan Kepmendesa 136 Tahun 2022</li>
-                <li>
-                    Dasar penyusunan laporan keuangan adalah biaya historis dan
-                    menggunakan asumsi dasar akrual. Mata uang penyajian yang digunakan untuk menyusun laporan
-                    keuangan ini adalah Rupiah.
-                </li>
-                <li>Piutang Usaha</li>
-                <li>
-                    Piutang usaha disajikan sebesar jumlah saldo pinjaman dikurangi
-                    dengan cadangan kerugian pinjaman
-                </li>
-                <li>Aset Tetap (berwujud dan tidak berwujud)</li>
-                <li>
-                    Aset tetap dicatat sebesar biaya perolehannya jika aset
-                    tersebut dimiliki secara hukum oleh Bumdesma Lkd Aset
-                    tetap disusutkan menggunakan metode garis lurus tanpa nilai residu.
-                </li>
-                <li>Pengakuan Pendapatan dan Beban</li>
-                <li>
-                    Jasa piutang kelompok dan lembaga lain yang sudah memasuki
-                    jatuh tempo pembayaran diakui sebagai pendapatan meskipun tidak diterbitkan kuitansi sebagai
-                    bukti pembayaran jasa piutang. Sedangkan denda keterlambatan pembayaran/pinalti diakui
-                    sebagai pendapatan pada saat diterbitkan kuitansi pembayaran.
+                    Pernyataan Kepatuhan
+                    <ol style="list-style: lower-alpha;">
+                        <li>
+                            Laporan keuangan disusun menggunakan Standar Akuntansi Keuangan
+                            Perusahaan Jasa Keuangan
+                        </li>
+                        <li>Dasar Penyusunan Kepmendesa 136 Tahun 2022</li>
+                        <li>
+                            Dasar penyusunan laporan keuangan adalah biaya historis dan
+                            menggunakan asumsi dasar akrual. Mata uang penyajian yang digunakan untuk menyusun laporan
+                            keuangan ini adalah Rupiah.
+                        </li>
+                    </ol>
                 </li>
                 <li>
-                    Adapun kewajiban bayar atas kebutuhan operasional, pemasaran
-                    maupun non operasional pada suatu periode operasi tertentu sebagai akibat
-                    telah menikmati manfaat/menerima fasilitas, maka hal tersebut sudah wajib diakui
-                    sebagai beban meskipun belum diterbitkan kuitansi pembayaran.
+                    Piutang Usaha
+                    <ol style="list-style: lower-alpha;">
+                        <li>
+                            Piutang usaha disajikan sebesar jumlah saldo pinjaman dikurangi
+                            dengan cadangan kerugian pinjaman
+                        </li>
+                    </ol>
                 </li>
-                <li>Pajak Penghasilan</li>
                 <li>
-                    Pajak Penghasilan mengikuti ketentuan perpajakan yang berlaku di Indonesia
+                    Aset Tetap (berwujud dan tidak berwujud)
+                    <ol style="list-style: lower-alpha">
+                        <li>
+                            Aset tetap dicatat sebesar biaya perolehannya jika aset
+                            tersebut dimiliki secara hukum oleh Bumdesma Lkd Aset
+                            tetap disusutkan menggunakan metode garis lurus tanpa nilai residu.
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    Pengakuan Pendapatan dan Beban
+                    <ol style="list-style: lower-alpha;">
+                        <li>
+                            Jasa piutang kelompok dan lembaga lain yang sudah memasuki
+                            jatuh tempo pembayaran diakui sebagai pendapatan meskipun tidak diterbitkan kuitansi sebagai
+                            bukti pembayaran jasa piutang. Sedangkan denda keterlambatan pembayaran/pinalti diakui
+                            sebagai pendapatan pada saat diterbitkan kuitansi pembayaran.
+                        </li>
+                        <li>
+                            Adapun kewajiban bayar atas kebutuhan operasional, pemasaran
+                            maupun non operasional pada suatu periode operasi tertentu sebagai akibat
+                            telah menikmati manfaat/menerima fasilitas, maka hal tersebut sudah wajib diakui
+                            sebagai beban meskipun belum diterbitkan kuitansi pembayaran.
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    Pajak Penghasilan
+                    <ol style="list-style: lower-alpha;">
+                        <li>
+                            Pajak Penghasilan mengikuti ketentuan perpajakan yang berlaku di Indonesia
+                        </li>
+                    </ol>
                 </li>
             </ol>
         </li>
-        <li>
+        <li style="margin-top: 12px;">
             <div style="text-transform: uppercase;">
                 Informasi Tambahan Laporan Keuangan
             </div>
@@ -304,7 +330,7 @@
                 </table>
             </div>
         </li>
-        <li>
+        <li style="margin-top: 12px;">
             <div style="text-transform: uppercase;">
                 Ketentuan Pembagian Laba Usaha
             </div>
@@ -326,9 +352,9 @@
                             <table style="margin-left: 10px;" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td class="b" colspan="3" align="center">Desa</td>
-                                    <td class="b" align="center">Laba Th Lalu</td>
-                                    <td class="b" align="center">Laba Th Ini</td>
-                                    <td class="b" align="center">Laba s.d Th Ini</td>
+                                    <td class="b" align="center">s/d Tahun lalu</td>
+                                    <td class="b" align="center">Tahun ini</td>
+                                    <td class="b" align="center">s/d Tahun Ini</td>
                                 </tr>
 
                                 @foreach ($kec->desa as $desa)
@@ -353,31 +379,24 @@
                             </table>
                         </li>
                         <li>
-                            <div>Bagian milik bersama masyarakat Desa digunakan untuk:</div>
-                            <table style="margin-left: 10px;">
-                                <tr>
-                                    <td>1. </td>
-                                    <td>Kegiatan sosial kemasyarakatan dan bantuan rumah tangga miskin
-                                        {{ number_format($calk[0]['th_lalu'], 2) }},
-                                        {{ number_format($calk[0]['th_ini'], 2) }}</td>
-                                </tr>
-                                <tr>
-                                    <td>2. </td>
-                                    <td>
-                                        Pengembangan kapasitas kelompok simpan pinjam perempuan/usaha ekonomi produktif
-                                        {{ number_format($calk[1]['th_lalu'], 2) }},
-                                        {{ number_format($calk[1]['th_ini'], 2) }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3. </td>
-                                    <td>
-                                        Pelatihan masyarakat, dan kelompok pemanfaat umum
-                                        {{ number_format($calk[2]['th_lalu'], 2) }},
-                                        {{ number_format($calk[2]['th_ini'], 2) }}
-                                    </td>
-                                </tr>
-                            </table>
+                            Bagian milik bersama masyarakat Desa digunakan untuk:
+                            <ol>
+                                <li>
+                                    Kegiatan sosial kemasyarakatan dan bantuan rumah tangga miskin
+                                    {{ number_format($calk[0]['th_lalu'], 2) }},
+                                    {{ number_format($calk[0]['th_ini'], 2) }}
+                                </li>
+                                <li>
+                                    Pengembangan kapasitas kelompok simpan pinjam perempuan/usaha ekonomi produktif
+                                    {{ number_format($calk[1]['th_lalu'], 2) }},
+                                    {{ number_format($calk[1]['th_ini'], 2) }}
+                                </li>
+                                <li>
+                                    Pelatihan masyarakat, dan kelompok pemanfaat umum
+                                    {{ number_format($calk[2]['th_lalu'], 2) }},
+                                    {{ number_format($calk[2]['th_ini'], 2) }}
+                                </li>
+                            </ol>
                         </li>
                     </ol>
                 </li>
@@ -397,7 +416,7 @@
                 </li>
             </ol>
         </li>
-        <li>
+        <li style="margin-top: 12px;">
             <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
                 <tr>
                     <td align="justify">
