@@ -269,7 +269,7 @@ class Keuangan
             $sum_jasa = 0;
             $saldo_pokok = $pinkel->alokasi;
             $saldo_jasa = 0;
-            if ($pinkel->pros_jasa >= 0) {
+            if ($pinkel->pros_jasa > 0) {
                 $saldo_jasa = $pinkel->alokasi / $pinkel->pros_jasa;
             }
             if ($pinkel->saldo) {
