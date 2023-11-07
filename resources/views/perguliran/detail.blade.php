@@ -666,7 +666,8 @@
                     var resultList = result.map(function(item) {
                         states.push({
                             "id": item.id,
-                            "name": item.namadepan + ' [' + item.nik + ']',
+                            "name": item.namadepan + ' [' + item.nik + ']' + '[' + item
+                                .alamat + ']',
                             "value": item.nik,
                             "id_pinkel": '{{ $perguliran->id }}'
                         });
