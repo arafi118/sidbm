@@ -16,7 +16,7 @@
                 </h5>
 
                 <div class="text-muted">
-                    {{ $anggota->nik }}
+                    {{ $anggota->nik }} ({{ $anggota->id }})
                 </div>
 
                 @if ($umur->m == 0)
