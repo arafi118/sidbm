@@ -160,7 +160,8 @@
         </tr>
         <tr>
             <td colspan="6" height="20">
-                Catatan Verifikasi
+                Catatan Verifikasi :
+                <div>{{ $pinkel->catatan_verifikasi }}</div>
             </td>
         </tr>
     </table>
