@@ -29,8 +29,8 @@
 
     $jum_angsuran = $pinkel->jangka / $pinkel->sis_pokok->sistem;
 
-    $pokok_bulan_depan = $target_pokok;
-    $jasa_bulan_depan = $target_jasa;
+    $pokok_bulan_depan = $wajib_pokok;
+    $jasa_bulan_depan = $wajib_jasa;
     if ($angsuran_ke >= $jum_angsuran) {
         $pokok_bulan_depan = $pinkel->alokasi - $real->sum_pokok;
         $jasa_bulan_depan = ($pinkel->alokasi * $pinkel->pros_jasa) / 100 - $real->sum_jasa;
