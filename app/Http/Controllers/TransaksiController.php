@@ -964,8 +964,10 @@ class TransaksiController extends Controller
         $tgl = $thn . '-' . $bln . '-' . $hari;
         if (strlen($hari) > 0 && strlen($bln) > 0) {
             $tgl = $thn . '-' . $bln . '-' . $hari;
+            $data['judul'] = 'Laporan Harian';
             $data['sub_judul'] = 'Tanggal ' . $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $awal_bulan = $tgl;
+            $data['tgl'] = Tanggal::tglLatin($tgl);
+            $awal_bulan = date('Y-m-d', strtotime('-1 day', strtotime($tgl)));
         } elseif (strlen($bln) > 0) {
             $tgl = $thn . '-' . $bln;
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);

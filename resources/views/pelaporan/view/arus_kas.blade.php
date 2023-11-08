@@ -136,15 +136,24 @@
             @endif
         @endforeach
 
-        <tr style="background: rgb(100, 100, 100)">
-            <td align="center">&nbsp;</td>
-            <td>Kenaikan (Penurunan) Kas</td>
-            <td align="right">{{ number_format($total1 + $total2 + $total3, 2) }}</td>
-        </tr>
-        <tr style="background: rgb(100, 100, 100)">
-            <td align="center">&nbsp;</td>
-            <td>SALDO AKHIR KAS SETARA KAS</td>
-            <td align="right">{{ number_format($total1 + $total2 + $total3 + $saldo_bulan_lalu, 2) }}</td>
+        <tr>
+            <td colspan="3" style="padding: 0px !important;">
+                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 11px;">
+                    <tr style="background: rgb(100, 100, 100)">
+                        <td width="5%" align="center">&nbsp;</td>
+                        <td width="80%">Kenaikan (Penurunan) Kas</td>
+                        <td width="15%" align="right">{{ number_format($total1 + $total2 + $total3, 2) }}</td>
+                    </tr>
+                    <tr style="background: rgb(100, 100, 100)">
+                        <td align="center">&nbsp;</td>
+                        <td>SALDO AKHIR KAS SETARA KAS</td>
+                        <td align="right">{{ number_format($total1 + $total2 + $total3 + $saldo_bulan_lalu, 2) }}</td>
+                    </tr>
+                </table>
+
+                {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
+            </td>
         </tr>
     </table>
 @endsection
