@@ -8,10 +8,10 @@
     $target_pokok = 0;
     $target_jasa = 0;
     $angsuran_ke = 0;
-    if ($ra) {
-        $target_pokok = $ra->target_pokok;
-        $target_jasa = $ra->target_jasa;
-        $angsuran_ke = $ra->angsuran_ke;
+    if ($ra_bulan_ini) {
+        $target_pokok = $ra_bulan_ini->target_pokok;
+        $target_jasa = $ra_bulan_ini->target_jasa;
+        $angsuran_ke = $ra_bulan_ini->angsuran_ke;
     }
 
     $tunggakan_pokok = $target_pokok - $real->sum_pokok;

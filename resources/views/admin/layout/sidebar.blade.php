@@ -51,7 +51,7 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link text-white {{ active('provinsi') }}" href="/master/provinsi">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">note_add</i>
@@ -66,7 +66,7 @@
                     </div>
                     <span class="nav-link-text ms-1">Kabupaten</span>
                 </a>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a class="nav-link text-white {{ active('kecamatan') }}" href="/master/kecamatan">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -120,7 +120,7 @@
                 </div>
             </li>
 
-            <li class="nav-item mt-3">
+            {{-- <li class="nav-item mt-3">
                 <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder text-white">Laporan</h6>
             </li>
             <li class="nav-item">
@@ -130,7 +130,7 @@
                     </div>
                     <span class="nav-link-text ms-1">Laporan</span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </div>
 </nav>

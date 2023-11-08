@@ -38,6 +38,8 @@ Route::group(['prefix' => 'master', 'as' => 'master.'], function () {
 
     Route::resource('/users', AdminUserController::class)->middleware('master');
 
+    Route::get('/kecamatan', [AdminController::class, 'kecamatan'])->middleware('master');
+
     Route::get('/buat_invoice', [InvoiceController::class, 'index'])->middleware('master');
     Route::get('/nomor_invoice', [InvoiceController::class, 'InvoiceNo'])->middleware('master');
     Route::get('/jumlah_tagihan', [InvoiceController::class, 'Tagihan'])->middleware('master');
@@ -163,9 +165,9 @@ Route::post('/transaksi/simpan_anggaran', [TransaksiController::class, 'simpanAn
 
 Route::resource('/transaksi', TransaksiController::class)->middleware('auth');
 
-Route::get('/pelaporan', [PelaporanController::class, 'index'])->middleware('auth');
-Route::get('/pelaporan/sub_laporan/{file}', [PelaporanController::class, 'subLaporan'])->middleware('auth');
-Route::post('/pelaporan/preview', [PelaporanController::class, 'preview'])->middleware('auth');
+Route::get('/pelaporan', [PelaporanController::class, 'index'])->middleware('basic');
+Route::get('/pelaporan/sub_laporan/{file}', [PelaporanController::class, 'subLaporan'])->middleware('basic');
+Route::post('/pelaporan/preview', [PelaporanController::class, 'preview'])->middleware('basic');
 
 Route::get('/pelaporan/mou', [PelaporanController::class, 'mou'])->middleware('auth');
 Route::get('/pelaporan/ts', [PelaporanController::class, 'ts'])->middleware('auth');
