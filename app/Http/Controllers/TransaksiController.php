@@ -1122,7 +1122,7 @@ class TransaksiController extends Controller
         $data['ra_bulan_ini'] = RencanaAngsuran::where([
             ['loan_id', $data['real']->loan_id],
             ['jatuh_tempo', '<=', date('Y-m-t', strtotime($data['real']->tgl_transaksi))]
-        ])->orderBy('jatuh_tempo', 'ASC')->first();
+        ])->orderBy('jatuh_tempo', 'DESC')->first();
         $data['pinkel'] = PinjamanKelompok::where('id', $data['real']->loan_id)->with([
             'kelompok',
             'kelompok.d',
