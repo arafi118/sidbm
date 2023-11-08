@@ -581,6 +581,27 @@
         </div>
     </div>
 
+    {{-- Modal Pinjaman Anggota --}}
+    <div class="modal fade" id="PinjamanAnggota" tabindex="-1" aria-labelledby="PinjamanAnggotaLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="PinjamanAnggotaLabel">
+                        Detail Pemanfaat
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="LayoutPinjamanAnggota"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <form action="/perguliran/{{ $perguliran->id }}" method="post" id="FormDeleteProposal">
         @csrf
         @method('DELETE')
@@ -911,6 +932,55 @@
                             }
                         }
                     })
+                }
+            })
+        })
+
+        $(document).on('click', '.btn-click', function(e) {
+            e.preventDefault()
+
+            var id = $(this).attr('data-id')
+            $.get('/pinjaman_anggota/' + id, function(result) {
+                if (result.success) {
+                    $('#LayoutPinjamanAnggota').html(result.view)
+
+                    $('#PinjamanAnggota').modal('show')
+                }
+            })
+        })
+
+        $(document).on('click', '#Pelunasan', function(e) {
+            e.preventDefault()
+
+            Swal.fire({
+                title: 'Peringatan',
+                text: 'Anda yakin ingin melakukan pelunasan pinjaman untuk pemanfaat ini?',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Lunaskan',
+                cancelButtonText: 'Batal',
+                icon: 'warning'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#formPelunasanPemanfaat')
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        success: function(result) {
+                            if (result.success) {
+                                Swal.fire('Berhasil', result.msg, 'success').then(() => {
+                                    $.get('/perguliran/{{ $perguliran->id }}',
+                                        function(result) {
+                                            $('#layout').html(result)
+                                        })
+
+                                    $('#PinjamanAnggota').modal('hide')
+                                })
+                            }
+                        }
+                    })
+                } else {
+                    $('#PinjamanAnggota').modal('hide')
                 }
             })
         })

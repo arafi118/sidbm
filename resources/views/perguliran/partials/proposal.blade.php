@@ -71,8 +71,8 @@
             <hr class="horizontal dark">
 
             <div class="table-responsive">
-                <table class="table align-items-center mb-0" width="100%">
-                    <thead>
+                <table class="table table-striped align-items-center mb-0" width="100%">
+                    <thead class="bg-dark text-white">
                         <tr>
                             <th>#</th>
                             <th>Nama</th>
@@ -91,7 +91,7 @@
                                 $proposal += $pinjaman_anggota->proposal;
                             @endphp
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td align="center">{{ $loop->iteration }}</td>
                                 <td>
                                     {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
                                     ({{ $pinjaman_anggota->nia }})
@@ -124,20 +124,6 @@
                                             class="btn btn-icon btn-sm btn-danger HapusPinjamanAnggota">
                                             <i class="fas fa-trash"></i>
                                         </button>
-                                        {{-- <button type="button"
-                                            class="btn btn-icon btn-sm btn-success dropdown-toggle dropdown-toggle-split"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="fas fa-th"></i>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="#">Action</a></li>
-                                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
-                                            <li><a class="dropdown-item" href="#">Separated link</a></li>
-                                        </ul> --}}
                                     </div>
                                 </td>
                             </tr>

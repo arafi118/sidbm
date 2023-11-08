@@ -199,8 +199,8 @@
             <hr class="horizontal dark">
 
             <div class="table-responsive">
-                <table class="table align-items-center mb-0" width="100%">
-                    <thead>
+                <table class="table table-striped align-items-center mb-0" width="100%">
+                    <thead class="bg-dark text-white">
                         <tr>
                             <th>#</th>
                             <th>Nama</th>
@@ -222,7 +222,7 @@
                                 $alokasi += $pinjaman_anggota->alokasi;
                             @endphp
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td align="center">{{ $loop->iteration }}</td>
                                 <td>
                                     {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
                                     ({{ $pinjaman_anggota->nia }})

@@ -129,6 +129,8 @@ Route::get('/hapus_pemanfaat/{id}', [PinjamanAnggotaController::class, 'hapus'])
 
 Route::resource('/pinjaman_anggota', PinjamanAnggotaController::class)->middleware('auth');
 
+Route::post('/lunaskan_pemanfaat/{pinjaman}', [PinjamanAnggotaController::class, 'lunaskan'])->middleware('auth');
+
 Route::get('/transaksi/jurnal_umum', [TransaksiController::class, 'jurnalUmum'])->middleware('auth');
 Route::get('/transaksi/jurnal_angsuran', [TransaksiController::class, 'jurnalAngsuran'])->middleware('auth');
 Route::get('/trasaksi/saldo/{kode_akun}', [TransaksiController::class, 'saldo'])->middleware('auth');

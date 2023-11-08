@@ -157,7 +157,14 @@ class PinjamanAnggotaController extends Controller
      */
     public function show(PinjamanAnggota $pinjaman_anggotum)
     {
-        //
+        $pinj = PinjamanAnggota::where('id', $pinjaman_anggotum->id)->with([
+            'anggota'
+        ])->first();
+
+        return response()->json([
+            'success' => true,
+            'view' => view('pinjaman.anggota.detail')->with(compact('pinj'))->render()
+        ]);
     }
 
     public function cariPemanfaat()
@@ -216,6 +223,20 @@ class PinjamanAnggotaController extends Controller
         return response()->json([
             'jumlah' => number_format($jumlah, 2)
         ], Response::HTTP_ACCEPTED);
+    }
+
+    public function lunaskan(Request $request, PinjamanAnggota $pinjaman)
+    {
+        $data = $request->only(['id_pinkel']);
+
+        $pinj = PinjamanAnggota::where('id', $pinjaman->id)->update([
+            'status' => 'L'
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Sekarang pemanfaat atas nama ' . $pinjaman->anggota->namadepan . ' telah berstatus L (Lunas) dan dapat melakukan pencairan pinjaman lagi.'
+        ]);
     }
 
     /**
