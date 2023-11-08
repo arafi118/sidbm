@@ -6,7 +6,7 @@
     $tgl = $pinkel->tgl_proposal;
     $tanggal = 'Tanggal Proposal';
     if (Request::get('status') == 'A') {
-        $alokasi = $pinkel->alokasi;
+        $alokasi = $pinkel->pinjaman_anggota_sum_alokasi;
         $tgl = $pinkel->tgl_cair;
         $tanggal = 'Tanggal Cair';
     }
@@ -110,16 +110,16 @@
                 <td class="l" align="center">{{ Tanggal::tglIndo($ra->jatuh_tempo) }}</td>
                 <td class="l" align="right">{{ number_format($ra->wajib_pokok) }}</td>
                 <td class="l" align="right">{{ number_format($ra->wajib_jasa) }}</td>
+                <td class="l" align="right">{{ number_format($wajib_angsur) }}</td>
                 <td class="l" align="right">{{ number_format($jumlah_angsuran) }}</td>
-                <td class="l" align="right">{{ number_format($ra->target_pokok) }}</td>
                 <td class="l" align="right">{{ number_format($saldo_pokok) }}</td>
                 <td class="l r" align="right">{{ number_format($saldo_jasa) }}</td>
             </tr>
         @endforeach
         <tr style="font-weight: bold;">
             <td class="l t b" height="15" align="center" colspan="2">Jumlah</td>
-            <td class="l t b" align="right">{{ number_format($pinkel->alokasi) }}</td>
-            <td class="l t b" align="right">{{ number_format(($pinkel->alokasi * $pinkel->pros_jasa) / 100) }}</td>
+            <td class="l t b" align="right">{{ number_format($alokasi) }}</td>
+            <td class="l t b" align="right">{{ number_format(($alokasi * $pinkel->pros_jasa) / 100) }}</td>
             <td class="l t b" align="right">{{ number_format($jumlah_angsuran) }}</td>
             <td class="l t b" align="right">{{ number_format($ra->target_pokok) }}</td>
             <td class="l t b" align="right">{{ number_format($saldo_pokok) }}</td>
