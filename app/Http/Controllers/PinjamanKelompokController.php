@@ -337,7 +337,9 @@ class PinjamanKelompokController extends Controller
             'sis_jasa',
             'jpp',
             'jasa',
-            'pinjaman_anggota',
+            'pinjaman_anggota' => function ($query) {
+                $query->where('status', '!=', 'H');
+            },
             'pinjaman_anggota.anggota',
             'pinjaman_anggota.anggota.pemanfaat' => function ($query) {
                 $query->where([
@@ -1360,7 +1362,11 @@ class PinjamanKelompokController extends Controller
             'kelompok',
             'sis_pokok',
             'jasa'
-        ])->first();
+        ])->withSum([
+            'pinjaman_anggota' => function ($query) {
+                $query->where('status', '!=', 'H');
+            }
+        ], 'alokasi')->first();
 
         $data['dir'] = User::where([
             ['level', '1'],
@@ -1757,7 +1763,11 @@ class PinjamanKelompokController extends Controller
     public function generate($id_pinj)
     {
         $rencana = [];
-        $pinkel = PinjamanKelompok::where('id', $id_pinj)->firstOrFail();
+        $pinkel = PinjamanKelompok::where('id', $id_pinj)->withSum([
+            'pinjaman_anggota' => function ($query) {
+                $query->where('status', '!=', 'H');
+            }
+        ], 'alokasi')->firstOrFail();
 
         $jangka = $pinkel->jangka;
         $sa_pokok = $pinkel->sistem_angsuran;
@@ -1774,7 +1784,7 @@ class PinjamanKelompokController extends Controller
             $alokasi = $pinkel->alokasi;
             $tgl = $pinkel->tgl_tunggu;
         } else {
-            $alokasi = $pinkel->alokasi;
+            $alokasi = $pinkel->pinjaman_anggota_sum_alokasi;
             $tgl = $pinkel->tgl_cair;
         }
 
@@ -1790,7 +1800,7 @@ class PinjamanKelompokController extends Controller
                 $alokasi = $pinkel->alokasi;
                 $tgl = $pinkel->tgl_tunggu;
             } else {
-                $alokasi = $pinkel->alokasi;
+                $alokasi = $pinkel->pinjaman_anggota_sum_alokasi;
                 $tgl = $pinkel->tgl_cair;
             }
         }
