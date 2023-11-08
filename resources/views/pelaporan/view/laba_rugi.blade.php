@@ -270,7 +270,6 @@
                     </tr>
                 </table>
 
-                <div style="margin-top: 24px;"></div>
                 {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
             </td>
         </tr>
