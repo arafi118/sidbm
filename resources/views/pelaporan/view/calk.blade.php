@@ -113,7 +113,7 @@
                 KEPALA DESA
                 NOMOR {{ $peraturan_desa }} dan mendapatkan Sertifikat Badan Hukum dari Menteri Hukum dan Hak
                 Asasi Manusia
-                No. {{ $kec->nomor_bh }} tanggal ............. . {{ $kec->nama_lembaga_sort }}
+                No. {{ $kec->nomor_bh }}. {{ $kec->nama_lembaga_sort }}
                 menjalankan usaha
                 pinjaman Dana Bergulir Masyarakat yang masuk dalam kategori usaha mikrofinance dan berdomisili
                 di {{ $kec->nama_kec }}
