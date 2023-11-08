@@ -8,7 +8,11 @@
     $target_pokok = 0;
     $target_jasa = 0;
     $angsuran_ke = 0;
+    $wajib_pokok = 0;
+    $wajib_jasa = 0;
     if ($ra_bulan_ini) {
+        $wajib_pokok = $ra_bulan_ini->wajib_pokok;
+        $wajib_jasa = $ra_bulan_ini->wajib_jasa;
         $target_pokok = $ra_bulan_ini->target_pokok;
         $target_jasa = $ra_bulan_ini->target_jasa;
         $angsuran_ke = $ra_bulan_ini->angsuran_ke;
