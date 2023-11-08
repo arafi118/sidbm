@@ -121,7 +121,7 @@
             <td class="l t b" align="right">{{ number_format($alokasi) }}</td>
             <td class="l t b" align="right">{{ number_format(($alokasi * $pinkel->pros_jasa) / 100) }}</td>
             <td class="l t b" align="right">{{ number_format($jumlah_angsuran) }}</td>
-            <td class="l t b" align="right">{{ number_format($ra->target_pokok) }}</td>
+            <td class="l t b" align="right">{{ number_format($jumlah_angsuran) }}</td>
             <td class="l t b" align="right">{{ number_format($saldo_pokok) }}</td>
             <td class="l t b r" align="right">{{ number_format($saldo_jasa) }}</td>
         </tr>
