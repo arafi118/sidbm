@@ -40,7 +40,8 @@ class AuthController extends Controller
                         'nama_lembaga' => str_replace('DBM ', '', $kec->nama_lembaga_sort),
                         'nama' => $user->namadepan . ' ' . $user->namabelakang,
                         'foto' => $user->foto,
-                        'logo' => $kec->logo
+                        'logo' => $kec->logo,
+                        'lokasi' => $user->lokasi
                     ]);
 
                     return redirect('/dashboard')->with('pesan', 'Selamat Datang ' . $user->namadepan . ' ' . $user->namabelakang);

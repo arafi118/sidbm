@@ -29,6 +29,10 @@ class DashboardController extends Controller
             $this->sync(auth()->user()->lokasi);
         }
 
+        if (!Session::get('lokasi')) {
+            Session::put('lokasi', auth()->user()->lokasi);
+        }
+
         $tgl = date('Y-m-d');
         $pinj_anggota = PinjamanAnggota::where([
             ['status', 'A'],
