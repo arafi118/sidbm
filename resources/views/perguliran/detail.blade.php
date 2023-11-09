@@ -45,7 +45,9 @@
         </div>
     @endif
 
-    <div id="layout"></div>
+    <div id="layout">
+
+    </div>
 
     <div class="card mt-3">
         <div class="card-body p-2">

@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use \Awobaz\Compoships\Compoships;
+use Session;
 
 class Ebudgeting extends Model
 {
@@ -17,6 +17,6 @@ class Ebudgeting extends Model
 
     public function __construct()
     {
-        $this->table = 'ebudgeting_' . Auth::user()->lokasi;
+        $this->table = 'ebudgeting_' . Session::get('lokasi');
     }
 }

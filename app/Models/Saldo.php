@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use \Awobaz\Compoships\Compoships;
 use Awobaz\Compoships\Database\Eloquent\Relations\BelongsTo;
+use Session;
 
 class Saldo extends Model
 {
@@ -16,7 +16,7 @@ class Saldo extends Model
 
     public function __construct()
     {
-        $this->table = 'saldo_' . Auth::user()->lokasi;
+        $this->table = 'saldo_' . Session::get('lokasi');
     }
 
     protected $fillable = ['id', 'kode_akun', 'lokasi', 'tahun', 'bulan', 'debit', 'kredit'];

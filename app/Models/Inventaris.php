@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Session;
 
 class Inventaris extends Model
 {
@@ -16,6 +16,6 @@ class Inventaris extends Model
 
     public function __construct()
     {
-        $this->table = 'inventaris_' . Auth::user()->lokasi;
+        $this->table = 'inventaris_' . Session::get('lokasi');
     }
 }

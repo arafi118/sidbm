@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Session;
 
 class PinjamanAnggota extends Model
 {
@@ -16,7 +16,7 @@ class PinjamanAnggota extends Model
 
     public function __construct()
     {
-        $this->table = 'pinjaman_anggota_' . Auth::user()->lokasi;
+        $this->table = 'pinjaman_anggota_' . Session::get('lokasi');
     }
 
     public function sts()

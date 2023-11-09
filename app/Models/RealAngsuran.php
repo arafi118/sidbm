@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Session;
 
 class RealAngsuran extends Model
 {
@@ -17,7 +17,7 @@ class RealAngsuran extends Model
 
     public function __construct()
     {
-        $this->table = 'real_angsuran_' . Auth::user()->lokasi;
+        $this->table = 'real_angsuran_' . Session::get('lokasi');
     }
 
     public function trx()

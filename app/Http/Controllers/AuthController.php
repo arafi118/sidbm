@@ -57,9 +57,6 @@ class AuthController extends Controller
         $user = auth()->user()->namadepan . ' ' . auth()->user()->namabelakang;
         FacadesAuth::logout();
 
-        request()->session()->invalidate();
-        request()->session()->regenerateToken();
-
         return redirect('/')->with('pesan', 'Terima Kasih ' . $user);
     }
 }

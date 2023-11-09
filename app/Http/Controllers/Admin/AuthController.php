@@ -41,9 +41,6 @@ class AuthController extends Controller
         $user = auth()->guard('master')->user()->nama_lengkap;
         Auth::guard('master')->logout();
 
-        request()->session()->invalidate();
-        request()->session()->regenerateToken();
-
         return redirect('/master/login')->with('pesan', 'Terima Kasih ' . $user);
     }
 }

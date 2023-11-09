@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use \Awobaz\Compoships\Compoships;
+use Session;
 
 class Transaksi extends Model
 {
@@ -18,7 +18,7 @@ class Transaksi extends Model
 
     public function __construct()
     {
-        $this->table = 'transaksi_' . Auth::user()->lokasi;
+        $this->table = 'transaksi_' . Session::get('lokasi');
     }
 
     public function angs()

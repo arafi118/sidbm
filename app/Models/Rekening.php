@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use \Awobaz\Compoships\Compoships;
+use Session;
 
 class Rekening extends Model
 {
@@ -17,7 +17,7 @@ class Rekening extends Model
 
     public function __construct()
     {
-        $this->table = 'rekening_' . Auth::user()->lokasi;
+        $this->table = 'rekening_' . Session::get('lokasi');
     }
 
     public function trx_debit()
