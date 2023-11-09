@@ -413,22 +413,6 @@ class PinjamanKelompokController extends Controller
             }
         }
 
-        if ($perguliran->status == 'A') {
-            foreach ($perguliran->pinjaman_anggota as $pinj) {
-                if (!($this->isJson($pinj->kom_pokok) || $this->isJson($pinj->kom_jasa))) {
-                    $rencana_anggota = $this->generateAnggota($pinj, $perguliran)->getData();
-
-                    $kom_pokok = json_encode($rencana_anggota->rencana_pokok);
-                    $kom_jasa = json_encode($rencana_anggota->rencana_jasa);
-
-                    PinjamanAnggota::where('id', $pinj->id)->update([
-                        'kom_pokok' => $kom_pokok,
-                        'kom_jasa' => $kom_jasa
-                    ]);
-                }
-            }
-        }
-
         return view('perguliran.partials/' . $view)->with(compact('perguliran', 'jenis_jasa', 'sistem_angsuran', 'sumber_bayar', 'debet', 'pinj_a'));
     }
 
@@ -840,8 +824,8 @@ class PinjamanKelompokController extends Controller
 
         $trx_resc = Transaksi::create([
             'tgl_transaksi' => (string) Tanggal::tglNasional($tgl_resceduling),
-            'rekening_debit' => (string) $rekening_2,
-            'rekening_kredit' => (string) $rekening_1,
+            'rekening_debit' => (string) $rekening_1,
+            'rekening_kredit' => (string) $rekening_2,
             'idtp' => $last_idtp + 1,
             'id_pinj' => $pinkel->id,
             'id_pinj_i' => '0',
@@ -894,8 +878,8 @@ class PinjamanKelompokController extends Controller
 
         $trx_cair = Transaksi::create([
             'tgl_transaksi' => (string) Tanggal::tglNasional($tgl_resceduling),
-            'rekening_debit' => (string) $rekening_1,
-            'rekening_kredit' => (string) $rekening_2,
+            'rekening_debit' => (string) $rekening_2,
+            'rekening_kredit' => (string) $rekening_1,
             'idtp' => '0',
             'id_pinj' => $pinjaman->id,
             'id_pinj_i' => '0',
@@ -2201,154 +2185,5 @@ class PinjamanKelompokController extends Controller
             'ra' => $ra,
             'rencana' => $rencana
         ], Response::HTTP_OK);
-    }
-
-
-    public function generateAnggota($pinj_a, $pinkel)
-    {
-        $rencana = [];
-        $rencana_pokok = [];
-        $rencana_jasa = [];
-
-        $jangka = $pinkel->jangka;
-        $sa_pokok = $pinkel->sistem_angsuran;
-        $sa_jasa = $pinkel->sa_jasa;
-        $pros_jasa = $pinkel->pros_jasa;
-
-        $alokasi = $pinj_a->alokasi;
-        $tgl = $pinj_a->tgl_cair;
-
-        $sistem_pokok = $pinkel->sis_pokok->sistem;
-        $sistem_jasa = $pinkel->sis_jasa->sistem;
-
-        if ($sa_pokok == 11) {
-            $tempo_pokok        = ($jangka) - 24 / $sistem_pokok;
-        } else if ($sa_pokok == 14) {
-            $tempo_pokok        = ($jangka) - 3 / $sistem_pokok;
-        } else if ($sa_pokok == 15) {
-            $tempo_pokok        = ($jangka) - 2 / $sistem_pokok;
-        } else if ($sa_pokok == 20) {
-            $tempo_pokok        = ($jangka) - 12 / $sistem_pokok;
-        } else {
-            $tempo_pokok        = floor($jangka / $sistem_pokok);
-        }
-
-        if ($sa_jasa == 11) {
-            $tempo_jasa        = ($jangka) - 24 / $sistem_jasa;
-        } else if ($sa_jasa == 14) {
-            $tempo_jasa        = ($jangka) - 3 / $sistem_jasa;
-        } else if ($sa_jasa == 15) {
-            $tempo_jasa        = ($jangka) - 2 / $sistem_jasa;
-        } else if ($sa_jasa == 20) {
-            $tempo_jasa        = ($jangka) - 12 / $sistem_jasa;
-        } else {
-            $tempo_jasa        = floor($jangka / $sistem_jasa);
-        }
-
-        // Rencana Angsuran Pokok
-        for ($i = 1; $i <= $jangka; $i++) {
-            $sisa = $i % $sistem_pokok;
-            $ke = $i / $sistem_pokok;
-            $wajib_pokok = Keuangan::bulatkan($alokasi / $tempo_pokok);
-            $sum_pokok = $wajib_pokok * ($tempo_pokok - 1);
-
-            if ($sisa == 0 and $ke != $tempo_pokok) {
-                $angsuran_pokok = $wajib_pokok;
-            } elseif ($sisa == 0 and $ke == $tempo_pokok) {
-                $angsuran_pokok = $alokasi - $sum_pokok;
-            } else {
-                $angsuran_pokok = 0;
-            }
-
-            $ra[$i]['pokok'] = $angsuran_pokok;
-        }
-
-        // Rencana Angsuran Jasa
-        for ($j = 1; $j <= $jangka; $j++) {
-            $sisa = $j % $sistem_jasa;
-            $ke = $j / $sistem_jasa;
-            $alokasi_jasa = $alokasi * ($pros_jasa / 100);
-            $wajib_jasa = Keuangan::bulatkan($alokasi_jasa / $tempo_jasa);
-            $sum_jasa = $wajib_jasa * ($tempo_jasa - 1);
-
-            if ($sisa == 0 and $ke != $tempo_jasa) {
-                $angsuran_jasa = $wajib_jasa;
-            } elseif ($sisa == 0 and $ke == $tempo_jasa) {
-                $angsuran_jasa = $alokasi_jasa - $sum_jasa;
-            } else {
-                $angsuran_jasa = 0;
-            }
-
-            $ra[$j]['jasa'] = $angsuran_jasa;
-        }
-        $ra['alokasi'] = $alokasi;
-
-        $target_pokok = 0;
-        $target_jasa = 0;
-        for ($x = 1; $x <= $jangka; $x++) {
-            $bulan  = substr($tgl, 5, 2);
-            $tahun  = substr($tgl, 0, 4);
-
-            if ($sa_pokok == 12) {
-                $tambah = $x * 7;
-                $penambahan = "+$tambah days";
-            } else {
-                $penambahan = "+$x month";
-            }
-            $jatuh_tempo = date('Y-m-d', strtotime($penambahan, strtotime($tgl)));
-
-            $pokok = $ra[$x]['pokok'];
-            $jasa = $ra[$x]['jasa'];
-
-            if ($x == 1) {
-                $target_pokok = $pokok;
-            } elseif ($x >= 2) {
-                $target_pokok += $pokok;
-            }
-            if ($x == 1) {
-                $target_jasa = $jasa;
-            } elseif ($x >= 2) {
-                $target_jasa += $jasa;
-            }
-
-            $rencana[] = [
-                'angsuran_ke' => $x,
-                'jatuh_tempo' => $jatuh_tempo,
-                'wajib_pokok' => $pokok,
-                'wajib_jasa' => $jasa,
-                'target_pokok' => $target_pokok,
-                'target_jasa' => $target_jasa
-            ];
-
-            $rencana_pokok[] = [
-                'angsuran_ke' => $x,
-                'jatuh_tempo' => $jatuh_tempo,
-                'wajib_pokok' => $pokok,
-                'target_pokok' => $target_pokok,
-                'realisasi' => []
-            ];
-
-            $rencana_jasa[] = [
-                'angsuran_ke' => $x,
-                'jatuh_tempo' => $jatuh_tempo,
-                'wajib_jasa' => $jasa,
-                'target_jasa' => $target_jasa,
-                'realisasi' => []
-            ];
-        }
-
-        return response()->json([
-            'success' => true,
-            'ra' => $ra,
-            'rencana' => $rencana,
-            'rencana_pokok' => $rencana_pokok,
-            'rencana_jasa' => $rencana_jasa,
-        ], Response::HTTP_OK);
-    }
-
-    public function isJson($string)
-    {
-        json_decode($string, true);
-        return json_last_error() === JSON_ERROR_NONE;
     }
 }
