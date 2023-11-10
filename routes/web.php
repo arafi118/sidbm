@@ -151,7 +151,9 @@ Route::get('/transaksi/angsuran/struk_matrix/{id}', [TransaksiController::class,
 Route::get('/transaksi/detail_transaksi/', [TransaksiController::class, 'detailTransaksi'])->middleware('auth');
 Route::post('/transaksi/angsuran', [TransaksiController::class, 'angsuran'])->middleware('auth');
 Route::get('/transaksi/generate_real/{id_pinkel}', [TransaksiController::class, 'generateReal'])->middleware('auth');
-Route::get('/transaksi/regenerate_real/{id_pinkel}', [TransaksiController::class, 'regenerateReal'])->middleware('auth');
+Route::get('/transaksi/regenerate_real/{id_pinkel}', [TransaksiController::class, 'realisasi'])->middleware('auth');
+
+Route::get('/transaksi/angsuran/form_anggota/{id_pinkel}', [TransaksiController::class, 'formAnggota'])->middleware('auth');
 
 Route::get('/transaksi/dokumen/kuitansi/{id}', [TransaksiController::class, 'kuitansi'])->middleware('auth');
 Route::get('/transaksi/dokumen/bkk/{id}', [TransaksiController::class, 'bkk'])->middleware('auth');

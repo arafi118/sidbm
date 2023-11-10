@@ -457,10 +457,12 @@ class TransaksiController extends Controller
             ]);
         }
 
+        $transaksi = [];
+
         $last_idtp = Transaksi::where('idtp', '!=', '0')->max('idtp');
         $idtp = $last_idtp + 1;
         if ($request->pokok > 0) {
-            $trx_pokok = [
+            $transaksi[] = [
                 'tgl_transaksi' => (string) $tgl_transaksi,
                 'rekening_debit' => (string) $kas_umum,
                 'rekening_kredit' => (string) $poko_kredit,
@@ -473,8 +475,6 @@ class TransaksiController extends Controller
                 'urutan' => '0',
                 'id_user' => auth()->user()->id
             ];
-
-            $pokok = Transaksi::create($trx_pokok);
         }
 
         if ($request->jasa > 0) {
@@ -486,7 +486,7 @@ class TransaksiController extends Controller
             //     $jasa_kredit = '1.1.03.06';
             // }
 
-            $trx_jasa = [
+            $transaksi[] = [
                 'tgl_transaksi' => (string) $tgl_transaksi,
                 'rekening_debit' => (string) $kas_umum,
                 'rekening_kredit' => (string) $jasa_kredit,
@@ -500,11 +500,10 @@ class TransaksiController extends Controller
                 'id_user' => auth()->user()->id
             ];
 
-            $jasa = Transaksi::create($trx_jasa);
             // if ($request->jasa < $tunggakan_jasa) {
             // } else {
             //     $angs_jasa = ($request->jasa - $tunggakan_jasa > 0) ? ($request->jasa - $tunggakan_jasa) : $request->jasa;
-            //     $trx_jasa = [
+            //     $transaksi[] = [
             //         'tgl_transaksi' => (string) $tgl_transaksi,
             //         'rekening_debit' => (string) $kas_umum,
             //         'rekening_kredit' => (string) $jasa_kredit,
@@ -517,7 +516,6 @@ class TransaksiController extends Controller
             //         'urutan' => '0',
             //         'id_user' => auth()->user()->id
             //     ];
-            //     $jasa = Transaksi::create($trx_jasa);
 
             //     if ($request->jasa - $angs_jasa > 0) {
             //         $piutang_kredit = $jasa_kredit;
@@ -530,7 +528,7 @@ class TransaksiController extends Controller
             //         }
 
             //         $piutang_jasa = $request->jasa - $angs_jasa;
-            //         $trx_jasa = [
+            //         $transaksi[] = [
             //             'tgl_transaksi' => (string) $tgl_transaksi,
             //             'rekening_debit' => (string) $kas_umum,
             //             'rekening_kredit' => (string) $piutang_kredit,
@@ -543,14 +541,12 @@ class TransaksiController extends Controller
             //             'urutan' => '0',
             //             'id_user' => auth()->user()->id
             //         ];
-
-            //         $piutang = Transaksi::create($trx_jasa);
             //     }
             // }
         }
 
         if ($request->denda > 0) {
-            $trx_denda = [
+            $transaksi[] = [
                 'tgl_transaksi' => (string) $tgl_transaksi,
                 'rekening_debit' => (string) $kas_umum,
                 'rekening_kredit' => (string) $dend_kredit,
@@ -563,11 +559,8 @@ class TransaksiController extends Controller
                 'urutan' => '0',
                 'id_user' => auth()->user()->id
             ];
-
-            $denda = Transaksi::create($trx_denda);
         }
-
-        $this->regenerateReal($pinkel->id);
+        Transaksi::insert($transaksi);
 
         $trx = Transaksi::where('idtp', $idtp)->first();
         $view = view('transaksi.jurnal_angsuran.partials.notif', [
@@ -895,6 +888,21 @@ class TransaksiController extends Controller
         ]);
     }
 
+    public function formAnggota($id_pinkel)
+    {
+        $pinkel = PinjamanKelompok::where('id', $id_pinkel)->with([
+            'kelompok',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota',
+        ])->firstOrFail();
+
+        return response()->json([
+            'success' => true,
+            'title' => 'Angsuran per Anggota Kelompok ' . $pinkel->kelompok->nama_kelompok . ' - Loan ID. ' . $pinkel->id,
+            'view' => view('transaksi.jurnal_angsuran.partials.angsuran_anggota')->with(compact('pinkel'))->render()
+        ]);
+    }
+
     public function targetAngsuran($id_pinkel)
     {
         if (request()->get('tanggal')) {
@@ -1055,7 +1063,8 @@ class TransaksiController extends Controller
         }
 
         if ($angsuran) {
-            $this->regenerateReal($id_pinj);
+            $pinkel = PinjamanKelompok::where('id', $id_pinj)->first();
+            $this->regenerateReal($pinkel);
         }
 
         return response()->json([
@@ -1076,7 +1085,8 @@ class TransaksiController extends Controller
         if ($idtp != '0') {
             $trx = Transaksi::where('idtp', $idtp)->delete();
 
-            $this->regenerateReal($id_pinj);
+            $pinkel = PinjamanKelompok::where('id', $id_pinj)->first();
+            $this->regenerateReal($pinkel);
         } else {
             if ($id_pinj != '0') {
                 $pinkel = PinjamanKelompok::where('id', $id_pinj)->update([
@@ -1475,17 +1485,17 @@ class TransaksiController extends Controller
         ]);
     }
 
-    public function regenerateReal($id_pinkel)
+    public function regenerateReal($pinkel)
     {
         $keuangan = new Keuangan;
-        if ($id_pinkel == 0) {
+        if (!$pinkel) {
             return response()->json([
                 'success' => false,
                 'msg' => 'Error'
             ]);
         }
 
-        $pinkel = PinjamanKelompok::where('id', $id_pinkel)->first();
+        $id_pinkel = $pinkel->id;
         $transaksi = Transaksi::select(
             'idtp',
             'tgl_transaksi'
@@ -1510,7 +1520,7 @@ class TransaksiController extends Controller
         foreach ($transaksi as $trx) {
             $tgl_transaksi = $trx->tgl_transaksi;
 
-            $insert = [
+            $insert[$trx->idtp] = [
                 'id' => $trx->idtp,
                 'loan_id' => $pinkel->id,
                 'tgl_transaksi' => $tgl_transaksi,
@@ -1547,10 +1557,10 @@ class TransaksiController extends Controller
                         $tunggakan_pokok = $ra->target_pokok - $sum_pokok;
                         if ($tunggakan_pokok <= 0) $tunggakan_pokok = 0;
 
-                        $insert['realisasi_pokok'] = $tr->jumlah;
-                        $insert['sum_pokok'] = $sum_pokok;
-                        $insert['saldo_pokok'] = $alokasi_pokok - $sum_pokok;
-                        $insert['tunggakan_pokok'] = $tunggakan_pokok;
+                        $insert[$trx->idtp]['realisasi_pokok'] = $tr->jumlah;
+                        $insert[$trx->idtp]['sum_pokok'] = $sum_pokok;
+                        $insert[$trx->idtp]['saldo_pokok'] = $alokasi_pokok - $sum_pokok;
+                        $insert[$trx->idtp]['tunggakan_pokok'] = $tunggakan_pokok;
                     }
 
                     if (in_array($tr->rekening_kredit, $rek_jasa)) {
@@ -1559,16 +1569,25 @@ class TransaksiController extends Controller
                         $tunggakan_jasa = $ra->target_jasa - $sum_jasa;
                         if ($tunggakan_jasa <= 0) $tunggakan_jasa = 0;
 
-                        $insert['realisasi_jasa'] = $tr->jumlah;
-                        $insert['sum_jasa'] = $sum_jasa;
-                        $insert['saldo_jasa'] = $alokasi_jasa - $sum_jasa;
-                        $insert['tunggakan_jasa'] = $tunggakan_jasa;
+                        $insert[$trx->idtp]['realisasi_jasa'] = $tr->jumlah;
+                        $insert[$trx->idtp]['sum_jasa'] = $sum_jasa;
+                        $insert[$trx->idtp]['saldo_jasa'] = $alokasi_jasa - $sum_jasa;
+                        $insert[$trx->idtp]['tunggakan_jasa'] = $tunggakan_jasa;
                     }
                 }
-
-                RealAngsuran::create($insert);
             }
         }
+        RealAngsuran::insert($insert);
+
+        return response()->json([
+            'success' => true
+        ]);
+    }
+
+    public function realisasi($id_pinkel)
+    {
+        $pinkel = PinjamanKelompok::where('id', $id_pinkel)->first();
+        $this->regenerateReal($pinkel);
 
         return response()->json([
             'success' => true

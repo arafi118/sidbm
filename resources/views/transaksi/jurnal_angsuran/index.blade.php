@@ -62,6 +62,9 @@
                         <button type="button" id="btnDetailKelompok" class="btn btn-info btn-sm me-3">
                             Detail Kelompok <span class="badge badge-info" id="loan-id"></span>
                         </button>
+                        {{-- <button type="button" id="btnAngsuranAnggota" class="btn btn-warning btn-sm me-3">
+                            Angsuran Anggota
+                        </button> --}}
                         <button type="button" id="SimpanAngsuran" class="btn btn-github btn-sm">Posting</button>
                     </div>
                 </div>
@@ -167,6 +170,26 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="AngsuranAnggota" tabindex="-1" aria-labelledby="AngsuranAnggotaLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="AngsuranAnggotaLabel">
+
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="LayoutAngsuranAnggota"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -212,6 +235,14 @@
                 makeChart('jasa', ch_jasa, result.sisa_jasa, result.sum_jasa)
 
                 $('#loan-id').html(id_pinkel)
+
+                var id = $('#id').val()
+                $.get('/transaksi/angsuran/form_anggota/' + id, function(result) {
+                    if (result.success) {
+                        $('#LayoutAngsuranAnggota').html(result.view)
+                        $('#AngsuranAnggotaLabel').text(result.title)
+                    }
+                })
             })
         }
 
@@ -259,25 +290,57 @@
             e.preventDefault()
 
             var form = $('#FormAngsuran')
+            var form2 = $('#FormAngsuranAnggota')
+
             $.ajax({
                 type: 'POST',
                 url: form.attr('action'),
-                data: form.serialize(),
+                data: form.serialize() + '&'.form2.serialize(),
                 success: function(result) {
                     if (result.success) {
-                        Swal.fire('Berhasil!', result.msg, 'success').then(() => {
-                            $('#notif').html(result.view)
-
-                            $.get('/transaksi/form_angsuran/' + result.id_pinkel,
-                                function(result) {
-                                    angsuran(true, result)
-
-                                    makeChart('pokok', ch_pokok, result
-                                        .sisa_pokok, result.sum_pokok)
-                                    makeChart('jasa', ch_jasa, result.sisa_jasa,
-                                        result.sum_jasa)
-                                })
+                        var loader = Swal.fire({
+                            title: "Tunggu Sebentar..",
+                            html: "Menyimpan transaksi angsuran.",
+                            timerProgressBar: true,
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
                         })
+
+                        $.get('/transaksi/regenerate_real/' + result.id_pinkel, function(res) {
+                            if (res.success) {
+                                loader.close()
+                                Swal.fire('Berhasil!', result.msg, 'success').then(() => {
+                                    $('#notif').html(result.view)
+
+                                    $.get('/transaksi/form_angsuran/' + result
+                                        .id_pinkel,
+                                        function(result) {
+                                            angsuran(true, result)
+
+                                            makeChart('pokok', ch_pokok, result
+                                                .sisa_pokok, result.sum_pokok)
+                                            makeChart('jasa', ch_jasa, result
+                                                .sisa_jasa,
+                                                result.sum_jasa)
+
+                                            var id = $('#id').val()
+                                            $.get('/transaksi/angsuran/form_anggota/' +
+                                                id,
+                                                function(result) {
+                                                    if (result.success) {
+                                                        $('#LayoutAngsuranAnggota')
+                                                            .html(result.view)
+                                                        $('#AngsuranAnggotaLabel')
+                                                            .text(result.title)
+                                                    }
+                                                })
+                                        })
+                                })
+                            }
+                        })
+
                     } else {
                         Swal.fire('Error', result.msg, 'warning')
                     }
@@ -319,6 +382,11 @@
                 $('#DetailAngsuranLabel').html(result.label)
                 $('#LayoutDetailAngsuran').html(result.view)
             })
+        })
+
+        $(document).on('click', '#btnAngsuranAnggota', function(e) {
+            e.preventDefault()
+            $('#AngsuranAnggota').modal('show')
         })
 
         $(document).on('click', '.btn-link', function(e) {

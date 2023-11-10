@@ -2,6 +2,23 @@
     $today = new DateTime();
     $tgl_lahir = new DateTime($pinj->anggota->tgl_lahir);
     $umur = $today->diff($tgl_lahir);
+
+    $kom_pokok = 0;
+    $kom_jasa = 0;
+
+    if ($pinj->kom_pokok) {
+        $angsuran_pokok = json_decode($pinj->kom_pokok, true);
+        foreach ($angsuran_pokok as $pokok => $jumlah) {
+            $kom_pokok += $jumlah;
+        }
+    }
+
+    if ($pinj->kom_jasa) {
+        $angsuran_jasa = json_decode($pinj->kom_jasa, true);
+        foreach ($angsuran_jasa as $jasa => $jumlah) {
+            $kom_jasa += $jumlah;
+        }
+    }
 @endphp
 
 <div class="row">
@@ -32,25 +49,25 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-4 my-3">
-                        <div class="input-group input-group-static">
-                            <label for="proposal_anggota">Pengajuan Rp.</label>
-                            <input type="text" id="proposal_anggota" name="proposal_anggota" class="form-control"
-                                readonly value="{{ number_format($pinj->proposal, 2) }}">
-                        </div>
-                    </div>
-                    <div class="col-4 my-3">
-                        <div class="input-group input-group-static">
-                            <label for="verifikasi_anggota">Verifikasi Rp.</label>
-                            <input type="text" id="verifikasi_anggota" name="verifikasi_anggota" class="form-control"
-                                readonly value="{{ number_format($pinj->verifikasi, 2) }}">
-                        </div>
-                    </div>
-                    <div class="col-4 my-3">
+                    <div class="col-12 my-3">
                         <div class="input-group input-group-static">
                             <label for="alokasi_anggota">Alokasi Rp.</label>
                             <input type="text" id="alokasi_anggota" name="alokasi_anggota" class="form-control"
                                 readonly value="{{ number_format($pinj->alokasi, 2) }}">
+                        </div>
+                    </div>
+                    <div class="col-6 my-3">
+                        <div class="input-group input-group-static">
+                            <label for="kom_pokok">Angsuran Pokok</label>
+                            <input type="text" id="kom_pokok" name="kom_pokok" class="form-control" readonly
+                                value="{{ number_format($kom_pokok, 2) }}">
+                        </div>
+                    </div>
+                    <div class="col-6 my-3">
+                        <div class="input-group input-group-static">
+                            <label for="kom_jasa">Angsuran Jasa</label>
+                            <input type="text" id="kom_jasa" name="kom_jasa" class="form-control" readonly
+                                value="{{ number_format($kom_jasa, 2) }}">
                         </div>
                     </div>
 
