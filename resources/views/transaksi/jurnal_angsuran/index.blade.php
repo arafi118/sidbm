@@ -295,7 +295,7 @@
             $.ajax({
                 type: 'POST',
                 url: form.attr('action'),
-                data: form.serialize() + '&'.form2.serialize(),
+                data: form.serialize(),
                 success: function(result) {
                     if (result.success) {
                         var loader = Swal.fire({
