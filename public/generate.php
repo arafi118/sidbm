@@ -31,7 +31,6 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
     <?php
     function bulatkan($angka)
     {
-
         global $koneksi;
         $lokasi = $_GET['lokasi'];
         $kec = mysqli_fetch_array(mysqli_query($koneksi, "select * from kecamatan WHERE id='$lokasi'"));
@@ -72,6 +71,7 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
                         AND ($limit) ORDER BY id ASC LIMIT $start, $per_page");
 
     while ($pk = mysqli_fetch_array($pinjaman_kelompok)) {
+        $kel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelompok_$lokasi AS k JOIN desa AS d ON k.desa=d.kd_desa WHERE k.id=$pk[id_kel]"));
         $del_re = mysqli_query($koneksi, "DELETE FROM real_angsuran_$lokasi WHERE loan_id=$pk[id]");
         $del_ra = mysqli_query($koneksi, "DELETE FROM rencana_angsuran_$lokasi WHERE loan_id=$pk[id]");
 
@@ -79,6 +79,13 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
             $tgl_cair = $pk['tgl_tunggu'];
         } else {
             $tgl_cair = $pk['tgl_cair'];
+        }
+
+        if ($kel['jadwal_angsuran_desa'] > 0) {
+            var_dump($kel);
+            die;
+            $tgl_pinjaman = date('Y-m', strtotime($tgl_cair));
+            $tgl_cair = $tgl_pinjaman . '-' . $kel['jadwal_angsuran_desa'];
         }
         $tgllalu = $tgl_cair;
 

@@ -1763,7 +1763,10 @@ class PinjamanKelompokController extends Controller
     public function generate($id_pinj)
     {
         $rencana = [];
-        $pinkel = PinjamanKelompok::where('id', $id_pinj)->withSum([
+        $pinkel = PinjamanKelompok::where('id', $id_pinj)->with([
+            'kelompok',
+            'kelompok.d'
+        ])->withSum([
             'pinjaman_anggota' => function ($query) {
                 $query->where('status', '!=', 'H');
             }
@@ -1802,6 +1805,14 @@ class PinjamanKelompokController extends Controller
             } else {
                 $alokasi = $pinkel->pinjaman_anggota_sum_alokasi;
                 $tgl = $pinkel->tgl_cair;
+            }
+        }
+
+        if ($pinkel->kelompok->d) {
+            $angsuran_desa = $pinkel->kelompok->d->jadwal_angsuran_desa;
+            if ($angsuran_desa > 0) {
+                $tgl_pinjaman = date('Y-m', strtotime($tgl));
+                $tgl = $tgl_pinjaman . '-' . $angsuran_desa;
             }
         }
 
