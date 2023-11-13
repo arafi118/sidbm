@@ -26,11 +26,11 @@ class DashboardController extends Controller
     {
         if (Session::get('pesan')) {
             // $this->piutang();
-            $this->sync(auth()->user()->lokasi);
+            $this->sync(Session::get('lokasi'));
         }
 
         if (!Session::get('lokasi')) {
-            Session::put('lokasi', auth()->user()->lokasi);
+            Session::put('lokasi', Session::get('lokasi'));
         }
 
         $tgl = date('Y-m-d');
