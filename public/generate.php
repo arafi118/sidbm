@@ -82,8 +82,6 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
         }
 
         if ($kel['jadwal_angsuran_desa'] > 0) {
-            var_dump($kel);
-            die;
             $tgl_pinjaman = date('Y-m', strtotime($tgl_cair));
             $tgl_cair = $tgl_pinjaman . '-' . $kel['jadwal_angsuran_desa'];
         }
