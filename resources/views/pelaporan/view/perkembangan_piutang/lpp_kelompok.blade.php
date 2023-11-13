@@ -62,7 +62,7 @@
                         <small>(dd/mm/yy)</small>
                     </div>
                 </th>
-                <th class="t l b" rowspan="2" width="2%">Bln</th>
+                <th class="t l b" rowspan="2" width="3%">Bln</th>
                 <th class="t l b" rowspan="2" width="6%">Alokasi</th>
                 <th class="t l b" colspan="2">Target</th>
                 <th class="t l b" colspan="2">Real s.d. Bulan Lalu</th>
@@ -212,9 +212,12 @@
 
                 <tr>
                     <td class="t l b" align="center">{{ $nomor++ }}</td>
-                    <td class="t l b" align="left">{{ $pinkel->nama_kelompok }} - {{ $pinkel->id }}</td>
+                    <td class="t l b" align="left">{{ $pinkel->nama_kelompok }} {{ $pinkel->ketua }} -
+                        {{ $pinkel->id }}</td>
                     <td class="t l b" align="center">{{ Tanggal::tglIndo($pinkel->tgl_cair, 'DD/MM/YY') }}</td>
-                    <td class="t l b" align="center">{{ $pinkel->jangka }}</td>
+                    <td class="t l b" align="center">
+                        <small>{{ $pinkel->jangka }}*{{ $pinkel->pros_jasa / $pinkel->jangka }}</small>
+                    </td>
                     <td class="t l b" align="right">{{ number_format($pinkel->alokasi) }}</td>
                     <td class="t l b" align="right">{{ number_format($target_pokok) }}</td>
                     <td class="t l b" align="right">{{ number_format($target_jasa) }}</td>
