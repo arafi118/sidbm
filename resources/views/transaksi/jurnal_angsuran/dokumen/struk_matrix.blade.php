@@ -123,7 +123,8 @@
             <td width="15%">Loan ID</td>
             <td width="11%"><strong>: {{ $pinkel->id }}</strong></td>
             <td colspan="2">
-                <div align="right">Angsuran ke: {{ $ra->angsuran_ke }} dari {{ $jum_angsuran }}</div>
+                <div align="right">Angsuran ke: {{ $ra_bulan_ini->angsuran_ke > 0 ? $ra_bulan_ini->angsuran_ke : 1 }}
+                    dari {{ $jum_angsuran }}</div>
             </td>
             <th class="bottom top">STATUS PINJAMAN</th>
             <th class="bottom top">POKOK</th>
