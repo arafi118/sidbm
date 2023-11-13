@@ -558,6 +558,7 @@ class DashboardController extends Controller
             Saldo::insert($_saldo);
         }
 
+        $data_id = [];
         for ($i = 1; $i <= $bulan; $i++) {
             $cek_saldo = Saldo::where([
                 ['bulan', $i],
@@ -579,14 +580,19 @@ class DashboardController extends Controller
 
                 $saldo = [];
                 foreach ($rekening as $rek) {
-                    $saldo[] = [
-                        'id' => str_replace('.', '', $rek->kode_akun) . $tahun . str_pad($i, 2, "0", STR_PAD_LEFT),
-                        'kode_akun' => $rek->kode_akun,
-                        'tahun' => $tahun,
-                        'bulan' => $i,
-                        'debit' => $rek->trx_debit_sum_jumlah,
-                        'kredit' => $rek->trx_kredit_sum_jumlah
-                    ];
+                    $id = str_replace('.', '', $rek->kode_akun) . $tahun . str_pad($i, 2, "0", STR_PAD_LEFT);
+                    if (!in_array($id, $data_id)) {
+                        $saldo[] = [
+                            'id' => $id,
+                            'kode_akun' => $rek->kode_akun,
+                            'tahun' => $tahun,
+                            'bulan' => $i,
+                            'debit' => $rek->trx_debit_sum_jumlah,
+                            'kredit' => $rek->trx_kredit_sum_jumlah
+                        ];
+
+                        $data_id[] = $id;
+                    }
                 }
 
                 Saldo::insert($saldo);
