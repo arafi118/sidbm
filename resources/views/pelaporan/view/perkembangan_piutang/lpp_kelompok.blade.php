@@ -212,7 +212,7 @@
 
                 <tr>
                     <td class="t l b" align="center">{{ $nomor++ }}</td>
-                    <td class="t l b" align="left">{{ $pinkel->nama_kelompok }} {{ $pinkel->ketua }} -
+                    <td class="t l b" align="left">{{ $pinkel->nama_kelompok }} [{{ $pinkel->ketua }}] -
                         {{ $pinkel->id }}</td>
                     <td class="t l b" align="center">{{ Tanggal::tglIndo($pinkel->tgl_cair, 'DD/MM/YY') }}</td>
                     <td class="t l b" align="center">
