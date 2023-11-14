@@ -744,7 +744,7 @@ class DashboardController extends Controller
         if (isset($query['tahun'])) {
             $query['tahun'] += 1;
         } else {
-            $query['tahun'] = date('y');
+            $query['tahun'] = date('Y');
         }
 
         $query['bulan'] = str_pad($query['bulan'], 2, '0', STR_PAD_LEFT);
