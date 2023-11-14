@@ -407,9 +407,9 @@
         })
 
         $(document).on('click', '#BtndetailTransaksi', function(e) {
-            var tahun = $('#tahun').val()
-            var bulan = $('#bulan').val()
-            var hari = $('#tanggal').val()
+            var tahun = $('select#tahun').val()
+            var bulan = $('select#bulan').val()
+            var hari = $('select#tanggal').val()
             var kode_akun = $('#sumber_dana').val()
 
             if (kode_akun != '') {
