@@ -40,7 +40,7 @@ class KelompokController extends Controller
                     if ($row->pinjaman) {
                         $status_pinjaman = $pinjaman->status;
 
-                        $badge = $pinjaman->sts->warna_status;
+                        $badge = ($pinjaman->sts) ? $pinjaman->sts->warna_status : '';
                         $status = '<span class="badge badge-' . $badge . '">' . $status_pinjaman . '</span>';
                     }
 
