@@ -427,12 +427,16 @@ class TransaksiController extends Controller
             ])->first();
             $pinjaman_anggota = $pinkel->pinjaman_anggota;
 
-            if ($pinkel->relationLoaded('saldo')) {
+            $sum_pokok = 0;
+            $sum_jasa = 0;
+            if ($pinkel->saldo) {
                 $sum_pokok = $pinkel->saldo->sum_pokok;
                 $sum_jasa = $pinkel->saldo->sum_jasa;
             }
 
-            if ($pinkel->relationLoaded('target')) {
+            $target_pokok = 0;
+            $target_jasa = 0;
+            if ($pinkel->target) {
                 $target_pokok = $pinkel->target->target_pokok;
                 $target_jasa = $pinkel->target->target_jasa;
             }
