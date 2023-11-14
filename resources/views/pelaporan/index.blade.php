@@ -151,16 +151,16 @@
 
             var file = $(this).val()
             $.get('/pelaporan/sub_laporan/' + file, function(result) {
-                $('#subLaporan').html(result)
+                $('select#subLaporan').html(result)
             })
         })
 
         $(document).on('click', '#Preview', function(e) {
             e.preventDefault()
-            $('#type').val('pdf')
 
-            var file = $('#laporan').val()
-            var sub = $('#sub_laporan').val()
+            $(this).parent('div').parent('div').find('form').find('#type').val('pdf')
+            var file = $('select#laporan').val()
+            var sub = $('select#sub_laporan').val()
 
             var form = $('#FormPelaporan')
             if (file != '') {
@@ -170,12 +170,13 @@
 
         $(document).on('click', '#Excel', function(e) {
             e.preventDefault()
-            $('#type').val('excel')
 
-            var file = $('#laporan').val()
-            var sub = $('#sub_laporan').val()
+            $(this).parent('div').parent('div').find('form').find('#type').val('excel')
+            var file = $('select#laporan').val()
+            var sub = $('select#sub_laporan').val()
 
             var form = $('#FormPelaporan')
+            console.log(form.serialize())
             if (file != '') {
                 form.submit()
             }
