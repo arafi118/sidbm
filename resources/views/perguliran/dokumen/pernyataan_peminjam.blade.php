@@ -41,7 +41,8 @@
                 <td>Tempat, Tangal lahir</td>
                 <td align="right">:</td>
                 <td>
-                    <b>{{ $pa->anggota->tempat_lahir }}, {{ Tanggal::tglLatin($pa->anggota->tgl_lahir) }}</b>
+                    <b>{{ $pa->anggota->tempat_lahir }},
+                        {{ $pa->anggota->tgl_lahir ? Tanggal::tglLatin($pa->anggota->tgl_lahir) : '' }}</b>
                 </td>
             </tr>
             <tr>
