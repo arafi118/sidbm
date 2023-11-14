@@ -359,7 +359,9 @@ class DashboardController extends Controller
             },
             'saldo' => function ($query) use ($tgl) {
                 $query->where('tgl_transaksi', '<=', $tgl);
-            }
+            },
+            'kelompok',
+            'kelompok.d'
         ])->get();
 
         $table = '';
@@ -383,7 +385,7 @@ class DashboardController extends Controller
                     $table .= '<tr>';
 
                     $table .= '<td align="center">' . $no++ . '</td>';
-                    $table .= '<td>' . $pinkel->kelompok->nama_kelompok . ' Loan Id. ' . $pinkel->id . '</td>';
+                    $table .= '<td>' . $pinkel->kelompok->nama_kelompok . '[' . $pinkel->kelompok->ketua . '][' . $pinkel->kelompok->d->nama_desa . '] - ' . $pinkel->id . '</td>';
                     $table .= '<td>' . Tanggal::tglIndo($pinkel->tgl_cair) . '</td>';
                     $table .= '<td align="right">' . number_format($pinkel->alokasi) . '</td>';
                     $table .= '<td align="right">' . number_format($nunggak_pokok) . '</td>';
@@ -414,7 +416,8 @@ class DashboardController extends Controller
             'saldo' => function ($query) use ($tgl) {
                 $query->where('tgl_transaksi', '<=', $tgl);
             },
-            'kelompok'
+            'kelompok',
+            'kelompok.d'
         ])->orderBy('tgl_cair', 'ASC')->orderBy('id', 'ASC')->get();
 
         $nunggak = "00";
@@ -457,7 +460,7 @@ class DashboardController extends Controller
                 $table .= '<tr>';
 
                 $table .= '<td align="center">' . $no++ . '</td>';
-                $table .= '<td>' . $pinkel->kelompok->nama_kelompok . ' Loan Id. ' . $pinkel->id . '</td>';
+                $table .= '<td>' . $pinkel->kelompok->nama_kelompok . '[' . $pinkel->kelompok->ketua . '][' . $pinkel->kelompok->d->nama_desa . '] - ' . $pinkel->id . '</td>';
                 $table .= '<td>' . Tanggal::tglIndo($pinkel->tgl_cair) . '</td>';
                 $table .= '<td align="right">' . number_format($pinkel->alokasi) . '</td>';
                 $table .= '<td align="right">' . number_format($tunggakan_pokok) . '</td>';
