@@ -38,7 +38,6 @@ class PelaporanController extends Controller
     {
         if ($file == 3) {
             $rekening = Rekening::orderBy('kode_akun', 'ASC')->get();
-
             return view('pelaporan.partials.sub_laporan')->with(compact('file', 'rekening'));
         }
 
