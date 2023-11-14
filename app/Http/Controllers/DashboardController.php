@@ -571,7 +571,7 @@ class DashboardController extends Controller
                 'trx_kredit' => function ($query) use ($tgl_kondisi, $tahun) {
                     $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
                 }
-            ], 'jumlah')->get();
+            ], 'jumlah')->orderBy('kode_akun', 'ASC')->get();
 
             $saldo = [];
             foreach ($rekening as $rek) {
