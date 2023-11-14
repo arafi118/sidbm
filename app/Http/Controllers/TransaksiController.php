@@ -409,9 +409,7 @@ class TransaksiController extends Controller
 
             $pinkel = PinjamanKelompok::where('id', $request->id)->with([
                 'kelompok',
-                'pinjaman_anggota' => function ($query) use ($request) {
-                    $query->whereIn('id', array_keys($request->pokok_anggota));
-                },
+                'pinjaman_anggota',
                 'saldo' => function ($query) use ($request, $tgl_transaksi) {
                     $query->where([
                         ['loan_id', $request->id],
