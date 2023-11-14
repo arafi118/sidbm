@@ -151,7 +151,7 @@
 
             var file = $(this).val()
             $.get('/pelaporan/sub_laporan/' + file, function(result) {
-                $('select#subLaporan').html(result)
+                $('#subLaporan').html(result)
             })
         })
 

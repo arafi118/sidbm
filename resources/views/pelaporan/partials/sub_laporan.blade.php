@@ -44,5 +44,5 @@
 
 
 <script>
-    new Choices($('#sub_laporan')[0])
+    new Choices($('select#sub_laporan')[0])
 </script>
