@@ -59,6 +59,22 @@
                     </td>
                 </tr>
             @endforeach
+
+            <tr>
+                <th colspan="2">Jumlah</th>
+                <th align="right">
+                    <div id="_total_pokok_anggota">Rp. {{ number_format(0, 2) }}</div>
+                    <input type="hidden" name="total_pokok_anggota" id="total_pokok_anggota">
+                </th>
+                <th align="right">
+                    <div id="_total_jasa_anggota">Rp. {{ number_format(0, 2) }}</div>
+                    <input type="hidden" name="total_jasa_anggota" id="total_jasa_anggota">
+                </th>
+                <th align="right">
+                    <div id="_total_denda_anggota">Rp. {{ number_format(0, 2) }}</div>
+                    <input type="hidden" name="total_denda_anggota" id="total_denda_anggota">
+                </th>
+            </tr>
         </tbody>
     </table>
 </form>
@@ -88,6 +104,8 @@
             total += value
 
             $('#pokok').val(formatter.format(total))
+            $('#_total_pokok_anggota').text(formatter.format(total))
+            $('#total_pokok_anggota').val(total)
         })
     })
 
@@ -106,6 +124,8 @@
             total += value
 
             $('#jasa').val(formatter.format(total))
+            $('#_total_jasa_anggota').text(formatter.format(total))
+            $('#total_jasa_anggota').val(total)
         })
     })
 
@@ -124,6 +144,8 @@
             total += value
 
             $('#denda').val(formatter.format(total))
+            $('#_total_denda_anggota').text(formatter.format(total))
+            $('#total_denda_anggota').val(total)
         })
     })
 </script>

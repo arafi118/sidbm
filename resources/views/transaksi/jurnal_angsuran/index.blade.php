@@ -14,6 +14,8 @@
                         <input type="hidden" name="id" id="id" value="{{ Request::get('pinkel') ?: 0 }}">
                         <input type="hidden" name="_pokok" id="_pokok">
                         <input type="hidden" name="_jasa" id="_jasa">
+                        <input type="hidden" name="tgl_pakai_aplikasi" id="tgl_pakai_aplikasi"
+                            value="{{ $kec->tgl_pakai }}">
                         <div class="row">
                             <div class="col-12">
                                 <div class="input-group input-group-static my-3">
@@ -62,9 +64,9 @@
                         <button type="button" id="btnDetailKelompok" class="btn btn-info btn-sm me-3">
                             Detail Kelompok <span class="badge badge-info" id="loan-id"></span>
                         </button>
-                        {{-- <button type="button" id="btnAngsuranAnggota" class="btn btn-warning btn-sm me-3">
+                        <button type="button" id="btnAngsuranAnggota" class="btn btn-warning btn-sm me-3">
                             Angsuran Anggota
-                        </button> --}}
+                        </button>
                         <button type="button" id="SimpanAngsuran" class="btn btn-github btn-sm">Posting</button>
                     </div>
                 </div>
@@ -295,11 +297,11 @@
             $.ajax({
                 type: 'POST',
                 url: form.attr('action'),
-                data: form.serialize(),
+                data: form.serialize() + '&' + form2.serialize(),
                 success: function(result) {
                     if (result.success) {
                         var loader = Swal.fire({
-                            title: "Tunggu Sebentar..",
+                            title: "Mohon Menunggu..",
                             html: "Menyimpan transaksi angsuran.",
                             timerProgressBar: true,
                             allowOutsideClick: false,
@@ -308,12 +310,14 @@
                             }
                         })
 
+                        $.get('/angsuran/notifikasi/' + result.idtp, function(res) {
+                            $('#notif').html(res.view)
+                        })
+
                         $.get('/transaksi/regenerate_real/' + result.id_pinkel, function(res) {
                             if (res.success) {
                                 loader.close()
                                 Swal.fire('Berhasil!', result.msg, 'success').then(() => {
-                                    $('#notif').html(result.view)
-
                                     $.get('/transaksi/form_angsuran/' + result
                                         .id_pinkel,
                                         function(result) {

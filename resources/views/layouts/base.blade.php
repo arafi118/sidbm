@@ -353,6 +353,12 @@
             },
         });
 
+        $(document).on('click', '#btnLaporanPelunasan', function(e) {
+            e.preventDefault()
+
+            $('#FormLaporanPelunasan').submit()
+        })
+
         // $(document).ajaxStart(function() {
         //     let timerInterval
         //     notif = Swal.fire({

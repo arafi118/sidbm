@@ -24,6 +24,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         if (Session::get('pesan')) {
             // $this->piutang();
             $this->sync(Session::get('lokasi'));
@@ -76,6 +77,7 @@ class DashboardController extends Controller
         $data['jasa_pl'] = $trx->jasa_pl;
 
         $data['saldo'] = $this->_saldo($tgl);
+        $data['jumlah_saldo'] = Saldo::where('kode_akun', 'NOT LIKE', $kec->kd_kec . '%')->count();
 
         $data['title'] = "Dashboard";
         return view('dashboard.index')->with($data);
@@ -502,95 +504,91 @@ class DashboardController extends Controller
                 ];
             }
 
-            Saldo::insert($saldo_desa);
-
-            $_saldo = [
-                [
-                    'id' => 1,
-                    'kode_akun' => $kec->kd_kec,
-                    'tahun' => $tahun,
-                    'bulan' => 0,
-                    'debit' => 0,
-                    'kredit' => 0
-                ],
-                [
-                    'id' => 2,
-                    'kode_akun' => $kec->kd_kec,
-                    'tahun' => $tahun,
-                    'bulan' => 0,
-                    'debit' => 0,
-                    'kredit' => 0
-                ],
-                [
-                    'id' => 3,
-                    'kode_akun' => $kec->kd_kec,
-                    'tahun' => $tahun,
-                    'bulan' => 0,
-                    'debit' => 0,
-                    'kredit' => 0
-                ],
-                [
-                    'id' => 4,
-                    'kode_akun' => $kec->kd_kec,
-                    'tahun' => $tahun,
-                    'bulan' => 0,
-                    'debit' => 0,
-                    'kredit' => 0
-                ],
-                [
-                    'id' => 5,
-                    'kode_akun' => $kec->kd_kec,
-                    'tahun' => $tahun,
-                    'bulan' => 0,
-                    'debit' => 0,
-                    'kredit' => 0
-                ],
-                [
-                    'id' => 6,
-                    'kode_akun' => $kec->kd_kec,
-                    'tahun' => $tahun,
-                    'bulan' => 0,
-                    'debit' => 0,
-                    'kredit' => 0
-                ]
+            $saldo_desa[] = [
+                'id' => 1,
+                'kode_akun' => $kec->kd_kec,
+                'tahun' => $tahun,
+                'bulan' => 0,
+                'debit' => 0,
+                'kredit' => 0
+            ];
+            $saldo_desa[] = [
+                'id' => 2,
+                'kode_akun' => $kec->kd_kec,
+                'tahun' => $tahun,
+                'bulan' => 0,
+                'debit' => 0,
+                'kredit' => 0
+            ];
+            $saldo_desa[] = [
+                'id' => 3,
+                'kode_akun' => $kec->kd_kec,
+                'tahun' => $tahun,
+                'bulan' => 0,
+                'debit' => 0,
+                'kredit' => 0
+            ];
+            $saldo_desa[] = [
+                'id' => 4,
+                'kode_akun' => $kec->kd_kec,
+                'tahun' => $tahun,
+                'bulan' => 0,
+                'debit' => 0,
+                'kredit' => 0
+            ];
+            $saldo_desa[] = [
+                'id' => 5,
+                'kode_akun' => $kec->kd_kec,
+                'tahun' => $tahun,
+                'bulan' => 0,
+                'debit' => 0,
+                'kredit' => 0
+            ];
+            $saldo_desa[] = [
+                'id' => 6,
+                'kode_akun' => $kec->kd_kec,
+                'tahun' => $tahun,
+                'bulan' => 0,
+                'debit' => 0,
+                'kredit' => 0
             ];
 
-            Saldo::insert($_saldo);
+            Saldo::insert($saldo_desa);
         }
 
-        $data_id = [];
-        for ($i = 1; $i <= $bulan; $i++) {
-            $date = $tahun . '-' . $i . '-01';
-            $tgl_kondisi = date('Y-m-t', strtotime($date));
-            $rekening = Rekening::withSum([
-                'trx_debit' => function ($query) use ($tgl_kondisi, $tahun) {
-                    $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
-                }
-            ], 'jumlah')->withSum([
-                'trx_kredit' => function ($query) use ($tgl_kondisi, $tahun) {
-                    $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
-                }
-            ], 'jumlah')->get();
+        // $data_id = [];
+        // for ($i = 1; $i <= $bulan; $i++) {
+        //     $date = $tahun . '-' . $i . '-01';
+        //     $tgl_kondisi = date('Y-m-t', strtotime($date));
+        //     $rekening = Rekening::withSum([
+        //         'trx_debit' => function ($query) use ($tgl_kondisi, $tahun) {
+        //             $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
+        //         }
+        //     ], 'jumlah')->withSum([
+        //         'trx_kredit' => function ($query) use ($tgl_kondisi, $tahun) {
+        //             $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
+        //         }
+        //     ], 'jumlah')->get();
 
-            $saldo = [];
-            foreach ($rekening as $rek) {
-                $id = str_replace('.', '', $rek->kode_akun) . $tahun . str_pad($i, 2, "0", STR_PAD_LEFT);
-                if (!in_array($id, $data_id)) {
-                    $saldo[] = [
-                        'id' => $id,
-                        'kode_akun' => $rek->kode_akun,
-                        'tahun' => $tahun,
-                        'bulan' => $i,
-                        'debit' => $rek->trx_debit_sum_jumlah,
-                        'kredit' => $rek->trx_kredit_sum_jumlah
-                    ];
+        //     $saldo = [];
+        //     foreach ($rekening as $rek) {
+        //         $id = str_replace('.', '', $rek->kode_akun) . $tahun . str_pad($i, 2, "0", STR_PAD_LEFT);
+        //         if (!in_array($id, $data_id)) {
+        //             $saldo[] = [
+        //                 'id' => $id,
+        //                 'kode_akun' => $rek->kode_akun,
+        //                 'tahun' => $tahun,
+        //                 'bulan' => $i,
+        //                 'debit' => $rek->trx_debit_sum_jumlah,
+        //                 'kredit' => $rek->trx_kredit_sum_jumlah
+        //             ];
 
-                    $data_id[] = $id;
-                }
-            }
+        //             $data_id[] = $id;
+        //         }
+        //     }
 
-            Saldo::insert($saldo);
-        }
+        //     $query = Saldo::insert($saldo);
+        // }
     }
 
     private function _saldo($tgl)

@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Session;
 
 class TransaksiController extends Controller
 {
@@ -47,6 +48,7 @@ class TransaksiController extends Controller
     {
         $title = 'Jurnal Angsuran';
 
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         if (request()->get('pinkel')) {
             $pinkel = PinjamanKelompok::where('id', request()->get('pinkel'))->with('kelompok');
             $pinkel = $pinkel->first();
@@ -54,7 +56,7 @@ class TransaksiController extends Controller
             $pinkel = '0';
         }
 
-        return view('transaksi.jurnal_angsuran.index')->with(compact('title', 'pinkel'));
+        return view('transaksi.jurnal_angsuran.index')->with(compact('title', 'pinkel', 'kec'));
     }
 
     public function ebudgeting()
@@ -366,215 +368,284 @@ class TransaksiController extends Controller
 
     public function angsuran(Request $request)
     {
-        $data = $request->only([
-            'id',
-            'tgl_transaksi',
-            'pokok',
-            'jasa',
-            'denda'
-        ]);
+        DB::beginTransaction();
 
-        $validate = Validator::make($data, [
-            'tgl_transaksi' => 'required',
-            'pokok' => 'required',
-            'jasa' => 'required',
-            'denda' => 'required'
-        ]);
-
-        if ($validate->fails()) {
-            return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
-        }
-
-        $request->pokok = str_replace(',', '', str_replace('.00', '', $request->pokok));
-        $request->jasa = str_replace(',', '', str_replace('.00', '', $request->jasa));
-        $request->denda = str_replace(',', '', str_replace('.00', '', $request->denda));
-
-        if ($request->pokok <= 0 && $request->jasa <= 0 && $request->denda <= 0) {
-            return response()->json([
-                'success' => false,
-                'msg' => 'Total Bayar tidak boleh nol'
+        try {
+            $data = $request->only([
+                'id',
+                'tgl_transaksi',
+                'pokok',
+                'jasa',
+                'denda'
             ]);
-        }
 
-        $tgl_transaksi = Tanggal::tglNasional($request->tgl_transaksi);
-
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
-        $pinkel = PinjamanKelompok::where('id', $request->id)->with('kelompok')->first();
-
-        $real = RealAngsuran::where([
-            ['loan_id', $pinkel->id],
-            ['tgl_transaksi', '<=', $tgl_transaksi]
-        ])->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
-
-        $ra = RencanaAngsuran::where([
-            ['loan_id', $pinkel->id],
-            ['jatuh_tempo', '<=', $tgl_transaksi]
-        ])->orderBy('jatuh_tempo', 'DESC');
-
-        if ($real->count() > 0) {
-            $real = $real->first();
-        } else {
-            $real->sum_pokok = 0;
-            $real->sum_jasa = 0;
-        }
-
-        if ($ra->count() > 0) {
-            $ra = $ra->first();
-        } else {
-            $ra->target_pokok = 0;
-            $ra->target_jasa = 0;
-        }
-
-        $tunggakan_jasa    = $ra->target_jasa - $real->sum_jasa;
-        if ($tunggakan_jasa < '0') $tunggakan_jasa = '0';
-
-        if (strtotime($tgl_transaksi) < strtotime($pinkel->tgl_cair)) {
-            return response()->json([
-                'success' => false,
-                'msg' => 'Tanggal transaksi tidak boleh sebelum Tanggal Cair'
+            $validate = Validator::make($data, [
+                'tgl_transaksi' => 'required',
+                'pokok' => 'required',
+                'jasa' => 'required',
+                'denda' => 'required'
             ]);
-        }
 
-        $kas_umum = '1.1.01.01';
-        if ($pinkel->jenis_pp == '1') {
-            $poko_kredit = '1.1.03.01';
-            $jasa_kredit = '4.1.01.01';
-            $dend_kredit = '4.1.01.04';
-        } elseif ($pinkel->jenis_pp == '2') {
-            $poko_kredit = '1.1.03.02';
-            $jasa_kredit = '4.1.01.02';
-            $dend_kredit = '4.1.01.05';
-        } else {
-            $poko_kredit = '1.1.03.03';
-            $jasa_kredit = '4.1.01.03';
-            $dend_kredit = '4.1.01.06';
-        }
+            if ($validate->fails()) {
+                return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
+            }
 
-        if (strtotime($tgl_transaksi) < strtotime($kec->tgl_pakai)) {
+            $request->pokok = str_replace(',', '', str_replace('.00', '', $request->pokok));
+            $request->jasa = str_replace(',', '', str_replace('.00', '', $request->jasa));
+            $request->denda = str_replace(',', '', str_replace('.00', '', $request->denda));
+
+            $request->total_pokok_anggota = str_replace(',', '', str_replace('.00', '', $request->total_pokok_anggota));
+            $request->total_jasa_anggota = str_replace(',', '', str_replace('.00', '', $request->total_jasa_anggota));
+            $request->total_denda_anggota = str_replace(',', '', str_replace('.00', '', $request->total_denda_anggota));
+
+            if ($request->pokok <= 0 && $request->jasa <= 0 && $request->denda <= 0) {
+                return response()->json([
+                    'success' => false,
+                    'msg' => 'Total Bayar tidak boleh nol'
+                ]);
+            }
+
+            $tgl_transaksi = Tanggal::tglNasional($request->tgl_transaksi);
+
+            $pinkel = PinjamanKelompok::where('id', $request->id)->with([
+                'kelompok',
+                'pinjaman_anggota' => function ($query) use ($request) {
+                    $query->whereIn('id', array_keys($request->pokok_anggota));
+                },
+                'saldo' => function ($query) use ($request, $tgl_transaksi) {
+                    $query->where([
+                        ['loan_id', $request->id],
+                        ['tgl_transaksi', '<=', $tgl_transaksi]
+                    ]);
+                },
+                'target' => function ($query) use ($request, $tgl_transaksi) {
+                    $query->where([
+                        ['loan_id', $request->id],
+                        ['jatuh_tempo', '<=', $tgl_transaksi]
+                    ]);
+                }
+            ])->first();
+            $pinjaman_anggota = $pinkel->pinjaman_anggota;
+
+            if ($pinkel->relationLoaded('saldo')) {
+                $sum_pokok = $pinkel->saldo->sum_pokok;
+                $sum_jasa = $pinkel->saldo->sum_jasa;
+            }
+
+            if ($pinkel->relationLoaded('target')) {
+                $target_pokok = $pinkel->target->target_pokok;
+                $target_jasa = $pinkel->target->target_jasa;
+            }
+
+            $tunggakan_jasa    = $target_jasa - $sum_jasa;
+            if ($tunggakan_jasa < '0') $tunggakan_jasa = '0';
+
+            if (strtotime($tgl_transaksi) < strtotime($pinkel->tgl_cair)) {
+                return response()->json([
+                    'success' => false,
+                    'msg' => 'Tanggal transaksi tidak boleh sebelum Tanggal Cair'
+                ]);
+            }
+
+            $kas_umum = '1.1.01.01';
+            if ($pinkel->jenis_pp == '1') {
+                $poko_kredit = '1.1.03.01';
+                $jasa_kredit = '4.1.01.01';
+                $dend_kredit = '4.1.01.04';
+            } elseif ($pinkel->jenis_pp == '2') {
+                $poko_kredit = '1.1.03.02';
+                $jasa_kredit = '4.1.01.02';
+                $dend_kredit = '4.1.01.05';
+            } else {
+                $poko_kredit = '1.1.03.03';
+                $jasa_kredit = '4.1.01.03';
+                $dend_kredit = '4.1.01.06';
+            }
+
+            $_pokok = floatval($request->pokok) - floatval($request->total_pokok_anggota);
+            $_jasa = floatval($request->jasa) - floatval($request->total_jasa_anggota);
+            $_denda = floatval($request->denda) - floatval($request->total_denda_anggota);
+
+            if (strtotime($tgl_transaksi) < strtotime($request->tgl_pakai_aplikasi)) {
+                return response()->json([
+                    'success' => false,
+                    'msg' => 'Tanggal transaksi tidak boleh sebelum Tanggal Pakai Aplikasi'
+                ]);
+            }
+
+            $transaksi = [];
+
+            $last_idtp = Transaksi::where('idtp', '!=', '0')->max('idtp');
+            $idtp = $last_idtp + 1;
+            if ($request->pokok > 0) {
+                $transaksi[] = [
+                    'tgl_transaksi' => (string) $tgl_transaksi,
+                    'rekening_debit' => (string) $kas_umum,
+                    'rekening_kredit' => (string) $poko_kredit,
+                    'idtp' => $idtp,
+                    'id_pinj' => $pinkel->id,
+                    'id_pinj_i' => '0',
+                    'keterangan_transaksi' => (string) 'Angs. (P) ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')' . ' [' . $pinkel->kelompok->d->nama_desa . ']',
+                    'relasi' => (string) $pinkel->kelompok->nama_kelompok,
+                    'jumlah' => str_replace(',', '', str_replace('.00', '', $request->pokok)),
+                    'urutan' => '0',
+                    'id_user' => auth()->user()->id
+                ];
+            }
+
+            if ($request->jasa > 0) {
+                // if ($pinkel->jenis_pp == '1') {
+                //     $jasa_kredit = '1.1.03.04';
+                // } elseif ($pinkel->jenis_pp == '2') {
+                //     $jasa_kredit = '1.1.03.05';
+                // } else {
+                //     $jasa_kredit = '1.1.03.06';
+                // }
+
+                $transaksi[] = [
+                    'tgl_transaksi' => (string) $tgl_transaksi,
+                    'rekening_debit' => (string) $kas_umum,
+                    'rekening_kredit' => (string) $jasa_kredit,
+                    'idtp' => $idtp,
+                    'id_pinj' => $pinkel->id,
+                    'id_pinj_i' => '0',
+                    'keterangan_transaksi' => (string) 'Angs. (J) ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')' . ' [' . $pinkel->kelompok->d->nama_desa . ']',
+                    'relasi' => (string) $pinkel->kelompok->nama_kelompok,
+                    'jumlah' => str_replace(',', '', str_replace('.00', '', $request->jasa)),
+                    'urutan' => '0',
+                    'id_user' => auth()->user()->id
+                ];
+
+                // if ($request->jasa < $tunggakan_jasa) {
+                // } else {
+                //     $angs_jasa = ($request->jasa - $tunggakan_jasa > 0) ? ($request->jasa - $tunggakan_jasa) : $request->jasa;
+                //     $transaksi[] = [
+                //         'tgl_transaksi' => (string) $tgl_transaksi,
+                //         'rekening_debit' => (string) $kas_umum,
+                //         'rekening_kredit' => (string) $jasa_kredit,
+                //         'idtp' => $idtp,
+                //         'id_pinj' => $pinkel->id,
+                //         'id_pinj_i' => '0',
+                //         'keterangan_transaksi' => (string) 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
+                //         'relasi' => (string) $pinkel->kelompok->nama_kelompok,
+                //         'jumlah' => str_replace(',', '', str_replace('.00', '', $angs_jasa)),
+                //         'urutan' => '0',
+                //         'id_user' => auth()->user()->id
+                //     ];
+
+                //     if ($request->jasa - $angs_jasa > 0) {
+                //         $piutang_kredit = $jasa_kredit;
+                //         if ($pinkel->jenis_pp == '1') {
+                //             $piutang_kredit = '1.1.03.04';
+                //         } elseif ($pinkel->jenis_pp == '2') {
+                //             $piutang_kredit = '1.1.03.05';
+                //         } else {
+                //             $piutang_kredit = '1.1.03.06';
+                //         }
+
+                //         $piutang_jasa = $request->jasa - $angs_jasa;
+                //         $transaksi[] = [
+                //             'tgl_transaksi' => (string) $tgl_transaksi,
+                //             'rekening_debit' => (string) $kas_umum,
+                //             'rekening_kredit' => (string) $piutang_kredit,
+                //             'idtp' => $idtp,
+                //             'id_pinj' => $pinkel->id,
+                //             'id_pinj_i' => '0',
+                //             'keterangan_transaksi' => (string) 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
+                //             'relasi' => (string) $pinkel->kelompok->nama_kelompok,
+                //             'jumlah' => str_replace(',', '', str_replace('.00', '', $piutang_jasa)),
+                //             'urutan' => '0',
+                //             'id_user' => auth()->user()->id
+                //         ];
+                //     }
+                // }
+            }
+
+            if ($request->denda > 0) {
+                $transaksi[] = [
+                    'tgl_transaksi' => (string) $tgl_transaksi,
+                    'rekening_debit' => (string) $kas_umum,
+                    'rekening_kredit' => (string) $dend_kredit,
+                    'idtp' => $idtp,
+                    'id_pinj' => $pinkel->id,
+                    'id_pinj_i' => '0',
+                    'keterangan_transaksi' => (string) 'Denda. ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')' . ' [' . $pinkel->kelompok->d->nama_desa . ']',
+                    'relasi' => (string) $pinkel->kelompok->nama_kelompok,
+                    'jumlah' => str_replace(',', '', str_replace('.00', '', $request->denda)),
+                    'urutan' => '0',
+                    'id_user' => auth()->user()->id
+                ];
+            }
+            Transaksi::insert($transaksi);
+
+            $jasa_pinjaman = $pinkel->pros_jasa / 100 * $pinkel->alokasi;
+            foreach ($pinjaman_anggota as $pa) {
+                $pokok_anggota = 0;
+                if ($request->pokok_anggota[$pa->id]) {
+                    $pokok_anggota = floatval(str_replace(',', '', str_replace('.00', '', $request->pokok_anggota[$pa->id])));
+                }
+
+                $jasa_anggota = 0;
+                if ($request->jasa_anggota[$pa->id]) {
+                    $jasa_anggota = str_replace(',', '', str_replace('.00', '', $request->jasa_anggota[$pa->id]));
+                }
+
+                if ($pokok_anggota <= 0) {
+                    $pros_pokok_anggota = round(($pa->alokasi / $pinkel->alokasi) * 100, 2);
+                    $pokok_anggota = round(($pros_pokok_anggota / 100) * $_pokok, 2);
+                }
+
+                if ($jasa_anggota <= 0) {
+                    $pros_jasa_anggota = round((($pa->pros_jasa / 100 * $pa->alokasi) / $jasa_pinjaman) * 100, 2);
+                    $jasa_anggota = round(($pros_jasa_anggota / 100) * $_jasa, 2);
+                }
+
+                $kom_pokok = json_decode($pa->kom_pokok, true);
+                $kom_jasa = json_decode($pa->kom_jasa, true);
+
+                if (is_array($kom_pokok)) {
+                    $kom_pokok[$idtp] = $pokok_anggota;
+                } else {
+                    $kom_pokok = [];
+                    $kom_pokok[$idtp] = $pokok_anggota;
+                }
+
+                if (is_array($kom_jasa)) {
+                    $kom_jasa[$idtp] = $jasa_anggota;
+                } else {
+                    $kom_jasa = [];
+                    $kom_jasa[$idtp] = $jasa_anggota;
+                }
+
+                PinjamanAnggota::where('id', $pa->id)->update([
+                    'kom_pokok' => $kom_pokok,
+                    'kom_jasa' => $kom_jasa
+                ]);
+            }
+
+            DB::commit();
             return response()->json([
-                'success' => false,
-                'msg' => 'Tanggal transaksi tidak boleh sebelum Tanggal Pakai Aplikasi'
+                'success' => true,
+                'msg' => 'Angsuran kelompok ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] berhasil diposting',
+                'id_pinkel' => $pinkel->id,
+                'idtp' => $idtp,
+                'tgl_transaksi' => $tgl_transaksi
             ]);
+        } catch (\Exception $e) {
+            DB::rollback();
         }
+    }
 
-        $transaksi = [];
-
-        $last_idtp = Transaksi::where('idtp', '!=', '0')->max('idtp');
-        $idtp = $last_idtp + 1;
-        if ($request->pokok > 0) {
-            $transaksi[] = [
-                'tgl_transaksi' => (string) $tgl_transaksi,
-                'rekening_debit' => (string) $kas_umum,
-                'rekening_kredit' => (string) $poko_kredit,
-                'idtp' => $idtp,
-                'id_pinj' => $pinkel->id,
-                'id_pinj_i' => '0',
-                'keterangan_transaksi' => (string) 'Angs. (P) ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')' . ' [' . $pinkel->kelompok->d->nama_desa . ']',
-                'relasi' => (string) $pinkel->kelompok->nama_kelompok,
-                'jumlah' => str_replace(',', '', str_replace('.00', '', $request->pokok)),
-                'urutan' => '0',
-                'id_user' => auth()->user()->id
-            ];
-        }
-
-        if ($request->jasa > 0) {
-            // if ($pinkel->jenis_pp == '1') {
-            //     $jasa_kredit = '1.1.03.04';
-            // } elseif ($pinkel->jenis_pp == '2') {
-            //     $jasa_kredit = '1.1.03.05';
-            // } else {
-            //     $jasa_kredit = '1.1.03.06';
-            // }
-
-            $transaksi[] = [
-                'tgl_transaksi' => (string) $tgl_transaksi,
-                'rekening_debit' => (string) $kas_umum,
-                'rekening_kredit' => (string) $jasa_kredit,
-                'idtp' => $idtp,
-                'id_pinj' => $pinkel->id,
-                'id_pinj_i' => '0',
-                'keterangan_transaksi' => (string) 'Angs. (J) ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')' . ' [' . $pinkel->kelompok->d->nama_desa . ']',
-                'relasi' => (string) $pinkel->kelompok->nama_kelompok,
-                'jumlah' => str_replace(',', '', str_replace('.00', '', $request->jasa)),
-                'urutan' => '0',
-                'id_user' => auth()->user()->id
-            ];
-
-            // if ($request->jasa < $tunggakan_jasa) {
-            // } else {
-            //     $angs_jasa = ($request->jasa - $tunggakan_jasa > 0) ? ($request->jasa - $tunggakan_jasa) : $request->jasa;
-            //     $transaksi[] = [
-            //         'tgl_transaksi' => (string) $tgl_transaksi,
-            //         'rekening_debit' => (string) $kas_umum,
-            //         'rekening_kredit' => (string) $jasa_kredit,
-            //         'idtp' => $idtp,
-            //         'id_pinj' => $pinkel->id,
-            //         'id_pinj_i' => '0',
-            //         'keterangan_transaksi' => (string) 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
-            //         'relasi' => (string) $pinkel->kelompok->nama_kelompok,
-            //         'jumlah' => str_replace(',', '', str_replace('.00', '', $angs_jasa)),
-            //         'urutan' => '0',
-            //         'id_user' => auth()->user()->id
-            //     ];
-
-            //     if ($request->jasa - $angs_jasa > 0) {
-            //         $piutang_kredit = $jasa_kredit;
-            //         if ($pinkel->jenis_pp == '1') {
-            //             $piutang_kredit = '1.1.03.04';
-            //         } elseif ($pinkel->jenis_pp == '2') {
-            //             $piutang_kredit = '1.1.03.05';
-            //         } else {
-            //             $piutang_kredit = '1.1.03.06';
-            //         }
-
-            //         $piutang_jasa = $request->jasa - $angs_jasa;
-            //         $transaksi[] = [
-            //             'tgl_transaksi' => (string) $tgl_transaksi,
-            //             'rekening_debit' => (string) $kas_umum,
-            //             'rekening_kredit' => (string) $piutang_kredit,
-            //             'idtp' => $idtp,
-            //             'id_pinj' => $pinkel->id,
-            //             'id_pinj_i' => '0',
-            //             'keterangan_transaksi' => (string) 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
-            //             'relasi' => (string) $pinkel->kelompok->nama_kelompok,
-            //             'jumlah' => str_replace(',', '', str_replace('.00', '', $piutang_jasa)),
-            //             'urutan' => '0',
-            //             'id_user' => auth()->user()->id
-            //         ];
-            //     }
-            // }
-        }
-
-        if ($request->denda > 0) {
-            $transaksi[] = [
-                'tgl_transaksi' => (string) $tgl_transaksi,
-                'rekening_debit' => (string) $kas_umum,
-                'rekening_kredit' => (string) $dend_kredit,
-                'idtp' => $idtp,
-                'id_pinj' => $pinkel->id,
-                'id_pinj_i' => '0',
-                'keterangan_transaksi' => (string) 'Denda. ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')' . ' [' . $pinkel->kelompok->d->nama_desa . ']',
-                'relasi' => (string) $pinkel->kelompok->nama_kelompok,
-                'jumlah' => str_replace(',', '', str_replace('.00', '', $request->denda)),
-                'urutan' => '0',
-                'id_user' => auth()->user()->id
-            ];
-        }
-        Transaksi::insert($transaksi);
-
+    public function notifikasi($idtp)
+    {
         $trx = Transaksi::where('idtp', $idtp)->first();
         $view = view('transaksi.jurnal_angsuran.partials.notif', [
             'idtp' => $idtp,
-            'id_pinkel' => $pinkel->id,
+            'id_pinkel' => $trx->id_pinj,
             'idt' => $trx->idt
         ])->render();
 
         return response()->json([
-            'success' => true,
-            'msg' => 'Angsuran kelompok ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] berhasil diposting',
-            'id_pinkel' => $pinkel->id,
-            'idtp' => $idtp,
-            'tgl_transaksi' => $tgl_transaksi,
             'view' => $view
         ]);
     }
@@ -1023,16 +1094,19 @@ class TransaksiController extends Controller
         $idt = $request->rev_idt;
         $idtp = $request->rev_idtp;
         $id_pinj = $request->rev_id_pinj;
+        $idtp_baru = $last_idtp + 1;
 
         $angsuran = false;
         if ($idtp != '0') {
+            $trx_reversal = [];
+            $pinkel = PinjamanKelompok::where('id', $id_pinj)->with('pinjaman_anggota')->first();
             $transaksi = Transaksi::where('idtp', $idtp)->orderBy('idtp', 'ASC')->get();
             foreach ($transaksi as $trx) {
-                $reversal = Transaksi::create([
+                $trx_reversal[] = [
                     'tgl_transaksi' => (string) date('Y-m-d'),
                     'rekening_debit' => (string) $trx->rekening_debit,
                     'rekening_kredit' => (string) $trx->rekening_kredit,
-                    'idtp' => $last_idtp + 1,
+                    'idtp' => $idtp_baru,
                     'id_pinj' => $trx->id_pinj,
                     'id_pinj_i' => $trx->id_pinj_i,
                     'keterangan_transaksi' => (string) 'KOREKSI idt (' . $idt . ') : ' . $trx->keterangan_transaksi,
@@ -1040,6 +1114,30 @@ class TransaksiController extends Controller
                     'jumlah' => ($trx->jumlah * -1),
                     'urutan' => $trx->urutan,
                     'id_user' => auth()->user()->id
+                ];
+            }
+            $reversal = Transaksi::insert($trx_reversal);
+
+            $pinjaman_anggota = $pinkel->pinjaman_anggota;
+            foreach ($pinjaman_anggota as $pa) {
+                $kom_pokok = json_decode($pa->kom_pokok, true);
+                $kom_jasa = json_decode($pa->kom_jasa, true);
+
+                if (is_array($kom_pokok)) {
+                    $kom_pokok[$idtp_baru] = $kom_pokok[$idtp] * -1;
+                } else {
+                    $kom_pokok = [];
+                }
+
+                if (is_array($kom_jasa)) {
+                    $kom_jasa[$idtp_baru] = $kom_jasa[$idtp] * -1;
+                } else {
+                    $kom_jasa = [];
+                }
+
+                PinjamanAnggota::where('id', $pa->id)->update([
+                    'kom_pokok' => $kom_pokok,
+                    'kom_jasa' => $kom_jasa
                 ]);
             }
 
@@ -1063,7 +1161,6 @@ class TransaksiController extends Controller
         }
 
         if ($angsuran) {
-            $pinkel = PinjamanKelompok::where('id', $id_pinj)->first();
             $this->regenerateReal($pinkel);
         }
 
@@ -1084,8 +1181,31 @@ class TransaksiController extends Controller
 
         if ($idtp != '0') {
             $trx = Transaksi::where('idtp', $idtp)->delete();
+            $pinkel = PinjamanKelompok::where('id', $id_pinj)->with('pinjaman_anggota')->first();
 
-            $pinkel = PinjamanKelompok::where('id', $id_pinj)->first();
+            $pinjaman_anggota = $pinkel->pinjaman_anggota;
+            foreach ($pinjaman_anggota as $pa) {
+                $kom_pokok = json_decode($pa->kom_pokok, true);
+                $kom_jasa = json_decode($pa->kom_jasa, true);
+
+                if (is_array($kom_pokok)) {
+                    unset($kom_pokok[$idtp]);
+                } else {
+                    $kom_pokok = [];
+                }
+
+                if (is_array($kom_jasa)) {
+                    unset($kom_jasa[$idtp]);
+                } else {
+                    $kom_jasa = [];
+                }
+
+                PinjamanAnggota::where('id', $pa->id)->update([
+                    'kom_pokok' => $kom_pokok,
+                    'kom_jasa' => $kom_jasa
+                ]);
+            }
+
             $this->regenerateReal($pinkel);
         } else {
             if ($id_pinj != '0') {
@@ -1094,7 +1214,9 @@ class TransaksiController extends Controller
                 ]);
 
                 $pinj_anggota = PinjamanAnggota::where('id_pinkel', $id_pinj)->update([
-                    'status' => 'W'
+                    'status' => 'W',
+                    'kom_pokok' => 0,
+                    'kom_jasa' => 0
                 ]);
 
                 $real = RealAngsuran::where('loan_id', $id_pinj)->delete();

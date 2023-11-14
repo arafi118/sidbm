@@ -46,6 +46,14 @@
             </div>
             <ul class="navbar-nav justify-content-end align-items-center">
                 <li class="nav-item">
+                    <a href="#" class="nav-link text-body p-0 position-relative" target="_blank"
+                        id="btnLaporanPelunasan">
+                        <i class="material-icons me-sm-1">
+                            notifications_active
+                        </i>
+                    </a>
+                </li>
+                <li class="nav-item ps-3">
                     <a href="/pelaporan/mou" class="nav-link text-body p-0 position-relative" target="_blank">
                         <i class="material-icons me-sm-1">
                             library_books
@@ -123,3 +131,14 @@
         </div>
     </div>
 </nav>
+
+<form action="/pelaporan/preview" method="post" id="FormLaporanPelunasan" target="_blank">
+    @csrf
+
+    <input type="hidden" name="type" id="type" value="pdf">
+    <input type="hidden" name="tahun" id="tahun" value="{{ date('Y') }}">
+    <input type="hidden" name="bulan" id="bulan" value="{{ date('m') }}">
+    <input type="hidden" name="hari" id="hari" value="{{ date('d') }}">
+    <input type="hidden" name="laporan" id="laporan" value="pelunasan">
+    <input type="hidden" name="sub_laporan" id="sub_laporan" value="">
+</form>
