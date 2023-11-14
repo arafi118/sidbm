@@ -34,7 +34,13 @@ class DashboardController extends Controller
             Session::put('lokasi', Session::get('lokasi'));
         }
 
+        $tgl_pakai = $kec->tgl_pakai;
         $tgl = date('Y-m-d');
+        $jumlah = 1 + (date("Y", strtotime($tgl)) - date("Y", strtotime($tgl_pakai))) * 12;
+        $jumlah += date("m", strtotime($tgl)) - date("m", strtotime($tgl_pakai));
+        $data['jumlah'] = Rekening::count() + $jumlah;
+        $data['request'] = '?tahun=' . date('Y', strtotime($tgl_pakai)) . '&bulan=' . date('m');
+
         $pinj_anggota = PinjamanAnggota::where([
             ['status', 'A'],
             ['tgl_cair', '<=', $tgl]
@@ -690,5 +696,66 @@ class DashboardController extends Controller
             'success' => true,
             'invoice' => $jumlah
         ]);
+    }
+
+    public function simpanSaldo()
+    {
+        $tahun = request()->get('tahun') ?: date('Y');
+        $bulan = request()->get('bulan') ?: date('m');
+
+        $date = $tahun . '-' . $bulan . '-01';
+        $tgl_kondisi = date('Y-m-t', strtotime($date));
+        $rekening = Rekening::withSum([
+            'trx_debit' => function ($query) use ($tgl_kondisi, $tahun) {
+                $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
+            }
+        ], 'jumlah')->withSum([
+            'trx_kredit' => function ($query) use ($tgl_kondisi, $tahun) {
+                $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
+            }
+        ], 'jumlah')->orderBy('kode_akun', 'ASC')->get();
+
+        $saldo = [];
+        foreach ($rekening as $rek) {
+            $id = str_replace('.', '', $rek->kode_akun) . $tahun . str_pad($bulan, 2, "0", STR_PAD_LEFT);
+            $saldo[] = [
+                'id' => $id,
+                'kode_akun' => $rek->kode_akun,
+                'tahun' => $tahun,
+                'bulan' => $bulan,
+                'debit' => $rek->trx_debit_sum_jumlah,
+                'kredit' => $rek->trx_kredit_sum_jumlah
+            ];
+
+            $data_id[] = $id;
+        }
+
+        Saldo::whereIn('id', $data_id)->delete();
+        $query = Saldo::insert($saldo);
+
+        $link = request()->url('');
+        $query = request()->query();
+
+        if (isset($query['bulan'])) {
+            $query['bulan'] += 1;
+        } else {
+            $query['bulan'] = date('m') + 1;
+        }
+        if (isset($query['tahun'])) {
+            $query['tahun'] += 1;
+        } else {
+            $query['tahun'] = date('y');
+        }
+
+        $query['bulan'] = str_pad($query['bulan'], 2, '0', STR_PAD_LEFT);
+        $next = $link . '?' . http_build_query($query);
+
+        if ($query['bulan'] < 13) {
+            echo '<a href="' . $next . '" id="next"></a><script>document.querySelector("#next").click()</script>';
+            exit;
+        } else {
+            echo '<script>window.opener.postMessage("closed", "*"); window.close();</script>';
+            exit;
+        }
     }
 }

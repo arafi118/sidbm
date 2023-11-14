@@ -8,6 +8,15 @@
     </form>
 
     <div class="row">
+        @if ($jumlah_saldo <= $jumlah)
+            <div class="col-12">
+                <div class="alert alert-warning text-white" role="alert">
+                    Sepertinya saldo transaksi anda belum tersimpan di aplikasi. Silahkan Klik <a href="#"
+                        data-href="/simpan_saldo?bulan=12" class="alert-link" id="simpanSaldo">Disini</a> untuk menyimpan
+                    saldo transaksi anda
+                </div>
+            </div>
+        @endif
         <div class="col-sm-4">
             <div class="card">
                 <div class="card-body p-3 position-relative pointer" id="btnAktif">
@@ -837,6 +846,18 @@
             e.preventDefault()
 
             $('#aktif').modal('show')
+        })
+
+        let childWindow;
+        $(document).on('click', '#simpanSaldo', function(e) {
+            var link = $(this).attr('data-href')
+            childWindow = window.open(link, '_blank');
+        })
+
+        window.addEventListener('message', function(event) {
+            if (event.data === 'closed') {
+                window.location.reload()
+            }
         })
     </script>
 @endsection

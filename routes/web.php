@@ -62,6 +62,7 @@ Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 Route::get('/piutang_jasa', [DashboardController::class, 'piutang'])->middleware('auth');
 Route::get('/pelaporan/invoice/{invoice}', [PelaporanController::class, 'invoice']);
+Route::get('/simpan_saldo', [DashboardController::class, 'simpanSaldo'])->middleware('auth');
 
 Route::post('/dashboard/jatuh_tempo', [DashboardController::class, 'jatuhTempo'])->middleware('auth');
 Route::post('/dashboard/nunggak', [DashboardController::class, 'nunggak'])->middleware('auth');
