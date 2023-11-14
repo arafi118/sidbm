@@ -225,21 +225,21 @@
                 distance: 1000
             }
         })
-        new Choices($('#tahun')[0], {
+        new Choices($('select#tahun')[0], {
             shouldSort: false,
             fuseOptions: {
                 threshold: 0.1,
                 distance: 1000
             }
         })
-        new Choices($('#bulan')[0], {
+        new Choices($('select#bulan')[0], {
             shouldSort: false,
             fuseOptions: {
                 threshold: 0.1,
                 distance: 1000
             }
         })
-        new Choices($('#tanggal')[0], {
+        new Choices($('select#tanggal')[0], {
             shouldSort: false,
             fuseOptions: {
                 threshold: 0.1,
