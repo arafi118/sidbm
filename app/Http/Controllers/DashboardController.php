@@ -560,38 +560,38 @@ class DashboardController extends Controller
         }
 
         $data_id = [];
-        for ($i = 1; $i <= $bulan; $i++) {
-            $date = $tahun . '-' . $i . '-01';
-            $tgl_kondisi = date('Y-m-t', strtotime($date));
-            $rekening = Rekening::withSum([
-                'trx_debit' => function ($query) use ($tgl_kondisi, $tahun) {
-                    $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
-                }
-            ], 'jumlah')->withSum([
-                'trx_kredit' => function ($query) use ($tgl_kondisi, $tahun) {
-                    $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
-                }
-            ], 'jumlah')->orderBy('kode_akun', 'ASC')->get();
+        // for ($i = 1; $i <= $bulan; $i++) {
+        //     $date = $tahun . '-' . $i . '-01';
+        //     $tgl_kondisi = date('Y-m-t', strtotime($date));
+        //     $rekening = Rekening::withSum([
+        //         'trx_debit' => function ($query) use ($tgl_kondisi, $tahun) {
+        //             $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
+        //         }
+        //     ], 'jumlah')->withSum([
+        //         'trx_kredit' => function ($query) use ($tgl_kondisi, $tahun) {
+        //             $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
+        //         }
+        //     ], 'jumlah')->orderBy('kode_akun', 'ASC')->get();
 
-            $saldo = [];
-            foreach ($rekening as $rek) {
-                $id = str_replace('.', '', $rek->kode_akun) . $tahun . str_pad($i, 2, "0", STR_PAD_LEFT);
-                if (!in_array($id, $data_id)) {
-                    $saldo[] = [
-                        'id' => $id,
-                        'kode_akun' => $rek->kode_akun,
-                        'tahun' => $tahun,
-                        'bulan' => $i,
-                        'debit' => $rek->trx_debit_sum_jumlah,
-                        'kredit' => $rek->trx_kredit_sum_jumlah
-                    ];
+        //     $saldo = [];
+        //     foreach ($rekening as $rek) {
+        //         $id = str_replace('.', '', $rek->kode_akun) . $tahun . str_pad($i, 2, "0", STR_PAD_LEFT);
+        //         if (!in_array($id, $data_id)) {
+        //             $saldo[] = [
+        //                 'id' => $id,
+        //                 'kode_akun' => $rek->kode_akun,
+        //                 'tahun' => $tahun,
+        //                 'bulan' => $i,
+        //                 'debit' => $rek->trx_debit_sum_jumlah,
+        //                 'kredit' => $rek->trx_kredit_sum_jumlah
+        //             ];
 
-                    $data_id[] = $id;
-                }
-            }
+        //             $data_id[] = $id;
+        //         }
+        //     }
 
-            $query = Saldo::insert($saldo);
-        }
+        //     $query = Saldo::insert($saldo);
+        // }
     }
 
     private function _saldo($tgl)
