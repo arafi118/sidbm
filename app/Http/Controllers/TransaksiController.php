@@ -59,6 +59,15 @@ class TransaksiController extends Controller
         return view('transaksi.jurnal_angsuran.index')->with(compact('title', 'pinkel', 'kec'));
     }
 
+    public function jurnalTutupBuku()
+    {
+
+        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
+
+        $title = 'Tutup Buku';
+        return view('transaksi.tutup_buku.index')->with(compact('title', 'kec'));
+    }
+
     public function ebudgeting()
     {
         $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();

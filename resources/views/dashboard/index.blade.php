@@ -13,8 +13,7 @@
                 <div class="alert alert-warning text-white" role="alert">
                     Sepertinya saldo transaksi anda belum tersimpan di aplikasi. Silahkan Klik <a href="#"
                         data-href="/simpan_saldo?bulan=01" class="alert-link" id="simpanSaldo">Disini</a> untuk menyimpan
-                    saldo
-                    transaksi anda
+                    saldo transaksi anda
                 </div>
             </div>
         @endif

@@ -23,7 +23,7 @@
 
 <div class="row">
     <div class="col-lg-4 mb-4">
-        <div class="card">
+        <div class="card h-100">
             <div class="card-body text-center">
                 <img src="/assets/img/avatar/female.jpg" class="rounded-circle border" style="width: 150px;"
                     alt="Avatar" />
@@ -46,7 +46,7 @@
         </div>
     </div>
     <div class="col-lg-8 mb-4">
-        <div class="card">
+        <div class="card h-100">
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 my-3">
@@ -58,21 +58,22 @@
                     </div>
                     <div class="col-6 my-3">
                         <div class="input-group input-group-static">
-                            <label for="kom_pokok">Angsuran Pokok</label>
+                            <label for="kom_pokok">Kom. Angsuran Pokok</label>
                             <input type="text" id="kom_pokok" name="kom_pokok" class="form-control" readonly
                                 value="{{ number_format($kom_pokok, 2) }}">
                         </div>
                     </div>
                     <div class="col-6 my-3">
                         <div class="input-group input-group-static">
-                            <label for="kom_jasa">Angsuran Jasa</label>
+                            <label for="kom_jasa">Kom. Angsuran Jasa</label>
                             <input type="text" id="kom_jasa" name="kom_jasa" class="form-control" readonly
                                 value="{{ number_format($kom_jasa, 2) }}">
                         </div>
                     </div>
 
                     <div class="col-6 d-grid">
-                        <button type="button" id="Penghapusan" disabled class="mb-0 btn btn-sm btn-danger">
+                        <button type="button" data-id="{{ $pinj->id }}" id="Penghapusan"
+                            class="mb-0 btn btn-sm btn-danger">
                             Penghapusan Pinjaman
                         </button>
                     </div>

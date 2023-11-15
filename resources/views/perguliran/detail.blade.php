@@ -604,6 +604,30 @@
         </div>
     </div>
 
+    {{-- Modal Penghapusan Pinjaman Anggota --}}
+    <div class="modal fade" id="PenghapusanPinjamanAnggota" tabindex="-1"
+        aria-labelledby="PenghapusanPinjamanAnggotaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="PenghapusanPinjamanAnggotaLabel">
+                        Form Penghapusan Pinjaman Anggota
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="LayoutPenghapusanPinjamanAnggota"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" id="tutupFormPenghapusan">Tutup</button>
+                    <button type="button" id="HapusPinjamanAnggota" class="btn btn-github btn-sm">
+                        Hapus Pinjaman
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <form action="/perguliran/{{ $perguliran->id }}" method="post" id="FormDeleteProposal">
         @csrf
         @method('DELETE')
@@ -983,6 +1007,66 @@
                     })
                 } else {
                     $('#PinjamanAnggota').modal('hide')
+                }
+            })
+        })
+
+        $(document).on('click', '#Penghapusan', function(e) {
+            e.preventDefault()
+
+            var id_pinj = $(this).attr('data-id')
+            $.get('/pinjaman_anggota/form_hapus/' + id_pinj, function(result) {
+                if (result.success) {
+                    $('#LayoutPenghapusanPinjamanAnggota').html(result.view)
+
+                    $('#PenghapusanPinjamanAnggota').modal('show')
+                    $('#PinjamanAnggota').modal('hide')
+                }
+            })
+        })
+
+        $(document).on('click', '#tutupFormPenghapusan', function(e) {
+            e.preventDefault()
+
+            $('#PenghapusanPinjamanAnggota').modal('hide')
+            $('#PinjamanAnggota').modal('show')
+        })
+
+        $(document).on('click', '#HapusPinjamanAnggota', function(e) {
+            e.preventDefault()
+
+            var form = $('#FormPenghapusanPinjamanAnggota')
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+                success: function(result) {
+                    if (result.success) {
+                        $.get('/transaksi/regenerate_real/' + result.id_pinkel, function(res) {
+                            if (res.success) {
+                                Swal.fire('Berhasil!', result.msg, 'success').then(() => {
+                                    $.get('/perguliran/{{ $perguliran->id }}',
+                                        function(result) {
+                                            $('#PenghapusanPinjamanAnggota').modal(
+                                                'hide')
+                                            $('#layout').html(result)
+                                        })
+                                })
+                            }
+                        })
+                    } else {
+                        Swal.fire('Error', result.msg, 'error')
+                    }
+                },
+                error: function(result) {
+                    const respons = result.responseJSON;
+
+                    Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error')
+                    $.map(respons, function(res, key) {
+                        $('#' + key).parent('.input-group.input-group-static').addClass(
+                            'is-invalid')
+                        $('#msg_' + key).html(res)
+                    })
                 }
             })
         })

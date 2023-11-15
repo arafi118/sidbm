@@ -6,7 +6,12 @@
     $tgl = $pinkel->tgl_proposal;
     $tanggal = 'Tanggal Proposal';
     if (Request::get('status') == 'A') {
-        $alokasi = $pinkel->pinjaman_anggota_sum_alokasi;
+        $alokasi = $pinkel->alokasi;
+
+        $alokasi_pinjaman = $alokasi;
+        if ($pinkel->saldo_pinjaman) {
+            $alokasi = $pinkel->saldo_pinjaman->saldo_pinjaman;
+        }
         $tgl = $pinkel->tgl_cair;
         $tanggal = 'Tanggal Cair';
     }
@@ -74,7 +79,7 @@
             <td>Alokasi Pinjaman</td>
             <td align="center">:</td>
             <td>
-                <b>Rp. {{ number_format($alokasi) }}</b>
+                <b>Rp. {{ number_format($alokasi_pinjaman) }}</b>
             </td>
             <td>Prosentase Jasa</td>
             <td align="center">:</td>

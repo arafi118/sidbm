@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 use DNS1D;
 use Illuminate\Support\Facades\Http;
+use Session;
 
 class PinjamanKelompokController extends Controller
 {
@@ -337,9 +338,7 @@ class PinjamanKelompokController extends Controller
             'sis_jasa',
             'jpp',
             'jasa',
-            'pinjaman_anggota' => function ($query) {
-                $query->where('status', '!=', 'H');
-            },
+            'pinjaman_anggota',
             'pinjaman_anggota.anggota',
             'pinjaman_anggota.anggota.pemanfaat' => function ($query) {
                 $query->where([
@@ -1361,12 +1360,9 @@ class PinjamanKelompokController extends Controller
             'jpp',
             'kelompok',
             'sis_pokok',
-            'jasa'
-        ])->withSum([
-            'pinjaman_anggota' => function ($query) {
-                $query->where('status', '!=', 'H');
-            }
-        ], 'alokasi')->first();
+            'jasa',
+            'saldo_pinjaman'
+        ])->first();
 
         $data['dir'] = User::where([
             ['level', '1'],
@@ -1765,12 +1761,11 @@ class PinjamanKelompokController extends Controller
         $rencana = [];
         $pinkel = PinjamanKelompok::where('id', $id_pinj)->with([
             'kelompok',
-            'kelompok.d'
-        ])->withSum([
-            'pinjaman_anggota' => function ($query) {
-                $query->where('status', '!=', 'H');
+            'kelompok.d',
+            'saldo_pinjaman' => function ($query) {
+                $query->where('lokasi', Session::get('lokasi'))->orderBy('tanggal', 'DESC');
             }
-        ], 'alokasi')->firstOrFail();
+        ])->firstOrFail();
 
         $jangka = $pinkel->jangka;
         $sa_pokok = $pinkel->sistem_angsuran;
@@ -1787,7 +1782,10 @@ class PinjamanKelompokController extends Controller
             $alokasi = $pinkel->alokasi;
             $tgl = $pinkel->tgl_cair;
         } else {
-            $alokasi = $pinkel->pinjaman_anggota_sum_alokasi;
+            $alokasi = $pinkel->alokasi;
+            if ($pinkel->saldo_pinjaman) {
+                $alokasi = $pinkel->saldo_pinjaman->saldo_pinjaman;
+            }
             $tgl = $pinkel->tgl_cair;
         }
 
@@ -1803,7 +1801,10 @@ class PinjamanKelompokController extends Controller
                 $alokasi = $pinkel->alokasi;
                 $tgl = $pinkel->tgl_tunggu;
             } else {
-                $alokasi = $pinkel->pinjaman_anggota_sum_alokasi;
+                $alokasi = $pinkel->alokasi;
+                if ($pinkel->saldo_pinjaman) {
+                    $alokasi = $pinkel->saldo_pinjaman->saldo_pinjaman;
+                }
                 $tgl = $pinkel->tgl_cair;
             }
         }
@@ -1884,8 +1885,9 @@ class PinjamanKelompokController extends Controller
         $ra['alokasi'] = $alokasi;
 
         if (request()->get('save')) {
-            RencanaAngsuran::where('loan_id', $id_pinj)->delete();
+            $insert_ra = [];
 
+            RencanaAngsuran::where('loan_id', $id_pinj)->delete();
             RencanaAngsuran::create([
                 'loan_id' => $id_pinj,
                 'angsuran_ke' => '0',
@@ -1926,7 +1928,7 @@ class PinjamanKelompokController extends Controller
                     $target_jasa += $jasa;
                 }
 
-                RencanaAngsuran::create([
+                $insert_ra[] = [
                     'loan_id' => $id_pinj,
                     'angsuran_ke' => $x,
                     'jatuh_tempo' => $jatuh_tempo,
@@ -1936,8 +1938,10 @@ class PinjamanKelompokController extends Controller
                     'target_jasa' => $target_jasa,
                     'lu' => date('Y-m-d H:i:s'),
                     'id_user' => auth()->user()->id
-                ]);
+                ];
             }
+
+            RencanaAngsuran::insert($insert_ra);
         } else {
             $target_pokok = 0;
             $target_jasa = 0;
