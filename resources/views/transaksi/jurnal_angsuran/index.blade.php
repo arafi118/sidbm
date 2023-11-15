@@ -295,7 +295,6 @@
             var pokok = $('#pokok').val()
             pokok = parseFloat(pokok.split(',').join('').split('.00').join(''))
 
-            console.log(sisa_pokok, pokok);
             var next = true
             if (pokok > sisa_pokok) {
                 Swal.fire('Error', 'Angsuran pokok tidak boleh melebihi saldo pinjaman saat ini.', 'warning')
