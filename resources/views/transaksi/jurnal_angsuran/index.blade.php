@@ -265,19 +265,19 @@
             var jasa = $('#jasa').val()
             var denda = $('#denda').val()
 
-            pokok = parseInt(pokok.split(',').join('').split('.00').join(''))
+            pokok = parseFloat(pokok.split(',').join('').split('.00').join(''))
             if (!pokok) {
                 pokok = 0;
                 $('#pokok').val(formatter.format('0'))
             }
 
-            jasa = parseInt(jasa.split(',').join('').split('.00').join(''))
+            jasa = parseFloat(jasa.split(',').join('').split('.00').join(''))
             if (!jasa) {
                 jasa = 0;
                 $('#jasa').val(formatter.format('0'))
             }
 
-            denda = parseInt(denda.split(',').join('').split('.00').join(''))
+            denda = parseFloat(denda.split(',').join('').split('.00').join(''))
             if (!denda) {
                 $('#denda').val(formatter.format('0'))
                 denda = 0;
@@ -291,65 +291,83 @@
             $('#notif').html('')
             e.preventDefault()
 
-            var form = $('#FormAngsuran')
-            var form2 = $('#FormAngsuranAnggota')
+            var sisa_pokok = $('#_pokok').val()
+            var pokok = $('#pokok').val()
+            pokok = parseFloat(pokok.split(',').join('').split('.00').join(''))
 
-            $.ajax({
-                type: 'POST',
-                url: form.attr('action'),
-                data: form.serialize() + '&' + form2.serialize(),
-                success: function(result) {
-                    if (result.success) {
-                        var loader = Swal.fire({
-                            title: "Mohon Menunggu..",
-                            html: "Menyimpan transaksi angsuran.",
-                            timerProgressBar: true,
-                            allowOutsideClick: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                            }
-                        })
+            console.log(sisa_pokok, pokok);
+            var next = true
+            if (pokok > sisa_pokok) {
+                Swal.fire('Error', 'Angsuran pokok tidak boleh melebihi saldo pinjaman saat ini.', 'warning')
+                return false
 
-                        $.get('/angsuran/notifikasi/' + result.idtp, function(res) {
-                            $('#notif').html(res.view)
-                        })
+                next = false
+            }
 
-                        $.get('/transaksi/regenerate_real/' + result.id_pinkel, function(res) {
-                            if (res.success) {
-                                loader.close()
-                                Swal.fire('Berhasil!', result.msg, 'success').then(() => {
-                                    $.get('/transaksi/form_angsuran/' + result
-                                        .id_pinkel,
-                                        function(result) {
-                                            angsuran(true, result)
+            if (next == true) {
+                var form = $('#FormAngsuran')
+                var form2 = $('#FormAngsuranAnggota')
 
-                                            makeChart('pokok', ch_pokok, result
-                                                .sisa_pokok, result.sum_pokok)
-                                            makeChart('jasa', ch_jasa, result
-                                                .sisa_jasa,
-                                                result.sum_jasa)
+                $.ajax({
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize() + '&' + form2.serialize(),
+                    success: function(result) {
+                        if (result.success) {
+                            var loader = Swal.fire({
+                                title: "Mohon Menunggu..",
+                                html: "Menyimpan transaksi angsuran.",
+                                timerProgressBar: true,
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            })
 
-                                            var id = $('#id').val()
-                                            $.get('/transaksi/angsuran/form_anggota/' +
-                                                id,
-                                                function(result) {
-                                                    if (result.success) {
-                                                        $('#LayoutAngsuranAnggota')
-                                                            .html(result.view)
-                                                        $('#AngsuranAnggotaLabel')
-                                                            .text(result.title)
-                                                    }
-                                                })
-                                        })
-                                })
-                            }
-                        })
+                            $.get('/angsuran/notifikasi/' + result.idtp, function(res) {
+                                $('#notif').html(res.view)
+                            })
 
-                    } else {
-                        Swal.fire('Error', result.msg, 'warning')
+                            $.get('/transaksi/regenerate_real/' + result.id_pinkel, function(res) {
+                                if (res.success) {
+                                    loader.close()
+                                    Swal.fire('Berhasil!', result.msg, 'success').then(() => {
+                                        $.get('/transaksi/form_angsuran/' + result
+                                            .id_pinkel,
+                                            function(result) {
+                                                angsuran(true, result)
+
+                                                makeChart('pokok', ch_pokok, result
+                                                    .sisa_pokok, result
+                                                    .sum_pokok)
+                                                makeChart('jasa', ch_jasa, result
+                                                    .sisa_jasa,
+                                                    result.sum_jasa)
+
+                                                var id = $('#id').val()
+                                                $.get('/transaksi/angsuran/form_anggota/' +
+                                                    id,
+                                                    function(result) {
+                                                        if (result.success) {
+                                                            $('#LayoutAngsuranAnggota')
+                                                                .html(result
+                                                                    .view)
+                                                            $('#AngsuranAnggotaLabel')
+                                                                .text(result
+                                                                    .title)
+                                                        }
+                                                    })
+                                            })
+                                    })
+                                }
+                            })
+
+                        } else {
+                            Swal.fire('Error', result.msg, 'warning')
+                        }
                     }
-                }
-            })
+                })
+            }
         })
 
         $(document).on('click', '#cetakKartuAngsuran', function(e) {
