@@ -421,7 +421,9 @@
 
                     <div class="card border">
                         <div class="card-body pt-3 pb-0 ps-3 pe-3">
-                            <div id="LayoutTambahPemanfaat"></div>
+                            <div id="LayoutTambahPemanfaat">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -632,6 +634,33 @@
         @csrf
         @method('DELETE')
     </form>
+
+    <div id="placeholder" class="d-none">
+        <div class="row">
+            <div class="col-lg-4 mb-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <span class="placeholder rounded-circle border" style="width: 150px; height: 150px;"></span>
+
+                        <h5 class="mb-2">
+                            <b><span class="placeholder col-12"></span></b>
+                        </h5>
+
+                        <div class="text-muted">
+                            <span class="placeholder col-12"></span>
+                        </div>
+                        <div class="text-muted"><span class="placeholder col-12"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="alert placeholder col-12 p-4"></div>
+                <div class="alert placeholder col-12 p-5"></div>
+                <div class="alert placeholder col-12 p-5"></div>
+                <div class="alert placeholder col-12 p-4"></div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -752,7 +781,7 @@
             $('#cariNik').val('')
             $('#alokasi_pengajuan').val('')
 
-            $('#LayoutTambahPemanfaat').html('')
+            $('#LayoutTambahPemanfaat').html($('#placeholder').html())
         })
 
         $(document).on('click', '#SimpanEditProposal', function(e) {
