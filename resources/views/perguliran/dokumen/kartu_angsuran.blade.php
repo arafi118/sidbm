@@ -2,13 +2,9 @@
     use App\Utils\Tanggal;
     use App\Models\RencanaAngsuran;
 
-    $rowspan = $pinkel->real_count + 16;
-    if ($pinkel->real_count >= 16) {
+    $rowspan = 19;
+    if ($pinkel->real_count > 16) {
         $rowspan = $pinkel->real_count + 3;
-    }
-
-    if ($pinkel->real_count == 0) {
-        $rowspan = 20;
     }
 @endphp
 
@@ -290,7 +286,7 @@
             @endforeach
 
             @if ($jumlah < 16)
-                @for ($i = 0; $i <= 16 - $jumlah; $i++)
+                @for ($i = 1; $i <= 16 - $jumlah; $i++)
                     <tr>
                         <td class="l {{ $i == 16 - $jumlah ? 'b' : '' }}" align="center">&nbsp;</td>
                         <td class="l {{ $i == 16 - $jumlah ? 'b' : '' }}" align="center">&nbsp;</td>
