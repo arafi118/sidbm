@@ -11,7 +11,7 @@
             <th>No</th>
             <th>Tanggal</th>
             <th>Keterangan</th>
-            <th>Kode Trx</th>
+            <th>Kode Kuitansi</th>
             <th>Pencairan</th>
             <th>Pokok</th>
             <th>Jasa</th>
@@ -42,7 +42,7 @@
                     if ($trx->rekening_kredit == '4.1.01.04' || $trx->rekening_kredit == '4.1.01.05' || $trx->rekening_kredit == '4.1.01.06') {
                         $denda += $trx->jumlah;
                     }
-                    
+
                     $idt = $trx->idt;
                 @endphp
             @endforeach
