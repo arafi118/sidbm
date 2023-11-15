@@ -97,16 +97,6 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="input-group input-group-static my-3">
-                <label for="catatan_verifikasi">Catatan Verifikasi</label>
-                <textarea class="form-control" name="catatan_verifikasi" id="catatan_verifikasi" rows="3"
-                    placeholder="Catatan" spellcheck="false">{{ $perguliran->catatan_verifikasi }}</textarea>
-                <small class="text-danger" id="msg_catatan_verifikasi"></small>
-            </div>
-        </div>
-    </div>
 </form>
 
 <script>

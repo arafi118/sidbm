@@ -514,8 +514,7 @@ class PinjamanKelompokController extends Controller
                 'pros_jasa_proposal',
                 'jenis_jasa_proposal',
                 'sistem_angsuran_pokok_proposal',
-                'sistem_angsuran_jasa_proposal',
-                'catatan_verifikasi'
+                'sistem_angsuran_jasa_proposal'
             ]);
 
             $validate = Validator::make($data, [
@@ -525,8 +524,7 @@ class PinjamanKelompokController extends Controller
                 'pros_jasa_proposal' => 'required',
                 'jenis_jasa_proposal' => 'required',
                 'sistem_angsuran_pokok_proposal' => 'required',
-                'sistem_angsuran_jasa_proposal' => 'required',
-                'catatan_verifikasi' => 'required'
+                'sistem_angsuran_jasa_proposal' => 'required'
             ]);
 
             $data['jangka'] = $data['jangka_proposal'];
@@ -689,15 +687,12 @@ class PinjamanKelompokController extends Controller
         } else {
             if ($request->idpa != null) {
                 foreach ($request->idpa as $idpa => $val) {
-                    $catatan = $request->catatan[$idpa];
-
                     $val = str_replace(',', '', str_replace('.00', '', $val));
                     if ($val == '') $val = 0;
                     // echo $val . ', ';
                     PinjamanAnggota::where('id', $idpa)->update([
                         $tgl => Tanggal::tglNasional($data[$tgl]),
                         $alokasi => $val,
-                        'catatan_verifikasi' => $catatan,
                         'status' => $data['status']
                     ]);
 
@@ -715,7 +710,6 @@ class PinjamanKelompokController extends Controller
                 'jenis_jasa' => $data['jenis_jasa'],
                 'sistem_angsuran' => $data['sistem_angsuran_pokok'],
                 'sa_jasa' => $data['sistem_angsuran_jasa'],
-                'catatan_verifikasi' => $data['catatan_verifikasi'],
                 'status' => $data['status']
             ];
         }
@@ -728,6 +722,9 @@ class PinjamanKelompokController extends Controller
 
         if ($perguliran->status == 'P') {
             $msg = 'Rekom Verifikator berhasil disimpan';
+            if ($request->status == 'P') {
+                $msg = 'Proposal berhasil diedit';
+            }
         } elseif ($perguliran->status == 'V') {
             $msg = 'Keputusan Pendanaan berhasil disimpan';
         } elseif ($perguliran->status == 'W') {
