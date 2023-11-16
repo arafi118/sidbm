@@ -20,9 +20,11 @@ use App\Models\Transaksi;
 use App\Models\User;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
+use DB;
 use Dompdf\Dompdf;
 use Illuminate\Http\Request;
 use PDF;
+use Session;
 
 class PelaporanController extends Controller
 {
@@ -1388,7 +1390,40 @@ class PelaporanController extends Controller
             $data['tgl'] = Tanggal::tahun($tgl);
         }
 
-        $data['pinjaman_kelompok'] = PinjamanKelompok::where('status', 'A')->get();
+        $tb_pinkel = 'pinjaman_kelompok_' . Session::get('lokasi');
+        $tb_kel = 'kelompok_' . Session::get('lokasi');
+        $data['pinjaman_kelompok'] = PinjamanKelompok::select([
+            $tb_pinkel . '.*',
+            $tb_kel . '.nama_kelompok',
+            $tb_kel . '.ketua',
+            $tb_kel . '.alamat_kelompok',
+            $tb_kel . '.telpon',
+            'desa.nama_desa',
+            'desa.kd_desa',
+            'desa.kode_desa',
+            'sebutan_desa.sebutan_desa',
+            DB::raw('(TIMESTAMPDIFF(MONTH, ' . $tb_pinkel . '.tgl_cair, CURRENT_DATE)) as sisa')
+        ])->join($tb_kel, $tb_kel . '.id', '=', $tb_pinkel . '.id_kel')
+            ->join('desa', $tb_kel . '.desa', '=', 'desa.kd_desa')
+            ->join('sebutan_desa', 'sebutan_desa.id', '=', 'desa.sebutan')
+            ->withSum(['real' => function ($query) use ($data) {
+                $query->where('tgl_transaksi', 'LIKE', '%' . $data['tahun'] . '-' . $data['bulan'] . '-%');
+            }], 'realisasi_pokok')
+            ->withSum(['real' => function ($query) use ($data) {
+                $query->where('tgl_transaksi', 'LIKE', '%' . $data['tahun'] . '-' . $data['bulan'] . '-%');
+            }], 'realisasi_jasa')
+            ->where([
+                [$tb_pinkel . '.sistem_angsuran', '!=', '12'],
+                [$tb_pinkel . '.status', 'A']
+            ])
+            ->whereRaw('(TIMESTAMPDIFF(MONTH, ' . $tb_pinkel . '.tgl_cair, CURRENT_DATE))<=3')
+            ->with([
+                'rencana1' => function ($query) use ($data) {
+                    $query->where('jatuh_tempo', '>=', $data['tgl_kondisi']);
+                }
+            ])
+            ->orderBy($tb_kel . '.desa', 'ASC')
+            ->orderBy($tb_pinkel . '.id', 'ASC')->get();
 
         $view = view('pelaporan.view.perkembangan_piutang.pelunasan', $data)->render();
         $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');

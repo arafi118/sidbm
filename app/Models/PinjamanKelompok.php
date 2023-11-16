@@ -94,6 +94,11 @@ class PinjamanKelompok extends Model
         return $this->hasMany(RencanaAngsuran::class, 'loan_id')->orderBy('jatuh_tempo', 'ASC');
     }
 
+    public function rencana1()
+    {
+        return $this->hasOne(RencanaAngsuran::class, 'loan_id')->orderBy('jatuh_tempo', 'ASC');
+    }
+
     public function trx()
     {
         return $this->hasMany(Transaksi::class, 'id_pinj', 'id')->orderBy('tgl_transaksi', 'ASC')->orderBy('idtp', 'ASC');
