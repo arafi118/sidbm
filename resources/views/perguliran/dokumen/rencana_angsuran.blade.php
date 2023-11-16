@@ -3,6 +3,7 @@
     $jumlah_angsuran = 0;
 
     $alokasi = $pinkel->proposal;
+    $alokasi_pinjaman = $alokasi;
     $tgl = $pinkel->tgl_proposal;
     $tanggal = 'Tanggal Proposal';
     if (Request::get('status') == 'A') {
