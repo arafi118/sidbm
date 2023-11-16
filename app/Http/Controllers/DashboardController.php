@@ -385,7 +385,6 @@ class DashboardController extends Controller
                 $nunggak_pokok = $pinkel->target->target_pokok - $sum_pokok;
                 $nunggak_jasa = $pinkel->target->target_jasa - $sum_jasa;
 
-                dd($nunggak_pokok, $nunggak_jasa);
                 if ($nunggak_pokok > 0 || $nunggak_jasa > 0) {
                     $jatuh_tempo++;
 
