@@ -177,6 +177,14 @@
                         $saldo_jasa = $pinkel->saldo->saldo_jasa;
                     }
 
+                    if ($saldo_jasa < 0) {
+                        $saldo_jasa = 0;
+                    }
+
+                    if ($pinkel->tgl_lunas <= $tgl_kondisi && $pinkel->status == 'L') {
+                        $saldo_jasa = 0;
+                    }
+
                     $target_pokok = 0;
                     $target_jasa = 0;
                     if ($pinkel->target) {

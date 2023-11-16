@@ -67,7 +67,7 @@
                 @php
                     $kd_desa[] = $pinkel->kd_desa;
                     $desa = $pinkel->kd_desa;
-                    
+
                 @endphp
                 @if (array_count_values($kd_desa)[$pinkel->kd_desa] <= '1')
                     @if ($section != $desa && count($kd_desa) > 1)
@@ -118,7 +118,15 @@
                         $saldo_pokok = $pinkel->saldo->saldo_pokok;
                         $saldo_jasa = $pinkel->saldo->saldo_jasa;
                     }
-                    
+
+                    if ($saldo_jasa < 0) {
+                        $saldo_jasa = 0;
+                    }
+
+                    if ($pinkel->tgl_lunas <= $tgl_kondisi && $pinkel->status == 'L') {
+                        $saldo_jasa = 0;
+                    }
+
                     $target_pokok = 0;
                     $target_jasa = 0;
                     $wajib_pokok = 0;
@@ -131,7 +139,7 @@
                         $wajib_jasa = $pinkel->target->wajib_jasa;
                         $angsuran_ke = $pinkel->target->angsuran_ke;
                     }
-                    
+
                     $tunggakan_pokok = $target_pokok - $sum_pokok;
                     if ($tunggakan_pokok < 0) {
                         $tunggakan_pokok = 0;
@@ -140,9 +148,9 @@
                     if ($tunggakan_jasa < 0) {
                         $tunggakan_jasa = 0;
                     }
-                    
+
                     $pross = $saldo_pokok / $pinkel->alokasi;
-                    
+
                     if ($pinkel->tgl_lunas <= $tgl_kondisi && $pinkel->status == 'L') {
                         $tunggakan_pokok = 0;
                         $tunggakan_jasa = 0;
@@ -153,17 +161,17 @@
                         $tunggakan_pokok = 0;
                         $tunggakan_jasa = 0;
                     }
-                    
+
                     $tgl_cair = explode('-', $pinkel->tgl_cair);
                     $th_cair = $tgl_cair[0];
                     $bl_cair = $tgl_cair[1];
                     $tg_cair = $tgl_cair[2];
-                    
+
                     $selisih_tahun = ($tahun - $th_cair) * 12;
                     $selisih_bulan = $bulan - $bl_cair;
-                    
+
                     $selisih = $selisih_bulan + $selisih_tahun;
-                    
+
                     $_kolek = 0;
                     if ($wajib_pokok != '0') {
                         $_kolek = floor($tunggakan_pokok / $wajib_pokok);
@@ -182,7 +190,7 @@
                         $kolek2 = 0;
                         $kolek3 = $saldo_pokok;
                     }
-                    
+
                     $j_alokasi += $pinkel->alokasi;
                     $j_saldo += $saldo_pokok;
                     $j_tunggakan_pokok += $tunggakan_pokok;
