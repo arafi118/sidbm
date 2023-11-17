@@ -35,7 +35,7 @@
                     Yang bersangkutan memiliki Proposal dalam Proses
                     dengan status <b>{{ $pinjaman_anggota->status }}</b> pada kelompok
                     <b>{{ $pinjaman_anggota->kelompok->nama_kelompok . ' ' . $pinjaman_anggota->kelompok->alamat_kelompok }}</b>,
-                    dengan pengajuan sebesar <b>Rp. {{ number_format($pinjaman_anggota->pinkel->proposal) }}</b>!
+                    dengan pengajuan sebesar <b>Rp. {{ number_format($pinjaman_anggota->proposal) }}</b>!
                 </span>
             </div>
         @else
@@ -52,7 +52,7 @@
                     Yang bersangkutan memiliki Pinjaman Aktif pada kelompok
                     <b>{{ $pinjaman_anggota_a->kelompok->nama_kelompok . ' ' . $pinjaman_anggota_a->kelompok->alamat_kelompok }}
                         - Loan ID. {{ $pinjaman_anggota_a->id_pinkel }}</b>,
-                    dengan alokasi sebesar <b>Rp. {{ number_format($pinjaman_anggota_a->pinkel->alokasi) }}</b>!
+                    dengan alokasi sebesar <b>Rp. {{ number_format($pinjaman_anggota_a->alokasi) }}</b>!
                 </span>
             </div>
         @else
