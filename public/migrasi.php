@@ -54,6 +54,7 @@ if (isset($_POST['copy'])) {
 
     mysqli_query($koneksi, "ALTER TABLE dbm_laravel.anggota_$lokasi CHANGE `usaha` `usaha` VARCHAR(50) NULL DEFAULT '0'");
     mysqli_query($koneksi, "ALTER TABLE dbm_laravel.rekening_$lokasi ADD `parent_id` VARCHAR(50) NULL FIRST");
+    mysqli_query($koneksi, "ALTER TABLE dbm_laravel.pinjaman_anggota_$lokasi CHANGE `kom_pokok` `kom_pokok` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL, CHANGE `kom_jasa` `kom_jasa` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL");
     mysqli_query($koneksi, "UPDATE dbm_laravel.rekening_$lokasi SET parent_id=CONCAT(lev1, lev2, lev3) WHERE 1");
 
     $query = mysqli_query($koneksi, "SELECT * FROM dbm_laravel.tanda_tangan_laporan WHERE lokasi='$lokasi'");
