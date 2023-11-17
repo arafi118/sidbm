@@ -51,7 +51,7 @@
                 </div>
                 <div style="font-weight: bold;">Di</div>
                 <div style="font-weight: bold; text-align: center;">
-                    {{ strtoupper($pinkel->kelompok->d->nama_desa) }} {{ strtoupper($kec->nama_kec) }}
+                    {{ strtoupper($pinkel->kelompok->d->nama_desa) }}
                 </div>
             </td>
         </tr>
@@ -79,8 +79,9 @@
                         <td>Alamat</td>
                         <td>:</td>
                         <td>
-                            {{ $pinkel->kelompok->alamat_kelompok }}
-                            {{ $pinkel->kelompok->d->sebutan_desa->sebutan_desa }} {{ $pinkel->kelompok->d->nama_desa }}
+                            {{ ucwords(strtolower($pinkel->kelompok->alamat_kelompok)) }}
+                            {{ ucwords(strtolower($pinkel->kelompok->d->sebutan_desa->sebutan_desa)) }}
+                            {{ ucwords(strtolower($pinkel->kelompok->d->nama_desa)) }}
                         </td>
                     </tr>
                     <tr>
