@@ -80,7 +80,7 @@
                         <td>:</td>
                         <td>
                             {{ $pinkel->kelompok->alamat_kelompok }}
-                            {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }}
+                            {{ $pinkel->kelompok->d->sebutan_desa->sebutan_desa }} {{ $pinkel->kelompok->d->nama_desa }}
                         </td>
                     </tr>
                     <tr>
