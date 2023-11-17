@@ -47,14 +47,17 @@
             <ul class="navbar-nav justify-content-end align-items-center">
                 <li class="nav-item">
                     <a href="#" class="nav-link text-body p-0 position-relative" target="_blank"
-                        id="btnLaporanPelunasan">
+                        id="btnLaporanPelunasan" data-bs-toggle="tooltip" data-bs-placement="top" title="Reminder"
+                        data-container="body" data-animation="true">
                         <i class="material-icons me-sm-1">
                             notifications_active
                         </i>
                     </a>
                 </li>
                 <li class="nav-item ps-3">
-                    <a href="/pelaporan/mou" class="nav-link text-body p-0 position-relative" target="_blank">
+                    <a href="/pelaporan/mou" class="nav-link text-body p-0 position-relative" target="_blank"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="MoU" data-container="body"
+                        data-animation="true">
                         <i class="material-icons me-sm-1">
                             library_books
                         </i>
@@ -62,7 +65,8 @@
                 </li>
                 <li class="nav-item dropdown ps-3">
                     <a href="javascript:;" class="nav-link text-body p-0 position-relative" id="dropdownMenuButton"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                        data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="TS dan Invoice" data-container="body" data-animation="true">
                         <i class="material-icons cursor-pointer me-sm-1">
                             chat_bubble
                         </i>
@@ -105,14 +109,16 @@
                     </ul>
                 </li>
                 <li class="nav-item ps-3">
-                    <a href="javascript:;" class="nav-link text-body p-0">
+                    <a href="javascript:;" class="nav-link text-body p-0" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Tampilan" data-container="body" data-animation="true">
                         <i class="material-icons fixed-plugin-button-nav cursor-pointer">
                             settings
                         </i>
                     </a>
                 </li>
                 <li class="nav-item ps-3">
-                    <a href="javascript:;" class="nav-link text-body p-0" id="logout">
+                    <a href="javascript:;" class="nav-link text-body p-0" id="logout" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Logout" data-container="body" data-animation="true">
                         <i class="material-icons fixed-plugin-button-nav cursor-pointer">
                             exit_to_app
                         </i>
