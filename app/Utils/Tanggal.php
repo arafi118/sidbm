@@ -47,7 +47,7 @@ class Tanggal
         $bulan_rom = $keuangan->romawi($bulan);
         $hari_rom = $keuangan->romawi($hari);
 
-        return $hari . '/' . $bulan_rom . '/' . $tahun;
+        return $bulan_rom . '/' . $tahun;
     }
 
     public static function tglLatin($tanggal)
