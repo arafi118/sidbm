@@ -1671,7 +1671,7 @@ class TransaksiController extends Controller
                 'id_user' => auth()->user()->id,
             ];
 
-            if ($trx->relationLoaded('tr_idtp')) {
+            if (count($trx->tr_idtp) > 0) {
                 $ra = RencanaAngsuran::where([
                     ['loan_id', $id_pinkel],
                     ['jatuh_tempo', '<=', $tgl_transaksi],
