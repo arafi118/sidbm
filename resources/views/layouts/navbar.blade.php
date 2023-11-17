@@ -63,10 +63,10 @@
                         </i>
                     </a>
                 </li>
-                <li class="nav-item dropdown ps-3">
+                <li class="nav-item dropdown ps-3" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title="TS dan Invoice" data-container="body" data-animation="true">
                     <a href="javascript:;" class="nav-link text-body p-0 position-relative" id="dropdownMenuButton"
-                        data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="tooltip" data-bs-placement="top"
-                        title="TS dan Invoice" data-container="body" data-animation="true">
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="material-icons cursor-pointer me-sm-1">
                             chat_bubble
                         </i>
