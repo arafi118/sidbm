@@ -10,9 +10,6 @@
         $alokasi = $pinkel->alokasi;
 
         $alokasi_pinjaman = $alokasi;
-        if ($pinkel->saldo_pinjaman) {
-            $alokasi = $pinkel->saldo_pinjaman->saldo_pinjaman;
-        }
         $tgl = $pinkel->tgl_cair;
         $tanggal = 'Tanggal Cair';
     }

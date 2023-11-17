@@ -171,20 +171,23 @@
                             $proposal += $pinjaman_anggota->proposal;
                             $verifikasi += $pinjaman_anggota->verifikasi;
                             $alokasi += $pinjaman_anggota->alokasi;
+
+                            $warna = $pinjaman_anggota->status == 'A' ? '' : 'class="text-danger fw-bold"';
                         @endphp
-                        <tr class="pointer btn-click" data-id="{{ $pinjaman_anggota->id }}">
-                            <td align="center">{{ $loop->iteration }}</td>
-                            <td>
+                        <tr class="{{ $pinjaman_anggota->status == 'A' ? 'pointer btn-click' : '' }}"
+                            data-id="{{ $pinjaman_anggota->id }}">
+                            <td {!! $warna !!} align="center">{{ $loop->iteration }}</td>
+                            <td {!! $warna !!}>
                                 {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
                                 ({{ $pinjaman_anggota->nia }})
                             </td>
-                            <td>
+                            <td {!! $warna !!}>
                                 {{ number_format($pinjaman_anggota->proposal, 2) }}
                             </td>
-                            <td>
+                            <td {!! $warna !!}>
                                 {{ number_format($pinjaman_anggota->verifikasi, 2) }}
                             </td>
-                            <td>
+                            <td {!! $warna !!}>
                                 {{ number_format($pinjaman_anggota->alokasi, 2) }}
                             </td>
                         </tr>

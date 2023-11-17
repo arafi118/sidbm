@@ -45,14 +45,22 @@
                     value="{{ number_format($kom_jasa, 2) }}">
             </div>
         </div>
-        <div class="col-md-6 my-3">
+        <div class="col-md-4 my-3">
+            <div class="input-group input-group-static">
+                <label for="tgl_penghapusan">Tgl Penghapusan</label>
+                <input autocomplete="off" type="text" name="tgl_penghapusan" id="tgl_penghapusan"
+                    class="form-control date" value="{{ date('d/m/Y') }}">
+                <small class="text-danger" id="msg_tgl_penghapusan"></small>
+            </div>
+        </div>
+        <div class="col-md-4 my-3">
             <div class="input-group input-group-static">
                 <label for="jumlah_penghapusan_pokok">Jumlah Penghapusan (pokok)</label>
                 <input type="text" id="jumlah_penghapusan_pokok" name="jumlah_penghapusan_pokok"
                     class="form-control money" value="{{ number_format($pinj->alokasi - $kom_pokok, 2) }}">
             </div>
         </div>
-        <div class="col-md-6 my-3">
+        <div class="col-md-4 my-3">
             <div class="input-group input-group-static">
                 <label for="jumlah_penghapusan_jasa">Jumlah Penghapusan (jasa)</label>
                 <input type="text" id="jumlah_penghapusan_jasa" name="jumlah_penghapusan_jasa"
@@ -64,4 +72,8 @@
 
 <script>
     $(".money").maskMoney();
+
+    $(".date").flatpickr({
+        dateFormat: "d/m/Y"
+    })
 </script>

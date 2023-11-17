@@ -12,6 +12,7 @@ use App\Models\RencanaAngsuran;
 use App\Models\StatusPinjaman;
 use App\Models\Transaksi;
 use App\Utils\Keuangan;
+use App\Utils\Tanggal;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -247,21 +248,28 @@ class PinjamanAnggotaController extends Controller
     {
         $data = $request->only([
             'id_pinjaman',
+            'tgl_penghapusan',
             'jumlah_penghapusan_pokok',
             'jumlah_penghapusan_jasa'
         ]);
 
         $validate = Validator::make($data, [
             'jumlah_penghapusan_pokok' => 'required',
-            'jumlah_penghapusan_jasa' => 'required'
+            'jumlah_penghapusan_jasa' => 'required',
+            'tgl_penghapusan' => 'required',
         ]);
 
         if ($validate->fails()) {
             return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
         }
 
+        $tgl_penghapusan = Tanggal::tglNasional($request->tgl_penghapusan);
         $hapus_pokok = str_replace(',', '', str_replace('.00', '', $request->jumlah_penghapusan_pokok));
         $hapus_jasa = str_replace(',', '', str_replace('.00', '', $request->jumlah_penghapusan_jasa));
+
+        Session::put('tgl_penghapusan', $tgl_penghapusan);
+        Session::put('hapus_pokok', $hapus_pokok);
+        Session::put('hapus_jasa', $hapus_jasa);
 
         if ($hapus_pokok + $hapus_jasa <= 0) {
             return response()->json([
@@ -321,7 +329,7 @@ class PinjamanAnggotaController extends Controller
         $pokok_anggota = 0;
         if ($hapus_pokok > 0) {
             $transaksi[] = [
-                'tgl_transaksi' => date('Y-m-d'),
+                'tgl_transaksi' => $tgl_penghapusan,
                 'rekening_debit' => (string) $poko_debit,
                 'rekening_kredit' => (string) $poko_kredit,
                 'idtp' => $idtp,
@@ -340,7 +348,7 @@ class PinjamanAnggotaController extends Controller
         $jasa_anggota = 0;
         if ($hapus_jasa > 0) {
             $transaksi[] = [
-                'tgl_transaksi' => date('Y-m-d'),
+                'tgl_transaksi' => $tgl_penghapusan,
                 'rekening_debit' => $jasa_debit,
                 'rekening_kredit' => $jasa_kredit,
                 'idtp' => $idtp,
@@ -363,7 +371,7 @@ class PinjamanAnggotaController extends Controller
             'id_pinj_i' => $pinjaman->id,
             'nia' => $pinjaman->nia,
             'saldo_pinjaman' => $alokasi - $hapus_pokok,
-            'tanggal' => date('Y-m-d H:i:s')
+            'tanggal' => date('Y-m-d H:i:s', strtotime($tgl_penghapusan))
         ]);
 
         $kom_pokok = json_decode($pinjaman->kom_pokok, true);
@@ -549,18 +557,10 @@ class PinjamanAnggotaController extends Controller
         }
         $ra['alokasi'] = $alokasi;
 
-        RencanaAngsuran::where('loan_id', $id_pinj)->delete();
-        RencanaAngsuran::create([
-            'loan_id' => $id_pinj,
-            'angsuran_ke' => '0',
-            'jatuh_tempo' => $tgl,
-            'wajib_pokok' => '0',
-            'wajib_jasa' => '0',
-            'target_pokok' => '0',
-            'target_jasa' => '0',
-            'lu' => date('Y-m-d H:i:s'),
-            'id_user' => auth()->user()->id
-        ]);
+        RencanaAngsuran::where([
+            ['loan_id', $id_pinj],
+            ['jatuh_tempo', '>=', Session::get('tgl_penghapusan')]
+        ])->delete();
 
         $rencana = [];
         $target_pokok = 0;
@@ -591,17 +591,57 @@ class PinjamanAnggotaController extends Controller
                 $target_jasa += $jasa;
             }
 
-            $rencana[] = [
-                'loan_id' => $id_pinj,
-                'angsuran_ke' => $x,
-                'jatuh_tempo' => $jatuh_tempo,
-                'wajib_pokok' => $pokok,
-                'wajib_jasa' => $jasa,
-                'target_pokok' => $target_pokok,
-                'target_jasa' => $target_jasa,
-                'lu' => date('Y-m-d H:i:s'),
-                'id_user' => auth()->user()->id
-            ];
+            if ($jatuh_tempo >= Session::get('tgl_penghapusan')) {
+                if (count($rencana) <= 0) {
+                    $rencana_angs = RencanaAngsuran::where([
+                        ['loan_id', $id_pinj],
+                        ['jatuh_tempo', '<=', date('Y-m-d')]
+                    ])->orderBy('jatuh_tempo', 'DESC')->first();
+
+                    $alokasi_jasa = $alokasi * ($pros_jasa / 100);
+
+                    $_pokok = 0;
+                    $_jasa = 0;
+                    foreach ($ra as $key => $angs) {
+                        if ($key >= $x && is_numeric($key)) {
+                            $_pokok += $angs['pokok'];
+                            $_jasa += $angs['jasa'];
+                        }
+                    }
+
+                    $sisa_pokok = ($rencana_angs->target_pokok + $_pokok) - $alokasi;
+                    $sisa_jasa = ($rencana_angs->target_jasa + $_jasa) - $alokasi_jasa;
+                    $target_pokok = $rencana_angs->target_pokok + $sisa_pokok;
+                    $target_jasa = $rencana_angs->target_jasa + $sisa_jasa;
+
+                    $rencana[] = [
+                        'loan_id' => $id_pinj,
+                        'angsuran_ke' => $x,
+                        'jatuh_tempo' => Session::get('tgl_penghapusan'),
+                        'wajib_pokok' => $sisa_pokok,
+                        'wajib_jasa' => $sisa_jasa,
+                        'target_pokok' => $target_pokok,
+                        'target_jasa' => $target_jasa,
+                        'lu' => date('Y-m-d H:i:s'),
+                        'id_user' => auth()->user()->id
+                    ];
+
+                    $target_pokok += $pokok;
+                    $target_jasa += $jasa;
+                }
+
+                $rencana[] = [
+                    'loan_id' => $id_pinj,
+                    'angsuran_ke' => $x + 1,
+                    'jatuh_tempo' => $jatuh_tempo,
+                    'wajib_pokok' => $pokok,
+                    'wajib_jasa' => $jasa,
+                    'target_pokok' => $target_pokok,
+                    'target_jasa' => $target_jasa,
+                    'lu' => date('Y-m-d H:i:s'),
+                    'id_user' => auth()->user()->id
+                ];
+            }
         }
 
         RencanaAngsuran::insert($rencana);
