@@ -718,30 +718,6 @@ class PelaporanController extends Controller
                         $query->where([
                             [$data['tb_pinkel'] . '.status', 'A'],
                             [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']]
-                        ])->orwhere([
-                            [$data['tb_pinkel'] . '.status', 'L'],
-                            [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
-                        ])->orwhere([
-                            [$data['tb_pinkel'] . '.status', 'L'],
-                            [$data['tb_pinkel'] . '.tgl_lunas', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
-                        ])->orwhere([
-                            [$data['tb_pinkel'] . '.status', 'R'],
-                            [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
-                        ])->orwhere([
-                            [$data['tb_pinkel'] . '.status', 'R'],
-                            [$data['tb_pinkel'] . '.tgl_lunas', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
-                        ])->orwhere([
-                            [$data['tb_pinkel'] . '.status', 'H'],
-                            [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
-                        ])->orwhere([
-                            [$data['tb_pinkel'] . '.status', 'H'],
-                            [$data['tb_pinkel'] . '.tgl_lunas', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
                         ]);
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')
@@ -1184,6 +1160,94 @@ class PelaporanController extends Controller
         ])->get();
 
         $view = view('pelaporan.view.perkembangan_piutang.cadangan_penghapusan', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
+    private function rencana_realisasi(array $data)
+    {
+        $keuangan = new Keuangan;
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        if (strlen($hari) > 0 && strlen($bln) > 0) {
+            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
+            $data['tgl'] = Tanggal::tglLatin($tgl);
+        } elseif (strlen($bln) > 0) {
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        } else {
+            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::tahun($tgl);
+        }
+
+        $triwulan = [
+            '1' => ['1', '2', '3'],
+            '2' => ['1', '2', '3'],
+            '3' => ['1', '2', '3'],
+            '4' => ['4', '5', '6'],
+            '5' => ['4', '5', '6'],
+            '6' => ['4', '5', '6'],
+            '7' => ['7', '8', '9'],
+            '8' => ['7', '8', '9'],
+            '9' => ['7', '8', '9'],
+            '10' => ['10', '11', '12'],
+            '11' => ['10', '11', '12'],
+            '12' => ['10', '11', '12'],
+        ];
+
+        $bulan_tampil = $triwulan[$data['bulan']];
+        $bulan1 = str_pad($bulan_tampil[0], 2, '0', STR_PAD_LEFT);
+        $bulan3 = str_pad($bulan_tampil[2], 2, '0', STR_PAD_LEFT);
+
+        $tgl_awal = $data['tahun'] . '-' . $bulan1 . '-01';
+        $tgl_akhir = date('Y-m-t', strtotime($data['tahun'] . '-' . $bulan3 . '-01'));
+
+        $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
+            'pinjaman_kelompok' => function ($query) use ($data) {
+                $tb_pinkel = 'pinjaman_kelompok_' . $data['kec']->id;
+                $tb_kel = 'kelompok_' . $data['kec']->id;
+                $data['tb_pinkel'] = $tb_pinkel;
+
+                $query->select(
+                    $tb_pinkel . '.*',
+                    $tb_kel . '.nama_kelompok',
+                    $tb_kel . '.ketua',
+                    'desa.nama_desa',
+                    'desa.kd_desa',
+                    'desa.kode_desa',
+                    'sebutan_desa.sebutan_desa'
+                )
+                    ->join($tb_kel, $tb_kel . '.id', '=', $tb_pinkel . '.id_kel')
+                    ->join('desa', $tb_kel . '.desa', '=', 'desa.kd_desa')
+                    ->join('sebutan_desa', 'sebutan_desa.id', '=', 'desa.sebutan')
+                    ->where($tb_pinkel . '.sistem_angsuran', '!=', '12')->where(function ($query) use ($data) {
+                        $query->where([
+                            [$data['tb_pinkel'] . '.status', 'A'],
+                            [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']]
+                        ]);
+                    })
+                    ->orderBy($tb_kel . '.desa', 'ASC')
+                    ->orderBy($tb_pinkel . '.id', 'ASC');
+            },
+            'pinjaman_kelompok.real' => function ($query) use ($tgl_awal, $tgl_akhir) {
+                $query->whereBetween('tgl_transaksi', [$tgl_awal, $tgl_akhir]);
+            },
+            'pinjaman_kelompok.ra' => function ($query) use ($tgl_awal, $tgl_akhir) {
+                $query->whereBetween('jatuh_tempo', [$tgl_awal, $tgl_akhir]);
+            }
+        ])->get();
+
+        $data['keuangan'] = $keuangan;
+
+        $view = view('pelaporan.view.perkembangan_piutang.rencana_realisasi', $data)->render();
 
         if ($data['type'] == 'pdf') {
             $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
