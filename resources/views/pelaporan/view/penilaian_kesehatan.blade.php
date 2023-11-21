@@ -276,7 +276,7 @@
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
                     <tr>
                         <td>Persentase (a/bx100%)</td>
-                        <td align="right">{{ number_format($saldo_piutang_berisiko) }}%</td>
+                        <td align="right">{{ number_format($saldo_piutang_berisiko, 2) }}%</td>
                     </tr>
                 </table>
             </td>
@@ -320,7 +320,7 @@
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
                     <tr>
                         <td>Persentase (a/bx100%)</td>
-                        <td align="right">{{ number_format($cadangan_kerugian) }}%</td>
+                        <td align="right">{{ number_format($cadangan_kerugian, 2) }}%</td>
                     </tr>
                 </table>
             </td>
@@ -373,7 +373,7 @@
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
                     <tr>
                         <td>Persentase (a-(b-c)/dx100%)</td>
-                        <td align="right">{{ number_format($laba_bersih) }}%</td>
+                        <td align="right">{{ number_format($laba_bersih, 2) }}%</td>
                     </tr>
                 </table>
             </td>
@@ -418,7 +418,7 @@
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
                     <tr>
                         <td>Persentase (a/bx100%)</td>
-                        <td align="right">{{ number_format($beban_operasional) }}%</td>
+                        <td align="right">{{ number_format($beban_operasional, 2) }}%</td>
                     </tr>
                 </table>
             </td>
@@ -463,7 +463,7 @@
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
                     <tr>
                         <td>Persentase (a/bx100%)</td>
-                        <td align="right">{{ number_format($saldo_piuang) }}%</td>
+                        <td align="right">{{ number_format($saldo_piuang, 2) }}%</td>
                     </tr>
                 </table>
             </td>
@@ -512,7 +512,7 @@
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
                     <tr>
                         <td>Persentase ((a-b)/cx100%)</td>
-                        <td align="right">{{ number_format($kekayaan_bersih) }}%</td>
+                        <td align="right">{{ number_format($kekayaan_bersih, 2) }}%</td>
                     </tr>
                 </table>
             </td>
