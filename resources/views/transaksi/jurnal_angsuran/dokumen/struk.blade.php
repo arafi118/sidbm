@@ -29,11 +29,15 @@
 
     $jum_angsuran = $pinkel->jangka / $pinkel->sis_pokok->sistem;
 
-    $pokok_bulan_depan = $wajib_pokok;
-    $jasa_bulan_depan = $wajib_jasa;
-    if ($angsuran_ke >= $jum_angsuran) {
-        $pokok_bulan_depan = $pinkel->alokasi - $real->sum_pokok;
-        $jasa_bulan_depan = ($pinkel->alokasi * $pinkel->pros_jasa) / 100 - $real->sum_jasa;
+    $pokok_bulan_depan = $pinkel->alokasi - $real->sum_pokok;
+    $jasa_bulan_depan = ($pinkel->alokasi * $pinkel->pros_jasa) / 100 - $real->sum_jasa;
+
+    if ($pokok_bulan_depan > 0 && $angsuran_ke < $jum_angsuran) {
+        $pokok_bulan_depan = $wajib_pokok;
+    }
+
+    if ($jasa_bulan_depan > 0 && $angsuran_ke < $jum_angsuran) {
+        $jasa_bulan_depan = $wajib_jasa;
     }
 @endphp
 @foreach ($real->trx as $trx)
