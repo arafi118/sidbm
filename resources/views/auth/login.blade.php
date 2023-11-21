@@ -88,12 +88,37 @@
         </section>
     </main>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="/assets/js/core/popper.min.js"></script>
     <script src="/assets/js/core/bootstrap.min.js"></script>
     <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="/assets/js/material-dashboard.min.js"></script>
     <script src="/assets/js/plugins/sweetalert.min.js"></script>
+
+    <script>
+        if (localStorage.getItem('devops') !== 'true') {
+            $(document).bind("contextmenu", function(e) {
+                return false;
+            });
+
+            $(document).keydown(function(event) {
+                if (event.keyCode == 123) { // Prevent F12
+                    return false;
+                }
+                if (event.ctrlKey && event.shiftKey && event.keyCode == 73) { // Prevent Ctrl+Shift+I        
+                    return false;
+                }
+                if (event.ctrlKey && event.shiftKey && event.keyCode == 67) { // Prevent Ctrl+Shift+C  
+                    return false;
+                }
+                if (event.ctrlKey && event.shiftKey && event.keyCode == 74) { // Prevent Ctrl+Shift+J
+                    return false;
+                }
+            });
+        }
+    </script>
+
     @if (session('pesan'))
         <script>
             const Toast = Swal.mixin({
