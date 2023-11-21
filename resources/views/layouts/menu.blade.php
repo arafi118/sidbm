@@ -46,8 +46,14 @@
             @php
                 $path = '/' . Request::path();
 
+                $arr_path = explode('/', $path);
+                $arr_menu = explode('/', $menu->link);
+
+                $end_page = end($arr_path);
+                $end_menu_link = end($arr_menu);
+
                 $active = '';
-                if ($path == $menu->link) {
+                if ($path == $menu->link || $end_page == $end_menu_link) {
                     $active = 'active';
                 }
             @endphp
