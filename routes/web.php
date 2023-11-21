@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AuthController;
@@ -30,31 +31,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/master/login', [AdminAuthController::class, 'index'])->middleware('master.quest');
+Route::post('/master/login', [AdminAuthController::class, 'login'])->middleware('master.quest');
+
 Route::group(['prefix' => 'master', 'as' => 'master.'], function () {
-    Route::get('/login', [AdminAuthController::class, 'index'])->middleware('master.quest');
-    Route::post('/login', [AdminAuthController::class, 'login'])->middleware('master.quest');
+    Route::get('/', [AdminController::class, 'index']);
 
-    Route::get('/', [AdminController::class, 'index'])->middleware('master');
+    Route::resource('/users', AdminUserController::class);
 
-    Route::resource('/users', AdminUserController::class)->middleware('master');
+    Route::get('/kecamatan', [AdminController::class, 'kecamatan']);
 
-    Route::get('/kecamatan', [AdminController::class, 'kecamatan'])->middleware('master');
+    Route::get('/buat_invoice', [InvoiceController::class, 'index']);
+    Route::get('/nomor_invoice', [InvoiceController::class, 'InvoiceNo']);
+    Route::get('/jumlah_tagihan', [InvoiceController::class, 'Tagihan']);
 
-    Route::get('/buat_invoice', [InvoiceController::class, 'index'])->middleware('master');
-    Route::get('/nomor_invoice', [InvoiceController::class, 'InvoiceNo'])->middleware('master');
-    Route::get('/jumlah_tagihan', [InvoiceController::class, 'Tagihan'])->middleware('master');
+    Route::get('/unpaid', [InvoiceController::class, 'Unpaid']);
+    Route::get('/{invoice}/unpaid', [InvoiceController::class, 'DetailUnpaid']);
 
-    Route::get('/unpaid', [InvoiceController::class, 'Unpaid'])->middleware('master');
-    Route::get('/{invoice}/unpaid', [InvoiceController::class, 'DetailUnpaid'])->middleware('master');
+    Route::get('/paid', [InvoiceController::class, 'Paid']);
+    Route::get('/{invoice}/paid', [InvoiceController::class, 'DetailPaid']);
 
-    Route::get('/paid', [InvoiceController::class, 'Paid'])->middleware('master');
-    Route::get('/{invoice}/paid', [InvoiceController::class, 'DetailPaid'])->middleware('master');
+    Route::post('/buat_invoice', [InvoiceController::class, 'store']);
+    Route::put('/{invoice}/simpan', [InvoiceController::class, 'simpan']);
 
-    Route::post('/buat_invoice', [InvoiceController::class, 'store'])->middleware('master');
-    Route::put('/{invoice}/simpan', [InvoiceController::class, 'simpan'])->middleware('master');
+    Route::resource('/menu', MenuController::class);
 
-    Route::post('/logout', [AdminAuthController::class, 'logout'])->middleware('master');
-});
+    Route::post('/logout', [AdminAuthController::class, 'logout']);
+})->middleware('master');
 
 Route::get('/', [AuthController::class, 'index'])->middleware('guest')->name('/');
 Route::post('/login', [AuthController::class, 'login'])->middleware('guest');

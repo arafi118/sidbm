@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kecamatan;
+use App\Models\Menu;
 use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
@@ -31,17 +32,22 @@ class AuthController extends Controller
         $kec = Kecamatan::where('web_kec', $url)->orwhere('web_alternatif', $url)->first();
         $lokasi = $kec->id;
 
+
         $user = User::where([['uname', $username], ['lokasi', $lokasi]])->first();
         if ($user) {
             if ($password === $user->pass) {
                 if (Auth::loginUsingId($user->id)) {
+                    $hak_akses = explode(',', $user->hak_akses);
+                    $menu = Menu::where('parent_id', '0')->whereNotIn('id', $hak_akses)->where('aktif', 'Y')->with('child', 'child.child')->orderBy('sort', 'ASC')->orderBy('id', 'ASC')->get();
+
                     $request->session()->regenerate();
                     session([
                         'nama_lembaga' => str_replace('DBM ', '', $kec->nama_lembaga_sort),
                         'nama' => $user->namadepan . ' ' . $user->namabelakang,
                         'foto' => $user->foto,
                         'logo' => $kec->logo,
-                        'lokasi' => $user->lokasi
+                        'lokasi' => $user->lokasi,
+                        'menu' => $menu
                     ]);
 
                     return redirect('/dashboard')->with('pesan', 'Selamat Datang ' . $user->namadepan . ' ' . $user->namabelakang);
