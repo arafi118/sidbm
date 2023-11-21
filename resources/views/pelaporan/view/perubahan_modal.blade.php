@@ -36,20 +36,20 @@
                 } else {
                     $saldo = $keuangan->Saldo($tgl_kondisi, $rek->kode_akun);
                 }
-                
+
                 $t_saldo += $saldo;
             @endphp
             <tr>
                 <td class="l t" align="center">{{ $loop->iteration }}</td>
                 <td class="l t">{{ $rek->nama_akun }}</td>
-                <td class="l t" align="right">{{ number_format($saldo) }}</td>
+                <td class="l t" align="right">{{ number_format($saldo, 2) }}</td>
                 <td class="l t r">&nbsp;</td>
             </tr>
         @endforeach
 
         <tr>
             <td class="l t b" colspan="2" height="15">&nbsp;</td>
-            <td class="l t b" align="right">{{ number_format($t_saldo) }}</td>
+            <td class="l t b" align="right">{{ number_format($t_saldo, 2) }}</td>
             <td class="l t r b">&nbsp;</td>
         </tr>
 
