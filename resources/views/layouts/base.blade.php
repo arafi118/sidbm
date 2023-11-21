@@ -16,7 +16,12 @@
 
 <head>
     <meta charset="utf-8" />
+    <meta name="description" content="Sistem Informasi Dana Bergulir Masyarakat">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords"
+        content="sidbm, sidbm.net, demo.sidbm.net, asta brata teknologi, abt, dbm, kepmendesa 136, kepmendesa nomor 136 tahun 2022">
+    <meta name="author" content="Enfii">
+
     <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/icon/favicon.png">
     <link rel="icon" type="image/png" href="/assets/img/icon/favicon.png">
     <title>
@@ -24,9 +29,6 @@
     </title>
 
     <link rel="canonical" href="https://www.creative-tim.com/product/material-dashboard-pro" />
-
-    <meta name="keywords" content="">
-    <meta name="description" content="">
 
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css" /> --}}
 
