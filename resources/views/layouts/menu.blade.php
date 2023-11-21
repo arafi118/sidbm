@@ -1,8 +1,27 @@
 @foreach ($parent_menu as $menu)
     @if (count($menu->child) > 0)
+        @php
+            $link = [];
+            $path = '/' . Request::path();
+
+            $links = $menu->pluck('link');
+            $links->each(function ($menu_link) {
+                $link[] = $menu_link;
+            });
+
+            $active = '';
+            if (in_array($path, $link)) {
+                $active = 'active';
+            }
+
+            if (in_array(str_replace('#', '', $menu->link), explode('/', $path))) {
+                $active = 'active';
+            }
+        @endphp
         <li class="nav-item">
-            <a data-bs-toggle="collapse" href="#{{ str_replace('#', '', $menu->link) }}" class="nav-link text-white"
-                aria-controls="{{ str_replace('#', '', $menu->link) }}" role="button" aria-expanded="false">
+            <a data-bs-toggle="collapse" href="#menu_{{ str_replace('#', '', $menu->link) }}"
+                class="nav-link text-white {{ $active }}"
+                aria-controls="menu_{{ str_replace('#', '', $menu->link) }}" role="button" aria-expanded="false">
                 @if ($menu->type == 'material')
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">{{ $menu->ikon }}</i>
@@ -12,7 +31,7 @@
                 @endif
                 <span class="nav-link-text ms-1">{{ $menu->title }}</span>
             </a>
-            <div class="collapse" id="{{ str_replace('#', '', $menu->link) }}">
+            <div class="collapse" id="menu_{{ str_replace('#', '', $menu->link) }}">
                 <ul class="nav nav-sm flex-column">
                     @include('layouts.menu', ['parent_menu' => $menu->child])
                 </ul>
@@ -24,8 +43,16 @@
                 <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder text-white">{{ $menu->title }}</h6>
             </li>
         @else
-            <li class="nav-item nav-item-link">
-                <a class="nav-link text-white " href="{{ $menu->link }}">
+            @php
+                $path = '/' . Request::path();
+
+                $active = '';
+                if ($path == $menu->link) {
+                    $active = 'active';
+                }
+            @endphp
+            <li class="nav-item nav-item-link {{ $active }}">
+                <a class="nav-link text-white {{ $active }}" href="{{ $menu->link }}">
                     @if ($menu->type == 'material')
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">{{ $menu->ikon }}</i>
