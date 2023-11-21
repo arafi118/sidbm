@@ -1189,15 +1189,15 @@ class PelaporanController extends Controller
         }
 
         $triwulan = [
-            '1' => ['1', '2', '3'],
-            '2' => ['1', '2', '3'],
-            '3' => ['1', '2', '3'],
-            '4' => ['4', '5', '6'],
-            '5' => ['4', '5', '6'],
-            '6' => ['4', '5', '6'],
-            '7' => ['7', '8', '9'],
-            '8' => ['7', '8', '9'],
-            '9' => ['7', '8', '9'],
+            '01' => ['1', '2', '3'],
+            '02' => ['1', '2', '3'],
+            '03' => ['1', '2', '3'],
+            '04' => ['4', '5', '6'],
+            '05' => ['4', '5', '6'],
+            '06' => ['4', '5', '6'],
+            '07' => ['7', '8', '9'],
+            '08' => ['7', '8', '9'],
+            '09' => ['7', '8', '9'],
             '10' => ['10', '11', '12'],
             '11' => ['10', '11', '12'],
             '12' => ['10', '11', '12'],
@@ -1209,6 +1209,7 @@ class PelaporanController extends Controller
 
         $tgl_awal = $data['tahun'] . '-' . $bulan1 . '-01';
         $tgl_akhir = date('Y-m-t', strtotime($data['tahun'] . '-' . $bulan3 . '-01'));
+        $data['tgl_akhir'] = $tgl_akhir;
 
         $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
             'pinjaman_kelompok' => function ($query) use ($data) {
@@ -1231,7 +1232,7 @@ class PelaporanController extends Controller
                     ->where($tb_pinkel . '.sistem_angsuran', '!=', '12')->where(function ($query) use ($data) {
                         $query->where([
                             [$data['tb_pinkel'] . '.status', 'A'],
-                            [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']]
+                            [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_akhir']]
                         ]);
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')
