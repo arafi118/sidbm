@@ -154,7 +154,7 @@
         </tr>
         <tr>
             <td>Alamat</td>
-            <td colspan="3">: {{ $pinkel->kelompok->alamat_kelompok }} {{ $kec->nama_kec }}</td>
+            <td colspan="3">: {{ $pinkel->kelompok->d->nama_desa }}</td>
             <td class="bottom">Realisasi Pengembalian</td>
             <td class="bottom" align="right">{{ number_format($real->sum_pokok) }}</td>
             <td class="bottom" align="right">{{ number_format($real->sum_jasa) }}</td>
