@@ -35,7 +35,7 @@
     <div style="text-align: justify;">
         Pada hari ini {{ Tanggal::namaHari($pinkel->tgl_cair) }} tanggal
         {{ $keuangan->terbilang(Tanggal::hari($pinkel->tgl_cair)) }} bulan {{ Tanggal::namaBulan($pinkel->tgl_cair) }} tahun
-        {{ $keuangan->terbilang(Tanggal::tahun($pinkel->tgl_cair)) }} Tiga, telah diadakan pencairan dana perguliran
+        {{ $keuangan->terbilang(Tanggal::tahun($pinkel->tgl_cair)) }}, telah diadakan pencairan dana perguliran
         {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }} {{ $kec->nama_kec }} kepada Kelompok
         {{ $pinkel->kelompok->nama_kelompok }} {{ $pinkel->kelompok->d->sebutan_desa->sebutan_desa }}
         {{ $pinkel->kelompok->d->nama_desa }} {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}, sebesar Rp.
