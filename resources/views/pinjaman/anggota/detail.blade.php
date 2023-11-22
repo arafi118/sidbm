@@ -72,8 +72,8 @@
                     </div>
 
                     <div class="col-6 d-grid">
-                        <button type="button" data-id="{{ $pinj->id }}" id="Penghapusan"
-                            class="mb-0 btn btn-sm btn-danger">
+                        <button type="button" {{ Session::get('lokasi') != '1' ? 'disabled' : '' }}
+                            data-id="{{ $pinj->id }}" id="Penghapusan" class="mb-0 btn btn-sm btn-danger">
                             Penghapusan Pinjaman
                         </button>
                     </div>
