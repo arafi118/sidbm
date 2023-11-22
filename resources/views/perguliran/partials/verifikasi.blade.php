@@ -286,11 +286,20 @@
                 </div>
             </div>
 
-            <button type="button" id="Simpan" class="btn btn-github float-end btn-sm">
-                Simpan Keputusan Pendanaan
-            </button>
+            <div class="d-flex justify-content-end mt-3">
+                <button type="button" id="kembaliProposal" class="btn btn-warning btn-sm">
+                    Kembalikan Ke Proposal
+                </button>
+                <button type="button" id="Simpan" class="btn btn-github ms-1 btn-sm">
+                    Simpan Keputusan Pendanaan
+                </button>
+            </div>
         </div>
     </div>
+</form>
+
+<form action="/perguliran/kembali_proposal/{{ $perguliran->id }}" method="post" id="formKembaliProposal">
+    @csrf
 </form>
 
 <script>
