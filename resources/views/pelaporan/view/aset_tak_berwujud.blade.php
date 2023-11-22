@@ -35,10 +35,10 @@
         </table>
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; table-layout: fixed;">
             <tr style="background: rgb(232, 232, 232)">
-                <th class="t l b" rowspan="2" width="2%">No</th>
-                <th class="t l b" rowspan="2" width="7%">Tgl Beli</th>
-                <th class="t l b" rowspan="2" width="21%">Nama Barang</th>
-                <th class="t l b" rowspan="2" width="2%">Id</th>
+                <th class="t l b" rowspan="2" width="3%">No</th>
+                <th class="t l b" rowspan="2" width="6%">Tgl Beli</th>
+                <th class="t l b" rowspan="2" width="20%">Nama Barang</th>
+                <th class="t l b" rowspan="2" width="3%">Id</th>
                 <th class="t l b" rowspan="2" width="5%">Kondisi</th>
                 <th class="t l b" rowspan="2" width="3%">Unit</th>
                 <th class="t l b" rowspan="2" width="8%">Harga Satuan</th>

@@ -1323,7 +1323,13 @@ class PelaporanController extends Controller
         $data['inventaris'] = Rekening::where('kode_akun', 'LIKE', '1.2.03%')
             ->with([
                 'inventaris' => function ($query) use ($data) {
-                    $query->where('jenis', '3');
+                    $query->where([
+                        ['jenis', '3'],
+                        ['status', '!=', '0'],
+                        ['lokasi', auth()->user()->lokasi],
+                        ['tgl_beli', '<=', $data['tgl_kondisi']],
+                        ['tgl_beli', '!=', '']
+                    ]);
                 }
             ])
             ->get();
