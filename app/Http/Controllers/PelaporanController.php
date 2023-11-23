@@ -1473,7 +1473,7 @@ class PelaporanController extends Controller
             'desa.kd_desa',
             'desa.kode_desa',
             'sebutan_desa.sebutan_desa',
-            DB::raw('(TIMESTAMPDIFF(MONTH, ' . $tb_pinkel . '.tgl_cair, CURRENT_DATE)) as sisa')
+            DB::raw('(TIMESTAMPDIFF(MONTH, DATE_ADD(' . $tb_pinkel . '.tgl_cair, INTERVAL ' . $tb_pinkel . '.jangka MONTH), CURRENT_DATE)) as sisa')
         ])->join($tb_kel, $tb_kel . '.id', '=', $tb_pinkel . '.id_kel')
             ->join('desa', $tb_kel . '.desa', '=', 'desa.kd_desa')
             ->join('sebutan_desa', 'sebutan_desa.id', '=', 'desa.sebutan')
@@ -1487,10 +1487,10 @@ class PelaporanController extends Controller
                 [$tb_pinkel . '.sistem_angsuran', '!=', '12'],
                 [$tb_pinkel . '.status', 'A']
             ])
-            ->whereRaw('(TIMESTAMPDIFF(MONTH, ' . $tb_pinkel . '.tgl_cair, CURRENT_DATE))<=3')
+            ->whereRaw('(TIMESTAMPDIFF(MONTH, DATE_ADD(' . $tb_pinkel . '.tgl_cair, INTERVAL ' . $tb_pinkel . '.jangka MONTH), CURRENT_DATE)) BETWEEN 0 AND 3')
             ->with([
-                'rencana1' => function ($query) use ($data) {
-                    $query->where('jatuh_tempo', '>=', $data['tgl_kondisi']);
+                'rencana1' => function ($query) use ($data, $tb_pinkel) {
+                    $query->where('jatuh_tempo', '>=', $data['tahun'] . '-' . $data['bulan'] . '-01')->orWhere('jatuh_tempo', '<', $data['tahun'] . '-' . $data['bulan'] . '-01');
                 }
             ])
             ->orderBy($tb_kel . '.desa', 'ASC')
