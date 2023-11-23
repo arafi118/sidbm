@@ -4,8 +4,8 @@
     <table border="0">
         <tr>
             <td width="5%">Nomor</td>
-            <td width="65%">: ______________________</td>
-            <td width="30%" align="right">{{ $kec->nama_kec }}, {{ $tgl }}</td>
+            <td width="50%">: ______________________</td>
+            <td width="45%" align="right">{{ $kec->nama_kec }}, {{ $tgl }}</td>
         </tr>
         <tr>
             <td>Lampiran</td>
