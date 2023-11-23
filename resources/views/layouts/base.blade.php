@@ -1,6 +1,6 @@
 @php
     use App\Models\AdminInvoice;
-    $invoice = AdminInvoice::where([['lokasi', auth()->user()->lokasi], ['status', 'UNPAID']])
+    $invoice = AdminInvoice::where([['lokasi', Session::get('lokasi')], ['status', 'UNPAID']])
         ->with('jp')
         ->orderBy('tgl_invoice', 'DESC');
 
