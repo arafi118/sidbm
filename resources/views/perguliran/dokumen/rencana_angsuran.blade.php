@@ -14,6 +14,10 @@
         $tanggal = 'Tanggal Cair';
     }
 
+    if ($pinkel->saldo_pinjaman) {
+        $alokasi = $pinkel->saldo_pinjaman->saldo_pinjaman;
+    }
+
     $saldo_pokok = $alokasi;
     $saldo_jasa = ($saldo_pokok * $pinkel->pros_jasa) / 100;
 @endphp
