@@ -79,8 +79,9 @@
     });
 
     $(document).on('change', '[data-group=pendapatan]', function() {
-        var total = 0;;
+        var total = 0;
         $.each($('[data-group=pendapatan]'), function(key, value) {
+            if ($(this).val() == '') $(this).val('0.00')
             var nominal = $(this).val().split(',').join('')
 
             total += parseInt(nominal)
@@ -90,8 +91,9 @@
     })
 
     $(document).on('change', '[data-group=beban]', function() {
-        var total = 0;;
+        var total = 0;
         $.each($('[data-group=beban]'), function(key, value) {
+            if ($(this).val() == '') $(this).val('0.00')
             var nominal = $(this).val().split(',').join('')
 
             total += parseInt(nominal)
