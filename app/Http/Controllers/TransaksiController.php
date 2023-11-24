@@ -1277,7 +1277,7 @@ class TransaksiController extends Controller
             'jpp',
             'sis_pokok'
         ])->first();
-        $data['user'] = User::where('id', $data['real']->id_user)->first();
+        $data['user'] = User::where('id', auth()->user()->id)->first();
         $data['kec'] = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten')->first();
         $data['keuangan'] = new Keuangan;
 
@@ -1302,7 +1302,7 @@ class TransaksiController extends Controller
             'jpp',
             'sis_pokok'
         ])->first();
-        $data['user'] = User::where('id', $data['real']->id_user)->first();
+        $data['user'] = User::where('id', auth()->user()->id)->first();
         $data['kec'] = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten')->first();
         $data['keuangan'] = new Keuangan;
 
