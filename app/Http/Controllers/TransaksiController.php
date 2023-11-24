@@ -1261,7 +1261,7 @@ class TransaksiController extends Controller
 
     public function struk($id)
     {
-        $data['real'] = RealAngsuran::where('id', $id)->with('trx')->firstOrFail();
+        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'trx.user')->firstOrFail();
         $data['ra'] = RencanaAngsuran::where([
             ['loan_id', $data['real']->loan_id],
             ['target_pokok', '>=', $data['real']->sum_pokok]
@@ -1286,7 +1286,7 @@ class TransaksiController extends Controller
 
     public function strukMatrix($id)
     {
-        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'user')->firstOrFail();
+        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'trx.user')->firstOrFail();
         $data['ra'] = RencanaAngsuran::where([
             ['loan_id', $data['real']->loan_id],
             ['target_pokok', '>=', $data['real']->sum_pokok]
