@@ -44,6 +44,7 @@
         $pokok_bulan_depan = 0;
         $jasa_bulan_depan = 0;
     }
+    $nama_user = '';
 @endphp
 @foreach ($real->trx as $trx)
     @php
@@ -53,6 +54,8 @@
         }
 
         $idt = $trx->idt;
+
+        $nama_user = $trx->user->namadepan . ' ' . $trx->user->namabelakang;
     @endphp
 @endforeach
 
@@ -263,9 +266,7 @@
                 - Cek status pinjaman kelompok anda di {{ $kec->web_kec }} </td>
             <th valign="top">
                 <div align="center" class="bottom">
-                    @if ($user)
-                        {{ $user->namadepan . ' ' . $user->namabelakang }}
-                    @endif
+                    {{ $nama_user }}
                 </div>
             </th>
             <th valign="top">
