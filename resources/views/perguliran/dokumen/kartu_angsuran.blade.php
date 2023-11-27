@@ -156,7 +156,7 @@
         </table>
 
         @php
-            $baris_angsuran = ceil($pinkel->jangka / 2);
+            $baris_angsuran = ceil($pinkel->rencana_count / 2);
         @endphp
 
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
