@@ -476,9 +476,6 @@ class PinjamanAnggotaController extends Controller
             $tgl = $pinkel->tgl_cair;
         } else {
             $alokasi = $pinkel->alokasi;
-            if ($pinkel->saldo_pinjaman) {
-                $alokasi = $pinkel->saldo_pinjaman->saldo_pinjaman;
-            }
             $tgl = $pinkel->tgl_cair;
         }
 
@@ -531,8 +528,6 @@ class PinjamanAnggotaController extends Controller
         $wajib_pokok = 0;
         $wajib_jasa = 0;
         $target_pokok = 0;
-        $sum_pokok = 0;
-        $sum_jasa = 0;
         $target_jasa = 0;
 
         $_alokasi_pokok = 0;
@@ -543,6 +538,7 @@ class PinjamanAnggotaController extends Controller
 
         // Rencana Angsuran Pokok
         for ($i = 1; $i <= $jangka; $i++) {
+            $x = $i;
             $bulan  = substr($tgl, 5, 2);
             $tahun  = substr($tgl, 0, 4);
 
@@ -568,29 +564,37 @@ class PinjamanAnggotaController extends Controller
                 $wajib_jasa = $rencana_angs->wajib_jasa;
             } else {
                 if ($_alokasi_pokok == 0 && $_alokasi_jasa == 0) {
-                    $_alokasi_pokok = $alokasi - $sum_pokok;
-                    $_alokasi_jasa = $alokasi_jasa - $sum_jasa;
+                    $rencana[] = [
+                        'loan_id' => $id_pinj,
+                        'angsuran_ke' => $x,
+                        'jatuh_tempo' => Session::get('tgl_penghapusan'),
+                        'wajib_pokok' => Session::get('hapus_pokok'),
+                        'wajib_jasa' => Session::get('hapus_jasa'),
+                        'target_pokok' => $target_pokok + Session::get('hapus_pokok'),
+                        'target_jasa' => $target_jasa + Session::get('hapus_jasa'),
+                        'lu' => date('Y-m-d H:i:s'),
+                        'id_user' => auth()->user()->id
+                    ];
+
+                    $_alokasi_pokok = $alokasi - ($target_pokok + Session::get('hapus_pokok'));
+                    $_alokasi_jasa = $alokasi_jasa - ($target_jasa + Session::get('hapus_jasa'));
 
                     $_tempo_pokok = floor(($jangka - ($i - 1)) / $sistem_pokok);
                     $_tempo_jasa = floor(($jangka - ($i - 1)) / $sistem_jasa);
+
+                    $target_pokok += Session::get('hapus_pokok');
+                    $target_jasa += Session::get('hapus_jasa');
                 }
 
                 $wajib_pokok = Keuangan::bulatkan($_alokasi_pokok / $_tempo_pokok);
                 $wajib_jasa = Keuangan::bulatkan($_alokasi_jasa / $_tempo_jasa);
-            }
-
-            if ($i == 1) {
-                $sum_pokok = $wajib_pokok;
-                $sum_jasa = $wajib_jasa;
-            } else {
-                $sum_pokok += $wajib_pokok;
-                $sum_jasa += $wajib_jasa;
+                $x = $i + 1;
             }
 
             if ($sisa_pokok == 0 and $ke_pokok != $tempo_pokok) {
                 $angsuran_pokok = $wajib_pokok;
             } elseif ($sisa_pokok == 0 and $ke_pokok == $tempo_pokok) {
-                $angsuran_pokok = $alokasi - ($sum_pokok - $wajib_pokok);
+                $angsuran_pokok = $alokasi - $target_pokok;
             } else {
                 $angsuran_pokok = 0;
             }
@@ -598,7 +602,7 @@ class PinjamanAnggotaController extends Controller
             if ($sisa_jasa == 0 and $ke_jasa != $tempo_jasa) {
                 $angsuran_jasa = $wajib_jasa;
             } elseif ($sisa_jasa == 0 and $ke_jasa == $tempo_jasa) {
-                $angsuran_jasa = $alokasi_jasa - ($sum_jasa - $wajib_jasa);
+                $angsuran_jasa = $alokasi_jasa - $target_jasa;
             } else {
                 $angsuran_jasa = 0;
             }
@@ -609,14 +613,14 @@ class PinjamanAnggotaController extends Controller
             if ($i == 1) {
                 $target_pokok = $pokok;
                 $target_jasa = $jasa;
-            } elseif ($i >= 2) {
+            } else {
                 $target_pokok += $pokok;
                 $target_jasa += $jasa;
             }
 
             $rencana[] = [
                 'loan_id' => $id_pinj,
-                'angsuran_ke' => $i,
+                'angsuran_ke' => $x,
                 'jatuh_tempo' => $jatuh_tempo,
                 'wajib_pokok' => $pokok,
                 'wajib_jasa' => $jasa,
