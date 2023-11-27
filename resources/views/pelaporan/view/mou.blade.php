@@ -494,7 +494,6 @@
             </ol>
         </div>
 
-        <div class="break"></div>
         <div style="text-align: center;">
             <div><b style="font-size: 14px;">PASAL 7</b></div>
             <div><b style="font-size: 14px;">PENUTUP</b></div>
