@@ -771,6 +771,7 @@ class PelaporanController extends Controller
                     $tb_pinj . '.*',
                     $tb_angg . '.namadepan',
                     $tb_angg . '.alamat',
+                    $tb_angg . '.nik',
                     $tb_kel . '.nama_kelompok',
                     'desa.nama_desa',
                     'desa.kd_desa',
