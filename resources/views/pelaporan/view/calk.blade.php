@@ -383,18 +383,18 @@
                             <ol>
                                 <li>
                                     Kegiatan sosial kemasyarakatan dan bantuan rumah tangga miskin
-                                    {{ number_format($calk[0]['th_lalu'], 2) }},
-                                    {{ number_format($calk[0]['th_ini'], 2) }}
+                                    Rp. {{ number_format($calk[0]['th_lalu'], 2) }},
+                                    Rp. {{ number_format($calk[0]['th_ini'], 2) }}
                                 </li>
                                 <li>
                                     Pengembangan kapasitas kelompok simpan pinjam perempuan/usaha ekonomi produktif
-                                    {{ number_format($calk[1]['th_lalu'], 2) }},
-                                    {{ number_format($calk[1]['th_ini'], 2) }}
+                                    Rp. {{ number_format($calk[1]['th_lalu'], 2) }},
+                                    Rp. {{ number_format($calk[1]['th_ini'], 2) }}
                                 </li>
                                 <li>
                                     Pelatihan masyarakat, dan kelompok pemanfaat umum
-                                    {{ number_format($calk[2]['th_lalu'], 2) }},
-                                    {{ number_format($calk[2]['th_ini'], 2) }}
+                                    Rp. {{ number_format($calk[2]['th_lalu'], 2) }},
+                                    Rp. {{ number_format($calk[2]['th_ini'], 2) }}
                                 </li>
                             </ol>
                         </li>
