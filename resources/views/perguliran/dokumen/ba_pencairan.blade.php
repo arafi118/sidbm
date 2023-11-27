@@ -38,7 +38,9 @@
         {{ $keuangan->terbilang(Tanggal::tahun($pinkel->tgl_cair)) }}, telah diadakan pencairan dana perguliran
         {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }} {{ $kec->nama_kec }} kepada Kelompok
         {{ $pinkel->kelompok->nama_kelompok }} {{ $pinkel->kelompok->d->sebutan_desa->sebutan_desa }}
-        {{ $pinkel->kelompok->d->nama_desa }} {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}, sebesar Rp.
+        {{ $pinkel->kelompok->d->nama_desa }} {{ $kec->sebutan_kec }} {{ $kec->nama_kec }} bertempat di
+        {{ $tempat }},
+        sebesar Rp.
         {{ number_format($pinkel->alokasi) }} ({{ $keuangan->terbilang($pinkel->alokasi) }} Rupiah), sesuai dengan
         Register Pinjaman pada Data Base Pinjaman Nomor nomor : {{ $pinkel->kelompok->kd_kelompok }} dan Surat Perjanjian
         Kredit (SPK) nomor: {{ $pinkel->spk_no }}.
@@ -208,23 +210,6 @@
             <td width="50%">&nbsp;</td>
             <td width="25%">&nbsp;</td>
             <td width="25%">&nbsp;</td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td>Dicairkan di</td>
-            <td>
-                : <b>{{ $tempat }}</b>
-            </td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td>Pada Tanggal</td>
-            <td>
-                : <b>{{ Tanggal::tglLatin($pinkel->tgl_cair) }}</b>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" height="20">&nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
