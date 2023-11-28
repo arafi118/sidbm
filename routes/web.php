@@ -215,5 +215,4 @@ Route::get('/user', function () {
 });
 
 Route::get('/unpaid', [DashboardController::class, 'unpaid'])->middleware('auth');
-
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
