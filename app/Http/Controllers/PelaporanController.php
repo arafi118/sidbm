@@ -31,7 +31,7 @@ class PelaporanController extends Controller
     public function index()
     {
         $title = 'Pelaporan';
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $laporan = JenisLaporan::where('file', '!=', '0')->orderBy('urut', 'ASC')->get();
         return view('pelaporan.index')->with(compact('title', 'kec', 'laporan'));
     }
@@ -531,28 +531,22 @@ class PelaporanController extends Controller
 
         $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with('akun2.akun3.rek')->orderBy('kode_akun', 'ASC')->get();
 
-        $data['dir'] = User::where([
-            ['level', '1'],
-            ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi],
-        ])->first();
-
         $data['sekr'] = User::where([
             ['level', '1'],
             ['jabatan', '2'],
-            ['lokasi', auth()->user()->lokasi],
+            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $data['bend'] = User::where([
             ['level', '1'],
             ['jabatan', '3'],
-            ['lokasi', auth()->user()->lokasi],
+            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $data['pengawas'] = User::where([
             ['level', '3'],
             ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi],
+            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $data['saldo_calk'] = Saldo::where('kode_akun', $data['kec']->kd_kec)->get();
@@ -1418,7 +1412,7 @@ class PelaporanController extends Controller
                     $query->where([
                         ['jenis', '1'],
                         ['status', '!=', '0'],
-                        ['lokasi', auth()->user()->lokasi],
+                        ['lokasi', Session::get('lokasi')],
                         ['tgl_beli', '<=', $data['tgl_kondisi']],
                         ['tgl_beli', '!=', '']
                     ]);
@@ -1461,7 +1455,7 @@ class PelaporanController extends Controller
                     $query->where([
                         ['jenis', '3'],
                         ['status', '!=', '0'],
-                        ['lokasi', auth()->user()->lokasi],
+                        ['lokasi', Session::get('lokasi')],
                         ['tgl_beli', '<=', $data['tgl_kondisi']],
                         ['tgl_beli', '!=', '']
                     ]);
@@ -1500,19 +1494,19 @@ class PelaporanController extends Controller
         $data['dir'] = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->first();
 
         $data['pengawas'] = User::where([
             ['level', '3'],
             ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->first();
 
         $data['bendahara'] = User::where([
             ['level', '1'],
             ['jabatan', '3'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->first();
 
         $view = view('pelaporan.view.penilaian_kesehatan', $data)->render();
@@ -1639,7 +1633,7 @@ class PelaporanController extends Controller
     public function mou()
     {
         $keuangan = new Keuangan;
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten', 'desa', 'ttd')->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten', 'desa', 'ttd')->first();
         $kab = $kec->kabupaten;
 
         $data['logo'] = $kec->logo;
@@ -1654,10 +1648,17 @@ class PelaporanController extends Controller
             $data['nama_kabupaten'] = ' Kabupaten ' . ucwords(strtolower($kab->nama_kab));
         }
 
+        $jabatan = '1';
+        $level = '1';
+        if (Session::get('lokasi') == '207') {
+            $jabatan = '1';
+            $level = '2';
+        }
+
         $data['dir'] = User::where([
-            ['level', '1'],
-            ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')],
+            ['jabatan', $jabatan],
+            ['level', $level]
         ])->first();
 
         $data['kec'] = $kec;
@@ -1671,7 +1672,7 @@ class PelaporanController extends Controller
 
     public function ts()
     {
-        $data['kec'] = Kecamatan::where('id', auth()->user()->lokasi)->first();
+        $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->first();
 
         $view = view('pelaporan.view.ts', $data)->render();
         $pdf = PDF::loadHTML($view)->setPaper([0, 0, 595.28, 352], 'potrait');
