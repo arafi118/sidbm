@@ -87,12 +87,20 @@ class PelaporanController extends Controller
         ]);
 
         $request->hari = ($request->hari) ?: 31;
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten', 'desa', 'desa.saldo', 'ttd')->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten', 'desa', 'desa.saldo', 'ttd')->first();
         $kab = $kec->kabupaten;
+
+        $jabatan = '1';
+        $level = '1';
+        if (Session::get('lokasi') == '207') {
+            $jabatan = '1';
+            $level = '2';
+        }
+
         $dir = User::where([
-            ['lokasi', auth()->user()->lokasi],
-            ['jabatan', '1'],
-            ['level', '1'],
+            ['lokasi', Session::get('lokasi')],
+            ['jabatan', $jabatan],
+            ['level', $level],
             ['sejak', '<=', date('Y-m-t', strtotime($request->tahun . '-' . $request->bulan . '-01'))]
         ])->first();
 
