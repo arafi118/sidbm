@@ -800,28 +800,13 @@ class PelaporanController extends Controller
                             [$data['tb_pinj'] . '.tgl_cair', '<=', $data['tgl_kondisi']]
                         ])->orwhere([
                             [$data['tb_pinj'] . '.status', 'L'],
-                            [$data['tb_pinj'] . '.tgl_cair', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinj'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
-                        ])->orwhere([
-                            [$data['tb_pinj'] . '.status', 'L'],
-                            [$data['tb_pinj'] . '.tgl_lunas', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinj'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                            [$data['tb_pinj'] . '.tgl_lunas', '>=', $data['tgl_kondisi']]
                         ])->orwhere([
                             [$data['tb_pinj'] . '.status', 'R'],
-                            [$data['tb_pinj'] . '.tgl_cair', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinj'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
-                        ])->orwhere([
-                            [$data['tb_pinj'] . '.status', 'R'],
-                            [$data['tb_pinj'] . '.tgl_lunas', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinj'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                            [$data['tb_pinj'] . '.tgl_lunas', '>=', $data['tgl_kondisi']]
                         ])->orwhere([
                             [$data['tb_pinj'] . '.status', 'H'],
-                            [$data['tb_pinj'] . '.tgl_cair', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinj'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
-                        ])->orwhere([
-                            [$data['tb_pinj'] . '.status', 'H'],
-                            [$data['tb_pinj'] . '.tgl_lunas', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinj'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                            [$data['tb_pinj'] . '.tgl_lunas', '>=', $data['tgl_kondisi']]
                         ]);
                     })
                     ->orderBy($tb_angg . '.desa', 'ASC')
