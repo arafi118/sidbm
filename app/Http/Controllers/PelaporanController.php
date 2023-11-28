@@ -721,6 +721,30 @@ class PelaporanController extends Controller
                         $query->where([
                             [$data['tb_pinkel'] . '.status', 'A'],
                             [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']]
+                        ])->orwhere([
+                            [$data['tb_pinkel'] . '.status', 'L'],
+                            [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']],
+                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                        ])->orwhere([
+                            [$data['tb_pinkel'] . '.status', 'L'],
+                            [$data['tb_pinkel'] . '.tgl_lunas', '<=', $data['tgl_kondisi']],
+                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                        ])->orwhere([
+                            [$data['tb_pinkel'] . '.status', 'R'],
+                            [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']],
+                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                        ])->orwhere([
+                            [$data['tb_pinkel'] . '.status', 'R'],
+                            [$data['tb_pinkel'] . '.tgl_lunas', '<=', $data['tgl_kondisi']],
+                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                        ])->orwhere([
+                            [$data['tb_pinkel'] . '.status', 'H'],
+                            [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']],
+                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                        ])->orwhere([
+                            [$data['tb_pinkel'] . '.status', 'H'],
+                            [$data['tb_pinkel'] . '.tgl_lunas', '<=', $data['tgl_kondisi']],
+                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
                         ]);
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')
@@ -789,6 +813,30 @@ class PelaporanController extends Controller
                         $query->where([
                             [$data['tb_pinj'] . '.status', 'A'],
                             [$data['tb_pinj'] . '.tgl_cair', '<=', $data['tgl_kondisi']]
+                        ])->orwhere([
+                            [$data['tb_pinj'] . '.status', 'L'],
+                            [$data['tb_pinj'] . '.tgl_cair', '<=', $data['tgl_kondisi']],
+                            [$data['tb_pinj'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                        ])->orwhere([
+                            [$data['tb_pinj'] . '.status', 'L'],
+                            [$data['tb_pinj'] . '.tgl_lunas', '<=', $data['tgl_kondisi']],
+                            [$data['tb_pinj'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                        ])->orwhere([
+                            [$data['tb_pinj'] . '.status', 'R'],
+                            [$data['tb_pinj'] . '.tgl_cair', '<=', $data['tgl_kondisi']],
+                            [$data['tb_pinj'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                        ])->orwhere([
+                            [$data['tb_pinj'] . '.status', 'R'],
+                            [$data['tb_pinj'] . '.tgl_lunas', '<=', $data['tgl_kondisi']],
+                            [$data['tb_pinj'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                        ])->orwhere([
+                            [$data['tb_pinj'] . '.status', 'H'],
+                            [$data['tb_pinj'] . '.tgl_cair', '<=', $data['tgl_kondisi']],
+                            [$data['tb_pinj'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                        ])->orwhere([
+                            [$data['tb_pinj'] . '.status', 'H'],
+                            [$data['tb_pinj'] . '.tgl_lunas', '<=', $data['tgl_kondisi']],
+                            [$data['tb_pinj'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
                         ]);
                     })
                     ->orderBy($tb_angg . '.desa', 'ASC')
