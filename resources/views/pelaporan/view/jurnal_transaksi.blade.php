@@ -1,9 +1,9 @@
 @php
     use App\Utils\Tanggal;
-    
+
     $data_idtp = [];
     $tgl_trx = [];
-    
+
     $number = 1;
     $debit = 0;
     $kredit = 0;
@@ -43,17 +43,17 @@
         @foreach ($transaksi as $trx)
             @php
                 $data_idtp[] = $trx->idtp;
-                
+
                 if ($trx->idtp != '0' && array_count_values($data_idtp)[$trx->idtp] > 1 && $trx->tgl_transaksi == $tgl_trx[$trx->idtp]) {
                     continue;
                 }
                 $tgl_trx[$trx->idtp] = $trx->tgl_transaksi;
-                
+
                 $bg = 'rgba(255, 255, 255)';
                 if ($number % 2 == 0) {
                     $bg = 'rgb(230, 230, 230)';
                 }
-                
+
             @endphp
 
             @if ($trx->idtp != '0')
@@ -151,8 +151,8 @@
                     </tr>
                 </table>
 
-                <div style="margin-top: 24px;"></div>
-                {!! json_decode($kec->ttd->tanda_tangan_pelaporan, true) !!}
+                <div style="margin-top: 16px;"></div>
+                {!! json_decode(str_replace('{tanggal}', $tanggal_kondisi, $kec->ttd->tanda_tangan_pelaporan), true) !!}
             </td>
         </tr>
     </table>

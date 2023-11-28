@@ -122,6 +122,7 @@ class PelaporanController extends Controller
         } else {
             $data['tgl_kondisi'] = $data['tahun'] . '-12-31';
         }
+        $data['tanggal_kondisi'] = $kec->nama_kec . ', ' . Tanggal::tglLatin($data['tgl_kondisi']);
 
         $file = $request->laporan;
         if ($file == 3) {
