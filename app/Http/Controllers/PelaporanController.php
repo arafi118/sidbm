@@ -317,7 +317,7 @@ class PelaporanController extends Controller
             $pend_rek = [];
             foreach ($pend->rek as $rek) {
                 $saldo = $keuangan->Saldo($data['tgl_kondisi'], $rek->kode_akun);
-                $saldo_bln_lalu = ($bln == 1) ? 0 : $keuangan->Saldo($data['bulan_lalu'], $rek->kode_akun);
+                $saldo_bln_lalu = ($bln == 1 || $data['bulan_lalu'] == ($thn - 1) . '-12-31') ? 0 : $keuangan->Saldo($data['bulan_lalu'], $rek->kode_akun);
 
                 $pend_rek[$rek->kode_akun] = [
                     'kode_akun' => $rek->kode_akun,
@@ -341,7 +341,7 @@ class PelaporanController extends Controller
             $beb_rek = [];
             foreach ($beb->rek as $rek) {
                 $saldo = $keuangan->Saldo($data['tgl_kondisi'], $rek->kode_akun);
-                $saldo_bln_lalu = ($bln == 1) ? 0 : $keuangan->Saldo($data['bulan_lalu'], $rek->kode_akun);
+                $saldo_bln_lalu = ($bln == 1 || $data['bulan_lalu'] == ($thn - 1) . '-12-31') ? 0 : $keuangan->Saldo($data['bulan_lalu'], $rek->kode_akun);
 
                 $beb_rek[$rek->kode_akun] = [
                     'kode_akun' => $rek->kode_akun,
@@ -365,7 +365,7 @@ class PelaporanController extends Controller
             $pendNOP_rek = [];
             foreach ($pendNOP->rek as $rek) {
                 $saldo = $keuangan->Saldo($data['tgl_kondisi'], $rek->kode_akun);
-                $saldo_bln_lalu = ($bln == 1) ? 0 : $keuangan->Saldo($data['bulan_lalu'], $rek->kode_akun);
+                $saldo_bln_lalu = ($bln == 1 || $data['bulan_lalu'] == ($thn - 1) . '-12-31') ? 0 : $keuangan->Saldo($data['bulan_lalu'], $rek->kode_akun);
 
                 $pendNOP_rek[$rek->kode_akun] = [
                     'kode_akun' => $rek->kode_akun,
@@ -389,7 +389,7 @@ class PelaporanController extends Controller
             $bebNOP_rek = [];
             foreach ($bebNOP->rek as $rek) {
                 $saldo = $keuangan->Saldo($data['tgl_kondisi'], $rek->kode_akun);
-                $saldo_bln_lalu = ($bln == 1) ? 0 : $keuangan->Saldo($data['bulan_lalu'], $rek->kode_akun);
+                $saldo_bln_lalu = ($bln == 1 || $data['bulan_lalu'] == ($thn - 1) . '-12-31') ? 0 : $keuangan->Saldo($data['bulan_lalu'], $rek->kode_akun);
 
                 $bebNOP_rek[$rek->kode_akun] = [
                     'kode_akun' => $rek->kode_akun,
@@ -403,7 +403,7 @@ class PelaporanController extends Controller
         }
 
         $data['pph'] = [
-            'bulan_lalu' => ($bln == 1) ? 0 : $keuangan->Saldo($data['bulan_lalu'], '5.4.01.01'),
+            'bulan_lalu' => ($bln == 1 || $data['bulan_lalu'] == ($thn - 1) . '-12-31') ? 0 : $keuangan->Saldo($data['bulan_lalu'], '5.4.01.01'),
             'sekarang' => $keuangan->Saldo($data['tgl_kondisi'], '5.4.01.01')
         ];
 
