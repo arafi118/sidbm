@@ -358,7 +358,8 @@
         $(document).on('click', '#btnLaporanPelunasan', function(e) {
             e.preventDefault()
 
-            $('#FormLaporanPelunasan').submit()
+            $('input#laporan').val('pelunasan')
+            $('#FormLaporanSisipan').submit()
         })
 
         // $(document).ajaxStart(function() {

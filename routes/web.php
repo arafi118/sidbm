@@ -34,12 +34,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/master/login', [AdminAuthController::class, 'index'])->middleware('master.quest');
 Route::post('/master/login', [AdminAuthController::class, 'login'])->middleware('master.quest');
 
-Route::group(['prefix' => 'master', 'as' => 'master.'], function () {
+Route::group(['prefix' => 'master', 'as' => 'master.', 'middleware' => 'master'], function () {
     Route::get('/', [AdminController::class, 'index']);
 
     Route::resource('/users', AdminUserController::class);
 
-    Route::get('/kecamatan', [AdminController::class, 'kecamatan']);
+    Route::get('/laporan', [AdminController::class, 'laporan']);
 
     Route::get('/buat_invoice', [InvoiceController::class, 'index']);
     Route::get('/nomor_invoice', [InvoiceController::class, 'InvoiceNo']);
@@ -57,7 +57,7 @@ Route::group(['prefix' => 'master', 'as' => 'master.'], function () {
     Route::resource('/menu', MenuController::class);
 
     Route::post('/logout', [AdminAuthController::class, 'logout']);
-})->middleware('master');
+});
 
 Route::get('/', [AuthController::class, 'index'])->middleware('guest')->name('/');
 Route::post('/login', [AuthController::class, 'login'])->middleware('guest');

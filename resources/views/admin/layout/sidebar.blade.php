@@ -1,4 +1,10 @@
 @php
+    use App\Models\Wilayah;
+
+    $wilayah = Wilayah::whereRaw('LENGTH(kode) = 2')
+        ->with('kab', 'kab.kec')
+        ->orderBy('nama', 'ASC')
+        ->get();
 
     function active($curent, ...$_url)
     {
@@ -19,6 +25,7 @@
 
         return '';
     }
+
 @endphp
 
 <nav class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
@@ -51,30 +58,16 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
+
             <li class="nav-item">
-                <a class="nav-link text-white {{ active('provinsi') }}" href="/master/provinsi">
+                <a class="nav-link text-white {{ active('laporan') }}" href="/master/laporan">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">note_add</i>
+                        <i class="material-icons opacity-10">insert_drive_file</i>
                     </div>
-                    <span class="nav-link-text ms-1">Provinsi</span>
+                    <span class="nav-link-text ms-1">Laporan</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ active('kabupaten') }}" href="/master/kabupaten">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">note_add</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Kabupaten</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ active('kecamatan') }}" href="/master/kecamatan">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">note_add</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Kecamatan</span>
-                </a>
-            </li>
+
 
             <li class="nav-item mt-3">
                 <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder text-white">Master Data</h6>
@@ -127,18 +120,6 @@
                     <span class="nav-link-text ms-1">Menu</span>
                 </a>
             </li>
-
-            {{-- <li class="nav-item mt-3">
-                <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder text-white">Laporan</h6>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ active('pelaporan') }}" href="/master/pelaporan">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">insert_drive_file</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Laporan</span>
-                </a>
-            </li> --}}
         </ul>
     </div>
 </nav>

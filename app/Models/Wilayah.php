@@ -11,4 +11,9 @@ class Wilayah extends Model
     public $timestamps = false;
 
     use HasFactory;
+
+    public function kab()
+    {
+        return $this->hasMany(Kabupaten::class, 'kd_prov', 'kode');
+    }
 }

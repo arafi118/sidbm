@@ -138,7 +138,7 @@
     </div>
 </nav>
 
-<form action="/pelaporan/preview" method="post" id="FormLaporanPelunasan" target="_blank">
+<form action="/pelaporan/preview" method="post" id="FormLaporanSisipan" target="_blank">
     @csrf
 
     <input type="hidden" name="type" id="type" value="pdf">

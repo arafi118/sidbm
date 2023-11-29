@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kecamatan;
-use App\Models\User;
+use App\Models\Wilayah;
 
 class AdminController extends Controller
 {
@@ -14,11 +13,11 @@ class AdminController extends Controller
         return view('admin.index')->with(compact('title'));
     }
 
-    public function kecamatan()
+    public function laporan()
     {
-        $kecamatan = Kecamatan::orderBy('id', 'ASC')->get();
+        $wilayah = Wilayah::WhereRaw('LENGTH(kode)=2')->orderBy('nama', 'ASC')->get();
 
-        $title = 'Daftar Kecamatan';
-        return view('admin.kecamatan')->with(compact('title', 'kecamatan'));
+        $title = 'Laporan Pusat';
+        return view('admin.wilayah')->with(compact('title', 'wilayah'));
     }
 }

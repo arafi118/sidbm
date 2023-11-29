@@ -15,4 +15,9 @@ class Kabupaten extends Model
     {
         return $this->belongsTo(Wilayah::class, 'kd_prov', 'kode');
     }
+
+    public function kec()
+    {
+        return $this->hasMany(Kecamatan::class, 'kd_kab', 'kd_kab');
+    }
 }
