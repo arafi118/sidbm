@@ -268,11 +268,11 @@
             })
         })
 
-        $(document).on('keypress', '#inisial', function() {
+        $(document).on('input', '#inisial', function() {
             var inisial = $(this).val()
 
             if (inisial.length >= 2) {
-                return false
+                $(this).val(inisial.substring(0, 2))
             }
         })
 
