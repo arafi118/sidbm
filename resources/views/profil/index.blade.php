@@ -268,6 +268,14 @@
             })
         })
 
+        $(document).on('keypress', '#inisial', function() {
+            var inisial = $(this).val()
+
+            if (inisial.length >= 2) {
+                return false
+            }
+        })
+
         $(document).on('click', '#SimpanEditUser', function(e) {
             e.preventDefault()
 
