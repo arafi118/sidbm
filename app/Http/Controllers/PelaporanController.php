@@ -570,21 +570,21 @@ class PelaporanController extends Controller
         if (strlen($hari) > 0 && strlen($bln) > 0) {
             $data['sub_judul'] = 'Tanggal ' . $hari . ' Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tglLatin($tgl);
-            $data['transaksi'] = Transaksi::where('tgl_transaksi', $tgl)->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->withCount('angs')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
+            $data['transaksi'] = Transaksi::where('tgl_transaksi', $tgl)->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
         } elseif (strlen($bln) > 0) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['transaksi'] = Transaksi::whereBetween('tgl_transaksi', [
                 $thn . '-' . $bln . '-01',
                 $thn . '-' . $bln . '-' . date('t', strtotime($thn . '-' . $bln . '-01'))
-            ])->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->withCount('angs')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
+            ])->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
         } else {
             $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tahun($tgl);
             $data['transaksi'] = Transaksi::whereBetween('tgl_transaksi', [
                 $thn . '-01-01',
                 $thn . '-12-31'
-            ])->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->withCount('angs')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
+            ])->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
         }
 
         $view = view('pelaporan.view.jurnal_transaksi', $data)->render();
