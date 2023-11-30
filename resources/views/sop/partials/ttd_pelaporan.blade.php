@@ -18,7 +18,8 @@
             @if (!$tanggal)
                 <small class="text-danger">
                     Masukkan <span style="text-transform: lowercase">
-                        <b>{tanggal}</b> pada form tanda tangan untuk menuliskan tanggal laporan dibuat.
+                        *{tanggal}* pada form tanda tangan untuk menuliskan tanggal laporan dibuat. <b>Hapus tanda bintang
+                            (*)</b>
                     </span>
                 </small>
             @endif
