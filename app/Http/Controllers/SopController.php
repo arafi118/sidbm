@@ -272,8 +272,18 @@ class SopController extends Controller
     {
         $title = "Pengaturan Tanda Tangan Pelaporan";
         $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('ttd')->first();
+        $ttd = TandaTanganLaporan::where([['lokasi', Session::get('lokasi')]])->first();
 
-        return view('sop.partials.ttd_pelaporan')->with(compact('title', 'kec'));
+        $tanggal = false;
+        if ($ttd) {
+            $str = strpos($ttd->tanda_tangan_pelaporan, '{tanggal}');
+
+            if ($str !== false) {
+                $tanggal = true;
+            }
+        }
+
+        return view('sop.partials.ttd_pelaporan')->with(compact('title', 'kec', 'tanggal'));
     }
 
     public function ttdSpk()

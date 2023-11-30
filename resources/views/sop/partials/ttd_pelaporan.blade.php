@@ -15,6 +15,13 @@
 </textarea>
             </form>
 
+            @if (!$tanggal)
+                <small class="text-danger">
+                    Masukkan <span style="text-transform: lowercase">
+                        <b>{tanggal}</b> pada form tanda tangan untuk menuliskan tanggal laporan dibuat.
+                    </span>
+                </small>
+            @endif
             <div class="d-flex justify-content-end mt-3">
                 <button type="button" id="simpanTtdPelaporan" class="btn btn-github btn-sm ms-2">
                     Simpan Perubahan

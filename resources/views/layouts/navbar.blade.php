@@ -1,3 +1,21 @@
+@php
+    use App\Models\TandaTanganLaporan;
+    $ttd = TandaTanganLaporan::where([['lokasi', Session::get('lokasi')]])->first();
+
+    $tanggal = false;
+    if ($ttd) {
+        $str = strpos($ttd->tanda_tangan_pelaporan, '{tanggal}');
+
+        if ($str !== false) {
+            $tanggal = true;
+        }
+    }
+
+    if (!$tanggal) {
+        $jumlah += 1;
+    }
+@endphp
+
 <nav class="navbar navbar-main navbar-expand-lg position-sticky mt-4 top-1 px-0 mx-4 shadow-none border-radius-xl z-index-sticky"
     id="navbarBlur" data-scroll="true">
     <div class="container-fluid py-1 px-3">
@@ -94,6 +112,18 @@
                                         </div>
                                     </a>
                                 @endforeach
+                            @endif
+                            @if (!$tanggal)
+                                <a class="dropdown-item border-radius-md" href="/pengaturan/ttd_pelaporan">
+                                    <div class="d-flex align-items-center py-1">
+                                        <span class="material-icons">date_range</span>
+                                        <div class="ms-2">
+                                            <h6 class="text-sm font-weight-normal my-auto">
+                                                Tanggal pada laporan
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </a>
                             @endif
                             <a class="dropdown-item border-radius-md" href="/pelaporan/ts" target="_blank">
                                 <div class="d-flex align-items-center py-1">
