@@ -102,12 +102,23 @@
                     $debit += $jumlah_angs;
                 @endphp
             @else
+                @php
+                    $rek_debit = '';
+                    $rek_kredit = '';
+
+                    if ($trx->rek_debit) {
+                        $rek_debit = $trx->rek_debit->nama_akun;
+                    }
+                    if ($trx->rek_kredit) {
+                        $rek_kredit = $trx->rek_kredit->nama_akun;
+                    }
+                @endphp
                 <tr style="background: {{ $bg }};">
                     <td height="15" align="center">{{ $number }}.</td>
                     <td align="center">{{ Tanggal::tglIndo($trx->tgl_transaksi) }}</td>
                     <td align="left">{{ $trx->idt }}</td>
                     <td align="center">{{ $trx->rekening_debit }}</td>
-                    <td align="left">{{ $trx->rek_debit->nama_akun }}</td>
+                    <td align="left">{{ $rek_debit }}</td>
                     <td align="right">{{ number_format($trx->jumlah, 2) }}</td>
                     <td align="right">&nbsp;</td>
                     @if ($trx->user)
@@ -121,7 +132,7 @@
                     <td align="center">&nbsp;</td>
                     <td align="left">{{ $trx->idt }}</td>
                     <td align="center">{{ $trx->rekening_kredit }}</td>
-                    <td align="left">{{ $trx->rek_kredit->nama_akun }}</td>
+                    <td align="left">{{ $rek_kredit }}</td>
                     <td align="right">&nbsp;</td>
                     <td align="right">{{ number_format($trx->jumlah, 2) }}</td>
                     @if ($trx->user)
