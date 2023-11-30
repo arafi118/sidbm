@@ -37,6 +37,8 @@ Route::post('/master/login', [AdminAuthController::class, 'login'])->middleware(
 Route::group(['prefix' => 'master', 'as' => 'master.', 'middleware' => 'master'], function () {
     Route::get('/', [AdminController::class, 'index']);
 
+    Route::get('/kecamatan/{kd_prov}/{kd_kab}/{kd_kec}', [AdminController::class, 'kecamatan']);
+
     Route::resource('/users', AdminUserController::class);
 
     Route::get('/laporan', [AdminController::class, 'laporan']);

@@ -295,3 +295,8 @@ body.swal2-toast-shown .swal2-container {
 .moving-tab .nav-link.active {
     color: #fff !important;
 }
+
+.sidenav .navbar-nav>.nav-item .nav-link.active+.collapse .nav-item .nav-link.active+.collapse .nav-item .nav-link.active[data-bs-toggle="collapse"],
+.sidenav .navbar-nav>.nav-item .nav-link.active+.collapsing .nav-item .nav-link.active+.collapse .nav-item .nav-link.active[data-bs-toggle="collapse"] {
+    background-image: unset;
+}

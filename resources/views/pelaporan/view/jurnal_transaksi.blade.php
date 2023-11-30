@@ -102,7 +102,7 @@
                     <td align="center">{{ Tanggal::tglIndo($trx->tgl_transaksi) }}</td>
                     <td align="left">{{ $trx->idt }}</td>
                     <td align="center">{{ $trx->rekening_debit }}</td>
-                    <td align="left">{{ $trx->rek_debit->nama_akun }}</td>
+                    <td align="left">{{ $trx->rek_debit->nama_akun ?: '' }}</td>
                     <td align="right">{{ number_format($trx->jumlah, 2) }}</td>
                     <td align="right">&nbsp;</td>
                     @if ($trx->user)

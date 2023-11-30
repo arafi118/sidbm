@@ -2,7 +2,13 @@
     use App\Models\Wilayah;
 
     $wilayah = Wilayah::whereRaw('LENGTH(kode) = 2')
-        ->with('kab', 'kab.kec')
+        ->with([
+            'kab' => function ($query) {
+                $query->withCount('kec');
+            },
+            'kab.kec',
+        ])
+        ->withCount('kab')
         ->orderBy('nama', 'ASC')
         ->get();
 
@@ -12,7 +18,7 @@
         $url = request()->segment($jumlah_url);
 
         if ($curent == $url) {
-            return 'active bg-gradient-info';
+            return 'active';
         }
 
         if (in_array($url, $_url)) {
@@ -26,10 +32,26 @@
         return '';
     }
 
+    $links = [
+        [
+            'title' => 'Provinsi',
+            'icon' => '',
+        ],
+        [
+            'title' => 'Kabupaten',
+            'icon' => '',
+        ],
+        [
+            'title' => 'Kecamatan',
+            'icon' => '',
+        ],
+    ];
+
 @endphp
 
-<nav class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
-    id="sidenav-main">
+<aside
+    class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
+    id="sidenav-main" data-color="success">
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
@@ -50,7 +72,8 @@
                 </a>
             </li>
             <hr class="horizontal light mt-0">
-            <li class="nav-item">
+
+            <li class="nav-item nav-item-link {{ active('master') }}">
                 <a class="nav-link text-white {{ active('master') }}" href="/master">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">dashboard</i>
@@ -59,20 +82,42 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link text-white {{ active('laporan') }}" href="/master/laporan">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">insert_drive_file</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Laporan</span>
-                </a>
-            </li>
+            @php
+                $path = Request::path();
+                $path = explode('/', $path);
+            @endphp
 
+            @foreach ($links as $link)
+                @php
+                    $active = '';
+                    if (in_array(strtolower($link['title']), $path)) {
+                        $active = 'active';
+                    }
+                @endphp
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#Menu{{ $link['title'] }}"
+                        class="nav-link text-white {{ $active }}" aria-controls="Menu{{ $link['title'] }}"
+                        role="button" aria-expanded="false">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons-round opacity-10">insert_drive_file</i>
+                        </div>
+                        <span class="nav-link-text ms-1">{{ $link['title'] }}</span>
+                    </a>
+                    <div class="collapse" id="Menu{{ $link['title'] }}">
+                        <ul class="nav nav-sm flex-column">
+                            @include('admin.layout.menu', [
+                                'title' => $link['title'],
+                                'data' => $wilayah,
+                            ])
+                        </ul>
+                    </div>
+                </li>
+            @endforeach
 
             <li class="nav-item mt-3">
                 <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder text-white">Master Data</h6>
             </li>
-            <li class="nav-item">
+            <li class="nav-item nav-item-link {{ active('users') }}">
                 <a class="nav-link text-white {{ active('users') }}" href="/master/users">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">note_add</i>
@@ -91,19 +136,19 @@
                 </a>
                 <div class="collapse" id="MenuInvoice">
                     <ul class="nav nav-sm flex-column">
-                        <li class="nav-item">
+                        <li class="nav-item nav-item-link {{ active('buat_invoice') }}">
                             <a class="nav-link text-white {{ active('buat_invoice') }}" href="/master/buat_invoice">
                                 <span class="sidenav-mini-icon"> BB </span>
                                 <span class="sidenav-normal  ms-2  ps-1"> Buat Baru </span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item nav-item-link {{ active('unpaid') }}">
                             <a class="nav-link text-white {{ active('unpaid') }}" href="/master/unpaid">
                                 <span class="sidenav-mini-icon"> P </span>
                                 <span class="sidenav-normal  ms-2  ps-1"> Invoice Unpaid </span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item nav-item-link {{ active('paid') }}">
                             <a class="nav-link text-white {{ active('paid') }}" href="/master/paid">
                                 <span class="sidenav-mini-icon"> U </span>
                                 <span class="sidenav-normal  ms-2  ps-1"> Invoice Paid </span>
@@ -122,4 +167,4 @@
             </li>
         </ul>
     </div>
-</nav>
+</aside>
