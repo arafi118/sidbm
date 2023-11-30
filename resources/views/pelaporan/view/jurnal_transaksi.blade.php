@@ -62,23 +62,7 @@
                 @endphp
 
                 @foreach ($trx->angs as $angs)
-                    <tr style="background: {{ $bg }};">
-                        <td height="15" align="center">&nbsp;</td>
-                        <td align="center">&nbsp;</td>
-                        <td align="left">{{ $trx->idtp }}.{{ $angs->idt }}</td>
-                        <td align="center">{{ $angs->rekening_kredit }}</td>
-                        <td align="left">{{ $angs->rek_kredit->nama_akun }}</td>
-                        <td align="right">&nbsp;</td>
-                        <td align="right">{{ number_format($angs->jumlah, 2) }}</td>
-                        @if ($trx->user)
-                            <td align="center">{{ $trx->user->ins }}</td>
-                        @else
-                            <td align="center">&nbsp;</td>
-                        @endif
-                    </tr>
-
                     @php
-                        $kredit += $angs->jumlah;
                         $jumlah_angs += $angs->jumlah;
                     @endphp
                 @endforeach
@@ -97,6 +81,27 @@
                         <td align="center">&nbsp;</td>
                     @endif
                 </tr>
+
+                @foreach ($trx->angs as $angs)
+                    <tr style="background: {{ $bg }};">
+                        <td height="15" align="center">&nbsp;</td>
+                        <td align="center">&nbsp;</td>
+                        <td align="left">{{ $trx->idtp }}.{{ $angs->idt }}</td>
+                        <td align="center">{{ $angs->rekening_kredit }}</td>
+                        <td align="left">{{ $angs->rek_kredit->nama_akun }}</td>
+                        <td align="right">&nbsp;</td>
+                        <td align="right">{{ number_format($angs->jumlah, 2) }}</td>
+                        @if ($trx->user)
+                            <td align="center">{{ $trx->user->ins }}</td>
+                        @else
+                            <td align="center">&nbsp;</td>
+                        @endif
+                    </tr>
+
+                    @php
+                        $kredit += $angs->jumlah;
+                    @endphp
+                @endforeach
 
                 @php
                     $debit += $jumlah_angs;
