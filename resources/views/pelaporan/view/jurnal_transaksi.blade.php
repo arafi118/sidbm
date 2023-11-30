@@ -57,20 +57,9 @@
             @endphp
 
             @if ($trx->idtp != '0')
-                <tr style="background: {{ $bg }};">
-                    <td height="15" align="center">{{ $number }}.</td>
-                    <td align="center">{{ Tanggal::tglIndo($trx->tgl_transaksi) }}</td>
-                    <td align="left">{{ $trx->idtp }}.0</td>
-                    <td align="center">{{ $trx->rekening_debit }}</td>
-                    <td align="left">{{ $trx->rek_debit->nama_akun }}</td>
-                    <td align="right">{{ number_format($trx->angs_sum_jumlah, 2) }}</td>
-                    <td align="right">&nbsp;</td>
-                    @if ($trx->user)
-                        <td align="center">{{ $trx->user->ins }}</td>
-                    @else
-                        <td align="center">&nbsp;</td>
-                    @endif
-                </tr>
+                @php
+                    $jumlah_angs = 0;
+                @endphp
 
                 @foreach ($trx->angs as $angs)
                     <tr style="background: {{ $bg }};">
@@ -90,11 +79,27 @@
 
                     @php
                         $kredit += $angs->jumlah;
+                        $jumlah_angs += $angs->jumlah;
                     @endphp
                 @endforeach
 
+                <tr style="background: {{ $bg }};">
+                    <td height="15" align="center">{{ $number }}.</td>
+                    <td align="center">{{ Tanggal::tglIndo($trx->tgl_transaksi) }}</td>
+                    <td align="left">{{ $trx->idtp }}.0</td>
+                    <td align="center">{{ $trx->rekening_debit }}</td>
+                    <td align="left">{{ $trx->rek_debit->nama_akun }}</td>
+                    <td align="right">{{ number_format($jumlah_angs, 2) }}</td>
+                    <td align="right">&nbsp;</td>
+                    @if ($trx->user)
+                        <td align="center">{{ $trx->user->ins }}</td>
+                    @else
+                        <td align="center">&nbsp;</td>
+                    @endif
+                </tr>
+
                 @php
-                    $debit += $trx->angs_sum_jumlah;
+                    $debit += $jumlah_angs;
                 @endphp
             @else
                 <tr style="background: {{ $bg }};">
