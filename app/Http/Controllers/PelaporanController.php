@@ -584,7 +584,7 @@ class PelaporanController extends Controller
             $data['transaksi'] = Transaksi::whereBetween('tgl_transaksi', [
                 $thn . '-01-01',
                 $thn . '-12-31'
-            ])->withSum('angs', 'jumlah')->with('user', 'rek_debit', 'rek_kredit', 'angs')->withCount('angs')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
+            ])->withSum('angs', 'jumlah')->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->withCount('angs')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
         }
 
         $view = view('pelaporan.view.jurnal_transaksi', $data)->render();
