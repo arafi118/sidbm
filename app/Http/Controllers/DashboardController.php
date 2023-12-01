@@ -593,19 +593,19 @@ class DashboardController extends Controller
             $debit_lalu = 0;
             $kredit_lalu = 0;
 
-            if ($s->debit) {
+            if ($s->debit > 0) {
                 $debit = $s->debit;
             }
 
-            if ($s->kredit) {
+            if ($s->kredit > 0) {
                 $kredit = $s->kredit;
             }
 
-            if ($s->saldo->debit) {
+            if ($s->saldo->debit > 0) {
                 $debit_lalu = $s->debit;
             }
 
-            if ($s->saldo->kredit) {
+            if ($s->saldo->kredit > 0) {
                 $kredit_lalu = $s->kredit;
             }
 
