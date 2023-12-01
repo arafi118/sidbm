@@ -33,10 +33,6 @@ class DashboardController extends Controller
             $this->sync(Session::get('lokasi'));
         }
 
-        if (!Session::get('lokasi')) {
-            Session::put('lokasi', Session::get('lokasi'));
-        }
-
         $tgl_pakai = $kec->tgl_pakai;
         $tgl = date('Y-m-d');
         $jumlah = 1 + (date("Y", strtotime($tgl)) - date("Y", strtotime($tgl_pakai))) * 12;
@@ -502,7 +498,8 @@ class DashboardController extends Controller
 
     public function sync($lokasi)
     {
-        $tahun = request()->get('tahun') ?: date('Y');
+        $tahun = date('Y');
+        $bulan = date('m');
 
         if (Saldo::count() <= 0) {
             $saldo_desa = [];
@@ -570,38 +567,46 @@ class DashboardController extends Controller
             Saldo::insert($saldo_desa);
         }
 
-        $tahun = date('Y');
-        $bulan = date('m');
-
         $date = $tahun . '-' . $bulan . '-01';
-        $tgl_kondisi = date('Y-m-t', strtotime($date));
-        $rekening = Rekening::withSum([
-            'trx_debit' => function ($query) use ($tgl_kondisi, $tahun) {
-                $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
-            }
-        ], 'jumlah')->withSum([
-            'trx_kredit' => function ($query) use ($tgl_kondisi, $tahun) {
-                $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
-            }
-        ], 'jumlah')->orderBy('kode_akun', 'ASC')->get();
+        $bulan_lalu = date('Y-m-d', strtotime('-1 month', strtotime($date)));
 
-        $saldo = [];
-        foreach ($rekening as $rek) {
-            $id = str_replace('.', '', $rek->kode_akun) . $tahun . str_pad($bulan, 2, "0", STR_PAD_LEFT);
-            $saldo[] = [
-                'id' => $id,
-                'kode_akun' => $rek->kode_akun,
-                'tahun' => $tahun,
-                'bulan' => $bulan,
-                'debit' => $rek->trx_debit_sum_jumlah,
-                'kredit' => $rek->trx_kredit_sum_jumlah
-            ];
+        $saldo = Saldo::where([
+            ['tahun', $tahun],
+            ['bulan', $bulan]
+        ])->with([
+            'saldo' => function ($query) use ($bulan_lalu) {
+                $tahun = date('Y', strtotime($bulan_lalu));
+                $bulan = date('m', strtotime($bulan_lalu));
 
-            $data_id[] = $id;
+                $query->where([
+                    ['tahun', $tahun],
+                    ['bulan', $bulan]
+                ]);
+            }
+        ])->orderBy('kode_akun', 'ASC')->get();
+
+        $data_id = [];
+        $insert = [];
+        foreach ($saldo as $s) {
+            if ($s->debit < $s->saldo->debit || $s->kredit < $s->saldo->kredit) {
+                $id = str_replace('.', '', $s->kode_akun) . $tahun . str_pad($bulan, 2, "0", STR_PAD_LEFT);
+                $insert[] = [
+                    'id' => $id,
+                    'kode_akun' => $s->kode_akun,
+                    'tahun' => $tahun,
+                    'bulan' => $bulan,
+                    'debit' => $s->saldo->debit,
+                    'kredit' => $s->saldo->kredit
+                ];
+
+                $data_id[] = $id;
+            }
         }
 
-        Saldo::whereIn('id', $data_id)->delete();
-        $query = Saldo::insert($saldo);
+        if (count($insert) > 0) {
+            Saldo::whereIn('id', $data_id)->delete();
+            $query = Saldo::insert($insert);
+        }
     }
 
     private function _saldo($tgl)
