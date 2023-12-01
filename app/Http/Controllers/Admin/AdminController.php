@@ -15,8 +15,11 @@ class AdminController extends Controller
 
     public function kecamatan($kd_prov, $kd_kab, $kd_kec)
     {
-        $title = 'Kecamatan';
-        return view('admin.kecamatan.index')->with(compact('title'));
+        $kec = Kecamatan::where('kd_kec', $kd_kec)->first();
+        $laporan = JenisLaporan::where('file', '!=', '0')->orderBy('urut', 'ASC')->get();
+
+        $title = 'Pelaporan ' . $kec->sebutan_kec . ' ' . $kec->nama_kec;
+        return view('pelaporan.index')->with(compact('title', 'kec', 'laporan'));
     }
 
     public function laporan()

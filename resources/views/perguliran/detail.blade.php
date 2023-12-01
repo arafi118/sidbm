@@ -51,7 +51,12 @@
 
     <div class="card mt-3">
         <div class="card-body p-2">
-            <a href="/perguliran" class="btn btn-info float-end btn-sm mb-0">Kembali</a>
+            @if ($perguliran->status == 'L')
+                <a href="/database/kelompok/{{ $perguliran->kelompok->kd_kelompok }}"
+                    class="btn btn-info float-end btn-sm mb-0">Kembali</a>
+            @else
+                <a href="/perguliran" class="btn btn-info float-end btn-sm mb-0">Kembali</a>
+            @endif
         </div>
     </div>
 
