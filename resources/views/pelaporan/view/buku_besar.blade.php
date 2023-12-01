@@ -106,7 +106,11 @@
                 <td align="right">{{ number_format($debit, 2) }}</td>
                 <td align="right">{{ number_format($kredit, 2) }}</td>
                 <td align="right">{{ number_format($total_saldo, 2) }}</td>
-                <td align="center">{{ $trx->user->ins }}</td>
+                @if ($trx->user)
+                    <td align="center">{{ $trx->user->ins }}</td>
+                @else
+                    <td align="center">&nbsp;</td>
+                @endif
             </tr>
         @endforeach
 
