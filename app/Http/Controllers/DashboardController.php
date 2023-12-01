@@ -24,6 +24,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        if (!Session::get('lokasi_user')) {
+            Session::put('lokasi_user', Session::get('lokasi'));
+        }
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         if (Session::get('pesan')) {
             // $this->piutang();
