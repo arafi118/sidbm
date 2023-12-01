@@ -14,6 +14,10 @@ class AuthController extends Controller
 {
     public function index()
     {
+        if (request()->getHost() == 'master.sidbm.net') {
+            return redirect('/master');
+        }
+
         $kec = Kecamatan::where('web_kec', explode('//', request()->url(''))[1])->orwhere('web_alternatif', explode('//', request()->url(''))[1])->first();
         return view('auth.login')->with(compact('kec'));
     }
@@ -31,7 +35,6 @@ class AuthController extends Controller
 
         $kec = Kecamatan::where('web_kec', $url)->orwhere('web_alternatif', $url)->first();
         $lokasi = $kec->id;
-
 
         $user = User::where([['uname', $username], ['lokasi', $lokasi]])->first();
         if ($user) {
