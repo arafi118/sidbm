@@ -733,7 +733,7 @@ class PelaporanController extends Controller
                         ]);
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')
-                    ->orderBy($tb_pinkel . '.id', 'ASC');
+                    ->orderBy($tb_pinkel . '.tgl_cair', 'ASC');
             },
             'pinjaman_kelompok.saldo' => function ($query) use ($data) {
                 $query->where('tgl_transaksi', '<=', $data['tgl_kondisi']);
@@ -810,7 +810,8 @@ class PelaporanController extends Controller
                         ]);
                     })
                     ->orderBy($tb_angg . '.desa', 'ASC')
-                    ->orderBy($tb_pinj . '.id_kel', 'ASC');
+                    ->orderBy($tb_pinj . '.id_kel', 'ASC')
+                    ->orderBy($tb_pinj . '.tgl_cair', 'ASC');
             }
         ])->get();
 
@@ -891,7 +892,7 @@ class PelaporanController extends Controller
                         ]);
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')
-                    ->orderBy($tb_pinkel . '.id', 'ASC');
+                    ->orderBy($tb_pinkel . '.tgl_cair', 'ASC');
             },
             'pinjaman_kelompok.saldo' => function ($query) use ($data) {
                 $query->where('tgl_transaksi', '<=', $data['tgl_kondisi']);
@@ -976,7 +977,7 @@ class PelaporanController extends Controller
                         ]);
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')
-                    ->orderBy($tb_pinkel . '.id', 'ASC');
+                    ->orderBy($tb_pinkel . '.tgl_cair', 'ASC');
             },
             'pinjaman_kelompok.saldo' => function ($query) use ($data) {
                 $query->where('tgl_transaksi', '<=', $data['tgl_kondisi']);
@@ -1061,7 +1062,7 @@ class PelaporanController extends Controller
                         ]);
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')
-                    ->orderBy($tb_pinkel . '.id', 'ASC');
+                    ->orderBy($tb_pinkel . '.tgl_cair', 'ASC');
             },
             'pinjaman_kelompok.saldo' => function ($query) use ($data) {
                 $query->where('tgl_transaksi', '<=', $data['tgl_kondisi']);
@@ -1146,7 +1147,7 @@ class PelaporanController extends Controller
                         ]);
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')
-                    ->orderBy($tb_pinkel . '.id', 'ASC');
+                    ->orderBy($tb_pinkel . '.tgl_cair', 'ASC');
             },
             'pinjaman_kelompok.saldo' => function ($query) use ($data) {
                 $query->where('tgl_transaksi', '<=', $data['tgl_kondisi']);
@@ -1231,7 +1232,7 @@ class PelaporanController extends Controller
                         ]);
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')
-                    ->orderBy($tb_pinkel . '.id', 'ASC');
+                    ->orderBy($tb_pinkel . '.tgl_cair', 'ASC');
             },
             'pinjaman_kelompok.saldo' => function ($query) use ($data) {
                 $query->where('tgl_transaksi', '<=', $data['tgl_kondisi']);
