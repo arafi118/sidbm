@@ -588,7 +588,28 @@ class DashboardController extends Controller
         $data_id = [];
         $insert = [];
         foreach ($saldo as $s) {
-            if ($s->debit < $s->saldo->debit || $s->kredit < $s->saldo->kredit) {
+            $debit = 0;
+            $kredit = 0;
+            $debit_lalu = 0;
+            $kredit_lalu = 0;
+
+            if ($s->debit) {
+                $debit = $s->debit;
+            }
+
+            if ($s->kredit) {
+                $kredit = $s->kredit;
+            }
+
+            if ($s->saldo->debit) {
+                $debit_lalu = $s->debit;
+            }
+
+            if ($s->saldo->kredit) {
+                $kredit_lalu = $s->kredit;
+            }
+
+            if ($debit < $debit_lalu || $kredit < $kredit_lalu) {
                 $id = str_replace('.', '', $s->kode_akun) . $tahun . str_pad($bulan, 2, "0", STR_PAD_LEFT);
                 $insert[] = [
                     'id' => $id,
