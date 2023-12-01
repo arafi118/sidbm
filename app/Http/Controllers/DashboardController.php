@@ -616,8 +616,8 @@ class DashboardController extends Controller
                     'kode_akun' => $s->kode_akun,
                     'tahun' => $tahun,
                     'bulan' => $bulan,
-                    'debit' => $s->saldo->debit,
-                    'kredit' => $s->saldo->kredit
+                    'debit' => $debit_lalu,
+                    'kredit' => $kredit_lalu
                 ];
 
                 $data_id[] = $id;
