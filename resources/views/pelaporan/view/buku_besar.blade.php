@@ -53,9 +53,9 @@
             <td align="center">{{ Tanggal::tglIndo($tahun . '-01-01') }}</td>
             <td align="center"></td>
             <td>Komulatif Transaksi Awal Tahun {{ $tahun }}</td>
-            <td align="right">{{ number_format($saldo['debit']) }}</td>
-            <td align="right">{{ number_format($saldo['kredit']) }}</td>
-            <td align="right">{{ number_format($saldo_awal_tahun) }}</td>
+            <td align="right">{{ number_format($saldo['debit'], 2) }}</td>
+            <td align="right">{{ number_format($saldo['kredit'], 2) }}</td>
+            <td align="right">{{ number_format($saldo_awal_tahun, 2) }}</td>
             <td align="center"></td>
         </tr>
         <tr style="background: rgb(255, 255, 255);">
@@ -63,9 +63,9 @@
             <td align="center">{{ Tanggal::tglIndo($tahun . '-' . $bulan . '-01') }}</td>
             <td align="center"></td>
             <td>Komulatif Transaksi s/d Bulan Lalu</td>
-            <td align="right">{{ number_format($d_bulan_lalu) }}</td>
-            <td align="right">{{ number_format($k_bulan_lalu) }}</td>
-            <td align="right">{{ number_format($total_saldo) }}</td>
+            <td align="right">{{ number_format($d_bulan_lalu, 2) }}</td>
+            <td align="right">{{ number_format($k_bulan_lalu, 2) }}</td>
+            <td align="right">{{ number_format($total_saldo, 2) }}</td>
             <td align="center"></td>
         </tr>
 
@@ -103,9 +103,9 @@
                 <td align="center">{{ Tanggal::tglIndo($trx->tgl_transaksi) }}</td>
                 <td align="center">{{ $ref . '-' . $trx->idt }}</td>
                 <td>{{ $trx->keterangan_transaksi }}</td>
-                <td align="right">{{ number_format($debit) }}</td>
-                <td align="right">{{ number_format($kredit) }}</td>
-                <td align="right">{{ number_format($total_saldo) }}</td>
+                <td align="right">{{ number_format($debit, 2) }}</td>
+                <td align="right">{{ number_format($kredit, 2) }}</td>
+                <td align="right">{{ number_format($total_saldo, 2) }}</td>
                 <td align="center">{{ $trx->user->ins }}</td>
             </tr>
         @endforeach
@@ -119,13 +119,13 @@
                             <b>Total Transaksi {{ ucwords($sub_judul) }}</b>
                         </td>
                         <td align="right" width="13%">
-                            <b>{{ number_format($total_debit) }}</b>
+                            <b>{{ number_format($total_debit, 2) }}</b>
                         </td>
                         <td align="right" width="13%">
-                            <b>{{ number_format($total_kredit) }}</b>
+                            <b>{{ number_format($total_kredit, 2) }}</b>
                         </td>
                         <td align="center" rowspan="3" width="18%">
-                            <b>{{ number_format($total_saldo) }}</b>
+                            <b>{{ number_format($total_saldo, 2) }}</b>
                         </td>
                     </tr>
 
@@ -134,10 +134,10 @@
                             <b>Total Transaksi sampai dengan {{ ucwords($sub_judul) }}</b>
                         </td>
                         <td align="right">
-                            <b>{{ number_format($d_bulan_lalu + $total_debit) }}</b>
+                            <b>{{ number_format($d_bulan_lalu + $total_debit, 2) }}</b>
                         </td>
                         <td align="right">
-                            <b>{{ number_format($k_bulan_lalu + $total_kredit) }}</b>
+                            <b>{{ number_format($k_bulan_lalu + $total_kredit, 2) }}</b>
                         </td>
                     </tr>
 
@@ -146,10 +146,10 @@
                             <b>Total Transaksi Komulatif sampai dengan Tahun {{ $tahun }}</b>
                         </td>
                         <td align="right">
-                            <b>{{ number_format($saldo['debit'] + $d_bulan_lalu + $total_debit) }}</b>
+                            <b>{{ number_format($saldo['debit'] + $d_bulan_lalu + $total_debit, 2) }}</b>
                         </td>
                         <td align="right">
-                            <b>{{ number_format($saldo['kredit'] + $k_bulan_lalu + $total_kredit) }}</b>
+                            <b>{{ number_format($saldo['kredit'] + $k_bulan_lalu + $total_kredit, 2) }}</b>
                         </td>
                     </tr>
                 </table>
