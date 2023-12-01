@@ -25,4 +25,9 @@ class Saldo extends Model
     {
         return $this->belongsTo(Ebudgeting::class, ['kode_akun', 'tahun', 'bulan'], ['kode_akun', 'tahun', 'bulan']);
     }
+
+    public function awal()
+    {
+        return $this->belongsTo(Saldo::class, 'kode_akun', 'kode_akun');
+    }
 }

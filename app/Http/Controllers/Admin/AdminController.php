@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\JenisLaporan;
+use App\Models\Kecamatan;
 use App\Models\Wilayah;
 
 class AdminController extends Controller
@@ -19,7 +21,7 @@ class AdminController extends Controller
         $laporan = JenisLaporan::where('file', '!=', '0')->orderBy('urut', 'ASC')->get();
 
         $title = 'Pelaporan ' . $kec->sebutan_kec . ' ' . $kec->nama_kec;
-        return view('pelaporan.index')->with(compact('title', 'kec', 'laporan'));
+        return view('admin.kecamatan.index')->with(compact('title', 'kec', 'laporan'));
     }
 
     public function laporan()
