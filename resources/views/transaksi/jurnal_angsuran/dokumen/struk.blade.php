@@ -5,6 +5,8 @@
     $denda = 0;
     $idt = 0;
 
+    $angsur_bulan_depan = true;
+
     $target_pokok = 0;
     $target_jasa = 0;
     $angsuran_ke = 1;
@@ -18,6 +20,9 @@
         $angsuran_ke = $ra_bulan_ini->angsuran_ke;
     }
 
+    if ($ra->jatuh_tempo <= $real->tgl_transaksi) {
+        $angsur_bulan_depan = false;
+    }
     $tunggakan_pokok = $target_pokok - $real->sum_pokok;
     if ($tunggakan_pokok < 0) {
         $tunggakan_pokok = 0;
@@ -41,6 +46,11 @@
     }
 
     if ($angsuran_ke == $jum_angsuran) {
+        $pokok_bulan_depan = 0;
+        $jasa_bulan_depan = 0;
+    }
+
+    if (!$angsur_bulan_depan) {
         $pokok_bulan_depan = 0;
         $jasa_bulan_depan = 0;
     }
@@ -152,8 +162,8 @@
             <td>Nama Kelompok </td>
             <td colspan="3"><b>: {{ $pinkel->kelompok->nama_kelompok }}</b></td>
             <td>Target Pengembalian (x)</td>
-            <td align="right">{{ number_format($ra->target_pokok) }}</td>
-            <td align="right">{{ number_format($ra->target_jasa) }}</td>
+            <td align="right">{{ number_format($target_pokok) }}</td>
+            <td align="right">{{ number_format($target_jasa) }}</td>
         </tr>
         <tr>
             <td>Alamat</td>
