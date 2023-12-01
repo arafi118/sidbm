@@ -601,12 +601,14 @@ class DashboardController extends Controller
                 $kredit = $s->kredit;
             }
 
-            if ($s->saldo->debit > 0) {
-                $debit_lalu = $s->debit;
-            }
+            if ($s->saldo) {
+                if ($s->saldo->debit > 0) {
+                    $debit_lalu = $s->debit;
+                }
 
-            if ($s->saldo->kredit > 0) {
-                $kredit_lalu = $s->kredit;
+                if ($s->saldo->kredit > 0) {
+                    $kredit_lalu = $s->kredit;
+                }
             }
 
             if ($debit < $debit_lalu || $kredit < $kredit_lalu) {
