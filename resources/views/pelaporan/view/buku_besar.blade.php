@@ -74,12 +74,12 @@
                 $number = $loop->iteration;
                 if ($trx->rekening_debit == $rek->kode_akun) {
                     $ref = substr($trx->rekening_kredit, 0, 3);
-                    $debit = intval($trx->jumlah);
+                    $debit = $trx->jumlah;
                     $kredit = 0;
                 } else {
                     $ref = substr($trx->rekening_debit, 0, 3);
                     $debit = 0;
-                    $kredit = intval($trx->jumlah);
+                    $kredit = $trx->jumlah;
                 }
 
                 if ($rek->jenis_mutasi == 'debet') {
