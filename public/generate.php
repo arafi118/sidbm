@@ -1,12 +1,14 @@
 <?php
 ini_set('display_errors', '1');
-
 $koneksi = mysqli_connect('localhost', 'dbm_sidbm', 'dbm_sidbm', 'dbm_laravel');
 
 if (isset($_GET['lokasi']) && isset($_GET['where'])) {
     $lokasi = $_GET['lokasi'];
     $limit = $_GET['where'];
     $datetime = date('Y-m-d H:i:s');
+
+    // mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS rencana_angsuran_$lokasi LIKE rencana_angsuran_1");
+    // mysqli_query($koneksi, "CREATE TABLE IF NOT EXISTS real_angsuran_$lokasi LIKE real_angsuran_1");
 
     $total = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM pinjaman_kelompok_$lokasi WHERE (status='A' OR status='W' OR status='L' OR status='H' OR status='R') 
                         AND ($limit) ORDER BY id ASC"));
@@ -31,47 +33,27 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
     <?php
     function bulatkan($angka)
     {
+
         global $koneksi;
         $lokasi = $_GET['lokasi'];
         $kec = mysqli_fetch_array(mysqli_query($koneksi, "select * from kecamatan WHERE id='$lokasi'"));
         $pembulatan = $kec['pembulatan']; // 1000
-        $length        = strlen($pembulatan); //Jumlah karakter pada kolom pembulatan
-        $uang        = floor($angka);
-        $bulat         = substr($pembulatan, 1); //Angka pembulatnya : 50
-        if ($length <= 3) {
-            $pecahan         = substr($uang, -2); //Pecahan yang akan dibulatkan ex: 33
-            $pengali        = $bulat * 2;
+
+        $ratusan = substr($angka, -3);
+        $nilai_tengah = $pembulatan / 2;
+        if ($ratusan < $nilai_tengah) {
+            $akhir = $angka - $ratusan;
         } else {
-            $pecahan         = substr($uang, -3);
-            $pengali        = 1000;
+            $akhir = $angka + ($pembulatan - $ratusan);
         }
-        if ($pembulatan > 0) { //Pembulatan Keatas
-            if ($pecahan < $bulat and $pecahan > 0) { //.333
-                $pembulatan = $uang + ($bulat - $pecahan);
-            } else if ($pecahan > $bulat) {
-                $pembulatan = $uang + $pengali - $pecahan; //.666
-            } else if ($pecahan == 0 or $pecahan == $bulat) {
-                $pembulatan = $uang;
-            }
-        } else  if ($pembulatan < 0) { //Pembulatan Kebawah
-            if ($pecahan < $bulat and $pecahan > 0) { //.333
-                $pembulatan = $uang - $pecahan;
-            } else if ($pecahan > $bulat) {        //.666
-                $pembulatan = $uang + (($bulat * 2) - $pecahan);
-            } else if ($pecahan == 0 or $pecahan == $bulat) {
-                $pembulatan = $uang;
-            }
-        } else {
-            $pembulatan = $uang;
-        }
-        return $pembulatan;
+
+        return $akhir;
     }
     // Ambil Data Pinjaman Kelompok
     $pinjaman_kelompok = mysqli_query($koneksi, "SELECT * FROM pinjaman_kelompok_$lokasi WHERE (status='A' OR status='W' OR status='L' OR status='H' OR status='R') 
                         AND ($limit) ORDER BY id ASC LIMIT $start, $per_page");
 
     while ($pk = mysqli_fetch_array($pinjaman_kelompok)) {
-        $kel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelompok_$lokasi AS k JOIN desa AS d ON k.desa=d.kd_desa WHERE k.id=$pk[id_kel]"));
         $del_re = mysqli_query($koneksi, "DELETE FROM real_angsuran_$lokasi WHERE loan_id=$pk[id]");
         $del_ra = mysqli_query($koneksi, "DELETE FROM rencana_angsuran_$lokasi WHERE loan_id=$pk[id]");
 
@@ -79,11 +61,6 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
             $tgl_cair = $pk['tgl_tunggu'];
         } else {
             $tgl_cair = $pk['tgl_cair'];
-        }
-
-        if ($kel['jadwal_angsuran_desa'] > 0) {
-            $tgl_pinjaman = date('Y-m', strtotime($tgl_cair));
-            $tgl_cair = $tgl_pinjaman . '-' . $kel['jadwal_angsuran_desa'];
         }
         $tgllalu = $tgl_cair;
 
@@ -160,15 +137,27 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
             $sapokok = intval($sipokok['sistem']);
             $tempokok = @($jangka / $sapokok);
             $satuanwapok = bulatkan(@($alokasi / $tempokok));
+            $wapok = 0;
             if ($ke % $sapokok == 0) {
                 $wapok = $satuanwapok;
-            } else {
-                $wapok = 0;
             }
 
             if ($ke == $jangka) {
                 $sump = $wapok * ($ke / $sapokok - 1);
                 $wapok = $alokasi - $sump;
+            }
+
+            if ($pk['sistem_angsuran'] == 20) {
+                $satuanwapok = bulatkan(@($alokasi / ($jangka - 12)));
+                if ($ke > 12) {
+                    $wapok = $satuanwapok;
+                } else {
+                    $wapok = 0;
+                }
+                if ($ke == $jangka) {
+                    $sump = $wapok * ($ke / $sapokok - 13);
+                    $wapok = $alokasi - $sump;
+                }
             }
 
             $sajasa = $sijasa['sistem'];
@@ -245,11 +234,6 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
 
             $ra = mysqli_fetch_array(mysqli_query($koneksi, "select * from rencana_angsuran_$lokasi WHERE loan_id='$id_pinj' AND jatuh_tempo<='$tgl_transaksi' 
                                     ORDER BY jatuh_tempo DESC, id DESC LIMIT 1"));
-
-            if (!$ra) {
-                $ra['target_pokok'] = 0;
-                $ra['target_jasa'] = 0;
-            }
             $targetp = $ra['target_pokok'];
             $targetj = $ra['target_jasa'];
             $tunggakan_pokok = $targetp - $sum_pokok;
