@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\JenisLaporan;
 use App\Models\Kecamatan;
 use App\Models\Wilayah;
+use Session;
 
 class AdminController extends Controller
 {
@@ -20,6 +21,7 @@ class AdminController extends Controller
         $kec = Kecamatan::where('kd_kec', $kd_kec)->first();
         $laporan = JenisLaporan::where('file', '!=', '0')->orderBy('urut', 'ASC')->get();
 
+        Session::put('lokasi', $kec->id);
         $title = 'Pelaporan ' . $kec->sebutan_kec . ' ' . $kec->nama_kec;
         return view('admin.kecamatan.index')->with(compact('title', 'kec', 'laporan'));
     }

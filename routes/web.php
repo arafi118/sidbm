@@ -17,6 +17,7 @@ use App\Http\Controllers\SopController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use App\Models\Kecamatan;
+use App\Models\PinjamanKelompok;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -63,6 +64,17 @@ Route::group(['prefix' => 'master', 'as' => 'master.', 'middleware' => 'master']
 
 Route::get('/', [AuthController::class, 'index'])->middleware('guest')->name('/');
 Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
+
+Route::get('/pelaporan', [PelaporanController::class, 'index'])->middleware('basic');
+Route::get('/pelaporan/sub_laporan/{file}', [PelaporanController::class, 'subLaporan'])->middleware('basic');
+Route::post('/pelaporan/preview', [PelaporanController::class, 'preview'])->middleware('basic');
+
+Route::get('/pelaporan/mou', [PelaporanController::class, 'mou'])->middleware('auth');
+Route::get('/pelaporan/ts', [PelaporanController::class, 'ts'])->middleware('auth');
+
+if (Session::get('lokasi_user')) {
+    Session::put('lokasi', Session::get('lokasi_user'));
+}
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 Route::get('/piutang_jasa', [DashboardController::class, 'piutang'])->middleware('auth');
@@ -180,13 +192,6 @@ Route::post('/transaksi/simpan_anggaran', [TransaksiController::class, 'simpanAn
 
 Route::resource('/transaksi', TransaksiController::class)->middleware('auth');
 
-Route::get('/pelaporan', [PelaporanController::class, 'index'])->middleware('basic');
-Route::get('/pelaporan/sub_laporan/{file}', [PelaporanController::class, 'subLaporan'])->middleware('basic');
-Route::post('/pelaporan/preview', [PelaporanController::class, 'preview'])->middleware('basic');
-
-Route::get('/pelaporan/mou', [PelaporanController::class, 'mou'])->middleware('auth');
-Route::get('/pelaporan/ts', [PelaporanController::class, 'ts'])->middleware('auth');
-
 Route::resource('/profil', UserController::class);
 
 Route::get('/sync/{lokasi}', [DashboardController::class, 'sync'])->middleware('auth');
@@ -200,8 +205,10 @@ Route::get('/generate/{id}', function ($id) {
     $pinjaman = new PinjamanKelompokController;
     $transaksi = new TransaksiController;
 
-    $pinjaman->generate($id);
-    $transaksi->regenerateReal($id);
+    $pinkel = PinjamanKelompok::where('id', $id)->first();
+
+    $pinjaman->generate($pinkel);
+    $transaksi->regenerateReal($pinkel);
 
     return response()->json([
         'msg' => 'Generate Real dan Rencana Berhasil'
