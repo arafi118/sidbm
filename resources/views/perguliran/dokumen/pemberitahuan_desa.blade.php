@@ -60,7 +60,7 @@
         </tr>
         <tr>
             <td>&nbsp;</td>
-            <td colspan="3">
+            <td colspan="3" align="justify">
                 <div>Dengan hormat,</div>
                 <div>
                     Menindaklanjuti hasil keputusan rapat pendanaan {{ $kec->nama_lembaga_sort }}
@@ -122,40 +122,56 @@
                         </tr>
                     @endforeach
                 </table>
-
-                <p>
-                    Demikian surat pemberitahuan ini kami sampaikan, atas perhatian dan kerjasamanya kami ucapkan
-                    terimakasih.
-                </p>
-            </td>
-        </tr>
-    </table>
-
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
-        <tr>
-            <td width="33%" height="30">&nbsp;</td>
-            <td width="33%">&nbsp;</td>
-            <td width="33%">&nbsp;</td>
-        </tr>
-        <tr>
-            <td colspan="2">&nbsp;</td>
-            <td align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
-        </tr>
-        <tr>
-            <td colspan="2">&nbsp;</td>
-            <td align="center">
-                {{ $kec->sebutan_level_1 }} {{ $kec->nama_lembaga_sort }}
             </td>
         </tr>
         <tr>
-            <td colspan="3" height="40">&nbsp;</td>
-        </tr>
-        <tr>
-            <td colspan="2">&nbsp;</td>
-            <td align="center">
-                <u>
-                    <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
-                </u>
+            <td colspan="4">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;"
+                    class="padding">
+                    <tr>
+                        <td width="50">&nbsp;</td>
+                        <td style="padding: 0px;" align="justify">
+                            <p>
+                                Demikian surat pemberitahuan ini kami sampaikan, atas perhatian dan kerjasamanya kami
+                                ucapkan
+                                terimakasih.
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
+                                <tr>
+                                    <td width="33%" height="10">&nbsp;</td>
+                                    <td width="33%">&nbsp;</td>
+                                    <td width="33%">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                    <td align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                    <td align="center">
+                                        {{ $kec->sebutan_level_1 }} {{ $kec->nama_lembaga_sort }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" height="40">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                    <td align="center">
+                                        <u>
+                                            <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
+                                        </u>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
