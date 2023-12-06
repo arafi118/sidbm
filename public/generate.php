@@ -282,10 +282,6 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
             $data_idtp[] = $tr['idtp'];
         }
         echo "<br>";
-        // echo "INSERT INTO `real_angsuran_$lokasi` (`id`, `loan_id`, `tgl_transaksi`, `realisasi_pokok`, `realisasi_jasa`, 
-        //                 `sum_pokok`, `sum_jasa`, `saldo_pokok`, `saldo_jasa`, `tunggakan_pokok`, `tunggakan_jasa`, `lu`, `id_user`) VALUES ('$tr[idtp]','$pk[id]',
-        //                 '$tgl_transaksi','$realisasi_pokok','$realisasi_jasa','$sum_pokok','$sum_jasa','$saldo_pokok','$saldo_jasa','$tunggakan_pokok','$tunggakan_jasa',
-        //                 '$datetime','1')<br>";
     }
 
     if (mysqli_num_rows($pinjaman_kelompok) > 0) {
