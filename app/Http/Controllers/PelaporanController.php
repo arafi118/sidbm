@@ -164,13 +164,13 @@ class PelaporanController extends Controller
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
         if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['judul'] = 'Laporan Harian';
+            $data['judul'] = 'Laporan Keuangan';
             $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
         } elseif (strlen($bln) > 0) {
-            $data['judul'] = 'Laporan Bulanan';
+            $data['judul'] = 'Laporan Keuangan';
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
         } else {
-            $data['judul'] = 'Laporan Tahunan';
+            $data['judul'] = 'Laporan Keuangan';
             $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
         }
 

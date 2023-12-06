@@ -79,33 +79,23 @@ class TransaksiController extends Controller
 
     public function saldoTutupBuku(Request $request)
     {
+        $keuangan = new Keuangan;
         $tahun = $request->tahun;
         $bulan = date('m');
         if ($tahun < date('Y')) {
             $bulan = 12;
         }
 
-        $rekening1 = Rekening::where('lev1', '1')->with([
-            'saldo' => function ($query) use ($tahun, $bulan) {
-                $query->where([
-                    ['tahun', $tahun],
-                    ['bulan', $bulan]
-                ])->orderBy('kode_akun', 'ASC')->orderBy('bulan', 'ASC');
-            }
+        $akun1 = AkunLevel1::where('lev1', '<=', '3')->with([
+            'akun2',
+            'akun2.akun3',
+            'akun2.akun3.rek',
         ])->get();
 
-        $rekening2 = Rekening::where('lev1', '2')->orwhere('lev1', '3')->with([
-            'saldo' => function ($query) use ($tahun, $bulan) {
-                $query->where([
-                    ['tahun', $tahun],
-                    ['bulan', $bulan]
-                ])->orderBy('kode_akun', 'ASC')->orderBy('bulan', 'ASC');
-            }
-        ])->get();
-
+        $tgl_kondisi = $tahun . '-' . $bulan . '-' . date('t', strtotime($tahun . '-' . $bulan . '-01'));
         return response()->json([
             'success' => true,
-            'view' => view('transaksi.tutup_buku.partials.saldo')->with(compact('rekening1', 'rekening2'))->render()
+            'view' => view('transaksi.tutup_buku.partials.saldo')->with(compact('akun1', 'keuangan', 'tgl_kondisi'))->render()
         ]);
     }
 
