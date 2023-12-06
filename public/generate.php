@@ -278,7 +278,6 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
                 var_dump($sqlinput2);
             }
 
-            // Masukkan idtp kedalam array untuk pengecekan
             $data_idtp[] = $tr['idtp'];
         }
         echo "<br>";
