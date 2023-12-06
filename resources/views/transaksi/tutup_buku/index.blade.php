@@ -3,22 +3,26 @@
 @section('content')
     <div class="card mb-3">
         <div class="card-body">
-            <div class="col-12">
-                <div class="my-2">
-                    <label class="form-label" for="tahun">Tahun</label>
-                    <select class="form-control" name="tahun" id="tahun">
-                        @php
-                            $tgl_pakai = $kec->tgl_pakai;
-                            $th_pakai = explode('-', $tgl_pakai)[0];
-                        @endphp
-                        @for ($i = $th_pakai; $i <= date('Y'); $i++)
-                            <option value="{{ $i }}" {{ date('Y') == $i ? 'selected' : '' }}>
-                                {{ $i }}</option>
-                        @endfor
-                    </select>
-                    <small class="text-danger" id="msg_tahun"></small>
+            <form action="/transaksi/tutup_buku/saldo" method="post" id="FormTahunTutupBuku">
+                @csrf
+
+                <div class="col-12">
+                    <div class="my-2">
+                        <label class="form-label" for="tahun">Tahun</label>
+                        <select class="form-control" name="tahun" id="tahun">
+                            @php
+                                $tgl_pakai = $kec->tgl_pakai;
+                                $th_pakai = explode('-', $tgl_pakai)[0];
+                            @endphp
+                            @for ($i = $th_pakai; $i <= date('Y'); $i++)
+                                <option value="{{ $i }}" {{ date('Y') == $i ? 'selected' : '' }}>
+                                    {{ $i }}</option>
+                            @endfor
+                        </select>
+                        <small class="text-danger" id="msg_tahun"></small>
+                    </div>
                 </div>
-            </div>
+            </form>
 
             <div class="d-flex justify-content-end">
                 <button type="button" id="SimpanSaldo" class="btn btn-sm btn-info mb-0">Simpan Saldo</button>
@@ -29,7 +33,7 @@
     </div>
 
     <div class="card">
-        <div class="card-body p-2" id="LayoutPreview">
+        <div class="card-body p-3" id="LayoutPreview">
             <div class="p-5"></div>
         </div>
     </div>
@@ -71,6 +75,23 @@
             if (event.data === 'closed') {
                 window.location.reload()
             }
+        })
+
+        $(document).on('click', '#TutupBuku', function(e) {
+            e.preventDefault()
+            $('#LayoutPreview').html('<div class="p-5"></div>')
+
+            var form = $('#FormTahunTutupBuku')
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function(result) {
+                    if (result.success) {
+                        $('#LayoutPreview').html(result.view)
+                    }
+                }
+            })
         })
     </script>
 @endsection

@@ -234,10 +234,22 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
 
             $ra = mysqli_fetch_array(mysqli_query($koneksi, "select * from rencana_angsuran_$lokasi WHERE loan_id='$id_pinj' AND jatuh_tempo<='$tgl_transaksi' 
                                     ORDER BY jatuh_tempo DESC, id DESC LIMIT 1"));
-            $targetp = $ra['target_pokok'];
-            $targetj = $ra['target_jasa'];
+            $targetp = 0;
+            $targetj = 0;
+            if ($ra) {
+                $targetp = $ra['target_pokok'];
+                $targetj = $ra['target_jasa'];
+            }
             $tunggakan_pokok = $targetp - $sum_pokok;
             $tunggakan_jasa = $targetj - $sum_jasa;
+
+            if ($tunggakan_pokok < 0) {
+                $tunggakan_pokok = 0;
+            }
+
+            if ($tunggakan_jasa < 0) {
+                $tunggakan_jasa = 0;
+            }
 
             $realisasi = mysqli_query($koneksi, "SELECT * FROM real_angsuran_$lokasi WHERE loan_id='$pk[id]' AND id='$tr[idtp]'");
 

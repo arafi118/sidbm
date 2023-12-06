@@ -12,6 +12,7 @@ use App\Models\PinjamanKelompok;
 use App\Models\RealAngsuran;
 use App\Models\Rekening;
 use App\Models\RencanaAngsuran;
+use App\Models\Saldo;
 use App\Models\Transaksi;
 use App\Models\User;
 use App\Utils\Inventaris as UtilsInventaris;
@@ -59,6 +60,14 @@ class TransaksiController extends Controller
         return view('transaksi.jurnal_angsuran.index')->with(compact('title', 'pinkel', 'kec'));
     }
 
+    public function ebudgeting()
+    {
+        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
+
+        $title = 'E - Budgeting';
+        return view('transaksi.ebudgeting.index')->with(compact('title', 'kec'));
+    }
+
     public function jurnalTutupBuku()
     {
 
@@ -68,12 +77,36 @@ class TransaksiController extends Controller
         return view('transaksi.tutup_buku.index')->with(compact('title', 'kec'));
     }
 
-    public function ebudgeting()
+    public function saldoTutupBuku(Request $request)
     {
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
+        $tahun = $request->tahun;
+        $bulan = date('m');
+        if ($tahun < date('Y')) {
+            $bulan = 12;
+        }
 
-        $title = 'E - Budgeting';
-        return view('transaksi.ebudgeting.index')->with(compact('title', 'kec'));
+        $rekening1 = Rekening::where('lev1', '1')->with([
+            'saldo' => function ($query) use ($tahun, $bulan) {
+                $query->where([
+                    ['tahun', $tahun],
+                    ['bulan', $bulan]
+                ])->orderBy('kode_akun', 'ASC')->orderBy('bulan', 'ASC');
+            }
+        ])->get();
+
+        $rekening2 = Rekening::where('lev1', '2')->orwhere('lev1', '3')->with([
+            'saldo' => function ($query) use ($tahun, $bulan) {
+                $query->where([
+                    ['tahun', $tahun],
+                    ['bulan', $bulan]
+                ])->orderBy('kode_akun', 'ASC')->orderBy('bulan', 'ASC');
+            }
+        ])->get();
+
+        return response()->json([
+            'success' => true,
+            'view' => view('transaksi.tutup_buku.partials.saldo')->with(compact('rekening1', 'rekening2'))->render()
+        ]);
     }
 
     public function formAnggaran(Request $request)
