@@ -172,7 +172,7 @@
                                 data-bs-placement="top" title="Reversal" data-container="body" data-animation="true">
                                 <span class="btn-inner--icon"><i class="fas fa-code-pull-request"></i></span>
                             </button>
-                            @if (!$is_sek)
+                            @if (!$is_ben)
                                 <button type="button" data-idt="{{ $trx->idt }}"
                                     class="btn btn-github btn-icon-only btn-tooltip btn-delete" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Hapus" data-container="body" data-animation="true">
