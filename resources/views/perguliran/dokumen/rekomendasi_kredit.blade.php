@@ -205,6 +205,9 @@
                     <u>
                         <b>{{ $pinkel->kelompok->d->kades }}</b>
                     </u>
+                    @if ($pinkel->kelompok->d->nip)
+                        <div><small>NIP. {{ $pinkel->kelompok->d->nip }}</small></div>
+                    @endif
                 </td>
             </tr>
         </table>

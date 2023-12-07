@@ -117,6 +117,11 @@ class TransaksiController extends Controller
         ]);
     }
 
+    public function simpanTutupBuku(Request $request)
+    {
+        dd($request);
+    }
+
     public function formAnggaran(Request $request)
     {
         $data = $request->only(['tahun', 'bulan']);

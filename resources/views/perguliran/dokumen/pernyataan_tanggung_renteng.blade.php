@@ -108,9 +108,15 @@
         <tr>
             <td align="center">
                 <b>{{ $pinkel->kelompok->d->kades }}</b>
+                @if ($pinkel->kelompok->d->nip)
+                    <div><small>NIP. {{ $pinkel->kelompok->d->nip }}</small></div>
+                @endif
             </td>
             <td align="center">
                 <b>{{ $pinkel->kelompok->ketua }}</b>
+                @if ($pinkel->kelompok->d->nip)
+                    <div>&nbsp;</div>
+                @endif
             </td>
         </tr>
     </table>

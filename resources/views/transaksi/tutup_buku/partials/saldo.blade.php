@@ -1,9 +1,11 @@
 @php
+    $aset = 0;
     $liabilitas = 0;
+    $laba_rugi = 0;
 @endphp
 @foreach ($akun1 as $lev1)
     @php
-        $aset = 0;
+        $total_saldo = 0;
     @endphp
     <div class="card mb-3">
         <div class="card-body p-3 pb-0">
@@ -46,6 +48,7 @@
                                         }
 
                                         $_saldo = $pendapatan - $biaya;
+                                        $laba_rugi = $pendapatan - $biaya;
                                     }
 
                                     $saldo_akun += $_saldo;
@@ -61,9 +64,11 @@
                             </tr>
 
                             @php
-                                $aset += $saldo_akun;
+                                $total_saldo += $saldo_akun;
                                 if ($lev1->lev1 > '1') {
                                     $liabilitas += $saldo_akun;
+                                } else {
+                                    $aset += $saldo_akun;
                                 }
                             @endphp
                         @endforeach
@@ -72,7 +77,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="2">Jumlah {{ $lev1->nama_akun }}</th>
-                        <th class="text-end">{{ number_format($aset, 2) }}</th>
+                        <th class="text-end">{{ number_format($total_saldo, 2) }}</th>
                     </tr>
                     @if ($lev1->lev1 == '3')
                         <tr>
@@ -85,3 +90,19 @@
         </div>
     </div>
 @endforeach
+
+<form action="/transaksi/tutup_buku" method="post" id="FormSimpanTutupBuku">
+    @csrf
+
+    <input type="hidden" name="aset" id="aset" value="{{ $aset }}">
+    <input type="hidden" name="liabilitas" id="liabilitas" value="{{ $liabilitas }}">
+    <input type="hidden" name="surplus" id="surplus" value="{{ $laba_rugi }}">
+
+    <div class="card">
+        <div class="card-body p-2">
+            <button type="submit" id="SimpanTutupBuku" class="btn btn-info float-end btn-sm mb-0">
+                Lanjutkan Tutup Buku
+            </button>
+        </div>
+    </div>
+</form>
