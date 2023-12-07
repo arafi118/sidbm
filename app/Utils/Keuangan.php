@@ -8,12 +8,13 @@ use App\Models\Rekening;
 use App\Models\Transaksi;
 use DB;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Session;
 
 class Keuangan
 {
     public static function bulatkan($angka)
     {
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $pembulatan    = number_format($kec->pembulatan, 0, '', '');
         $length        = strlen($pembulatan);
         $uang        = floor($angka);
@@ -103,13 +104,13 @@ class Keuangan
             DB::raw("SUM(tb$thn_lalu) as debit"),
             DB::raw("SUM(tbk$thn_lalu) as kredit"),
             DB::raw('(SELECT sum(jumlah) as dbt FROM 
-            transaksi_' . auth()->user()->lokasi . ' as td WHERE 
-            td.rekening_debit=rekening_' . auth()->user()->lokasi . '.kode_akun AND 
+            transaksi_' . Session::get('lokasi') . ' as td WHERE 
+            td.rekening_debit=rekening_' . Session::get('lokasi') . '.kode_akun AND 
             td.tgl_transaksi BETWEEN "' . $awal_tahun . '" AND "' . $tgl_kondisi . '"
             ) as saldo_debit'),
             DB::raw('(SELECT sum(jumlah) as dbt FROM 
-            transaksi_' . auth()->user()->lokasi . ' as td WHERE 
-            td.rekening_kredit=rekening_' . auth()->user()->lokasi . '.kode_akun AND 
+            transaksi_' . Session::get('lokasi') . ' as td WHERE 
+            td.rekening_kredit=rekening_' . Session::get('lokasi') . '.kode_akun AND 
             td.tgl_transaksi BETWEEN "' . $awal_tahun . '" AND "' . $tgl_kondisi . '"
             ) as saldo_kredit'),
             'kode_akun'
@@ -212,7 +213,7 @@ class Keuangan
         $data['tahun'] = $tgl[0];
         $data['bulan'] = $tgl[1];
         $data['tanggal'] = $tgl[2];
-        $data['lokasi'] = auth()->user()->lokasi;
+        $data['lokasi'] = Session::get('lokasi');
         $data['tgl_kondisi'] = $tgl_kondisi;
 
         $sum_nunggak_pokok = 0;

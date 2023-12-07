@@ -32,9 +32,11 @@
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-body p-3" id="LayoutPreview">
-            <div class="p-5"></div>
+    <div id="LayoutPreview">
+        <div class="card">
+            <div class="card-body p-3">
+                <div class="p-5"></div>
+            </div>
         </div>
     </div>
 @endsection
@@ -79,7 +81,8 @@
 
         $(document).on('click', '#TutupBuku', function(e) {
             e.preventDefault()
-            $('#LayoutPreview').html('<div class="p-5"></div>')
+            $('#LayoutPreview').html(
+                '<div class="card"><div class="card-body p-3"><div class="p-5"></div></div></div>')
 
             var form = $('#FormTahunTutupBuku')
             $.ajax({

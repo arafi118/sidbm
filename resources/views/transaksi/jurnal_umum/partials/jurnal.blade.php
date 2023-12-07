@@ -172,11 +172,13 @@
                                 data-bs-placement="top" title="Reversal" data-container="body" data-animation="true">
                                 <span class="btn-inner--icon"><i class="fas fa-code-pull-request"></i></span>
                             </button>
-                            <button type="button" data-idt="{{ $trx->idt }}"
-                                class="btn btn-github btn-icon-only btn-tooltip btn-delete" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Hapus" data-container="body" data-animation="true">
-                                <span class="btn-inner--icon"><i class="fas fa-trash-can"></i></span>
-                            </button>
+                            @if (!$is_sek)
+                                <button type="button" data-idt="{{ $trx->idt }}"
+                                    class="btn btn-github btn-icon-only btn-tooltip btn-delete" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Hapus" data-container="body" data-animation="true">
+                                    <span class="btn-inner--icon"><i class="fas fa-trash-can"></i></span>
+                                </button>
+                            @endif
                         @endif
                     </div>
                 </td>

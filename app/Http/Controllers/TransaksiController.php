@@ -81,6 +81,7 @@ class TransaksiController extends Controller
     {
         $keuangan = new Keuangan;
         $tahun = $request->tahun;
+        $tahun_lalu = $tahun - 1;
         $bulan = date('m');
         if ($tahun < date('Y')) {
             $bulan = 12;
@@ -90,12 +91,29 @@ class TransaksiController extends Controller
             'akun2',
             'akun2.akun3',
             'akun2.akun3.rek',
-        ])->get();
+            'akun2.akun3.rek.saldo' => function ($query) use ($tahun, $bulan) {
+                $query->where([
+                    ['tahun', $tahun],
+                    ['bulan', $bulan]
+                ]);
+            },
+        ])->orderBy('kode_akun', 'ASC')->get();
+
+        $surplus = Rekening::where([
+            ['lev1', '>=', '4']
+        ])->with([
+            'saldo' => function ($query) use ($tahun, $bulan) {
+                $query->where([
+                    ['tahun', $tahun],
+                    ['bulan', $bulan]
+                ]);
+            }
+        ])->orderBy('kode_akun', 'ASC')->get();
 
         $tgl_kondisi = $tahun . '-' . $bulan . '-' . date('t', strtotime($tahun . '-' . $bulan . '-01'));
         return response()->json([
             'success' => true,
-            'view' => view('transaksi.tutup_buku.partials.saldo')->with(compact('akun1', 'keuangan', 'tgl_kondisi'))->render()
+            'view' => view('transaksi.tutup_buku.partials.saldo')->with(compact('akun1', 'surplus', 'tgl_kondisi', 'tahun_lalu'))->render()
         ]);
     }
 
@@ -1096,6 +1114,7 @@ class TransaksiController extends Controller
         }
 
         $data['is_dir'] = (auth()->guard('web')->user()->level == 1 && (auth()->guard('web')->user()->jabatan == 1 || auth()->guard('web')->user()->jabatan == 3)) ? true : false;
+        $data['is_sek'] = (auth()->guard('web')->user()->level == 1 && (auth()->guard('web')->user()->jabatan == 3)) ? true : false;
 
         $data['rek'] = Rekening::where('kode_akun', $data['kode_akun'])->first();
         $data['transaksi'] = Transaksi::where('tgl_transaksi', 'LIKE', '%' . $tgl . '%')->where(function ($query) use ($data) {
