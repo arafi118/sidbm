@@ -1352,14 +1352,7 @@ class PinjamanKelompokController extends Controller
 
     public function rencanaAngsuran($id, $data)
     {
-        if (request()->get('status') == 'A') {
-            $data['rencana'] = RencanaAngsuran::where([
-                ['loan_id', $id],
-                ['angsuran_ke', '!=', '0']
-            ])->orderBy('jatuh_tempo', 'ASC')->get();
-        } else {
-            $data['rencana'] = $this->generate($id)->getData()->rencana;
-        }
+        $data['rencxana'] = $this->generate($id)->getData()->rencana;
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'jpp',
             'kelompok',
@@ -1791,9 +1784,6 @@ class PinjamanKelompokController extends Controller
             $tgl = $pinkel->tgl_cair;
         } else {
             $alokasi = $pinkel->alokasi;
-            if ($pinkel->saldo_pinjaman) {
-                $alokasi = $pinkel->saldo_pinjaman->saldo_pinjaman;
-            }
             $tgl = $pinkel->tgl_cair;
         }
 
@@ -1810,9 +1800,6 @@ class PinjamanKelompokController extends Controller
                 $tgl = $pinkel->tgl_tunggu;
             } else {
                 $alokasi = $pinkel->alokasi;
-                if ($pinkel->saldo_pinjaman) {
-                    $alokasi = $pinkel->saldo_pinjaman->saldo_pinjaman;
-                }
                 $tgl = $pinkel->tgl_cair;
             }
         }
