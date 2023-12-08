@@ -244,7 +244,7 @@
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="CetakDokumenPencairanLabel">Cetak Dokumen Proposal</h1>
+                    <h1 class="modal-title fs-5" id="CetakDokumenPencairanLabel">Cetak Dokumen Pencairan</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -358,13 +358,13 @@
                             <div class="col-md-4 d-grid">
                                 <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
                                     value="tanggungRentengKematian">
-                                    12. Tanggung Renteng Kematian
+                                    12. Pernyataan Tanggung Renteng
                                 </button>
                             </div>
                             <div class="col-md-4 d-grid">
                                 <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
                                     value="pernyataanTanggungRenteng">
-                                    13. Pernyataan Tanggung Renteng
+                                    13. Tanggung Renteng Kematian
                                 </button>
                             </div>
                             <div class="col-md-4 d-grid">
