@@ -1352,7 +1352,7 @@ class PinjamanKelompokController extends Controller
 
     public function rencanaAngsuran($id, $data)
     {
-        $data['rencxana'] = $this->generate($id)->getData()->rencana;
+        $data['rencana'] = $this->generate($id)->getData()->rencana;
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'jpp',
             'kelompok',
