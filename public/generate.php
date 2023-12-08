@@ -33,6 +33,7 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
     <?php
     function bulatkan($angka)
     {
+        $angka = round($angka);
 
         global $koneksi;
         $lokasi = $_GET['lokasi'];
