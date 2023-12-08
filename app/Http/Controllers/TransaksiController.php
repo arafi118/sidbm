@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AkunLevel1;
+use App\Models\Desa;
 use App\Models\Ebudgeting;
 use App\Models\Inventaris;
 use App\Models\JenisTransaksi;
@@ -119,7 +120,21 @@ class TransaksiController extends Controller
 
     public function simpanTutupBuku(Request $request)
     {
-        dd($request);
+        $surplus = $request->surplus;
+        $tgl_kondisi = $request->tgl_kondisi;
+        $tahun = Tanggal::tahun($tgl_kondisi);
+        $bulan = Tanggal::bulan($tgl_kondisi);
+
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
+        $rekening = Rekening::where('kode_akun', 'like', '2.1.04%')->get();
+        $desa = Desa::where('kd_kec', $kec->kd_kec)->with([
+            'saldo' => function ($query) use ($tahun, $bulan) {
+                $query->where('tahun', $tahun);
+            }
+        ])->get();
+
+        $title = 'Pembagian Laba';
+        return view('transaksi.tutup_buku.tutup_buku')->with(compact('title', 'surplus', 'rekening', 'desa', 'tgl_kondisi'));
     }
 
     public function formAnggaran(Request $request)

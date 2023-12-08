@@ -9,84 +9,86 @@
     @endphp
     <div class="card mb-3">
         <div class="card-body p-3 pb-0">
-            <table class="table table-striped">
-                <thead>
-                    <tr class="bg-dark text-light">
-                        <th width="10%">Kode Akun</th>
-                        <th>Nama Akun</th>
-                        <th width="30%">Saldo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($lev1->akun2 as $lev2)
-                        @foreach ($lev2->akun3 as $lev3)
-                            @php
-                                $saldo_akun = 0;
-                            @endphp
-                            @foreach ($lev3->rek as $rek)
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr class="bg-dark text-light">
+                            <th width="10%">Kode Akun</th>
+                            <th>Nama Akun</th>
+                            <th width="30%">Saldo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($lev1->akun2 as $lev2)
+                            @foreach ($lev2->akun3 as $lev3)
                                 @php
-                                    $tb = 'tb' . $tahun_lalu;
-                                    $tbk = 'tbk' . $tahun_lalu;
+                                    $saldo_akun = 0;
+                                @endphp
+                                @foreach ($lev3->rek as $rek)
+                                    @php
+                                        $tb = 'tb' . $tahun_lalu;
+                                        $tbk = 'tbk' . $tahun_lalu;
 
-                                    if ($lev1->lev1 <= 1) {
-                                        $saldo_awal = $rek->$tb - $rek->$tbk;
-                                        $_saldo = $saldo_awal + ($rek->saldo->debit - $rek->saldo->kredit);
-                                    } else {
-                                        $saldo_awal = $rek->$tbk - $rek->$tb;
-                                        $_saldo = $saldo_awal + ($rek->saldo->kredit - $rek->saldo->debit);
-                                    }
-
-                                    if ($rek->kode_akun == '3.2.02.01') {
-                                        $pendapatan = 0;
-                                        $biaya = 0;
-                                        foreach ($surplus as $sp) {
-                                            if ($sp->lev1 == '5') {
-                                                $biaya += $sp->saldo->debit - $sp->saldo->kredit;
-                                            } else {
-                                                $pendapatan += $sp->saldo->kredit - $sp->saldo->debit;
-                                            }
+                                        if ($lev1->lev1 <= 1) {
+                                            $saldo_awal = $rek->$tb - $rek->$tbk;
+                                            $_saldo = $saldo_awal + ($rek->saldo->debit - $rek->saldo->kredit);
+                                        } else {
+                                            $saldo_awal = $rek->$tbk - $rek->$tb;
+                                            $_saldo = $saldo_awal + ($rek->saldo->kredit - $rek->saldo->debit);
                                         }
 
-                                        $_saldo = $pendapatan - $biaya;
-                                        $laba_rugi = $pendapatan - $biaya;
-                                    }
+                                        if ($rek->kode_akun == '3.2.02.01') {
+                                            $pendapatan = 0;
+                                            $biaya = 0;
+                                            foreach ($surplus as $sp) {
+                                                if ($sp->lev1 == '5') {
+                                                    $biaya += $sp->saldo->debit - $sp->saldo->kredit;
+                                                } else {
+                                                    $pendapatan += $sp->saldo->kredit - $sp->saldo->debit;
+                                                }
+                                            }
 
-                                    $saldo_akun += $_saldo;
+                                            $_saldo = $pendapatan - $biaya;
+                                            $laba_rugi = $pendapatan - $biaya;
+                                        }
+
+                                        $saldo_akun += $_saldo;
+                                    @endphp
+                                @endforeach
+
+                                <tr>
+                                    <td align="center">{{ $lev3->kode_akun }}</td>
+                                    <td>{{ $lev3->nama_akun }}</td>
+                                    <td align="right">
+                                        <b>Rp. {{ number_format($saldo_akun, 2) }}</b>
+                                    </td>
+                                </tr>
+
+                                @php
+                                    $total_saldo += $saldo_akun;
+                                    if ($lev1->lev1 > '1') {
+                                        $liabilitas += $saldo_akun;
+                                    } else {
+                                        $aset += $saldo_akun;
+                                    }
                                 @endphp
                             @endforeach
-
-                            <tr>
-                                <td align="center">{{ $lev3->kode_akun }}</td>
-                                <td>{{ $lev3->nama_akun }}</td>
-                                <td align="right">
-                                    <b>Rp. {{ number_format($saldo_akun, 2) }}</b>
-                                </td>
-                            </tr>
-
-                            @php
-                                $total_saldo += $saldo_akun;
-                                if ($lev1->lev1 > '1') {
-                                    $liabilitas += $saldo_akun;
-                                } else {
-                                    $aset += $saldo_akun;
-                                }
-                            @endphp
                         @endforeach
-                    @endforeach
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th colspan="2">Jumlah {{ $lev1->nama_akun }}</th>
-                        <th class="text-end">{{ number_format($total_saldo, 2) }}</th>
-                    </tr>
-                    @if ($lev1->lev1 == '3')
+                    </tbody>
+                    <tfoot>
                         <tr>
-                            <th colspan="2">Jumlah Liabilitas + Ekuitas</th>
-                            <th class="text-end">{{ number_format($liabilitas, 2) }}</th>
+                            <th colspan="2">Jumlah {{ $lev1->nama_akun }}</th>
+                            <th class="text-end">{{ number_format($total_saldo, 2) }}</th>
                         </tr>
-                    @endif
-                </tfoot>
-            </table>
+                        @if ($lev1->lev1 == '3')
+                            <tr>
+                                <th colspan="2">Jumlah Liabilitas + Ekuitas</th>
+                                <th class="text-end">{{ number_format($liabilitas, 2) }}</th>
+                            </tr>
+                        @endif
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
 @endforeach
@@ -94,6 +96,7 @@
 <form action="/transaksi/tutup_buku" method="post" id="FormSimpanTutupBuku">
     @csrf
 
+    <input type="hidden" name="tgl_kondisi" id="tgl_kondisi" value="{{ $tgl_kondisi }}">
     <input type="hidden" name="aset" id="aset" value="{{ $aset }}">
     <input type="hidden" name="liabilitas" id="liabilitas" value="{{ $liabilitas }}">
     <input type="hidden" name="surplus" id="surplus" value="{{ $laba_rugi }}">

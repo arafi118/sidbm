@@ -26,6 +26,7 @@ class Keuangan
             $pecahan         = substr($uang, -3);
             $pengali        = 1000;
         }
+
         if ($pembulatan > 0) {
             if ($pecahan < $bulat and $pecahan > 0) {
                 $pembulatan = $uang + ($bulat - $pecahan);
