@@ -55,6 +55,8 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
                         AND ($limit) ORDER BY id ASC LIMIT $start, $per_page");
 
     while ($pk = mysqli_fetch_array($pinjaman_kelompok)) {
+        $kel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelompok_$lokasi WHERE id='$pk[id_kel]'"));
+        $desa = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM desa WHERE kd_desa='$kec[desa]'"));
         $del_re = mysqli_query($koneksi, "DELETE FROM real_angsuran_$lokasi WHERE loan_id=$pk[id]");
         $del_ra = mysqli_query($koneksi, "DELETE FROM rencana_angsuran_$lokasi WHERE loan_id=$pk[id]");
 
@@ -63,6 +65,15 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
         } else {
             $tgl_cair = $pk['tgl_cair'];
         }
+
+        if ($desa['jadwal_angsuran_desa'] > 0) {
+            $angsuran_desa = $desa['jadwal_angsuran_desa'];
+            if ($angsuran_desa > 0) {
+                $tgl_pinjaman = date('Y-m', strtotime($tgl));
+                $tgl_cair = $tgl_pinjaman . '-' . $angsuran_desa;
+            }
+        }
+
         $tgllalu = $tgl_cair;
 
         $jenis_pp = $pk['jenis_pp'];
