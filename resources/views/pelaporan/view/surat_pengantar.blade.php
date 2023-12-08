@@ -46,8 +46,8 @@
                         <li>Laporan Neraca</li>
                         <li>Laporan Rugi/Laba</li>
                         <li>Neraca Saldo</li>
-                        <li>laporn Perubahan Modal</li>
-                        <li>CALK</li>
+                        <li>Laporan Perubahan Modal</li>
+                        <li>Catatan Atas Laporan Keuangan (CALK)</li>
                     </ol>
                 </div>
                 <div>
