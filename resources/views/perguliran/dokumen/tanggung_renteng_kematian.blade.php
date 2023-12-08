@@ -20,7 +20,7 @@
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
-                    <b>SURAT PERNYATAAN KESANGGUPAN TANGGUNG RENTENG</b>
+                    <b>SURAT PERNYATAAN KESANGGUPAN TANGGUNG RENTENG KEMATIAN</b>
                 </div>
             </td>
         </tr>
