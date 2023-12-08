@@ -358,13 +358,13 @@
                             <div class="col-md-4 d-grid">
                                 <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
                                     value="tanggungRentengKematian">
-                                    12. Pernyataan Tanggung Renteng
+                                    12. Tanggung Renteng Kematian
                                 </button>
                             </div>
                             <div class="col-md-4 d-grid">
                                 <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
                                     value="pernyataanTanggungRenteng">
-                                    13. Tanggung Renteng Kematian
+                                    13. Pernyataan Tanggung Renteng
                                 </button>
                             </div>
                             <div class="col-md-4 d-grid">
