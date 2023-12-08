@@ -46,8 +46,8 @@
                         <li>Laporan Neraca</li>
                         <li>Laporan Rugi/Laba</li>
                         <li>Neraca Saldo</li>
-                        <li>Laporan Hutang</li>
-                        <li>Laporan Piutang</li>
+                        <li>laporn Perubahan Modal</li>
+                        <li>CALK</li>
                     </ol>
                 </div>
                 <div>
