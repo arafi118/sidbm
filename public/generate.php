@@ -69,7 +69,7 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
         if ($desa['jadwal_angsuran_desa'] > 0) {
             $angsuran_desa = $desa['jadwal_angsuran_desa'];
             if ($angsuran_desa > 0) {
-                $tgl_pinjaman = date('Y-m', strtotime($tgl));
+                $tgl_pinjaman = date('Y-m', strtotime($tgl_cair));
                 $tgl_cair = $tgl_pinjaman . '-' . $angsuran_desa;
             }
         }
