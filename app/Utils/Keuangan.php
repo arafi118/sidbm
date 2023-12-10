@@ -284,6 +284,23 @@ class Keuangan
                 $tunggakan_jasa = 0;
             }
 
+            if ($pinkel->tgl_lunas <= $data['tgl_kondisi'] && $pinkel->status == 'L') {
+                $tunggakan_pokok = 0;
+                $tunggakan_jasa = 0;
+                $saldo_pokok = 0;
+                $saldo_jasa = 0;
+            } elseif ($pinkel->tgl_lunas <= $data['tgl_kondisi'] && $pinkel->status == 'R') {
+                $tunggakan_pokok = 0;
+                $tunggakan_jasa = 0;
+                $saldo_pokok = 0;
+                $saldo_jasa = 0;
+            } elseif ($pinkel->tgl_lunas <= $data['tgl_kondisi'] && $pinkel->status == 'H') {
+                $tunggakan_pokok = 0;
+                $tunggakan_jasa = 0;
+                $saldo_pokok = 0;
+                $saldo_jasa = 0;
+            }
+
             $tgl_cair = explode('-', $pinkel->tgl_cair);
             $th_cair = $tgl_cair[0];
             $bl_cair = $tgl_cair[1];
