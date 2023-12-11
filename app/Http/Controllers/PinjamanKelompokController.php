@@ -1804,7 +1804,7 @@ class PinjamanKelompokController extends Controller
                 $tgl = $pinkel->tgl_verifikasi;
             } elseif ($status == 'W') {
                 $alokasi = $pinkel->alokasi;
-                $tgl = $pinkel->tgl_tunggu;
+                $tgl = $pinkel->tgl_cair;
             } else {
                 $alokasi = $pinkel->alokasi;
                 $tgl = $pinkel->tgl_cair;
