@@ -284,7 +284,7 @@
                         </div>
                     </form>
 
-                    <form action="/perguliran/dokumen?status=A" target="_blank" method="post">
+                    <form action="/perguliran/dokumen?status={{ $perguliran->status }}" target="_blank" method="post">
                         @csrf
 
                         <input type="hidden" name="id" value="{{ $perguliran->id }}">
