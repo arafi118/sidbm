@@ -84,7 +84,7 @@
                                 $nilai_buku = '0';
                             }
 
-                            if ($inv->status == 'Dijual' || $inv->status == 'Hilang' || $inv->status == 'Dihapus') {
+                            if (!($inv->status == 'Baik') && $tgl_kondisi >= $inv->tgl_validasi) {
                                 $j_unit += $inv->unit;
                                 $j_harga += $inv->harsat * $inv->unit;
                                 $j_nilai_buku += $inv->harsat * $inv->unit;
