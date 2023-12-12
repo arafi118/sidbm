@@ -171,8 +171,9 @@
     </div>
     <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
-            <th width="10" align="center">No</th>
+            <th width="5%" align="center">No</th>
             <th width="20%" align="center">Nama Anggota</th>
+            <th width="15%" align="center">Proposal (Rp.)</th>
             <th width="15%" align="center">Proposal (Rp.)</th>
             <th width="15%" align="center">Rekom TV</th>
             <th width="15%" align="center">Rekom TP</th>
@@ -181,18 +182,24 @@
 
         @php
             $proposal = 0;
+            $proposal_lalu = 0;
             $verifikasi = 0;
             $alokasi = 0;
         @endphp
         @foreach ($pinkel->pinjaman_anggota as $pa)
             @php
                 $proposal += $pa->proposal;
+                if ($pa->pinj_ang) {
+                    $proposal_lalu += $pa->pinj_ang->alokasi;
+                }
                 $verifikasi += $pa->verifikasi;
                 $alokasi += $pa->alokasi;
+
             @endphp
             <tr>
                 <td align="center">{{ $loop->iteration }}</td>
                 <td>{{ $pa->anggota->namadepan }}</td>
+                <td align="right">{{ number_format($pa->pinj_ang ? $pa->pinj_ang->alokasi : 0) }}</td>
                 <td align="right">{{ number_format($pa->proposal) }}</td>
                 <td align="right">
                     {!! $pa->status != 'P' ? number_format($pa->verifikasi) : '&nbsp;' !!}
@@ -210,6 +217,7 @@
             <td align="center" colspan="2">
                 <b>JUMLAH</b>
             </td>
+            <td align="right">{{ number_format($proposal_lalu) }}</td>
             <td align="right">{{ number_format($proposal) }}</td>
             <td align="right">
                 {!! $pinkel->status != 'P' ? number_format($verifikasi) : '&nbsp;' !!}

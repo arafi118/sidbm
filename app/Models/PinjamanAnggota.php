@@ -48,4 +48,9 @@ class PinjamanAnggota extends Model
     {
         return $this->hasOne(DataPemanfaat::class, 'nia', 'nia');
     }
+
+    public function pinj_ang()
+    {
+        return $this->hasOne(PinjamanAnggota::class, 'nia', 'nia')->orderBy('tgl_cair', 'DESC');
+    }
 }

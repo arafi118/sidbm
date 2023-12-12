@@ -26,4 +26,9 @@ class Kecamatan extends Model
     {
         return $this->belongsTo(TandaTanganLaporan::class, 'id', 'lokasi');
     }
+
+    public function saldo()
+    {
+        return $this->hasMany(Saldo::class, 'kode_akun', 'kd_kec');
+    }
 }
