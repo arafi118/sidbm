@@ -55,6 +55,7 @@
         $jasa_bulan_depan = 0;
     }
     $nama_user = '';
+    $no_kuitansi = '';
 @endphp
 @foreach ($real->trx as $trx)
     @php
@@ -63,7 +64,7 @@
             $denda += $trx->jumlah;
         }
 
-        $idt = $trx->idt;
+        $no_kuitansi .= $trx->idt . '/';
 
         $nama_user = $trx->user->namadepan . ' ' . $trx->user->namabelakang;
     @endphp
@@ -134,7 +135,7 @@
                 Tanggal Transasksi
             </td>
             <td width="15%">
-                : {{ $idt }}-{{ $pinkel->id }}/{{ $pinkel->jpp->nama_jpp }}
+                : {{ substr($no_kuitansi, 0, -1) }}
                 <br>
                 : {{ Tanggal::tglLatin($real->tgl_transaksi) }}
             </td>
