@@ -173,7 +173,7 @@
         <tr>
             <th width="5%" align="center">No</th>
             <th width="20%" align="center">Nama Anggota</th>
-            <th width="15%" align="center">Proposal (Rp.)</th>
+            <th width="15%" align="center">Pinj. Lalu</th>
             <th width="15%" align="center">Proposal (Rp.)</th>
             <th width="15%" align="center">Rekom TV</th>
             <th width="15%" align="center">Rekom TP</th>
@@ -208,7 +208,7 @@
                     {!! $pa->status == 'W' || $pa->status == 'A' ? number_format($pa->alokasi) : '&nbsp;' !!}
                 </td>
                 <td>
-                    {{ $pa->catatan_verifikasi }}
+                    &nbsp;
                 </td>
             </tr>
         @endforeach
