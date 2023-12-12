@@ -60,14 +60,16 @@
             @endphp
             <tr>
                 <td height="15" align="center"><b>{{ $no }}.</b></td>
-                <td>{{ $pa->anggota->namadepan }}</td>
+                <td>
+                    <div class="fw-bold" style="font-size: 14px;">{{ $pa->anggota->namadepan }}</div>
+                </td>
                 <td align="center">Pemanfaat</td>
                 <td>{{ $pa->anggota->alamat }}</td>
                 <td><b>{{ $no }}.</b></td>
             </tr>
         @endforeach
 
-        @for ($i = $no + 1; $i <= 25; $i++)
+        @for ($i = $no + 1; $i <= 20; $i++)
             <tr>
                 <td height="15" align="center"><b>{{ $i }}.</b></td>
                 <td>&nbsp;</td>
