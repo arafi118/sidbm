@@ -508,7 +508,7 @@ class DashboardController extends Controller
             $saldo_desa = [];
             foreach ($kec->desa as $desa) {
                 $saldo_desa[] = [
-                    'id' => $desa->kd_desa,
+                    'id' => $desa->kd_desa . $tahun . 00,
                     'kode_akun' => $desa->kode_desa,
                     'tahun' => $tahun,
                     'bulan' => 0,
@@ -518,7 +518,7 @@ class DashboardController extends Controller
             }
 
             $saldo_desa[] = [
-                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . $bulan . 1,
+                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 00 . 1,
                 'kode_akun' => $kec->kd_kec,
                 'tahun' => $tahun,
                 'bulan' => 0,
@@ -526,7 +526,7 @@ class DashboardController extends Controller
                 'kredit' => 0
             ];
             $saldo_desa[] = [
-                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . $bulan . 2,
+                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 00 . 2,
                 'kode_akun' => $kec->kd_kec,
                 'tahun' => $tahun,
                 'bulan' => 0,
@@ -534,7 +534,7 @@ class DashboardController extends Controller
                 'kredit' => 0
             ];
             $saldo_desa[] = [
-                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . $bulan . 3,
+                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 00 . 3,
                 'kode_akun' => $kec->kd_kec,
                 'tahun' => $tahun,
                 'bulan' => 0,
@@ -542,7 +542,7 @@ class DashboardController extends Controller
                 'kredit' => 0
             ];
             $saldo_desa[] = [
-                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . $bulan . 4,
+                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 00 . 4,
                 'kode_akun' => $kec->kd_kec,
                 'tahun' => $tahun,
                 'bulan' => 0,
@@ -550,7 +550,7 @@ class DashboardController extends Controller
                 'kredit' => 0
             ];
             $saldo_desa[] = [
-                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . $bulan . 5,
+                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 00 . 5,
                 'kode_akun' => $kec->kd_kec,
                 'tahun' => $tahun,
                 'bulan' => 0,
@@ -558,7 +558,7 @@ class DashboardController extends Controller
                 'kredit' => 0
             ];
             $saldo_desa[] = [
-                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . $bulan . 6,
+                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 00 . 6,
                 'kode_akun' => $kec->kd_kec,
                 'tahun' => $tahun,
                 'bulan' => 0,
