@@ -61,8 +61,20 @@
                 <th class="t l b" align="left" style="padding: 2px 4px;">
                     {{ $rek->kode_akun . '. ' . $rek->nama_akun }}
                 </th>
-                <td class="t l b" align="right">{{ number_format($debit, 2) }}</td>
-                <td class="t l b" align="right">{{ number_format($kredit, 2) }}</td>
+                <td class="t l b" align="right">
+                    @if ($debit < 0)
+                        ({{ number_format($debit * -1, 2) }})
+                    @else
+                        {{ number_format($debit, 2) }}
+                    @endif
+                </td>
+                <td class="t l b" align="right">
+                    @if ($kredit < 0)
+                        ({{ number_format($kredit * -1, 2) }})
+                    @else
+                        {{ number_format($kredit, 2) }}
+                    @endif
+                </td>
 
                 @if ($rek->lev1 <= 3)
                     @php
@@ -71,17 +83,45 @@
                     @endphp
                     <td class="t l b" align="right">{{ number_format(0, 2) }}</td>
                     <td class="t l b" align="right">{{ number_format(0, 2) }}</td>
-                    <td class="t l b" align="right">{{ number_format($debit, 2) }}</td>
-                    <td class="t l b r" align="right">{{ number_format($kredit, 2) }}</td>
+                    <td class="t l b" align="right">
+                        @if ($debit < 0)
+                            ({{ number_format($debit * -1, 2) }})
+                        @else
+                            {{ number_format($debit, 2) }}
+                        @endif
+                    </td>
+                    <td class="t l b r" align="right">
+                        @if ($kredit < 0)
+                            ({{ number_format($kredit * -1, 2) }})
+                        @else
+                            {{ number_format($kredit, 2) }}
+                        @endif
+                    </td>
                 @else
                     @php
                         $sum_rl_debit += $debit;
                         $sum_rl_kredit += $kredit;
                     @endphp
-                    <td class="t l b" align="right">{{ number_format($debit, 2) }}</td>
-                    <td class="t l b" align="right">{{ number_format($kredit, 2) }}</td>
-                    <td class="t l b" align="right">{{ number_format(0, 2) }}</td>
-                    <td class="t l b r" align="right">{{ number_format(0, 2) }}</td>
+                    <td class="t l b" align="right">
+                        @if ($debit < 0)
+                            ({{ number_format($debit * -1, 2) }})
+                        @else
+                            {{ number_format($debit, 2) }}
+                        @endif
+                    </td>
+                    <td class="t l b" align="right">
+                        @if ($kredit < 0)
+                            ({{ number_format($kredit * -1, 2) }})
+                        @else
+                            {{ number_format($kredit, 2) }}
+                        @endif
+                    </td>
+                    <td class="t l b" align="right">
+                        {{ number_format(0, 2) }}
+                    </td>
+                    <td class="t l b r" align="right">
+                        {{ number_format(0, 2) }}
+                    </td>
                 @endif
 
             </tr>
@@ -96,22 +136,67 @@
                         <td class="t l b" width="10%">&nbsp;</td>
                         <td class="t l b" width="10%">&nbsp;</td>
                         <td class="t l b" width="10%" align="right">
-                            {{ number_format($sum_rl_kredit - $sum_rl_debit, 2) }}</td>
+                            @if ($sum_rl_kredit - $sum_rl_debit < 0)
+                                ({{ number_format(($sum_rl_kredit - $sum_rl_debit) * -1, 2) }})
+                            @else
+                                {{ number_format($sum_rl_kredit - $sum_rl_debit, 2) }}
+                            @endif
+                        </td>
                         <td class="t l b" width="10%">&nbsp;</td>
                         <td class="t l b" width="10%">&nbsp;</td>
                         <td class="t l b r" width="10%" align="right">
-                            {{ number_format($sum_rl_kredit - $sum_rl_debit, 2) }}</td>
+                            @if ($sum_rl_kredit - $sum_rl_debit < 0)
+                                ({{ number_format(($sum_rl_kredit - $sum_rl_debit) * -1, 2) }})
+                            @else
+                                {{ number_format($sum_rl_kredit - $sum_rl_debit, 2) }}
+                            @endif
+                        </td>
                     </tr>
                     <tr style="background: rgb(242, 242, 242); font-weight: bold;">
                         <td class="t l b" align="center">Jumlah</td>
-                        <td class="t l b" align="right">{{ number_format($sum_ns_debit, 2) }}</td>
-                        <td class="t l b" align="right">{{ number_format($sum_ns_kredit, 2) }}</td>
                         <td class="t l b" align="right">
-                            {{ number_format($sum_rl_debit + ($sum_rl_kredit - $sum_rl_debit), 2) }}</td>
-                        <td class="t l b" align="right">{{ number_format($sum_rl_kredit, 2) }}</td>
-                        <td class="t l b" align="right">{{ number_format($sum_nc_debit, 2) }}</td>
+                            @if ($sum_ns_debit < 0)
+                                ({{ number_format($sum_ns_debit * -1, 2) }})
+                            @else
+                                {{ number_format($sum_ns_debit, 2) }}
+                            @endif
+                        </td>
+                        <td class="t l b" align="right">
+                            @if ($sum_ns_kredit < 0)
+                                ({{ number_format($sum_ns_kredit * -1, 2) }})
+                            @else
+                                {{ number_format($sum_ns_kredit, 2) }}
+                            @endif
+                        </td>
+                        <td class="t l b" align="right">
+                            {{ number_format($sum_rl_debit + ($sum_rl_kredit - $sum_rl_debit), 2) }}
+                            @if ($sum_rl_debit + ($sum_rl_kredit - $sum_rl_debit) < 0)
+                                ({{ number_format(($sum_rl_debit + ($sum_rl_kredit - $sum_rl_debit)) * -1, 2) }})
+                            @else
+                                {{ number_format($sum_rl_debit + ($sum_rl_kredit - $sum_rl_debit), 2) }}
+                            @endif
+                        </td>
+                        <td class="t l b" align="right">
+                            @if ($sum_rl_kredit < 0)
+                                ({{ number_format($sum_rl_kredit * -1, 2) }})
+                            @else
+                                {{ number_format($sum_rl_kredit, 2) }}
+                            @endif
+                        </td>
+                        <td class="t l b" align="right">
+                            @if ($sum_nc_debit < 0)
+                                ({{ number_format($sum_nc_debit * -1, 2) }})
+                            @else
+                                {{ number_format($sum_nc_debit, 2) }}
+                            @endif
+                        </td>
                         <td class="t l b r" align="right">
-                            {{ number_format($sum_nc_kredit + ($sum_rl_kredit - $sum_rl_debit), 2) }}</td>
+                            @if ($sum_nc_kredit + ($sum_rl_kredit - $sum_rl_debit) < 0)
+                                ({{ number_format(($sum_nc_kredit + ($sum_rl_kredit - $sum_rl_debit)) * -1, 2) }})
+                            @else
+                                {{ number_format($sum_nc_kredit + ($sum_rl_kredit - $sum_rl_debit), 2) }}
+                            @endif
+                        </td>
                     </tr>
                 </table>
 
