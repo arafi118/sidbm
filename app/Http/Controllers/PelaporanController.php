@@ -1307,10 +1307,13 @@ class PelaporanController extends Controller
                     ->join('desa', $tb_kel . '.desa', '=', 'desa.kd_desa')
                     ->join('sebutan_desa', 'sebutan_desa.id', '=', 'desa.sebutan')
                     ->where($tb_pinkel . '.sistem_angsuran', '!=', '12')->where(function ($query) use ($data) {
-                        $query->where([
-                            [$data['tb_pinkel'] . '.status', 'A'],
-                            [$data['tb_pinkel'] . '.tgl_cair', 'LIKE', $data['tgl_cair'] . '%']
-                        ]);
+                        $query->where($data['tb_pinkel'] . '.tgl_cair', 'LIKE', $data['tgl_cair'] . '%')
+                            ->where(function ($query) use ($data) {
+                                $query->where($data['tb_pinkel'] . '.status', 'A')
+                                    ->orwhere($data['tb_pinkel'] . '.status', 'L')
+                                    ->orwhere($data['tb_pinkel'] . '.status', 'H')
+                                    ->orwhere($data['tb_pinkel'] . '.status', 'R');
+                            });
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')
                     ->orderBy($tb_pinkel . '.id', 'ASC');
