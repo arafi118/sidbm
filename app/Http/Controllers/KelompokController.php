@@ -26,6 +26,8 @@ class KelompokController extends Controller
     {
         if (request()->ajax()) {
             $kelompok = Kelompok::with([
+                'd',
+                'd.sebutan_desa',
                 'kegiatan',
                 'pinjaman' => function ($query) {
                     $query->orderBy('tgl_proposal', 'DESC');
@@ -45,6 +47,9 @@ class KelompokController extends Controller
                     }
 
                     return $status;
+                })
+                ->editColumn('alamat_kelompok', function ($row) {
+                    return $row->alamat_kelompok . ' ' . $row->d->sebutan_desa->sebutan_desa . ' ' . $row->d->nama_desa;
                 })
                 ->rawColumns(['status'])
                 ->make(true);

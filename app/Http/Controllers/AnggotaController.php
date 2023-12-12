@@ -23,6 +23,8 @@ class AnggotaController extends Controller
     {
         if (request()->ajax()) {
             $penduduk = Anggota::query()->with([
+                'd',
+                'd.sebutan_desa',
                 'pinjaman' => function ($query) {
                     $query->orderBy('id', 'DESC');
                 },
@@ -42,6 +44,9 @@ class AnggotaController extends Controller
                     }
 
                     return $status;
+                })
+                ->editColumn('alamat', function ($row) {
+                    return $row->alamat . ' ' . $row->d->sebutan_desa->sebutan_desa . ' ' . $row->d->nama_desa;
                 })
                 ->rawColumns(['status'])
                 ->make(true);
