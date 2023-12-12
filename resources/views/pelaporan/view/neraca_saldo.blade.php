@@ -169,7 +169,6 @@
                             @endif
                         </td>
                         <td class="t l b" align="right">
-                            {{ number_format($sum_rl_debit + ($sum_rl_kredit - $sum_rl_debit), 2) }}
                             @if ($sum_rl_debit + ($sum_rl_kredit - $sum_rl_debit) < 0)
                                 ({{ number_format(($sum_rl_debit + ($sum_rl_kredit - $sum_rl_debit)) * -1, 2) }})
                             @else
