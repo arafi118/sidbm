@@ -169,7 +169,7 @@
     <div style="margin-top: 12px;">
         <b>DATA PINJAMAN ANGGOTA :</b>
     </div>
-    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr>
             <th width="5%" align="center">No</th>
             <th width="20%" align="center">Nama Anggota</th>
@@ -229,7 +229,7 @@
         </tr>
     </table>
 
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
         <tr>
             <td colspan="2">&nbsp;</td>
         </tr>
