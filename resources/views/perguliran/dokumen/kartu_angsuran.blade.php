@@ -142,7 +142,17 @@
             <tr>
                 <td>Angsuran</td>
                 <td align="center">:</td>
-                <td>{{ number_format($pinkel->target->wajib_pokok + $pinkel->target->wajib_jasa) }} /
+
+                @php
+                    $jumlah_angsuran = 0;
+                    foreach ($pinkel->rencana as $renc) {
+                        if ($renc->wajib_pokok + $renc->wajib_jasa > $jumlah_angsuran) {
+                            $jumlah_angsuran = $renc->wajib_pokok + $renc->wajib_jasa;
+                        }
+                    }
+                @endphp
+
+                <td>{{ number_format($renc->wajib_pokok + $renc->wajib_jasa) }} /
                     {{ $pinkel->sis_pokok->nama_sistem }}</td>
                 <td colspan="3">
                     Angsuran pada tanggal {{ explode('-', $pinkel->target->jatuh_tempo)[2] }}
