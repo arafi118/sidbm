@@ -17,7 +17,7 @@
             <td height="5"></td>
         </tr>
     </table>
-    <table border="0" width="100%" align="center"cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="0" width="100%" align="center"cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr>
             <td width="70">Nomor Proposal</td>
             <td align="center" width="5">:</td>
@@ -46,7 +46,7 @@
             <td colspan="6">&nbsp;</td>
         </tr>
     </table>
-    <table border="1" width="100%" align="center"cellspacing="0" cellpadding="0" style="font-size: 12px;">
+    <table border="1" width="100%" align="center"cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr>
             <th width="10" height="20" align="center">No</th>
             <th width="130" align="center">Nama Lengkap</th>
