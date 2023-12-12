@@ -87,7 +87,16 @@ class PelaporanController extends Controller
         ]);
 
         $request->hari = ($request->hari) ?: 31;
-        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten', 'desa', 'desa.saldo', 'ttd')->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with([
+            'kabupaten',
+            'desa',
+            'desa.saldo' => function ($query) use ($data) {
+                $query->where([
+                    ['tahun', $data['tahun']]
+                ]);
+            },
+            'ttd'
+        ])->first();
         $kab = $kec->kabupaten;
 
         $jabatan = '1';
@@ -549,7 +558,10 @@ class PelaporanController extends Controller
             ['lokasi', Session::get('lokasi')],
         ])->first();
 
-        $data['saldo_calk'] = Saldo::where('kode_akun', $data['kec']->kd_kec)->get();
+        $data['saldo_calk'] = Saldo::where([
+            ['kode_akun', $data['kec']->kd_kec],
+            ['tahun', $thn]
+        ])->get();
         $view = view('pelaporan.view.calk', $data)->render();
 
         if ($data['type'] == 'pdf') {
