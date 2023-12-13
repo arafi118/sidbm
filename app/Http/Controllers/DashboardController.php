@@ -673,7 +673,10 @@ class DashboardController extends Controller
             'akun2.akun3.rek',
             'akun2.akun3.rek.kom_saldo' => function ($query) use ($tgl) {
                 $tahun = date('Y', strtotime($tgl));
-                $query->where('tahun', $tahun)->orderBy('kode_akun', 'ASC')->orderBy('bulan', 'ASC');
+                $query->where([
+                    ['tahun', $tahun],
+                    ['bulan', '!=', '0']
+                ])->orderBy('kode_akun', 'ASC')->orderBy('bulan', 'ASC');
             },
         ])->get();
 

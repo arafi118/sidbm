@@ -163,8 +163,10 @@ Route::get('/transaksi/form_angsuran/{id_pinkel}', [TransaksiController::class, 
 Route::get('/transaksi/angsuran/target/{id_pinkel}', [TransaksiController::class, 'targetAngsuran'])->middleware('auth');
 
 Route::get('/transaksi/data/{idt}', [TransaksiController::class, 'data'])->middleware('auth');
+Route::get('/transaksi/tutup_buku/saldo_awal/{tahun}', [TransaksiController::class, 'saldoAwal'])->middleware('auth');
 Route::post('/transaksi/tutup_buku/saldo', [TransaksiController::class, 'saldoTutupBuku'])->middleware('auth');
 Route::post('/transaksi/tutup_buku', [TransaksiController::class, 'simpanTutupBuku'])->middleware('auth');
+Route::post('/transaksi/simpan_laba', [TransaksiController::class, 'simpanAlokasiLaba'])->middleware('auth');
 Route::post('/transaksi/reversal', [TransaksiController::class, 'reversal'])->middleware('auth');
 Route::post('/transaksi/hapus', [TransaksiController::class, 'hapus'])->middleware('auth');
 

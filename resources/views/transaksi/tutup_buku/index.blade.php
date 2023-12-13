@@ -6,6 +6,7 @@
             <form action="/transaksi/tutup_buku/saldo" method="post" id="FormTahunTutupBuku">
                 @csrf
 
+                <input type="hidden" name="tgl_pakai" id="tgl_pakai" value="{{ $kec->tgl_pakai }}">
                 <div class="col-12">
                     <div class="my-2">
                         <label class="form-label" for="tahun">Tahun</label>
@@ -58,7 +59,7 @@
             e.preventDefault()
 
             var tahun_val = $(this).val()
-            if (tahun == tahun_val && bulan <= 10) {
+            if ((tahun == tahun_val && bulan <= 10) || (tahun_val < tahun)) {
                 $('#TutupBuku').prop("disabled", true)
             } else {
                 $('#TutupBuku').prop("disabled", false)

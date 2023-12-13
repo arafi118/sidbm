@@ -100,6 +100,8 @@
     <input type="hidden" name="aset" id="aset" value="{{ $aset }}">
     <input type="hidden" name="liabilitas" id="liabilitas" value="{{ $liabilitas }}">
     <input type="hidden" name="surplus" id="surplus" value="{{ $laba_rugi }}">
+    <input type="hidden" name="jumlah_riwayat" id="jumlah_riwayat" value="{{ $jumlah_riwayat }}">
+    <input type="hidden" name="total_riwayat" id="total_riwayat" value="{{ $total_riwayat }}">
 
     <div class="card">
         <div class="card-body p-2">
