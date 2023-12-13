@@ -35,8 +35,15 @@ class PinjamanKelompokController extends Controller
      */
     public function index()
     {
+        $status = 'P';
+        if (request()->get('status')) {
+            $status = request()->get('status');
+        }
+
+        $status = strtolower($status);
+
         $title = 'Tahapan Perguliran';
-        return view('perguliran.index')->with(compact('title'));
+        return view('perguliran.index')->with(compact('title', 'status'));
     }
 
     public function proposal()

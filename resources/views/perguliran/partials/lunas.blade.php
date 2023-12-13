@@ -4,10 +4,10 @@
     @php
         $saldo_pokok = $ra->target_pokok - $real->sum_pokok;
         $saldo_jasa = $ra->target_jasa - $real->sum_jasa;
-        
+
         $keterangan1 = 'Belum Lunas';
         $keterangan2 = 'Belum Lunas';
-        
+
         if ($saldo_pokok <= 0) {
             $saldo_pokok = 0;
             $keterangan1 = 'Lunas';
@@ -127,7 +127,7 @@
 
     <div class="card mt-3">
         <div class="card-body p-2">
-            <a href="/perguliran" class="btn btn-info float-end btn-sm mb-0">Kembali</a>
+            <a href="/perguliran?status=L" class="btn btn-info float-end btn-sm mb-0">Kembali</a>
         </div>
     </div>
 @endsection
