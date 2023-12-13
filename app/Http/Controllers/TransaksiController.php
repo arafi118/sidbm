@@ -322,7 +322,7 @@ class TransaksiController extends Controller
 
         return response()->json([
             'success' => true,
-            'msg' => 'Tutup Buku ' . $tahun . ' berhasil.'
+            'msg' => 'Tutup Buku Tahun ' . $tahun . ' berhasil.'
         ]);
     }
 
