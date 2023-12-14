@@ -2,10 +2,24 @@
     use App\Utils\Tanggal;
     $jumlah_angsuran = 0;
 
-    $alokasi = $pinkel->proposal;
+    if (Request::get('status') == 'P') {
+        $alokasi = $pinkel->proposal;
+        $tgl = $pinkel->tgl_proposal;
+    }
+
+    if (Request::get('status') == 'V') {
+        $alokasi = $pinkel->verifikasi;
+        $tgl = $pinkel->tgl_verifikasi;
+    }
+
+    if (Request::get('status') == 'W') {
+        $alokasi = $pinkel->alokasi;
+        $tgl = $pinkel->tgl_cair;
+    }
+
     $alokasi_pinjaman = $alokasi;
-    $tgl = $pinkel->tgl_proposal;
     $tanggal = 'Tanggal Proposal';
+
     if (Request::get('status') == 'A') {
         $alokasi = $pinkel->alokasi;
 
