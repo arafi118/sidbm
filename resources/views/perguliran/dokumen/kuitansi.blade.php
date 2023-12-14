@@ -78,7 +78,7 @@
             </tr>
         </table>
 
-        <table border="0" width="100%">
+        <table border="0" width="100%" style="font-size: 11px;">
             <tr>
                 <td width="10%">&nbsp;</td>
                 <td width="10%">&nbsp;</td>
