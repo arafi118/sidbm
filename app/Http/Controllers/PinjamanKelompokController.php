@@ -1860,7 +1860,6 @@ class PinjamanKelompokController extends Controller
 
         $ra = [];
 
-        // Rencana Angsuran Pokok
         for ($i = 1; $i <= $jangka; $i++) {
             $sisa = $i % $sistem_pokok;
             $ke = $i / $sistem_pokok;
@@ -1878,7 +1877,6 @@ class PinjamanKelompokController extends Controller
             $ra[$i]['pokok'] = $angsuran_pokok;
         }
 
-        // Rencana Angsuran Jasa
         for ($j = 1; $j <= $jangka; $j++) {
             $sisa = $j % $sistem_jasa;
             $ke = $j / $sistem_jasa;
