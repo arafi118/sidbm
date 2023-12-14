@@ -99,17 +99,25 @@
                     $sum_pokok = 0;
                     $sum_jasa = 0;
 
+                    $target_pokok = 0;
+                    $target_jasa = 0;
+
                     if ($pinkel->saldo) {
                         $saldo = $pinkel->alokasi - $pinkel->saldo->sum_pokok;
                         $sum_pokok = $pinkel->saldo->sum_pokok;
                         $sum_jasa = $pinkel->saldo->sum_jasa;
                     }
 
-                    $tunggakan_pokok = $pinkel->target->target_pokok - $sum_pokok;
+                    if ($pinkel->target) {
+                        $target_pokok = $pinkel->target->target_pokok;
+                        $target_jasa = $pinkel->target->target_jasa;
+                    }
+
+                    $tunggakan_pokok = $target_pokok - $sum_pokok;
                     if ($tunggakan_pokok < 0) {
                         $tunggakan_pokok = 0;
                     }
-                    $tunggakan_jasa = $pinkel->target->target_jasa - $sum_jasa;
+                    $tunggakan_jasa = $target_jasa - $sum_jasa;
                     if ($tunggakan_jasa < 0) {
                         $tunggakan_jasa = 0;
                     }
