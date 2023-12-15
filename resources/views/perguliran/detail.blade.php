@@ -249,7 +249,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/perguliran/simpan_data/{{ $perguliran->id }}" method="post" id="simpanData">
+                    <form action="/perguliran/simpan_data/{{ $perguliran->id }}?save=true" method="post"
+                        id="simpanData">
                         @csrf
 
                         <div class="row">

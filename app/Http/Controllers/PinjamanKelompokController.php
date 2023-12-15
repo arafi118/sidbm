@@ -765,6 +765,8 @@ class PinjamanKelompokController extends Controller
             'wt_cair' => $wt_cair
         ]);
 
+        $this->generate($id);
+
         return response()->json([
             'success' => true,
             'msg' => 'Pinjaman Kelompok ' . $pinkel->kelompok->nama_kelompok . ' Berhasil Diperbarui',
@@ -1807,14 +1809,13 @@ class PinjamanKelompokController extends Controller
         }
 
         if (request()->get('status')) {
-            $status = request()->get('status');
-            if ($status == 'P') {
+            if (request()->get('status') == 'P') {
                 $alokasi = $pinkel->proposal;
                 $tgl = $pinkel->tgl_proposal;
-            } elseif ($status == 'V') {
+            } elseif (request()->get('status') == 'V') {
                 $alokasi = $pinkel->verifikasi;
                 $tgl = $pinkel->tgl_verifikasi;
-            } elseif ($status == 'W') {
+            } elseif (request()->get('status') == 'W') {
                 $alokasi = $pinkel->alokasi;
                 $tgl = $pinkel->tgl_cair;
             } else {
