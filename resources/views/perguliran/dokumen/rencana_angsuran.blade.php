@@ -4,31 +4,30 @@
 
     if (Request::get('status') == 'P') {
         $alokasi = $pinkel->proposal;
+        $tanggal = 'Tanggal Proposal';
         $tgl = $pinkel->tgl_proposal;
     }
 
     if (Request::get('status') == 'V') {
         $alokasi = $pinkel->verifikasi;
+        $tanggal = 'Tanggal Verifikasi';
         $tgl = $pinkel->tgl_verifikasi;
     }
 
     if (Request::get('status') == 'W') {
         $alokasi = $pinkel->alokasi;
+        $tanggal = 'Tanggal Cair';
         $tgl = $pinkel->tgl_cair;
     }
-
-    $alokasi_pinjaman = $alokasi;
-    $tanggal = 'Tanggal Proposal';
 
     if (Request::get('status') == 'A') {
         $alokasi = $pinkel->alokasi;
-
-        $alokasi_pinjaman = $alokasi;
-        $tgl = $pinkel->tgl_cair;
         $tanggal = 'Tanggal Cair';
+        $tgl = $pinkel->tgl_cair;
     }
 
     $saldo_pokok = $alokasi;
+    $alokasi_pinjaman = $alokasi;
     $saldo_jasa = ($saldo_pokok * $pinkel->pros_jasa) / 100;
 @endphp
 
