@@ -3,7 +3,7 @@
 @section('content')
     <div class="card mb-3">
         <div class="card-body">
-            <form action="/transaksi/tutup_buku/saldo" method="post" id="FormTahunTutupBuku">
+            <form action="" method="post" id="FormTahunTutupBuku">
                 @csrf
 
                 <input type="hidden" name="tgl_pakai" id="tgl_pakai" value="{{ $kec->tgl_pakai }}">
@@ -17,16 +17,22 @@
                             @endphp
                             @for ($i = $th_pakai; $i <= date('Y'); $i++)
                                 <option value="{{ $i }}" {{ date('Y') == $i ? 'selected' : '' }}>
-                                    {{ $i }}</option>
+                                    {{ $i }}
+                                </option>
                             @endfor
                         </select>
                         <small class="text-danger" id="msg_tahun"></small>
                     </div>
+
+                    <input type="hidden" name="pembagian_laba" id="pembagian_laba" value="true">
                 </div>
             </form>
 
             <div class="d-flex justify-content-end">
-                <button type="button" id="SimpanSaldo" class="btn btn-sm btn-info mb-0">Simpan Saldo</button>
+                <button type="button" id="SimpanSaldo" class="btn btn-sm btn-facebook mb-0">Simpan Saldo</button>
+                <button type="button" id="PembagianLaba" class="btn btn-sm btn-instagram mb-0 ms-3">
+                    Pembagian Lama
+                </button>
                 <button type="button" id="TutupBuku" {{ date('m') <= 10 ? 'disabled' : '' }}
                     class="btn btn-sm btn-github mb-0 ms-3">Tutup Buku</button>
             </div>
@@ -82,6 +88,7 @@
 
         $(document).on('click', '#TutupBuku', function(e) {
             e.preventDefault()
+            $('#FormTahunTutupBuku').attr('action', '/transaksi/tutup_buku/saldo')
             $('#LayoutPreview').html(
                 '<div class="card"><div class="card-body p-3"><div class="p-5"></div></div></div>')
 
@@ -96,6 +103,13 @@
                     }
                 }
             })
+        })
+
+        $(document).on('click', '#PembagianLaba', function(e) {
+            e.preventDefault()
+            $('#FormTahunTutupBuku').attr('action', '/transaksi/tutup_buku')
+
+            $('#FormTahunTutupBuku').submit()
         })
     </script>
 @endsection

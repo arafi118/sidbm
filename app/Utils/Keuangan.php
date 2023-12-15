@@ -187,6 +187,37 @@ class Keuangan
         return ($pendapatan - $biaya);
     }
 
+    public function laba_rugi($tgl_kondisi)
+    {
+        $array_tgl = explode('-', $tgl_kondisi);
+        $tahun = $array_tgl[0];
+        $bulan = $array_tgl[1];
+        $hari = $array_tgl[2];
+
+        $surplus = Rekening::where([
+            ['lev1', '>=', '4']
+        ])->with([
+            'saldo' => function ($query) use ($tahun, $bulan) {
+                $query->where([
+                    ['tahun', $tahun],
+                    ['bulan', $bulan]
+                ]);
+            }
+        ])->orderBy('kode_akun', 'ASC')->get();
+
+        $pendapatan = 0;
+        $biaya = 0;
+        foreach ($surplus as $sp) {
+            if ($sp->lev1 == '5') {
+                $biaya += ($sp->saldo->debit - $sp->saldo->kredit);
+            } else {
+                $pendapatan += ($sp->saldo->kredit - $sp->saldo->debit);
+            }
+        }
+
+        return $pendapatan - $biaya;
+    }
+
     public function tingkat_kesehatan($tgl_kondisi, $data = [])
     {
         $tgl = explode('-', $tgl_kondisi);

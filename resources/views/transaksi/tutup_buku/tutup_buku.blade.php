@@ -16,6 +16,24 @@
 @section('content')
     <div class="card">
         <div class="card-body">
+            @if ($success)
+                <div class="alert alert-success alert-dismissible text-white fade show" role="alert">
+                    <span class="alert-icon align-middle">
+                        <span class="material-icons text-md">
+                            thumb_up_off_alt
+                        </span>
+                    </span>
+                    <span class="alert-text">
+                        <strong>Tutup Buku Tahun {{ $tahun }}</strong> berhasil.
+                        Anda dapat melanjutkan proses pembagian laba di lain hari,
+                        klik <a href="/transaksi/tutup_buku" class="fw-bold text-white">Disini</a>
+                        untuk kembali.
+                    </span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             <h4 class="font-weight-normal mt-3">
                 <div class="row">
                     <span class="col-sm-6">Laba/Rugi Tahun {{ Tanggal::tahun($tgl_kondisi) }}</span>
@@ -79,7 +97,8 @@
                                                 @foreach ($desa as $d)
                                                     <tr>
                                                         <td>
-                                                            Bagian {{ $d->sebutan_desa->sebutan_desa }} {{ $d->nama_desa }}
+                                                            Bagian {{ $d->sebutan_desa->sebutan_desa }}
+                                                            {{ $d->nama_desa }}
                                                         </td>
                                                         <td>
                                                             <div class="input-group input-group-outline my-0">

@@ -96,12 +96,10 @@
 <form action="/transaksi/tutup_buku" method="post" id="FormSimpanTutupBuku">
     @csrf
 
-    <input type="hidden" name="tgl_kondisi" id="tgl_kondisi" value="{{ $tgl_kondisi }}">
-    <input type="hidden" name="aset" id="aset" value="{{ $aset }}">
-    <input type="hidden" name="liabilitas" id="liabilitas" value="{{ $liabilitas }}">
-    <input type="hidden" name="surplus" id="surplus" value="{{ $laba_rugi }}">
+    <input type="hidden" name="tahun" id="tahun" value="{{ $tahun }}">
     <input type="hidden" name="jumlah_riwayat" id="jumlah_riwayat" value="{{ $jumlah_riwayat }}">
     <input type="hidden" name="total_riwayat" id="total_riwayat" value="{{ $total_riwayat }}">
+    <input type="hidden" name="pembagian_laba" id="pembagian_laba" value="false">
 
     <div class="card">
         <div class="card-body p-2">

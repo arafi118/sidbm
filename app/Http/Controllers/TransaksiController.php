@@ -154,23 +154,82 @@ class TransaksiController extends Controller
         $tgl_kondisi = $tahun . '-' . $bulan . '-' . date('t', strtotime($tahun . '-' . $bulan . '-01'));
         return response()->json([
             'success' => true,
-            'view' => view('transaksi.tutup_buku.partials.saldo')->with(compact('akun1', 'surplus', 'tgl_kondisi', 'tahun_lalu', 'total_riwayat', 'jumlah_riwayat'))->render()
+            'view' => view('transaksi.tutup_buku.partials.saldo')->with(compact('akun1', 'surplus', 'tgl_kondisi', 'tahun', 'tahun_lalu', 'total_riwayat', 'jumlah_riwayat'))->render()
         ]);
     }
 
     public function simpanTutupBuku(Request $request)
     {
-        $surplus = $request->surplus;
-        $tgl_kondisi = $request->tgl_kondisi;
-        $tahun = Tanggal::tahun($tgl_kondisi);
-        $bulan = Tanggal::bulan($tgl_kondisi);
+        $keuangan = new Keuangan;
 
-        $jumlah_riwayat = $request->jumlah_riwayat;
-        $total_riwayat = $request->total_riwayat;
+        $tahun = $request->tahun;
+        $bulan = date('m');
+        if ($tahun < date('Y')) {
+            $bulan = 12;
+        }
+        $tgl_kondisi = $tahun . '-' . $bulan . '-' . date('t', strtotime($tahun . '-' . $bulan . '-01'));
 
+        $surplus = $keuangan->laba_rugi($tgl_kondisi);
+
+        $success = false;
         $migrasi_saldo = false;
-        if ($jumlah_riwayat < $total_riwayat) {
-            $migrasi_saldo = true;
+        if ($request->pembagian_laba == 'false') {
+            $jumlah_riwayat = $request->jumlah_riwayat;
+            $total_riwayat = $request->total_riwayat;
+
+            if ($jumlah_riwayat < $total_riwayat) {
+                $migrasi_saldo = true;
+            }
+
+            $tahun_tb = $tahun + 1;
+            $kode_rekening = Rekening::with([
+                'kom_saldo' => function ($query) use ($tahun, $bulan) {
+                    $query->where('tahun', $tahun)->where(function ($query) use ($bulan) {
+                        $query->where('bulan', '0')->orwhere('bulan', $bulan);
+                    });
+                }
+            ])->get();
+
+            $data_id = [];
+            $saldo_tutup_buku = [];
+            foreach ($kode_rekening as $rek) {
+                $saldo_awal_debit = 0;
+                $saldo_awal_kredit = 0;
+                $debit = 0;
+                $kredit = 0;
+
+                if ($rek->lev1 < 4 && $rek->kode_akun != '3.2.02.01') {
+                    foreach ($rek->kom_saldo as $saldo) {
+                        if ($saldo->bulan == 0) {
+                            if ($saldo->debit > 0) $saldo_awal_debit = $saldo->debit;
+                            if ($saldo->kredit > 0) $saldo_awal_kredit = $saldo->kredit;
+                        } else {
+                            if ($saldo->debit > 0) $debit = $saldo->debit;
+                            if ($saldo->kredit > 0) $kredit = $saldo->kredit;
+                        }
+                    }
+                }
+
+                $saldo_debit = $saldo_awal_debit + $debit;
+                $saldo_kredit = $saldo_awal_kredit + $kredit;
+
+                $id = str_replace('.', '', $rek->kode_akun) . $tahun_tb . '00';
+                $saldo_tutup_buku[] = [
+                    'id' => $id,
+                    'kode_akun' => $rek->kode_akun,
+                    'tahun' => $tahun_tb,
+                    'bulan' => '0',
+                    'debit' => $saldo_debit,
+                    'kredit' => $saldo_kredit
+                ];
+
+                $data_id[] = $id;
+            }
+
+            Saldo::whereIn('id', $data_id)->delete();
+            Saldo::insert($saldo_tutup_buku);
+
+            $success = true;
         }
 
         $kec = Kecamatan::where('id', Session::get('lokasi'))->with([
@@ -187,7 +246,7 @@ class TransaksiController extends Controller
         ])->get();
 
         $title = 'Pembagian Laba';
-        return view('transaksi.tutup_buku.tutup_buku')->with(compact('title', 'kec', 'surplus', 'rekening', 'desa', 'tgl_kondisi', 'tahun', 'migrasi_saldo'));
+        return view('transaksi.tutup_buku.tutup_buku')->with(compact('title', 'kec', 'surplus', 'rekening', 'desa', 'tgl_kondisi', 'tahun', 'migrasi_saldo', 'success'));
     }
 
     public function simpanAlokasiLaba(Request $request)
@@ -242,24 +301,29 @@ class TransaksiController extends Controller
         $pembagian_laba_ditahan = $data['laba_ditahan'];
         $pembagian_laba_masyarakat = $data['masyarakat'];
 
+        $data_id = [];
         $saldo_tutup_buku = [];
         foreach ($desa as $d) {
+            $id = $d->kd_desa . $tahun_tb . 0;
             $saldo_tutup_buku[] = [
-                'id' => $d->kd_desa . $tahun_tb . 0,
+                'id' => $id,
                 'kode_akun' => $d->kode_desa,
                 'tahun' => $tahun_tb,
                 'bulan' => '0',
                 'debit' => $d->saldo->kredit,
                 'kredit' => str_replace(',', '', str_replace('.00', '', $pembagian_laba_desa[$d->kd_desa]))
             ];
+
+            $data_id[] = $id;
         }
 
         foreach ($kec->saldo as $saldo) {
             $urut = substr($saldo->id, -1);
 
+            $id = str_replace('.', '', $kec->kd_kec) . $tahun_tb . 0 . $urut;
             if ($urut <= 3) {
                 $saldo_tutup_buku[] = [
-                    'id' => str_replace('.', '', $kec->kd_kec) . $tahun_tb . 0 . $urut,
+                    'id' => $id,
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
@@ -268,7 +332,7 @@ class TransaksiController extends Controller
                 ];
             } else {
                 $saldo_tutup_buku[] = [
-                    'id' => str_replace('.', '', $kec->kd_kec) . $tahun_tb . 0 . $urut,
+                    'id' => $id,
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
@@ -276,9 +340,10 @@ class TransaksiController extends Controller
                     'kredit' => str_replace(',', '', str_replace('.00', '', $pembagian_laba_ditahan[$urut]))
                 ];
             }
+
+            $data_id[] = $id;
         }
 
-        $saldo_tutup_buku = [];
         foreach ($rekening as $rek) {
             $saldo_awal_debit = 0;
             $saldo_awal_kredit = 0;
@@ -300,24 +365,23 @@ class TransaksiController extends Controller
             $saldo_debit = $saldo_awal_debit + $debit;
             $saldo_kredit = $saldo_awal_kredit + $kredit;
 
-            if (in_array($rek->kode_akun, $alokasi_laba)) {
+            if (in_array($rek->kode_akun, array_keys($alokasi_laba))) {
+                $id = str_replace('.', '', $rek->kode_akun) . $tahun_tb . '00';
                 $saldo_kredit += $alokasi_laba[$rek->kode_akun];
-            }
+                $saldo_tutup_buku[] = [
+                    'id' => $id,
+                    'kode_akun' => $rek->kode_akun,
+                    'tahun' => $tahun_tb,
+                    'bulan' => '0',
+                    'debit' => $saldo_debit,
+                    'kredit' => $saldo_kredit
+                ];
 
-            $saldo_tutup_buku[] = [
-                'id' => str_replace('.', '', $rek->kode_akun) . $tahun_tb . '00',
-                'kode_akun' => $rek->kode_akun,
-                'tahun' => $tahun_tb,
-                'bulan' => '0',
-                'debit' => $saldo_debit,
-                'kredit' => $saldo_kredit
-            ];
+                $data_id[] = $id;
+            }
         }
 
-        Saldo::where([
-            ['tahun', $tahun_tb],
-            ['bulan', '0']
-        ])->delete();
+        Saldo::whereIn('id', $data_id)->delete();
         Saldo::insert($saldo_tutup_buku);
 
         return response()->json([
