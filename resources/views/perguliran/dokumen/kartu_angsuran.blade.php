@@ -348,8 +348,10 @@
                         <li>Bayarlah angsuran tepat waktu sesuai dengan jadwal diatas</li>
                         <li>Untuk memudahkan pelayanan, bawalah kartu ini dan slip pembayaran terakhir setiap melakukan
                             angsuran</li>
-                        <li>Jagalah keutuhan kartu dan tidak melipatnya, jika hilang segera lapor UPK</li>
-                        <li>Jika lembar ini tidak mencukupi, cetak pada lembar baliknya dengan dibubuhi stempel UPK</li>
+                        <li>Jagalah keutuhan kartu dan tidak melipatnya, jika hilang segera lapor
+                            {{ $kec->nama_lembaga_sort }}</li>
+                        <li>Jika lembar ini tidak mencukupi, cetak pada lembar baliknya dengan dibubuhi stempel
+                            {{ $kec->nama_lembaga_sort }}</li>
                     </ol>
                 </td>
             </tr>
