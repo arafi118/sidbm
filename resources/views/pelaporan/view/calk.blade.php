@@ -349,52 +349,75 @@
                         </li>
                         <li>
                             <div>Bagian Desa;</div>
-                            <table style="margin-left: 10px;" cellspacing="0" cellpadding="0">
-                                <tr>
-                                    <td class="b" colspan="3" align="center">Desa</td>
-                                    <td class="b" align="center">s/d Tahun lalu</td>
-                                    <td class="b" align="center">Tahun ini</td>
-                                    <td class="b" align="center">s/d Tahun Ini</td>
-                                </tr>
+                            <ul>
+                                <li style="list-style: none; margin-left: -20px;">
+                                    <table cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td class="b" colspan="3" align="center">Desa</td>
+                                            <td class="b" align="center">s/d Tahun lalu</td>
+                                            <td class="b" align="center">Tahun ini</td>
+                                            <td class="b" align="center">s/d Tahun Ini</td>
+                                        </tr>
 
-                                @foreach ($kec->desa as $desa)
-                                    @php
-                                        $laba_th_lalu = 0;
-                                        $laba_th_ini = 0;
-                                        if ($desa->saldo) {
-                                            $laba_th_lalu = $desa->saldo->debit;
-                                            $laba_th_ini = $desa->saldo->kredit;
-                                        }
-                                    @endphp
-                                    <tr>
-                                        <td>{{ $loop->iteration }}.</td>
-                                        <td>{{ $desa->sebutan_desa->sebutan_desa }} {{ $desa->nama_desa }}</td>
-                                        <td>:</td>
-                                        <td width="70" align="right">{{ number_format($laba_th_lalu, 2) }}</td>
-                                        <td width="70" align="right">
-                                            {{ number_format($laba_th_ini - $laba_th_lalu, 2) }}</td>
-                                        <td width="70" align="right">{{ number_format($laba_th_ini, 2) }}</td>
-                                    </tr>
-                                @endforeach
-                            </table>
+                                        @foreach ($kec->desa as $desa)
+                                            @php
+                                                $laba_th_lalu = 0;
+                                                $laba_th_ini = 0;
+                                                if ($desa->saldo) {
+                                                    $laba_th_lalu = $desa->saldo->debit;
+                                                    $laba_th_ini = $desa->saldo->kredit;
+                                                }
+                                            @endphp
+                                            <tr>
+                                                <td>{{ $loop->iteration }}.</td>
+                                                <td>{{ $desa->sebutan_desa->sebutan_desa }} {{ $desa->nama_desa }}</td>
+                                                <td>:</td>
+                                                <td width="70" align="right">{{ number_format($laba_th_lalu, 2) }}
+                                                </td>
+                                                <td width="70" align="right">
+                                                    {{ number_format($laba_th_ini - $laba_th_lalu, 2) }}</td>
+                                                <td width="70" align="right">{{ number_format($laba_th_ini, 2) }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             Bagian milik bersama masyarakat Desa digunakan untuk:
                             <ol>
                                 <li>
                                     Kegiatan sosial kemasyarakatan dan bantuan rumah tangga miskin
-                                    Rp. {{ number_format($calk[0]['th_lalu'], 2) }},
-                                    Rp. {{ number_format($calk[0]['th_ini'], 2) }}
+                                    <ul style="list-style: lower-alpha">
+                                        <li>
+                                            s/d Tahun Lalu Rp. {{ number_format($calk[0]['th_lalu'], 2) }}
+                                        </li>
+                                        <li>
+                                            dan Tahun Ini Rp. {{ number_format($calk[0]['th_ini'], 2) }}
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li>
                                     Pengembangan kapasitas kelompok simpan pinjam perempuan/usaha ekonomi produktif
-                                    Rp. {{ number_format($calk[1]['th_lalu'], 2) }},
-                                    Rp. {{ number_format($calk[1]['th_ini'], 2) }}
+                                    <ul style="list-style: lower-alpha">
+                                        <li>
+                                            s/d Tahun Lalu Rp. {{ number_format($calk[1]['th_lalu'], 2) }}
+                                        </li>
+                                        <li>
+                                            dan Tahun Ini Rp. {{ number_format($calk[1]['th_ini'], 2) }}
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li>
                                     Pelatihan masyarakat, dan kelompok pemanfaat umum
-                                    Rp. {{ number_format($calk[2]['th_lalu'], 2) }},
-                                    Rp. {{ number_format($calk[2]['th_ini'], 2) }}
+                                    <ul style="list-style: lower-alpha">
+                                        <li>
+                                            s/d Tahun Lalu Rp. {{ number_format($calk[2]['th_lalu'], 2) }}
+                                        </li>
+                                        <li>
+                                            dan Tahun Ini Rp. {{ number_format($calk[2]['th_ini'], 2) }}
+                                        </li>
+                                    </ul>
                                 </li>
                             </ol>
                         </li>
@@ -404,7 +427,7 @@
                     <div>Laba Ditahan</div>
                     <ol style="list-style: lower-latin;">
                         <li>
-                            Laba Ditahan untuk Peningkatan Modal DBM Usaha Rp. {{ number_format($calk[3]['th_ini'], 2) }}
+                            Laba Ditahan untuk Penambahan Modal Kegiatan DBM Rp. {{ number_format($calk[3]['th_ini'], 2) }}
                         </li>
                         <li>
                             Laba Ditahan untuk Penambahan Investasi Usaha Rp. {{ number_format($calk[4]['th_ini'], 2) }}

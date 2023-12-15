@@ -2,10 +2,10 @@
     use App\Utils\Tanggal;
 
     $title_form = [
-        1 => 'Kegiatan sosial kemasyarakatan',
-        2 => 'Pengembangan kapasitas kelompok',
-        3 => 'Pelatihan masyarakat',
-        4 => 'Peningkatan Modal DBM Usaha',
+        1 => 'Kegiatan sosial kemasyarakatan dan bantuan RTM',
+        2 => 'Pengembangan kapasitas kelompok SPP/UEP',
+        3 => 'Pelatihan masyarakat, dan kelompok pemanfaat umum',
+        4 => 'Penambahan Modal DBM',
         5 => 'Penambahan Investasi Usaha',
         6 => 'Pendirian Unit Usaha',
     ];
@@ -50,7 +50,7 @@
                     <div class="card">
                         <div class="card-body p-3">
                             <h4 class="font-weight-normal">
-                                Pembagian Laba Usaha
+                                Alokasi Laba Usaha
                             </h4>
 
                             @foreach ($rekening as $rek)
@@ -79,7 +79,7 @@
                                                 @foreach ($kec->saldo as $saldo)
                                                     @if (substr($saldo->id, -1) <= 3)
                                                         <tr>
-                                                            <td>Untuk {{ $title_form[substr($saldo->id, -1)] }}</td>
+                                                            <td>{{ $title_form[substr($saldo->id, -1)] }}</td>
                                                             <td>
                                                                 <div class="input-group input-group-outline my-0">
                                                                     <input type="text"
@@ -140,7 +140,7 @@
                                     <thead class="bg-dark text-white">
                                         <tr>
                                             <th width="50%">
-                                                <span class="text-sm">Alokasi Laba</span>
+                                                <span class="text-sm">Laba Ditahan</span>
                                             </th>
                                             <th width="50%">
                                                 <div class="d-flex justify-content-between">
@@ -168,7 +168,7 @@
                                                     }
                                                 @endphp
                                                 <tr>
-                                                    <td>Untuk {{ $title_form[substr($saldo->id, -1)] }}</td>
+                                                    <td>{{ $title_form[substr($saldo->id, -1)] }}</td>
                                                     <td>
                                                         <div class="input-group input-group-outline my-0">
                                                             <input type="text"
@@ -188,7 +188,7 @@
 
                             <div class="d-flex justify-content-end">
                                 <button type="button" id="btnSimpanLaba" class="btn btn-github btn-sm">
-                                    Simpan Alokasi Pembagian Laba
+                                    Simpan Alokasi Laba
                                 </button>
                             </div>
                         </div>

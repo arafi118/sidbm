@@ -31,7 +31,7 @@
             <div class="d-flex justify-content-end">
                 <button type="button" id="SimpanSaldo" class="btn btn-sm btn-facebook mb-0">Simpan Saldo</button>
                 <button type="button" id="PembagianLaba" class="btn btn-sm btn-instagram mb-0 ms-3">
-                    Pembagian Laba
+                    Simpan Alokasi Laba
                 </button>
                 <button type="button" id="TutupBuku" {{ date('m') <= 10 ? 'disabled' : '' }}
                     class="btn btn-sm btn-github mb-0 ms-3">Tutup Buku</button>
