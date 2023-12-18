@@ -101,14 +101,6 @@
                     @include('sop.partials._spk')
                 </div>
             </div>
-            {{-- <div class="card mt-4" id="calk">
-                <div class="card-header">
-                    <h5 class="mb-0">Pengaturan CALK</h5>
-                </div>
-                <div class="card-body pt-0">
-                    @include('sop.partials._calk')
-                </div>
-            </div> --}}
             <div class="card mt-4" id="logo">
                 <div class="card-header">
                     <h5 class="mb-0">Upload Logo</h5>
