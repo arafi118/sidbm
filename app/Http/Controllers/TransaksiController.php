@@ -198,6 +198,34 @@ class TransaksiController extends Controller
                 $debit = 0;
                 $kredit = 0;
 
+                $bulan_tb = '0';
+                if ($rek->lev1 >= 4) {
+                    foreach ($rek->kom_saldo as $saldo) {
+                        if ($saldo->bulan == 0) {
+                            if ($saldo->debit > 0) $saldo_awal_debit = $saldo->debit;
+                            if ($saldo->kredit > 0) $saldo_awal_kredit = $saldo->kredit;
+                        } else {
+                            if ($saldo->debit > 0) $debit = $saldo->debit;
+                            if ($saldo->kredit > 0) $kredit = $saldo->kredit;
+                        }
+                    }
+
+                    $saldo_debit = $saldo_awal_debit + $debit;
+                    $saldo_kredit = $saldo_awal_kredit + $kredit;
+
+                    $id = str_replace('.', '', $rek->kode_akun) . $tahun . '13';
+                    $saldo_tutup_buku[] = [
+                        'id' => $id,
+                        'kode_akun' => $rek->kode_akun,
+                        'tahun' => $tahun,
+                        'bulan' => 13,
+                        'debit' => $saldo_debit,
+                        'kredit' => $saldo_kredit
+                    ];
+
+                    $data_id[] = $id;
+                }
+
                 if ($rek->lev1 < 4 && $rek->kode_akun != '3.2.02.01') {
                     foreach ($rek->kom_saldo as $saldo) {
                         if ($saldo->bulan == 0) {
@@ -218,7 +246,7 @@ class TransaksiController extends Controller
                     'id' => $id,
                     'kode_akun' => $rek->kode_akun,
                     'tahun' => $tahun_tb,
-                    'bulan' => '0',
+                    'bulan' => $bulan_tb,
                     'debit' => $saldo_debit,
                     'kredit' => $saldo_kredit
                 ];
