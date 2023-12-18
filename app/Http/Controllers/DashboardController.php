@@ -675,7 +675,8 @@ class DashboardController extends Controller
                 $tahun = date('Y', strtotime($tgl));
                 $query->where([
                     ['tahun', $tahun],
-                    ['bulan', '!=', '0']
+                    ['bulan', '!=', '0'],
+                    ['bulan', '!=', '13']
                 ])->orderBy('kode_akun', 'ASC')->orderBy('bulan', 'ASC');
             },
         ])->get();
