@@ -29,12 +29,12 @@
             </form>
 
             <div class="d-flex justify-content-end">
-                <button type="button" id="SimpanSaldo" class="btn btn-sm btn-facebook mb-0">Simpan Saldo</button>
-                <button type="button" id="PembagianLaba" class="btn btn-sm btn-instagram mb-0 ms-3">
-                    Simpan Alokasi Laba
-                </button>
+                {{-- <button type="button" id="SimpanSaldo" class="btn btn-sm btn-facebook mb-0">Simpan Saldo</button> --}}
                 <button type="button" id="TutupBuku" {{ date('m') <= 10 ? 'disabled' : '' }}
-                    class="btn btn-sm btn-github mb-0 ms-3">Tutup Buku</button>
+                    class="btn btn-sm btn-github mb-0 ms-3">1. Tutup Buku</button>
+                <button type="button" id="PembagianLaba" class="btn btn-sm btn-instagram mb-0 ms-3">
+                    2. Simpan Alokasi Laba
+                </button>
             </div>
         </div>
     </div>
@@ -69,20 +69,6 @@
                 $('#TutupBuku').prop("disabled", true)
             } else {
                 $('#TutupBuku').prop("disabled", false)
-            }
-        })
-
-        let childWindow;
-        $(document).on('click', '#SimpanSaldo', function(e) {
-            e.preventDefault()
-
-            var tahun = $('select#tahun').val()
-            childWindow = window.open('/simpan_saldo?bulan=01&tahun=' + tahun, '_blank');
-        })
-
-        window.addEventListener('message', function(event) {
-            if (event.data === 'closed') {
-                window.location.reload()
             }
         })
 

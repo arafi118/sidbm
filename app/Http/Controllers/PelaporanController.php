@@ -132,13 +132,21 @@ class PelaporanController extends Controller
         $data['kab'] = $kab;
         $data['dir'] = $dir;
 
-        if (strlen($data['hari']) > 0 && strlen($data['bulan']) > 0) {
-            $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
-        } elseif (strlen($data['bulan']) > 0) {
-            $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . date('t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'));
-        } else {
-            $data['tgl_kondisi'] = $data['tahun'] . '-12-31';
+        if ($data['tahun'] == null) {
+            abort(404);
         }
+
+        $data['bulanan'] = true;
+        if ($data['bulan'] == null) {
+            $data['bulanan'] = false;
+            $data['bulan'] = 12;
+        }
+
+        if ($data['hari'] == null) {
+            $data['hari'] = date('t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'));
+        }
+
+        $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
         $data['tanggal_kondisi'] = $kec->nama_kec . ', ' . Tanggal::tglLatin($data['tgl_kondisi']);
 
         $file = $request->laporan;
@@ -235,14 +243,9 @@ class PelaporanController extends Controller
         $hari = ($data['hari']);
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Per ' . $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-        } elseif (strlen($bln) > 0) {
-            $tgl .= '01';
-            $data['sub_judul'] = 'Per ' . date('t', strtotime($tgl)) . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-        } else {
+        $data['sub_judul'] = 'Per ' . $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tglLatin($tgl);
+        if ($data['bulanan'] == false) {
             $data['sub_judul'] = 'Per 31 Desember' . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tahun($tgl);
         }
@@ -254,6 +257,9 @@ class PelaporanController extends Controller
             'akun2',
             'akun2.akun3',
             'akun2.akun3.rek',
+            'akun2.akun3.rek.kom_saldo' => function ($query) use ($data) {
+                //
+            },
         ])->orderBy('kode_akun', 'ASC')->get();
 
         $view = view('pelaporan.view.neraca', $data)->render();

@@ -50,6 +50,12 @@
                             <span class="text-sm">Logo</span>
                         </a>
                     </li>
+                    <li class="nav-item pt-2">
+                        <a class="nav-link text-dark d-flex" id="SimpanSaldo" href="#">
+                            <i class="material-icons text-lg me-2">crop_original</i>
+                            <span class="text-sm">Simpan Saldo</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -117,6 +123,9 @@
 
 @section('script')
     <script>
+        var tahun = "{{ date('Y') }}"
+        var bulan = "{{ date('m') }}"
+
         $(".money").maskMoney();
         new Choices($('#pembulatan')[0], {
             shouldSort: false,
@@ -136,6 +145,19 @@
         var quill = new Quill('#editor', {
             theme: 'snow'
         });
+
+        let childWindow;
+        $(document).on('click', '#SimpanSaldo', function(e) {
+            e.preventDefault()
+
+            childWindow = window.open('/simpan_saldo?bulan=01&tahun=' + tahun, '_blank');
+        })
+
+        window.addEventListener('message', function(event) {
+            if (event.data === 'closed') {
+                window.location.reload()
+            }
+        })
 
         $(document).on('click', '.btn-simpan', async function(e) {
             e.preventDefault()
