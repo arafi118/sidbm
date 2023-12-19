@@ -78,6 +78,25 @@ class PelaporanController extends Controller
             return view('pelaporan.partials.sub_laporan')->with(compact('file', 'data'));
         }
 
+        if ($file == 'tutup_buku') {
+            $data = [
+                0 => [
+                    'title' => 'Alokasi Laba',
+                    'file' => 'alokasi_laba'
+                ],
+                1 => [
+                    'title' => 'Jurnal Tutup Buku',
+                    'file' => 'jurnal_tutup_buku'
+                ],
+                2 => [
+                    'title' => 'Neraca',
+                    'file' => 'neraca_tutup_buku'
+                ]
+            ];
+
+            return view('pelaporan.partials.sub_laporan')->with(compact('file', 'data'));
+        }
+
         return view('pelaporan.partials.sub_laporan')->with(compact('file'));
     }
 
@@ -165,6 +184,9 @@ class PelaporanController extends Controller
 
             $data['sub'] = $laporan[1];
             $data['laporan'] = 'E - Budgeting ';
+            return $this->$file($data);
+        } elseif ($file == 'tutup_buku') {
+            $file = $request->sub_laporan;;
             return $this->$file($data);
         } else {
             return $this->$file($data);
@@ -1669,6 +1691,71 @@ class PelaporanController extends Controller
         $view = view('pelaporan.view.perkembangan_piutang.pelunasan', $data)->render();
         $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
         return $pdf->stream();
+    }
+
+    private function jurnal_tutup_buku(array $data)
+    {
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        $data['saldo'] = Saldo::where([
+            ['tahun', $thn],
+            ['bulan', '13']
+        ])->with('rek')->orderBy('kode_akun', 'ASC')->get();
+        $data['rek'] = Rekening::where('kode_akun', '3.2.01.01')->first();
+
+        $data['tgl_transaksi'] = $thn . '-12-31';
+        $data['laporan'] = 'Jurnal Tutup Buku';
+        $view = view('pelaporan.view.tutup_buku.jurnal', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
+    private function neraca_tutup_buku(array $data)
+    {
+        $keuangan = new Keuangan;
+
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = ($data['hari']);
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['sub_judul'] = 'Tahun' . ' ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+
+        $data['debit'] = 0;
+        $data['kredit'] = 0;
+
+        $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with([
+            'akun2',
+            'akun2.akun3',
+            'akun2.akun3.rek',
+            'akun2.akun3.rek.saldo' => function ($query) use ($data) {
+                $query->where([
+                    ['tahun', $data['tahun'] + 1],
+                    ['bulan', '0']
+                ]);
+            },
+        ])->orderBy('kode_akun', 'ASC')->get();
+
+        $data['laporan'] = 'Neraca Tutup Buku';
+        $view = view('pelaporan.view.tutup_buku.neraca', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function mou()

@@ -169,8 +169,6 @@ class TransaksiController extends Controller
         }
         $tgl_kondisi = $tahun . '-' . $bulan . '-' . date('t', strtotime($tahun . '-' . $bulan . '-01'));
 
-        $surplus = $keuangan->laba_rugi($tgl_kondisi);
-
         $success = false;
         $migrasi_saldo = false;
         if ($request->pembagian_laba == 'false') {
@@ -205,25 +203,27 @@ class TransaksiController extends Controller
                             if ($saldo->debit > 0) $saldo_awal_debit = $saldo->debit;
                             if ($saldo->kredit > 0) $saldo_awal_kredit = $saldo->kredit;
                         } else {
-                            if ($saldo->debit > 0) $debit = $saldo->debit;
-                            if ($saldo->kredit > 0) $kredit = $saldo->kredit;
+                            if ($saldo->debit != 0) $debit = $saldo->debit;
+                            if ($saldo->kredit != 0) $kredit = $saldo->kredit;
                         }
                     }
 
-                    $saldo_debit = $saldo_awal_debit + $debit;
-                    $saldo_kredit = $saldo_awal_kredit + $kredit;
+                    $saldo_debit = $debit;
+                    $saldo_kredit = $kredit;
 
                     $id = str_replace('.', '', $rek->kode_akun) . $tahun . '13';
-                    $saldo_tutup_buku[] = [
-                        'id' => $id,
-                        'kode_akun' => $rek->kode_akun,
-                        'tahun' => $tahun,
-                        'bulan' => 13,
-                        'debit' => $saldo_debit,
-                        'kredit' => $saldo_kredit
-                    ];
+                    if ($saldo_debit + $saldo_kredit != 0) {
+                        $saldo_tutup_buku[] = [
+                            'id' => $id,
+                            'kode_akun' => $rek->kode_akun,
+                            'tahun' => $tahun,
+                            'bulan' => 13,
+                            'debit' => $saldo_debit,
+                            'kredit' => $saldo_kredit
+                        ];
 
-                    $data_id[] = $id;
+                        $data_id[] = $id;
+                    }
                 }
 
                 if ($rek->lev1 < 4 && $rek->kode_akun != '3.2.02.01') {
@@ -259,6 +259,8 @@ class TransaksiController extends Controller
 
             $success = true;
         }
+
+        $surplus = $keuangan->laba_rugi($tahun . '-13-00');
 
         $kec = Kecamatan::where('id', Session::get('lokasi'))->with([
             'saldo' => function ($query) use ($tahun, $bulan) {
@@ -403,6 +405,20 @@ class TransaksiController extends Controller
                     'bulan' => '0',
                     'debit' => $saldo_debit,
                     'kredit' => $saldo_kredit
+                ];
+
+                $data_id[] = $id;
+            }
+
+            if ($rek->lev1 >= 4) {
+                $id = str_replace('.', '', $rek->kode_akun) . $tahun_tb . '00';
+                $saldo_tutup_buku[] = [
+                    'id' => $id,
+                    'kode_akun' => $rek->kode_akun,
+                    'tahun' => $tahun_tb,
+                    'bulan' => '0',
+                    'debit' => 0,
+                    'kredit' => 0
                 ];
 
                 $data_id[] = $id;

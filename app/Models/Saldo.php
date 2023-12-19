@@ -30,4 +30,9 @@ class Saldo extends Model
     {
         return $this->belongsTo(Saldo::class, 'kode_akun', 'kode_akun');
     }
+
+    public function rek()
+    {
+        return $this->belongsTo(Rekening::class, 'kode_akun', 'kode_akun');
+    }
 }
