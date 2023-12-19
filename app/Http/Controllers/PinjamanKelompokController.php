@@ -719,6 +719,10 @@ class PinjamanKelompokController extends Controller
                 'sa_jasa' => $data['sistem_angsuran_jasa'],
                 'status' => $data['status']
             ];
+
+            if ($request->status == 'V') {
+                $update['catatan_verifikasi'] = $data['catatan_verifikasi'];
+            }
         }
 
         $pinkel = PinjamanKelompok::where('id', $perguliran->id)->update($update);
