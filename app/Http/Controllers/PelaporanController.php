@@ -81,7 +81,7 @@ class PelaporanController extends Controller
         if ($file == 'tutup_buku') {
             $data = [
                 0 => [
-                    'title' => 'Alokasi Laba',
+                    'title' => 'Pengalokasian Laba',
                     'file' => 'alokasi_laba'
                 ],
                 1 => [
@@ -1691,6 +1691,11 @@ class PelaporanController extends Controller
         $view = view('pelaporan.view.perkembangan_piutang.pelunasan', $data)->render();
         $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
         return $pdf->stream();
+    }
+
+    private function alokasi_laba(array $data)
+    {
+        //
     }
 
     private function jurnal_tutup_buku(array $data)
