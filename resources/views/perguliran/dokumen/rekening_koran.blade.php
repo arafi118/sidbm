@@ -1,7 +1,7 @@
 @php
     use App\Utils\Tanggal;
     $jumlah_angsuran = 0;
-    
+
     $alokasi = $pinkel->alokasi;
     $alokasi_jasa = ($alokasi * $pinkel->pros_jasa) / 100;
     $t_pokok = 0;
@@ -107,26 +107,26 @@
                 $jasa = 0;
                 $denda = 0;
                 $pencairan = 0;
-                
+
                 if ($kredit == '1.1.03') {
-                    $pokok = $trx->jumlah;
+                    $pokok = intval($trx->jumlah);
                 } elseif ($trx->rekening_kredit == '4.1.01.01' or $trx->rekening_kredit == '4.1.01.02' or $trx->rekening_kredit == '4.1.01.03') {
-                    $jasa = $trx->jumlah;
+                    $jasa = intval($trx->jumlah);
                 } elseif ($trx->rekening_kredit == '4.1.01.04' or $trx->rekening_kredit == '4.1.01.05' or $trx->rekening_kredit == '4.1.01.06') {
-                    $denda = $trx->jumlah;
+                    $denda = intval($trx->jumlah);
                 } elseif ($kredit == '1.1.01') {
-                    $pencairan = $trx->jumlah;
+                    $pencairan = intval($trx->jumlah);
                 }
-                
+
                 $inisial = '';
                 if (isset($trx->user->ins)) {
                     $inisial = $trx->user->ins;
                 }
-                
+
                 if ($debit != '1.1.03') {
                     $t_jasa += $jasa;
                 }
-                
+
                 $t_pokok += $pokok;
                 $t_denda += $denda;
             @endphp
