@@ -83,6 +83,7 @@ Route::get('/simpan_saldo', [DashboardController::class, 'simpanSaldo'])->middle
 
 Route::post('/dashboard/jatuh_tempo', [DashboardController::class, 'jatuhTempo'])->middleware('auth');
 Route::post('/dashboard/nunggak', [DashboardController::class, 'nunggak'])->middleware('auth');
+Route::post('/dashboard/tagihan', [DashboardController::class, 'tagihan'])->middleware('auth');
 Route::get('/dashboard/pinjaman', [DashboardController::class, 'pinjaman'])->middleware('auth');
 Route::get('/dashboard/pemanfaat', [DashboardController::class, 'pemanfaat'])->middleware('auth');
 

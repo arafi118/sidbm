@@ -57,7 +57,7 @@
                                     <label>NIK</label>
                                     <input type="text" class="form-control" name="nik" id="nik"
                                         placeholder="{{ str_replace('.', '', $user->kec->kd_kec) }}"
-                                        value="{{ $user->nik }}">
+                                        value="{{ $user->nik }}" maxlength="16">
                                     <small class="text-danger" id="msg_nik"></small>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
                                 <div class="input-group input-group-static my-3">
                                     <label>Telpon</label>
                                     <input type="text" name="telpon" id="telpon" class="form-control"
-                                        placeholder="628" value="{{ $user->hp }}">
+                                        placeholder="628" value="{{ $user->hp }}" maxlength="13">
                                     <small class="text-danger" id="msg_telpon"></small>
                                 </div>
                             </div>

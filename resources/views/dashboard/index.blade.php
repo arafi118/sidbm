@@ -198,8 +198,6 @@
         </div>
     </div>
 
-
-
     {{-- Modal Jatuh Dempo --}}
     <div class="modal fade" id="jatuhTempo" aria-labelledby="jatuhTempoLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
@@ -277,22 +275,77 @@
                             </div>
                             <div class="tab-pane fade" id="tagihan" role="tabpanel" aria-labelledby="tagihan">
                                 <div class="card">
-                                    <div class="card-body">
-                                        {{-- <div class="table-responsive">
-                                            <table class="table table-striped midle" width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <td align="center">No</td>
-                                                        <td align="center">Nama Kelompok</td>
-                                                        <td align="center">Tgl Cair</td>
-                                                        <td align="center">Alokasi</td>
-                                                        <td align="center">Tunggakan Pokok</td>
-                                                        <td align="center">Tunggakan Jasa</td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="TbHariIni"></tbody>
-                                            </table>
-                                        </div> --}}
+                                    <div class="card-body p-3">
+                                        <form action="/dashboard/tagihan" method="post" id="formTagihan">
+                                            @csrf
+
+                                            <div class="alert alert-info text-white">
+                                                Kirim Whatsapp Tagihan berdasarkan tanggal jatuh tempo. Pastikan nomor HP
+                                                kelompok dapat menerima pesan Whatsapp.
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="input-group input-group-static mb-3">
+                                                        <label for="tgl_tagihan">Tgl Jatuh Tempo</label>
+                                                        <input autocomplete="off" type="text" name="tgl_tagihan"
+                                                            id="tgl_tagihan" class="form-control date pesan"
+                                                            value="{{ date('d/m/Y') }}">
+                                                        <small class="text-danger" id="msg_tgl_tagihan"></small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-group input-group-static mb-3">
+                                                        <label for="tgl_pembayaran">Tgl Pembayaran</label>
+                                                        <input autocomplete="off" type="text" name="tgl_pembayaran"
+                                                            id="tgl_pembayaran" class="form-control date pesan"
+                                                            value="{{ date('d/m/Y') }}">
+                                                        <small class="text-danger" id="msg_tgl_pembayaran"></small>
+                                                    </div>
+                                                </div>
+
+                                                <textarea name="template" id="template" class="d-none">
+Yth. Kelompok {Nama Kelompok} {Nama Desa},
+
+{pesan}
+Salam,
+{{ $user->namadepan . ' ' . $user->namabelakang }}
+Nomor Telepon: {{ $user->hp }}
+                                                    </textarea>
+
+                                                <div class="col-md-6">
+                                                    <div class="input-group input-group-static mb-3">
+                                                        <label for="pesan">Pesan</label>
+                                                        <textarea class="form-control pesan" name="pesan" id="pesan" cols="30" rows="10">
+Kami ingin mengingatkan mengenai angsuran terbaru:
+Angsuran 
+Pokok   : Rp. {Angsuran Pokok}
+Jasa      : Rp. {Angsuran Jasa} 
+Jatuh tempo tanggal {Tanggal Jatuh Tempo}.
+
+Mohon segera melakukan pembayaran paling lambat tanggal {Tanggal Pembayaran}.
+
+Terima kasih atas perhatiannya!
+                                                        </textarea>
+                                                        <small class="text-danger" id="msg_pesan"></small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-group input-group-static mb-3">
+                                                        <label for="preview">Preview</label>
+                                                        <textarea readonly class="form-control" name="preview" id="preview" cols="30" rows="10"></textarea>
+                                                        <small class="text-danger" id="msg_preview"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <textarea class="form-control d-none" name="pesan_whatsapp" id="pesan_whatsapp"></textarea>
+                                        </form>
+
+                                        <div class="d-flex justify-content-end">
+                                            <button type="button" id="CekTagihan" class="btn btn-sm btn-github"
+                                                {{ strlen($user->hp) >= 11 ? '' : 'disabled' }}>Preview</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -506,6 +559,25 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal Tagihan --}}
+    <div class="modal fade" id="tagihanPinjaman" aria-labelledby="tagihanPinjamanLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="tagihanPinjamanLabel">Tagihan</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="TbTagihan"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-github btn-sm" id="KirimPesan">Kirim Pesan</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="closeTagihan">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
     @php
         $p = $saldo[4];
         $b = $saldo[5];
@@ -515,6 +587,10 @@
 
 @section('script')
     <script>
+        $(".date").flatpickr({
+            dateFormat: "d/m/Y"
+        })
+
         $.ajax({
             type: 'post',
             url: '/dashboard/jatuh_tempo',
@@ -543,6 +619,53 @@
                     }
                 }
             }
+        })
+
+        function tagihan() {
+            var tgl_tagihan = $('#tgl_tagihan').val()
+
+            $.ajax({
+                url: '/dashboard/tagihan',
+                type: 'post',
+                data: $('#formTagihan').serialize(),
+                success: function(result) {
+                    if (result.success) {
+                        $('#TbTagihan').html(result.tagihan)
+                        $('#tagihanPinjaman').modal('show')
+                    }
+                }
+            })
+        }
+
+        $(document).on('click', '#CekTagihan', function(e) {
+            e.preventDefault()
+
+            tagihan()
+        })
+
+        $(document).on('click', '#closeTagihan', function() {
+            $('#tagihanPinjaman').modal('hide')
+            $('#jatuhTempo').modal('show')
+        })
+
+        function preview() {
+            var tgl_jatuh_tempo = $('#tgl_tagihan').val()
+            var tgl_pembayaran = $('#tgl_pembayaran').val()
+            var template = $('#template').val()
+            var pesan = $('#pesan').val()
+
+            pesan = pesan.replace('{Tanggal Jatuh Tempo}', tgl_jatuh_tempo)
+                .replace('{Tanggal Pembayaran}', tgl_pembayaran)
+            template = template.replace('{pesan}', pesan)
+
+            $('#preview').val(template)
+            $('#pesan_whatsapp').val($('#preview').val())
+        }
+
+        preview()
+
+        $(document).on('change', '.pesan', function() {
+            preview()
         })
 
         $.get('/dashboard/pinjaman?status=P', function(result) {
@@ -574,6 +697,61 @@
                 $('#tbPemanfaat').html(result.table)
             }
         })
+
+        $(document).on('click', '#KirimPesan', function(e) {
+            e.preventDefault()
+
+            var form = $('#FormPemberitahuan')
+            var values = $('[data-input=checked]:checked').map(function(i) {
+                setTimeout(() => {
+                    var pesan = this.value
+                    var number = pesan.split('||')[0]
+                    var kelompok = pesan.split('||')[1]
+                    var msg = pesan.split('||')[2]
+                    sendMsg(number, kelompok, msg)
+                }, i * 1000);
+            }).get();
+        })
+
+        function sendMsg(number, nama, msg, repeat = 0) {
+            $.ajax({
+                type: 'post',
+                url: 'https://whatsapp.sidbm.net/send-text',
+                timeout: 0,
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                data: JSON.stringify({
+                    number: number,
+                    text: msg
+                }),
+                success: function(result) {
+                    if (result.success) {
+                        MultiToast('success', 'Pesan untuk kelompok ' + nama + ' berhasil dikirim')
+                    } else {
+                        if (repeat < 1) {
+                            setTimeout(function() {
+                                sendMsg(number, nama, msg, repeat + 1)
+                            }, 1000)
+                        } else {
+                            MultiToast('error', 'Pesan untuk kelompok ' + nama + ' gagal dikirim')
+                        }
+                    }
+                },
+                error: function(result) {
+                    if (repeat < 1) {
+                        setTimeout(function() {
+                            sendMsg(number, nama, msg, repeat + 1)
+                        }, 1000)
+                    } else {
+                        MultiToast('error', 'Pesan untuk kelompok ' + nama + ' gagal dikirim')
+                    }
+                }
+            })
+        }
     </script>
 
     <script>

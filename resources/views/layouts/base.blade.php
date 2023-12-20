@@ -420,6 +420,34 @@
                 width: formattedWidth
             })
         }
+
+        function MultiToast(icon, text) {
+            font = "1.2rem Nimrod MT";
+
+            canvas = document.createElement("canvas");
+            context = canvas.getContext("2d");
+            context.font = font;
+            width = context.measureText(text).width;
+            formattedWidth = Math.ceil(width) + 100;
+
+            let MultiToast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            MultiToast.fire({
+                icon: icon,
+                title: text,
+                width: formattedWidth
+            })
+        }
     </script>
 
     <script>

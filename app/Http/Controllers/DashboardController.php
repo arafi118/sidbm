@@ -96,6 +96,7 @@ class DashboardController extends Controller
             $data['jasa_pl'] = $trx->jasa_pl;
         }
 
+        $data['user'] = auth()->user();
         $data['saldo'] = $this->_saldo($tgl);
         $data['jumlah_saldo'] = Saldo::where('kode_akun', 'NOT LIKE', $kec->kd_kec . '%')->count();
 
@@ -503,8 +504,9 @@ class DashboardController extends Controller
 
     public function tagihan(Request $request)
     {
-        $checked = request()->get('checked') ?: false;
         $tanggal = Tanggal::tglNasional($request->tgl_tagihan);
+        $tgl_bayar = Tanggal::tglNasional($request->tgl_pembayaran);
+        $pesan = $request->pesan_whatsapp;
 
         $pinjaman = PinjamanKelompok::where('status', 'A')->whereDay('tgl_cair', date('d', strtotime($tanggal)))->with([
             'target' => function ($query) use ($tanggal) {
@@ -517,12 +519,13 @@ class DashboardController extends Controller
                 $query->where('tgl_transaksi', '<=', $tanggal);
             },
             'kelompok',
-            'kelompok.d'
+            'kelompok.d',
+            'kelompok.d.sebutan_desa'
         ])->get();
 
         return response()->json([
             'success' => true,
-            'tagihan' => view('dashboard.partials.tagihan')->with('checked', 'pinjaman')->render()
+            'tagihan' => view('dashboard.partials.tagihan')->with(compact('pinjaman', 'pesan'))->render()
         ]);
     }
 
