@@ -62,9 +62,14 @@ class DashboardController extends Controller
             DB::raw("(SELECT count(*) FROM $tb WHERE status='W') as w"),
         ])->first();
 
-        $data['proposal'] = $pinj->p;
-        $data['verifikasi'] = $pinj->v;
-        $data['waiting'] = $pinj->w;
+        $data['proposal'] = 0;
+        $data['verifikasi'] = 0;
+        $data['waiting'] = 0;
+        if ($pinj) {
+            $data['proposal'] = $pinj->p;
+            $data['verifikasi'] = $pinj->v;
+            $data['waiting'] = $pinj->w;
+        }
 
         $tb = 'transaksi_' . auth()->user()->lokasi;
         $trx = Transaksi::select([
@@ -76,12 +81,20 @@ class DashboardController extends Controller
             DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_debit LIKE '1.1.01.%' AND rekening_kredit='4.1.01.03' AND tgl_transaksi='$tgl') as jasa_pl"),
         ])->first();
 
-        $data['pokok_spp'] = $trx->pokok_spp;
-        $data['pokok_uep'] = $trx->pokok_uep;
-        $data['pokok_pl'] = $trx->pokok_pl;
-        $data['jasa_spp'] = $trx->jasa_spp;
-        $data['jasa_uep'] = $trx->jasa_uep;
-        $data['jasa_pl'] = $trx->jasa_pl;
+        $data['pokok_spp'] = 0;
+        $data['pokok_uep'] = 0;
+        $data['pokok_pl'] = 0;
+        $data['jasa_spp'] = 0;
+        $data['jasa_uep'] = 0;
+        $data['jasa_pl'] = 0;
+        if ($trx) {
+            $data['pokok_spp'] = $trx->pokok_spp;
+            $data['pokok_uep'] = $trx->pokok_uep;
+            $data['pokok_pl'] = $trx->pokok_pl;
+            $data['jasa_spp'] = $trx->jasa_spp;
+            $data['jasa_uep'] = $trx->jasa_uep;
+            $data['jasa_pl'] = $trx->jasa_pl;
+        }
 
         $data['saldo'] = $this->_saldo($tgl);
         $data['jumlah_saldo'] = Saldo::where('kode_akun', 'NOT LIKE', $kec->kd_kec . '%')->count();
@@ -485,6 +498,31 @@ class DashboardController extends Controller
             'success' => true,
             'nunggak' => $nunggak,
             'table' => $table
+        ]);
+    }
+
+    public function tagihan(Request $request)
+    {
+        $checked = request()->get('checked') ?: false;
+        $tanggal = Tanggal::tglNasional($request->tgl_tagihan);
+
+        $pinjaman = PinjamanKelompok::where('status', 'A')->whereDay('tgl_cair', date('d', strtotime($tanggal)))->with([
+            'target' => function ($query) use ($tanggal) {
+                $query->where([
+                    ['jatuh_tempo', $tanggal],
+                    ['angsuran_ke', '!=', '0']
+                ]);
+            },
+            'saldo' => function ($query) use ($tanggal) {
+                $query->where('tgl_transaksi', '<=', $tanggal);
+            },
+            'kelompok',
+            'kelompok.d'
+        ])->get();
+
+        return response()->json([
+            'success' => true,
+            'tagihan' => view('dashboard.partials.tagihan')->with('checked', 'pinjaman')->render()
         ]);
     }
 
