@@ -1,6 +1,6 @@
 @php
     use App\Utils\Tanggal;
-    
+
     $real_pokok = 0;
     $real_jasa = 0;
     $sum_pokok = 0;
@@ -15,14 +15,14 @@
         $saldo_pokok = $real->saldo_pokok;
         $saldo_jasa = $real->saldo_jasa;
     }
-    
+
     $target_pokok = 0;
     $target_jasa = 0;
     if ($ra) {
         $target_pokok = $ra->target_pokok;
         $target_jasa = $ra->target_jasa;
     }
-    
+
     $tunggakan_pokok = $target_pokok - $sum_pokok;
     if ($tunggakan_pokok < 0) {
         $tunggakan_pokok = 0;
@@ -109,7 +109,7 @@
                         <td>Prosentase Jasa</td>
                         <td>:</td>
                         <td>
-                            <b>{{ ($pinkel->pros_jasa * $pinkel->jangka) / 100 }}% per Bulan</b>
+                            <b>{{ $pinkel->pros_jasa / $pinkel->jangka }}% per Bulan</b>
                         </td>
                     </tr>
                     <tr>
