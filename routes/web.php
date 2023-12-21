@@ -72,10 +72,6 @@ Route::post('/pelaporan/preview', [PelaporanController::class, 'preview'])->midd
 Route::get('/pelaporan/mou', [PelaporanController::class, 'mou'])->middleware('auth');
 Route::get('/pelaporan/ts', [PelaporanController::class, 'ts'])->middleware('auth');
 
-if (Session::get('lokasi_user')) {
-    Session::put('lokasi', Session::get('lokasi_user'));
-}
-
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 Route::get('/piutang_jasa', [DashboardController::class, 'piutang'])->middleware('auth');
 Route::get('/pelaporan/invoice/{invoice}', [PelaporanController::class, 'invoice']);
