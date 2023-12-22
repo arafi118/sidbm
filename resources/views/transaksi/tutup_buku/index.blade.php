@@ -90,6 +90,33 @@
             })
         })
 
+        let childWindow;
+        $(document).on('click', '#SimpanSaldo', function(e) {
+            e.preventDefault()
+
+            childWindow = window.open('/simpan_saldo?bulan=01&tahun=' + tahun, '_blank');
+        })
+
+        window.addEventListener('message', function(event) {
+            if (event.data === 'closed') {
+                $('#FormTahunTutupBuku').attr('action', '/transaksi/tutup_buku/saldo')
+                $('#LayoutPreview').html(
+                    '<div class="card"><div class="card-body p-3"><div class="p-5"></div></div></div>')
+
+                var form = $('#FormTahunTutupBuku')
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(result) {
+                        if (result.success) {
+                            $('#LayoutPreview').html(result.view)
+                        }
+                    }
+                })
+            }
+        })
+
         $(document).on('click', '#PembagianLaba', function(e) {
             e.preventDefault()
             $('#FormTahunTutupBuku').attr('action', '/transaksi/tutup_buku')
