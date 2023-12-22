@@ -12,7 +12,7 @@
 @endphp
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 
 <head>
     <meta charset="utf-8" />
