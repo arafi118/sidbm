@@ -776,6 +776,8 @@ class TransaksiController extends Controller
 
             $pinkel = PinjamanKelompok::where('id', $request->id)->with([
                 'kelompok',
+                'kelompok.d',
+                'kelompok.d.sebutan_desa',
                 'pinjaman_anggota',
                 'saldo' => function ($query) use ($request, $tgl_transaksi) {
                     $query->where([
@@ -997,12 +999,34 @@ class TransaksiController extends Controller
             }
 
             DB::commit();
+
+            $whatsapp = false;
+            $pesan = '';
+            if (strlen($pinkel->kelompok->telpon) >= 11 && strlen(auth()->user()->hp) >= 11) {
+                $nama_kelompok = $pinkel->kelompok->nama_kelompok;
+                $desa = $pinkel->kelompok->d->sebutan_desa->sebutan_desa . ' ' . $pinkel->kelompok->d->nama_desa;
+
+                $whatsapp = true;
+                $pesan .= 'Yth. ' . $nama_kelompok . ' ' . $desa . ',\n\n';
+                $pesan .= 'Terima kasih atas pembayaran angsuran anda.\n';
+                $pesan .= 'Rincian Pembayaran:\n';
+                $pesan .= 'Pokok   : Rp. ' . number_format($request->pokok) . '\n';
+                $pesan .= 'Jasa      : Rp. ' . number_format($request->jasa) . '\n';
+                $pesan .= 'Pembayaran telah kami terima pada ' . Tanggal::tglIndo($tgl_transaksi) . '.';
+                $pesan .= 'Jika ada pertanyaan, hubungi kami di ' . auth()->user()->hp . '.\n\n';
+                $pesan .= 'Salam,\n' . auth()->user()->namadepan . ' ' . auth()->user()->namabelakang;
+            }
+
             return response()->json([
                 'success' => true,
                 'msg' => 'Angsuran kelompok ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] berhasil diposting',
                 'id_pinkel' => $pinkel->id,
                 'idtp' => $idtp,
-                'tgl_transaksi' => $tgl_transaksi
+                'tgl_transaksi' => $tgl_transaksi,
+                'whatsapp' => $whatsapp,
+                'number' => $pinkel->kelompok->telpon,
+                'nama_kelompok' => $pinkel->kelompok->nama_kelompok,
+                'pesan' => $pesan
             ]);
         } catch (\Exception $e) {
             DB::rollback();

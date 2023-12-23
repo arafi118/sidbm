@@ -359,7 +359,10 @@
                                             })
                                     })
 
-
+                                    if (result.whatsapp) {
+                                        sendMsg(result.number, result.nama_kelompok, result
+                                            .pesan)
+                                    }
                                 }
                             })
 
@@ -417,5 +420,45 @@
 
             open_window(action)
         })
+
+        function sendMsg(number, nama, msg, repeat = 0) {
+            $.ajax({
+                type: 'post',
+                url: 'https://whatsapp.sidbm.net/send-text',
+                timeout: 0,
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                data: JSON.stringify({
+                    number: number,
+                    text: msg
+                }),
+                success: function(result) {
+                    if (result.success) {
+                        MultiToast('success', 'Pesan untuk kelompok ' + nama + ' berhasil dikirim')
+                    } else {
+                        if (repeat < 1) {
+                            setTimeout(function() {
+                                sendMsg(number, nama, msg, repeat + 1)
+                            }, 1000)
+                        } else {
+                            MultiToast('error', 'Pesan untuk kelompok ' + nama + ' gagal dikirim')
+                        }
+                    }
+                },
+                error: function(result) {
+                    if (repeat < 1) {
+                        setTimeout(function() {
+                            sendMsg(number, nama, msg, repeat + 1)
+                        }, 1000)
+                    } else {
+                        MultiToast('error', 'Pesan untuk kelompok ' + nama + ' gagal dikirim')
+                    }
+                }
+            })
+        }
     </script>
 @endsection
