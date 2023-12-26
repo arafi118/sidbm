@@ -1012,7 +1012,7 @@ class TransaksiController extends Controller
                 $pesan .= "Rincian Pembayaran:\n";
                 $pesan .= "Pokok   : Rp. " . number_format($request->pokok) . "\n";
                 $pesan .= "Jasa      : Rp. " . number_format($request->jasa) . "\n\n";
-                $pesan .= "Pembayaran telah kami terima pada " . Tanggal::tglIndo($tgl_transaksi) . ".";
+                $pesan .= "Pembayaran telah kami terima pada " . Tanggal::tglIndo($tgl_transaksi) . ".\n\n";
                 $pesan .= "Salam,\n" . auth()->user()->namadepan . " " . auth()->user()->namabelakang . "\n";
                 $pesan .= "Nomor Telepon: " . auth()->user()->hp;
             }
