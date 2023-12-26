@@ -359,10 +359,10 @@
                                             })
                                     })
 
-                                    if (result.whatsapp) {
-                                        sendMsg(result.number, result.nama_kelompok, result
-                                            .pesan)
-                                    }
+                                    // if (result.whatsapp) {
+                                    //     sendMsg(result.number, result.nama_kelompok, result
+                                    //         .pesan)
+                                    // }
                                 }
                             })
 
