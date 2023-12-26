@@ -166,7 +166,7 @@ class InvoiceController extends Controller
 
     public function DetailUnpaid(AdminInvoice $invoice)
     {
-        $invoice = AdminInvoice::where('idv', $invoice->idv)->with('kec', 'jp')->withSum('trx', 'jumlah')->first();
+        $invoice = AdminInvoice::where('idv', $invoice->idv)->with('kec', 'kec.kabupaten', 'jp')->withSum('trx', 'jumlah')->first();
         $rekening = AdminRekening::where('kd_rekening', '111.1001')->orwhere('kd_rekening', '121.1001')->orderBy('kd_rekening', 'DESC')->get();
 
         $title = 'Detail Invoice No. ' . $invoice->nomor;
@@ -175,7 +175,7 @@ class InvoiceController extends Controller
 
     public function DetailPaid(AdminInvoice $invoice)
     {
-        $invoice = AdminInvoice::where('idv', $invoice->idv)->with('kec', 'jp')->withSum('trx', 'jumlah')->first();
+        $invoice = AdminInvoice::where('idv', $invoice->idv)->with('kec', 'kec.kabupaten', 'jp')->withSum('trx', 'jumlah')->first();
 
         $title = 'Detail Invoice No. ' . $invoice->nomor;
         return view('admin.invoice.detail_paid')->with(compact('title', 'invoice'));
