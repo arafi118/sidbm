@@ -19,7 +19,7 @@
                         Request::segment(count(request()->segments())) == 'unpaid')
                     #Invoice{{ $invoice->id }}{{ $invoice->kec->id }} {{ $invoice->kec->nama_kec }} -
                     {{ $invoice->kec->kabupaten->nama_kab }} {{ $invoice->tgl_invoice }}
-                    {{ number_format($invoice->jumlah) }}
+                    Rp. {{ number_format($invoice->jumlah) }}
                 @else
                     {{ ucwords(str_replace('_', ' ', Request::segment(count(request()->segments())))) }}
                 @endif
