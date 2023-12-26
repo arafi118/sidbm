@@ -110,12 +110,14 @@
                     {{ $pinkel->jangka }}
                 </td>
                 <td class="t l b" align="center">
-                    @if ($pinkel->rencana1)
-                        {{ Tanggal::tglIndo($pinkel->rencana1->jatuh_tempo) }}
-                    @endif
+                    @php
+                        $jatuh_tempo = date('Y-m-d', strtotime('+' . $pinkel->jangka . ' month', strtotime($pinkel->tgl_cair)));
+                    @endphp
+
+                    {{ Tanggal::tglIndo($jatuh_tempo) }}
                 </td>
                 <td class="t l b" align="center">
-                    {{ $pinkel->sisa }}
+                    {{ $pinkel->sisa * -1 }}
                 </td>
                 <td class="t l b" align="right">{{ number_format($sum_pokok) }}</td>
                 <td class="t l b" align="right">{{ number_format($sum_jasa) }}</td>
