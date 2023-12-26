@@ -1007,14 +1007,14 @@ class TransaksiController extends Controller
                 $desa = $pinkel->kelompok->d->sebutan_desa->sebutan_desa . ' ' . $pinkel->kelompok->d->nama_desa;
 
                 $whatsapp = true;
-                $pesan .= 'Yth. ' . $nama_kelompok . ' ' . $desa . ',\n\n';
-                $pesan .= 'Terima kasih atas pembayaran angsuran anda.\n';
-                $pesan .= 'Rincian Pembayaran:\n';
-                $pesan .= 'Pokok   : Rp. ' . number_format($request->pokok) . '\n';
-                $pesan .= 'Jasa      : Rp. ' . number_format($request->jasa) . '\n';
-                $pesan .= 'Pembayaran telah kami terima pada ' . Tanggal::tglIndo($tgl_transaksi) . '.';
-                $pesan .= 'Jika ada pertanyaan, hubungi kami di ' . auth()->user()->hp . '.\n\n';
-                $pesan .= 'Salam,\n' . auth()->user()->namadepan . ' ' . auth()->user()->namabelakang;
+                $pesan .= "Yth. " . $nama_kelompok . " " . $desa . ",\n\n";
+                $pesan .= "Terima kasih atas pembayaran angsuran anda.\n";
+                $pesan .= "Rincian Pembayaran:\n";
+                $pesan .= "Pokok   : Rp. " . number_format($request->pokok) . "\n";
+                $pesan .= "Jasa      : Rp. " . number_format($request->jasa) . "\n\n";
+                $pesan .= "Pembayaran telah kami terima pada " . Tanggal::tglIndo($tgl_transaksi) . ".";
+                $pesan .= "Salam,\n" . auth()->user()->namadepan . " " . auth()->user()->namabelakang . "\n";
+                $pesan .= "Nomor Telepon: " . auth()->user()->hp;
             }
 
             return response()->json([

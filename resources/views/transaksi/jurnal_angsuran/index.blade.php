@@ -307,14 +307,25 @@
                 var form = $('#FormAngsuran')
                 var form2 = $('#FormAngsuranAnggota')
 
+                var loading = Swal.fire({
+                    title: "Mohon Menunggu..",
+                    html: "Memproses transaksi angsuran.",
+                    timerProgressBar: true,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                })
+
                 $.ajax({
                     type: 'POST',
                     url: form.attr('action'),
                     data: form.serialize() + '&' + form2.serialize(),
                     success: function(result) {
+                        loading.close()
                         if (result.success) {
                             var loader = Swal.fire({
-                                title: "Mohon Menunggu..",
+                                title: "Menyimpan Transaksi",
                                 html: "Menyimpan transaksi angsuran.",
                                 timerProgressBar: true,
                                 allowOutsideClick: false,
@@ -359,14 +370,15 @@
                                             })
                                     })
 
-                                    // if (result.whatsapp) {
-                                    //     sendMsg(result.number, result.nama_kelompok, result
-                                    //         .pesan)
-                                    // }
+                                    if (result.whatsapp) {
+                                        sendMsg(result.number, result.nama_kelompok, result
+                                            .pesan)
+                                    }
                                 }
                             })
 
                         } else {
+                            loading.close()
                             Swal.fire('Error', result.msg, 'warning')
                         }
                     }
