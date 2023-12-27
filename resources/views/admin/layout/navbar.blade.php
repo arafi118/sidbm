@@ -18,8 +18,8 @@
                 @if (Request::segment(count(request()->segments())) == 'paid' ||
                         Request::segment(count(request()->segments())) == 'unpaid')
                     @if (count(request()->segments()) >= 3)
-                        #Invoice{{ $invoice->id }}{{ $invoice->kec->id }} {{ $invoice->kec->nama_kec }} -
-                        {{ $invoice->kec->kabupaten->nama_kab }} {{ $invoice->tgl_invoice }}
+                        #Invoice{{ $invoice->id }} - {{ $invoice->kec->id }} {{ $invoice->kec->nama_kec }} -
+                        {{ $invoice->kec->kabupaten->nama_kab }} {{ $invoice->tgl_lunas }}
                         Rp. {{ number_format($invoice->jumlah) }}
                     @else
                         {{ ucwords(str_replace('_', ' ', Request::segment(count(request()->segments())))) }}

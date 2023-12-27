@@ -30,7 +30,7 @@
 @section('script')
     <script>
         var tgl = "{{ date('d/m/Y') }}"
-        var jumlah = '{{ number_format($invoice->jumlah - $invoice->trx_sum_jumlah, 2) }}'
+        var jumlah = '{{ number_format($invoice->jumlah, 2) }}'
         var keterangan = '{{ $invoice->jp->nama_jp }} Kec. {{ $invoice->kec->nama_kec }}'
         var lembaga = '{{ $invoice->kec->nama_lembaga_sort }}'
 
