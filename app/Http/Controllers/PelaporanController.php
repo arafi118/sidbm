@@ -1695,7 +1695,29 @@ class PelaporanController extends Controller
 
     private function alokasi_laba(array $data)
     {
-        //
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        $data['saldo'] = Saldo::where([
+            ['tahun', $thn],
+            ['bulan', '13']
+        ])->with('rek')->orderBy('kode_akun', 'ASC')->get();
+        $data['rek'] = Rekening::where('kode_akun', '3.2.01.01')->first();
+
+        $data['tgl_transaksi'] = $thn . '-12-31';
+        $data['laporan'] = 'Alokasi Laba';
+        $view = view('pelaporan.view.tutup_buku.alokasi_laba', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function jurnal_tutup_buku(array $data)
