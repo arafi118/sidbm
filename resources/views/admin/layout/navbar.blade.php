@@ -17,7 +17,7 @@
             <h6 class="font-weight-bolder mb-0">
                 @if (Request::segment(count(request()->segments())) == 'paid' ||
                         Request::segment(count(request()->segments())) == 'unpaid')
-                    @if (count(request()->segments()) > 2)
+                    @if (count(request()->segments()) >= 3)
                         #Invoice{{ $invoice->id }}{{ $invoice->kec->id }} {{ $invoice->kec->nama_kec }} -
                         {{ $invoice->kec->kabupaten->nama_kab }} {{ $invoice->tgl_invoice }}
                         Rp. {{ number_format($invoice->jumlah) }}
