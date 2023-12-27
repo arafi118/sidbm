@@ -7,7 +7,7 @@
         <input type="hidden" name="tgl" id="tgl" value="{{ date('d/m/Y') }}">
     </form>
 
-    <div class="alert alert-warning text-white" role="alert">
+    <div class="alert alert-warning text-white text-justify" role="alert">
         <h4 class="alert-heading">Pemberitahuan</h4>
         <p>
             Kami selaku tim pengembang aplikasi sidbm.net ingin meminta maaf kepada para pengguna aplikasi sidbm.net
