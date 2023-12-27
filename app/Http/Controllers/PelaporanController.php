@@ -1695,6 +1695,7 @@ class PelaporanController extends Controller
 
     private function alokasi_laba(array $data)
     {
+        $keuangan = new Keuangan;
         $thn = $data['tahun'];
         $bln = $data['bulan'];
         $hari = $data['hari'];
@@ -1702,11 +1703,20 @@ class PelaporanController extends Controller
         $tgl = $thn . '-' . $bln . '-' . $hari;
         $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
         $data['tgl'] = Tanggal::tahun($tgl);
-        $data['saldo'] = Saldo::where([
-            ['tahun', $thn],
-            ['bulan', '13']
-        ])->with('rek')->orderBy('kode_akun', 'ASC')->get();
-        $data['rek'] = Rekening::where('kode_akun', '3.2.01.01')->first();
+
+        $data['tahun_tb'] = $thn + 1;
+        $data['surplus'] = $keuangan->laba_rugi($data['tahun'] . '-13-00');
+        $data['rekening'] = Rekening::where('kode_akun', 'like', '2.1.04%')->with([
+            'saldo' => function ($query) use ($data) {
+                $query->where('tahun', $data['tahun_tb']);
+            }
+        ])->get();
+        $data['desa'] = Desa::where('kd_kec', $data['kec']->kd_kec)->with([
+            'saldo' => function ($query) use ($data) {
+                $query->where('tahun', $data['tahun_tb']);
+            },
+            'sebutan_desa'
+        ])->get();
 
         $data['tgl_transaksi'] = $thn . '-12-31';
         $data['laporan'] = 'Alokasi Laba';
