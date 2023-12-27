@@ -164,7 +164,6 @@
         function pesan() {
             var pesan =
                 `*${keterangan}*\n\n*Yth. ${lembaga}*\nTerima kasih telah melakukan pembayaran *${keterangan}* sebesar *Rp. ${jumlah}* pada tanggal *${tgl}*. Silakan cetak Invoice Paid di menu Pengaturan - Invoice.\n\nSalam,\nPT. Asta Brata Teknologi`
-
             $('#pesan').val(pesan)
         }
     </script>
