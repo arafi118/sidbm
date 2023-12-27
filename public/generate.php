@@ -267,7 +267,7 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
 
             // Cek apakah data yang akan di input kedalam tabel real_angsuran_$lokasi sudah ada
             if (mysqli_num_rows($realisasi) <= 0) {
-
+                $sqlinput2 = false;
                 // Cek rekening_kredit apakah termasuk kedalam angsuran
                 if ($tr['rekening_kredit'] == $poko_kredit || $tr['rekening_kredit'] == $jasa_kredit) {
 
