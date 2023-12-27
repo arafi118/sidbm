@@ -371,8 +371,8 @@
                                     })
 
                                     if (result.whatsapp) {
-                                        sendMsg(result.number, result.nama_kelompok, result
-                                            .pesan)
+                                        // sendMsg(result.number, result.nama_kelompok, result
+                                        //     .pesan)
                                     }
                                 }
                             })
