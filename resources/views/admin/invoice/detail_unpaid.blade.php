@@ -150,7 +150,6 @@
                 },
                 error: function(result) {
                     const respons = result.responseJSON;
-
                     Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error')
                     $.map(respons, function(res, key) {
                         $('#' + key).parent('.input-group.input-group-static').addClass(
