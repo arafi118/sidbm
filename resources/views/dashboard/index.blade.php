@@ -15,7 +15,6 @@
             Banyaknya pesan pemberitahuan yang dikirimkan dalam waktu yang hampir bersamaan menyebabkan nomor yang digunakan
             untuk mengirimkan pesan diblokir oleh pihak whatsapp dengan alasan <b>Spam</b>.
         </p>
-
         <hr>
         <p class="mb-0">
             Kami akan mengaktifkan pesan whatsapp kembali setelah pihak whatsapp melepaskan nomor yang diblokir tersebut.
