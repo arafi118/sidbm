@@ -376,7 +376,6 @@
                                     }
                                 }
                             })
-
                         } else {
                             loading.close()
                             Swal.fire('Error', result.msg, 'warning')

@@ -16,7 +16,7 @@
 
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
-            <td colspan="7" height="5"></td>
+            <td height="5"></td>
         </tr>
     </table>
 @endsection

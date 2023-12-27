@@ -725,6 +725,7 @@ Terima kasih atas perhatiannya!
                     var number = pesan.split('||')[0]
                     var kelompok = pesan.split('||')[1]
                     var msg = pesan.split('||')[2]
+
                     // sendMsg(number, kelompok, msg)
                 }, i * 1000);
             }).get();

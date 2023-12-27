@@ -1837,7 +1837,6 @@ class PelaporanController extends Controller
     public function invoice(AdminInvoice $invoice)
     {
         $data['inv'] = AdminInvoice::where('idv', $invoice->idv)->with('jp', 'trx', 'kec', 'kec.kabupaten')->first();
-
         $view = view('pelaporan.view.invoice', $data)->render();
         $pdf = PDF::loadHTML($view)->setPaper('A4', 'potrait');
         return $pdf->stream();
