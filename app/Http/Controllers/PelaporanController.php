@@ -1476,7 +1476,7 @@ class PelaporanController extends Controller
                         ['status', '!=', '0'],
                         ['lokasi', Session::get('lokasi')],
                         ['tgl_beli', '<=', $data['tgl_kondisi']],
-                        ['tgl_beli', '!=', '']
+                        ['tgl_beli', 'NOT LIKE', '']
                     ]);
                 }
             ])
@@ -1519,7 +1519,7 @@ class PelaporanController extends Controller
                         ['status', '!=', '0'],
                         ['lokasi', Session::get('lokasi')],
                         ['tgl_beli', '<=', $data['tgl_kondisi']],
-                        ['tgl_beli', '!=', '']
+                        ['tgl_beli', 'NOT LIKE', '']
                     ]);
                 }
             ])
