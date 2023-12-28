@@ -95,5 +95,23 @@
             </td>
         </tr>
     </table>
-    <div style="font-size: 8px;">Keterangan: C = Cukup | K = Kurang | TA = Tidak Ada</div>
+    <div style="font-size: 8px; margin-bottom: 16px;">Keterangan: C = Cukup | K = Kurang | TA = Tidak Ada</div>
+
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; margin-top: 12px;">
+        <tr>
+            <td width="60%"></td>
+            <td width="40%" align="center">Diperika tanggal, ___________________</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td align="center">Diperiksa Oleh</td>
+        </tr>
+        <tr>
+            <td colspan="2" height="40">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td align="center"><b>_____________________</b></td>
+        </tr>
+    </table>
 @endsection
