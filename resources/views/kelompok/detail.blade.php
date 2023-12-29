@@ -86,8 +86,8 @@
                                             </span>
                                             |
                                             <span class="fw-bold">
-                                                {{ $pinkel->pros_jasa / $pinkel->jangka }}% @ {{ $pinkel->jangka }} Bulan --
-                                                {{ $pinkel->angsuran_pokok->nama_sistem }}
+                                                {{ $pinkel->pros_jasa == 0 ? 0 : $pinkel->pros_jasa / $pinkel->jangka }}% @
+                                                {{ $pinkel->jangka }} Bulan -- {{ $pinkel->angsuran_pokok->nama_sistem }}
                                             </span>
                                             |
                                             <span class="fw-bold">
