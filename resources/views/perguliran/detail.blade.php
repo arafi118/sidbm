@@ -424,6 +424,9 @@
                                 <small class="text-danger" id="msg_alokasi_pengajuan"></small>
                             </div>
                         </div>
+                        <h6>
+                            {{ $perguliran->kelompok->nama_kelompok }} - {{ $perguliran->id }}
+                        </h6>
                     </form>
 
                     <div class="card border">
