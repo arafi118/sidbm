@@ -200,11 +200,6 @@
 @endsection
 
 @section('script')
-    @if ($migrasi_saldo)
-        <script>
-            window.open('/transaksi/tutup_buku/saldo_awal/{{ $tahun }}')
-        </script>
-    @endif
     <script>
         $(".nominal").maskMoney({
             allowNegative: true

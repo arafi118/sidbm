@@ -77,6 +77,7 @@ class TransaksiController extends Controller
         return view('transaksi.tutup_buku.index')->with(compact('title', 'kec'));
     }
 
+    // Inactive
     public function saldoAwal($tahun)
     {
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
@@ -129,29 +130,19 @@ class TransaksiController extends Controller
             'akun2',
             'akun2.akun3',
             'akun2.akun3.rek',
-            'akun2.akun3.rek.saldo' => function ($query) use ($tahun, $bulan) {
-                $query->where([
-                    ['tahun', $tahun],
-                    ['bulan', $bulan]
-                ]);
+            'akun2.akun3.rek.kom_saldo' => function ($query) use ($tahun, $bulan) {
+                $query->where('tahun', $tahun)->where(function ($query) use ($bulan) {
+                    $query->where('bulan', '0')->orwhere('bulan', $bulan);
+                });
             },
         ])->orderBy('kode_akun', 'ASC')->get();
 
-        $surplus = Rekening::where([
-            ['lev1', '>=', '4']
-        ])->with([
-            'saldo' => function ($query) use ($tahun, $bulan) {
-                $query->where([
-                    ['tahun', $tahun],
-                    ['bulan', $bulan]
-                ]);
-            }
-        ])->orderBy('kode_akun', 'ASC')->get();
+        $tgl_kondisi = $tahun . '-' . $bulan . '-' . date('t', strtotime($tahun . '-' . $bulan . '-01'));
+        $surplus = $keuangan->laba_rugi($tgl_kondisi);
 
         $total_riwayat = ($tahun + 1) - $tahun_pakai;
         $jumlah_riwayat = count(Saldo::select('tahun')->whereRaw('LENGTH(kode_akun) = 9')->where('bulan', '0')->whereBetween('tahun', [$tahun_pakai, $tahun])->groupBy('tahun')->get());
 
-        $tgl_kondisi = $tahun . '-' . $bulan . '-' . date('t', strtotime($tahun . '-' . $bulan . '-01'));
         return response()->json([
             'success' => true,
             'view' => view('transaksi.tutup_buku.partials.saldo')->with(compact('akun1', 'surplus', 'tgl_kondisi', 'tahun', 'tahun_lalu', 'total_riwayat', 'jumlah_riwayat'))->render()

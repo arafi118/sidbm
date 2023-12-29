@@ -33,30 +33,31 @@
                                 @endphp
                                 @foreach ($lev3->rek as $rek)
                                     @php
-                                        $tb = 'tb' . $tahun_lalu;
-                                        $tbk = 'tbk' . $tahun_lalu;
+                                        $awal_debit = 0;
+                                        $saldo_debit = 0;
+                                        $awal_kredit = 0;
+                                        $saldo_kredit = 0;
+                                        foreach ($rek->kom_saldo as $kom_saldo) {
+                                            if ($kom_saldo->bulan == 0) {
+                                                $awal_debit += $kom_saldo->debit;
+                                                $awal_kredit += $kom_saldo->kredit;
+                                            } else {
+                                                $saldo_debit += $kom_saldo->debit;
+                                                $saldo_kredit += $kom_saldo->kredit;
+                                            }
+                                        }
 
                                         if ($lev1->lev1 <= 1) {
-                                            $saldo_awal = $rek->$tb - $rek->$tbk;
-                                            $_saldo = $saldo_awal + ($rek->saldo->debit - $rek->saldo->kredit);
+                                            $saldo_awal = $awal_debit - $awal_kredit;
+                                            $_saldo = $saldo_awal + ($saldo_debit - $saldo_kredit);
                                         } else {
-                                            $saldo_awal = $rek->$tbk - $rek->$tb;
-                                            $_saldo = $saldo_awal + ($rek->saldo->kredit - $rek->saldo->debit);
+                                            $saldo_awal = $awal_kredit - $awal_debit;
+                                            $_saldo = $saldo_awal + ($saldo_kredit - $saldo_debit);
                                         }
 
                                         if ($rek->kode_akun == '3.2.02.01') {
-                                            $pendapatan = 0;
-                                            $biaya = 0;
-                                            foreach ($surplus as $sp) {
-                                                if ($sp->lev1 == '5') {
-                                                    $biaya += $sp->saldo->debit - $sp->saldo->kredit;
-                                                } else {
-                                                    $pendapatan += $sp->saldo->kredit - $sp->saldo->debit;
-                                                }
-                                            }
-
-                                            $_saldo = $pendapatan - $biaya;
-                                            $laba_rugi = $pendapatan - $biaya;
+                                            $_saldo = $surplus;
+                                            $laba_rugi = $surplus;
                                         }
 
                                         $saldo_akun += $_saldo;

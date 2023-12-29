@@ -7,7 +7,6 @@ use App\Models\PinjamanKelompok;
 use App\Models\Rekening;
 use App\Models\Transaksi;
 use DB;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Session;
 
 class Keuangan
@@ -196,25 +195,36 @@ class Keuangan
         $surplus = Rekening::where([
             ['lev1', '>=', '4']
         ])->with([
-            'saldo' => function ($query) use ($tahun, $bulan) {
-                $query->where([
-                    ['tahun', $tahun],
-                    ['bulan', $bulan]
-                ]);
+            'kom_saldo' => function ($query) use ($tahun, $bulan) {
+                $query->where('tahun', $tahun)->where(function ($query) use ($bulan) {
+                    $query->where('bulan', '0')->orwhere('bulan', $bulan);
+                });
             }
         ])->orderBy('kode_akun', 'ASC')->get();
 
         $pendapatan = 0;
         $biaya = 0;
         foreach ($surplus as $sp) {
-            if ($sp->lev1 == '5') {
-                if ($sp->saldo) {
-                    $biaya += ($sp->saldo->debit - $sp->saldo->kredit);
+            $awal_debit = 0;
+            $saldo_debit = 0;
+            $awal_kredit = 0;
+            $saldo_kredit = 0;
+            foreach ($sp->kom_saldo as $kom_saldo) {
+                if ($kom_saldo->bulan == 0) {
+                    $awal_debit += $kom_saldo->debit;
+                    $awal_kredit += $kom_saldo->kredit;
+                } else {
+                    $saldo_debit += $kom_saldo->debit;
+                    $saldo_kredit += $kom_saldo->kredit;
                 }
+            }
+
+            if ($sp->lev1 == 5) {
+                $saldo_awal = $awal_debit - $awal_kredit;
+                $biaya += $saldo_awal + ($saldo_debit - $saldo_kredit);
             } else {
-                if ($sp->saldo) {
-                    $pendapatan += ($sp->saldo->kredit - $sp->saldo->debit);
-                }
+                $saldo_awal = $awal_kredit - $awal_debit;
+                $pendapatan += $saldo_awal + ($saldo_kredit - $saldo_debit);
             }
         }
 
@@ -484,5 +494,10 @@ class Keuangan
         }
 
         return $jumlah;
+    }
+
+    public function operasional($tgl_kondisi, $jenis = 'bulanan')
+    {
+        //
     }
 }
