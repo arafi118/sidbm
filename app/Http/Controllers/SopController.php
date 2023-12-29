@@ -6,6 +6,7 @@ use App\Models\AdminInvoice;
 use App\Models\AkunLevel1;
 use App\Models\Kecamatan;
 use App\Models\TandaTanganLaporan;
+use App\Models\User;
 use App\Utils\Pinjaman;
 use App\Utils\Tanggal;
 use DOMDocument;
@@ -20,10 +21,13 @@ class SopController extends Controller
 {
     public function index()
     {
-        $title = "Personalisasi SOP";
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('ttd')->first();
+        $api = env('APP_API', 'http://localhost:8080');
 
-        return view('sop.index')->with(compact('title', 'kec'));
+        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('ttd')->first();
+        $token = str_replace('.', '', $kec->kd_kec) . str_replace('-', '', $kec->tgl_pakai);
+
+        $title = "Personalisasi SOP";
+        return view('sop.index')->with(compact('title', 'kec', 'api', 'token'));
     }
 
     public function coa()
@@ -265,6 +269,18 @@ class SopController extends Controller
         return response()->json([
             'success' => false,
             'msg' => 'Logo gagal diperbarui'
+        ]);
+    }
+
+    public function whatsapp($token)
+    {
+        User::where('lokasi', Session::get('lokasi'))->update([
+            'ip' => $token
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Sukses'
         ]);
     }
 
