@@ -50,9 +50,18 @@
                             <span class="text-sm">Logo</span>
                         </a>
                     </li>
+                    @if (auth()->user()->level == '1' && auth()->user()->jabatan == '1')
+                        <li class="nav-item pt-2">
+                            <a class="nav-link text-dark d-flex" id="ScanWA" data-scroll="" href="#">
+                                <i class="material-icons text-lg me-2">priority_high</i>
+                                <span class="text-sm">Whatsapp</span>
+                            </a>
+                        </li>
+                    @endif
+
                     <li class="nav-item pt-2">
                         <a class="nav-link text-dark d-flex" id="SimpanSaldo" href="#">
-                            <i class="material-icons text-lg me-2">crop_original</i>
+                            <i class="material-icons text-lg me-2">credit_card</i>
                             <span class="text-sm">Simpan Saldo</span>
                         </a>
                     </li>
@@ -110,10 +119,110 @@
                 </div>
             </div>
         </div>
+
+        {{-- Modal Scan Whatsapp --}}
+        <div class="modal fade" id="ModalScanWA" tabindex="-1" aria-labelledby="ModalScanWALabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="ModalScanWALabel">
+                            Aktivasi Whatsapp Gateway
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="LayoutModalScanWA">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-xl-5 col-lg-6 text-center">
+                                            <img class="w-100 border-radius-lg shadow-lg mx-auto"
+                                                src="/assets/img/no_image.png" id="QrCode" alt="chair">
+                                        </div>
+                                        <div class="col-lg-5 mx-auto">
+                                            <h3 class="mt-lg-0 mt-4">Scan kode QR</h3>
+                                            <label class="mt-2">Riwayat Koneksi</label>
+                                            <ol id="Pesan">
+                                                <li>Membuat Kode QR</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <form action="/pengaturan/whatsapp/{{ $token }}" method="post" id="FormWhatsapp">
+        @csrf
+    </form>
 @endsection
 
 @section('script')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+
+    <script>
+        const form = $('#FormWhatsapp')
+        const socket = io("{{ $api }}")
+        const token = "{{ $token }}"
+        const pesan = $('#Pesan')
+        var scan = 0
+        var connect = 0
+
+        $(document).on('click', '#ScanWA', function(e) {
+            e.preventDefault()
+
+            Swal.fire({
+                title: 'Peringatan',
+                text: 'Kami selaku tim pengembang aplikasi SIDBM tidak bertanggung jawab jika terjadi sesuatu pada nomor anda ke depannya.',
+                showCancelButton: true,
+                confirmButtonText: 'Lanjutkan',
+                cancelButtonText: 'Batal',
+                icon: 'error'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#ModalScanWA').modal('show')
+                    socket.emit('register', {
+                        token
+                    })
+                }
+            })
+        })
+
+        socket.on('qrCode', (res) => {
+            if (res.token == token) {
+                $('#QrCode').attr('src', res.url)
+
+                if (scan < 1) {
+                    pesan.append('<li>' + res.msg + '</li>')
+                }
+                scan += 1
+            }
+        })
+
+        socket.on('aktif', (res) => {
+            if (res.token == token) {
+                if (connect < 1) {
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        success: function(result) {
+                            pesan.append('<li>' + res.msg + '</li>')
+                        }
+                    })
+                }
+                connect += 1
+            }
+        })
+    </script>
+
     <script>
         var tahun = "{{ date('Y') }}"
         var bulan = "{{ date('m') }}"
@@ -142,7 +251,7 @@
         $(document).on('click', '#SimpanSaldo', function(e) {
             e.preventDefault()
 
-            childWindow = window.open('/simpan_saldo?bulan=01&tahun=' + tahun, '_blank');
+            childWindow = window.open('/simpan_saldo?bulan=00&tahun=' + tahun, '_blank');
         })
 
         window.addEventListener('message', function(event) {

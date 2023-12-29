@@ -783,31 +783,56 @@ class DashboardController extends Controller
         $tahun = request()->get('tahun') ?: date('Y');
         $bulan = request()->get('bulan') ?: date('m');
 
-        $date = $tahun . '-' . $bulan . '-01';
-        $tgl_kondisi = date('Y-m-t', strtotime($date));
-        $rekening = Rekening::withSum([
-            'trx_debit' => function ($query) use ($tgl_kondisi, $tahun) {
-                $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
-            }
-        ], 'jumlah')->withSum([
-            'trx_kredit' => function ($query) use ($tgl_kondisi, $tahun) {
-                $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
-            }
-        ], 'jumlah')->orderBy('kode_akun', 'ASC')->get();
-
+        $data_id = [];
         $saldo = [];
-        foreach ($rekening as $rek) {
-            $id = str_replace('.', '', $rek->kode_akun) . $tahun . str_pad($bulan, 2, "0", STR_PAD_LEFT);
-            $saldo[] = [
-                'id' => $id,
-                'kode_akun' => $rek->kode_akun,
-                'tahun' => $tahun,
-                'bulan' => $bulan,
-                'debit' => $rek->trx_debit_sum_jumlah,
-                'kredit' => $rek->trx_kredit_sum_jumlah
-            ];
+        if ($bulan == '00') {
+            $tahun_tb = $tahun - 1;
+            $tb = 'tb' . $tahun_tb;
+            $tbk = 'tbk' . $tahun_tb;
 
-            $data_id[] = $id;
+            $rekening = Rekening::orderBy('kode_akun', 'ASC')->get();
+            foreach ($rekening as $rek) {
+                $saldo_debit = $rek->$tb;
+                $saldo_kredit = $rek->$tbk;
+
+                $id = str_replace('.', '', $rek->kode_akun) . $tahun . 0;
+                $saldo[] = [
+                    'id' => $id,
+                    'kode_akun' => $rek->kode_akun,
+                    'tahun' => $tahun,
+                    'bulan' => 0,
+                    'debit' => $saldo_debit,
+                    'kredit' => $saldo_kredit
+                ];
+
+                $data_id[] = $id;
+            }
+        } else {
+            $date = $tahun . '-' . $bulan . '-01';
+            $tgl_kondisi = date('Y-m-t', strtotime($date));
+            $rekening = Rekening::withSum([
+                'trx_debit' => function ($query) use ($tgl_kondisi, $tahun) {
+                    $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
+                }
+            ], 'jumlah')->withSum([
+                'trx_kredit' => function ($query) use ($tgl_kondisi, $tahun) {
+                    $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
+                }
+            ], 'jumlah')->orderBy('kode_akun', 'ASC')->get();
+
+            foreach ($rekening as $rek) {
+                $id = str_replace('.', '', $rek->kode_akun) . $tahun . str_pad($bulan, 2, "0", STR_PAD_LEFT);
+                $saldo[] = [
+                    'id' => $id,
+                    'kode_akun' => $rek->kode_akun,
+                    'tahun' => $tahun,
+                    'bulan' => intval($bulan),
+                    'debit' => $rek->trx_debit_sum_jumlah,
+                    'kredit' => $rek->trx_kredit_sum_jumlah
+                ];
+
+                $data_id[] = $id;
+            }
         }
 
         Saldo::whereIn('id', $data_id)->delete();
@@ -821,9 +846,7 @@ class DashboardController extends Controller
         } else {
             $query['bulan'] = date('m') + 1;
         }
-        if (isset($query['tahun'])) {
-            //
-        } else {
+        if (!isset($query['tahun'])) {
             $query['tahun'] = date('Y');
         }
 
