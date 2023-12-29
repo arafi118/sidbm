@@ -96,6 +96,8 @@ Route::put('/pengaturan/spk/{kec}', [SopController::class, 'spk'])->middleware('
 Route::put('/pengaturan/logo/{kec}', [SopController::class, 'logo'])->middleware('auth');
 Route::put('/pengaturan/calk/{kec}', [SopController::class, 'calk'])->middleware('auth');
 
+Route::post('/pengaturan/whatsapp/{token}', [SopController::class, 'whatsapp'])->middleware('auth');
+
 Route::get('/pengaturan/invoice', [SopController::class, 'invoice'])->middleware('auth');
 Route::get('/pengaturan/{inv}/invoice', [SopController::class, 'detailInvoice'])->middleware('auth');
 
