@@ -155,7 +155,7 @@
                         $tunggakan_jasa = 0;
                     }
 
-                    $pross = $saldo_pokok / $pinkel->alokasi;
+                    $pross = $saldo_pokok == 0 ? 0 : $saldo_pokok / $pinkel->alokasi;
 
                     if ($pinkel->tgl_lunas <= $tgl_kondisi && $pinkel->status == 'L') {
                         $tunggakan_pokok = 0;
