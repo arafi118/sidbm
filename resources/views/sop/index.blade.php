@@ -215,6 +215,14 @@
                         data: form.serialize(),
                         success: function(result) {
                             pesan.append('<li>' + res.msg + '</li>')
+                            Swal.fire({
+                                title: 'Selamat',
+                                text: 'SI DBM Whatsapp Gateway berhasil diaktifkan.',
+                                showCancelButton: false,
+                                icon: 'success'
+                            }).then((result) => {
+                                $('#ModalScanWA').modal('hide')
+                            })
                         }
                     })
                 }
