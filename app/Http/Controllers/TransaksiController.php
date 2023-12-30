@@ -209,8 +209,8 @@ class TransaksiController extends Controller
                             'kode_akun' => $rek->kode_akun,
                             'tahun' => $tahun,
                             'bulan' => 13,
-                            'debit' => $saldo_debit,
-                            'kredit' => $saldo_kredit
+                            'debit' => (string) $saldo_debit,
+                            'kredit' => (string) $saldo_kredit
                         ];
 
                         $data_id[] = $id;
@@ -238,8 +238,8 @@ class TransaksiController extends Controller
                     'kode_akun' => $rek->kode_akun,
                     'tahun' => $tahun_tb,
                     'bulan' => $bulan_tb,
-                    'debit' => $saldo_debit,
-                    'kredit' => $saldo_kredit
+                    'debit' => (string) $saldo_debit,
+                    'kredit' => (string) $saldo_kredit
                 ];
 
                 $data_id[] = $id;
@@ -331,7 +331,7 @@ class TransaksiController extends Controller
                 'kode_akun' => $d->kode_desa,
                 'tahun' => $tahun_tb,
                 'bulan' => '0',
-                'debit' => $d->saldo->kredit,
+                'debit' => (string) $d->saldo->kredit,
                 'kredit' => str_replace(',', '', str_replace('.00', '', $pembagian_laba_desa[$d->kd_desa]))
             ];
 
@@ -348,7 +348,7 @@ class TransaksiController extends Controller
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
-                    'debit' => $saldo->kredit,
+                    'debit' => (string) $saldo->kredit,
                     'kredit' => str_replace(',', '', str_replace('.00', '', $pembagian_laba_masyarakat[$urut]))
                 ];
             } else {
@@ -357,7 +357,7 @@ class TransaksiController extends Controller
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
-                    'debit' => $saldo->kredit,
+                    'debit' => (string) $saldo->kredit,
                     'kredit' => str_replace(',', '', str_replace('.00', '', $pembagian_laba_ditahan[$urut]))
                 ];
             }
@@ -394,8 +394,8 @@ class TransaksiController extends Controller
                     'kode_akun' => $rek->kode_akun,
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
-                    'debit' => $saldo_debit,
-                    'kredit' => $saldo_kredit
+                    'debit' => (string) $saldo_debit,
+                    'kredit' => (string) $saldo_kredit
                 ];
 
                 $data_id[] = $id;
