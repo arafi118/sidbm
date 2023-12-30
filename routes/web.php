@@ -225,5 +225,9 @@ Route::get('/user', function () {
     return view('welcome', ['users' => $users, 'kec' => $kec]);
 });
 
+Route::get('/download/{file}', function ($file) {
+    return response()->download(storage_path('app/public/docs/' . $file));
+})->name('download');
+
 Route::get('/unpaid', [DashboardController::class, 'unpaid'])->middleware('auth');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');

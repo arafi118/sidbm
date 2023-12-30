@@ -7,19 +7,14 @@
         <input type="hidden" name="tgl" id="tgl" value="{{ date('d/m/Y') }}">
     </form>
 
-    <div class="alert alert-warning text-white text-justify" role="alert">
-        <h4 class="alert-heading">Pemberitahuan</h4>
+    <div class="alert alert-info text-white text-justify" role="alert">
+        <h4 class="alert-heading">Informasi</h4>
         <p>
-            Kami selaku tim pengembang aplikasi sidbm.net ingin meminta maaf kepada para pengguna aplikasi sidbm.net
-            dikarenakan untuk sementara waktu fitur pemberitahuan angsuran via whatsapp kami matikan.
-            Banyaknya pesan pemberitahuan yang dikirimkan dalam waktu yang hampir bersamaan menyebabkan nomor yang digunakan
-            untuk mengirimkan pesan diblokir oleh pihak whatsapp dengan alasan <b>Spam</b>.
-        </p>
-        <hr>
-        <p class="mb-0">
-            Kami akan mengaktifkan pesan whatsapp kembali setelah pihak whatsapp melepaskan nomor yang diblokir tersebut.
-            <br>
-            Atas perhatiannya kami ucapkan terima kasih.
+            Memberitahukan kepada seluruh pengguna aplikasi sidbm.net bahwa proses tutup buku tahun 2023 sudah bisa anda
+            lakukan melalui menu <b>Transaksi->Tutup Buku</b>. Klik <a class="alert-link text-white"
+                href="{!! route('download', 'Panduan-tutup-buku-sidbm.pdf') !!}">Disini</a>
+            untuk mengunduh
+            panduan proses tutup buku sidbm.net
         </p>
     </div>
 
