@@ -94,7 +94,7 @@
         $(document).on('click', '#SimpanSaldo', function(e) {
             e.preventDefault()
 
-            childWindow = window.open('/simpan_saldo?bulan=01&tahun=' + tahun, '_blank');
+            childWindow = window.open('/simpan_saldo?bulan=00&tahun=' + tahun, '_blank');
         })
 
         window.addEventListener('message', function(event) {
