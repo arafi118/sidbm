@@ -100,7 +100,7 @@ class DashboardController extends Controller
         $data['saldo'] = $this->_saldo($tgl);
         $data['jumlah_saldo'] = Saldo::where('kode_akun', 'NOT LIKE', $kec->kd_kec . '%')->count();
 
-        $data['api'] = env('APP_API', 'https://whatsapp.sidbm.net');
+        $data['api'] = env('APP_API', 'https://api-whatsapp.sidbm.net');
         $data['title'] = "Dashboard";
         return view('dashboard.index')->with($data);
     }
