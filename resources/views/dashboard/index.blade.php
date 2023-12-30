@@ -28,7 +28,8 @@
             <div class="col-12">
                 <div class="alert alert-warning text-white" role="alert">
                     Sepertinya saldo transaksi anda belum tersimpan di aplikasi. Silahkan Klik <a href="#"
-                        data-href="/simpan_saldo?bulan=00&tahun={{ date('Y') }}" class="alert-link" id="simpanSaldo">Disini</a> untuk menyimpan
+                        data-href="/simpan_saldo?bulan=00&tahun={{ date('Y') }}" class="alert-link"
+                        id="simpanSaldo">Disini</a> untuk menyimpan
                     saldo transaksi anda
                 </div>
             </div>
@@ -725,15 +726,15 @@ Terima kasih atas perhatiannya!
                     var kelompok = pesan.split('||')[1]
                     var msg = pesan.split('||')[2]
 
-                    // sendMsg(number, kelompok, msg)
-                }, i * 1000);
+                    sendMsg(number, kelompok, msg)
+                }, i * 1500);
             }).get();
         })
 
         function sendMsg(number, nama, msg, repeat = 0) {
             $.ajax({
                 type: 'post',
-                url: 'https://whatsapp.sidbm.net/send-text',
+                url: '{{ $api }}/send-text',
                 timeout: 0,
                 headers: {
                     "Content-Type": "application/json"
@@ -742,11 +743,12 @@ Terima kasih atas perhatiannya!
                     withCredentials: true
                 },
                 data: JSON.stringify({
+                    token: "{{ auth()->user()->ip }}",
                     number: number,
                     text: msg
                 }),
                 success: function(result) {
-                    if (result.success) {
+                    if (result.status) {
                         MultiToast('success', 'Pesan untuk kelompok ' + nama + ' berhasil dikirim')
                     } else {
                         if (repeat < 1) {

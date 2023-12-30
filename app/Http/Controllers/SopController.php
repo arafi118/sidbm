@@ -21,7 +21,7 @@ class SopController extends Controller
 {
     public function index()
     {
-        $api = env('APP_API', 'http://localhost:8080');
+        $api = env('APP_API', 'https://whatsapp.sidbm.net');
 
         $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('ttd')->first();
         $token = str_replace('.', '', $kec->kd_kec) . str_replace('-', '', $kec->tgl_pakai);
