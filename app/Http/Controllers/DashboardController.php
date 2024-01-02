@@ -836,12 +836,17 @@ class DashboardController extends Controller
             }
         }
 
-        $jumlah = Saldo::where([
-            ['tahun', $tahun],
-            ['bulan', '0']
-        ])->whereRaw('LENGTH(kode_akun)=9')->count();
+        if ($bulan < 1) {
+            $jumlah = Saldo::where([
+                ['tahun', $tahun],
+                ['bulan', '0']
+            ])->whereRaw('LENGTH(kode_akun)=9')->count();
 
-        if ($jumlah <= '0') {
+            if ($jumlah <= '0') {
+                Saldo::whereIn('id', $data_id)->delete();
+                $query = Saldo::insert($saldo);
+            }
+        } else {
             Saldo::whereIn('id', $data_id)->delete();
             $query = Saldo::insert($saldo);
         }

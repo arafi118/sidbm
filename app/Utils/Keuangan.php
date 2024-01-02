@@ -728,8 +728,8 @@ class Keuangan
                 $debit_awal = 0;
                 $kredit_awal = 0;
                 if ($rek->saldo) {
-                    $debit_awal = $rek->saldo->debit;
-                    $kredit_awal = $rek->saldo->kredit;
+                    $debit_awal = floatval($rek->saldo->debit);
+                    $kredit_awal = floatval($rek->saldo->kredit);
                 }
 
                 $saldo_awal = $debit_awal - $kredit_awal;
