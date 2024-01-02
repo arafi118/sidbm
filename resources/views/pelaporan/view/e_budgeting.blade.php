@@ -98,6 +98,8 @@
                             $saldo_bula_lalu = 0;
                             $bulan_lalu = 0;
                             $saldo_kom = 0;
+
+                            $urutan = 1;
                         @endphp
                         <tr style="background: {{ $bg }};">
                             <td class="t l b">{{ $rek->kode_akun }}. {{ $rek->nama_akun }}</td>
@@ -142,7 +144,7 @@
                                     </td>
                                 @endif
 
-                                @if (in_array($saldo->bulan, $bulan_tampil))
+                                @if (in_array($saldo->bulan, $bulan_tampil) && $urutan <= 3)
                                     @php
                                         $_saldo -= $saldo_bula_lalu;
                                         if ($_saldo < 0) {
@@ -162,8 +164,12 @@
                                         }
 
                                         $t_saldo += $_saldo;
+
+                                        $urutan++;
                                     @endphp
-                                    <td class="t l b" align="right">{{ number_format($rencana, 2) }}</td>
+                                    <td class="t l b" align="right">
+                                        {{ number_format($rencana, 2) }}
+                                    </td>
                                     <td class="t l b" align="right">
                                         {{ number_format($_saldo, 2) }}
                                     </td>
