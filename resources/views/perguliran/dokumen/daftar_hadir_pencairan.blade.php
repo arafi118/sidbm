@@ -22,7 +22,7 @@
         <tr class="b">
             <td align="center">
                 <div style="font-size: 18px;">
-                    <b>DAFTAR HADIR PENCAIARAN {{ $pinkel->jpp->nama_jpp }}</b>
+                    <b>DAFTAR HADIR PENCAIRAN {{ $pinkel->jpp->nama_jpp }}</b>
                 </div>
             </td>
         </tr>
