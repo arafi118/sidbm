@@ -160,6 +160,8 @@ class TransaksiController extends Controller
         }
         $tgl_kondisi = $tahun . '-' . $bulan . '-' . date('t', strtotime($tahun . '-' . $bulan . '-01'));
 
+        $surplus = $keuangan->laba_rugi($tahun . '-13-00');
+
         $success = false;
         $migrasi_saldo = false;
         if ($request->pembagian_laba == 'false') {
@@ -217,6 +219,11 @@ class TransaksiController extends Controller
                     }
                 }
 
+                $saldo_awal_debit = 0;
+                $saldo_awal_kredit = 0;
+                $debit = 0;
+                $kredit = 0;
+
                 if ($rek->lev1 < 4 && $rek->kode_akun != '3.2.02.01') {
                     foreach ($rek->kom_saldo as $saldo) {
                         if ($saldo->bulan == 0) {
@@ -231,6 +238,10 @@ class TransaksiController extends Controller
 
                 $saldo_debit = $saldo_awal_debit + $debit;
                 $saldo_kredit = $saldo_awal_kredit + $kredit;
+
+                if ($rek->kode_akun == '3.2.01.01') {
+                    $saldo_kredit += $surplus;
+                }
 
                 $id = str_replace('.', '', $rek->kode_akun) . $tahun_tb . '00';
                 $saldo_tutup_buku[] = [
@@ -250,8 +261,6 @@ class TransaksiController extends Controller
 
             $success = true;
         }
-
-        $surplus = $keuangan->laba_rugi($tahun . '-13-00');
 
         $kec = Kecamatan::where('id', Session::get('lokasi'))->with([
             'saldo' => function ($query) use ($tahun, $bulan) {
@@ -1458,9 +1467,10 @@ class TransaksiController extends Controller
         })->with('user')->orderBy('tgl_transaksi', 'ASC')->orderBy('urutan', 'ASC')->orderBy('idt', 'ASC')->get();
 
         $data['keuangan'] = $keuangan;
+        $saldo_bulanan = $keuangan->saldoPerBulan($awal_bulan, $data['kode_akun']);
         $data['saldo'] = $keuangan->saldoAwal($tgl, $data['kode_akun']);
-        $data['d_bulan_lalu'] = $keuangan->saldoD($awal_bulan, $data['kode_akun']);
-        $data['k_bulan_lalu'] = $keuangan->saldoK($awal_bulan, $data['kode_akun']);
+        $data['d_bulan_lalu'] = $saldo_bulanan['debit'];
+        $data['k_bulan_lalu'] = $saldo_bulanan['kredit'];
 
         return [
             'label' => '<i class="fas fa-book"></i> ' . $data['rek']->kode_akun . ' - ' . $data['rek']->nama_akun . ' ' . $data['sub_judul'],

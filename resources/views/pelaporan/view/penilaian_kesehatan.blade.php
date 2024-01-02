@@ -40,16 +40,20 @@
         $ckp = $aset['cadangan_piutang'];
 
         $_risiko_kolek = $tk['sum_kolek'] == 0 ? $ckp : $tk['sum_kolek'];
-
-        $saldo_piutang_berisiko = @round(($tk['nunggak_pokok'] / $tk['saldo_pokok']) * 100, 2);
-        $cadangan_kerugian = @round(($ckp / $_risiko_kolek) * 100, 2);
-        $laba_bersih = @round((($surplus - ($tk['sum_kolek'] - $ckp)) / $aset_produktif) * 100, 2);
-        $beban_operasional = @round(($biaya / $pendapatan) * 100);
-        $saldo_piuang = @round(($tk['saldo_pokok'] / $aset_ekonomi) * 100);
-        if ($modal_awal == 0) {
-            $kekayaan_bersih = @round(($aset_ekonomi - $tk['sum_kolek']) * 100);
+        $saldo_piutang_berisiko = round(($tk['nunggak_pokok'] / $tk['saldo_pokok']) * 100, 2);
+        $cadangan_kerugian = round(($ckp / $_risiko_kolek) * 100, 2);
+        $laba_bersih = round((($surplus - ($tk['sum_kolek'] - $ckp)) / $aset_produktif) * 100, 2);
+        if ($biaya == '0' || $pendapatan == '0') {
+            $beban_operasional = 0;
         } else {
-            $kekayaan_bersih = @round((($aset_ekonomi - $tk['sum_kolek']) / $modal_awal) * 100);
+            $beban_operasional = round(($biaya / $pendapatan) * 100);
+        }
+
+        $saldo_piuang = round(($tk['saldo_pokok'] / $aset_ekonomi) * 100);
+        if ($modal_awal == 0) {
+            $kekayaan_bersih = round(($aset_ekonomi - $tk['sum_kolek']) * 100);
+        } else {
+            $kekayaan_bersih = round((($aset_ekonomi - $tk['sum_kolek']) / $modal_awal) * 100);
         }
 
         // Skor Baris 1

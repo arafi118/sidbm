@@ -51,9 +51,9 @@
 
                     @foreach ($lev3->rek as $rek)
                         @php
-                            $saldo = $keuangan->Saldo($tgl_kondisi, $rek->kode_akun);
+                            $saldo = $keuangan->komSaldo($rek);
                             if ($rek->kode_akun == '3.2.02.01') {
-                                $saldo = $keuangan->surplus($tgl_kondisi);
+                                $saldo = $keuangan->laba_rugi($tgl_kondisi);
                             }
 
                             $sum_saldo += $saldo;

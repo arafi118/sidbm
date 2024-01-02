@@ -32,9 +32,9 @@
         @foreach ($rekening as $rek)
             @php
                 if ($rek->kode_akun == '3.2.02.01') {
-                    $saldo = $keuangan->surplus($tgl_kondisi);
+                    $saldo = $keuangan->laba_rugi($tgl_kondisi);
                 } else {
-                    $saldo = $keuangan->Saldo($tgl_kondisi, $rek->kode_akun);
+                    $saldo = $keuangan->komSaldo($rek);
                 }
 
                 $t_saldo += $saldo;

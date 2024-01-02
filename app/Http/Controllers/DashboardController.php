@@ -796,7 +796,7 @@ class DashboardController extends Controller
                 $saldo_debit = $rek->$tb;
                 $saldo_kredit = $rek->$tbk;
 
-                $id = str_replace('.', '', $rek->kode_akun) . $tahun . 0;
+                $id = str_replace('.', '', $rek->kode_akun) . $tahun . "00";
                 $saldo[] = [
                     'id' => $id,
                     'kode_akun' => $rek->kode_akun,
@@ -836,8 +836,15 @@ class DashboardController extends Controller
             }
         }
 
-        Saldo::whereIn('id', $data_id)->delete();
-        $query = Saldo::insert($saldo);
+        $jumlah = Saldo::where([
+            ['tahun', $tahun],
+            ['bulan', '0']
+        ])->count();
+
+        if ($jumlah <= '0') {
+            Saldo::whereIn('id', $data_id)->delete();
+            $query = Saldo::insert($saldo);
+        }
 
         $link = request()->url('');
         $query = request()->query();

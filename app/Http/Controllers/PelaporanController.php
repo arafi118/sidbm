@@ -30,13 +30,8 @@ class PelaporanController extends Controller
 {
     public function index()
     {
-        $where = [['file', '!=', '0'], ['file', '!=', 'tutup_buku']];
-        if (Session::get('lokasi') == '1') {
-            $where = [['file', '!=', '0']];
-        }
-
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
-        $laporan = JenisLaporan::where($where)->orderBy('urut', 'ASC')->get();
+        $laporan = JenisLaporan::where([['file', '!=', '0']])->orderBy('urut', 'ASC')->get();
 
         $title = 'Pelaporan';
         return view('pelaporan.index')->with(compact('title', 'kec', 'laporan'));
@@ -157,13 +152,27 @@ class PelaporanController extends Controller
         $data['kab'] = $kab;
         $data['dir'] = $dir;
 
-        if (strlen($data['hari']) > 0 && strlen($data['bulan']) > 0) {
-            $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
-        } elseif (strlen($data['bulan']) > 0) {
-            $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . date('t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'));
-        } else {
-            $data['tgl_kondisi'] = $data['tahun'] . '-12-31';
+        if ($data['tahun'] == null) {
+            abort(404);
         }
+
+        $data['bulanan'] = true;
+        if ($data['bulan'] == null) {
+            $data['bulanan'] = false;
+            $data['bulan'] = '12';
+        }
+
+        if ($request->laporan != 'jurnal_transaksi') {
+            $data['hari'] = date('t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'));
+        } else {
+            $data['harian'] = true;
+            if ($data['hari'] == null) {
+                $data['harian'] = false;
+                $data['hari'] = date('t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'));
+            }
+        }
+
+        $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
         $data['tanggal_kondisi'] = $kec->nama_kec . ', ' . Tanggal::tglLatin($data['tgl_kondisi']);
 
         $file = $request->laporan;
@@ -263,17 +272,8 @@ class PelaporanController extends Controller
         $hari = ($data['hari']);
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Per ' . $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-        } elseif (strlen($bln) > 0) {
-            $tgl .= '01';
-            $data['sub_judul'] = 'Per ' . date('t', strtotime($tgl)) . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-        } else {
-            $data['sub_judul'] = 'Per 31 Desember' . ' ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tahun($tgl);
-        }
+        $data['sub_judul'] = 'Per ' . date('t', strtotime($tgl)) . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
 
         $data['debit'] = 0;
         $data['kredit'] = 0;
@@ -282,6 +282,11 @@ class PelaporanController extends Controller
             'akun2',
             'akun2.akun3',
             'akun2.akun3.rek',
+            'akun2.akun3.rek.kom_saldo' => function ($query) use ($data) {
+                $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
+                    $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
+                });
+            },
         ])->orderBy('kode_akun', 'ASC')->get();
 
         $view = view('pelaporan.view.neraca', $data)->render();
@@ -304,13 +309,7 @@ class PelaporanController extends Controller
         $awal_tahun = $thn . '-01-01';
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($awal_tahun) . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-            $data['bulan_lalu'] = date('Y-m-d', strtotime('-1 day', strtotime($data['tgl_kondisi'])));
-            $data['header_lalu'] = 'Kemarin';
-            $data['header_sekarang'] = 'Hari Ini';
-        } elseif (strlen($bln) > 0) {
+        if ($data['bulanan']) {
             $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($thn . '-' . $bln . '-01') . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['bulan_lalu'] = date('Y-m-t', strtotime('-1 month', strtotime($thn . '-' . $bln . '-10')));
@@ -324,130 +323,23 @@ class PelaporanController extends Controller
             $data['header_sekarang'] = 'Tahun Ini';
         }
 
-        // dd($data['tgl_kondisi'], $data['bulan_lalu']);
-        $pendapatan = AkunLevel2::where([
-            ['lev1', '4'],
-            ['lev2', '1']
-        ])->with('rek')->orderBy('kode_akun', 'ASC')->get();
-
-        $beban = AkunLevel2::where('lev1', '5')->where(function ($query) {
-            $query->where('lev2', '1')->orwhere('lev2', '2');
-        })->with('rek')->orderBy('kode_akun', 'ASC')->get();
-
-        $pendapatanNOP = AkunLevel2::where('lev1', '4')->where(function ($query) {
-            $query->where('lev2', '2')->orwhere('lev2', '3');
-        })->with('rek')->orderBy('kode_akun', 'ASC')->get();
-
-        $bebanNOP = AkunLevel2::where([
-            ['lev1', '5'],
-            ['lev2', '3']
-        ])->with('rek')->orderBy('kode_akun', 'ASC')->get();
-
-        // Pendapatan
-        $pend_lev1 = [];
-        foreach ($pendapatan as $pend) {
-            $pend_lev1[$pend->lev2] = [
-                'kode_akun' => $pend->kode_akun,
-                'nama_akun' => $pend->nama_akun
-            ];
-
-            $pend_rek = [];
-            foreach ($pend->rek as $rek) {
-                $saldo = $keuangan->Saldo($data['tgl_kondisi'], $rek->kode_akun);
-                $saldo_bln_lalu = ($bln == 1 || $data['bulan_lalu'] == ($thn - 1) . '-12-31') ? 0 : $keuangan->Saldo($data['bulan_lalu'], $rek->kode_akun);
-
-                $pend_rek[$rek->kode_akun] = [
-                    'kode_akun' => $rek->kode_akun,
-                    'nama_akun' => $rek->nama_akun,
-                    'saldo' => $saldo,
-                    'saldo_bln_lalu' => $saldo_bln_lalu
-                ];
-            }
-
-            $pend_lev1[$pend->lev2]['rek'] = $pend_rek;
+        $jenis = 'Tahunan';
+        if ($data['bulanan']) {
+            $jenis = 'Bulanan';
         }
 
-        // Beban
-        $beb_lev1 = [];
-        foreach ($beban as $beb) {
-            $beb_lev1[$beb->lev2] = [
-                'kode_akun' => $beb->kode_akun,
-                'nama_akun' => $beb->nama_akun
-            ];
-
-            $beb_rek = [];
-            foreach ($beb->rek as $rek) {
-                $saldo = $keuangan->Saldo($data['tgl_kondisi'], $rek->kode_akun);
-                $saldo_bln_lalu = ($bln == 1 || $data['bulan_lalu'] == ($thn - 1) . '-12-31') ? 0 : $keuangan->Saldo($data['bulan_lalu'], $rek->kode_akun);
-
-                $beb_rek[$rek->kode_akun] = [
-                    'kode_akun' => $rek->kode_akun,
-                    'nama_akun' => $rek->nama_akun,
-                    'saldo' => $saldo,
-                    'saldo_bln_lalu' => $saldo_bln_lalu
-                ];
-            }
-
-            $beb_lev1[$beb->lev2]['rek'] = $beb_rek;
-        }
-
-        // Pendapatan Non Operasional
-        $pendNOP_lev1 = [];
-        foreach ($pendapatanNOP as $pendNOP) {
-            $pendNOP_lev1[$pendNOP->lev2] = [
-                'kode_akun' => $pendNOP->kode_akun,
-                'nama_akun' => $pendNOP->nama_akun
-            ];
-
-            $pendNOP_rek = [];
-            foreach ($pendNOP->rek as $rek) {
-                $saldo = $keuangan->Saldo($data['tgl_kondisi'], $rek->kode_akun);
-                $saldo_bln_lalu = ($bln == 1 || $data['bulan_lalu'] == ($thn - 1) . '-12-31') ? 0 : $keuangan->Saldo($data['bulan_lalu'], $rek->kode_akun);
-
-                $pendNOP_rek[$rek->kode_akun] = [
-                    'kode_akun' => $rek->kode_akun,
-                    'nama_akun' => $rek->nama_akun,
-                    'saldo' => $saldo,
-                    'saldo_bln_lalu' => $saldo_bln_lalu
-                ];
-            }
-
-            $pendNOP_lev1[$pendNOP->lev2]['rek'] = $pendNOP_rek;
-        }
-
-        // Beban Non Operasional
-        $bebNOP_lev1 = [];
-        foreach ($bebanNOP as $bebNOP) {
-            $bebNOP_lev1[$bebNOP->lev2] = [
-                'kode_akun' => $bebNOP->kode_akun,
-                'nama_akun' => $bebNOP->nama_akun
-            ];
-
-            $bebNOP_rek = [];
-            foreach ($bebNOP->rek as $rek) {
-                $saldo = $keuangan->Saldo($data['tgl_kondisi'], $rek->kode_akun);
-                $saldo_bln_lalu = ($bln == 1 || $data['bulan_lalu'] == ($thn - 1) . '-12-31') ? 0 : $keuangan->Saldo($data['bulan_lalu'], $rek->kode_akun);
-
-                $bebNOP_rek[$rek->kode_akun] = [
-                    'kode_akun' => $rek->kode_akun,
-                    'nama_akun' => $rek->nama_akun,
-                    'saldo' => $saldo,
-                    'saldo_bln_lalu' => $saldo_bln_lalu
-                ];
-            }
-
-            $bebNOP_lev1[$bebNOP->lev2]['rek'] = $bebNOP_rek;
-        }
+        $pph = $keuangan->pph($data['tgl_kondisi'], $jenis);
+        $laba_rugi = $keuangan->laporan_laba_rugi($data['tgl_kondisi'], $jenis);
 
         $data['pph'] = [
-            'bulan_lalu' => ($bln == 1 || $data['bulan_lalu'] == ($thn - 1) . '-12-31') ? 0 : $keuangan->Saldo($data['bulan_lalu'], '5.4.01.01'),
-            'sekarang' => $keuangan->Saldo($data['tgl_kondisi'], '5.4.01.01')
+            'bulan_lalu' => $pph['bulan_lalu'],
+            'sekarang' => $pph['bulan_ini']
         ];
 
-        $data['pendapatan'] = $pend_lev1;
-        $data['beban'] = $beb_lev1;
-        $data['pendapatanNOP'] = $pendNOP_lev1;
-        $data['bebanNOP'] = $bebNOP_lev1;
+        $data['pendapatan'] = $laba_rugi['pendapatan'];
+        $data['beban'] = $laba_rugi['beban'];
+        $data['pendapatanNOP'] = $laba_rugi['pendapatan_non_ops'];
+        $data['bebanNOP'] = $laba_rugi['beban_non_ops'];
 
         $view = view('pelaporan.view.laba_rugi', $data)->render();
 
@@ -518,19 +410,21 @@ class PelaporanController extends Controller
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-        } elseif (strlen($bln) > 0) {
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        if ($data['bulanan']) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-        } else {
-            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tahun($tgl);
         }
 
         $data['keuangan'] = $keuangan;
-        $data['rekening'] = Rekening::where('lev1', '3')->get();
+        $data['rekening'] = Rekening::where('lev1', '3')->with([
+            'kom_saldo' => function ($query) use ($data) {
+                $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
+                    $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
+                });
+            }
+        ])->get();
 
         $view = view('pelaporan.view.perubahan_modal', $data)->render();
 
@@ -551,22 +445,27 @@ class PelaporanController extends Controller
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-            $data['nama_tgl'] = 'Tanggal ' . $hari . ' Bulan ' . Tanggal::namaBulan($tgl) . ' Tahun ' . $thn;
-        } elseif (strlen($bln) > 0) {
+        $data['tgl'] = Tanggal::tahun($tgl);
+        $data['nama_tgl'] = 'Tahun ' . $thn;
+        if ($data['bulanan']) {
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['nama_tgl'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' Tahun ' . $thn;
-        } else {
-            $data['tgl'] = Tanggal::tahun($tgl);
-            $data['nama_tgl'] = 'Tahun ' . $thn;
         }
 
         $data['sub_judul'] = 'Tahun ' . $thn;
         $data['debit'] = 0;
         $data['kredit'] = 0;
 
-        $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with('akun2.akun3.rek')->orderBy('kode_akun', 'ASC')->get();
+        $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with([
+            'akun2',
+            'akun2.akun3',
+            'akun2.akun3.rek',
+            'akun2.akun3.rek.kom_saldo' => function ($query) use ($data) {
+                $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
+                    $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
+                });
+            },
+        ])->orderBy('kode_akun', 'ASC')->get();
 
         $data['sekr'] = User::where([
             ['level', '1'],
@@ -607,24 +506,26 @@ class PelaporanController extends Controller
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Tanggal ' . $hari . ' Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-            $data['transaksi'] = Transaksi::where('tgl_transaksi', $tgl)->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
-        } elseif (strlen($bln) > 0) {
-            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $data['transaksi'] = Transaksi::whereBetween('tgl_transaksi', [
-                $thn . '-' . $bln . '-01',
-                $thn . '-' . $bln . '-' . date('t', strtotime($thn . '-' . $bln . '-01'))
-            ])->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
-        } else {
+        if (!$data['bulanan']) {
             $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tahun($tgl);
             $data['transaksi'] = Transaksi::whereBetween('tgl_transaksi', [
                 $thn . '-01-01',
                 $thn . '-12-31'
             ])->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
+        } else {
+            if (!$data['harian']) {
+                $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+                $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+                $data['transaksi'] = Transaksi::whereBetween('tgl_transaksi', [
+                    $thn . '-' . $bln . '-01',
+                    $thn . '-' . $bln . '-' . date('t', strtotime($thn . '-' . $bln . '-01'))
+                ])->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
+            } else {
+                $data['sub_judul'] = 'Tanggal ' . $hari . ' Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+                $data['tgl'] = Tanggal::tglLatin($tgl);
+                $data['transaksi'] = Transaksi::where('tgl_transaksi', $tgl)->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
+            }
         }
 
         $view = view('pelaporan.view.jurnal_transaksi', $data)->render();
@@ -646,13 +547,12 @@ class PelaporanController extends Controller
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $tgl = $thn . '-' . $bln . '-' . $hari;
-            $data['judul'] = 'Laporan Harian';
-            $data['sub_judul'] = 'Tanggal ' . $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-            $awal_bulan = date('Y-m-d', strtotime('-1 day', strtotime($tgl)));
-        } elseif (strlen($bln) > 0) {
+        $tgl = $thn . '-';
+        $data['judul'] = 'Laporan Tahunan';
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        $awal_bulan = $thn . '00-00';
+        if ($data['bulanan']) {
             $tgl = $thn . '-' . $bln . '-';
             $data['judul'] = 'Laporan Bulanan';
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
@@ -662,12 +562,6 @@ class PelaporanController extends Controller
             if ($bln == 1) {
                 $awal_bulan = $thn . '00-00';
             }
-        } else {
-            $tgl = $thn . '-';
-            $data['judul'] = 'Laporan Tahunan';
-            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tahun($tgl);
-            $awal_bulan = ($thn - 1) . '12-31';
         }
 
         $data['rek'] = Rekening::where('kode_akun', $data['kode_akun'])->first();
@@ -675,9 +569,10 @@ class PelaporanController extends Controller
             $query->where('rekening_debit', $data['kode_akun'])->orwhere('rekening_kredit', $data['kode_akun']);
         })->with('user')->orderBy('tgl_transaksi', 'ASC')->orderBy('urutan', 'ASC')->orderBy('idt', 'ASC')->get();
 
-        $data['saldo'] = $keuangan->saldoAwal($tgl, $data['kode_akun']);
-        $data['d_bulan_lalu'] = $keuangan->saldoD($awal_bulan, $data['kode_akun']);
-        $data['k_bulan_lalu'] = $keuangan->saldoK($awal_bulan, $data['kode_akun']);
+        $saldo_bulanan = $keuangan->saldoPerBulan($awal_bulan, $data['kode_akun']);
+        $data['saldo'] = $keuangan->saldoAwal($data['tgl_kondisi'], $data['kode_akun']);
+        $data['d_bulan_lalu'] = $saldo_bulanan['debit'];
+        $data['k_bulan_lalu'] = $saldo_bulanan['kredit'];
 
         $view = view('pelaporan.view.buku_besar', $data)->render();
 
@@ -698,19 +593,21 @@ class PelaporanController extends Controller
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-        } elseif (strlen($bln) > 0) {
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        if ($data['bulanan']) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-        } else {
-            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tahun($tgl);
         }
 
         $data['keuangan'] = $keuangan;
-        $data['rekening'] = Rekening::orderBy('kode_akun', 'ASC')->get();
+        $data['rekening'] = Rekening::orderBy('kode_akun', 'ASC')->with([
+            'kom_saldo' => function ($query) use ($data) {
+                $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
+                    $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
+                });
+            }
+        ])->get();
 
         $view = view('pelaporan.view.neraca_saldo', $data)->render();
 
@@ -1542,15 +1439,11 @@ class PelaporanController extends Controller
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-        } elseif (strlen($bln) > 0) {
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        if ($data['bulanan']) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-        } else {
-            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tahun($tgl);
         }
 
         $data['dir'] = User::where([

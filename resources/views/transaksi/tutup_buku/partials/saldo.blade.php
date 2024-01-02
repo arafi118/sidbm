@@ -39,11 +39,11 @@
                                         $saldo_kredit = 0;
                                         foreach ($rek->kom_saldo as $kom_saldo) {
                                             if ($kom_saldo->bulan == 0) {
-                                                $awal_debit += $kom_saldo->debit;
-                                                $awal_kredit += $kom_saldo->kredit;
+                                                $awal_debit += intval($kom_saldo->debit);
+                                                $awal_kredit += intval($kom_saldo->kredit);
                                             } else {
-                                                $saldo_debit += $kom_saldo->debit;
-                                                $saldo_kredit += $kom_saldo->kredit;
+                                                $saldo_debit += intval($kom_saldo->debit);
+                                                $saldo_kredit += intval($kom_saldo->kredit);
                                             }
                                         }
 

@@ -43,7 +43,7 @@
         </tr>
         @foreach ($rekening as $rek)
             @php
-                $saldo = $keuangan->Saldo($tgl_kondisi, $rek->kode_akun);
+                $saldo = $keuangan->komSaldo($rek);
 
                 $debit = 0;
                 $kredit = $saldo;

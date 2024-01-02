@@ -6,6 +6,7 @@ use App\Models\AkunLevel2;
 use App\Models\Kecamatan;
 use App\Models\PinjamanKelompok;
 use App\Models\Rekening;
+use App\Models\Saldo;
 use App\Models\Transaksi;
 use DB;
 use Session;
@@ -118,11 +119,11 @@ class Keuangan
         $saldo_kredit = 0;
         foreach ($rek->kom_saldo as $kom_saldo) {
             if ($kom_saldo->bulan == 0) {
-                $awal_debit += $kom_saldo->debit;
-                $awal_kredit += $kom_saldo->kredit;
+                $awal_debit += intval($kom_saldo->debit);
+                $awal_kredit += intval($kom_saldo->kredit);
             } else {
-                $saldo_debit += $kom_saldo->debit;
-                $saldo_kredit += $kom_saldo->kredit;
+                $saldo_debit += intval($kom_saldo->debit);
+                $saldo_kredit += intval($kom_saldo->kredit);
             }
         }
 
@@ -182,45 +183,59 @@ class Keuangan
     public function saldoAwal($tgl_kondisi, $kode_akun)
     {
         $thn_kondisi = explode('-', $tgl_kondisi)[0];
-        $thn_lalu = $thn_kondisi - 1;
-
-        $rek = Rekening::select(
-            DB::raw("SUM(tb$thn_lalu) as debit"),
-            DB::raw("SUM(tbk$thn_lalu) as kredit")
-        )->where('kode_akun', $kode_akun)->first();
+        $saldo = Saldo::where([
+            ['tahun', $thn_kondisi],
+            ['bulan', '0'],
+            ['kode_akun', $kode_akun]
+        ])->first();
 
         return [
-            'debit' => $rek->debit,
-            'kredit' => $rek->kredit
+            'debit' => $saldo->debit,
+            'kredit' => $saldo->kredit
         ];
     }
 
-    // Sum Saldo Debit
-    public function saldoD($tgl_kondisi, $kode_akun)
+    public function saldoPerBulan($tgl_kondisi, $kode_akun)
     {
-        $thn_kondisi = explode('-', $tgl_kondisi)[0];
-        $awal_tahun = $thn_kondisi . '-01-01';
+        $thn = explode('-', $tgl_kondisi)[0];
+        $bln = explode('-', $tgl_kondisi)[1];
 
-        $trx = Transaksi::where('rekening_debit', $kode_akun)->whereBetween('tgl_transaksi', [$awal_tahun, $tgl_kondisi])->sum('jumlah');
-        return $trx;
-    }
+        if ($bln < '1') {
+            return [
+                'debit' => '0',
+                'kredit' => '0'
+            ];
+        }
 
-    // Sum Saldo Kredit
-    public function saldoK($tgl_kondisi, $kode_akun)
-    {
-        $thn_kondisi = explode('-', $tgl_kondisi)[0];
-        $awal_tahun = $thn_kondisi . '-01-01';
+        $saldo = Saldo::where([
+            ['tahun', $thn],
+            ['bulan', $bln],
+            ['kode_akun', $kode_akun]
+        ])->first();
 
-        $trx = Transaksi::where('rekening_kredit', $kode_akun)->whereBetween('tgl_transaksi', [$awal_tahun, $tgl_kondisi])->sum('jumlah');
-        return $trx;
+        return [
+            'debit' => $saldo->debit,
+            'kredit' => $saldo->kredit
+        ];
     }
 
     public function pendapatan($tgl_kondisi)
     {
+        $data = [
+            'tahun' => explode('-', $tgl_kondisi)[0],
+            'bulan' => explode('-', $tgl_kondisi)[1]
+        ];
+
         $saldo = 0;
-        $rekening = Rekening::where('lev1', '4')->get();
+        $rekening = Rekening::where('lev1', '4')->with([
+            'kom_saldo' => function ($query) use ($data) {
+                $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
+                    $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
+                });
+            }
+        ])->get();
         foreach ($rekening as $rek) {
-            $saldo += $this->Saldo($tgl_kondisi, $rek->kode_akun);
+            $saldo += $this->komSaldo($rek);
         }
 
         return $saldo;
@@ -228,10 +243,21 @@ class Keuangan
 
     public function biaya($tgl_kondisi)
     {
+        $data = [
+            'tahun' => explode('-', $tgl_kondisi)[0],
+            'bulan' => explode('-', $tgl_kondisi)[1]
+        ];
+
         $saldo = 0;
-        $rekening = Rekening::where('lev1', '5')->get();
+        $rekening = Rekening::where('lev1', '5')->with([
+            'kom_saldo' => function ($query) use ($data) {
+                $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
+                    $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
+                });
+            }
+        ])->get();
         foreach ($rekening as $rek) {
-            $saldo += $this->Saldo($tgl_kondisi, $rek->kode_akun);
+            $saldo += $this->komSaldo($rek);
         }
 
         return $saldo;
@@ -457,12 +483,23 @@ class Keuangan
 
     public function aset($tgl_kondisi)
     {
+        $data = [
+            'tahun' => explode('-', $tgl_kondisi)[0],
+            'bulan' => explode('-', $tgl_kondisi)[1]
+        ];
+
         $aset_produktif = 0;
         $aset_ekonomi = 0;
         $cadangan_piutang = 0;
-        $rekening = Rekening::where('lev1', '1')->where('lev2', '1')->get();
+        $rekening = Rekening::where('lev1', '1')->where('lev2', '1')->with([
+            'kom_saldo' => function ($query) use ($data) {
+                $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
+                    $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
+                });
+            }
+        ])->get();
         foreach ($rekening as $rek) {
-            $saldo = $this->Saldo($tgl_kondisi, $rek->kode_akun);
+            $saldo = $this->komSaldo($rek);
             $aset_produktif += $saldo;
             if ($rek->lev3 < '6') {
                 $aset_ekonomi += $saldo;
@@ -481,7 +518,26 @@ class Keuangan
 
     public function modal_awal($tgl_kondisi)
     {
-        $modalawal = ($this->Saldo($tgl_kondisi, "3.1.01.01")) + ($this->Saldo($tgl_kondisi, "3.1.01.02")) + ($this->Saldo($tgl_kondisi, "3.1.01.03"));
+        $data = [
+            'tahun' => explode('-', $tgl_kondisi)[0],
+            'bulan' => explode('-', $tgl_kondisi)[1]
+        ];
+
+        $rekening = Rekening::where(function ($query) {
+            $query->where('kode_akun', '3.1.01.01')->orwhere('kode_akun', '3.1.01.02')->orwhere('kode_akun', '3.1.01.03');
+        })->with([
+            'kom_saldo' => function ($query) use ($data) {
+                $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
+                    $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
+                });
+            }
+        ])->get();
+
+        $modalawal = 0;
+        foreach ($rekening as $rek) {
+            $modalawal += $this->komSaldo($rek);
+        }
+
         return $modalawal;
     }
 
