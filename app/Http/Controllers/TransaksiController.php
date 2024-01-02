@@ -1722,7 +1722,15 @@ class TransaksiController extends Controller
                 $tgl_kondisi = $data['tahun'] . '-12-31';
             }
 
-            $saldo = $keuangan->Saldo($tgl_kondisi, $kode_akun);
+            $rek = Rekening::where('kode_akun', $kode_akun)->with([
+                'kom_saldo' => function ($query) use ($data) {
+                    $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
+                        $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
+                    });
+                }
+            ])->first();
+
+            $saldo = $keuangan->komSaldo($rek);
         }
 
         return response()->json([

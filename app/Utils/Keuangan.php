@@ -738,7 +738,7 @@ class Keuangan
                 if ($rek->lev1 == 4) {
                     $saldo_awal = $kredit_awal - $debit_awal;
                     $saldo_bulan_ini = $saldo_awal + ($kredit_bulan_ini - $debit_bulan_ini);
-                    $saldo_bulan_lalu = $saldo_awal + ($kredit_bulan_ini - $debit_bulan_lalu);
+                    $saldo_bulan_lalu = $saldo_awal + ($kredit_bulan_lalu - $debit_bulan_lalu);
                 }
 
                 $data[$rek->kode_akun] = [
