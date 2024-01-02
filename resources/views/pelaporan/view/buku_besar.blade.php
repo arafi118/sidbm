@@ -14,6 +14,8 @@
 
     $total_debit = 0;
     $total_kredit = 0;
+
+    $number = 0;
 @endphp
 
 @extends('pelaporan.layout.base')
@@ -71,7 +73,6 @@
 
         @foreach ($transaksi as $trx)
             @php
-                $number = $loop->iteration;
                 if ($trx->rekening_debit == $rek->kode_akun) {
                     $ref = substr($trx->rekening_kredit, 0, 3);
                     $debit = $trx->jumlah;
@@ -91,7 +92,14 @@
                 $total_saldo += $_saldo;
                 $total_debit += $debit;
                 $total_kredit += $kredit;
+            @endphp
 
+            @php
+                if ($harian && $trx->tgl_transaksi != $tgl_kondisi) {
+                    continue;
+                }
+
+                $number++;
                 $bg = 'rgb(230, 230, 230)';
                 if ($number % 2 == 0) {
                     $bg = 'rgba(255, 255, 255)';

@@ -162,14 +162,10 @@ class PelaporanController extends Controller
             $data['bulan'] = '12';
         }
 
-        if ($request->laporan != 'jurnal_transaksi') {
+        $data['harian'] = true;
+        if ($data['hari'] == null) {
+            $data['harian'] = false;
             $data['hari'] = date('t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'));
-        } else {
-            $data['harian'] = true;
-            if ($data['hari'] == null) {
-                $data['harian'] = false;
-                $data['hari'] = date('t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'));
-            }
         }
 
         $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
@@ -562,6 +558,12 @@ class PelaporanController extends Controller
             if ($bln == 1) {
                 $awal_bulan = $thn . '00-00';
             }
+        }
+
+        if ($data['harian']) {
+            $data['judul'] = 'Laporan Harian';
+            $data['sub_judul'] = 'Tanggal ' . $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::tglLatin($tgl);
         }
 
         $data['rek'] = Rekening::where('kode_akun', $data['kode_akun'])->first();
