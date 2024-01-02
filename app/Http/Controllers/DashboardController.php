@@ -839,7 +839,7 @@ class DashboardController extends Controller
         $jumlah = Saldo::where([
             ['tahun', $tahun],
             ['bulan', '0']
-        ])->count();
+        ])->whereRaw('LENGTH(kode_akun)=9')->count();
 
         if ($jumlah <= '0') {
             Saldo::whereIn('id', $data_id)->delete();

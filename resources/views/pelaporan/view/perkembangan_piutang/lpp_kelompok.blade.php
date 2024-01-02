@@ -232,7 +232,7 @@
                         {{ $pinkel->id }}</td>
                     <td class="t l b" align="center">{{ Tanggal::tglIndo($pinkel->tgl_cair, 'DD/MM/YY') }}</td>
                     <td class="t l b" align="center">
-                        <small>{{ $pinkel->jangka }}*{{ $pros_jasa }}</small>
+                        <small>{{ $pinkel->jangka }}*{{ number_format($pros_jasa, 2) }}</small>
                     </td>
                     <td class="t l b" align="right">{{ number_format($pinkel->alokasi) }}</td>
                     <td class="t l b" align="right">{{ number_format($target_pokok) }}</td>
