@@ -95,6 +95,7 @@
             </form>
 
             <div class="d-flex justify-content-end">
+                <button type="button" id="SimpanSaldo" class="btn btn-sm btn-danger me-2">Simpan Saldo</button>
                 <button type="button" id="Excel" class="btn btn-sm btn-success me-2">Excel</button>
                 <button type="button" id="Preview" class="btn btn-sm btn-github">Preview</button>
             </div>
@@ -179,6 +180,20 @@
             console.log(form.serialize())
             if (file != '') {
                 form.submit()
+            }
+        })
+
+        let childWindow;
+        $(document).on('click', '#SimpanSaldo', function(e) {
+            e.preventDefault()
+
+            var tahun = $('select#tahun').val()
+            childWindow = window.open('/simpan_saldo?bulan=00&tahun=' + tahun, '_blank');
+        })
+
+        window.addEventListener('message', function(event) {
+            if (event.data === 'closed') {
+                window.location.reload()
             }
         })
     </script>

@@ -58,13 +58,6 @@
                             </a>
                         </li>
                     @endif
-
-                    <li class="nav-item pt-2">
-                        <a class="nav-link text-dark d-flex" id="SimpanSaldo" href="#">
-                            <i class="material-icons text-lg me-2">credit_card</i>
-                            <span class="text-sm">Simpan Saldo</span>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -254,19 +247,6 @@
         var quill = new Quill('#editor', {
             theme: 'snow'
         });
-
-        let childWindow;
-        $(document).on('click', '#SimpanSaldo', function(e) {
-            e.preventDefault()
-
-            childWindow = window.open('/simpan_saldo?bulan=00&tahun=' + tahun, '_blank');
-        })
-
-        window.addEventListener('message', function(event) {
-            if (event.data === 'closed') {
-                window.location.reload()
-            }
-        })
 
         $(document).on('click', '.btn-simpan', async function(e) {
             e.preventDefault()
