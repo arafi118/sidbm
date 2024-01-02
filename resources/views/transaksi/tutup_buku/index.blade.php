@@ -64,7 +64,7 @@
             e.preventDefault()
 
             var tahun_val = $(this).val()
-            if ((tahun == tahun_val && bulan <= 10) || (tahun_val < tahun)) {
+            if ((tahun == tahun_val && bulan <= 10)) {
                 $('#TutupBuku').prop("disabled", true)
             } else {
                 $('#TutupBuku').prop("disabled", false)
