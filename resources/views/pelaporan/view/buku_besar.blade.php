@@ -3,12 +3,12 @@
     $total_saldo = 0;
 
     if ($rek->jenis_mutasi == 'debet') {
-        $saldo_awal_tahun = $saldo['debit'] - $saldo['kredit'];
-        $saldo_awal_bulan = $d_bulan_lalu - $k_bulan_lalu;
+        $saldo_awal_tahun = parsefloat($saldo['debit']) - parsefloat($saldo['kredit']);
+        $saldo_awal_bulan = parsefloat($d_bulan_lalu) - parsefloat($k_bulan_lalu);
         $total_saldo = $saldo_awal_tahun + $saldo_awal_bulan;
     } else {
-        $saldo_awal_tahun = $saldo['kredit'] - $saldo['debit'];
-        $saldo_awal_bulan = $k_bulan_lalu - $d_bulan_lalu;
+        $saldo_awal_tahun = parsefloat($saldo['kredit']) - parsefloat($saldo['debit']);
+        $saldo_awal_bulan = parsefloat($k_bulan_lalu) - parsefloat($d_bulan_lalu);
         $total_saldo = $saldo_awal_tahun + $saldo_awal_bulan;
     }
 
