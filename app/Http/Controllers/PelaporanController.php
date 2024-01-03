@@ -622,15 +622,11 @@ class PelaporanController extends Controller
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-        } elseif (strlen($bln) > 0) {
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        if ($data['bulanan']) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-        } else {
-            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tahun($tgl);
         }
 
         $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
@@ -694,15 +690,11 @@ class PelaporanController extends Controller
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-        } elseif (strlen($bln) > 0) {
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        if ($data['bulanan']) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-        } else {
-            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tahun($tgl);
         }
 
         $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
@@ -765,15 +757,11 @@ class PelaporanController extends Controller
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-        } elseif (strlen($bln) > 0) {
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        if ($data['bulanan']) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-        } else {
-            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tahun($tgl);
         }
 
         $data['tgl_lalu'] = $data['tahun'] . '-' . $data['bulan'] . '-01';
@@ -852,15 +840,11 @@ class PelaporanController extends Controller
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-        } elseif (strlen($bln) > 0) {
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        if ($data['bulanan']) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-        } else {
-            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tahun($tgl);
         }
 
         $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
@@ -937,15 +921,11 @@ class PelaporanController extends Controller
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-        } elseif (strlen($bln) > 0) {
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        if ($data['bulanan']) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-        } else {
-            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tahun($tgl);
         }
 
         $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
@@ -1022,15 +1002,11 @@ class PelaporanController extends Controller
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-        } elseif (strlen($bln) > 0) {
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        if ($data['bulanan']) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-        } else {
-            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tahun($tgl);
         }
 
         $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
@@ -1107,15 +1083,11 @@ class PelaporanController extends Controller
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-        } elseif (strlen($bln) > 0) {
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        if ($data['bulanan']) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-        } else {
-            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tahun($tgl);
         }
 
         $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
@@ -1193,18 +1165,13 @@ class PelaporanController extends Controller
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-            $data['tgl_cair'] = $thn . '-' . $bln . '-' . $hari;
-        } elseif (strlen($bln) > 0) {
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        $data['tgl_cair'] = $thn . '-';
+        if ($data['bulanan']) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl_cair'] = $thn . '-' . $bln . '-';
-        } else {
-            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tahun($tgl);
-            $data['tgl_cair'] = $thn . '-';
         }
 
         $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
