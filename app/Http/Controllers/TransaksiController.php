@@ -193,11 +193,11 @@ class TransaksiController extends Controller
                 if ($rek->lev1 >= 4) {
                     foreach ($rek->kom_saldo as $saldo) {
                         if ($saldo->bulan == 0) {
-                            if ($saldo->debit != 0) $saldo_awal_debit = $saldo->debit;
-                            if ($saldo->kredit != 0) $saldo_awal_kredit = $saldo->kredit;
+                            if ($saldo->debit != 0) $saldo_awal_debit = floatval($saldo->debit);
+                            if ($saldo->kredit != 0) $saldo_awal_kredit = floatval($saldo->kredit);
                         } else {
-                            if ($saldo->debit != 0) $debit = $saldo->debit;
-                            if ($saldo->kredit != 0) $kredit = $saldo->kredit;
+                            if ($saldo->debit != 0) $debit = floatval($saldo->debit);
+                            if ($saldo->kredit != 0) $kredit = floatval($saldo->kredit);
                         }
                     }
 
