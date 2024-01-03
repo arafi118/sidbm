@@ -442,9 +442,9 @@ class Keuangan
 
             $_kolek = 0;
             if ($wajib_pokok != '0') {
-                $_kolek = floor($tunggakan_pokok / $wajib_pokok);
+                $_kolek = ($tunggakan_pokok / $wajib_pokok);
             }
-            $kolek = $_kolek + ($selisih - $angsuran_ke);
+            $kolek = round($_kolek + ($selisih - $angsuran_ke));
             if ($kolek <= 3) {
                 $kolek1 = $saldo_pokok;
                 $kolek2 = 0;

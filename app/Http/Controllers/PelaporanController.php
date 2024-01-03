@@ -1573,6 +1573,10 @@ class PelaporanController extends Controller
             },
             'sebutan_desa'
         ])->get();
+        $data['saldo_calk'] = Saldo::where([
+            ['kode_akun', $data['kec']->kd_kec],
+            ['tahun', $thn]
+        ])->get();
 
         $data['tgl_transaksi'] = $thn . '-12-31';
         $data['laporan'] = 'Alokasi Laba';

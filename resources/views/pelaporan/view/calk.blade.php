@@ -34,8 +34,8 @@
 
     $i = 0;
     foreach ($saldo_calk as $_saldo) {
-        $calk["$i"]['th_lalu'] = intval($_saldo->debit);
-        $calk["$i"]['th_ini'] = intval($_saldo->kredit);
+        $calk["$i"]['th_lalu'] = floatval($_saldo->debit);
+        $calk["$i"]['th_ini'] = floatval($_saldo->kredit);
 
         $i++;
     }
