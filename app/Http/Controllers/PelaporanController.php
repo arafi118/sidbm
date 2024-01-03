@@ -356,12 +356,12 @@ class PelaporanController extends Controller
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
-            $data['sub_judul'] = 'Tanggal ' . Tanggal::tglLatin($tgl);
-            $data['tgl'] = Tanggal::tglLatin($tgl);
-            $data['jenis'] = 'Harian';
-            $tgl_lalu = date('Y-m-d', strtotime('-1 days', strtotime($data['tgl_kondisi'])));
-        } elseif (strlen($bln) > 0) {
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        $data['jenis'] = 'Tahunan';
+        $tgl_lalu = ($thn - 1) . '-00-00';
+        if ($data['bulanan']) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['jenis'] = 'Bulanan';
@@ -373,12 +373,6 @@ class PelaporanController extends Controller
             }
 
             $tgl_lalu = $thn . '-' . $bulan_lalu . '-' . date('t', strtotime($thn . '-' . $bulan_lalu . '-01'));
-        } else {
-            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::tahun($tgl);
-            $data['jenis'] = 'Tahunan';
-
-            $tgl_lalu = ($thn - 1) . '-00-00';
         }
 
         $data['keuangan'] = $keuangan;
