@@ -43,18 +43,15 @@
         </tr>
         @foreach ($rekening as $rek)
             @php
-                $saldo = $keuangan->komSaldo($rek);
+                $saldo = floatval($keuangan->komSaldo($rek));
 
                 $debit = 0;
                 $kredit = $saldo;
-
-                if ($rek->jenis_mutasi == 'debet') {
+                if ($rek->lev1 == '1' || $rek->lev1 == '5') {
                     $debit = $saldo;
                     $kredit = 0;
                 }
 
-                $sum_ns_debit += $debit;
-                $sum_ns_kredit += $kredit;
             @endphp
 
             <tr>
@@ -99,8 +96,13 @@
                     </td>
                 @else
                     @php
-                        $sum_rl_debit += $debit;
-                        $sum_rl_kredit += $kredit;
+                        if ($rek->lev1 == 4) {
+                            $sum_rl_debit += $debit;
+                            $sum_rl_kredit += $kredit;
+                        } else {
+                            $sum_rl_debit -= $debit;
+                            $sum_rl_kredit -= $kredit;
+                        }
                     @endphp
                     <td class="t l b" align="right">
                         @if ($debit < 0)
@@ -124,6 +126,10 @@
                     </td>
                 @endif
 
+                @php
+                    $sum_ns_debit = $sum_nc_debit + $sum_rl_debit;
+                    $sum_ns_kredit = $sum_nc_kredit + $sum_rl_kredit;
+                @endphp
             </tr>
         @endforeach
 
