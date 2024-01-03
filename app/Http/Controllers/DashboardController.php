@@ -24,14 +24,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        if (Session::get('lokasi_user')) {
-            Session::put('lokasi', Session::get('lokasi_user'));
-        } else {
-        }
-
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         if (Session::get('pesan')) {
-            // $this->piutang();
+            $this->piutang();
             $this->sync(Session::get('lokasi'));
         }
 
@@ -612,15 +607,13 @@ class DashboardController extends Controller
         }
 
         $date = $tahun . '-' . $bulan . '-01';
-        $bulan_lalu = date('Y-m-d', strtotime('-1 month', strtotime($date)));
 
         $saldo = Saldo::where([
             ['tahun', $tahun],
             ['bulan', $bulan]
         ])->with([
-            'saldo' => function ($query) use ($bulan_lalu) {
-                $tahun = date('Y', strtotime($bulan_lalu));
-                $bulan = date('m', strtotime($bulan_lalu));
+            'saldo' => function ($query) use ($tahun, $bulan) {
+                $bulan = $bulan - 1;
 
                 $query->where([
                     ['tahun', $tahun],
