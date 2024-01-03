@@ -1040,14 +1040,26 @@ Terima kasih atas perhatiannya!
             $('#aktif').modal('show')
         })
 
-        let childWindow;
+        let childWindow, loading;
         $(document).on('click', '#simpanSaldo', function(e) {
             var link = $(this).attr('data-href')
+
+            loading = Swal.fire({
+                title: "Mohon Menunggu..",
+                html: "Menyimpan Saldo Januari sampai Desember Th. {{ date('Y') }}",
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            })
+
             childWindow = window.open(link, '_blank');
         })
 
         window.addEventListener('message', function(event) {
             if (event.data === 'closed') {
+                loading.close()
                 window.location.reload()
             }
         })

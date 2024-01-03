@@ -189,16 +189,27 @@
             }
         })
 
-        let childWindow;
+        let childWindow, loading;
         $(document).on('click', '#SimpanSaldo', function(e) {
             e.preventDefault()
 
             var tahun = $('select#tahun').val()
+            loading = Swal.fire({
+                title: "Mohon Menunggu..",
+                html: "Menyimpan Saldo Januari sampai Desember Th. " + tahun,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            })
+
             childWindow = window.open('/simpan_saldo?bulan=00&tahun=' + tahun, '_blank');
         })
 
         window.addEventListener('message', function(event) {
             if (event.data === 'closed') {
+                loading.close()
                 window.location.reload()
             }
         })
