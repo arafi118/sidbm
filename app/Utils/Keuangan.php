@@ -160,11 +160,11 @@ class Keuangan
             $saldo_kredit = 0;
             foreach ($rek->kom_saldo as $kom_saldo) {
                 if ($kom_saldo->bulan == 0) {
-                    $awal_debit += $kom_saldo->debit;
-                    $awal_kredit += $kom_saldo->kredit;
+                    $awal_debit += floatval($kom_saldo->debit);
+                    $awal_kredit += floatval($kom_saldo->kredit);
                 } else {
-                    $saldo_debit += $kom_saldo->debit;
-                    $saldo_kredit += $kom_saldo->kredit;
+                    $saldo_debit += floatval($kom_saldo->debit);
+                    $saldo_kredit += floatval($kom_saldo->kredit);
                 }
             }
 
@@ -296,11 +296,11 @@ class Keuangan
             $saldo_kredit = 0;
             foreach ($sp->kom_saldo as $kom_saldo) {
                 if ($kom_saldo->bulan == 0) {
-                    $awal_debit += $kom_saldo->debit;
-                    $awal_kredit += $kom_saldo->kredit;
+                    $awal_debit += floatval($kom_saldo->debit);
+                    $awal_kredit += floatval($kom_saldo->kredit);
                 } else {
-                    $saldo_debit += $kom_saldo->debit;
-                    $saldo_kredit += $kom_saldo->kredit;
+                    $saldo_debit += floatval($kom_saldo->debit);
+                    $saldo_kredit += floatval($kom_saldo->kredit);
                 }
             }
 
@@ -643,15 +643,15 @@ class Keuangan
         $kredit_bulan_lalu = 0;
         foreach ($saldo->kom_saldo as $kom_saldo) {
             if ($kom_saldo->bulan == $bulan) {
-                $debit_bulan_ini += $kom_saldo->debit;
-                $kredit_bulan_ini += $kom_saldo->kredit;
+                $debit_bulan_ini += floatval($kom_saldo->debit);
+                $kredit_bulan_ini += floatval($kom_saldo->kredit);
             } else {
                 if ($bulan == 1 || $jenis != 'Bulanan') {
                     $debit_bulan_lalu += 0;
                     $kredit_bulan_lalu += 0;
                 } else {
-                    $debit_bulan_lalu += $kom_saldo->debit;
-                    $kredit_bulan_lalu += $kom_saldo->kredit;
+                    $debit_bulan_lalu += floatval($kom_saldo->debit);
+                    $kredit_bulan_lalu += floatval($kom_saldo->kredit);
                 }
             }
         }
@@ -712,15 +712,15 @@ class Keuangan
                 $kredit_bulan_lalu = 0;
                 foreach ($rek->kom_saldo as $kom_saldo) {
                     if ($kom_saldo->bulan == $bulan) {
-                        $debit_bulan_ini += $kom_saldo->debit;
-                        $kredit_bulan_ini += $kom_saldo->kredit;
+                        $debit_bulan_ini += floatval($kom_saldo->debit);
+                        $kredit_bulan_ini += floatval($kom_saldo->kredit);
                     } else {
                         if ($bulan == 1 || $jenis != 'Bulanan') {
                             $debit_bulan_lalu += 0;
                             $kredit_bulan_lalu += 0;
                         } else {
-                            $debit_bulan_lalu += $kom_saldo->debit;
-                            $kredit_bulan_lalu += $kom_saldo->kredit;
+                            $debit_bulan_lalu += floatval($kom_saldo->debit);
+                            $kredit_bulan_lalu += floatval($kom_saldo->kredit);
                         }
                     }
                 }
