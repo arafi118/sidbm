@@ -397,7 +397,7 @@ class TransaksiController extends Controller
 
             if (in_array($rek->kode_akun, array_keys($alokasi_laba))) {
                 $id = str_replace('.', '', $rek->kode_akun) . $tahun_tb . '00';
-                $saldo_kredit += $alokasi_laba[$rek->kode_akun];
+                $saldo_kredit += floatval($alokasi_laba[$rek->kode_akun]);
                 $saldo_tutup_buku[] = [
                     'id' => $id,
                     'kode_akun' => $rek->kode_akun,
