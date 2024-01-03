@@ -243,7 +243,7 @@ class TransaksiController extends Controller
                     $saldo_kredit += $surplus;
                 }
 
-                $id = str_replace('.', '', $rek->kode_akun) . $tahun_tb . '00';
+                $id = str_replace('.', '', $rek->kode_akun) . $tahun_tb . "00";
                 $saldo_tutup_buku[] = [
                     'id' => $id,
                     'kode_akun' => $rek->kode_akun,
