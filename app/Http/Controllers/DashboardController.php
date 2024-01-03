@@ -26,7 +26,7 @@ class DashboardController extends Controller
     {
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         if (Session::get('pesan')) {
-            $this->piutang();
+            // $this->piutang();
             $this->sync(Session::get('lokasi'));
         }
 

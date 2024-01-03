@@ -865,70 +865,70 @@ class TransaksiController extends Controller
             }
 
             if ($request->jasa > 0) {
-                if ($request->jasa < $tunggakan_jasa) {
-                    if ($pinkel->jenis_pp == '1') {
-                        $jasa_kredit = '1.1.03.04';
-                    } elseif ($pinkel->jenis_pp == '2') {
-                        $jasa_kredit = '1.1.03.05';
-                    } else {
-                        $jasa_kredit = '1.1.03.06';
-                    }
+                // if ($request->jasa < $tunggakan_jasa) {
+                //     if ($pinkel->jenis_pp == '1') {
+                //         $jasa_kredit = '1.1.03.04';
+                //     } elseif ($pinkel->jenis_pp == '2') {
+                //         $jasa_kredit = '1.1.03.05';
+                //     } else {
+                //         $jasa_kredit = '1.1.03.06';
+                //     }
 
-                    $transaksi[] = [
-                        'tgl_transaksi' => (string) $tgl_transaksi,
-                        'rekening_debit' => (string) $kas_umum,
-                        'rekening_kredit' => (string) $jasa_kredit,
-                        'idtp' => $idtp,
-                        'id_pinj' => $pinkel->id,
-                        'id_pinj_i' => '0',
-                        'keterangan_transaksi' => (string) 'Angs. (J) ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')' . ' [' . $pinkel->kelompok->d->nama_desa . ']',
-                        'relasi' => (string) $pinkel->kelompok->nama_kelompok,
-                        'jumlah' => str_replace(',', '', str_replace('.00', '', $request->jasa)),
-                        'urutan' => '0',
-                        'id_user' => auth()->user()->id
-                    ];
-                } else {
-                    $angs_jasa = ($request->jasa - $tunggakan_jasa > 0) ? ($request->jasa - $tunggakan_jasa) : $request->jasa;
-                    $transaksi[] = [
-                        'tgl_transaksi' => (string) $tgl_transaksi,
-                        'rekening_debit' => (string) $kas_umum,
-                        'rekening_kredit' => (string) $jasa_kredit,
-                        'idtp' => $idtp,
-                        'id_pinj' => $pinkel->id,
-                        'id_pinj_i' => '0',
-                        'keterangan_transaksi' => (string) 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
-                        'relasi' => (string) $pinkel->kelompok->nama_kelompok,
-                        'jumlah' => str_replace(',', '', str_replace('.00', '', $angs_jasa)),
-                        'urutan' => '0',
-                        'id_user' => auth()->user()->id
-                    ];
+                $transaksi[] = [
+                    'tgl_transaksi' => (string) $tgl_transaksi,
+                    'rekening_debit' => (string) $kas_umum,
+                    'rekening_kredit' => (string) $jasa_kredit,
+                    'idtp' => $idtp,
+                    'id_pinj' => $pinkel->id,
+                    'id_pinj_i' => '0',
+                    'keterangan_transaksi' => (string) 'Angs. (J) ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')' . ' [' . $pinkel->kelompok->d->nama_desa . ']',
+                    'relasi' => (string) $pinkel->kelompok->nama_kelompok,
+                    'jumlah' => str_replace(',', '', str_replace('.00', '', $request->jasa)),
+                    'urutan' => '0',
+                    'id_user' => auth()->user()->id
+                ];
+                // } else {
+                //     $angs_jasa = ($request->jasa - $tunggakan_jasa > 0) ? ($request->jasa - $tunggakan_jasa) : $request->jasa;
+                //     $transaksi[] = [
+                //         'tgl_transaksi' => (string) $tgl_transaksi,
+                //         'rekening_debit' => (string) $kas_umum,
+                //         'rekening_kredit' => (string) $jasa_kredit,
+                //         'idtp' => $idtp,
+                //         'id_pinj' => $pinkel->id,
+                //         'id_pinj_i' => '0',
+                //         'keterangan_transaksi' => (string) 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
+                //         'relasi' => (string) $pinkel->kelompok->nama_kelompok,
+                //         'jumlah' => str_replace(',', '', str_replace('.00', '', $angs_jasa)),
+                //         'urutan' => '0',
+                //         'id_user' => auth()->user()->id
+                //     ];
 
-                    if ($request->jasa - $angs_jasa > 0) {
-                        $piutang_kredit = $jasa_kredit;
-                        if ($pinkel->jenis_pp == '1') {
-                            $piutang_kredit = '1.1.03.04';
-                        } elseif ($pinkel->jenis_pp == '2') {
-                            $piutang_kredit = '1.1.03.05';
-                        } else {
-                            $piutang_kredit = '1.1.03.06';
-                        }
+                //     if ($request->jasa - $angs_jasa > 0) {
+                //         $piutang_kredit = $jasa_kredit;
+                //         if ($pinkel->jenis_pp == '1') {
+                //             $piutang_kredit = '1.1.03.04';
+                //         } elseif ($pinkel->jenis_pp == '2') {
+                //             $piutang_kredit = '1.1.03.05';
+                //         } else {
+                //             $piutang_kredit = '1.1.03.06';
+                //         }
 
-                        $piutang_jasa = $request->jasa - $angs_jasa;
-                        $transaksi[] = [
-                            'tgl_transaksi' => (string) $tgl_transaksi,
-                            'rekening_debit' => (string) $kas_umum,
-                            'rekening_kredit' => (string) $piutang_kredit,
-                            'idtp' => $idtp,
-                            'id_pinj' => $pinkel->id,
-                            'id_pinj_i' => '0',
-                            'keterangan_transaksi' => (string) 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
-                            'relasi' => (string) $pinkel->kelompok->nama_kelompok,
-                            'jumlah' => str_replace(',', '', str_replace('.00', '', $piutang_jasa)),
-                            'urutan' => '0',
-                            'id_user' => auth()->user()->id
-                        ];
-                    }
-                }
+                //         $piutang_jasa = $request->jasa - $angs_jasa;
+                //         $transaksi[] = [
+                //             'tgl_transaksi' => (string) $tgl_transaksi,
+                //             'rekening_debit' => (string) $kas_umum,
+                //             'rekening_kredit' => (string) $piutang_kredit,
+                //             'idtp' => $idtp,
+                //             'id_pinj' => $pinkel->id,
+                //             'id_pinj_i' => '0',
+                //             'keterangan_transaksi' => (string) 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
+                //             'relasi' => (string) $pinkel->kelompok->nama_kelompok,
+                //             'jumlah' => str_replace(',', '', str_replace('.00', '', $piutang_jasa)),
+                //             'urutan' => '0',
+                //             'id_user' => auth()->user()->id
+                //         ];
+                //     }
+                // }
             }
 
             if ($request->denda > 0) {
