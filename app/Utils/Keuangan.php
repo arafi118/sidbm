@@ -190,8 +190,8 @@ class Keuangan
         ])->first();
 
         return [
-            'debit' => $saldo->debit,
-            'kredit' => $saldo->kredit
+            'debit' => floatval($saldo->debit),
+            'kredit' => floatval($saldo->kredit)
         ];
     }
 
@@ -214,8 +214,8 @@ class Keuangan
         ])->first();
 
         return [
-            'debit' => $saldo->debit,
-            'kredit' => $saldo->kredit
+            'debit' => floatval($saldo->debit),
+            'kredit' => floatval($saldo->kredit)
         ];
     }
 
