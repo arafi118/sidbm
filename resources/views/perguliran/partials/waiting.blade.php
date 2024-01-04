@@ -259,9 +259,19 @@
     </div>
 
     <div class="card card-body p-2 pb-0 mb-3">
-        <div class="d-grid">
-            <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenPencairan"
-                class="btn btn-info btn-sm mb-2">Cetak Dokumen Pencairan</button>
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-6">
+                <div class="d-grid">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenProposal"
+                        class="btn btn-info btn-sm mb-2">Cetak Dokumen Proposal</button>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6">
+                <div class="d-grid">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenPencairan"
+                        class="btn btn-info btn-sm mb-2">Cetak Dokumen Pencairan</button>
+                </div>
+            </div>
         </div>
     </div>
 

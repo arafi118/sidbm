@@ -218,32 +218,43 @@
 
         <input type="hidden" name="id" value="{{ $perguliran->id }}">
         <div class="row">
-            <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4">
                 <div class="d-grid">
                     <a href="/perguliran/dokumen/kartu_angsuran/{{ $perguliran->id }}" target="_blank"
                         class="btn btn-outline-info btn-sm mb-2">Kartu Angsuran</a>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4">
                 <div class="d-grid">
                     <button type="submit" class="btn btn-outline-info btn-sm mb-2" name="report"
                         value="rencanaAngsuran">Rencana Angsuran</button>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4">
                 <div class="d-grid">
                     <button type="submit" class="btn btn-outline-info btn-sm mb-2" name="report"
                         value="rekeningKoran">Rekening Koran</button>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-6 col-lg-3">
-                <div class="d-grid">
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenPencairan"
-                        class="btn btn-info btn-sm mb-2">Cetak Dokumen Pencairan</button>
-                </div>
-            </div>
         </div>
     </form>
+</div>
+
+<div class="card card-body p-2 pb-0 mb-3">
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-6">
+            <div class="d-grid">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenProposal"
+                    class="btn btn-info btn-sm mb-2">Cetak Dokumen Proposal</button>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6">
+            <div class="d-grid">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenPencairan"
+                    class="btn btn-info btn-sm mb-2">Cetak Dokumen Pencairan</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="card mb-3">
