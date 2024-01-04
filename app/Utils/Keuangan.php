@@ -117,7 +117,13 @@ class Keuangan
         $saldo_debit = 0;
         $awal_kredit = 0;
         $saldo_kredit = 0;
+
+        $nomor = 0;
         foreach ($rek->kom_saldo as $kom_saldo) {
+            if ($nomor > 2) {
+                continue;
+            }
+
             if ($kom_saldo->bulan == 0) {
                 $awal_debit += floatval($kom_saldo->debit);
                 $awal_kredit += floatval($kom_saldo->kredit);
@@ -125,6 +131,8 @@ class Keuangan
                 $saldo_debit += floatval($kom_saldo->debit);
                 $saldo_kredit += floatval($kom_saldo->kredit);
             }
+
+            $nomor++;
         }
 
         if ($rek->lev1 <= 1) {
@@ -158,7 +166,13 @@ class Keuangan
             $saldo_debit = 0;
             $awal_kredit = 0;
             $saldo_kredit = 0;
+
+            $nomor = 0;
             foreach ($rek->kom_saldo as $kom_saldo) {
+                if ($nomor > 2) {
+                    continue;
+                }
+
                 if ($kom_saldo->bulan == 0) {
                     $awal_debit += floatval($kom_saldo->debit);
                     $awal_kredit += floatval($kom_saldo->kredit);
@@ -166,6 +180,8 @@ class Keuangan
                     $saldo_debit += floatval($kom_saldo->debit);
                     $saldo_kredit += floatval($kom_saldo->kredit);
                 }
+
+                $nomor++;
             }
 
             if ($rek->lev1 < 2) {
@@ -294,7 +310,13 @@ class Keuangan
             $saldo_debit = 0;
             $awal_kredit = 0;
             $saldo_kredit = 0;
+
+            $nomor = 0;
             foreach ($sp->kom_saldo as $kom_saldo) {
+                if ($nomor > 2) {
+                    continue;
+                }
+
                 if ($kom_saldo->bulan == 0) {
                     $awal_debit += floatval($kom_saldo->debit);
                     $awal_kredit += floatval($kom_saldo->kredit);
@@ -302,6 +324,8 @@ class Keuangan
                     $saldo_debit += floatval($kom_saldo->debit);
                     $saldo_kredit += floatval($kom_saldo->kredit);
                 }
+
+                $nomor++;
             }
 
             if ($sp->lev1 == 5) {
