@@ -424,7 +424,7 @@ class Keuangan
             $saldo_pokok = $pinkel->alokasi;
             $saldo_jasa = 0;
             if ($pinkel->pros_jasa > 0) {
-                $saldo_jasa = $pinkel->alokasi / $pinkel->pros_jasa;
+                $saldo_jasa = $pinkel->pros_jasa == 0 ? 0 : $pinkel->alokasi * ($pinkel->pros_jasa / 100);
             }
             if ($pinkel->saldo) {
                 $real_pokok = $pinkel->saldo->realisasi_pokok;

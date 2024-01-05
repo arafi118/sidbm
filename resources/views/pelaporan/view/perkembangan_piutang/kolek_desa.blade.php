@@ -111,7 +111,7 @@
                     $sum_pokok = 0;
                     $sum_jasa = 0;
                     $saldo_pokok = $pinkel->alokasi;
-                    $saldo_jasa = $pinkel->pros_jasa == 0 ? 0 : $pinkel->alokasi / $pinkel->pros_jasa;
+                    $saldo_jasa = $pinkel->pros_jasa == 0 ? 0 : $pinkel->alokasi * ($pinkel->pros_jasa / 100);
                     if ($pinkel->saldo) {
                         $sum_pokok = $pinkel->saldo->sum_pokok;
                         $sum_jasa = $pinkel->saldo->sum_jasa;
