@@ -556,9 +556,11 @@ class PelaporanController extends Controller
         }
 
         if ($data['harian']) {
+            $tgl = $thn . '-' . $bln . '-' . $hari;
             $data['judul'] = 'Laporan Harian';
             $data['sub_judul'] = 'Tanggal ' . $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tglLatin($tgl);
+            $awal_bulan = date('Y-m-d', strtotime('-1 day', strtotime($tgl)));
         }
 
         $data['rek'] = Rekening::where('kode_akun', $data['kode_akun'])->first();
@@ -566,10 +568,9 @@ class PelaporanController extends Controller
             $query->where('rekening_debit', $data['kode_akun'])->orwhere('rekening_kredit', $data['kode_akun']);
         })->with('user')->orderBy('tgl_transaksi', 'ASC')->orderBy('urutan', 'ASC')->orderBy('idt', 'ASC')->get();
 
-        $saldo_bulanan = $keuangan->saldoPerBulan($awal_bulan, $data['kode_akun']);
         $data['saldo'] = $keuangan->saldoAwal($data['tgl_kondisi'], $data['kode_akun']);
-        $data['d_bulan_lalu'] = $saldo_bulanan['debit'];
-        $data['k_bulan_lalu'] = $saldo_bulanan['kredit'];
+        $data['d_bulan_lalu'] = $keuangan->saldoD($awal_bulan, $data['kode_akun']);
+        $data['k_bulan_lalu'] = $keuangan->saldoK($awal_bulan, $data['kode_akun']);
 
         $view = view('pelaporan.view.buku_besar', $data)->render();
 

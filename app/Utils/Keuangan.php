@@ -111,6 +111,26 @@ class Keuangan
         return $saldo;
     }
 
+    // Sum Saldo Debit
+    public function saldoD($tgl_kondisi, $kode_akun)
+    {
+        $thn_kondisi = explode('-', $tgl_kondisi)[0];
+        $awal_tahun = $thn_kondisi . '-01-01';
+
+        $trx = Transaksi::where('rekening_debit', $kode_akun)->whereBetween('tgl_transaksi', [$awal_tahun, $tgl_kondisi])->sum('jumlah');
+        return $trx;
+    }
+
+    // Sum Saldo Kredit
+    public function saldoK($tgl_kondisi, $kode_akun)
+    {
+        $thn_kondisi = explode('-', $tgl_kondisi)[0];
+        $awal_tahun = $thn_kondisi . '-01-01';
+
+        $trx = Transaksi::where('rekening_kredit', $kode_akun)->whereBetween('tgl_transaksi', [$awal_tahun, $tgl_kondisi])->sum('jumlah');
+        return $trx;
+    }
+
     public function komSaldo($rek)
     {
         $awal_debit = 0;
