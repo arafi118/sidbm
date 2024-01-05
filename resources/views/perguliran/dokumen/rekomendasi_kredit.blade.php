@@ -102,7 +102,7 @@
             <tr>
                 <td align="center">
                     <div style="font-size: 18px;">
-                        <b>SURAT REKOMENDASI KREDIT SPP</b>
+                        <b>SURAT REKOMENDASI KREDIT {{ $pinkel->jpp->nama_jpp }}</b>
                     </div>
                     <div style="font-size: 12px;">
                         Nomor: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;

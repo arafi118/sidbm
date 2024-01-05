@@ -268,7 +268,7 @@ class DashboardController extends Controller
                         'idtp' => 0,
                         'id_pinj' => $pinkel->id,
                         'id_pinj_i' => 0,
-                        'keterangan_transaksi' => 'Hutang jasa loan_id ' . $pinkel->id . ' angsuran ke ' . $rencana->angsuran_ke,
+                        'keterangan_transaksi' => 'Hutang jasa ' . $pinkel->kelompok->nama_kelompok . '(' . $pinkel->id . ') angsuran ke ' . $rencana->angsuran_ke,
                         'relasi' => $pinkel->kelompok->nama_kelompok,
                         'jumlah' => $nunggak_jasa,
                         'urutan' => 0,
