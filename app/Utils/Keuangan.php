@@ -155,7 +155,7 @@ class Keuangan
             $nomor++;
         }
 
-        if ($rek->lev1 <= 1) {
+        if ($rek->lev1 == 1 || $rek->lev1 == '5') {
             $saldo_awal = $awal_debit - $awal_kredit;
             $saldo = $saldo_awal + ($saldo_debit - $saldo_kredit);
         } else {
