@@ -66,6 +66,8 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
             $tgl_cair = $pk['tgl_cair'];
         }
 
+        $tgl_angsur = $tgl_cair;
+        $tanggal_cair = date('d', strtotime($tgl_cair));
         if ($desa['jadwal_angsuran_desa'] > 0) {
             $angsuran_desa = $desa['jadwal_angsuran_desa'];
             if ($angsuran_desa > 0) {
@@ -112,6 +114,13 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
 
         // Loop Jangka Untuk Membuat Rencana Angsuran
         for ($ke = 1; $ke <= $pk['jangka']; $ke++) {
+
+            if ($tanggal_cair > '25' && $sipokok['id'] == '2') {
+                if ($tarp > '0') {
+                    $tgl_cair = $tgl_angsur;
+                }
+            }
+
             $tgl = explode('-', $tgl_cair);
             $tanggal = $tgl[2];
             $bulan = $tgl[1];
