@@ -548,6 +548,10 @@ Terima kasih atas perhatiannya!
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-info btn-sm me-2 btn-pelaporan" id="daftarKelompok">Cetak
+                        Daftar Kelompok</button>
+                    <button type="button" class="btn btn-info btn-sm me-2 btn-pelaporan" id="daftarPemanfaat">Cetak
+                        Daftar Pemanfaat</button>
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
@@ -590,6 +594,18 @@ Terima kasih atas perhatiannya!
             </div>
         </div>
     </div>
+
+    <form action="/pelaporan/preview" method="post" id="FormLaporanDashboard" target="_blank">
+        @csrf
+
+        <input type="hidden" name="type" id="type" value="pdf">
+        <input type="hidden" name="tahun" id="tahun" value="{{ date('Y') }}">
+        <input type="hidden" name="bulan" id="bulan" value="{{ date('m') }}">
+        <input type="hidden" name="hari" id="hari" value="{{ date('d') }}">
+        <input type="hidden" name="laporan" id="laporan" value="">
+        <input type="hidden" name="sub_laporan" id="sub_laporan" value="">
+    </form>
+
     @php
         $p = $saldo[4];
         $b = $saldo[5];
@@ -765,6 +781,25 @@ Terima kasih atas perhatiannya!
                     }
                 }
             })
+        }
+
+        $(document).on('click', '.btn-pelaporan', function(e) {
+            var id = $(this).attr('id');
+
+            if (id == 'daftarKelompok') {
+                submitLaporan('5', 'kelompok_aktif')
+            }
+
+            if (id == 'daftarPemanfaat') {
+                submitLaporan('5', 'pemanfaat_aktif')
+            }
+        })
+
+        function submitLaporan(laporan, subLaporan = null) {
+            $('#FormLaporanDashboard #laporan').val(laporan);
+            $('#FormLaporanDashboard #sub_laporan').val(subLaporan);
+
+            $('#FormLaporanDashboard').submit()
         }
     </script>
 

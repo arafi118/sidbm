@@ -67,7 +67,7 @@
                             $t_tunggakan_pokok += $j_tunggakan_pokok;
                             $t_tunggakan_jasa += $j_tunggakan_jasa;
                         @endphp
-                        <tr>
+                        <tr style="font-weight: bold;">
                             <td class="t l b" colspan="5">Jumlah {{ $nama_desa }}</td>
                             <td class="t l b" align="right">{{ number_format($j_alokasi) }}</td>
                             <td class="t l b" align="right">{{ number_format($j_saldo) }}</td>
@@ -152,7 +152,7 @@
                     $t_tunggakan_jasa += $j_tunggakan_jasa;
                 @endphp
 
-                <tr>
+                <tr style="font-weight: bold;">
                     <td class="t l b" colspan="5">Jumlah {{ $nama_desa }}</td>
                     <td class="t l b" align="right">{{ number_format($j_alokasi) }}</td>
                     <td class="t l b" align="right">{{ number_format($j_saldo) }}</td>
