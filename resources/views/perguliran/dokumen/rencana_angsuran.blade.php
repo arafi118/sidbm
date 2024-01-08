@@ -71,7 +71,7 @@
             <td>Sistem Angsuran</td>
             <td align="center">:</td>
             <td>
-                <b>{{ $pinkel->sis_pokok->nama_sistem }} {{ $pinkel->jangka / $pinkel->sis_pokok->sistem }} Kali</b>
+                <b>{{ $pinkel->sis_pokok->nama_sistem }} {{ round($pinkel->jangka / $pinkel->sis_pokok->sistem) }} Kali</b>
             </td>
         </tr>
         <tr>

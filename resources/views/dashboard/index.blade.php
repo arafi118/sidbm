@@ -474,7 +474,7 @@ Terima kasih atas perhatiannya!
         </div>
     </div>
 
-    {{-- Modal Pinjaman --}}
+    {{-- Kelompok Aktif --}}
     <div class="modal fade" id="aktif" aria-labelledby="aktifLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
             <div class="modal-content">
