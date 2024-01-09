@@ -504,8 +504,9 @@ Terima kasih atas perhatiannya!
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link mb-0 px-0 py-1 text-danger" data-bs-toggle="tab" href="#pemanfaat"
-                                    role="tab" aria-controls="pemanfaat_aktif" aria-selected="false">
+                                <a class="nav-link mb-0 px-0 py-1 text-danger" data-bs-toggle="tab"
+                                    href="#pemanfaat_aktif" role="tab" aria-controls="pemanfaat_aktif"
+                                    aria-selected="false">
                                     Pemanfaat
                                 </a>
                             </li>
