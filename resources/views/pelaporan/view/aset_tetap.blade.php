@@ -41,7 +41,7 @@
             </tr>
 
         </table>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px; table-layout: fixed;">
             <tr style="background: rgb(232, 232, 232)">
                 <th class="t l b" rowspan="2" width="3%">No</th>
                 <th class="t l b" rowspan="2" width="6%">Tgl Beli</th>
@@ -216,7 +216,7 @@
             <tr>
                 <td colspan="15" style="padding: 0px !important">
                     <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
-                        style="font-size: 10px;">
+                        style="font-size: 10px; table-layout: fixed;">
                         <tr>
                             <td class="t l b" width="37%" height="15">
                                 Jumlah
