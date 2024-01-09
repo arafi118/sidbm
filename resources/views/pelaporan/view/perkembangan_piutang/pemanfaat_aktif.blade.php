@@ -44,9 +44,9 @@
                 <th class="t l b" width="10%">NIK</th>
                 <th class="t l b" width="10%">Nomor KK</th>
                 <th class="t l b" width="20%">Nama Anggota</th>
-                <th class="t l b" width="35%">Alamat</th>
+                <th class="t l b" width="30%">Alamat</th>
                 <th class="t l b" width="10%">Tgl Cair</th>
-                <th class="t l b r" width="10%">Alokasi</th>
+                <th class="t l b r" width="15%">Alokasi</th>
             </tr>
 
             @foreach ($jpp->pinjaman_anggota as $pinj)
@@ -164,11 +164,11 @@
                     <td colspan="7" style="padding: 0px !important;">
                         <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                             style="font-size: 11px;">
-                            <tr style="font-weight: bold;">
-                                <td class="t l b" colspan="6" width="90%">
+                            <tr style="background: rgb(74, 74, 74); font-weight: bold; color: #fff;" class="t l b r">
+                                <td height="15" width="85%">
                                     J U M L A H
                                 </td>
-                                <td class="t l b r" align="right" width="10%">{{ number_format($t_pencairan) }}
+                                <td align="right" width="15%">{{ number_format($t_pencairan) }}
                             </tr>
                         </table>
 

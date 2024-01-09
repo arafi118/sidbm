@@ -637,7 +637,7 @@ class PelaporanController extends Controller
                 $tb_kel = 'kelompok_' . $data['kec']->id;
                 $data['tb_pinkel'] = $tb_pinkel;
 
-                $query->select($tb_pinkel . '.*', $tb_kel . '.nama_kelompok', 'desa.nama_desa', 'desa.kd_desa', 'desa.kode_desa', 'sebutan_desa.sebutan_desa')
+                $query->select($tb_pinkel . '.*', $tb_kel . '.nama_kelompok', $tb_kel . '.ketua', 'desa.nama_desa', 'desa.kd_desa', 'desa.kode_desa', 'sebutan_desa.sebutan_desa')
                     ->join($tb_kel, $tb_kel . '.id', '=', $tb_pinkel . '.id_kel')
                     ->join('desa', $tb_kel . '.desa', '=', 'desa.kd_desa')
                     ->join('sebutan_desa', 'sebutan_desa.id', '=', 'desa.sebutan')
@@ -745,6 +745,135 @@ class PelaporanController extends Controller
         ])->get();
 
         $view = view('pelaporan.view.perkembangan_piutang.pemanfaat_aktif', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
+    private function proposal(array $data)
+    {
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        if ($data['bulanan']) {
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        }
+
+        $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
+            'pinjaman_kelompok' => function ($query) use ($data) {
+                $tb_pinkel = 'pinjaman_kelompok_' . $data['kec']->id;
+                $tb_kel = 'kelompok_' . $data['kec']->id;
+                $data['tb_pinkel'] = $tb_pinkel;
+
+                $query->select($tb_pinkel . '.*', $tb_kel . '.nama_kelompok', $tb_kel . '.ketua', 'desa.nama_desa', 'desa.kd_desa', 'desa.kode_desa', 'sebutan_desa.sebutan_desa')
+                    ->join($tb_kel, $tb_kel . '.id', '=', $tb_pinkel . '.id_kel')
+                    ->join('desa', $tb_kel . '.desa', '=', 'desa.kd_desa')
+                    ->join('sebutan_desa', 'sebutan_desa.id', '=', 'desa.sebutan')
+                    ->withCount('pinjaman_anggota')
+                    ->where($tb_pinkel . '.sistem_angsuran', '!=', '12')->where('status', 'P')
+                    ->orderBy($tb_kel . '.desa', 'ASC')
+                    ->orderBy($tb_pinkel . '.id_kel', 'ASC')
+                    ->orderBy($tb_pinkel . '.tgl_cair', 'ASC');
+            },
+            'pinjaman_kelompok.sis_pokok'
+        ])->get();
+
+        $view = view('pelaporan.view.perkembangan_piutang.proposal', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
+    private function verifikasi(array $data)
+    {
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        if ($data['bulanan']) {
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        }
+
+        $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
+            'pinjaman_kelompok' => function ($query) use ($data) {
+                $tb_pinkel = 'pinjaman_kelompok_' . $data['kec']->id;
+                $tb_kel = 'kelompok_' . $data['kec']->id;
+                $data['tb_pinkel'] = $tb_pinkel;
+
+                $query->select($tb_pinkel . '.*', $tb_kel . '.nama_kelompok', $tb_kel . '.ketua', 'desa.nama_desa', 'desa.kd_desa', 'desa.kode_desa', 'sebutan_desa.sebutan_desa')
+                    ->join($tb_kel, $tb_kel . '.id', '=', $tb_pinkel . '.id_kel')
+                    ->join('desa', $tb_kel . '.desa', '=', 'desa.kd_desa')
+                    ->join('sebutan_desa', 'sebutan_desa.id', '=', 'desa.sebutan')
+                    ->withCount('pinjaman_anggota')
+                    ->where($tb_pinkel . '.sistem_angsuran', '!=', '12')->where('status', 'V')
+                    ->orderBy($tb_kel . '.desa', 'ASC')
+                    ->orderBy($tb_pinkel . '.id_kel', 'ASC')
+                    ->orderBy($tb_pinkel . '.tgl_cair', 'ASC');
+            },
+            'pinjaman_kelompok.sis_pokok'
+        ])->get();
+
+        $view = view('pelaporan.view.perkembangan_piutang.verifikasi', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
+    private function waiting(array $data)
+    {
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        if ($data['bulanan']) {
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        }
+
+        $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
+            'pinjaman_kelompok' => function ($query) use ($data) {
+                $tb_pinkel = 'pinjaman_kelompok_' . $data['kec']->id;
+                $tb_kel = 'kelompok_' . $data['kec']->id;
+                $data['tb_pinkel'] = $tb_pinkel;
+
+                $query->select($tb_pinkel . '.*', $tb_kel . '.nama_kelompok', $tb_kel . '.ketua', 'desa.nama_desa', 'desa.kd_desa', 'desa.kode_desa', 'sebutan_desa.sebutan_desa')
+                    ->join($tb_kel, $tb_kel . '.id', '=', $tb_pinkel . '.id_kel')
+                    ->join('desa', $tb_kel . '.desa', '=', 'desa.kd_desa')
+                    ->join('sebutan_desa', 'sebutan_desa.id', '=', 'desa.sebutan')
+                    ->withCount('pinjaman_anggota')
+                    ->where($tb_pinkel . '.sistem_angsuran', '!=', '12')->where('status', 'W')
+                    ->orderBy($tb_kel . '.desa', 'ASC')
+                    ->orderBy($tb_pinkel . '.id_kel', 'ASC')
+                    ->orderBy($tb_pinkel . '.tgl_cair', 'ASC');
+            },
+            'pinjaman_kelompok.sis_pokok'
+        ])->get();
+
+        $view = view('pelaporan.view.perkembangan_piutang.waiting', $data)->render();
 
         if ($data['type'] == 'pdf') {
             $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
@@ -1304,6 +1433,105 @@ class PelaporanController extends Controller
         $data['keuangan'] = $keuangan;
 
         $view = view('pelaporan.view.perkembangan_piutang._rencana_realisasi', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
+    private function tagihan_hari_ini(array $data)
+    {
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['sub_judul'] = $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+
+        $data['pinjaman'] = PinjamanKelompok::where('status', 'A')->whereDay('tgl_cair', date('d', strtotime($tgl)))->with([
+            'target' => function ($query) use ($tgl) {
+                $query->where([
+                    ['jatuh_tempo', $tgl],
+                    ['angsuran_ke', '!=', '0']
+                ]);
+            },
+            'saldo' => function ($query) use ($tgl) {
+                $query->where('tgl_transaksi', '<=', $tgl);
+            },
+            'kelompok',
+            'kelompok.d'
+        ])->get();
+
+        $view = view('pelaporan.view.perkembangan_piutang.jatuh_tempo', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
+    private function menunggak(array $data)
+    {
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['sub_judul'] = $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+
+        $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
+            'pinjaman_kelompok' => function ($query) use ($data) {
+                $tb_pinkel = 'pinjaman_kelompok_' . $data['kec']->id;
+                $tb_kel = 'kelompok_' . $data['kec']->id;
+                $data['tb_pinkel'] = $tb_pinkel;
+
+                $query->select($tb_pinkel . '.*', $tb_kel . '.nama_kelompok', $tb_kel . '.ketua', 'desa.nama_desa', 'desa.kd_desa', 'desa.kode_desa', 'sebutan_desa.sebutan_desa')
+                    ->join($tb_kel, $tb_kel . '.id', '=', $tb_pinkel . '.id_kel')
+                    ->join('desa', $tb_kel . '.desa', '=', 'desa.kd_desa')
+                    ->join('sebutan_desa', 'sebutan_desa.id', '=', 'desa.sebutan')
+                    ->withCount('pinjaman_anggota')
+                    ->withSum(['real' => function ($query) use ($data) {
+                        $query->where('tgl_transaksi', 'LIKE', '%' . $data['tahun'] . '-' . $data['bulan'] . '-%');
+                    }], 'realisasi_pokok')
+                    ->withSum(['real' => function ($query) use ($data) {
+                        $query->where('tgl_transaksi', 'LIKE', '%' . $data['tahun'] . '-' . $data['bulan'] . '-%');
+                    }], 'realisasi_jasa')
+                    ->where($tb_pinkel . '.sistem_angsuran', '!=', '12')->where(function ($query) use ($data) {
+                        $query->where([
+                            [$data['tb_pinkel'] . '.status', 'A'],
+                            [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']]
+                        ])->orwhere([
+                            [$data['tb_pinkel'] . '.status', 'L'],
+                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', $data['tgl_kondisi']]
+                        ])->orwhere([
+                            [$data['tb_pinkel'] . '.status', 'R'],
+                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', $data['tgl_kondisi']]
+                        ])->orwhere([
+                            [$data['tb_pinkel'] . '.status', 'H'],
+                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', $data['tgl_kondisi']]
+                        ]);
+                    })
+                    ->orderBy($tb_kel . '.desa', 'ASC')
+                    ->orderBy($tb_pinkel . '.id_kel', 'ASC')
+                    ->orderBy($tb_pinkel . '.tgl_cair', 'ASC');
+            },
+            'pinjaman_kelompok.saldo' => function ($query) use ($data) {
+                $query->where('tgl_transaksi', '<=', $data['tgl_kondisi']);
+            },
+            'pinjaman_kelompok.target' => function ($query) use ($data) {
+                $query->where('jatuh_tempo', '<=', $data['tgl_kondisi']);
+            },
+            'pinjaman_kelompok.sis_pokok'
+        ])->get();
+
+        $view = view('pelaporan.view.perkembangan_piutang.tunggakan', $data)->render();
 
         if ($data['type'] == 'pdf') {
             $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');

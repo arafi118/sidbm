@@ -223,7 +223,8 @@
                         <ul class="nav nav-pills nav-fill p-1" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link mb-0 px-0 py-1 active text-danger" data-bs-toggle="tab"
-                                    href="#hari_ini" role="tab" aria-controls="hari_ini" aria-selected="true">
+                                    href="#tagihan_hari_ini" role="tab" aria-controls="tagihan_hari_ini"
+                                    aria-selected="true">
                                     Hari Ini
                                 </a>
                             </li>
@@ -242,8 +243,8 @@
                         </ul>
 
                         <div class="tab-content mt-2">
-                            <div class="tab-pane fade show active" id="hari_ini" role="tabpanel"
-                                aria-labelledby="hari_ini">
+                            <div class="tab-pane fade show active" id="tagihan_hari_ini" role="tabpanel"
+                                aria-labelledby="tagihan_hari_ini">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -365,7 +366,12 @@ Terima kasih atas perhatiannya!
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-info btn-sm me-2 btn-pelaporan">
+                        Print
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
+                        Tutup
+                    </button>
                 </div>
             </div>
         </div>
@@ -468,7 +474,12 @@ Terima kasih atas perhatiannya!
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-info btn-sm me-2 btn-pelaporan">
+                        Print
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
+                        Tutup
+                    </button>
                 </div>
             </div>
         </div>
@@ -486,22 +497,23 @@ Terima kasih atas perhatiannya!
                     <div class="nav-wrapper position-relative end-0">
                         <ul class="nav nav-pills nav-fill p-1" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link mb-0 px-0 py-1 active text-info" data-bs-toggle="tab" href="#kelompok"
-                                    role="tab" aria-controls="kelompok" aria-selected="true">
+                                <a class="nav-link mb-0 px-0 py-1 active text-info" data-bs-toggle="tab"
+                                    href="#kelompok_aktif" role="tab" aria-controls="kelompok_aktif"
+                                    aria-selected="true">
                                     Kelompok
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link mb-0 px-0 py-1 text-danger" data-bs-toggle="tab" href="#pemanfaat"
-                                    role="tab" aria-controls="pemanfaat" aria-selected="false">
+                                    role="tab" aria-controls="pemanfaat_aktif" aria-selected="false">
                                     Pemanfaat
                                 </a>
                             </li>
                         </ul>
 
                         <div class="tab-content mt-2">
-                            <div class="tab-pane fade show active" id="kelompok" role="tabpanel"
-                                aria-labelledby="kelompok">
+                            <div class="tab-pane fade show active" id="kelompok_aktif" role="tabpanel"
+                                aria-labelledby="kelompok_aktif">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -522,7 +534,8 @@ Terima kasih atas perhatiannya!
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="pemanfaat" role="tabpanel" aria-labelledby="pemanfaat">
+                            <div class="tab-pane fade" id="pemanfaat_aktif" role="tabpanel"
+                                aria-labelledby="pemanfaat_aktif">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -548,11 +561,12 @@ Terima kasih atas perhatiannya!
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info btn-sm me-2 btn-pelaporan" id="daftarKelompok">Cetak
-                        Daftar Kelompok</button>
-                    <button type="button" class="btn btn-info btn-sm me-2 btn-pelaporan" id="daftarPemanfaat">Cetak
-                        Daftar Pemanfaat</button>
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-info btn-sm me-2 btn-pelaporan">
+                        Print
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
+                        Tutup
+                    </button>
                 </div>
             </div>
         </div>
@@ -783,23 +797,65 @@ Terima kasih atas perhatiannya!
             })
         }
 
-        $(document).on('click', '.btn-pelaporan', function(e) {
-            var id = $(this).attr('id');
+        $(document).on('click', '#btnjatuhTempo', function(e) {
+            e.preventDefault()
 
-            if (id == 'daftarKelompok') {
-                submitLaporan('5', 'kelompok_aktif')
-            }
+            $('#jatuhTempo').modal('show')
 
-            if (id == 'daftarPemanfaat') {
-                submitLaporan('5', 'pemanfaat_aktif')
+
+            let tab = $('#jatuhTempo').find('ul li a.active')
+            if (tab.length > 0) {
+                if (tab.attr('aria-controls') != 'tagihan') {
+                    $('.btn-pelaporan').show()
+                    setLaporan('5', tab.attr('aria-controls'))
+                } else {
+                    $('.btn-pelaporan').hide()
+                }
             }
         })
 
-        function submitLaporan(laporan, subLaporan = null) {
+        $(document).on('click', '#btnpinjaman', function(e) {
+            e.preventDefault()
+
+            $('#pinjaman').modal('show')
+            $('.btn-pelaporan').show()
+
+            let tab = $('#pinjaman').find('ul li a.active')
+            if (tab.length > 0) {
+                setLaporan('5', tab.attr('aria-controls'))
+            }
+        })
+
+        $(document).on('click', '#btnAktif', function(e) {
+            e.preventDefault()
+
+            $('#aktif').modal('show')
+            $('.btn-pelaporan').show()
+
+            let tab = $('#aktif').find('ul li a.active')
+            if (tab.length > 0) {
+                setLaporan('5', tab.attr('aria-controls'))
+            }
+        })
+
+        $(document).on('click', '.nav.nav-pills .nav-item', function() {
+            var a = $(this).find('a')
+
+            if (a.attr('aria-controls') == 'tagihan') {
+                $('.btn-pelaporan').hide()
+            } else {
+                $('.btn-pelaporan').show()
+            }
+            setLaporan('5', a.attr('aria-controls'))
+        })
+
+        $(document).on('click', '.btn-pelaporan', function(e) {
+            $('#FormLaporanDashboard').submit()
+        })
+
+        function setLaporan(laporan, subLaporan = null) {
             $('#FormLaporanDashboard #laporan').val(laporan);
             $('#FormLaporanDashboard #sub_laporan').val(subLaporan);
-
-            $('#FormLaporanDashboard').submit()
         }
     </script>
 
@@ -1056,24 +1112,6 @@ Terima kasih atas perhatiannya!
             "{{ $pokok_spp + $jasa_spp + $pokok_uep + $jasa_uep + $pokok_pl + $jasa_pl }}"
 
         $('#total_angsur').html(formatter.format(total_angsur))
-
-        $(document).on('click', '#btnjatuhTempo', function(e) {
-            e.preventDefault()
-
-            $('#jatuhTempo').modal('show')
-        })
-
-        $(document).on('click', '#btnpinjaman', function(e) {
-            e.preventDefault()
-
-            $('#pinjaman').modal('show')
-        })
-
-        $(document).on('click', '#btnAktif', function(e) {
-            e.preventDefault()
-
-            $('#aktif').modal('show')
-        })
 
         let childWindow, loading;
         $(document).on('click', '#simpanSaldo', function(e) {

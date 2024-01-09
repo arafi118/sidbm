@@ -28,7 +28,7 @@
             <tr>
                 <td colspan="3" align="center">
                     <div style="font-size: 18px;">
-                        <b>DAFTAR KELOMPOK AKTIF {{ strtoupper($jpp->nama_jpp) }}</b>
+                        <b>DAFTAR TUNGGAKAN PINJAMAN {{ strtoupper($jpp->nama_jpp) }}</b>
                     </div>
                     <div style="font-size: 16px;">
                         <b>{{ strtoupper($sub_judul) }}</b>
@@ -122,27 +122,30 @@
                         $tunggakan_jasa = 0;
                     }
                 @endphp
-                <tr>
-                    <td class="t l b" align="center">{{ $nomor++ }}</td>
-                    <td class="t l b" align="left">
-                        {{ $pinkel->nama_kelompok }} [{{ $pinkel->ketua }}] - {{ $pinkel->id }}
-                    </td>
-                    <td class="t l b" align="center">{{ $pinkel->pinjaman_anggota_count }}</td>
-                    <td class="t l b" align="center">{{ Tanggal::tglIndo($pinkel->tgl_cair) }}</td>
-                    <td class="t l b" align="center">{{ $pinkel->jangka }}/{{ $pinkel->sis_pokok->sistem }}</td>
-                    <td class="t l b" align="right">{{ number_format($pinkel->alokasi) }}</td>
-                    <td class="t l b" align="right">{{ number_format($saldo) }}</td>
-                    <td class="t l b" align="right">{{ number_format($tunggakan_pokok) }}
-                    <td class="t l b r" align="right">{{ number_format($tunggakan_jasa) }}
-                </tr>
 
-                @php
-                    $j_angg += $pinkel->pinjaman_anggota_count;
-                    $j_alokasi += $pinkel->alokasi;
-                    $j_saldo += $saldo;
-                    $j_tunggakan_pokok += $tunggakan_pokok;
-                    $j_tunggakan_jasa += $tunggakan_jasa;
-                @endphp
+                @if ($tunggakan_pokok != 0 || $tunggakan_jasa != 0)
+                    <tr>
+                        <td class="t l b" align="center">{{ $nomor++ }}</td>
+                        <td class="t l b" align="left">
+                            {{ $pinkel->nama_kelompok }} [{{ $pinkel->ketua }}] - {{ $pinkel->id }}
+                        </td>
+                        <td class="t l b" align="center">{{ $pinkel->pinjaman_anggota_count }}</td>
+                        <td class="t l b" align="center">{{ Tanggal::tglIndo($pinkel->tgl_cair) }}</td>
+                        <td class="t l b" align="center">{{ $pinkel->jangka }}/{{ $pinkel->sis_pokok->sistem }}</td>
+                        <td class="t l b" align="right">{{ number_format($pinkel->alokasi) }}</td>
+                        <td class="t l b" align="right">{{ number_format($saldo) }}</td>
+                        <td class="t l b" align="right">{{ number_format($tunggakan_pokok) }}
+                        <td class="t l b r" align="right">{{ number_format($tunggakan_jasa) }}
+                    </tr>
+
+                    @php
+                        $j_angg += $pinkel->pinjaman_anggota_count;
+                        $j_alokasi += $pinkel->alokasi;
+                        $j_saldo += $saldo;
+                        $j_tunggakan_pokok += $tunggakan_pokok;
+                        $j_tunggakan_jasa += $tunggakan_jasa;
+                    @endphp
+                @endif
             @endforeach
 
             @if (count($kd_desa) > 0)

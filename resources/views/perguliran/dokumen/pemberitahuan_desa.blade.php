@@ -86,9 +86,9 @@
                     </tr>
                     <tr>
                         <td>3.</td>
-                        <td>Tanggal Proposal</td>
+                        <td>Tanggal Cair</td>
                         <td>:</td>
-                        <td>{{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
+                        <td>{{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
                     </tr>
                     <tr>
                         <td>4.</td>
