@@ -121,7 +121,7 @@
 
             <table style="margin-top: -10px; margin-left: 15px;">
                 <tr>
-                    <td style="padding: 0px; 4px;" width="60">{{ $kec->nama_bp_long }}</td>
+                    <td style="padding: 0px; 4px;" width="100">{{ $kec->nama_bp_long }}</td>
                     <td style="padding: 0px; 4px;">:</td>
                     <td style="padding: 0px; 4px;">
                         {{ $pengawas ? $pengawas->namadepan . ' ' . $pengawas->namabelakang : '......................................' }}
