@@ -41,7 +41,7 @@
             </tr>
 
         </table>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px; table-layout: fixed;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
             <tr style="background: rgb(232, 232, 232)">
                 <th class="t l b" rowspan="2" width="3%">No</th>
                 <th class="t l b" rowspan="2" width="6%">Tgl Beli</th>
