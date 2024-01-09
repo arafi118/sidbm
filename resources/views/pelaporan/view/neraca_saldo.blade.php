@@ -5,6 +5,9 @@
     $sum_rl_kredit = 0;
     $sum_ns_debit = 0;
     $sum_ns_kredit = 0;
+
+    $pendapatan = 0;
+    $biaya = 0;
 @endphp
 
 @extends('pelaporan.layout.base')
@@ -96,12 +99,14 @@
                     </td>
                 @else
                     @php
+                        $sum_rl_debit += $debit;
+                        $sum_rl_kredit += $kredit;
                         if ($rek->lev1 == 4) {
-                            $sum_rl_debit += $debit;
-                            $sum_rl_kredit += $kredit;
+                            $_pendapatan = $kredit - $debit;
+                            $pendapatan += $_pendapatan;
                         } else {
-                            $sum_rl_debit -= $debit;
-                            $sum_rl_kredit -= $kredit;
+                            $_biaya = $debit - $kredit;
+                            $biaya += $_biaya;
                         }
                     @endphp
                     <td class="t l b" align="right">
@@ -142,19 +147,19 @@
                         <td class="t l b" width="10%">&nbsp;</td>
                         <td class="t l b" width="10%">&nbsp;</td>
                         <td class="t l b" width="10%" align="right">
-                            @if ($sum_rl_kredit - $sum_rl_debit < 0)
-                                ({{ number_format(($sum_rl_kredit - $sum_rl_debit) * -1, 2) }})
+                            @if ($pendapatan - $biaya < 0)
+                                ({{ number_format(($pendapatan - $biaya) * -1, 2) }})
                             @else
-                                {{ number_format($sum_rl_kredit - $sum_rl_debit, 2) }}
+                                {{ number_format($pendapatan - $biaya, 2) }}
                             @endif
                         </td>
                         <td class="t l b" width="10%">&nbsp;</td>
                         <td class="t l b" width="10%">&nbsp;</td>
                         <td class="t l b r" width="10%" align="right">
-                            @if ($sum_rl_kredit - $sum_rl_debit < 0)
-                                ({{ number_format(($sum_rl_kredit - $sum_rl_debit) * -1, 2) }})
+                            @if ($pendapatan - $biaya < 0)
+                                ({{ number_format(($pendapatan - $biaya) * -1, 2) }})
                             @else
-                                {{ number_format($sum_rl_kredit - $sum_rl_debit, 2) }}
+                                {{ number_format($pendapatan - $biaya, 2) }}
                             @endif
                         </td>
                     </tr>
@@ -175,10 +180,10 @@
                             @endif
                         </td>
                         <td class="t l b" align="right">
-                            @if ($sum_rl_debit + ($sum_rl_kredit - $sum_rl_debit) < 0)
-                                ({{ number_format(($sum_rl_debit + ($sum_rl_kredit - $sum_rl_debit)) * -1, 2) }})
+                            @if ($sum_rl_debit + ($pendapatan - $biaya) < 0)
+                                ({{ number_format(($sum_rl_debit + ($pendapatan - $biaya)) * -1, 2) }})
                             @else
-                                {{ number_format($sum_rl_debit + ($sum_rl_kredit - $sum_rl_debit), 2) }}
+                                {{ number_format($sum_rl_debit + ($pendapatan - $biaya), 2) }}
                             @endif
                         </td>
                         <td class="t l b" align="right">
@@ -196,10 +201,10 @@
                             @endif
                         </td>
                         <td class="t l b r" align="right">
-                            @if ($sum_nc_kredit + ($sum_rl_kredit - $sum_rl_debit) < 0)
-                                ({{ number_format(($sum_nc_kredit + ($sum_rl_kredit - $sum_rl_debit)) * -1, 2) }})
+                            @if ($sum_nc_kredit + ($pendapatan - $biaya) < 0)
+                                ({{ number_format(($sum_nc_kredit + ($pendapatan - $biaya)) * -1, 2) }})
                             @else
-                                {{ number_format($sum_nc_kredit + ($sum_rl_kredit - $sum_rl_debit), 2) }}
+                                {{ number_format($sum_nc_kredit + ($pendapatan - $biaya), 2) }}
                             @endif
                         </td>
                     </tr>
