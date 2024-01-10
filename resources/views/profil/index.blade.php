@@ -29,7 +29,7 @@
                                 {{ Session::get('nama') }}
                             </h5>
                             <p class="mb-0 font-weight-normal text-sm">
-                                {{ $user->j->nama_jabatan }}
+                                {{ $user->j ? $user->j->nama_jabatan : '' }}
                             </p>
                         </div>
                     </div>
