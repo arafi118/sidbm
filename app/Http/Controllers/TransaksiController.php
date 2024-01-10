@@ -159,8 +159,7 @@ class TransaksiController extends Controller
             $bulan = 12;
         }
         $tgl_kondisi = $tahun . '-' . $bulan . '-' . date('t', strtotime($tahun . '-' . $bulan . '-01'));
-
-        $surplus = $keuangan->laba_rugi($tahun . '-13-00');
+        $surplus = $keuangan->laba_rugi($tgl_kondisi);
 
         $success = false;
         $migrasi_saldo = false;
@@ -261,6 +260,8 @@ class TransaksiController extends Controller
 
             $success = true;
         }
+
+        $surplus = $keuangan->laba_rugi($tahun . '-13-00');
 
         $kec = Kecamatan::where('id', Session::get('lokasi'))->with([
             'saldo' => function ($query) use ($tahun, $bulan) {
