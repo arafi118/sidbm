@@ -324,58 +324,43 @@
                     success: function(result) {
                         loading.close()
                         if (result.success) {
-                            var loader = Swal.fire({
-                                title: "Menyimpan Transaksi",
-                                html: "Menyimpan transaksi angsuran.",
-                                timerProgressBar: true,
-                                allowOutsideClick: false,
-                                didOpen: () => {
-                                    Swal.showLoading();
-                                }
-                            })
-
                             $.get('/angsuran/notifikasi/' + result.idtp, function(res) {
                                 $('#notif').html(res.view)
                             })
 
-                            $.get('/transaksi/regenerate_real/' + result.id_pinkel, function(res) {
-                                if (res.success) {
-                                    loader.close()
-                                    Swal.fire('Berhasil!', result.msg, 'success').then(() => {
-                                        $.get('/transaksi/form_angsuran/' + result
-                                            .id_pinkel,
+                            Swal.fire('Berhasil!', result.msg, 'success').then(() => {
+                                $.get('/transaksi/form_angsuran/' + result
+                                    .id_pinkel,
+                                    function(result) {
+                                        angsuran(true, result)
+
+                                        makeChart('pokok', ch_pokok, result
+                                            .sisa_pokok, result
+                                            .sum_pokok)
+                                        makeChart('jasa', ch_jasa, result
+                                            .sisa_jasa,
+                                            result.sum_jasa)
+
+                                        var id = $('#id').val()
+                                        $.get('/transaksi/angsuran/form_anggota/' +
+                                            id,
                                             function(result) {
-                                                angsuran(true, result)
-
-                                                makeChart('pokok', ch_pokok, result
-                                                    .sisa_pokok, result
-                                                    .sum_pokok)
-                                                makeChart('jasa', ch_jasa, result
-                                                    .sisa_jasa,
-                                                    result.sum_jasa)
-
-                                                var id = $('#id').val()
-                                                $.get('/transaksi/angsuran/form_anggota/' +
-                                                    id,
-                                                    function(result) {
-                                                        if (result.success) {
-                                                            $('#LayoutAngsuranAnggota')
-                                                                .html(result
-                                                                    .view)
-                                                            $('#AngsuranAnggotaLabel')
-                                                                .text(result
-                                                                    .title)
-                                                        }
-                                                    })
+                                                if (result.success) {
+                                                    $('#LayoutAngsuranAnggota')
+                                                        .html(result
+                                                            .view)
+                                                    $('#AngsuranAnggotaLabel')
+                                                        .text(result
+                                                            .title)
+                                                }
                                             })
                                     })
-
-                                    if (result.whatsapp) {
-                                        sendMsg(result.number, result.nama_kelompok, result
-                                            .pesan)
-                                    }
-                                }
                             })
+
+                            if (result.whatsapp) {
+                                sendMsg(result.number, result.nama_kelompok, result
+                                    .pesan)
+                            }
                         } else {
                             loading.close()
                             Swal.fire('Error', result.msg, 'warning')

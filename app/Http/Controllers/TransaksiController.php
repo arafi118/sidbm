@@ -808,7 +808,10 @@ class TransaksiController extends Controller
                 $target_jasa = $pinkel->target->target_jasa;
             }
 
-            $tunggakan_jasa    = $target_jasa - $sum_jasa;
+            $tunggakan_pokok = $target_pokok - $sum_pokok;
+            if ($tunggakan_pokok < '0') $tunggakan_pokok = '0';
+
+            $tunggakan_jasa = $target_jasa - $sum_jasa;
             if ($tunggakan_jasa < '0') $tunggakan_jasa = '0';
 
             if (strtotime($tgl_transaksi) < strtotime($pinkel->tgl_cair)) {
@@ -948,7 +951,7 @@ class TransaksiController extends Controller
             }
             Transaksi::insert($transaksi);
 
-            $jasa_pinjaman = $pinkel->pros_jasa / 100 * $pinkel->alokasi;
+            $jasa_pinjaman = ($pinkel->pros_jasa / 100) * $pinkel->alokasi;
             foreach ($pinjaman_anggota as $pa) {
                 $pokok_anggota = 0;
                 if ($request->pokok_anggota) {
@@ -997,6 +1000,55 @@ class TransaksiController extends Controller
                 ]);
             }
 
+            $rek_pokok = ['1.1.03.01', '1.1.03.02', '1.1.03.03'];
+            $rek_jasa = ['1.1.03.04', '1.1.03.05', '1.1.03.06', '4.1.01.01', '4.1.01.02', '4.1.01.03'];
+
+            $alokasi_pokok = intval($pinkel->alokasi);
+            $alokasi_jasa = intval($pinkel->pros_jasa == 0 ? 0 : $pinkel->alokasi * ($pinkel->pros_jasa / 100));
+
+            $real_angsuran = [
+                'id' => $idtp,
+                'loan_id' => $pinkel->id,
+                'tgl_transaksi' => $tgl_transaksi,
+                'realisasi_pokok' => 0,
+                'realisasi_jasa' => 0,
+                'sum_pokok' => $sum_pokok,
+                'sum_jasa' => $sum_jasa,
+                'saldo_pokok' => $alokasi_jasa,
+                'saldo_jasa' => $alokasi_jasa,
+                'tunggakan_pokok' => $tunggakan_pokok,
+                'tunggakan_jasa' => $tunggakan_jasa,
+                'lu' => date('Y-m-d H:i:s', strtotime($tgl_transaksi)),
+                'id_user' => auth()->user()->id,
+            ];
+
+            foreach ($transaksi as $key => $trx) {
+                if (in_array($trx['rekening_kredit'], $rek_pokok)) {
+                    $sum_pokok += $trx['jumlah'];
+                    $alokasi_pokok -= $sum_pokok;
+                    $tunggakan_pokok -= $trx['jumlah'];
+                    if ($tunggakan_pokok <= 0) $tunggakan_pokok = 0;
+
+                    $real_angsuran['realisasi_pokok'] = $trx['jumlah'];
+                    $real_angsuran['sum_pokok'] = $sum_pokok;
+                    $real_angsuran['saldo_pokok'] = $alokasi_pokok;
+                    $real_angsuran['tunggakan_pokok'] = $tunggakan_pokok;
+                }
+
+                if (in_array($trx['rekening_kredit'], $rek_jasa)) {
+                    $sum_jasa += $trx['jumlah'];
+                    $alokasi_jasa -= $sum_jasa;
+                    $tunggakan_jasa -= $trx['jumlah'];
+                    if ($tunggakan_jasa <= 0) $tunggakan_jasa = 0;
+
+                    $real_angsuran['realisasi_jasa'] = $trx['jumlah'];
+                    $real_angsuran['sum_jasa'] = $sum_jasa;
+                    $real_angsuran['saldo_jasa'] = $alokasi_jasa;
+                    $real_angsuran['tunggakan_jasa'] = $tunggakan_jasa;
+                }
+            }
+
+            RealAngsuran::insert($real_angsuran);
             DB::commit();
 
             $whatsapp = false;
