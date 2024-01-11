@@ -541,7 +541,9 @@ class DashboardController extends Controller
         $bulan = date('m');
         $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('desa')->first();
 
-        if (Saldo::where('kode_akun', 'LIKE', '%' . $kec->kd_kec . '%')->count() <= 0) {
+        if (Saldo::where([
+            ['kode_akun', 'LIKE', '%' . $kec->kd_kec . '%']
+        ])->count() <= 0) {
             $saldo_desa = [];
             foreach ($kec->desa as $desa) {
                 $saldo_desa[] = [
@@ -777,9 +779,80 @@ class DashboardController extends Controller
         $tahun = request()->get('tahun') ?: date('Y');
         $bulan = request()->get('bulan') ?: date('m');
 
+        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('desa')->first();
+
         $data_id = [];
         $saldo = [];
         if ($bulan == '00') {
+
+            if (Saldo::where([
+                ['kode_akun', 'LIKE', '%' . $kec->kd_kec . '%'],
+                ['tahun', $tahun]
+            ])->count() <= 0) {
+                $saldo_desa = [];
+                foreach ($kec->desa as $desa) {
+                    $saldo_desa[] = [
+                        'id' => $desa->kd_desa . $tahun . 0,
+                        'kode_akun' => $desa->kode_desa,
+                        'tahun' => $tahun,
+                        'bulan' => 0,
+                        'debit' => 0,
+                        'kredit' => 0
+                    ];
+                }
+
+                $saldo_desa[] = [
+                    'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 0 . 1,
+                    'kode_akun' => $kec->kd_kec,
+                    'tahun' => $tahun,
+                    'bulan' => 0,
+                    'debit' => 0,
+                    'kredit' => 0
+                ];
+                $saldo_desa[] = [
+                    'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 0 . 2,
+                    'kode_akun' => $kec->kd_kec,
+                    'tahun' => $tahun,
+                    'bulan' => 0,
+                    'debit' => 0,
+                    'kredit' => 0
+                ];
+                $saldo_desa[] = [
+                    'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 0 . 3,
+                    'kode_akun' => $kec->kd_kec,
+                    'tahun' => $tahun,
+                    'bulan' => 0,
+                    'debit' => 0,
+                    'kredit' => 0
+                ];
+                $saldo_desa[] = [
+                    'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 0 . 4,
+                    'kode_akun' => $kec->kd_kec,
+                    'tahun' => $tahun,
+                    'bulan' => 0,
+                    'debit' => 0,
+                    'kredit' => 0
+                ];
+                $saldo_desa[] = [
+                    'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 0 . 5,
+                    'kode_akun' => $kec->kd_kec,
+                    'tahun' => $tahun,
+                    'bulan' => 0,
+                    'debit' => 0,
+                    'kredit' => 0
+                ];
+                $saldo_desa[] = [
+                    'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 0 . 6,
+                    'kode_akun' => $kec->kd_kec,
+                    'tahun' => $tahun,
+                    'bulan' => 0,
+                    'debit' => 0,
+                    'kredit' => 0
+                ];
+
+                Saldo::insert($saldo_desa);
+            }
+
             $tahun_tb = $tahun - 1;
             $tb = 'tb' . $tahun_tb;
             $tbk = 'tbk' . $tahun_tb;
