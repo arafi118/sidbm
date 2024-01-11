@@ -101,21 +101,23 @@
         <div class="card shadow-lg">
             <div class="card-header pb-0 pt-3">
                 <div class="float-start">
-                    <h5 class="mt-3 mb-0">Pengaturan Tampilan</h5>
-                    <p></p>
+                    <h5 class="mt-3 mb-0">
+                        Tampilan SIDBM
+                    </h5>
+                    <p>Sesuaikan tampilan aplikasi anda.</p>
                 </div>
                 <div class="float-end mt-4">
-                    <button class="btn btn-link text-dark p-0 fixed-plugin-close-button">
+                    <button class="btn btn-link p-0 fixed-plugin-close-button text-dark">
                         <i class="material-icons">clear</i>
                     </button>
                 </div>
 
             </div>
-            <hr class="horizontal dark my-1">
+            <hr class="horizontal my-1 dark">
             <div class="card-body pt-sm-3 pt-0">
 
                 <div>
-                    <h6 class="mb-0">Sidebar Colors</h6>
+                    <h6 class="mb-0">Warna Sidebar</h6>
                 </div>
                 <a href="javascript:void(0)" class="switch-trigger background-color">
                     <div class="badge-colors my-2 text-start">
@@ -134,28 +136,52 @@
                     </div>
                 </a>
 
+                <div class="mt-3">
+                    <h6 class="mb-0">Tipe Sidebar</h6>
+                </div>
+                <div class="d-flex">
+                    <button class="btn bg-gradient-dark px-3 mb-2 active" data-class="bg-gradient-dark"
+                        onclick="sidebarType(this)">Dark</button>
+                    <button class="btn bg-gradient-dark px-3 mb-2 ms-2" data-class="bg-transparent"
+                        onclick="sidebarType(this)">Transparent</button>
+                    <button class="btn bg-gradient-dark px-3 mb-2 ms-2" data-class="bg-white"
+                        onclick="sidebarType(this)">White</button>
+                </div>
+                <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
+
                 <div class="mt-3 d-flex">
                     <h6 class="mb-0">Navbar Fixed</h6>
                     <div class="form-check form-switch ps-0 ms-auto my-auto">
                         <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarFixed"
-                            onclick="navbarFixed(this)">
+                            onclick="navbarFixed(this)" checked="true">
                     </div>
                 </div>
-                <hr class="horizontal dark my-3">
+                <hr class="horizontal my-3 dark">
                 <div class="mt-2 d-flex">
-                    <h6 class="mb-0">Sidenav Mini</h6>
-                    <div class="form-check form-switch ps-0 ms-auto my-auto">
+                    <h6 class="mb-0">Sidebar Mini</h6>
+                    <div class="form-check form-switch ps-0 ms-auto my-auto is-filled">
                         <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarMinimize"
                             onclick="navbarMinimize(this)">
                     </div>
                 </div>
-                <hr class="horizontal dark my-3">
+                <hr class="horizontal my-3 dark">
                 <div class="mt-2 d-flex">
-                    <h6 class="mb-0">Light / Dark</h6>
-                    <div class="form-check form-switch ps-0 ms-auto my-auto">
+                    <h6 class="mb-0">Mode Malam</h6>
+                    <div class="form-check form-switch ps-0 ms-auto my-auto is-filled">
                         <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version"
                             onclick="darkMode(this)">
                     </div>
+                </div>
+                <hr class="horizontal my-sm-4 dark">
+                <div class="w-100 text-center">
+                    <span></span>
+                    <h6 class="mt-3">Have a nice day</h6>
+                    <a href="https://app.sidbm.net" class="btn btn-dark mb-0 me-2" target="_blank">
+                        <i class="fas fa-cube me-1" aria-hidden="true"></i> Demo App
+                    </a>
+                    <a href="https://www.facebook.com/astabratagroup" class="btn btn-dark mb-0 me-2" target="_blank">
+                        <i class="fab fa-facebook-square me-1" aria-hidden="true"></i> Facebook
+                    </a>
                 </div>
             </div>
         </div>
@@ -474,7 +500,7 @@
     </script>
 
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script async src="/assets/js/material-dashboard.min.js"></script>
+    <script async src="/assets/js/material-dashboard.min.js?v={{ time() }}"></script>
 
     @if (session('pesan'))
         <script>
