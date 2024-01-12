@@ -139,15 +139,15 @@
                     <td class="t l b" align="center">{{ $inv->id }}</td>
                     <td class="t l b" align="center">{{ $inv->status }}</td>
                     <td class="t l b" align="center">{{ $inv->unit }}</td>
-                    <td class="t l b" align="right">{{ number_format($inv->harsat) }}</td>
-                    <td class="t l b" align="right">{{ number_format($inv->harsat * $inv->unit) }}</td>
+                    <td class="t l b" align="right">{{ number_format($inv->harsat, 2) }}</td>
+                    <td class="t l b" align="right">{{ number_format($inv->harsat * $inv->unit, 2) }}</td>
                     <td class="t l b" align="center">{{ $inv->umur_ekonomis }}</td>
-                    <td class="t l b" align="right">{{ number_format($satuan_susut) }}</td>
+                    <td class="t l b" align="right">{{ number_format($satuan_susut, 2) }}</td>
                     <td class="t l b" align="center">{{ $umur_pakai }}</td>
-                    <td class="t l b" align="right">{{ number_format($penyusutan) }}</td>
+                    <td class="t l b" align="right">{{ number_format($penyusutan, 2) }}</td>
                     <td class="t l b" align="center">{{ $akum_umur }}</td>
-                    <td class="t l b" align="right">{{ number_format($akum_susut) }}</td>
-                    <td class="t l b r" align="right">{{ number_format($nilai_buku) }}</td>
+                    <td class="t l b" align="right">{{ number_format($akum_susut, 2) }}</td>
+                    <td class="t l b r" align="right">{{ number_format($nilai_buku, 2) }}</td>
                 </tr>
             @endforeach
 
@@ -159,20 +159,20 @@
                             <td class="t l b" width="37%" height="15">
                                 Jumlah
                             </td>
-                            <td class="t l b" width="3%" align="center">{{ number_format($t_unit) }}</td>
+                            <td class="t l b" width="3%" align="center">{{ number_format($t_unit, 2) }}</td>
                             <td class="t l b" width="8%">&nbsp;</td>
-                            <td class="t l b" width="8%" align="right">{{ number_format($t_harga) }}</td>
+                            <td class="t l b" width="8%" align="right">{{ number_format($t_harga, 2) }}</td>
                             @if ($rek->lev4 == '1')
                                 <td class="t l b" width="36%">&nbsp;</td>
                             @else
                                 <td class="t l b" width="4%">&nbsp;</td>
                                 <td class="t l b" width="8%">&nbsp;</td>
-                                <td class="t l b" width="12%" align="right">{{ number_format($t_penyusutan) }}
+                                <td class="t l b" width="12%" align="right">{{ number_format($t_penyusutan, 2) }}
                                 </td>
-                                <td class="t l b" width="12%" align="right">{{ number_format($t_akum_susut) }}
+                                <td class="t l b" width="12%" align="right">{{ number_format($t_akum_susut, 2) }}
                                 </td>
                             @endif
-                            <td class="t l b r" width="8%" align="right">{{ number_format($t_nilai_buku) }}</td>
+                            <td class="t l b r" width="8%" align="right">{{ number_format($t_nilai_buku, 2) }}</td>
                         </tr>
 
                         <tr>
