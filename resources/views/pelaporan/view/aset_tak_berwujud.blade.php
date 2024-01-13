@@ -162,21 +162,18 @@
                             <td class="t l b" width="3%" align="center">{{ number_format($t_unit, 2) }}</td>
                             <td class="t l b" width="8%">&nbsp;</td>
                             <td class="t l b" width="8%" align="right">{{ number_format($t_harga, 2) }}</td>
-                            @if ($rek->lev4 == '1')
-                                <td class="t l b" width="36%">&nbsp;</td>
-                            @else
-                                <td class="t l b" width="4%">&nbsp;</td>
-                                <td class="t l b" width="8%">&nbsp;</td>
-                                <td class="t l b" width="12%" align="right">{{ number_format($t_penyusutan, 2) }}
-                                </td>
-                                <td class="t l b" width="12%" align="right">{{ number_format($t_akum_susut, 2) }}
-                                </td>
-                            @endif
+                            <td class="t l b" width="36%">&nbsp;</td>
+                            <td class="t l b" width="4%">&nbsp;</td>
+                            <td class="t l b" width="8%">&nbsp;</td>
+                            <td class="t l b" width="12%" align="right">{{ number_format($t_penyusutan, 2) }}
+                            </td>
+                            <td class="t l b" width="12%" align="right">{{ number_format($t_akum_susut, 2) }}
+                            </td>
                             <td class="t l b r" width="8%" align="right">{{ number_format($t_nilai_buku, 2) }}</td>
                         </tr>
 
                         <tr>
-                            <td colspan="{{ $rek->lev4 == '1' ? 6 : 9 }}">
+                            <td colspan="9">
                                 <div style="margin-top: 16px;"></div>
                                 {!! json_decode(str_replace('{tanggal}', $tanggal_kondisi, $kec->ttd->tanda_tangan_pelaporan), true) !!}
                             </td>
