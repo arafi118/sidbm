@@ -1485,30 +1485,53 @@ class TransaksiController extends Controller
         $data['bulan'] = $request->bulan;
         $data['hari'] = $request->hari;
 
+        if ($data['tahun'] == null) {
+            abort(404);
+        }
+
+        $data['bulanan'] = true;
+        if ($data['bulan'] == null) {
+            $data['bulanan'] = false;
+            $data['bulan'] = '12';
+        }
+
+        $data['harian'] = true;
+        if ($data['hari'] == null) {
+            $data['harian'] = false;
+            $data['hari'] = date('t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'));
+        }
+
         $thn = $data['tahun'];
         $bln = $data['bulan'];
         $hari = $data['hari'];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        if (strlen($hari) > 0 && strlen($bln) > 0) {
+        $tgl = $thn . '-';
+        $data['judul'] = 'Laporan Tahunan';
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        $awal_bulan = $thn . '00-00';
+        if ($data['bulanan']) {
+            $tgl = $thn . '-' . $bln . '-';
+            $data['judul'] = 'Laporan Bulanan';
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $bulan_lalu = date('m', strtotime('-1 month', strtotime($tgl . '01')));
+            $awal_bulan = $thn . '-' . $bulan_lalu . '-' . date('t', strtotime($thn . '-' . $bulan_lalu));
+            if ($bln == 1) {
+                $awal_bulan = $thn . '00-00';
+            }
+        }
+
+        if ($data['harian']) {
             $tgl = $thn . '-' . $bln . '-' . $hari;
             $data['judul'] = 'Laporan Harian';
             $data['sub_judul'] = 'Tanggal ' . $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tglLatin($tgl);
             $awal_bulan = date('Y-m-d', strtotime('-1 day', strtotime($tgl)));
-        } elseif (strlen($bln) > 0) {
-            $tgl = $thn . '-' . $bln;
-            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $bulan_lalu = date('m', strtotime('-1 month', strtotime($tgl . '-01')));
-            $awal_bulan = $thn . '-' . $bulan_lalu . '-' . date('t', strtotime($thn . '-' . $bulan_lalu));
-            if ($bln == 1) {
-                $awal_bulan = $thn . '00-00';
-            }
-        } else {
-            $tgl = $thn;
-            $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
-            $awal_bulan = ($thn - 1) . '12-31';
         }
+
+        $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
 
         $data['is_dir'] = (auth()->guard('web')->user()->level == 1 && (auth()->guard('web')->user()->jabatan == 1 || auth()->guard('web')->user()->jabatan == 3)) ? true : false;
         $data['is_ben'] = (auth()->guard('web')->user()->level == 1 && (auth()->guard('web')->user()->jabatan == 3)) ? true : false;
@@ -1519,10 +1542,9 @@ class TransaksiController extends Controller
         })->with('user')->orderBy('tgl_transaksi', 'ASC')->orderBy('urutan', 'ASC')->orderBy('idt', 'ASC')->get();
 
         $data['keuangan'] = $keuangan;
-        $saldo_bulanan = $keuangan->saldoPerBulan($awal_bulan, $data['kode_akun']);
-        $data['saldo'] = $keuangan->saldoAwal($tgl, $data['kode_akun']);
-        $data['d_bulan_lalu'] = $saldo_bulanan['debit'];
-        $data['k_bulan_lalu'] = $saldo_bulanan['kredit'];
+        $data['saldo'] = $keuangan->saldoAwal($data['tgl_kondisi'], $data['kode_akun']);
+        $data['d_bulan_lalu'] = $keuangan->saldoD($awal_bulan, $data['kode_akun']);
+        $data['k_bulan_lalu'] = $keuangan->saldoK($awal_bulan, $data['kode_akun']);
 
         return [
             'label' => '<i class="fas fa-book"></i> ' . $data['rek']->kode_akun . ' - ' . $data['rek']->nama_akun . ' ' . $data['sub_judul'],
