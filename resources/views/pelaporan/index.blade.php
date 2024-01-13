@@ -8,11 +8,13 @@
     <div class="card mb-3">
         <div class="card-body pb-0">
 
-            <div class="col-12">
-                <div class="alert alert-warning text-white" role="alert">
-                    Mulai 2024 Laporan Harian hanya bisa digunakan pada Jurnal Transaksi.
+            @if (date('d') <= '13' && date('Y-m') == '2024-01')
+                <div class="col-12">
+                    <div class="alert alert-warning text-white" role="alert">
+                        Mulai 2024 Laporan Harian hanya bisa digunakan pada Jurnal Transaksi.
+                    </div>
                 </div>
-            </div>
+            @endif
 
             <form action="/pelaporan/preview" method="post" id="FormPelaporan" target="_blank">
                 @csrf
