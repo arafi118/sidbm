@@ -144,7 +144,7 @@
                 <li class="nav-item ps-3">
                     <a href="javascript:;" class="nav-link text-body p-0" id="logout" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="Logout" data-container="body" data-animation="true">
-                        <i class="material-icons fixed-plugin-button-nav cursor-pointer">
+                        <i class="material-icons cursor-pointer">
                             exit_to_app
                         </i>
                     </a>
