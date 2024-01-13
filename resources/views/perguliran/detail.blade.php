@@ -212,6 +212,12 @@
                                     16. Penerima IPTW
                                 </button>
                             </div>
+                            {{-- <div class="col-md-3 d-grid">
+                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                    value="formVerifikasiAnggota">
+                                    16. Form Verifikasi Anggota
+                                </button>
+                            </div> --}}
                         </div>
                     </form>
                 </div>

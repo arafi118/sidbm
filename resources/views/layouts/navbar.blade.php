@@ -52,15 +52,17 @@
         </div>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 justify-content-between" id="navbar">
             <div class="ms-md-3 pe-md-3 d-flex align-items-center w-100">
-                <div class="input-group input-group-outline">
-                    <label class="form-label">Cari Kelompok</label>
-                    @if (Request::get('pinkel'))
-                        <input type="text" id="cariKelompok" name="cariKelompok" class="form-control"
-                            value="{{ $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] [' . $pinkel->kelompok->ketua . ']' }}">
-                    @else
-                        <input type="text" id="cariKelompok" name="cariKelompok" class="form-control">
-                    @endif
-                </div>
+                @if (Session::get('angsuran') == true)
+                    <div class="input-group input-group-outline">
+                        <label class="form-label">Cari Kelompok</label>
+                        @if (Request::get('pinkel'))
+                            <input type="text" id="cariKelompok" name="cariKelompok" class="form-control"
+                                value="{{ $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] [' . $pinkel->kelompok->ketua . ']' }}">
+                        @else
+                            <input type="text" id="cariKelompok" name="cariKelompok" class="form-control">
+                        @endif
+                    </div>
+                @endif
             </div>
             <ul class="navbar-nav justify-content-end align-items-center">
                 <li class="nav-item">
@@ -69,15 +71,6 @@
                         data-container="body" data-animation="true">
                         <i class="material-icons me-sm-1">
                             notifications_active
-                        </i>
-                    </a>
-                </li>
-                <li class="nav-item ps-3">
-                    <a href="/pelaporan/mou" class="nav-link text-body p-0 position-relative" target="_blank"
-                        data-bs-toggle="tooltip" data-bs-placement="top" title="MoU" data-container="body"
-                        data-animation="true">
-                        <i class="material-icons me-sm-1">
-                            library_books
                         </i>
                     </a>
                 </li>
@@ -135,16 +128,18 @@
                                     </div>
                                 </div>
                             </a>
+                            <a class="dropdown-item border-radius-md" href="/pelaporan/mou" target="_blank">
+                                <div class="d-flex align-items-center py-1">
+                                    <span class="material-icons">library_books</span>
+                                    <div class="ms-2">
+                                        <h6 class="text-sm font-weight-normal my-auto">
+                                            MoU
+                                        </h6>
+                                    </div>
+                                </div>
+                            </a>
                         </li>
                     </ul>
-                </li>
-                <li class="nav-item ps-3">
-                    <a href="javascript:;" class="nav-link text-body p-0" data-bs-toggle="tooltip"
-                        data-bs-placement="top" title="Tampilan" data-container="body" data-animation="true">
-                        <i class="material-icons fixed-plugin-button-nav cursor-pointer">
-                            settings
-                        </i>
-                    </a>
                 </li>
                 <li class="nav-item ps-3">
                     <a href="javascript:;" class="nav-link text-body p-0" id="logout" data-bs-toggle="tooltip"

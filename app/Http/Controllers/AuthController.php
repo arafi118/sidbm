@@ -59,6 +59,11 @@ class AuthController extends Controller
                         }
                     ])->orderBy('sort', 'ASC')->orderBy('id', 'ASC')->get();
 
+                    $angsuran = true;
+                    if (in_array('19', $hak_akses) || in_array('21', $hak_akses)) {
+                        $angsuran = false;
+                    }
+
                     $request->session()->regenerate();
                     session([
                         'nama_lembaga' => str_replace('DBM ', '', $kec->nama_lembaga_sort),
@@ -67,7 +72,8 @@ class AuthController extends Controller
                         'logo' => $kec->logo,
                         'lokasi' => $user->lokasi,
                         'lokasi_user' => $user->lokasi,
-                        'menu' => $menu
+                        'menu' => $menu,
+                        'angsuran' => $angsuran
                     ]);
 
                     return redirect('/dashboard')->with('pesan', 'Selamat Datang ' . $user->namadepan . ' ' . $user->namabelakang);

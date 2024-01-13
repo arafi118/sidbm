@@ -1244,7 +1244,7 @@ class PinjamanKelompokController extends Controller
         return $pdf->stream();
     }
 
-    public function  tanggungRenteng($id, $data)
+    public function tanggungRenteng($id, $data)
     {
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'jpp',
@@ -1348,6 +1348,18 @@ class PinjamanKelompokController extends Controller
         $data['judul'] = 'Form Verifikasi (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.form_verifikasi', $data)->render();
         $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function formVerifikasiAnggota($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'kelompok'
+        ])->first();
+
+        $data['judul'] = 'Form Verifikasi Anggota (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.form_verifikasi_anggota', $data)->render();
+        $pdf = PDF::loadHTML($view)->setPaper('f4');
         return $pdf->stream();
     }
 

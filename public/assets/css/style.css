@@ -263,7 +263,7 @@ table.table.midle tbody tr td {
 }
 
 .sidenav {
-    z-index: 1 !important;
+    z-index: 1024 !important;
 }
 
 .swal2-container {

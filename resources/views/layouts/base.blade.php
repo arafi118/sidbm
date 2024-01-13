@@ -50,7 +50,7 @@
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
     <link id="pagestyle" href="/assets/css/material-dashboard.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css?v={{ time() }}">
     <style>
         .tox-promotion {
             display: none;
