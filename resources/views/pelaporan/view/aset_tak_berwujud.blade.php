@@ -162,14 +162,17 @@
                             <td class="t l b" width="3%" align="center">{{ number_format($t_unit, 2) }}</td>
                             <td class="t l b" width="8%">&nbsp;</td>
                             <td class="t l b" width="8%" align="right">{{ number_format($t_harga, 2) }}</td>
-                            <td class="t l b" width="36%">&nbsp;</td>
                             <td class="t l b" width="4%">&nbsp;</td>
                             <td class="t l b" width="8%">&nbsp;</td>
-                            <td class="t l b" width="12%" align="right">{{ number_format($t_penyusutan, 2) }}
+                            <td class="t l b" width="12%" align="right">
+                                {{ number_format($t_penyusutan, 2) }}
                             </td>
-                            <td class="t l b" width="12%" align="right">{{ number_format($t_akum_susut, 2) }}
+                            <td class="t l b" width="12%" align="right">
+                                {{ number_format($t_akum_susut, 2) }}
                             </td>
-                            <td class="t l b r" width="8%" align="right">{{ number_format($t_nilai_buku, 2) }}</td>
+                            <td class="t l b r" width="8%" align="right">
+                                {{ number_format($t_nilai_buku, 2) }}
+                            </td>
                         </tr>
 
                         <tr>
