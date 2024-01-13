@@ -62,7 +62,7 @@
             <td colspan="2"></td>
             <td align="center">
                 <div>{{ $nama_lembaga }} {{ $kec->nama_kec }}</div>
-                <div>{{ Session::get('lokasi') == '207' ? 'Direktur' : $kec->sebutan_level_1 }} DBM,</div>
+                <div>{{ Session::get('lokasi') == '207' ? 'Direktur' : $kec->sebutan_level_1 }},</div>
                 <br>
                 <br>
                 <br>

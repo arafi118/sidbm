@@ -3,7 +3,7 @@
     $proposal = 0;
     $jasa = 0;
     $iptw = 0;
-    
+
     $alokasi_pinjaman = $pinkel->proposal;
     if (Request::get('status') == 'A') {
         $alokasi_pinjaman = $pinkel->alokasi;
@@ -68,7 +68,13 @@
         <tr style="background: rgb(232,232,232)">
             <th height="20" width="10" align="center">No</th>
             <th align="center">Nama Anggota</th>
-            <th width="80" align="center">Pengajuan</th>
+            <th width="80" align="center">
+                @if (Request::get('status') == 'A')
+                    Alokasi
+                @else
+                    Pengajuan
+                @endif
+            </th>
             <th width="80" align="center">Total Jasa</th>
             <th width="80" align="center">Jumlah IPTW</th>
             <th width="70" align="center">Tanda Tangan</th>
@@ -82,7 +88,7 @@
                 }
                 $_jasa = ($_proposal * $pinkel->pros_jasa) / 100;
                 $_iptw = ($_jasa * $kec->iptw) / 100;
-                
+
                 $proposal += $_proposal;
                 $jasa += $_jasa;
                 $iptw += $_iptw;

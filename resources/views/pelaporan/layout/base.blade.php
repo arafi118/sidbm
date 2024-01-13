@@ -83,8 +83,8 @@
             <table width="100%" style="border-bottom: 1px double #000; border-width: 4px;">
                 <tr>
                     <td width="70">
-                        <img src="../storage/app/public/logo/{{ $logo }}" width="80"
-                            alt="{{ $logo }}">
+                        <img src="../storage/app/public/logo/{{ $logo }}" height="70"
+                            alt="{{ $kec->id }}">
                     </td>
                     <td align="center">
                         <div>{{ strtoupper($nama_lembaga) }}</div>
