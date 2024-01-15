@@ -120,7 +120,7 @@ class DashboardController extends Controller
         $table = '';
 
         $no = 1;
-        $pinjaman = PinjamanKelompok::where('status', $status)->with('saldo', 'kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
+        $pinjaman = PinjamanKelompok::where('status', $status)->with('saldo', 'kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->orderBy('tgl_cair', 'ASC')->get();
         foreach ($pinjaman as $pinkel) {
             $status = $pinkel->sts->warna_status;
 
@@ -179,7 +179,7 @@ class DashboardController extends Controller
             'anggota.d',
             'anggota.d.sebutan_desa',
             'kelompok'
-        ])->get();
+        ])->orderBy('tgl_cair', 'ASC')->get();
         foreach ($pinjaman as $pinkel) {
             $nama_desa = '';
             if ($pinkel->anggota->d) {
