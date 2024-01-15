@@ -69,7 +69,7 @@
             <th height="20" width="10" align="center">No</th>
             <th align="center">Nama Anggota</th>
             <th width="80" align="center">
-                @if (Request::get('status') == 'A')
+                @if (Request::get('status') == 'A' || Request::get('status') == 'W')
                     Alokasi
                 @else
                     Pengajuan
@@ -83,7 +83,7 @@
         @foreach ($pinkel->pinjaman_anggota as $pa)
             @php
                 $_proposal = $pa->proposal;
-                if (Request::get('status') == 'A') {
+                if (Request::get('status') == 'A' || Request::get('status') == 'W') {
                     $_proposal = $pa->alokasi;
                 }
                 $_jasa = ($_proposal * $pinkel->pros_jasa) / 100;
