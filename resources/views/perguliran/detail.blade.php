@@ -206,12 +206,12 @@
                                     15. Rencana Angsuran
                                 </button>
                             </div>
-                            <div class="col-md-3 d-grid">
+                            {{-- <div class="col-md-3 d-grid">
                                 <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
                                     value="iptw">
                                     16. Penerima IPTW
                                 </button>
-                            </div>
+                            </div> --}}
                             {{-- <div class="col-md-3 d-grid">
                                 <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
                                     value="formVerifikasiAnggota">
