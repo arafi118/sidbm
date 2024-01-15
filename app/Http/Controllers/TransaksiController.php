@@ -1781,34 +1781,67 @@ class TransaksiController extends Controller
     {
         $keuangan = new Keuangan;
 
-        $saldo = 0;
+        $total_saldo = 0;
         if (request()->get('tahun') || request()->get('bulan') || request()->get('hari')) {
             $data = [];
             $data['tahun'] = request()->get('tahun');
             $data['bulan'] = request()->get('bulan');
             $data['hari'] = request()->get('hari');
 
-            if (strlen($data['hari']) > 0 && strlen($data['bulan']) > 0) {
-                $tgl_kondisi = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
-            } elseif (strlen($data['bulan']) > 0) {
-                $tgl_kondisi = $data['tahun'] . '-' . $data['bulan'] . '-' . date('t', strtotime($data['tahun'] . '-' . $data['bulan']));
-            } else {
-                $tgl_kondisi = $data['tahun'] . '-12-31';
+            $thn = $data['tahun'];
+            $bln = $data['bulan'];
+            $hari = $data['hari'];
+
+            $tgl = $thn . '-' . $bln . '-';
+            $bulan_lalu = date('m', strtotime('-1 month', strtotime($tgl . '01')));
+            $awal_bulan = $thn . '-' . $bulan_lalu . '-' . date('t', strtotime($thn . '-' . $bulan_lalu));
+            if ($bln == 1) {
+                $awal_bulan = $thn . '00-00';
             }
 
-            $rek = Rekening::where('kode_akun', $kode_akun)->with([
-                'kom_saldo' => function ($query) use ($data) {
-                    $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
-                        $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
-                    });
-                }
-            ])->first();
+            $data['rek'] = Rekening::where('kode_akun', $data['kode_akun'])->first();
+            $data['transaksi'] = Transaksi::where('tgl_transaksi', 'LIKE', '%' . $tgl . '%')->where(function ($query) use ($data) {
+                $query->where('rekening_debit', $data['kode_akun'])->orwhere('rekening_kredit', $data['kode_akun']);
+            })->with('user')->orderBy('tgl_transaksi', 'ASC')->orderBy('urutan', 'ASC')->orderBy('idt', 'ASC')->get();
 
-            $saldo = $keuangan->komSaldo($rek);
+            $data['keuangan'] = $keuangan;
+            $data['saldo'] = $keuangan->saldoAwal($data['tgl_kondisi'], $data['kode_akun']);
+            $data['d_bulan_lalu'] = $keuangan->saldoD($awal_bulan, $data['kode_akun']);
+            $data['k_bulan_lalu'] = $keuangan->saldoK($awal_bulan, $data['kode_akun']);
+
+            if ($data['rek']->jenis_mutasi == 'debet') {
+                $saldo_awal_tahun = $data['saldo']['debit'] - $data['saldo']['kredit'];
+                $saldo_awal_bulan = $data['d_bulan_lalu'] - $data['k_bulan_lalu'];
+                $total_saldo = $saldo_awal_tahun + $saldo_awal_bulan;
+            } else {
+                $saldo_awal_tahun = $data['saldo']['kredit'] - $data['saldo']['debit'];
+                $saldo_awal_bulan = $data['k_bulan_lalu'] - $data['d_bulan_lalu'];
+                $total_saldo = $saldo_awal_tahun + $saldo_awal_bulan;
+            }
+
+            foreach ($data['transaksi'] as $trx) {
+                if ($trx->rekening_debit == $data['rek']->kode_akun) {
+                    $ref = $trx->rekening_kredit;
+                    $debit = $trx->jumlah;
+                    $kredit = 0;
+                } else {
+                    $ref = $trx->rekening_debit;
+                    $debit = 0;
+                    $kredit = $trx->jumlah;
+                }
+
+                if ($data['rek']->jenis_mutasi == 'debet') {
+                    $_saldo = $debit - $kredit;
+                } else {
+                    $_saldo = $kredit - $debit;
+                }
+
+                $total_saldo += $_saldo;
+            }
         }
 
         return response()->json([
-            'saldo' => $saldo
+            'saldo' => $total_saldo
         ]);
     }
 
