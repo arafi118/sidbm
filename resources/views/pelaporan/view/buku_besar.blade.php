@@ -59,7 +59,7 @@
             <td align="right">{{ number_format($saldo['kredit'], 2) }}</td>
             <td align="right">
                 @if ($saldo_awal_tahun < 0)
-                    {{ number_format($saldo_awal_tahun * -1, 2) }}
+                    ({{ number_format($saldo_awal_tahun * -1, 2) }})
                 @else
                     {{ number_format($saldo_awal_tahun, 2) }}
                 @endif
@@ -75,7 +75,7 @@
             <td align="right">{{ number_format($k_bulan_lalu, 2) }}</td>
             <td align="right">
                 @if ($total_saldo < 0)
-                    {{ number_format($total_saldo * -1, 2) }}
+                    ({{ number_format($total_saldo * -1, 2) }})
                 @else
                     {{ number_format($total_saldo, 2) }}
                 @endif
@@ -127,7 +127,7 @@
                 <td align="right">{{ number_format($kredit, 2) }}</td>
                 <td align="right">
                     @if ($total_saldo < 0)
-                        {{ number_format($total_saldo * -1, 2) }}
+                        ({{ number_format($total_saldo * -1, 2) }})
                     @else
                         {{ number_format($total_saldo, 2) }}
                     @endif
@@ -156,7 +156,7 @@
                         </td>
                         <td align="center" rowspan="3" width="18%">
                             @if ($total_saldo < 0)
-                                <b>{{ number_format($total_saldo * -1, 2) }}</b>
+                                <b>({{ number_format($total_saldo * -1, 2) }})</b>
                             @else
                                 <b>{{ number_format($total_saldo, 2) }}</b>
                             @endif
