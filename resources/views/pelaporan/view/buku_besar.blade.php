@@ -57,7 +57,13 @@
             <td>Komulatif Transaksi Awal Tahun {{ $tahun }}</td>
             <td align="right">{{ number_format($saldo['debit'], 2) }}</td>
             <td align="right">{{ number_format($saldo['kredit'], 2) }}</td>
-            <td align="right">{{ number_format($saldo_awal_tahun, 2) }}</td>
+            <td align="right">
+                @if ($saldo_awal_tahun < 0)
+                    {{ number_format($saldo_awal_tahun * -1, 2) }}
+                @else
+                    {{ number_format($saldo_awal_tahun, 2) }}
+                @endif
+            </td>
             <td align="center"></td>
         </tr>
         <tr style="background: rgb(255, 255, 255);">
@@ -67,7 +73,13 @@
             <td>Komulatif Transaksi s/d Bulan Lalu</td>
             <td align="right">{{ number_format($d_bulan_lalu, 2) }}</td>
             <td align="right">{{ number_format($k_bulan_lalu, 2) }}</td>
-            <td align="right">{{ number_format($total_saldo, 2) }}</td>
+            <td align="right">
+                @if ($total_saldo < 0)
+                    {{ number_format($total_saldo * -1, 2) }}
+                @else
+                    {{ number_format($total_saldo, 2) }}
+                @endif
+            </td>
             <td align="center"></td>
         </tr>
 
@@ -113,7 +125,13 @@
                 <td>{{ $trx->keterangan_transaksi }}</td>
                 <td align="right">{{ number_format($debit, 2) }}</td>
                 <td align="right">{{ number_format($kredit, 2) }}</td>
-                <td align="right">{{ number_format($total_saldo, 2) }}</td>
+                <td align="right">
+                    @if ($total_saldo < 0)
+                        {{ number_format($total_saldo * -1, 2) }}
+                    @else
+                        {{ number_format($total_saldo, 2) }}
+                    @endif
+                </td>
                 @if ($trx->user)
                     <td align="center">{{ $trx->user->ins }}</td>
                 @else
@@ -137,7 +155,11 @@
                             <b>{{ number_format($total_kredit, 2) }}</b>
                         </td>
                         <td align="center" rowspan="3" width="18%">
-                            <b>{{ number_format($total_saldo, 2) }}</b>
+                            @if ($total_saldo < 0)
+                                <b>{{ number_format($total_saldo * -1, 2) }}</b>
+                            @else
+                                <b>{{ number_format($total_saldo, 2) }}</b>
+                            @endif
                         </td>
                     </tr>
 
