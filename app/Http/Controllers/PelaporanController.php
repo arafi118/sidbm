@@ -1790,7 +1790,7 @@ class PelaporanController extends Controller
         ])->get();
         $data['saldo_calk'] = Saldo::where([
             ['kode_akun', $data['kec']->kd_kec],
-            ['tahun', $thn]
+            ['tahun', $data['tahun_tb']]
         ])->get();
 
         $data['tgl_transaksi'] = $thn . '-12-31';
