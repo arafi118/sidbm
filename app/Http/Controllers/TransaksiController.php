@@ -393,8 +393,8 @@ class TransaksiController extends Controller
                 }
             }
 
-            $saldo_debit = $saldo_awal_debit + $debit;
-            $saldo_kredit = $saldo_awal_kredit + $kredit;
+            $saldo_debit = floatval($saldo_awal_debit) + floatval($debit);
+            $saldo_kredit = floatval($saldo_awal_kredit) + floatval($kredit);
 
             if (in_array($rek->kode_akun, array_keys($alokasi_laba))) {
                 $id = str_replace('.', '', $rek->kode_akun) . $tahun_tb . '00';
