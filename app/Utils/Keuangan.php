@@ -729,10 +729,17 @@ class Keuangan
 
         $akun2 = AkunLevel2::where('lev1', '4')->orwhere('lev1', '5')->with([
             'rek',
-            'rek.kom_saldo' => function ($query) use ($tahun, $bulan, $bulan_lalu) {
-                $query->where('tahun', $tahun)->where(function ($query) use ($bulan, $bulan_lalu) {
-                    $query->where('bulan', $bulan_lalu)->orwhere('bulan', $bulan);
-                });
+            'rek.kom_saldo' => function ($query) use ($tahun, $bulan, $bulan_lalu, $hari) {
+                if ($bulan == '1' && $hari == '1') {
+                    $query->where([
+                        ['tahun', $tahun],
+                        ['bulan', '0']
+                    ]);
+                } else {
+                    $query->where('tahun', $tahun)->where(function ($query) use ($bulan, $bulan_lalu) {
+                        $query->where('bulan', $bulan_lalu)->orwhere('bulan', $bulan);
+                    });
+                }
             },
             'rek.saldo' => function ($query) use ($tahun) {
                 $query->where([

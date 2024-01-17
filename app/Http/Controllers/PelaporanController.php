@@ -86,6 +86,14 @@ class PelaporanController extends Controller
                 2 => [
                     'title' => 'Neraca',
                     'file' => 'neraca_tutup_buku'
+                ],
+                3 => [
+                    'title' => 'Laba Rugi',
+                    'file' => 'laba_rugi_tutup_buku'
+                ],
+                4 => [
+                    'title' => 'CALK',
+                    'file' => 'CALK_tutup_buku'
                 ]
             ];
 
@@ -267,6 +275,10 @@ class PelaporanController extends Controller
         $bln = $data['bulan'];
         $hari = ($data['hari']);
 
+        if ($bln == '1' && $hari == '1') {
+            return $this->neraca_tutup_buku($data);
+        }
+
         $tgl = $thn . '-' . $bln . '-' . $hari;
         $data['sub_judul'] = 'Per ' . date('t', strtotime($tgl)) . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
         $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
@@ -303,6 +315,10 @@ class PelaporanController extends Controller
         $bln = $data['bulan'];
         $hari = $data['hari'];
         $awal_tahun = $thn . '-01-01';
+
+        if ($bln == '1' && $hari == '1') {
+            return $this->laba_rugi_tutup_buku($data);
+        }
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
         if ($data['bulanan']) {
@@ -434,6 +450,10 @@ class PelaporanController extends Controller
         $bln = $data['bulan'];
         $hari = $data['hari'];
 
+        if ($bln == '1' && $hari == '1') {
+            return $this->CALK_tutup_buku($data);
+        }
+
         $tgl = $thn . '-' . $bln . '-' . $hari;
         $data['tgl'] = Tanggal::tahun($tgl);
         $data['nama_tgl'] = 'Tahun ' . $thn;
@@ -495,6 +515,10 @@ class PelaporanController extends Controller
         $thn = $data['tahun'];
         $bln = $data['bulan'];
         $hari = $data['hari'];
+
+        if ($bln == '1' && $hari == '1') {
+            return $this->jurnal_tutup_buku($data);
+        }
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
         if (!$data['bulanan']) {
@@ -1768,15 +1792,16 @@ class PelaporanController extends Controller
     {
         $keuangan = new Keuangan;
         $thn = $data['tahun'];
-        $bln = $data['bulan'];
-        $hari = $data['hari'];
+        $bln = 1;
+        $hari = 1;
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['tanggal_kondisi'] = Tanggal::tglLatin(date('Y-m-d', strtotime($tgl)));
         $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
         $data['tgl'] = Tanggal::tahun($tgl);
 
-        $data['tahun_tb'] = $thn + 1;
-        $data['surplus'] = $keuangan->laba_rugi($data['tahun'] . '-13-00');
+        $data['tahun_tb'] = $thn;
+        $data['surplus'] = $keuangan->laba_rugi(($data['tahun'] - 1) . '-13-00');
         $data['rekening'] = Rekening::where('kode_akun', 'like', '2.1.04%')->with([
             'saldo' => function ($query) use ($data) {
                 $query->where('tahun', $data['tahun_tb']);
@@ -1807,11 +1832,12 @@ class PelaporanController extends Controller
 
     private function jurnal_tutup_buku(array $data)
     {
-        $thn = $data['tahun'];
-        $bln = $data['bulan'];
-        $hari = $data['hari'];
+        $thn = $data['tahun'] - 1;
+        $bln = 1;
+        $hari = 1;
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['tanggal_kondisi'] = Tanggal::tglLatin(date('Y-m-d', strtotime($tgl)));
         $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
         $data['tgl'] = Tanggal::tahun($tgl);
         $data['saldo'] = Saldo::where([
@@ -1821,7 +1847,7 @@ class PelaporanController extends Controller
         $data['rek'] = Rekening::where('kode_akun', '3.2.01.01')->first();
 
         $data['tgl_transaksi'] = $thn . '-12-31';
-        $data['laporan'] = 'Jurnal Tutup Buku';
+        $data['laporan'] = 'Jurnal Awal Tahun';
         $view = view('pelaporan.view.tutup_buku.jurnal', $data)->render();
 
         if ($data['type'] == 'pdf') {
@@ -1837,10 +1863,11 @@ class PelaporanController extends Controller
         $keuangan = new Keuangan;
 
         $thn = $data['tahun'];
-        $bln = $data['bulan'];
-        $hari = ($data['hari']);
+        $bln = 1;
+        $hari = 1;
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['tanggal_kondisi'] = Tanggal::tglLatin(date('Y-m-d', strtotime($tgl)));
         $data['sub_judul'] = 'Tahun' . ' ' . Tanggal::tahun($tgl);
         $data['tgl'] = Tanggal::tahun($tgl);
 
@@ -1853,14 +1880,130 @@ class PelaporanController extends Controller
             'akun2.akun3.rek',
             'akun2.akun3.rek.saldo' => function ($query) use ($data) {
                 $query->where([
-                    ['tahun', $data['tahun'] + 1],
+                    ['tahun', $data['tahun']],
                     ['bulan', '0']
                 ]);
             },
         ])->orderBy('kode_akun', 'ASC')->get();
 
-        $data['laporan'] = 'Neraca Tutup Buku';
+        $data['laporan'] = 'Neraca Awal Tahun';
         $view = view('pelaporan.view.tutup_buku.neraca', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
+    private function CALK_tutup_buku(array $data)
+    {
+        $keuangan = new Keuangan;
+
+        $thn = $data['tahun'];
+        $bln = 1;
+        $hari = 1;
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['tanggal_kondisi'] = Tanggal::tglLatin(date('Y-m-d', strtotime($tgl)));
+        $data['tgl'] = Tanggal::tahun($tgl);
+        $data['nama_tgl'] = 'Tahun ' . $thn;
+        $data['sub_judul'] = 'Tahun ' . $thn;
+
+        $data['debit'] = 0;
+        $data['kredit'] = 0;
+
+        $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with([
+            'akun2',
+            'akun2.akun3',
+            'akun2.akun3.rek',
+            'akun2.akun3.rek.kom_saldo' => function ($query) use ($data) {
+                $query->where([
+                    ['tahun', $data['tahun']],
+                    ['bulan', '0']
+                ]);
+            },
+        ])->orderBy('kode_akun', 'ASC')->get();
+
+        $data['sekr'] = User::where([
+            ['level', '1'],
+            ['jabatan', '2'],
+            ['lokasi', Session::get('lokasi')],
+        ])->first();
+
+        $data['bend'] = User::where([
+            ['level', '1'],
+            ['jabatan', '3'],
+            ['lokasi', Session::get('lokasi')],
+        ])->first();
+
+        $data['pengawas'] = User::where([
+            ['level', '3'],
+            ['jabatan', '1'],
+            ['lokasi', Session::get('lokasi')],
+        ])->first();
+
+        $data['saldo_calk'] = Saldo::where([
+            ['kode_akun', $data['kec']->kd_kec],
+            ['tahun', $thn]
+        ])->get();
+
+        $data['laporan'] = 'CALK Awal Tahun';
+        $view = view('pelaporan.view.tutup_buku.calk', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
+    private function laba_rugi_tutup_buku(array $data)
+    {
+        $keuangan = new Keuangan;
+
+        $thn = $data['tahun'];
+        $bln = 1;
+        $hari = 1;
+        $awal_tahun = $thn . '-01-01';
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['tanggal_kondisi'] = Tanggal::tglLatin(date('Y-m-d', strtotime($tgl)));
+        if ($data['bulanan']) {
+            $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($thn . '-' . $bln . '-01') . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['bulan_lalu'] = date('Y-m-t', strtotime('-1 month', strtotime($thn . '-' . $bln . '-10')));
+            $data['header_lalu'] = 'Bulan Lalu';
+            $data['header_sekarang'] = 'Bulan Ini';
+        } else {
+            $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($awal_tahun) . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
+            $data['tgl'] = Tanggal::tahun($tgl);
+            $data['bulan_lalu'] = ($thn - 1) . '-12-31';
+            $data['header_lalu'] = 'Tahun Lalu';
+            $data['header_sekarang'] = 'Tahun Ini';
+        }
+
+        $jenis = 'Tahunan';
+        if ($data['bulanan']) {
+            $jenis = 'Bulanan';
+        }
+
+        $pph = $keuangan->pph($tgl, $jenis);
+        $laba_rugi = $keuangan->laporan_laba_rugi($tgl, $jenis);
+
+        $data['pph'] = [
+            'bulan_lalu' => $pph['bulan_lalu'],
+            'sekarang' => $pph['bulan_ini']
+        ];
+
+        $data['pendapatan'] = $laba_rugi['pendapatan'];
+        $data['beban'] = $laba_rugi['beban'];
+        $data['pendapatanNOP'] = $laba_rugi['pendapatan_non_ops'];
+        $data['bebanNOP'] = $laba_rugi['beban_non_ops'];
+
+        $view = view('pelaporan.view.laba_rugi', $data)->render();
 
         if ($data['type'] == 'pdf') {
             $pdf = PDF::loadHTML($view);
