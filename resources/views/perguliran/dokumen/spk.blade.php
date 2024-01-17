@@ -134,7 +134,7 @@
                 {{ number_format($pinkel->alokasi) }} ({{ $keuangan->terbilang($pinkel->alokasi) }} Rupiah) yaitu jumlah
                 yang telah diputuskan dalam rapat penetapan pendanaan, berdasarkan permohonan dari Pihak Kedua dan para
                 pemberi kuasa yang dilakukan secara kelompok sesuai Surat Permohonan Kredit tanggal
-                {{ Tanggal::tglLatin($pinkel->tgl_cair) }}.
+                {{ Tanggal::tglLatin($pinkel->tgl_proposal) }}.
             </li>
             <li>
                 Pihak Kedua dan Pemberi kuasa, menyatakan telah menerima uang dengan jumlah sebagaimana yang

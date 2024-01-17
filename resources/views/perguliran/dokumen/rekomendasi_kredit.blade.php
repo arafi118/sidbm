@@ -135,7 +135,7 @@
             </tr>
             <tr>
                 <td align="center">:</td>
-                <td>{{ $pinkel->kelompok->bendahara }} / Bendahara Kelompo</td>
+                <td>{{ $pinkel->kelompok->bendahara }} / Bendahara Kelompok</td>
             </tr>
             <tr>
                 <td></td>
