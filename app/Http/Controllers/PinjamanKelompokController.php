@@ -1354,7 +1354,9 @@ class PinjamanKelompokController extends Controller
     public function formVerifikasiAnggota($id, $data)
     {
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
-            'kelompok'
+            'kelompok',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota',
         ])->first();
 
         $data['judul'] = 'Form Verifikasi Anggota (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';

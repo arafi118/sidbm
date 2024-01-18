@@ -77,6 +77,16 @@
             margin-right: 24px;
         }
 
+        table tr.vt td,
+        table tr.vb td.vt {
+            vertical-align: top;
+        }
+
+        table tr.vb td,
+        table tr.vt td.vb {
+            vertical-align: bottom;
+        }
+
         .break {
             page-break-after: always;
         }
