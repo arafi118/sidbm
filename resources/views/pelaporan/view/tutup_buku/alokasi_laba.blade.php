@@ -78,8 +78,10 @@
             @if ($rek->kode_akun == '2.1.04.02')
                 @foreach ($desa as $d)
                     @php
-                        $jumlah_laba_ditahan -= $d->saldo->kredit;
-                        $jumlah += $d->saldo->kredit;
+                        if ($d->saldo) {
+                            $jumlah_laba_ditahan -= $d->saldo->kredit;
+                            $jumlah += $d->saldo->kredit;
+                        }
                         $bg = 'rgb(230, 230, 230)';
                         if ($loop->iteration % 2 == 0) {
                             $bg = 'rgb(255, 255, 255)';
