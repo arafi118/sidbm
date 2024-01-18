@@ -1971,19 +1971,11 @@ class PelaporanController extends Controller
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
         $data['tanggal_kondisi'] = Tanggal::tglLatin(date('Y-m-d', strtotime($tgl)));
-        if ($data['bulanan']) {
-            $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($thn . '-' . $bln . '-01') . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
-            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $data['bulan_lalu'] = date('Y-m-t', strtotime('-1 month', strtotime($thn . '-' . $bln . '-10')));
-            $data['header_lalu'] = 'Bulan Lalu';
-            $data['header_sekarang'] = 'Bulan Ini';
-        } else {
-            $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($awal_tahun) . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
-            $data['tgl'] = Tanggal::tahun($tgl);
-            $data['bulan_lalu'] = ($thn - 1) . '-12-31';
-            $data['header_lalu'] = 'Tahun Lalu';
-            $data['header_sekarang'] = 'Tahun Ini';
-        }
+        $data['sub_judul'] = 'Awal Tahun ' . $thn;
+        $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        $data['bulan_lalu'] = date('Y-m-t', strtotime('-1 month', strtotime($thn . '-' . $bln . '-10')));
+        $data['header_lalu'] = 'Bulan Lalu';
+        $data['header_sekarang'] = 'Bulan Ini';
 
         $jenis = 'Tahunan';
         if ($data['bulanan']) {
