@@ -78,9 +78,11 @@
             @if ($rek->kode_akun == '2.1.04.02')
                 @foreach ($desa as $d)
                     @php
+                        $saldo_desa = 0;
                         if ($d->saldo) {
                             $jumlah_laba_ditahan -= $d->saldo->kredit;
                             $jumlah += $d->saldo->kredit;
+                            $saldo_desa = $d->saldo->kredit;
                         }
                         $bg = 'rgb(230, 230, 230)';
                         if ($loop->iteration % 2 == 0) {
@@ -93,7 +95,7 @@
                             {{ $d->nama_desa }}
                         </td>
                         <td align="right">
-                            Rp. {{ number_format($d->saldo->kredit, 2) }}
+                            Rp. {{ number_format($saldo_desa, 2) }}
                         </td>
                     </tr>
                 @endforeach
