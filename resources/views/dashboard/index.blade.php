@@ -330,8 +330,7 @@ Nomor Telepon: {{ $user->hp }}
                                                     <div class="input-group input-group-static mb-3">
                                                         <label for="pesan">Pesan</label>
                                                         <textarea class="form-control pesan" name="pesan" id="pesan" cols="30" rows="10">
-Kami ingin mengingatkan mengenai angsuran terbaru:
-Angsuran 
+Diinformasikan bahwa kewajiban angsuran kelompok anda: 
 Pokok   : Rp. {Angsuran Pokok}
 Jasa      : Rp. {Angsuran Jasa} 
 Jatuh tempo tanggal {Tanggal Jatuh Tempo}.
