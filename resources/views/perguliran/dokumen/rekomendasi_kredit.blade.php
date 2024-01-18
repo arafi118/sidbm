@@ -193,7 +193,7 @@
             <tr>
                 <td colspan="2">&nbsp;</td>
                 <td align="center">
-                    {{ $pinkel->kelompok->d->sebutan_desa->sebutan_desa }} {{ $pinkel->kelompok->d->nama_desa }}
+                    {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }}
                 </td>
             </tr>
             <tr>
