@@ -1908,8 +1908,8 @@ class PelaporanController extends Controller
         $tgl = $thn . '-' . $bln . '-' . $hari;
         $data['tanggal_kondisi'] = Tanggal::tglLatin(date('Y-m-d', strtotime($tgl)));
         $data['tgl'] = Tanggal::tahun($tgl);
-        $data['nama_tgl'] = 'Tahun ' . $thn;
-        $data['sub_judul'] = 'Tahun ' . $thn;
+        $data['nama_tgl'] = 'Awal Tahun ' . $thn;
+        $data['sub_judul'] = 'Awal Tahun ' . $thn;
 
         $data['debit'] = 0;
         $data['kredit'] = 0;
