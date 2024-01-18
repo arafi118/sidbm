@@ -273,11 +273,6 @@
                                 @endforeach
 
                                 @php
-                                    $bg = 'rgb(230, 230, 230)';
-                                    if ($loop->iteration % 2 == 0) {
-                                        $bg = 'rgba(255, 255, 255)';
-                                    }
-
                                     if ($lev1->lev1 == '1') {
                                         $debit += $sum_saldo;
                                     } else {
@@ -287,7 +282,7 @@
                                     $sum_akun1 += $sum_saldo;
                                 @endphp
 
-                                <tr style="background: {{ $bg }};">
+                                <tr style="background: rgb(200,200,200);">
                                     <td>{{ $lev3->kode_akun }}.</td>
                                     <td>{{ $lev3->nama_akun }}</td>
                                     @if ($sum_saldo < 0)
@@ -298,7 +293,13 @@
                                 </tr>
 
                                 @foreach ($akun_lev4 as $lev4)
-                                    <tr style="background: {{ $bg }};">
+                                    @php
+                                        $bg = 'rgb(230, 230, 230)';
+                                        if ($loop->iteration % 2 == 0) {
+                                            $bg = 'rgba(255, 255, 255)';
+                                        }
+                                    @endphp
+                                    <tr style="background: rgb(255,255,255);">
                                         <td>{{ $lev4['kode_akun'] }}.</td>
                                         <td>{{ $lev4['nama_akun'] }}</td>
                                         @if ($lev4['saldo'] < 0)
