@@ -1109,6 +1109,7 @@ class PinjamanKelompokController extends Controller
         }
 
         $file = $request->report;
+        $data['report'] = $file;
         return $this->$file($request->id, $data);
     }
 

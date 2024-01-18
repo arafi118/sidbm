@@ -29,20 +29,6 @@
             page-break-inside: auto !important;
         }
 
-        main {
-            position: relative;
-            top: 60px;
-            font-size: 12px;
-            padding-bottom: 37.79px;
-        }
-
-        header {
-            position: fixed;
-            top: -10px;
-            left: 0px;
-            right: 0px;
-        }
-
         footer {
             position: fixed;
             bottom: -50px;
@@ -114,36 +100,61 @@
 </head>
 
 <body>
-    <header>
-        <table width="100%" style="border-bottom: 1px solid grey;">
-            <tr>
-                <td width="30">
-                    <img src="../storage/app/public/logo/{{ $logo }}" width="40" height="40"
-                        alt="{{ $logo }}">
-                </td>
-                <td>
-                    <div style="font-size: 12px;">{{ strtoupper($nama_lembaga) }}</div>
-                    <div style="font-size: 12px;">
-                        <b>{{ strtoupper($nama_kecamatan) }}</b>
-                    </div>
-                </td>
-            </tr>
-        </table>
-        <table width="100%" style="position: relative; top: -10px;">
-            <tr>
-                <td>
-                    <span style="font-size: 8px; color: grey;">
-                        <i>{{ $nomor_usaha }}</i>
-                    </span>
-                </td>
-                <td align="right">
-                    <span style="font-size: 8px; color: grey;">
-                        <i>{{ $info }}</i>
-                    </span>
-                </td>
-            </tr>
-        </table>
-    </header>
+    @if ($report != 'suratKuasa')
+        <style>
+            header {
+                position: fixed;
+                top: -10px;
+                left: 0px;
+                right: 0px;
+            }
+
+            main {
+                position: relative;
+                top: 60px;
+                font-size: 12px;
+                padding-bottom: 37.79px;
+            }
+        </style>
+        <header>
+            <table width="100%" style="border-bottom: 1px solid grey;">
+                <tr>
+                    <td width="30">
+                        <img src="../storage/app/public/logo/{{ $logo }}" width="40" height="40"
+                            alt="{{ $logo }}">
+                    </td>
+                    <td>
+                        <div style="font-size: 12px;">{{ strtoupper($nama_lembaga) }}</div>
+                        <div style="font-size: 12px;">
+                            <b>{{ strtoupper($nama_kecamatan) }}</b>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="position: relative; top: -10px;">
+                <tr>
+                    <td>
+                        <span style="font-size: 8px; color: grey;">
+                            <i>{{ $nomor_usaha }}</i>
+                        </span>
+                    </td>
+                    <td align="right">
+                        <span style="font-size: 8px; color: grey;">
+                            <i>{{ $info }}</i>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </header>
+    @else
+        <style>
+            main {
+                position: relative;
+                font-size: 12px;
+                top: -20px;
+            }
+        </style>
+    @endif
 
     <main>
         @yield('content')
