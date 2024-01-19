@@ -120,7 +120,8 @@ class DashboardController extends Controller
         $table = '';
 
         $no = 1;
-        $pinjaman = PinjamanKelompok::where('status', $status)->with('saldo', 'kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->orderBy('tgl_cair', 'ASC')->get();
+        $pinjaman = PinjamanKelompok::where('status', $status)->with('saldo', 'kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')
+            ->orderBy($tgl, 'ASC')->get();
         foreach ($pinjaman as $pinkel) {
             $status = $pinkel->sts->warna_status;
 
