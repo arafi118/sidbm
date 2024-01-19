@@ -68,7 +68,7 @@
                         <i>{{ $email }}</i>
                     </div>
                     <div style="font-size: 10px; color: grey; margin-top: 10px;">
-                        <i>Tahun {{ date('Y') }}</i>
+                        <i>Tahun {{ $tahun }}</i>
                     </div>
                 </td>
             </tr>
