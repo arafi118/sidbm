@@ -54,11 +54,11 @@
             @if ($rek->kode_akun == '2.1.04.01')
                 @foreach ($saldo_calk as $saldo)
                     @php
-                        $jumlah_laba_ditahan -= $saldo->kredit;
+                        $jumlah_laba_ditahan -= floatval($saldo->kredit);
                     @endphp
                     @if (substr($saldo->id, -1) <= 3)
                         @php
-                            $jumlah += $saldo->kredit;
+                            $jumlah += floatval($saldo->kredit);
                             $bg = 'rgb(230, 230, 230)';
                             if ($loop->iteration % 2 == 0) {
                                 $bg = 'rgba(255, 255, 255)';
@@ -80,9 +80,9 @@
                     @php
                         $saldo_desa = 0;
                         if ($d->saldo) {
-                            $jumlah_laba_ditahan -= $d->saldo->kredit;
-                            $jumlah += $d->saldo->kredit;
-                            $saldo_desa = $d->saldo->kredit;
+                            $jumlah_laba_ditahan -= floatval($d->saldo->kredit);
+                            $jumlah += floatval($d->saldo->kredit);
+                            $saldo_desa = floatval($d->saldo->kredit);
                         }
                         $bg = 'rgb(230, 230, 230)';
                         if ($loop->iteration % 2 == 0) {
@@ -146,8 +146,8 @@
         @foreach ($saldo_calk as $saldo)
             @if (substr($saldo->id, -1) > 3)
                 @php
-                    $jumlah += $saldo->kredit;
-                    $total += $saldo->kredit;
+                    $jumlah += floatval($saldo->kredit);
+                    $total += floatval($saldo->kredit);
                     $bg = 'rgb(230, 230, 230)';
                     if ($loop->iteration % 2 == 0) {
                         $bg = 'rgb(255, 255, 255)';
