@@ -684,7 +684,6 @@ class PelaporanController extends Controller
                         ]);
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')
-                    ->orderBy($tb_pinkel . '.id_kel', 'ASC')
                     ->orderBy($tb_pinkel . '.tgl_cair', 'ASC');
             },
             'pinjaman_kelompok.saldo' => function ($query) use ($data) {
@@ -759,7 +758,6 @@ class PelaporanController extends Controller
                         ]);
                     })
                     ->orderBy($tb_angg . '.desa', 'ASC')
-                    ->orderBy($tb_pinj . '.id_kel', 'ASC')
                     ->orderBy($tb_pinj . '.tgl_cair', 'ASC');
             }
         ])->get();
@@ -801,8 +799,7 @@ class PelaporanController extends Controller
                     ->withCount('pinjaman_anggota')
                     ->where($tb_pinkel . '.sistem_angsuran', '!=', '12')->where('status', 'P')
                     ->orderBy($tb_kel . '.desa', 'ASC')
-                    ->orderBy($tb_pinkel . '.id_kel', 'ASC')
-                    ->orderBy($tb_pinkel . '.tgl_cair', 'ASC');
+                    ->orderBy($tb_pinkel . '.tgl_proposal', 'ASC');
             },
             'pinjaman_kelompok.sis_pokok'
         ])->get();
@@ -844,8 +841,7 @@ class PelaporanController extends Controller
                     ->withCount('pinjaman_anggota')
                     ->where($tb_pinkel . '.sistem_angsuran', '!=', '12')->where('status', 'V')
                     ->orderBy($tb_kel . '.desa', 'ASC')
-                    ->orderBy($tb_pinkel . '.id_kel', 'ASC')
-                    ->orderBy($tb_pinkel . '.tgl_cair', 'ASC');
+                    ->orderBy($tb_pinkel . '.tgl_verifikasi', 'ASC');
             },
             'pinjaman_kelompok.sis_pokok'
         ])->get();
@@ -887,8 +883,7 @@ class PelaporanController extends Controller
                     ->withCount('pinjaman_anggota')
                     ->where($tb_pinkel . '.sistem_angsuran', '!=', '12')->where('status', 'W')
                     ->orderBy($tb_kel . '.desa', 'ASC')
-                    ->orderBy($tb_pinkel . '.id_kel', 'ASC')
-                    ->orderBy($tb_pinkel . '.tgl_cair', 'ASC');
+                    ->orderBy($tb_pinkel . '.tgl_tunggu', 'ASC');
             },
             'pinjaman_kelompok.sis_pokok'
         ])->get();
