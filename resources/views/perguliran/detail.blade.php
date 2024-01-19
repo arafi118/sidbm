@@ -404,7 +404,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="TambahPemanfaatLabel">
-                        Tambah Calon Pemanfaat
+                        Tambah Calon Pemanfaat ({{ $perguliran->id }})
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -430,9 +430,14 @@
                                 <small class="text-danger" id="msg_alokasi_pengajuan"></small>
                             </div>
                         </div>
-                        <h6>
-                            {{ $perguliran->kelompok->nama_kelompok }} - {{ $perguliran->id }}
-                        </h6>
+
+                        <div class="fw-bold text-center">
+                            <div>
+                                {{ $perguliran->kelompok->nama_kelompok }} -
+                                {{ $perguliran->kelompok->d->sebutan_desa->sebutan_desa }}
+                                {{ $perguliran->kelompok->d->nama_desa }}
+                            </div>
+                        </div>
                     </form>
 
                     <div class="card border">
