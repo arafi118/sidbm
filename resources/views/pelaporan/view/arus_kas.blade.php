@@ -56,6 +56,7 @@
             @foreach ($ak->child as $child)
                 @php
                     $arus_kas = $keuangan->arus_kas($child->rekening, $tgl_kondisi, $jenis);
+                    // dd($child->rekening, $tgl_kondisi, $jenis, $arus_kas);
                     if ($loop->iteration % 2 == 0) {
                         $bg = '240, 240, 240';
                     } else {

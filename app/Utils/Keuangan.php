@@ -174,13 +174,24 @@ class Keuangan
         $tgl = $tanggal[2];
 
         $saldo = 0;
-        $rekening = Rekening::where('kode_akun', 'like', '1.1.01%')->orwhere('kode_akun', 'like', '1.1.02%')->with([
-            'kom_saldo' => function ($query) use ($thn, $bln) {
-                $query->where('tahun', $thn)->where(function ($query) use ($bln) {
-                    $query->where('bulan', '0')->orwhere('bulan', $bln);
-                });
-            }
-        ])->get();
+        if ($bln == 12) {
+            $rekening = Rekening::where('kode_akun', 'like', '1.1.01%')->orwhere('kode_akun', 'like', '1.1.02%')->with([
+                'kom_saldo' => function ($query) use ($thn) {
+                    $query->where([
+                        ['tahun', $thn + 1],
+                        ['bulan', '0']
+                    ]);
+                }
+            ])->get();
+        } else {
+            $rekening = Rekening::where('kode_akun', 'like', '1.1.01%')->orwhere('kode_akun', 'like', '1.1.02%')->with([
+                'kom_saldo' => function ($query) use ($thn, $bln) {
+                    $query->where('tahun', $thn)->where(function ($query) use ($bln) {
+                        $query->where('bulan', '0')->orwhere('bulan', $bln);
+                    });
+                }
+            ])->get();
+        }
         foreach ($rekening as $rek) {
             $awal_debit = 0;
             $saldo_debit = 0;
