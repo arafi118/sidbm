@@ -1358,6 +1358,7 @@ class PinjamanKelompokController extends Controller
             'kelompok',
             'pinjaman_anggota',
             'pinjaman_anggota.anggota',
+            'pinjaman_anggota.anggota.u',
         ])->first();
 
         $data['judul'] = 'Form Verifikasi Anggota (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';

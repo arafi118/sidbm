@@ -43,4 +43,9 @@ class Anggota extends Model
     {
         return 'nik';
     }
+
+    public function u()
+    {
+        return $this->belongsTo(Usaha::class, 'usaha', 'id');
+    }
 }

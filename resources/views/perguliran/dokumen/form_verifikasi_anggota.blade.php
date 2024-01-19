@@ -50,7 +50,7 @@
                 ],
                 [
                     'label' => 'Jenis Usaha yang Akan Didanai',
-                    'value' => $pa->anggota->usaha,
+                    'value' => is_numeric($pa->anggota->usaha) ? $pa->anggota->u->nama_usaha : $pa->anggota->usaha,
                 ],
                 [
                     'label' => 'Alokasi Lalu',
