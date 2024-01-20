@@ -1801,6 +1801,7 @@ class PinjamanKelompokController extends Controller
     public function generate($id_pinj)
     {
         $rencana = [];
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $pinkel = PinjamanKelompok::where('id', $id_pinj)->with([
             'kelompok',
             'kelompok.d',
@@ -1886,7 +1887,7 @@ class PinjamanKelompokController extends Controller
         for ($i = 1; $i <= $jangka; $i++) {
             $sisa = $i % $sistem_pokok;
             $ke = $i / $sistem_pokok;
-            $wajib_pokok = Keuangan::pembulatan($alokasi / $tempo_pokok);
+            $wajib_pokok = Keuangan::pembulatan($alokasi / $tempo_pokok, (string) $kec->pembulatan);
             $sum_pokok = $wajib_pokok * ($tempo_pokok - 1);
 
             if ($sisa == 0 and $ke != $tempo_pokok) {
@@ -1904,7 +1905,7 @@ class PinjamanKelompokController extends Controller
             $sisa = $j % $sistem_jasa;
             $ke = $j / $sistem_jasa;
             $alokasi_jasa = $alokasi * ($pros_jasa / 100);
-            $wajib_jasa = Keuangan::pembulatan($alokasi_jasa / $tempo_jasa);
+            $wajib_jasa = Keuangan::pembulatan($alokasi_jasa / $tempo_jasa, (string) $kec->pembulatan);
             $sum_jasa = $wajib_jasa * ($tempo_jasa - 1);
 
             if ($sisa == 0 and $ke != $tempo_jasa) {
@@ -2042,6 +2043,7 @@ class PinjamanKelompokController extends Controller
     public function generateRA($id_pinj)
     {
         $rencana = [];
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $pinkel = PinjamanKelompok::where('id', $id_pinj)->firstOrFail();
 
         $jangka = $pinkel->jangka;
@@ -2113,7 +2115,7 @@ class PinjamanKelompokController extends Controller
         for ($i = 1; $i <= $jangka; $i++) {
             $sisa = $i % $sistem_pokok;
             $ke = $i / $sistem_pokok;
-            $wajib_pokok = Keuangan::pembulatan($alokasi / $tempo_pokok);
+            $wajib_pokok = Keuangan::pembulatan($alokasi / $tempo_pokok, (string) $kec->pembulatan);
             $sum_pokok = $wajib_pokok * ($tempo_pokok - 1);
 
             if ($sisa == 0 and $ke != $tempo_pokok) {
@@ -2132,7 +2134,7 @@ class PinjamanKelompokController extends Controller
             $sisa = $j % $sistem_jasa;
             $ke = $j / $sistem_jasa;
             $sum_jasa = $alokasi * ($pros_jasa / 100);
-            $wajib_jasa = Keuangan::pembulatan($sum_jasa / $tempo_jasa);
+            $wajib_jasa = Keuangan::pembulatan($sum_jasa / $tempo_jasa, (string) $kec->pembulatan);
 
             if ($sisa == 0) {
                 $angsuran_jasa = $wajib_jasa;

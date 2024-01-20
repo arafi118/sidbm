@@ -30,12 +30,14 @@ class Keuangan
         return $akhir;
     }
 
-    public static function pembulatan($angka)
+    public static function pembulatan($angka, $pembulatan = null)
     {
         $angka = round($angka);
 
-        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
-        $pembulatan    = (string) $kec->pembulatan;
+        if ($pembulatan == null) {
+            $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
+            $pembulatan    = (string) $kec->pembulatan;
+        }
 
         $sistem = 'auto';
         if (self::startWith($pembulatan, '+')) {
