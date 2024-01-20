@@ -31,6 +31,13 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
     </form>
 
     <?php
+    function startWith($string, $startString)
+    {
+        $string = (string) $string;
+        $len = strlen($startString);
+        return (substr($string, 0, $len) === $startString);
+    }
+
     function bulatkan($angka)
     {
         $angka = round($angka);
@@ -41,12 +48,12 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
         $pembulatan = (string) $kec['pembulatan'];
 
         $sistem = 'auto';
-        if (self::startWith($pembulatan, '+')) {
+        if (startWith($pembulatan, '+')) {
             $sistem = 'keatas';
             $pembulatan = intval($pembulatan);
         }
 
-        if (self::startWith($pembulatan, '-')) {
+        if (startWith($pembulatan, '-')) {
             $sistem = 'kebawah';
             $pembulatan = intval($pembulatan * -1);
         }
