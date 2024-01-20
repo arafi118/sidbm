@@ -1886,7 +1886,7 @@ class PinjamanKelompokController extends Controller
         for ($i = 1; $i <= $jangka; $i++) {
             $sisa = $i % $sistem_pokok;
             $ke = $i / $sistem_pokok;
-            $wajib_pokok = Keuangan::bulatkan($alokasi / $tempo_pokok);
+            $wajib_pokok = Keuangan::pembulatan($alokasi / $tempo_pokok);
             $sum_pokok = $wajib_pokok * ($tempo_pokok - 1);
 
             if ($sisa == 0 and $ke != $tempo_pokok) {
@@ -1904,7 +1904,7 @@ class PinjamanKelompokController extends Controller
             $sisa = $j % $sistem_jasa;
             $ke = $j / $sistem_jasa;
             $alokasi_jasa = $alokasi * ($pros_jasa / 100);
-            $wajib_jasa = Keuangan::bulatkan($alokasi_jasa / $tempo_jasa);
+            $wajib_jasa = Keuangan::pembulatan($alokasi_jasa / $tempo_jasa);
             $sum_jasa = $wajib_jasa * ($tempo_jasa - 1);
 
             if ($sisa == 0 and $ke != $tempo_jasa) {
@@ -2113,7 +2113,7 @@ class PinjamanKelompokController extends Controller
         for ($i = 1; $i <= $jangka; $i++) {
             $sisa = $i % $sistem_pokok;
             $ke = $i / $sistem_pokok;
-            $wajib_pokok = Keuangan::bulatkan($alokasi / $tempo_pokok);
+            $wajib_pokok = Keuangan::pembulatan($alokasi / $tempo_pokok);
             $sum_pokok = $wajib_pokok * ($tempo_pokok - 1);
 
             if ($sisa == 0 and $ke != $tempo_pokok) {
@@ -2132,7 +2132,7 @@ class PinjamanKelompokController extends Controller
             $sisa = $j % $sistem_jasa;
             $ke = $j / $sistem_jasa;
             $sum_jasa = $alokasi * ($pros_jasa / 100);
-            $wajib_jasa = Keuangan::bulatkan($sum_jasa / $tempo_jasa);
+            $wajib_jasa = Keuangan::pembulatan($sum_jasa / $tempo_jasa);
 
             if ($sisa == 0) {
                 $angsuran_jasa = $wajib_jasa;

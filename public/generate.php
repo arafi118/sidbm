@@ -38,14 +38,36 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
         global $koneksi;
         $lokasi = $_GET['lokasi'];
         $kec = mysqli_fetch_array(mysqli_query($koneksi, "select * from kecamatan WHERE id='$lokasi'"));
-        $pembulatan = $kec['pembulatan']; // 1000
+        $pembulatan = (string) $kec['pembulatan'];
+
+        $sistem = 'auto';
+        if (self::startWith($pembulatan, '+')) {
+            $sistem = 'keatas';
+            $pembulatan = intval($pembulatan);
+        }
+
+        if (self::startWith($pembulatan, '-')) {
+            $sistem = 'kebawah';
+            $pembulatan = intval($pembulatan * -1);
+        }
 
         $ratusan = substr($angka, -3);
         $nilai_tengah = $pembulatan / 2;
-        if ($ratusan < $nilai_tengah) {
-            $akhir = $angka - $ratusan;
-        } else {
+
+        if ($sistem == 'keatas') {
             $akhir = $angka + ($pembulatan - $ratusan);
+        }
+
+        if ($sistem == 'kebawah') {
+            $akhir = $angka - $ratusan;
+        }
+
+        if ($sistem == 'auto') {
+            if ($ratusan < $nilai_tengah) {
+                $akhir = $angka - $ratusan;
+            } else {
+                $akhir = $angka + ($pembulatan - $ratusan);
+            }
         }
 
         return $akhir;

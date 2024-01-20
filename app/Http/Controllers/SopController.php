@@ -149,7 +149,8 @@ class SopController extends Controller
         $data = $request->only([
             'default_jasa',
             'default_jangka',
-            'pembulatan'
+            'pembulatan',
+            'sistem'
         ]);
 
         $validate = Validator::make($data, [
@@ -161,6 +162,8 @@ class SopController extends Controller
         if ($validate->fails()) {
             return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
         }
+
+        $data['pembulatan'] = "$data[sistem]$data[pembulatan]";
 
         $kecamatan = Kecamatan::where('id', $kec->id)->update([
             'def_jasa' => $data['default_jasa'],

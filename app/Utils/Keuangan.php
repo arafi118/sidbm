@@ -21,10 +21,50 @@ class Keuangan
         $pembulatan    = number_format($kec->pembulatan, 0, '', '');
         $ratusan = substr($angka, -3);
         $nilai_tengah = $pembulatan / 2;
+
         if ($ratusan < $nilai_tengah) {
             $akhir = $angka - $ratusan;
         } else {
             $akhir = $angka + ($pembulatan - $ratusan);
+        }
+        return $akhir;
+    }
+
+    public static function pembulatan($angka)
+    {
+        $angka = round($angka);
+
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
+        $pembulatan    = (string) $kec->pembulatan;
+
+        $sistem = 'auto';
+        if (self::startWith($pembulatan, '+')) {
+            $sistem = 'keatas';
+            $pembulatan = intval($pembulatan);
+        }
+
+        if (self::startWith($pembulatan, '-')) {
+            $sistem = 'kebawah';
+            $pembulatan = intval($pembulatan * -1);
+        }
+
+        $ratusan = substr($angka, -3);
+        $nilai_tengah = $pembulatan / 2;
+
+        if ($sistem == 'keatas') {
+            $akhir = $angka + ($pembulatan - $ratusan);
+        }
+
+        if ($sistem == 'kebawah') {
+            $akhir = $angka - $ratusan;
+        }
+
+        if ($sistem == 'auto') {
+            if ($ratusan < $nilai_tengah) {
+                $akhir = $angka - $ratusan;
+            } else {
+                $akhir = $angka + ($pembulatan - $ratusan);
+            }
         }
 
         return $akhir;
@@ -32,6 +72,7 @@ class Keuangan
 
     public static function startWith($string, $startString)
     {
+        $string = (string) $string;
         $len = strlen($startString);
         return (substr($string, 0, $len) === $startString);
     }
