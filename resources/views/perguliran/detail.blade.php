@@ -86,8 +86,8 @@
             'file' => 'coverPencairan',
         ],
         [
-            'title' => 'spk',
-            'file' => 'Surat Perjanjian Kredit',
+            'title' => 'Surat Perjanjian Kredit',
+            'file' => 'spk',
         ],
         [
             'title' => 'Surat Kelayakan',
