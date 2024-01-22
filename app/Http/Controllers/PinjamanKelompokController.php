@@ -30,9 +30,6 @@ use Session;
 
 class PinjamanKelompokController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $status = 'P';
@@ -376,7 +373,7 @@ class PinjamanKelompokController extends Controller
             ['lev4', $perguliran->jenis_pp]
         ])->first();
 
-        if ($perguliran->status == 'A' || $perguliran->status == 'L') {
+        if ($perguliran->status == 'A' || $perguliran->status == 'L' || $perguliran->status == 'R') {
             $view = 'aktif';
         } elseif ($perguliran->status == 'W') {
             $view = 'waiting';
@@ -1642,6 +1639,25 @@ class PinjamanKelompokController extends Controller
         return view('perguliran.dokumen.kartu_angsuran', $data);
     }
 
+    public function kartuAngsuranAnggota($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'kelompok',
+            'jpp',
+            'sis_pokok',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota',
+        ])->withCount('real')->first();
+
+        $rencana = [];
+        foreach ($data['pinkel']->pinjaman_anggota as $pinj) {
+            $rencana[$pinj->id] = $this->generate($id, $data['pinkel'], $pinj->alokasi, $pinj->tgl_cair)->getData()->rencana;
+        }
+
+        $data['laporan'] = 'Kartu Angsuran Anggota ' . $data['pinkel']->kelompok->nama_kelompok;
+        return view('perguliran.dokumen.kartu_angsuran_anggota', $data);
+    }
+
     public function pemberitahuanDesa($id, $data)
     {
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
@@ -1800,52 +1816,55 @@ class PinjamanKelompokController extends Controller
         return view('perguliran.dokumen.cetak_kartu_angsuran', $data);
     }
 
-    public function generate($id_pinj)
+    public function generate($id_pinj, $pinkel = null, $alokasi = null, $tgl = null)
     {
         $rencana = [];
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
-        $pinkel = PinjamanKelompok::where('id', $id_pinj)->with([
-            'kelompok',
-            'kelompok.d',
-            'saldo_pinjaman' => function ($query) {
-                $query->where('lokasi', Session::get('lokasi'))->orderBy('tanggal', 'DESC');
-            }
-        ])->firstOrFail();
 
-        $jangka = $pinkel->jangka;
-        $sa_pokok = $pinkel->sistem_angsuran;
-        $sa_jasa = $pinkel->sa_jasa;
-        $pros_jasa = $pinkel->pros_jasa;
+        if ($alokasi == null && $tgl == null) {
+            $pinkel = PinjamanKelompok::where('id', $id_pinj)->with([
+                'kelompok',
+                'kelompok.d',
+                'saldo_pinjaman' => function ($query) {
+                    $query->where('lokasi', Session::get('lokasi'))->orderBy('tanggal', 'DESC');
+                }
+            ])->firstOrFail();
 
-        if ($pinkel->status == 'P') {
-            $alokasi = $pinkel->proposal;
-            $tgl = $pinkel->tgl_proposal;
-        } elseif ($pinkel->status == 'V') {
-            $alokasi = $pinkel->verifikasi;
-            $tgl = $pinkel->tgl_verifikasi;
-        } elseif ($pinkel->status == 'W') {
-            $alokasi = $pinkel->alokasi;
-            $tgl = $pinkel->tgl_cair;
-        } else {
-            $alokasi = $pinkel->alokasi;
-            $tgl = $pinkel->tgl_cair;
-        }
-
-        if (request()->get('status')) {
-            if (request()->get('status') == 'P') {
+            if ($pinkel->status == 'P') {
                 $alokasi = $pinkel->proposal;
                 $tgl = $pinkel->tgl_proposal;
-            } elseif (request()->get('status') == 'V') {
+            } elseif ($pinkel->status == 'V') {
                 $alokasi = $pinkel->verifikasi;
                 $tgl = $pinkel->tgl_verifikasi;
-            } elseif (request()->get('status') == 'W') {
+            } elseif ($pinkel->status == 'W') {
                 $alokasi = $pinkel->alokasi;
                 $tgl = $pinkel->tgl_cair;
             } else {
                 $alokasi = $pinkel->alokasi;
                 $tgl = $pinkel->tgl_cair;
             }
+
+            if (request()->get('status')) {
+                if (request()->get('status') == 'P') {
+                    $alokasi = $pinkel->proposal;
+                    $tgl = $pinkel->tgl_proposal;
+                } elseif (request()->get('status') == 'V') {
+                    $alokasi = $pinkel->verifikasi;
+                    $tgl = $pinkel->tgl_verifikasi;
+                } elseif (request()->get('status') == 'W') {
+                    $alokasi = $pinkel->alokasi;
+                    $tgl = $pinkel->tgl_cair;
+                } else {
+                    $alokasi = $pinkel->alokasi;
+                    $tgl = $pinkel->tgl_cair;
+                }
+            }
         }
+
+        $jangka = $pinkel->jangka;
+        $sa_pokok = $pinkel->sistem_angsuran;
+        $sa_jasa = $pinkel->sa_jasa;
+        $pros_jasa = $pinkel->pros_jasa;
 
         $tgl_angsur = $tgl;
         $tanggal_cair = date('d', strtotime($tgl));

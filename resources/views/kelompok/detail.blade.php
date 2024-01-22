@@ -61,7 +61,7 @@
                                             }
                                         }
 
-                                        if ($pinkel->status == 'R' || $pinkel->status == 'H') {
+                                        if ($pinkel->status == 'H') {
                                             $link = '#';
                                         }
 
