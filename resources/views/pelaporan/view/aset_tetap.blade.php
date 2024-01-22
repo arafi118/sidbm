@@ -171,7 +171,7 @@
                             $tahun_validasi = substr($inv->tgl_validasi, 0, 4);
                         @endphp
 
-                        @if (($rek->lev4 == 1 || $rek->lev4 == 4) && $nilai_buku == 0 && $tahun_validasi < $tahun)
+                        @if ($nilai_buku == 0 && $tahun_validasi < $tahun)
                             @php
                                 $j_unit += $inv->unit;
                                 $j_harga += $inv->harsat * $inv->unit;
