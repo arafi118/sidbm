@@ -974,7 +974,10 @@ class TransaksiController extends Controller
                 }
 
                 if ($jasa_anggota <= 0) {
-                    $pros_jasa_anggota = round((($pa->pros_jasa / 100 * $pa->alokasi) / $jasa_pinjaman) * 100, 2);
+                    $pros_jasa_anggota = 0;
+                    if ($jasa_pinjaman != 0) {
+                        $pros_jasa_anggota = round((($pa->pros_jasa / 100 * $pa->alokasi) / $jasa_pinjaman) * 100, 2);
+                    }
                     $jasa_anggota = round(($pros_jasa_anggota / 100) * $_jasa, 2);
                 }
 
