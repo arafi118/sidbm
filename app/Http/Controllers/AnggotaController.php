@@ -39,8 +39,10 @@ class AnggotaController extends Controller
                     if ($row->pinjaman) {
                         $status_pinjaman = $pinjaman->status;
 
-                        $badge = $pinjaman->sts->warna_status;
-                        $status = '<span class="badge badge-' . $badge . '">' . $status_pinjaman . '</span>';
+                        if ($pinjaman->sts) {
+                            $badge = $pinjaman->sts->warna_status;
+                            $status = '<span class="badge badge-' . $badge . '">' . $status_pinjaman . '</span>';
+                        }
                     }
 
                     return $status;
