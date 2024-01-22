@@ -1443,7 +1443,9 @@ class PinjamanKelompokController extends Controller
             'kelompok',
             'kelompok.d',
             'kelompok.d.sebutan_desa',
-            'pinjaman_anggota',
+            'pinjaman_anggota' => function ($query) {
+                $query->where('status', 'A')->orwhere('status', 'W');
+            },
             'pinjaman_anggota.anggota'
         ])->first();
 
