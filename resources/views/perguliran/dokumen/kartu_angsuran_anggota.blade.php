@@ -76,7 +76,7 @@
     </style>
 </head>
 
-<body>
+<body onload="window.print()">
     @foreach ($pinkel->pinjaman_anggota as $pinj)
         @php
             $jatuh_tempo = [];
