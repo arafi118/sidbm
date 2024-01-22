@@ -1645,6 +1645,7 @@ class PinjamanKelompokController extends Controller
             'kelompok',
             'jpp',
             'sis_pokok',
+            'real',
             'pinjaman_anggota',
             'pinjaman_anggota.anggota',
         ])->withCount('real')->first();
@@ -1653,6 +1654,8 @@ class PinjamanKelompokController extends Controller
         foreach ($data['pinkel']->pinjaman_anggota as $pinj) {
             $rencana[$pinj->id] = $this->generate($id, $data['pinkel'], $pinj->alokasi, $pinj->tgl_cair)->getData()->rencana;
         }
+        $data['rencana'] = $rencana;
+        $data['barcode'] = DNS1D::getBarcodePNG($data['pinkel']->kelompok->kd_kelompok, 'C128');
 
         $data['laporan'] = 'Kartu Angsuran Anggota ' . $data['pinkel']->kelompok->nama_kelompok;
         return view('perguliran.dokumen.kartu_angsuran_anggota', $data);

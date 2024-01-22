@@ -12,6 +12,140 @@
     if ($saldo_pokok < 0) {
         $saldo_pokok = 0;
     }
+
+    $dokumen_proposal = [
+        [
+            'title' => 'Cover',
+            'file' => 'coverProposal',
+        ],
+        [
+            'title' => 'Check List',
+            'file' => 'check',
+        ],
+        [
+            'title' => 'Surat Pengajuan Pinjaman',
+            'file' => 'suratPengajuanPinjaman',
+        ],
+        [
+            'title' => 'Surat Rekomendasi Kredit',
+            'file' => 'suratRekomendasi',
+        ],
+        [
+            'title' => 'Profil Kelompok',
+            'file' => 'profilKelompok',
+        ],
+        [
+            'title' => 'Susunan Pengurus',
+            'file' => 'susunanPengurus',
+        ],
+        [
+            'title' => 'Daftar Anggota Kelompok',
+            'file' => 'daftarAnggota',
+        ],
+        [
+            'title' => 'Daftar Pemanfaat',
+            'file' => 'daftarPemanfaat',
+        ],
+        [
+            'title' => 'Pernyataan Tanggung Renteng',
+            'file' => 'tanggungRenteng',
+        ],
+        [
+            'title' => 'FC KTP Pemanfaat & Penjamin',
+            'file' => 'fotoCopyKTP',
+        ],
+        [
+            'title' => 'Surat Pernyataan Peminjam',
+            'file' => 'pernyataanPeminjam',
+        ],
+        [
+            'title' => 'BA Musyawarah Kelompok',
+            'file' => 'baMusyawarahDesa',
+        ],
+        [
+            'title' => 'Form Verifikasi',
+            'file' => 'formVerifikasi',
+        ],
+        [
+            'title' => 'Daftar Hadir Verifikasi',
+            'file' => 'daftarHadirVerifikasi',
+        ],
+        [
+            'title' => 'Rencana Angsuran',
+            'file' => 'rencanaAngsuran',
+        ],
+        [
+            'title' => 'Form Verifikasi Anggota',
+            'file' => 'formVerifikasiAnggota',
+        ],
+    ];
+
+    $dokumen_pencairan = [
+        [
+            'title' => 'Cover',
+            'file' => 'coverPencairan',
+        ],
+        [
+            'title' => 'spk',
+            'file' => 'Surat Perjanjian Kredit',
+        ],
+        [
+            'title' => 'Surat Kelayakan',
+            'file' => 'suratKelayakan',
+        ],
+        [
+            'title' => 'Surat Kuasa',
+            'file' => 'suratKuasa',
+        ],
+        [
+            'title' => 'Berita Acara Pencairan',
+            'file' => 'BaPencairan',
+        ],
+        [
+            'title' => 'Daftar Hadir Pencairan',
+            'file' => 'daftarHadirPencairan',
+        ],
+        [
+            'title' => 'Tanda Terima',
+            'file' => 'tandaTerima',
+        ],
+        [
+            'title' => 'Kartu Angsuran',
+            'file' => 'kartuAngsuran',
+        ],
+        [
+            'title' => 'Kartu Angsuran Anggota',
+            'file' => 'kartuAngsuranAnggota',
+        ],
+        [
+            'title' => 'Rencana Angsuran',
+            'file' => 'rencanaAngsuran',
+        ],
+        [
+            'title' => 'Pemberitahuan Ke Desa',
+            'file' => 'pemberitahuanDesa',
+        ],
+        [
+            'title' => 'Penerima IPTW',
+            'file' => 'iptw',
+        ],
+        [
+            'title' => 'Tanggung Renteng Kematian',
+            'file' => 'tanggungRentengKematian',
+        ],
+        [
+            'title' => 'Pernyataan Tanggung Renteng',
+            'file' => 'pernyataanTanggungRenteng',
+        ],
+        [
+            'title' => 'Kuitansi',
+            'file' => 'kuitansi',
+        ],
+        [
+            'title' => 'Surat Tagihan',
+            'file' => 'suratTagihan',
+        ],
+    ];
 @endphp
 
 @extends('layouts.base')
@@ -116,108 +250,14 @@
 
                         <input type="hidden" name="id" value="{{ $perguliran->id }}">
                         <div class="row">
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="coverProposal">
-                                    1. Cover
-                                </button>
-                            </div>
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="check">
-                                    2. Check List
-                                </button>
-                            </div>
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="suratPengajuanPinjaman">
-                                    3. Surat Pengajuan Pinjaman
-                                </button>
-                            </div>
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="suratRekomendasi">
-                                    4. Surat Rekomendasi Kredit
-                                </button>
-                            </div>
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="profilKelompok">
-                                    5. Profil Kelompok
-                                </button>
-                            </div>
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="susunanPengurus">
-                                    6. Susunan Pengurus
-                                </button>
-                            </div>
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="anggotaKelompok">
-                                    7. Daftar Anggota Kelompok
-                                </button>
-                            </div>
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="daftarPemanfaat">
-                                    8. Daftar Pemanfaat
-                                </button>
-                            </div>
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="tanggungRenteng">
-                                    9. Pernyataan Tanggung Renteng
-                                </button>
-                            </div>
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="fotoCopyKTP">
-                                    10. FC KTP Pemanfaat & Penjamin
-                                </button>
-                            </div>
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="pernyataanPeminjam">
-                                    11. Surat Pernyataan Peminjam
-                                </button>
-                            </div>
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="baMusyawarahDesa">
-                                    12. BA Musyawarah Kelompok
-                                </button>
-                            </div>
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="formVerifikasi">
-                                    13. Form Verifikasi
-                                </button>
-                            </div>
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="daftarHadirVerifikasi">
-                                    14. Daftar Hadir Verifikasi
-                                </button>
-                            </div>
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="rencanaAngsuran">
-                                    15. Rencana Angsuran
-                                </button>
-                            </div>
-                            {{-- <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="iptw">
-                                    16. Penerima IPTW
-                                </button>
-                            </div> --}}
-                            <div class="col-md-3 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="formVerifikasiAnggota">
-                                    16. Form Verifikasi Anggota
-                                </button>
-                            </div>
+                            @foreach ($dokumen_proposal as $doc => $val)
+                                <div class="col-md-3 d-grid">
+                                    <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                        value="{{ $val['file'] }}">
+                                        {{ $loop->iteration }}. {{ $val['title'] }}
+                                    </button>
+                                </div>
+                            @endforeach
                         </div>
                     </form>
                 </div>
@@ -297,96 +337,14 @@
 
                         <input type="hidden" name="id" value="{{ $perguliran->id }}">
                         <div class="row">
-                            <div class="col-md-4 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="coverPencairan">
-                                    1. Cover
-                                </button>
-                            </div>
-                            <div class="col-md-4 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="spk">
-                                    2. Surat Perjanjian Kredit
-                                </button>
-                            </div>
-                            <div class="col-md-4 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="suratKelayakan">
-                                    3. Surat Kelayakan
-                                </button>
-                            </div>
-                            <div class="col-md-4 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="suratKuasa">
-                                    4. Surat Kuasa
-                                </button>
-                            </div>
-                            <div class="col-md-4 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="BaPencairan">
-                                    5. Berita Acara Pencairan
-                                </button>
-                            </div>
-                            <div class="col-md-4 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="daftarHadirPencairan">
-                                    6. Daftar Hadir Pencairan
-                                </button>
-                            </div>
-                            <div class="col-md-4 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="tandaTerima">
-                                    7. Tanda Terima
-                                </button>
-                            </div>
-                            <div class="col-md-4 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="kartuAngsuran">
-                                    8. Kartu Angsuran
-                                </button>
-                            </div>
-                            <div class="col-md-4 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="rencanaAngsuran">
-                                    9. Rencana Angsuran
-                                </button>
-                            </div>
-                            <div class="col-md-4 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="pemberitahuanDesa">
-                                    10. Pemberitahuan Ke Desa
-                                </button>
-                            </div>
-                            <div class="col-md-4 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="iptw">
-                                    11. Penerima IPTW
-                                </button>
-                            </div>
-                            <div class="col-md-4 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="tanggungRentengKematian">
-                                    12. Tanggung Renteng Kematian
-                                </button>
-                            </div>
-                            <div class="col-md-4 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="pernyataanTanggungRenteng">
-                                    13. Pernyataan Tanggung Renteng
-                                </button>
-                            </div>
-                            <div class="col-md-4 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="kuitansi">
-                                    14. Kuitansi
-                                </button>
-                            </div>
-                            <div class="col-md-4 d-grid">
-                                <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                    value="suratTagihan">
-                                    15. Surat Tagihan
-                                </button>
-                            </div>
+                            @foreach ($dokumen_pencairan as $doc => $val)
+                                <div class="col-md-4 d-grid">
+                                    <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
+                                        value="{{ $val['file'] }}">
+                                        {{ $loop->iteration }}. {{ $val['title'] }}
+                                    </button>
+                                </div>
+                            @endforeach
                         </div>
                     </form>
                 </div>
