@@ -116,9 +116,9 @@
                                     }
 
                                     $bulan_lalu = $saldo->bulan;
-                                    $_saldo = $saldo->kredit - $saldo->debit;
+                                    $_saldo = floatval($saldo->kredit) - floatval($saldo->debit);
                                     if ($rek->lev1 == 5) {
-                                        $_saldo = $saldo->debit - $saldo->kredit;
+                                        $_saldo = floatval($saldo->debit) - floatval($saldo->kredit);
                                     }
 
                                     $rencana = 0;
@@ -132,9 +132,9 @@
 
                                 @if ($triwulan > 1 && $saldo->bulan == $bulan_akhir)
                                     @php
-                                        $saldo_kom = $saldo->kredit - $saldo->debit;
+                                        $saldo_kom = floatval($saldo->kredit) - floatval($saldo->debit);
                                         if ($rek->lev1 == 5) {
-                                            $saldo_kom = $saldo->debit - $saldo->kredit;
+                                            $saldo_kom = floatval($saldo->debit) - floatval($saldo->kredit);
                                         }
 
                                         $kom_saldo_lalu += $saldo_kom;
