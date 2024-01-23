@@ -79,6 +79,12 @@
 <body onload="window.print()">
     @foreach ($pinkel->pinjaman_anggota as $pinj)
         @php
+            if ($nia != null) {
+                if ($nia != $pinj->nia) {
+                    continue;
+                }
+            }
+
             $jatuh_tempo = [];
             $no++;
         @endphp

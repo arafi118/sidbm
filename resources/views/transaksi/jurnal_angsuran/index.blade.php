@@ -374,7 +374,20 @@
             e.preventDefault()
             var id_pinj = $('#id').val()
 
-            open_window('/perguliran/dokumen/kartu_angsuran/' + id_pinj)
+            Swal.fire({
+                title: "Cetak Kartu Angsuran",
+                showDenyButton: true,
+                confirmButtonText: "Angsuran Kelompok",
+                denyButtonText: "Angsuran Anggota",
+                confirmButtonColor: "#3085d6",
+                denyButtonColor: "#3085d6",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    open_window('/perguliran/dokumen/kartu_angsuran/' + id_pinj)
+                } else if (result.isDenied) {
+                    open_window('/perguliran/dokumen/kartu_angsuran_anggota/' + id_pinj)
+                }
+            });
         })
 
         $(document).on('click', '#cetakLPP', function(e) {

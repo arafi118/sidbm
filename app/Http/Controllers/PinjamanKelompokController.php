@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anggota;
 use App\Models\DataPemanfaat;
 use App\Models\JenisJasa;
 use App\Models\JenisProdukPinjaman;
@@ -1107,6 +1108,10 @@ class PinjamanKelompokController extends Controller
 
         $file = $request->report;
         $data['report'] = $file;
+
+        if ($file == 'kartuAngsuranAnggota') {
+            return $this->$file($request->id);
+        }
         return $this->$file($request->id, $data);
     }
 
@@ -1636,11 +1641,14 @@ class PinjamanKelompokController extends Controller
         ])->first();
 
         $data['laporan'] = 'Kartu Angsuran ' . $data['pinkel']->kelompok->nama_kelompok;
+        $data['laporan'] .= ' Loan ID. ' . $id;
         return view('perguliran.dokumen.kartu_angsuran', $data);
     }
 
-    public function kartuAngsuranAnggota($id, $data)
+    public function kartuAngsuranAnggota($id, $nia = null)
     {
+        $data['nia'] = $nia;
+        $data['kec'] = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten')->first();
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'kelompok',
             'jpp',
@@ -1657,7 +1665,25 @@ class PinjamanKelompokController extends Controller
         $data['rencana'] = $rencana;
         $data['barcode'] = DNS1D::getBarcodePNG($data['pinkel']->kelompok->kd_kelompok, 'C128');
 
+        $data['dir'] = User::where([
+            ['lokasi', auth()->user()->lokasi],
+            ['level', '1'],
+            ['jabatan', '1']
+        ])->first();
+
         $data['laporan'] = 'Kartu Angsuran Anggota ' . $data['pinkel']->kelompok->nama_kelompok;
+        if ($nia != null) {
+            $anggota = PinjamanAnggota::where([
+                ['id_pinkel', $id],
+                ['nia', $nia]
+            ])->with('anggota')->first();
+
+            if (!$anggota) abort(404);
+
+            $data['laporan'] = 'Kartu Angsuran ' . $anggota->anggota->namadepan . ' - ' . $data['pinkel']->kelompok->nama_kelompok;
+        }
+
+        $data['laporan'] .= ' Loan ID. ' . $id;
         return view('perguliran.dokumen.kartu_angsuran_anggota', $data);
     }
 
