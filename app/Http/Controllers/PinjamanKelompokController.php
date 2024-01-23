@@ -1918,6 +1918,14 @@ class PinjamanKelompokController extends Controller
 
         $tgl_angsur = $tgl;
         $tanggal_cair = date('d', strtotime($tgl));
+
+        if ($kec->reset_inventaris > 0) {
+            $batas_tgl_angsuran = $kec->reset_inventaris;
+            if ($tanggal_cair >= $batas_tgl_angsuran) {
+                $tgl = date('d-m-Y', strtotime('+1 month', strtotime($tgl)));
+            }
+        }
+
         if ($pinkel->kelompok->d) {
             $angsuran_desa = $pinkel->kelompok->d->jadwal_angsuran_desa;
             if ($angsuran_desa > 0) {
