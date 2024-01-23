@@ -129,6 +129,10 @@
             'title' => 'Penerima IPTW',
             'file' => 'iptw',
         ],
+        // [
+        //     'title' => 'Peserta Asuransi',
+        //     'file' => 'pesertaAsuransi',
+        // ],
         [
             'title' => 'Tanggung Renteng Kematian',
             'file' => 'tanggungRentengKematian',

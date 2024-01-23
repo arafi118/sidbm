@@ -1457,6 +1457,26 @@ class PinjamanKelompokController extends Controller
         return $pdf->stream();
     }
 
+    public function pesertaAsuransi($id, $data)
+    {
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jasa',
+            'sis_pokok',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+            'pinjaman_anggota' => function ($query) {
+                $query->where('status', 'A')->orwhere('status', 'W');
+            },
+            'pinjaman_anggota.anggota'
+        ])->first();
+
+        $data['judul'] = 'Daftar Peserta Asuransi (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.peserta_asuransi', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
     public function coverPencairan($id, $data)
     {
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
