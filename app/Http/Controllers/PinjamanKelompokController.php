@@ -1347,6 +1347,7 @@ class PinjamanKelompokController extends Controller
         ])->with('j')->orderBy('id')->get();
 
         $data['keuangan'] = $keuangan;
+        $data['statusDokumen'] = request()->get('status');
 
         $data['judul'] = 'Form Verifikasi (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.form_verifikasi', $data)->render();

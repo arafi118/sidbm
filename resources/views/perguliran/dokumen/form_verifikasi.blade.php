@@ -202,10 +202,10 @@
                 <td align="right">{{ number_format($pa->pinj_ang ? $pa->pinj_ang->alokasi : 0) }}</td>
                 <td align="right">{{ number_format($pa->proposal) }}</td>
                 <td align="right">
-                    {!! $pa->status != 'P' ? number_format($pa->verifikasi) : '&nbsp;' !!}
+                    {!! $statusDokumen != 'P' ? number_format($pa->verifikasi) : '&nbsp;' !!}
                 </td>
                 <td align="right">
-                    {!! $pa->status == 'W' || $pa->status == 'A' ? number_format($pa->alokasi) : '&nbsp;' !!}
+                    {!! $statusDokumen == 'W' || $statusDokumen == 'A' ? number_format($pa->alokasi) : '&nbsp;' !!}
                 </td>
                 <td>
                     &nbsp;
@@ -220,10 +220,10 @@
             <td align="right">{{ number_format($proposal_lalu) }}</td>
             <td align="right">{{ number_format($proposal) }}</td>
             <td align="right">
-                {!! $pinkel->status != 'P' ? number_format($verifikasi) : '&nbsp;' !!}
+                {!! $statusDokumen != 'P' ? number_format($verifikasi) : '&nbsp;' !!}
             </td>
             <td align="right">
-                {!! $pinkel->status == 'W' || $pinkel->status == 'A' ? number_format($alokasi) : '&nbsp;' !!}
+                {!! $statusDokumen == 'W' || $statusDokumen == 'A' ? number_format($alokasi) : '&nbsp;' !!}
             </td>
             <td align="right">&nbsp;</td>
         </tr>
