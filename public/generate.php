@@ -83,6 +83,7 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
     $pinjaman_kelompok = mysqli_query($koneksi, "SELECT * FROM pinjaman_kelompok_$lokasi WHERE (status='A' OR status='W' OR status='L' OR status='H' OR status='R') 
                         AND ($limit) ORDER BY id ASC LIMIT $start, $per_page");
 
+    $kec = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM kecamatan WHERE id='$lokasi'"));
     while ($pk = mysqli_fetch_array($pinjaman_kelompok)) {
         $kel = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM kelompok_$lokasi WHERE id='$pk[id_kel]'"));
         $desa = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM desa WHERE kd_desa='$kel[desa]'"));
@@ -97,6 +98,14 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
 
         $tgl_angsur = $tgl_cair;
         $tanggal_cair = date('d', strtotime($tgl_cair));
+
+        if ($kec['reset_inventaris'] > 0) {
+            $batas_tgl_angsuran = $kec['reset_inventaris'];
+            if ($tanggal_cair >= $batas_tgl_angsuran) {
+                $tgl_cair = date('d-m-Y', strtotime('+1 month', strtotime($tgl_cair)));
+            }
+        }
+
         if ($desa['jadwal_angsuran_desa'] > 0) {
             $angsuran_desa = $desa['jadwal_angsuran_desa'];
             if ($angsuran_desa > 0) {
