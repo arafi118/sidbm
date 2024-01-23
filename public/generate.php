@@ -153,12 +153,6 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
         // Loop Jangka Untuk Membuat Rencana Angsuran
         for ($ke = 1; $ke <= $pk['jangka']; $ke++) {
 
-            if ($tanggal_cair > '25' && $sipokok['id'] == '2') {
-                if ($tarp > '0') {
-                    $tgl_cair = $tgl_angsur;
-                }
-            }
-
             $tgl = explode('-', $tgl_cair);
             $tanggal = $tgl[2];
             $bulan = $tgl[1];

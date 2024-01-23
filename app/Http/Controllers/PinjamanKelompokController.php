@@ -2021,12 +2021,6 @@ class PinjamanKelompokController extends Controller
                 $bulan  = substr($tgl, 5, 2);
                 $tahun  = substr($tgl, 0, 4);
 
-                if ($tanggal_cair > '25' && $sa_pokok == '2') {
-                    if ($target_pokok > '0') {
-                        $tgl = $tgl_angsur;
-                    }
-                }
-
                 if ($sa_pokok == 12) {
                     $tambah = $x * 7;
                     $penambahan = "+$tambah days";
@@ -2069,12 +2063,6 @@ class PinjamanKelompokController extends Controller
             for ($x = 1; $x <= $jangka; $x++) {
                 $bulan  = substr($tgl, 5, 2);
                 $tahun  = substr($tgl, 0, 4);
-
-                if ($tanggal_cair > '25' && $sa_pokok == '2') {
-                    if ($target_pokok > '0') {
-                        $tgl = $tgl_angsur;
-                    }
-                }
 
                 if ($sa_pokok == 12) {
                     $tambah = $x * 7;

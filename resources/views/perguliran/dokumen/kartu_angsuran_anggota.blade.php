@@ -93,7 +93,7 @@
             <div class="break"></div>
         @endif
         <main style="position: relative; font-size: 12px;">
-            <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+            <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
                 <tr>
                     <td rowspan="7" align="center" width="400">
                         <div style="font-size: 14px; font-weight: bold;">
@@ -132,7 +132,7 @@
                     <td>Telpon/SMS</td>
                     <td align="center">:</td>
                     <td>{{ $pinj->anggota->hp }}</td>
-                    <td>Nama Pemanfaat</td>
+                    <td>Pemanfaat</td>
                     <td align="center">:</td>
                     <td style="font-weight: bold;">{{ $pinj->anggota->namadepan }}</td>
                 </tr>
@@ -167,7 +167,7 @@
                         }
                     @endphp
 
-                    <td>{{ number_format($jumlah_angsuran) }} /
+                    <td style="display: inline-block;">{{ number_format($jumlah_angsuran) }} /
                         {{ $pinkel->sis_pokok->nama_sistem }}</td>
                     <td colspan="3">
                         Angsuran pada tanggal {{ explode('-', $pinkel->target->jatuh_tempo)[2] }}
