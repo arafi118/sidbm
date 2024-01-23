@@ -40,7 +40,7 @@
         ],
         [
             'title' => 'Daftar Anggota Kelompok',
-            'file' => 'daftarAnggota',
+            'file' => 'anggotaKelompok',
         ],
         [
             'title' => 'Daftar Pemanfaat',
