@@ -208,7 +208,7 @@
                     {!! $statusDokumen == 'W' || $statusDokumen == 'A' ? number_format($pa->alokasi) : '&nbsp;' !!}
                 </td>
                 <td>
-                    &nbsp;
+                    {!! $statusDokumen != 'P' ? number_format($pa->catatan_verifikasi) : '&nbsp;' !!}
                 </td>
             </tr>
         @endforeach
