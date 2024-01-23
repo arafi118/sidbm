@@ -22,7 +22,7 @@
             <td width="50">Nomor</td>
             <td width="10" align="center">:</td>
             <td colspan="2">
-                <b>______/DBM/{{ Tanggal::tglRomawi($pinkel->tgl_dana) }}</b>
+                <b>______/DBM/{{ Tanggal::tglRomawi($pinkel->tgl_cair) }}</b>
             </td>
         </tr>
         <tr>
