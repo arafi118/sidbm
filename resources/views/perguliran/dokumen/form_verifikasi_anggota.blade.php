@@ -201,40 +201,53 @@
                         <div>Oleh: Tim Verifikasi Kecamatan</div>
                     </td>
                 </tr>
-                <tr class="vb">
-                    <td>&nbsp;</td>
-                    <td colspan="2">
-                        ........................................................................
-                    </td>
-                    <td colspan="2">
-                        <div>
-                            <b>{{ $pinkel->kelompok->ketua }}</b>
-                        </div>
-                        <div>
-                            <b>(Ketua)</b>
-                        </div>
-                    </td>
-                    <td colspan="2" align="center">
-                        <b>______________</b>
-                    </td>
-                </tr>
-                <tr class="vb">
-                    <td>&nbsp;</td>
-                    <td class="vt" colspan="2">
-                        Catatan:
-                    </td>
-                    <td colspan="2">
-                        <div>
-                            <b>{{ $pinkel->kelompok->sekretaris }}</b>
-                        </div>
-                        <div>
-                            <b>(Sekretaris)</b>
-                        </div>
-                    </td>
-                    <td colspan="2" align="center">
-                        <b>______________</b>
-                    </td>
-                </tr>
+                @php
+                    $nomor = 1;
+                @endphp
+                @foreach ($verifikator as $verif)
+                    <tr class="vb">
+                        <td>&nbsp;</td>
+                        @if ($nomor == 1)
+                            <td colspan="2">
+                                ........................................................................
+                            </td>
+                        @else
+                            <td class="vt" colspan="2">
+                                Catatan:
+                            </td>
+                        @endif
+                        @php
+                            $nomor++;
+                        @endphp
+                        <td colspan="2">
+                            <div>
+                                <b>{{ $verif->namadepan . ' ' . $verif->nama_belakang }}</b>
+                            </div>
+                            <div>
+                                <b>(Verifikator)</b>
+                            </div>
+                        </td>
+                        <td colspan="2" align="center">
+                            <b>______________</b>
+                        </td>
+                    </tr>
+                @endforeach
+
+                @if ($nomor <= 1)
+                    <tr class="vb">
+                        <td>&nbsp;</td>
+                        <td class="vt" colspan="2">
+                            Catatan:
+                        </td>
+                        <td colspan="2">
+                            &nbsp;
+                        </td>
+                        <td colspan="2" align="center">
+                            &nbsp;
+                        </td>
+                    </tr>
+                @endif
+
                 <tr class="vb">
                     <td height="20">&nbsp;</td>
                     <td colspan="6">

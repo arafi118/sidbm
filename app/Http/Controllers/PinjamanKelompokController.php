@@ -1364,6 +1364,12 @@ class PinjamanKelompokController extends Controller
             'pinjaman_anggota.anggota.u',
         ])->first();
 
+        $data['verifikator'] = User::where([
+            ['lokasi', Session::get('lokasi')],
+            ['level', '4'],
+            ['jabatan', '5']
+        ])->take(2)->get();
+
         $data['judul'] = 'Form Verifikasi Anggota (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.form_verifikasi_anggota', $data)->render();
         $pdf = PDF::loadHTML($view)->setPaper('f4');
