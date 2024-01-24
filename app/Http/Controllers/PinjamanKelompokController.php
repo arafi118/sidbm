@@ -1106,8 +1106,11 @@ class PinjamanKelompokController extends Controller
             $data['tgl_kondisi'] = $data['tahun'] . '-12-31';
         }
 
-        $file = $request->report;
+        $report = explode('#', $request->report);
+        $file = $report[0];
+
         $data['report'] = $file;
+        $data['type'] = $report[1];
 
         if ($file == 'kartuAngsuranAnggota') {
             return $this->$file($request->id);
@@ -1126,8 +1129,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'DOKUMEN PROPOSAL';
         $view = view('perguliran.dokumen.cover_proposal', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function check($id, $data)
@@ -1140,8 +1148,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Check List (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.check', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function suratPengajuanPinjaman($id, $data)
@@ -1155,8 +1168,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Surat Perngajuran Kredit (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.pengajuan_kredit', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function suratRekomendasi($id, $data)
@@ -1173,8 +1191,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Surat Rekomendasi Kredit (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.rekomendasi_kredit', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function profilKelompok($id, $data)
@@ -1191,8 +1214,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Profil Kelompok (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.profil_kelompok', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function susunanPengurus($id, $data)
@@ -1206,8 +1234,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Susunan Pengurus (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.pengurus', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function anggotaKelompok($id, $data)
@@ -1220,9 +1253,13 @@ class PinjamanKelompokController extends Controller
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with('kelompok')->first();
         $data['judul'] = 'Daftar Anggota (Loan ID. ' . $id . ')';
         $view = view('perguliran.dokumen.anggota', $data)->render();
-        $pdf = PDF::loadHTML($view);
 
-        return $pdf->stream();
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function daftarPemanfaat($id, $data)
@@ -1243,8 +1280,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Daftar Pemanfaat (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.pemanfaat', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function tanggungRenteng($id, $data)
@@ -1260,8 +1302,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Pernyataan Tanggung Renteng (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.tanggung_renteng', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function fotoCopyKTP($id, $data)
@@ -1273,8 +1320,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'FC KTP Pemanfaat dan Penjamin (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.ktp', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function pernyataanPeminjam($id, $data)
@@ -1296,8 +1348,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Pernyataan Peminjam (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.pernyataan_peminjam', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function baMusyawarahDesa($id, $data)
@@ -1312,8 +1369,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'BA Musyawarah (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.ba_musyawarah', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function formVerifikasi($id, $data)
@@ -1351,8 +1413,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Form Verifikasi (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.form_verifikasi', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function formVerifikasiAnggota($id, $data)
@@ -1368,12 +1435,17 @@ class PinjamanKelompokController extends Controller
             ['lokasi', Session::get('lokasi')],
             ['level', '4'],
             ['jabatan', '5']
-        ])->get();
+        ])->orderBy('id', 'ASC')->get();
 
         $data['judul'] = 'Form Verifikasi Anggota (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.form_verifikasi_anggota', $data)->render();
-        $pdf = PDF::loadHTML($view)->setPaper('f4');
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function daftarHadirVerifikasi($id, $data)
@@ -1389,8 +1461,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Daftar Hadir Verifikasi (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.daftar_hadir_verifikasi', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function rencanaAngsuran($id, $data)
@@ -1419,8 +1496,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Rencana Angsuran (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.rencana_angsuran', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function rekeningKoran($id, $data)
@@ -1442,8 +1524,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Rekening Koran (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.rekening_koran', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function iptw($id, $data)
@@ -1460,8 +1547,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Daftar Penerima IPTW (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.iptw', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function pesertaAsuransi($id, $data)
@@ -1480,8 +1572,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Daftar Peserta Asuransi (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.peserta_asuransi', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function coverPencairan($id, $data)
@@ -1495,8 +1592,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'DOKUMEN PENCAIRAN';
         $view = view('perguliran.dokumen.cover_pencairan', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function spk($id, $data)
@@ -1523,8 +1625,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Surat Perjanjian Kredit (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.spk', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function suratKelayakan($id, $data)
@@ -1547,8 +1654,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Surat Kelayakan (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.surat_kelayakan', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function suratKuasa($id, $data)
@@ -1566,8 +1678,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Surat Kuasa (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.surat_kuasa', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function BaPencairan($id, $data)
@@ -1597,8 +1714,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Berita Acara Pencairan (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.ba_pencairan', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function daftarHadirPencairan($id, $data)
@@ -1614,8 +1736,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Daftar Hadir Pencairan (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.daftar_hadir_pencairan', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function tandaTerima($id, $data)
@@ -1636,8 +1763,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Tanda Terima (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.tanda_terima', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function kartuAngsuran($id)
@@ -1732,8 +1864,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Pemberitahuan Ke Desa (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.pemberitahuan_desa', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function tanggungRentengKematian($id, $data)
@@ -1755,8 +1892,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Tanggung Renteng Kematian (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.tanggung_renteng_kematian', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function pernyataanTanggungRenteng($id, $data)
@@ -1774,8 +1916,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Pernyataan Tanggung Renteng (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.pernyataan_tanggung_renteng', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function kuitansi($id, $data)
@@ -1809,8 +1956,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Kuitansi Pencairan (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.kuitansi', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function suratTagihan($id, $data)
@@ -1840,8 +1992,13 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Surat Tagihan (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.tagihan', $data)->render();
-        $pdf = PDF::loadHTML($view);
-        return $pdf->stream();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function cetakPadaKartu($id, $idtp)

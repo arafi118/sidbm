@@ -17,66 +17,82 @@
         [
             'title' => 'Cover',
             'file' => 'coverProposal',
+            'withExcel' => false,
         ],
         [
             'title' => 'Check List',
             'file' => 'check',
+            'withExcel' => false,
         ],
         [
             'title' => 'Surat Pengajuan Pinjaman',
             'file' => 'suratPengajuanPinjaman',
+            'withExcel' => false,
         ],
         [
             'title' => 'Surat Rekomendasi Kredit',
             'file' => 'suratRekomendasi',
+            'withExcel' => false,
         ],
         [
             'title' => 'Profil Kelompok',
             'file' => 'profilKelompok',
+            'withExcel' => false,
         ],
         [
             'title' => 'Susunan Pengurus',
             'file' => 'susunanPengurus',
+            'withExcel' => false,
         ],
         [
             'title' => 'Daftar Anggota Kelompok',
             'file' => 'anggotaKelompok',
+            'withExcel' => false,
         ],
         [
             'title' => 'Daftar Pemanfaat',
             'file' => 'daftarPemanfaat',
+            'withExcel' => false,
         ],
         [
             'title' => 'Pernyataan Tanggung Renteng',
             'file' => 'tanggungRenteng',
+            'withExcel' => false,
         ],
         [
             'title' => 'FC KTP Pemanfaat & Penjamin',
             'file' => 'fotoCopyKTP',
+            'withExcel' => false,
         ],
         [
             'title' => 'Surat Pernyataan Peminjam',
             'file' => 'pernyataanPeminjam',
+            'withExcel' => false,
         ],
         [
             'title' => 'BA Musyawarah Kelompok',
             'file' => 'baMusyawarahDesa',
+            'withExcel' => false,
         ],
         [
             'title' => 'Form Verifikasi',
             'file' => 'formVerifikasi',
+            'withExcel' => false,
         ],
         [
             'title' => 'Daftar Hadir Verifikasi',
             'file' => 'daftarHadirVerifikasi',
+            'withExcel' => false,
         ],
         [
             'title' => 'Rencana Angsuran',
             'file' => 'rencanaAngsuran',
+            'withExcel' => false,
         ],
         [
             'title' => 'Form Verifikasi Anggota',
             'file' => 'formVerifikasiAnggota',
+            'withExcel' => false,
         ],
     ];
 
@@ -84,70 +100,87 @@
         [
             'title' => 'Cover',
             'file' => 'coverPencairan',
+            'withExcel' => false,
         ],
         [
             'title' => 'Surat Perjanjian Kredit',
             'file' => 'spk',
+            'withExcel' => false,
         ],
         [
             'title' => 'Surat Kelayakan',
             'file' => 'suratKelayakan',
+            'withExcel' => false,
         ],
         [
             'title' => 'Surat Kuasa',
             'file' => 'suratKuasa',
+            'withExcel' => false,
         ],
         [
             'title' => 'Berita Acara Pencairan',
             'file' => 'BaPencairan',
+            'withExcel' => false,
         ],
         [
             'title' => 'Daftar Hadir Pencairan',
             'file' => 'daftarHadirPencairan',
+            'withExcel' => false,
         ],
         [
             'title' => 'Tanda Terima',
             'file' => 'tandaTerima',
+            'withExcel' => false,
         ],
         [
             'title' => 'Kartu Angsuran',
             'file' => 'kartuAngsuran',
+            'withExcel' => false,
         ],
         [
             'title' => 'Kartu Angsuran Anggota',
             'file' => 'kartuAngsuranAnggota',
+            'withExcel' => false,
         ],
         [
             'title' => 'Rencana Angsuran',
             'file' => 'rencanaAngsuran',
+            'withExcel' => false,
         ],
         [
             'title' => 'Pemberitahuan Ke Desa',
             'file' => 'pemberitahuanDesa',
+            'withExcel' => false,
         ],
         [
             'title' => 'Penerima IPTW',
             'file' => 'iptw',
+            'withExcel' => false,
         ],
         // [
         //     'title' => 'Peserta Asuransi',
         //     'file' => 'pesertaAsuransi',
+        //     'withExcel' => false,
         // ],
         [
             'title' => 'Tanggung Renteng Kematian',
             'file' => 'tanggungRentengKematian',
+            'withExcel' => false,
         ],
         [
             'title' => 'Pernyataan Tanggung Renteng',
             'file' => 'pernyataanTanggungRenteng',
+            'withExcel' => false,
         ],
         [
             'title' => 'Kuitansi',
             'file' => 'kuitansi',
+            'withExcel' => false,
         ],
         [
             'title' => 'Surat Tagihan',
             'file' => 'suratTagihan',
+            'withExcel' => false,
         ],
     ];
 @endphp
@@ -256,10 +289,23 @@
                         <div class="row">
                             @foreach ($dokumen_proposal as $doc => $val)
                                 <div class="col-md-3 d-grid">
-                                    <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                        value="{{ $val['file'] }}">
-                                        {{ $loop->iteration }}. {{ $val['title'] }}
-                                    </button>
+                                    @if ($val['withExcel'])
+                                        <div class="btn-group">
+                                            <button class="btn btn-linkedin btn-sm text-start" type="submit" name="report"
+                                                value="{{ $val['file'] }}#pdf">
+                                                {{ $loop->iteration }}. {{ $val['title'] }}
+                                            </button>
+                                            <button class="btn btn-icon btn-sm btn-instagram" type="submit" name="report"
+                                                value="{{ $val['file'] }}#excel">
+                                                <i class="fas fa-file-excel"></i>
+                                            </button>
+                                        </div>
+                                    @else
+                                        <button class="btn btn-linkedin btn-sm text-start" type="submit" name="report"
+                                            value="{{ $val['file'] }}#pdf">
+                                            {{ $loop->iteration }}. {{ $val['title'] }}
+                                        </button>
+                                    @endif
                                 </div>
                             @endforeach
                         </div>
@@ -342,11 +388,24 @@
                         <input type="hidden" name="id" value="{{ $perguliran->id }}">
                         <div class="row">
                             @foreach ($dokumen_pencairan as $doc => $val)
-                                <div class="col-md-4 d-grid">
-                                    <button class="btn btn-slack btn-sm text-start" type="submit" name="report"
-                                        value="{{ $val['file'] }}">
-                                        {{ $loop->iteration }}. {{ $val['title'] }}
-                                    </button>
+                                <div class="col-md-3 d-grid">
+                                    @if ($val['withExcel'])
+                                        <div class="btn-group">
+                                            <button class="btn btn-linkedin btn-sm text-start" type="submit"
+                                                name="report" value="{{ $val['file'] }}#pdf">
+                                                {{ $loop->iteration }}. {{ $val['title'] }}
+                                            </button>
+                                            <button class="btn btn-icon btn-sm btn-instagram" type="submit"
+                                                name="report" value="{{ $val['file'] }}#excel">
+                                                <i class="fas fa-file-excel"></i>
+                                            </button>
+                                        </div>
+                                    @else
+                                        <button class="btn btn-linkedin btn-sm text-start" type="submit" name="report"
+                                            value="{{ $val['file'] }}#pdf">
+                                            {{ $loop->iteration }}. {{ $val['title'] }}
+                                        </button>
+                                    @endif
                                 </div>
                             @endforeach
                         </div>
