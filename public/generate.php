@@ -107,8 +107,8 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
             }
         }
 
-        if ($kec['reset_inventaris'] > 0) {
-            $batas_tgl_angsuran = $kec['reset_inventaris'];
+        if ($kec['batas_angsuran'] > 0) {
+            $batas_tgl_angsuran = $kec['batas_angsuran'];
             if ($tanggal_cair >= $batas_tgl_angsuran) {
                 $tgl_cair = date('Y-m-d', strtotime('+1 month', strtotime($tgl_cair)));
             }
