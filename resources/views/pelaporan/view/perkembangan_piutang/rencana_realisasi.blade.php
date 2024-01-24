@@ -1,6 +1,7 @@
 @php
     use App\Utils\Tanggal;
     $section = 0;
+    $jenis_produk_pinjaman = 0;
 @endphp
 
 @extends('pelaporan.layout.base')
@@ -16,8 +17,10 @@
     @foreach ($jenis_pp as $jpp)
         @php
             if ($jpp->pinjaman_kelompok->isEmpty()) {
-                break;
+                continue;
             }
+
+            $jenis_produk_pinjaman += 1;
         @endphp
 
         @php
@@ -29,7 +32,7 @@
             $t_pencairan = 0;
         @endphp
 
-        @if ($jpp->nama_jpp != 'SPP')
+        @if ($jpp->nama_jpp != 'SPP' && $jenis_produk_pinjaman > 1)
             <div class="break"></div>
         @endif
 

@@ -202,13 +202,13 @@
                 <td align="right">{{ number_format($pa->pinj_ang ? $pa->pinj_ang->alokasi : 0) }}</td>
                 <td align="right">{{ number_format($pa->proposal) }}</td>
                 <td align="right">
-                    {!! ($statusDokumen != 'P' || $pinkel->status == 'V') ? number_format($pa->verifikasi) : '&nbsp;' !!}
+                    {!! $statusDokumen != 'P' || $pinkel->status == 'V' ? number_format($pa->verifikasi) : '&nbsp;' !!}
                 </td>
                 <td align="right">
                     {!! $statusDokumen == 'W' || $statusDokumen == 'A' ? number_format($pa->alokasi) : '&nbsp;' !!}
                 </td>
                 <td>
-                    {!! ($statusDokumen != 'P' || $pinkel->status == 'V') ? number_format($pa->catatan_verifikasi) : '&nbsp;' !!}
+                    {!! $statusDokumen != 'P' || $pinkel->status == 'V' ? $pa->catatan_verifikasi : '&nbsp;' !!}
                 </td>
             </tr>
         @endforeach
@@ -220,7 +220,7 @@
             <td align="right">{{ number_format($proposal_lalu) }}</td>
             <td align="right">{{ number_format($proposal) }}</td>
             <td align="right">
-                {!! ($statusDokumen != 'P' || $pinkel->status == 'V') ? number_format($verifikasi) : '&nbsp;' !!}
+                {!! $statusDokumen != 'P' || $pinkel->status == 'V' ? number_format($verifikasi) : '&nbsp;' !!}
             </td>
             <td align="right">
                 {!! $statusDokumen == 'W' || $statusDokumen == 'A' ? number_format($alokasi) : '&nbsp;' !!}
