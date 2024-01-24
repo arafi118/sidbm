@@ -1368,7 +1368,7 @@ class PinjamanKelompokController extends Controller
             ['lokasi', Session::get('lokasi')],
             ['level', '4'],
             ['jabatan', '5']
-        ])->take(2)->get();
+        ])->get();
 
         $data['judul'] = 'Form Verifikasi Anggota (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.form_verifikasi_anggota', $data)->render();
