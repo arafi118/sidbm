@@ -218,7 +218,7 @@
                                 <tr>
                                     <td width="60%">
                                         <div>
-                                            <b>{{ $verif->namadepan . ' ' . $verif->nama_belakang }}</b>
+                                            <b>{{ $verif->namadepan . ' ' . $verif->namabelakang }}</b>
                                         </div>
                                         <div>
                                             <b>(Verifikator)</b>
