@@ -151,7 +151,7 @@
                 <td style="padding: 0px;" align="center" colspan="2">Tanda Tangan</td>
             </tr>
 
-            @for ($i = 1; $i <= 10; $i++)
+            @for ($i = 1; $i <= 15; $i++)
                 <tr>
                     <td height="15" style="padding: 0px;" width="50%">{{ $i }}.
                         ______________________________________________</td>
