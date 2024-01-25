@@ -11,6 +11,11 @@ class Inventaris
     public static function nilaiBuku($tgl, $inv)
     {
         $tgl_beli = $inv->tgl_beli;
+
+        if (auth()->user()->lokasi == '273') {
+            $tgl_beli = date('Y-m-d', strtotime('+1 month', strtotime($tgl_beli)));
+        }
+
         $unit = $inv->unit;
         $harga_satuan = $inv->harsat * $unit;
         $umur = $inv->umur_ekonomis;
@@ -29,6 +34,10 @@ class Inventaris
 
     public static function bulan($start, $end, $periode = 'bulan')
     {
+        if (auth()->user()->lokasi == '273') {
+            $start = date('Y-m-d', strtotime('+1 month', strtotime($start)));
+        }
+
         $batasan = date('t');
         $thn_awal    = substr($start, 0, 4);
         $bln_awal    = substr($start, 5, 2);   //12
