@@ -310,7 +310,7 @@
                 success: function(result) {
                     if (result.success) {
                         Swal.fire('Selamat', result.msg, 'success').then(() => {
-                            window.location.href = '/transaksi/tutup_buku'
+                            // window.location.href = '/transaksi/tutup_buku'
                         })
                     }
                 }
