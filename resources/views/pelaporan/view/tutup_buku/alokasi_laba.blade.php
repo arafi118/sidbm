@@ -67,7 +67,7 @@
                         <tr style="background: {{ $bg }}">
                             <td>{{ $title_form[substr($saldo->id, -1)] }}</td>
                             <td align="right">
-                                Rp. {{ number_format($saldo->kredit, 2) }}
+                                Rp. {{ number_format(floatval($saldo->kredit), 2) }}
                             </td>
                         </tr>
                     @endif
