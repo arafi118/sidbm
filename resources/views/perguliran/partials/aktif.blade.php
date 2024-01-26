@@ -227,13 +227,13 @@
             <div class="col-12 col-sm-6 col-md-6 col-lg-4">
                 <div class="d-grid">
                     <button type="submit" class="btn btn-outline-info btn-sm mb-2" name="report"
-                        value="rencanaAngsuran">Rencana Angsuran</button>
+                        value="rencanaAngsuran#pdf">Rencana Angsuran</button>
                 </div>
             </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-4">
                 <div class="d-grid">
                     <button type="submit" class="btn btn-outline-info btn-sm mb-2" name="report"
-                        value="rekeningKoran">Rekening Koran</button>
+                        value="rekeningKoran#pdf">Rekening Koran</button>
                 </div>
             </div>
         </div>
