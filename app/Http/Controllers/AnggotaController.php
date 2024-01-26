@@ -329,4 +329,22 @@ class AnggotaController extends Controller
     {
         //
     }
+
+    public function blokir(Request $request, Anggota $nik)
+    {
+        $status = $request->status;
+        Anggota::where('id', $nik->id)->update([
+            'status' => $status
+        ]);
+
+        $msg = 'Penduduk atas nama ' . $nik->namadepan . ' telah diblokir dan tidak akan bisa mengajukan pinjaman lagi';
+        if ($status != '0') {
+            $msg = 'Penduduk atas nama ' . $nik->namadepan . ' telah dilepas dari blokirannya dan dapat mengajukan pinjaman lagi';
+        }
+
+        return response()->json([
+            'success' => true,
+            'msg' => $msg
+        ]);
+    }
 }

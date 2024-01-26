@@ -1,3 +1,10 @@
+@php
+    $status = '0';
+    if ($data_anggota->status == '0') {
+        $status = '1';
+    }
+@endphp
+
 <form action="/database/penduduk/{{ $data_anggota->nik }}" method="post" id="Penduduk">
     @csrf
     @method('PUT')
@@ -134,7 +141,20 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary float-end" id="SimpanPenduduk">Simpan Penduduk</button>
+    <button type="submit" class="btn btn-github btn-sm float-end" id="SimpanPenduduk">Simpan Penduduk</button>
+    <button type="button" class="btn btn-danger btn-sm me-3 float-end" id="BlokirPenduduk">
+        @if ($status == '0')
+            Blokir Penduduk
+        @else
+            Lepaskan Blokiran
+        @endif
+    </button>
+</form>
+
+<form action="/database/penduduk/{{ $data_anggota->nik }}/blokir" method="post" id="Blokir">
+    @csrf
+
+    <input type="hidden" name="status" id="status" value="{{ $status }}">
 </form>
 
 <script>

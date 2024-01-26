@@ -109,6 +109,8 @@ Route::get('/database/kelompok/generatekode', [KelompokController::class, 'gener
 Route::get('/database/penduduk/register_penduduk', [AnggotaController::class, 'register'])->middleware('auth');
 Route::get('/database/penduduk/cari_nik', [AnggotaController::class, 'cariNik'])->middleware('auth');
 
+Route::post('/database/penduduk/{nik}/blokir', [AnggotaController::class, 'blokir'])->middleware('auth');
+
 Route::get('/database/kelompok/detail_kelompok/{id}', [KelompokController::class, 'detailKelompok'])->middleware('auth');
 Route::resource('/database/desa', DesaController::class)->middleware('auth');
 Route::resource('/database/kelompok', KelompokController::class)->middleware('auth');

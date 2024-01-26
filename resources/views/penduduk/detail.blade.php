@@ -171,6 +171,20 @@
                             <button type="submit" class="btn btn-github btn-sm float-end" id="SimpanPenduduk">
                                 Simpan Penduduk
                             </button>
+                            <button type="button" class="btn btn-danger btn-sm me-3 float-end" id="BlokirPenduduk">
+                                @php
+                                    $status = '0';
+                                    if ($penduduk->status == '0') {
+                                        $status = '1';
+                                    }
+                                @endphp
+
+                                @if ($status == '0')
+                                    Blokir Penduduk
+                                @else
+                                    Lepaskan Blokiran
+                                @endif
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -243,6 +257,18 @@
             </div>
         </div>
     </div>
+
+    <form action="/database/penduduk/{{ $penduduk->nik }}/blokir" method="post" id="Blokir">
+        @csrf
+
+        @php
+            $status = '0';
+            if ($penduduk->status == '0') {
+                $status = '1';
+            }
+        @endphp
+        <input type="hidden" name="status" id="status" value="{{ $status }}">
+    </form>
 @endsection
 
 @section('script')
@@ -293,6 +319,46 @@
                         $('#' + key).parent('.input-group.input-group-static').addClass(
                             'is-invalid')
                         $('#msg_' + key).html(res)
+                    })
+                }
+            })
+        })
+
+        $(document).on('click', '#BlokirPenduduk', function(e) {
+            e.preventDefault()
+            let blokir = $('#Blokir #status').val()
+            let title = 'Blokir Penduduk?'
+            let text = 'Dengan klik Ya maka penduduk ini tidak akan bisa mengajukan pinjaman lagi. Yakin?'
+            if (blokir != '0') {
+                title = 'Lepaskan Blokiran?'
+                text = 'Dengan klik Ya maka penduduk ini akan dilepas dari blokirannya. Yakin lepaskan?'
+            }
+
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Tidak'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    var form = $('#Blokir')
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        success: function(result) {
+                            if (result.success) {
+                                Swal.fire({
+                                    title: 'Berhasil',
+                                    text: result.msg,
+                                    icon: 'success',
+                                }).then(() => {
+                                    window.location.reload();
+                                })
+                            }
+                        }
                     })
                 }
             })

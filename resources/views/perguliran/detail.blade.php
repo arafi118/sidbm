@@ -418,7 +418,7 @@
         </div>
     </div>
 
-    {{-- Modal Cetak Tambah Pemanfaat --}}
+    {{-- Modal Tambah Pemanfaat --}}
     <div class="modal fade" id="TambahPemanfaat" tabindex="-1" aria-labelledby="TambahPemanfaatLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -787,7 +787,8 @@
                             "name": item.namadepan + ' [' + item.nik + ']' + '[' + item
                                 .alamat + ']',
                             "value": item.nik,
-                            "id_pinkel": '{{ $perguliran->id }}'
+                            "id_pinkel": '{{ $perguliran->id }}',
+                            "status": item.status
                         });
                     });
 
