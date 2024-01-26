@@ -197,7 +197,7 @@ class AnggotaController extends Controller
             'usaha' => $request->jenis_usaha,
             'foto' => '1',
             'terdaftar' => date('Y-m-d'),
-            'status' => 'A',
+            'status' => '1',
             'petugas' => auth()->user()->id,
         ];
 
