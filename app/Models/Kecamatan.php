@@ -19,7 +19,7 @@ class Kecamatan extends Model
 
     public function desa()
     {
-        return $this->hasMany(Desa::class, 'kd_kec', 'kd_kec');
+        return $this->hasMany(Desa::class, 'kd_kec', 'kd_kec')->orderBy('kd_desa', 'ASC');
     }
 
     public function ttd()
