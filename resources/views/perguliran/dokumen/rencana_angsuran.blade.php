@@ -38,7 +38,7 @@
         <tr class="b">
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
-                    <b>RENCANA ANGSURAN PINJAMAN {{ $pinkel->jpp->nama_pp }}</b>
+                    <b>RENCANA ANGSURAN PINJAMAN {{ $pinkel->jpp->nama_jpp }}</b>
                 </div>
                 <div style="font-size: 16px;">
                     <b>KELOMPOK {{ strtoupper($pinkel->kelompok->nama_kelompok) }}</b>
