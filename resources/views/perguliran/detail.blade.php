@@ -787,8 +787,7 @@
                             "name": item.namadepan + ' [' + item.nik + ']' + '[' + item
                                 .alamat + ']',
                             "value": item.nik,
-                            "id_pinkel": '{{ $perguliran->id }}',
-                            "status": item.status
+                            "id_pinkel": '{{ $perguliran->id }}'
                         });
                     });
 

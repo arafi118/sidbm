@@ -193,7 +193,10 @@ class PinjamanAnggotaController extends Controller
             $pinkel = PinjamanKelompok::where('id', request()->get('loan_id'))->first();
             $kel = Kelompok::where('id', $pinkel->id_kel)->first();
 
-            $anggota = Anggota::where('desa', $kel->desa)->where(function (Builder $query) {
+            $anggota = Anggota::where([
+                ['desa', $kel->desa],
+                ['status', '!=', '0']
+            ])->where(function (Builder $query) {
                 $query->where('namadepan', 'like', '%' . request()->get('query') . '%')
                     ->orwhere('nik', 'like', '%' . request()->get('query') . '%');
             })->orderBy('id', 'DESC')->get();
