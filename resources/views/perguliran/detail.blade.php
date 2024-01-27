@@ -782,37 +782,51 @@
                     query: query
                 }, function(result) {
                     var resultList = result.map(function(item) {
+
+                        var disable = false
+                        if (item.status == '0') {
+                            disable = true
+                        }
+
                         states.push({
                             "id": item.id,
                             "name": item.namadepan + ' [' + item.nik + ']' + '[' + item
                                 .alamat + ']',
                             "value": item.nik,
-                            "id_pinkel": '{{ $perguliran->id }}'
+                            "id_pinkel": '{{ $perguliran->id }}',
+                            "disable": disable
                         });
                     });
 
                     return process(states);
                 })
             },
+            updater: function(item) {
+                return item.disable ? '' : item;
+            },
             afterSelect: function(item) {
-                $.ajax({
-                    url: '/pinjaman_anggota/register/' + item.id_pinkel,
-                    type: 'get',
-                    data: item,
-                    success: function(result) {
-                        if (result.enable_alokasi) {
-                            $('#alokasi_pengajuan').removeAttr('disabled')
-                            $('#SimpanPemanfaat').removeAttr('disabled')
-                        } else {
-                            $('#alokasi_pengajuan').attr('disabled', true)
-                            $('#SimpanPemanfaat').attr('disabled', true)
-                        }
+                if (item != '') {
+                    $.ajax({
+                        url: '/pinjaman_anggota/register/' + item.id_pinkel,
+                        type: 'get',
+                        data: item,
+                        success: function(result) {
+                            if (result.enable_alokasi) {
+                                $('#alokasi_pengajuan').removeAttr('disabled')
+                                $('#SimpanPemanfaat').removeAttr('disabled')
+                            } else {
+                                $('#alokasi_pengajuan').attr('disabled', true)
+                                $('#SimpanPemanfaat').attr('disabled', true)
+                            }
 
-                        $('#nia_pemanfaat').val(result.nia)
-                        $('#catatan_pinjaman').val(result.catatan)
-                        $('#LayoutTambahPemanfaat').html(result.html)
-                    }
-                });
+                            $('#nia_pemanfaat').val(result.nia)
+                            $('#catatan_pinjaman').val(result.catatan)
+                            $('#LayoutTambahPemanfaat').html(result.html)
+                        }
+                    });
+                } else {
+                    Toastr('error', 'Pemanfaat diblokir. Tidak dapat mengajukan pinjaman')
+                }
             }
         });
 

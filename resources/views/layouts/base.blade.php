@@ -360,26 +360,26 @@
 
         var notif;
 
-        $.ajaxSetup({
-            xhr: () => {
-                var xhr = new window.XMLHttpRequest();
-                console.log(xhr);
-                xhr.upload.addEventListener("progress", function(evt) {
-                    if (evt.lengthComputable) {
-                        var percentComplete = (evt.loaded / evt.total) * 100;
-                        console.log(percentComplete);
-                    }
-                }, false);
+        // $.ajaxSetup({
+        //     xhr: () => {
+        //         var xhr = new window.XMLHttpRequest();
+        //         console.log(xhr);
+        //         xhr.upload.addEventListener("progress", function(evt) {
+        //             if (evt.lengthComputable) {
+        //                 var percentComplete = (evt.loaded / evt.total) * 100;
+        //                 console.log(percentComplete);
+        //             }
+        //         }, false);
 
-                xhr.addEventListener("progress", function(evt) {
-                    if (evt.lengthComputable) {
-                        var percentComplete = (evt.loaded / evt.total) * 100;
-                        console.log(percentComplete);
-                    }
-                }, false);
-                return xhr;
-            },
-        });
+        //         xhr.addEventListener("progress", function(evt) {
+        //             if (evt.lengthComputable) {
+        //                 var percentComplete = (evt.loaded / evt.total) * 100;
+        //                 console.log(percentComplete);
+        //             }
+        //         }, false);
+        //         return xhr;
+        //     },
+        // });
 
         $(document).on('click', '#btnLaporanPelunasan', function(e) {
             e.preventDefault()

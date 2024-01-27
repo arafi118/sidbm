@@ -57,9 +57,11 @@
                         <label class="form-label">Cari Kelompok</label>
                         @if (Request::get('pinkel'))
                             <input type="text" id="cariKelompok" name="cariKelompok" class="form-control"
+                                autocomplete="off"
                                 value="{{ $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] [' . $pinkel->kelompok->ketua . ']' }}">
                         @else
-                            <input type="text" id="cariKelompok" name="cariKelompok" class="form-control">
+                            <input type="text" id="cariKelompok" name="cariKelompok" class="form-control"
+                                autocomplete="off">
                         @endif
                     </div>
                 @endif
