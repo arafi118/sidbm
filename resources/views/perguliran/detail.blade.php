@@ -810,6 +810,13 @@
                         url: '/pinjaman_anggota/register/' + item.id_pinkel,
                         type: 'get',
                         data: item,
+                        uploadProgress: function(e) {
+                            // track uploading
+                            if (e.lengthComputable) {
+                                var completedPercentage = Math.round((e.loaded * 100) / e.total);
+                                console.log(completedPercentage);
+                            }
+                        },
                         success: function(result) {
                             if (result.enable_alokasi) {
                                 $('#alokasi_pengajuan').removeAttr('disabled')

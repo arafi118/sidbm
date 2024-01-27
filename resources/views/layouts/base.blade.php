@@ -43,6 +43,7 @@
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+    <link rel="stylesheet" href="/assets/css/pace.css?v={{ time() }}">
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
@@ -63,10 +64,27 @@
         .dataTables_filter .form-control {
             border: 1px solid #d2d6da !important;
         }
+
+        #progress-container {
+            width: 100%;
+            height: 6px;
+            position: relative;
+        }
+
+        #progress-bar {
+            width: 0;
+            height: 100%;
+            background-color: var(--bs-success);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
     </style>
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
+
     @include('layouts.sidebar')
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         @include('layouts.navbar')
@@ -193,6 +211,8 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
+
     <script src="/assets/js/core/popper.min.js"></script>
     <script src="/assets/js/core/bootstrap.min.js"></script>
     <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
@@ -221,6 +241,15 @@
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
         })
+
+        window.paceOptions = {
+            ajax: true,
+            document: false,
+            eventLag: false,
+            elements: {
+                selectors: ['.g-sidenav-show']
+            }
+        }
 
         $('#cariKelompok').typeahead({
             source: function(query, process) {
@@ -358,59 +387,12 @@
             })
         })
 
-        var notif;
-
-        // $.ajaxSetup({
-        //     xhr: () => {
-        //         var xhr = new window.XMLHttpRequest();
-        //         console.log(xhr);
-        //         xhr.upload.addEventListener("progress", function(evt) {
-        //             if (evt.lengthComputable) {
-        //                 var percentComplete = (evt.loaded / evt.total) * 100;
-        //                 console.log(percentComplete);
-        //             }
-        //         }, false);
-
-        //         xhr.addEventListener("progress", function(evt) {
-        //             if (evt.lengthComputable) {
-        //                 var percentComplete = (evt.loaded / evt.total) * 100;
-        //                 console.log(percentComplete);
-        //             }
-        //         }, false);
-        //         return xhr;
-        //     },
-        // });
-
         $(document).on('click', '#btnLaporanPelunasan', function(e) {
             e.preventDefault()
 
             $('input#laporan').val('pelunasan')
             $('#FormLaporanSisipan').submit()
         })
-
-        // $(document).ajaxStart(function() {
-        //     let timerInterval
-        //     notif = Swal.fire({
-        //         title: 'Loading...',
-        //         html: 'Permintaan anda sedang diproses oleh sistem.',
-        //         timer: 10000,
-        //         timerProgressBar: true,
-        //         didOpen: () => {
-        //             Swal.showLoading()
-        //             const b = Swal.getHtmlContainer().querySelector('b')
-        //             timerInterval = setInterval(() => {
-        //                 b.textContent = Swal.getTimerLeft()
-        //             }, 100)
-        //         },
-        //         willClose: () => {
-        //             clearInterval(timerInterval)
-        //         }
-        //     })
-        // });
-
-        // $(document).ajaxStop(function() {
-        //     notif.close();
-        // });
     </script>
 
     <script>
