@@ -87,12 +87,12 @@
             @php
                 if ($trx->rekening_debit == $rek->kode_akun) {
                     $ref = substr($trx->rekening_kredit, 0, 3);
-                    $debit = $trx->jumlah;
+                    $debit = floatval($trx->jumlah);
                     $kredit = 0;
                 } else {
                     $ref = substr($trx->rekening_debit, 0, 3);
                     $debit = 0;
-                    $kredit = $trx->jumlah;
+                    $kredit = floatval($trx->jumlah);
                 }
 
                 if ($rek->jenis_mutasi == 'debet') {
