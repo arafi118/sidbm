@@ -801,9 +801,9 @@
                     return process(states);
                 })
             },
-            updater: function(item) {
-                return item.disable ? '' : item;
-            },
+            // updater: function(item) {
+            //     return item.disable ? '' : item;
+            // },
             afterSelect: function(item) {
                 if (item != '') {
                     $.ajax({
