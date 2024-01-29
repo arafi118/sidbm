@@ -346,7 +346,7 @@ class TransaksiController extends Controller
         $data_id = [];
         $saldo_tutup_buku = [];
         foreach ($desa as $d) {
-            $id = $d->kd_desa . $tahun_tb . 0;
+            $id = str_replace('.', '', $d->kode_desa) . $tahun_tb . 0;
             $saldo_tutup_buku[] = [
                 'id' => $id,
                 'kode_akun' => $d->kode_desa,
