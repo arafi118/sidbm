@@ -1540,7 +1540,7 @@ class PinjamanKelompokController extends Controller
             'kelompok.d',
             'kelompok.d.sebutan_desa',
             'pinjaman_anggota' => function ($query) {
-                $query->where('status', 'A')->orwhere('status', 'W');
+                $query->where('status', 'A')->orwhere('status', 'W')->orwhere('status', 'L');
             },
             'pinjaman_anggota.anggota'
         ])->first();
