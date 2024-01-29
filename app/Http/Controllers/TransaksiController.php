@@ -335,7 +335,7 @@ class TransaksiController extends Controller
         $laba_ditahan = $data['laba_ditahan']; // Ditambahkan ke 3.2.01.01
         foreach ($laba_ditahan as $key => $val) {
             $value = str_replace(',', '', str_replace('.00', '', $val));
-            $alokasi_laba['3.2.01.01'] += $value;
+            $alokasi_laba['3.2.01.01'] += floatval($value);
         }
 
         $pembagian_laba_desa = $data['desa'];
