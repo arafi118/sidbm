@@ -279,7 +279,86 @@
                     if ($t_target_pokok != 0) {
                         $t_pross = $t_real_bi_pokok / $t_target_pokok;
                     }
+
+                    $tl_alokasi = 0;
+                    $tl_target_pokok = 0;
+                    $tl_target_jasa = 0;
+                    $tl_real_bl_pokok = 0;
+                    $tl_real_bl_jasa = 0;
+                    $tl_real_bi_pokok = 0;
+                    $tl_real_bi_jasa = 0;
+                    $tl_saldo_pokok = 0;
+                    $tl_saldo_jasa = 0;
+                    $tl_tunggakan_pokok = 0;
+                    $tl_tunggakan_jasa = 0;
+
+                    foreach ($lunas as $ln) {
+                        $target_pokok = 0;
+                        $target_jasa = 0;
+                        $sum_pokok = 0;
+                        $sum_jasa = 0;
+
+                        $tl_alokasi += $ln->alokasi;
+                        if ($ln->target) {
+                            $tl_target_pokok += $ln->target->target_pokok;
+                            $tl_target_jasa += $ln->target->target_jasa;
+
+                            $target_pokok = $ln->target->target_pokok;
+                            $target_jasa = $ln->target->target_jasa;
+                        }
+
+                        if ($ln->saldo) {
+                            $tl_real_bl_pokok += $ln->saldo->sum_pokok;
+                            $tl_real_bl_jasa += $ln->saldo->sum_jasa;
+
+                            $tl_real_bi_pokok += $ln->saldo->sum_pokok;
+                            $tl_real_bi_jasa += $ln->saldo->sum_jasa;
+
+                            $tl_saldo_pokok += $ln->saldo->saldo_pokok;
+                            $tl_saldo_jasa += $ln->saldo->saldo_jasa;
+
+                            $sum_pokok = $ln->saldo->sum_pokok;
+                            $sum_jasa = $ln->saldo->sum_jasa;
+                        }
+
+                        $tunggakan_pokok = $target_pokok - $sum_pokok;
+                        if ($tunggakan_pokok < 0) {
+                            $tunggakan_pokok = 0;
+                        }
+                        $tunggakan_jasa = $target_jasa - $sum_jasa;
+                        if ($tunggakan_jasa < 0) {
+                            $tunggakan_jasa = 0;
+                        }
+
+                        $tl_tunggakan_pokok += $tunggakan_pokok;
+                        $tl_tunggakan_jasa += $tunggakan_jasa;
+                    }
+
+                    $tl_pross = 1;
+                    if ($tl_target_pokok != 0) {
+                        $tl_pross = $tl_real_bi_pokok / $tl_target_pokok;
+                    }
                 @endphp
+
+                <tr style="font-weight: bold;">
+                    <td class="t l b" align="left" colspan="2" height="15">
+                        Lunas s.d. Tahun Lalu
+                    </td>
+                    <td class="t l b" align="right">{{ number_format($tl_alokasi) }}</td>
+                    <td class="t l b" align="right">{{ number_format($tl_target_pokok) }}</td>
+                    <td class="t l b" align="right">{{ number_format($tl_target_jasa) }}</td>
+                    <td class="t l b" align="right">{{ number_format($tl_real_bl_pokok) }}</td>
+                    <td class="t l b" align="right">{{ number_format($tl_real_bl_jasa) }}</td>
+                    <td class="t l b" align="right">{{ number_format(0) }}</td>
+                    <td class="t l b" align="right">{{ number_format(0) }}</td>
+                    <td class="t l b" align="right">{{ number_format($tl_real_bi_pokok) }}</td>
+                    <td class="t l b" align="right">{{ number_format($tl_real_bi_jasa) }}</td>
+                    <td class="t l b" align="right">{{ number_format($tl_saldo_pokok) }}</td>
+                    <td class="t l b" align="right">{{ number_format($tl_saldo_jasa) }}</td>
+                    <td class="t l b" align="center">{{ number_format($tl_pross) }}</td>
+                    <td class="t l b" align="right">{{ number_format($tl_tunggakan_pokok) }}</td>
+                    <td class="t l b r" align="right">{{ number_format($tl_tunggakan_jasa) }}</td>
+                </tr>
 
                 <tr>
                     <td colspan="16" style="padding: 0px !important;">

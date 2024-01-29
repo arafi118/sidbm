@@ -971,6 +971,11 @@ class PelaporanController extends Controller
             }
         ])->get();
 
+        $data['lunas'] = PinjamanKelompok::where([
+            ['tgl_lunas', '<', $thn . '-01-01'],
+            ['status', 'L']
+        ])->with('saldo', 'target')->get();
+
         $view = view('pelaporan.view.perkembangan_piutang.lpp_kelompok', $data)->render();
 
         if ($data['type'] == 'pdf') {
@@ -1051,6 +1056,11 @@ class PelaporanController extends Controller
                 $query->where('jatuh_tempo', '<=', $data['tgl_kondisi']);
             }
         ])->get();
+
+        $data['lunas'] = PinjamanKelompok::where([
+            ['tgl_lunas', '<', $thn . '-01-01'],
+            ['status', 'L']
+        ])->with('saldo', 'target')->get();
 
         $view = view('pelaporan.view.perkembangan_piutang.lpp_desa', $data)->render();
 
