@@ -1798,7 +1798,7 @@ class PelaporanController extends Controller
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
         $data['tanggal_kondisi'] = Tanggal::tglLatin(date('Y-m-d', strtotime($tgl)));
-        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['sub_judul'] = 'Tahun ' . ($thn - 1);
         $data['tgl'] = Tanggal::tahun($tgl);
 
         $data['tahun_tb'] = $thn;
