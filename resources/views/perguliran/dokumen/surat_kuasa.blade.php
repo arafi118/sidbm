@@ -84,9 +84,6 @@
             </td>
         </tr>
         <tr>
-            <td colspan="4">&nbsp;</td>
-        </tr>
-        <tr>
             <td colspan="3">&nbsp;</td>
             <td align="center">
                 {{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}
@@ -103,8 +100,8 @@
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
             <td style="padding: 0px !important;">
-                <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;"
-                    class="p">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 11px; margin-top: 8px;" class="p0">
                     @for ($i = 1; $i <= $batas_pemanfaat; $i++)
                         @php
                             $j = $i - 1;
@@ -135,11 +132,8 @@
                     @endfor
                 </table>
 
-                <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;"
-                    class="p">
-                    <tr>
-                        <td colspan="3">&nbsp;</td>
-                    </tr>
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 11px; margin-top: 8px;" class="p0">
                     <tr>
                         <td colspan="3" align="center">
                             Pengurus kelompok Selaku Penerima Kuasa :
