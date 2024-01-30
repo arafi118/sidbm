@@ -511,7 +511,12 @@ class TransaksiController extends Controller
                 'akun2',
                 'akun2.akun3',
                 'akun2.akun3.rek',
-                'akun2.akun3.rek.eb',
+                'akun2.akun3.rek.eb' => function ($query) use ($data) {
+                    $query->where([
+                        ['tahun', $data['tahun']],
+                        ['bulan', $data['bulan']]
+                    ]);
+                },
             ])->orderBy('kode_akun', 'ASC')->get();
         } else {
             $akun1 = AkunLevel1::where('lev1', '>=', '4')->with([
@@ -1171,7 +1176,7 @@ class TransaksiController extends Controller
                 'kode_akun' => $kode_akun,
                 'tahun' => $request->tahun,
                 'bulan' => $request->bulan,
-                'jumlah' => str_replace(',', '', $nominal)
+                'jumlah' => floatval(str_replace(',', '', $nominal))
             ];
         }
 
