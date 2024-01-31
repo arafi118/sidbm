@@ -124,7 +124,7 @@
                     <td align="left">{{ $trx->idt }}</td>
                     <td align="center">{{ $trx->rekening_debit }}</td>
                     <td align="left">{{ $rek_debit }}</td>
-                    <td align="right">{{ number_format($trx->jumlah, 2) }}</td>
+                    <td align="right">{{ number_format(floatval($trx->jumlah), 2) }}</td>
                     <td align="right">&nbsp;</td>
                     @if ($trx->user)
                         <td align="center">{{ $trx->user->ins }}</td>
@@ -139,7 +139,7 @@
                     <td align="center">{{ $trx->rekening_kredit }}</td>
                     <td align="left">{{ $rek_kredit }}</td>
                     <td align="right">&nbsp;</td>
-                    <td align="right">{{ number_format($trx->jumlah, 2) }}</td>
+                    <td align="right">{{ number_format(floatval($trx->jumlah), 2) }}</td>
                     @if ($trx->user)
                         <td align="center">{{ $trx->user->ins }}</td>
                     @else
@@ -148,8 +148,8 @@
                 </tr>
 
                 @php
-                    $debit += $trx->jumlah;
-                    $kredit += $trx->jumlah;
+                    $debit += floatval($trx->jumlah);
+                    $kredit += floatval($trx->jumlah);
                 @endphp
             @endif
 
