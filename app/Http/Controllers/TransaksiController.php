@@ -1954,11 +1954,7 @@ class TransaksiController extends Controller
         ])->first();
 
         $logo = $kec->logo;
-        if (!(Storage::exists('logo/' . $kec->logo)) || empty($logo)) {
-            $gambar = '/storage/logo/1.png';
-        } else {
-            $gambar = '/storage/logo/' . $logo;
-        }
+        $gambar = '/storage/logo/' . $logo;
 
         return view('transaksi.dokumen.bkk')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
     }
@@ -1984,11 +1980,7 @@ class TransaksiController extends Controller
         ])->first();
 
         $logo = $kec->logo;
-        if (!(Storage::exists('logo/' . $kec->logo)) || empty($logo)) {
-            $gambar = '/storage/logo/1.png';
-        } else {
-            $gambar = '/storage/logo/' . $logo;
-        }
+        $gambar = '/storage/logo/' . $logo;
 
         return view('transaksi.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
     }
@@ -2014,11 +2006,7 @@ class TransaksiController extends Controller
         ])->first();
 
         $logo = $kec->logo;
-        if (!(Storage::exists('logo/' . $kec->logo)) || empty($logo)) {
-            $gambar = '/storage/logo/1.png';
-        } else {
-            $gambar = '/storage/logo/' . $logo;
-        }
+        $gambar = '/storage/logo/' . $logo;
 
         return view('transaksi.dokumen.bm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
     }
@@ -2044,11 +2032,7 @@ class TransaksiController extends Controller
         ])->first();
 
         $logo = $kec->logo;
-        if (!(Storage::exists('logo/' . $kec->logo)) || empty($logo)) {
-            $gambar = '/storage/logo/1.png';
-        } else {
-            $gambar = '/storage/logo/' . $logo;
-        }
+        $gambar = '/storage/logo/' . $logo;
 
         return view('transaksi.jurnal_angsuran.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
     }
