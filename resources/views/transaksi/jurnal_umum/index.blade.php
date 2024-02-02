@@ -225,14 +225,14 @@
                 distance: 1000
             }
         })
-        new Choices($('select#tahun')[0], {
+        var selectTahun = new Choices($('select#tahun')[0], {
             shouldSort: false,
             fuseOptions: {
                 threshold: 0.1,
                 distance: 1000
             }
         })
-        new Choices($('select#bulan')[0], {
+        var selectBulan = new Choices($('select#bulan')[0], {
             shouldSort: false,
             fuseOptions: {
                 threshold: 0.1,
@@ -263,6 +263,18 @@
                     $('#kd_rekening').html(result)
                 })
             }
+        })
+
+        $(document).on('change', '#tgl_transaksi', function(e) {
+            e.preventDefault()
+
+            var tgl_transaksi = $(this).val().split('/')
+            var tahun = tgl_transaksi[2];
+            var bulan = tgl_transaksi[1];
+            var hari = tgl_transaksi[0];
+
+            selectTahun.setChoiceByValue(tahun)
+            selectBulan.setChoiceByValue(bulan)
         })
 
         $(document).on('change', '#sumber_dana', function(e) {
@@ -336,6 +348,17 @@
                             jenis_transaksi.setChoiceByValue('')
 
                             $('#notifikasi').html(result.view)
+                            var sumber_dana = $('#sumber_dana').val()
+                            var tgl_transaksi = $('#tgl_transaksi').val().split('/')
+                            var tahun = tgl_transaksi[2];
+                            var bulan = tgl_transaksi[1];
+                            var hari = tgl_transaksi[0];
+
+                            $.get('/trasaksi/saldo/' + sumber_dana + '?tahun=' + tahun +
+                                '&bulan=' + bulan + '&hari=' + hari,
+                                function(res) {
+                                    $('#saldo').html(formatter.format(res.saldo))
+                                })
                         })
                     } else {
                         Swal.fire('Error', result.msg, 'error')

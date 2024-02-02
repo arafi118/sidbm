@@ -1792,7 +1792,7 @@ class TransaksiController extends Controller
         ])->orderBy('jatuh_tempo', 'DESC')->first();
         $data['ra_bulan_ini'] = RencanaAngsuran::where([
             ['loan_id', $data['real']->loan_id],
-            ['jatuh_tempo', '<=', date('Y-m-t', strtotime($data['real']->tgl_transaksi))]
+            ['jatuh_tempo', '<=', $data['real']->tgl_transaksi],
         ])->orderBy('jatuh_tempo', 'DESC')->first();
         $data['pinkel'] = PinjamanKelompok::where('id', $data['real']->loan_id)->with([
             'kelompok',
@@ -1846,6 +1846,7 @@ class TransaksiController extends Controller
             $data['tahun'] = request()->get('tahun');
             $data['bulan'] = request()->get('bulan');
             $data['hari'] = request()->get('hari');
+            $data['kode_akun'] = $kode_akun;
 
             $thn = $data['tahun'];
             $bln = $data['bulan'];
@@ -1858,6 +1859,7 @@ class TransaksiController extends Controller
                 $awal_bulan = $thn . '00-00';
             }
 
+            $data['tgl_kondisi'] = $tgl;
             $data['rek'] = Rekening::where('kode_akun', $data['kode_akun'])->first();
             $data['transaksi'] = Transaksi::where('tgl_transaksi', 'LIKE', '%' . $tgl . '%')->where(function ($query) use ($data) {
                 $query->where('rekening_debit', $data['kode_akun'])->orwhere('rekening_kredit', $data['kode_akun']);

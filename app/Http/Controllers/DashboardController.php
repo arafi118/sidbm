@@ -542,9 +542,7 @@ class DashboardController extends Controller
         $bulan = date('m');
         $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('desa')->first();
 
-        if (Saldo::where([
-            ['kode_akun', 'LIKE', '%' . $kec->kd_kec . '%']
-        ])->count() <= 0) {
+        if (Saldo::where([['kode_akun', 'LIKE', '%' . $kec->kd_kec . '%']])->count() <= 0) {
             $saldo_desa = [];
             foreach ($kec->desa as $desa) {
                 $saldo_desa[] = [
@@ -616,7 +614,7 @@ class DashboardController extends Controller
             ['bulan', $bulan]
         ])->with([
             'saldo' => function ($query) use ($tahun, $bulan) {
-                $bulan = $bulan - 1;
+                $bulan = (($bulan - 1) < 1) ? 1 : $bulan - 1;
 
                 $query->where([
                     ['tahun', $tahun],
@@ -643,11 +641,11 @@ class DashboardController extends Controller
 
             if ($s->saldo) {
                 if ($s->saldo->debit > 0) {
-                    $debit_lalu = $s->debit;
+                    $debit_lalu = $s->saldo->debit;
                 }
 
                 if ($s->saldo->kredit > 0) {
-                    $kredit_lalu = $s->kredit;
+                    $kredit_lalu = $s->saldo->kredit;
                 }
             }
 
@@ -669,6 +667,14 @@ class DashboardController extends Controller
         if (count($insert) > 0) {
             Saldo::whereIn('id', $data_id)->delete();
             $query = Saldo::insert($insert);
+
+            $update = Saldo::where([
+                ['tahun', $tahun],
+                ['bulan', '>', $bulan]
+            ])->update([
+                'debit' => 0,
+                'kredit' => 0
+            ]);
         }
     }
 
@@ -732,6 +738,11 @@ class DashboardController extends Controller
                             }
 
                             $kom_saldo[$lev1->lev1][$saldo->bulan] += $_saldo;
+                            if ($saldo->bulan > 1) {
+                                if ($kom_saldo[$lev1->lev1][$saldo->bulan] < $kom_saldo[$lev1->lev1][$saldo->bulan - 1]) {
+                                    $kom_saldo[$lev1->lev1][$saldo->bulan] = $kom_saldo[$lev1->lev1][$saldo->bulan - 1];
+                                }
+                            }
                         }
                     }
                 }

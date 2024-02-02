@@ -314,7 +314,7 @@ Salam,
 {{ $user->namadepan . ' ' . $user->namabelakang }}
 Nomor Telepon: {{ $user->hp }}
 
-*Abaikan pesan ini jika sudah melakukan pembayarn
+*Abaikan pesan ini jika sudah melakukan pembayaran
                                                     </textarea>
 
                                                 <div class="col-md-6">
