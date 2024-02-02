@@ -187,7 +187,6 @@
         @endforeach
 
         <tr>
-            <td>&nbsp;</td>
             <td colspan="5">
                 <b>Total Transaksi {{ ucwords($sub_judul) }}</b>
             </td>
@@ -203,7 +202,6 @@
         </tr>
 
         <tr>
-            <td>&nbsp;</td>
             <td colspan="5">
                 <b>Total Transaksi sampai dengan {{ ucwords($sub_judul) }}</b>
             </td>
