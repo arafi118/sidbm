@@ -130,17 +130,23 @@
                 <tr>
                     <td style="padding: 0px; 4px;">{{ $kec->sebutan_level_1 }}</td>
                     <td style="padding: 0px; 4px;">:</td>
-                    <td style="padding: 0px; 4px;">{{ $dir->namadepan . ' ' . $dir->namabelakang }}</td>
+                    <td style="padding: 0px; 4px;">
+                        {{ $dir ? $dir->namadepan . ' ' . $dir->namabelakang : '......................................' }}
+                    </td>
                 </tr>
                 <tr>
                     <td style="padding: 0px; 4px;">{{ $kec->sebutan_level_2 }}</td>
                     <td style="padding: 0px; 4px;">:</td>
-                    <td style="padding: 0px; 4px;">{{ $sekr->namadepan . ' ' . $sekr->namabelakang }}</td>
+                    <td style="padding: 0px; 4px;">
+                        {{ $sekr ? $sekr->namadepan . ' ' . $sekr->namabelakang : '......................................' }}
+                    </td>
                 </tr>
                 <tr>
                     <td style="padding: 0px; 4px;">{{ $kec->sebutan_level_3 }}</td>
                     <td style="padding: 0px; 4px;">:</td>
-                    <td style="padding: 0px; 4px;">{{ $bend->namadepan . ' ' . $bend->namabelakang }}</td>
+                    <td style="padding: 0px; 4px;">
+                        {{ $bend ? $bend->namadepan . ' ' . $bend->namabelakang : '......................................' }}
+                    </td>
                 </tr>
                 {{-- <tr>
                     <td style="padding: 0px; 4px;">Unit Usaha</td>
