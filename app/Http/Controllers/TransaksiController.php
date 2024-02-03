@@ -274,7 +274,7 @@ class TransaksiController extends Controller
                 $query->where('tahun', $tahun);
             },
             'sebutan_desa'
-        ])->get();
+        ])->orderBy('kd_desa', 'ASC')->get();
 
         $title = 'Pembagian Laba';
         return view('transaksi.tutup_buku.tutup_buku')->with(compact('title', 'kec', 'surplus', 'rekening', 'desa', 'tgl_kondisi', 'tahun', 'migrasi_saldo', 'success'));
@@ -1607,7 +1607,8 @@ class TransaksiController extends Controller
 
         return [
             'label' => '<i class="fas fa-book"></i> ' . $data['rek']->kode_akun . ' - ' . $data['rek']->nama_akun . ' ' . $data['sub_judul'],
-            'view' => view('transaksi.jurnal_umum.partials.jurnal', $data)->render()
+            'view' => view('transaksi.jurnal_umum.partials.jurnal', $data)->render(),
+            'cetak' => view('transaksi.jurnal_umum.partials._jurnal', $data)->render()
         ];
     }
 
