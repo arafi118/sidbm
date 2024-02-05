@@ -56,6 +56,10 @@
                 if ($path == $menu->link || $end_page == $end_menu_link) {
                     $active = 'active';
                 }
+
+                if ((in_array('detail', $arr_path) || in_array('lunas', $arr_path)) && $menu->link == '/perguliran') {
+                    $active = 'active';
+                }
             @endphp
             <li class="nav-item nav-item-link {{ $active }}">
                 <a class="nav-link text-white {{ $active }}" href="{{ $menu->link }}">
