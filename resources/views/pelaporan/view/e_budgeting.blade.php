@@ -1,9 +1,16 @@
 @php
     use App\Utils\Tanggal;
+    $r_pendapatan1 = 0;
+    $r_pendapatan2 = 0;
+    $r_pendapatan3 = 0;
 
     $pendapatan1 = 0;
     $pendapatan2 = 0;
     $pendapatan3 = 0;
+
+    $r_beban1 = 0;
+    $r_beban2 = 0;
+    $r_beban3 = 0;
 
     $beban1 = 0;
     $beban2 = 0;
@@ -183,11 +190,19 @@
 
             @php
                 if ($lev1->lev1 == 4) {
+                    $r_pendapatan1 += $rencana1;
+                    $r_pendapatan2 += $rencana2;
+                    $r_pendapatan3 += $rencana3;
+
                     $pendapatan1 += $bulan1;
                     $pendapatan2 += $bulan2;
                     $pendapatan3 += $bulan3;
                     $komulatif_pendapatan += $kom_saldo_lalu;
                 } else {
+                    $r_beban1 += $rencana1;
+                    $r_beban2 += $rencana2;
+                    $r_beban3 += $rencana3;
+
                     $beban1 += $bulan1;
                     $beban2 += $bulan2;
                     $beban3 += $bulan3;
@@ -211,6 +226,9 @@
         @endforeach
 
         @php
+            $r_pendapatan = $r_pendapatan1 + $r_pendapatan2 + $r_pendapatan3;
+            $r_beban = $r_beban1 + $r_beban2 + $r_beban3;
+
             $pendapatan = $pendapatan1 + $pendapatan2 + $pendapatan3;
             $beban = $beban1 + $beban2 + $beban3;
         @endphp
@@ -223,13 +241,19 @@
                         <th width="10%" class="t l b" align="right">
                             {{ number_format($komulatif_pendapatan - $komulatif_beban, 2) }}
                         </th>
-                        <th width="8%" class="t l b" align="right">&nbsp;</th>
+                        <th width="8%" class="t l b" align="right">
+                            {{ number_format($r_pendapatan1 - $r_beban1, 2) }}
+                        </th>
                         <th width="8%" class="t l b" align="right">{{ number_format($pendapatan1 - $beban1, 2) }}
                         </th>
-                        <th width="8%" class="t l b" align="right">&nbsp;</th>
+                        <th width="8%" class="t l b" align="right">
+                            {{ number_format($r_pendapatan2 - $r_beban2, 2) }}
+                        </th>
                         <th width="8%" class="t l b" align="right">{{ number_format($pendapatan2 - $beban2, 2) }}
                         </th>
-                        <th width="8%" class="t l b" align="right">&nbsp;</th>
+                        <th width="8%" class="t l b" align="right">
+                            {{ number_format($r_pendapatan3 - $r_beban3, 2) }}
+                        </th>
                         <th width="8%" class="t l b" align="right">{{ number_format($pendapatan3 - $beban3, 2) }}
                         </th>
                         <th width="10%" class="t l b r" align="right">
