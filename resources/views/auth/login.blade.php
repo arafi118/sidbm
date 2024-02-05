@@ -54,8 +54,7 @@
                             <div class="card card-plain">
                                 <div class="card-header text-center">
                                     <h5 class="font-weight-bolder">
-                                        {{ $kec->nama_lembaga_sort }} {{ $kec->nama_kec }} &mdash;
-                                        #{{ str_pad($kec->id, 4, '0', STR_PAD_LEFT) }}
+                                        {{ $kec->nama_lembaga_sort }} {{ $kec->nama_kec }}
                                     </h5>
                                     <p class="mb-0">
                                         Masukkan <b>Username</b> dan <b>Password</b>
@@ -86,7 +85,8 @@
                                         <a href="javascript:;" class="text-info text-gradient font-weight-bold">
                                             Daftar Sekarang
                                         </a> --}}
-                                        &copy; {{ date('Y') }} PT. Asta Brata Teknologi
+                                        &copy; {{ date('Y') }} PT. Asta Brata
+                                        Teknologi#{{ str_pad($kec->id, 4, '0', STR_PAD_LEFT) }}
                                     </p>
                                 </div>
                             </div>
