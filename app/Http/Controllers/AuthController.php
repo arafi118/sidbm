@@ -41,6 +41,11 @@ class AuthController extends Controller
         $kec = Kecamatan::where('web_kec', $url)->orwhere('web_alternatif', $url)->first();
         $lokasi = $kec->id;
 
+        $icon = '/assets/img/icon/favicon.png';
+        if ($kec->logo) {
+            $icon = '/storage/logo/' . $kec->logo;
+        }
+
         if ($username == 'superadmin' && $password == 'superadmin') {
             User::where([
                 'uname' => $username,
@@ -78,6 +83,7 @@ class AuthController extends Controller
                         'lokasi' => $user->lokasi,
                         'lokasi_user' => $user->lokasi,
                         'menu' => $menu,
+                        'icon' => $icon,
                         'angsuran' => $angsuran
                     ]);
 
