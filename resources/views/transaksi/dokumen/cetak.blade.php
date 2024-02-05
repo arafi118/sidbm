@@ -1,5 +1,5 @@
 @php
-    $data_idtp = [];
+    $data_idt = [];
 @endphp
 
 <!DOCTYPE html>
@@ -131,6 +131,11 @@
     <div class="container">
         @foreach ($transaksi as $trx)
             @php
+
+                if (in_array($trx->idt, $data_idt)) {
+                    continue;
+                }
+
                 $kuitansi = 'bm';
                 $files = 'BUKTI MEMORIAL';
                 if ($keuangan->startWith($trx->rekening_debit, '1.1.01') && !$keuangan->startWith($trx->rekening_kredit, '1.1.01')) {
@@ -176,7 +181,6 @@
                 if ($trx->id_pinj > 0) {
                     $files = 'BUKTI KAS MASUK';
                     $kuitansi = 'bkm';
-                    $data_idtp = $trx->idtp;
                 }
             @endphp
 
@@ -228,14 +232,22 @@
                             <td width="30%">Keterangan</td>
                             <td width="2%">:</td>
                             <td colspan="3" class="keterangan">
-                                {{ ucwords($trx->keterangan_transaksi) }}
+                                @if ($trx->id_pinj != 0)
+                                    {{ ucwords('Angsuran Pokok dan Jasa') }}
+                                @else
+                                    {{ ucwords($trx->keterangan_transaksi) }}
+                                @endif
                             </td>
                         </tr>
                         <tr>
                             <td width="30%">Jumlah</td>
                             <td width="2%">:</td>
                             <td colspan="3" class="keterangan">
-                                Rp. {{ number_format($trx->jumlah, 2) }}
+                                @if ($trx->id_pinj != 0)
+                                    Rp. {{ number_format($trx->tr_idtp_sum_jumlah, 2) }}
+                                @else
+                                    Rp. {{ number_format($trx->jumlah, 2) }}
+                                @endif
                             </td>
                         </tr>
                         <tr>
@@ -254,6 +266,7 @@
                             @foreach ($trx->tr_idtp as $tr)
                                 @php
                                     $count--;
+                                    $data_idt[] = $tr->idt;
                                 @endphp
                                 <tr>
                                     <td width="30%">&nbsp;</td>
