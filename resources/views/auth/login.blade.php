@@ -53,6 +53,7 @@
                         <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
                             <div class="card card-plain">
                                 <div class="card-header text-center">
+                                    <img src="{{ $logo }}" class="avatar avatar-sm me-3" alt="avatar image">
                                     <h5 class="font-weight-bolder">
                                         {{ $kec->nama_lembaga_sort }} {{ $kec->nama_kec }}
                                     </h5>
