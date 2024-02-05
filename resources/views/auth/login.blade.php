@@ -86,7 +86,7 @@
                                             Daftar Sekarang
                                         </a> --}}
                                         &copy; {{ date('Y') }} PT. Asta Brata
-                                        Teknologi#{{ str_pad($kec->id, 4, '0', STR_PAD_LEFT) }}
+                                        Teknologi &mdash; {{ str_pad($kec->id, 4, '0', STR_PAD_LEFT) }}
                                     </p>
                                 </div>
                             </div>
