@@ -2040,6 +2040,33 @@ class TransaksiController extends Controller
         return view('transaksi.jurnal_angsuran.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
     }
 
+    public function cetak(Request $request)
+    {
+        $keuangan = new Keuangan;
+        $idt = $request->cetak;
+
+        $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
+        $data['transaksi'] = Transaksi::whereIn('idt', $idt)->with('rek_debit', 'rek_kredit', 'tr_idtp', 'tr_idtp.rek_kredit')->withSum('tr_idtp', 'jumlah')->get();
+
+        $data['dir'] = User::where([
+            ['level', '1'],
+            ['jabatan', '1'],
+            ['lokasi', Session::get('lokasi')]
+        ])->first();
+
+        $data['sekr'] = User::where([
+            ['level', '1'],
+            ['jabatan', '3'],
+            ['lokasi', Session::get('lokasi')]
+        ])->first();
+
+        $logo = $data['kec']->logo;
+        $data['gambar'] = '/storage/logo/' . $logo;
+        $data['keuangan'] = $keuangan;
+
+        return view('transaksi.dokumen.cetak', $data);
+    }
+
     public function lpp($id)
     {
         $data['bulan'] = date('Y-m-t');

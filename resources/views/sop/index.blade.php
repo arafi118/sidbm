@@ -145,6 +145,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        {{-- <button type="button" class="btn btn-warning btn-sm" id="WaLogout">Logout</button> --}}
                         <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
                     </div>
                 </div>
@@ -181,9 +182,13 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $('#ModalScanWA').modal('show')
-                    socket.emit('register', {
-                        token
-                    })
+                    if (connect < 1) {
+                        socket.emit('register', {
+                            token
+                        })
+                    } else {
+                        waActive()
+                    }
                 }
             })
         })
@@ -208,20 +213,47 @@
                         data: form.serialize(),
                         success: function(result) {
                             pesan.append('<li>' + res.msg + '</li>')
-                            Swal.fire({
-                                title: 'Selamat',
-                                text: 'SI DBM Whatsapp Gateway berhasil diaktifkan.',
-                                showCancelButton: false,
-                                icon: 'success'
-                            }).then((result) => {
-                                $('#ModalScanWA').modal('hide')
-                            })
+                            waActive()
                         }
                     })
                 }
                 connect += 1
             }
         })
+
+        $(document).on('click', '#WaLogout', function(e) {
+            e.preventDefault()
+
+            $.ajax({
+                type: 'post',
+                url: '{{ $api }}/logout',
+                data: {
+                    token: token
+                },
+                success: function(result) {
+                    if (result.status) {
+                        Swal.fire({
+                            title: 'Selamat',
+                            text: 'Anda telah logout dari SI DBM Whatsapp Gateway.',
+                            showCancelButton: false,
+                            icon: 'success'
+                        }).then(() => {
+                            scan = 0
+                            connect = 0
+                        })
+                    }
+                }
+            })
+        })
+
+        function waActive() {
+            Swal.fire({
+                title: 'Selamat',
+                text: 'SI DBM Whatsapp Gateway berhasil diaktifkan.',
+                showCancelButton: false,
+                icon: 'success'
+            })
+        }
     </script>
 
     <script>

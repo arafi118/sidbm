@@ -174,7 +174,33 @@
                     <div id="LayoutdetailTransaksi"></div>
                 </div>
                 <div class="modal-footer">
+                    {{-- <button type="button" id="BtnCetakBuktiTransaksi" class="btn btn-sm btn-info">
+                        Cetak Bukti Transaksi
+                    </button> --}}
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="CetakBuktiTransaksi" tabindex="-1" aria-labelledby="CetakBuktiTransaksiLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="CetakBuktiTransaksiLabel">
+
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="LayoutCetakBuktiTransaksi"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="BtnCetak" class="btn btn-sm btn-info">
+                        Print
+                    </button>
+                    <button type="button" id="BtnCetakBuktiTransaksi" class="btn btn-danger btn-sm">Tutup</button>
                 </div>
             </div>
         </div>
@@ -450,9 +476,18 @@
 
                         $('#detailTransaksiLabel').html(result.label)
                         $('#LayoutdetailTransaksi').html(result.view)
+
+                        $('#CetakBuktiTransaksiLabel').html(result.label)
+                        $('#LayoutCetakBuktiTransaksi').html(result.cetak)
                     }
                 })
             }
+        })
+
+        $(document).on('click', '#BtnCetakBuktiTransaksi', function(e) {
+            e.preventDefault()
+
+            $('#CetakBuktiTransaksi').modal('toggle')
         })
 
         $(document).on('click', '.btn-link', function(e) {
@@ -534,6 +569,12 @@
                     }
                 })
             })
+        })
+
+        $(document).on('click', '#BtnCetak', function(e) {
+            e.preventDefault()
+
+            $('#FormCetakDokumenTransaksi').submit()
         })
 
         function initializeBootstrapTooltip() {
