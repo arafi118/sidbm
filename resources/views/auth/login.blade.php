@@ -52,7 +52,7 @@
                         </div>
                         <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
                             <div class="card card-plain">
-                                <div class="card-header text-center">
+                                <div class="card-header text-center mb-0">
                                     <img src="{{ $logo }}" class="rounded-circle border" style="width: 150px;"
                                         alt="Avatar" />
                                     <h5 class="font-weight-bolder">
@@ -62,7 +62,7 @@
                                         Masukkan <b>Username</b> dan <b>Password</b>
                                     </p>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body pt-1">
                                     <form role="form" method="POST" action="/login">
                                         @csrf
                                         <div class="input-group input-group-outline mb-3">
