@@ -53,8 +53,13 @@
                         <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
                             <div class="card card-plain">
                                 <div class="card-header text-center">
-                                    <h4 class="font-weight-bolder">Sign In &mdash; Aplikasi ID. {{ $kec->id }}</h4>
-                                    <p class="mb-0">Masukkan <b>Username</b> dan <b>Password</b> yang anda miliki</p>
+                                    <h5 class="font-weight-bolder">
+                                        {{ $kec->nama_lembaga_sort }} {{ $kec->nama_kec }} &mdash;
+                                        #{{ str_pad($kec->id, 4, '0', STR_PAD_LEFT) }}
+                                    </h5>
+                                    <p class="mb-0">
+                                        Masukkan <b>Username</b> dan <b>Password</b>
+                                    </p>
                                 </div>
                                 <div class="card-body">
                                     <form role="form" method="POST" action="/login">
@@ -69,7 +74,7 @@
                                         </div>
                                         <div class="text-center">
                                             <button type="submit"
-                                                class="btn btn-lg bg-gradient-info btn-lg w-100 mt-4 mb-0">
+                                                class="btn btn-lg bg-gradient-info btn-lg w-100 mt-3 mb-0">
                                                 Sign In
                                             </button>
                                         </div>
@@ -77,10 +82,11 @@
                                 </div>
                                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                     <p class="mb-4 text-sm mx-auto">
-                                        Belum punya SI DBM?
+                                        {{-- Belum punya SI DBM?
                                         <a href="javascript:;" class="text-info text-gradient font-weight-bold">
                                             Daftar Sekarang
-                                        </a>
+                                        </a> --}}
+                                        &copy; {{ date('Y') }} PT. Asta Brata Teknologi
                                     </p>
                                 </div>
                             </div>
