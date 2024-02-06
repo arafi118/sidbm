@@ -19,11 +19,15 @@ class AuthController extends Controller
         }
 
         $kec = Kecamatan::where('web_kec', explode('//', request()->url(''))[1])->orwhere('web_alternatif', explode('//', request()->url(''))[1])->first();
+        if (!$kec) {
+            abort(404);
+        }
 
         $logo = '/assets/img/icon/favicon.png';
         if ($kec->logo) {
             $logo = '/storage/logo/' . $kec->logo;
         }
+
         return view('auth.login')->with(compact('kec', 'logo'));
     }
 
