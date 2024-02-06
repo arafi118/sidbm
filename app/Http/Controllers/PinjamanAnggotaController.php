@@ -254,8 +254,6 @@ class PinjamanAnggotaController extends Controller
         ]);
 
         $validate = Validator::make($data, [
-            'jumlah_penghapusan_pokok' => 'required',
-            'jumlah_penghapusan_jasa' => 'required',
             'tgl_penghapusan' => 'required',
         ]);
 
@@ -264,8 +262,8 @@ class PinjamanAnggotaController extends Controller
         }
 
         $tgl_penghapusan = Tanggal::tglNasional($request->tgl_penghapusan);
-        $hapus_pokok = str_replace(',', '', str_replace('.00', '', $request->jumlah_penghapusan_pokok));
-        $hapus_jasa = str_replace(',', '', str_replace('.00', '', $request->jumlah_penghapusan_jasa));
+        $hapus_pokok = floatval(str_replace(',', '', str_replace('.00', '', $request->jumlah_penghapusan_pokok ?: 0)));
+        $hapus_jasa = floatval(str_replace(',', '', str_replace('.00', '', $request->jumlah_penghapusan_jasa ?: 0)));
 
         Session::put('tgl_penghapusan', $tgl_penghapusan);
         Session::put('hapus_pokok', $hapus_pokok);
