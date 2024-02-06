@@ -9,8 +9,7 @@ class MenuController extends Controller
 {
     public function index()
     {
-        $menu = Menu::where('parent_id', '0')->with('child')->get();
-        dd($menu);
+        $menu = Menu::where('parent_id', '0')->with('child', 'child.child')->get();
 
         $title = 'Pengaturan Menu';
         return view('admin.menu.index')->with(compact('title'));
