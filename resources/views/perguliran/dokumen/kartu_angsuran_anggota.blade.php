@@ -420,7 +420,7 @@
                         <div>Lembar 2 : Arsip Lembaga</div>
                     </td>
                     <td style="font-weight: bold; font-size: 12px;" width="350" align="center">
-                        <div>{{ $kec->sebutan_level_1 }} {{ $kec->nama_lembaga_sort }}</div>
+                        <div>Nama Pemanfaat</div>
                     </td>
                     <td style="font-weight: bold; font-size: 12px;" width="350" align="center">Ketua Kelompok</td>
                 </tr>
@@ -429,7 +429,7 @@
                 </tr>
                 <tr style="font-weight: bold; font-size: 12px; text-transform: uppercase;">
                     <td width="350" align="center">
-                        <div>{{ $dir->namadepan }} {{ $dir->namabelakang }}</div>
+                        <div>{{ $pinj->anggota->namadepan }}</div>
                     </td>
                     <td width="350" align="center">
                         {{ $pinkel->kelompok->ketua }}
