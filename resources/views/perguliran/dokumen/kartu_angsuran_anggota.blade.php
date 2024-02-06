@@ -419,20 +419,20 @@
                         <div>Lembar 1 : Untuk Kelompok</div>
                         <div>Lembar 2 : Arsip Lembaga</div>
                     </td>
-                    <td style="font-weight: bold; font-size: 12px;" width="350" align="center">
-                        <div>Nama Pemanfaat</div>
-                    </td>
                     <td style="font-weight: bold; font-size: 12px;" width="350" align="center">Ketua Kelompok</td>
+                    <td style="font-weight: bold; font-size: 12px;" width="350" align="center">
+                        <div>Anggota Pemanfaat</div>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2" height="50"></td>
                 </tr>
                 <tr style="font-weight: bold; font-size: 12px; text-transform: uppercase;">
                     <td width="350" align="center">
-                        <div>{{ $pinj->anggota->namadepan }}</div>
+                        {{ $pinkel->kelompok->ketua }}
                     </td>
                     <td width="350" align="center">
-                        {{ $pinkel->kelompok->ketua }}
+                        <div>{{ $pinj->anggota->namadepan }}</div>
                     </td>
                 </tr>
                 <tr>
