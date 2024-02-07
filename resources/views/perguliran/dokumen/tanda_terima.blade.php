@@ -54,16 +54,16 @@
             <td>0</td>
         </tr>
     </table>
-    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; table-layout: fixed;">
         <tr style="background: rgb(232, 232, 232)">
-            <th width="3%" height="15">No</th>
-            <th width="15%">Nik</th>
-            <th width="22%">Nama Anggota</th>
-            <th width="3%">JK</th>
-            <th width="20%">Alamat</th>
-            <th width="12%">Penjamin</th>
-            <th width="12%">Pengajuan</th>
-            <th width="13%">Ttd</th>
+            <th class="t l b" width="3%" height="15">No</th>
+            <th class="t l b" width="18%">Nik</th>
+            <th class="t l b" width="22%">Nama Anggota</th>
+            <th class="t l b" width="3%">JK</th>
+            <th class="t l b" width="20%">Alamat</th>
+            <th class="t l b" width="12%">Penjamin</th>
+            <th class="t l b" width="12%">Pengajuan</th>
+            <th class="t l b r" width="10%">Ttd</th>
         </tr>
 
         @php
@@ -74,61 +74,68 @@
                 $no = $loop->iteration;
             @endphp
             <tr>
-                <td height="15" align="center">{{ $no }}</td>
-                <td>{{ $pa->anggota->nik }}</td>
-                <td>{{ $pa->anggota->namadepan }}</td>
-                <td align="center">{{ $pa->anggota->jk }}</td>
-                <td>{{ $pa->anggota->alamat }}</td>
-                <td>{{ $pa->anggota->penjamin }}</td>
-                <td align="right">{{ number_format($pa->alokasi) }}</td>
-                <td>{{ $no }}.</td>
+                <td class="t l b" height="15" align="center">{{ $no }}</td>
+                <td class="t l b">{{ $pa->anggota->nik }}</td>
+                <td class="t l b">{{ $pa->anggota->namadepan }}</td>
+                <td class="t l b" align="center">{{ $pa->anggota->jk }}</td>
+                <td class="t l b">{{ $pa->anggota->alamat }}</td>
+                <td class="t l b">{{ $pa->anggota->penjamin }}</td>
+                <td class="t l b" align="right">{{ number_format($pa->alokasi) }}</td>
+                <td class="t l b r">{{ $no }}.</td>
             </tr>
             @php
                 $alokasi += $pa->alokasi;
             @endphp
         @endforeach
 
-        <tr style="font-weight: bold;">
-            <td height="15" colspan="6" align="center">JUMLAH</td>
-            <td align="right">{{ number_format($alokasi) }}</td>
-            <td>&nbsp;</td>
-        </tr>
-    </table>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
-            <td colspan="4">&nbsp;</td>
-        </tr>
-        <tr>
-            <td width="60%">&nbsp;</td>
-            <td width="60">Diterima Di</td>
-            <td width="2">:</td>
-            <td>{{ substr($pinkel->wt_cair, 6) }}</td>
-        </tr>
-        <tr>
-            <td width="60%">&nbsp;</td>
-            <td width="60">Pada Tanggal</td>
-            <td width="2">:</td>
-            <td>{{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
-        </tr>
-    </table>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
-        <tr>
-            <td colspan="2" height="20">&nbsp;</td>
-        </tr>
-        <tr>
-            <td align="center" width="50%">Mengetahui,</td>
-            <td align="center" width="50%">&nbsp;</td>
-        </tr>
-        <tr>
-            <td align="center">{{ $kec->sebutan_level_1 }} {{ $kec->nama_lembaga_sort }}</td>
-            <td align="center">Ketua Kelompok</td>
-        </tr>
-        <tr>
-            <td align="center" colspan="2" height="30">&nbsp;</td>
-        </tr>
-        <tr style="font-weight: bold;">
-            <td align="center">{{ $dir->namadepan }} {{ $dir->namabelakang }}</td>
-            <td align="center">{{ $pinkel->kelompok->ketua }}</td>
+            <td colspan="8" style="padding: 0px !important;">
+                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 11px; table-layout: fixed;">
+                    <tr style="font-weight: bold;">
+                        <td class="t l b" height="15" width="78%" align="center">JUMLAH</td>
+                        <td class="t l b" align="right" width="12%">{{ number_format($alokasi) }}</td>
+                        <td class="t l b r" width="10%">&nbsp;</td>
+                    </tr>
+                </table>
+
+                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 11px;">
+                    <tr>
+                        <td width="60%">&nbsp;</td>
+                        <td width="60">Diterima Di</td>
+                        <td width="2">:</td>
+                        <td>{{ substr($pinkel->wt_cair, 6) }}</td>
+                    </tr>
+                    <tr>
+                        <td width="60%">&nbsp;</td>
+                        <td width="60">Pada Tanggal</td>
+                        <td width="2">:</td>
+                        <td>{{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
+                    </tr>
+                </table>
+                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 11px;">
+                    <tr>
+                        <td colspan="2" height="10">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center" width="50%">Mengetahui,</td>
+                        <td align="center" width="50%">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center">{{ $kec->sebutan_level_1 }} {{ $kec->nama_lembaga_sort }}</td>
+                        <td align="center">Ketua Kelompok</td>
+                    </tr>
+                    <tr>
+                        <td align="center" colspan="2" height="30">&nbsp;</td>
+                    </tr>
+                    <tr style="font-weight: bold;">
+                        <td align="center">{{ $dir->namadepan }} {{ $dir->namabelakang }}</td>
+                        <td align="center">{{ $pinkel->kelompok->ketua }}</td>
+                    </tr>
+                </table>
+            </td>
         </tr>
     </table>
 @endsection

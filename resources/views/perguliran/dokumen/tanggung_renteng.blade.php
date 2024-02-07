@@ -54,7 +54,7 @@
                     kewajibannya sesuai jadwal angsuran yang ditetapkan, maka masing-masing pemanfaat dalam kedudukan
                     sebagai pribadi anggota kelompok, secara sadar dan penuh tanggung jawab menyatakan :
 
-                    <ol>
+                    <ol style="margin-bottom: 0; padding-bottom: 0;">
                         <li>
                             Memberikan kuasa kepada ketua kelompok untuk menarik tabungan anggota yang dikelola
                             kelompok guna melunasi tunggakan angsuran, apabila terjadi tunggakan angsuran dari satu,
@@ -78,47 +78,55 @@
                             terhadap pernyataan ini.
                         </li>
                     </ol>
-
-                    Demikian surat pernyataan Kesanggupan Tanggung Renteng ini dibuat dengan penuh kesadaran dan
-                    tanpa paksaan dari pihak manapun serta untuk dipergunakan dan/atau dilaksanakan sebagaimana mestinya.
                 </div>
             </td>
         </tr>
         <tr>
-            <td colspan="2" height="20">&nbsp;</td>
-        </tr>
-        <tr>
-            <td width="50%">&nbsp;</td>
-            <td width="50%" align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
-        </tr>
-        <tr>
-            <td colspan="2">&nbsp;</td>
-        </tr>
-        <tr>
-            <td align="center">Mengetahui,</td>
-            <td align="center">Dikuatkan Oleh,</td>
-        </tr>
-        <tr>
-            <td align="center">
-                {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }}
-            </td>
-            <td align="center">Ketua Kelompok {{ $pinkel->kelompok->nama_kelompok }}</td>
-        </tr>
-        <tr>
-            <td colspan="2" height="50">&nbsp;</td>
-        </tr>
-        <tr>
-            <td align="center">
-                <b>{{ $pinkel->kelompok->d->kades }}</b>
-                @if ($pinkel->kelompok->d->nip)
-                    <div><small>NIP. {{ $pinkel->kelompok->d->nip }}</small></div>
-                @endif
-            </td>
-            <td align="center">
-                <b>{{ $pinkel->kelompok->ketua }}</b>
-                @if ($pinkel->kelompok->d->nip)
-                    <div>&nbsp;</div>
-                @endif
+            <td colspan="2" style="padding: 0px !important;">
+                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 11px;">
+                    <tr>
+                        <td colspan="2" style="padding-top: 0px;">
+                            <div style="text-align: justify;">
+                                Demikian surat pernyataan Kesanggupan Tanggung Renteng ini dibuat dengan penuh kesadaran dan
+                                tanpa paksaan dari pihak manapun serta untuk dipergunakan dan/atau dilaksanakan sebagaimana
+                                mestinya.
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%">&nbsp;</td>
+                        <td width="50%" align="center">{{ $kec->nama_kec }},
+                            {{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
+                    </tr>
+                    <tr>
+                        <td align="center">Mengetahui,</td>
+                        <td align="center">Dikuatkan Oleh,</td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }}
+                        </td>
+                        <td align="center">Ketua Kelompok {{ $pinkel->kelompok->nama_kelompok }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" height="50">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <b>{{ $pinkel->kelompok->d->kades }}</b>
+                            @if ($pinkel->kelompok->d->nip)
+                                <div><small>NIP. {{ $pinkel->kelompok->d->nip }}</small></div>
+                            @endif
+                        </td>
+                        <td align="center">
+                            <b>{{ $pinkel->kelompok->ketua }}</b>
+                            @if ($pinkel->kelompok->d->nip)
+                                <div>&nbsp;</div>
+                            @endif
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
