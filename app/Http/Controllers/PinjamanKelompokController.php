@@ -1396,13 +1396,15 @@ class PinjamanKelompokController extends Controller
             'kelompok.d.sebutan_desa',
             'pinjaman_anggota',
             'pinjaman_anggota.anggota',
-            'pinjaman_anggota.pinj_ang' => function ($query) use ($data, $id) {
+            'sis_pokok',
+            'user',
+            'pinkel' => function ($query) use ($data, $id) {
                 $query->where([
-                    ['id_pinkel', '!=', $id]
+                    ['id', '!=', $id]
                 ]);
             },
-            'sis_pokok',
-            'user'
+            'pinkel.pinjaman_anggota',
+            'pinkel.pinjaman_anggota.anggota'
         ])->first();
 
         $data['user'] = User::where([

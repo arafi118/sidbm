@@ -113,4 +113,9 @@ class PinjamanKelompok extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function pinkel()
+    {
+        return $this->hasOne(PinjamanKelompok::class, 'id_kel', 'id_kel')->orderBy('tgl_cair', 'DESC');
+    }
 }
