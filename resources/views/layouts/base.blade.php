@@ -80,6 +80,12 @@
             left: 0;
             transition: width 0.3s ease;
         }
+
+        #html5-qrcode-anchor-scan-type-change,
+        #html5-qrcode-button-camera-stop,
+        #html5-qrcode-button-camera-start {
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -91,6 +97,7 @@
 
         <div class="container-fluid py-3">
             @yield('content')
+
             <footer class="footer py-4  ">
                 <div class="container-fluid">
                     <div class="row align-items-center justify-content-lg-between">
@@ -212,6 +219,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
     <script src="/assets/js/core/popper.min.js"></script>
     <script src="/assets/js/core/bootstrap.min.js"></script>
@@ -221,6 +229,7 @@
     <script src="/assets/js/plugins/sweetalert.min.js"></script>
     <script src="/assets/js/plugins/flatpickr.min.js"></script>
     <script src="/assets/js/plugins/chartjs.min.js"></script>
+    <script src="/assets/js/html5-qrcode.js?v={{ time() }}"></script>
     <script src="{{ asset('vendor/tinymce/tinymce.min.js') }}"></script>
 
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>

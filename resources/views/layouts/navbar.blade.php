@@ -20,7 +20,7 @@
     id="navbarBlur" data-scroll="true">
     <div class="container-fluid py-1 px-3">
         <div class="sidenav-toggler sidenav-toggler-inner d-xl-block d-none ">
-            <a href="javascript:;" class="nav-link text-body p-0" onclick="navbarMinimize(this)">
+            <a href="javascript:;" class="nav-link text-body p-0" onclick="navbarMinimize(this)" checked="true">
                 <div class="sidenav-toggler-inner">
                     <i class="sidenav-toggler-line"></i>
                     <i class="sidenav-toggler-line"></i>
@@ -28,24 +28,33 @@
                 </div>
             </a>
         </div>
+        <div class="ms-md-3 pe-md-3 d-flex align-items-center w-100">
+            @if (Session::get('angsuran') == true)
+                <div class="input-group input-group-outline">
+                    <label class="form-label">Cari Kelompok</label>
+                    @if (Request::get('pinkel'))
+                        <input type="text" id="cariKelompok" name="cariKelompok" class="form-control"
+                            autocomplete="off"
+                            value="{{ $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] [' . $pinkel->kelompok->ketua . ']' }}">
+                    @else
+                        <input type="text" id="cariKelompok" name="cariKelompok" class="form-control"
+                            autocomplete="off">
+                    @endif
+                </div>
+            @endif
+        </div>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 justify-content-between" id="navbar">
-            <div class="ms-md-3 pe-md-3 d-flex align-items-center w-100">
-                @if (Session::get('angsuran') == true)
-                    <div class="input-group input-group-outline">
-                        <label class="form-label">Cari Kelompok</label>
-                        @if (Request::get('pinkel'))
-                            <input type="text" id="cariKelompok" name="cariKelompok" class="form-control"
-                                autocomplete="off"
-                                value="{{ $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] [' . $pinkel->kelompok->ketua . ']' }}">
-                        @else
-                            <input type="text" id="cariKelompok" name="cariKelompok" class="form-control"
-                                autocomplete="off">
-                        @endif
-                    </div>
-                @endif
-            </div>
             <ul class="navbar-nav justify-content-end align-items-center">
                 <li class="nav-item">
+                    <a href="#" class="nav-link text-body p-0 position-relative" id="btnScanKartu"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Scan Kartu Angsuran"
+                        data-container="body" data-animation="true">
+                        <i class="material-icons me-sm-1">
+                            search
+                        </i>
+                    </a>
+                </li>
+                <li class="nav-item ps-3">
                     <a href="#" class="nav-link text-body p-0 position-relative" target="_blank"
                         id="btnLaporanPelunasan" data-bs-toggle="tooltip" data-bs-placement="top" title="Reminder"
                         data-container="body" data-animation="true">
@@ -153,3 +162,24 @@
     <input type="hidden" name="laporan" id="laporan" value="pelunasan">
     <input type="hidden" name="sub_laporan" id="sub_laporan" value="">
 </form>
+
+<div class="modal fade" id="scanQrCode" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="scanQrCodeLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="scanQrCodeLabel">
+                    Scan Kartu Angsuran
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="reader"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-info" id="stopScan">Stop</button>
+                <button type="button" class="btn btn-sm btn-danger" id="scanQrCodeClose">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

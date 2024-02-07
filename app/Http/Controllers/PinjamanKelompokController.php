@@ -1795,7 +1795,7 @@ class PinjamanKelompokController extends Controller
                 $query->where('angsuran_ke', '!=', '0');
             }
         ])->withCount('real')->first();
-        $data['barcode'] = DNS1D::getBarcodePNG($data['pinkel']->kelompok->kd_kelompok, 'C128');
+        $data['barcode'] = DNS1D::getBarcodePNG($data['pinkel']->id, 'C128');
 
         $data['dir'] = User::where([
             ['lokasi', auth()->user()->lokasi],
@@ -1826,7 +1826,7 @@ class PinjamanKelompokController extends Controller
             $rencana[$pinj->id] = $this->generate($id, $data['pinkel'], $pinj->alokasi, $pinj->tgl_cair)->getData()->rencana;
         }
         $data['rencana'] = $rencana;
-        $data['barcode'] = DNS1D::getBarcodePNG($data['pinkel']->kelompok->kd_kelompok, 'C128');
+        $data['barcode'] = DNS1D::getBarcodePNG($data['pinkel']->id, 'C128');
 
         $data['dir'] = User::where([
             ['lokasi', auth()->user()->lokasi],
