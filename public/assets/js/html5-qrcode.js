@@ -21,6 +21,8 @@ $(document).on('click', '#btnScanKartu', function (e) {
         if (scanningEnabled) {
             if (result.length >= 10) {
                 Swal.fire('Error', 'Sepertinya kartu angsuran yang anda punya bukan yang terbaru. Silahkan cetak ulang kartu angsuran anda', 'error')
+                $('#html5-qrcode-button-camera-stop').trigger('click')
+                $('#stopScan').html('Scan Ulang')
             } else {
                 window.location.href = '/transaksi/jurnal_angsuran?pinkel=' + result
             }
