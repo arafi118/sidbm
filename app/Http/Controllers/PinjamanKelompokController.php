@@ -357,7 +357,9 @@ class PinjamanKelompokController extends Controller
             },
             'pinjaman_anggota.pinjaman.pinkel',
             'pinjaman_anggota.pinjaman.kelompok',
-            'pinjaman_anggota.pinjaman.anggota'
+            'pinjaman_anggota.pinjaman.anggota',
+            'real',
+            'real.transaksi'
         ])->where('id', $perguliran->id)->first();
         $jenis_jasa = JenisJasa::all();
         $sistem_angsuran = SistemAngsuran::all();

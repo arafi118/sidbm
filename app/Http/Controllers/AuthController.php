@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kecamatan;
 use App\Models\Menu;
 use App\Models\User;
+use App\Utils\Keuangan;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
@@ -14,7 +15,9 @@ class AuthController extends Controller
 {
     public function index()
     {
-        if (request()->getHost() == 'master.sidbm.net') {
+        $keuangan = new Keuangan;
+
+        if ($keuangan->startWith(request()->getHost(), 'master.sidbm')) {
             return redirect('/master');
         }
 

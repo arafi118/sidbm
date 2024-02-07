@@ -24,4 +24,9 @@ class RealAngsuran extends Model
     {
         return $this->hasMany(Transaksi::class, 'idtp', 'id');
     }
+
+    public function transaksi()
+    {
+        return $this->hasOne(Transaksi::class, 'idtp', 'id');
+    }
 }

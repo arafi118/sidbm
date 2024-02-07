@@ -272,6 +272,7 @@
                         <th>Pokok</th>
                         <th>Jasa</th>
                         <th>Saldo Pokok</th>
+                        <th>#</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -282,6 +283,32 @@
                             <td>{{ number_format($real->realisasi_pokok) }}</td>
                             <td>{{ number_format($real->realisasi_jasa) }}</td>
                             <td>{{ number_format($real->saldo_pokok) }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button"
+                                        data-action="/transaksi/angsuran/struk/{{ $real->transaksi->idtp }}"
+                                        class="btn btn-linkedin btn-icon-only btn-tooltip btn-link"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Struk"
+                                        data-container="body" data-animation="true">
+                                        <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
+                                    </button>
+                                    <button type="button"
+                                        data-action="/transaksi/angsuran/struk_matrix/{{ $real->transaksi->idtp }}"
+                                        class="btn btn-linkedin btn-icon-only btn-tooltip btn-link"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Struk Dot Matrix"
+                                        data-container="body" data-animation="true">
+                                        <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
+                                    </button>
+                                    <button type="button"
+                                        data-action="/transaksi/dokumen/bkm_angsuran/{{ $real->transaksi->idt }}"
+                                        class="btn btn-instagram btn-icon-only btn-tooltip btn-link"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="bkm"
+                                        data-container="body" data-animation="true">
+                                        <span class="btn-inner--icon"><i
+                                                class="fas fa-file-circle-exclamation"></i></span>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

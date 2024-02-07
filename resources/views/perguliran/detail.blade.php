@@ -1156,6 +1156,12 @@
             })
         })
 
+        $(document).on('click', '.btn-link', function(e) {
+            var action = $(this).attr('data-action')
+
+            open_window(action)
+        })
+
         $(".money").maskMoney();
     </script>
 @endsection
