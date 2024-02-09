@@ -151,6 +151,7 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
         }
 
         // Loop Jangka Untuk Membuat Rencana Angsuran
+        $alokasi_pokok = $alokasi;
         for ($ke = 1; $ke <= $pk['jangka']; $ke++) {
 
             $tgl = explode('-', $tgl_cair);
@@ -215,7 +216,7 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
 
             $sajasa = $sijasa['sistem'];
             $temjasa = @($jangka / $sajasa);
-            $satuanwajas = bulatkan($alokasi * ($pros_jasa / 100) * $sajasa);
+            $satuanwajas = bulatkan($alokasi_pokok * ($pros_jasa / 100) * $sajasa);
             if ($ke % $sajasa == 0) {
                 $wajas = $satuanwajas;
             } else {
@@ -225,6 +226,11 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
             if ($ke == $jangka) {
                 $sumj = $wajas * ($ke / $sajasa - 1);
                 $wajas = bulatkan($alokasi * ($pk['pros_jasa'] / 100)) - $sumj;
+            }
+
+            if ($pk['jenis_jasa'] == '2') {
+                $angsuran_jasa = $wajas;
+                $alokasi_pokok -= $wapok;
             }
 
             $tarp = $tarp + $wapok;

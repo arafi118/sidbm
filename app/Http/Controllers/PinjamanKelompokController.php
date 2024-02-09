@@ -2078,6 +2078,7 @@ class PinjamanKelompokController extends Controller
             }
         }
 
+        $jenis_jasa = $pinkel->jenis_jasa;
         $jangka = $pinkel->jangka;
         $sa_pokok = $pinkel->sistem_angsuran;
         $sa_jasa = $pinkel->sa_jasa;
@@ -2147,10 +2148,11 @@ class PinjamanKelompokController extends Controller
             $ra[$i]['pokok'] = $angsuran_pokok;
         }
 
+        $alokasi_pokok = $alokasi;
         for ($j = 1; $j <= $jangka; $j++) {
             $sisa = $j % $sistem_jasa;
             $ke = $j / $sistem_jasa;
-            $alokasi_jasa = $alokasi * ($pros_jasa / 100);
+            $alokasi_jasa = $alokasi_pokok * ($pros_jasa / 100);
             $wajib_jasa = Keuangan::pembulatan($alokasi_jasa / $tempo_jasa, (string) $kec->pembulatan);
             $sum_jasa = $wajib_jasa * ($tempo_jasa - 1);
 
@@ -2160,6 +2162,11 @@ class PinjamanKelompokController extends Controller
                 $angsuran_jasa = $alokasi_jasa - $sum_jasa;
             } else {
                 $angsuran_jasa = 0;
+            }
+
+            if ($jenis_jasa == '2') {
+                $angsuran_jasa = $wajib_jasa;
+                $alokasi_pokok -= $ra[$j]['pokok'];
             }
 
             $ra[$j]['jasa'] = $angsuran_jasa;

@@ -29,6 +29,9 @@
     $saldo_pokok = $alokasi;
     $alokasi_pinjaman = $alokasi;
     $saldo_jasa = ($saldo_pokok * $pinkel->pros_jasa) / 100;
+
+    $sum_pokok = 0;
+    $sum_jasa = 0;
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
@@ -121,6 +124,13 @@
                 $jumlah_angsuran += $wajib_angsur;
                 $saldo_pokok -= $ra->wajib_pokok;
                 $saldo_jasa -= $ra->wajib_jasa;
+
+                if ($pinkel->jenis_jasa == '2') {
+                    $saldo_jasa = ($saldo_pokok * $pinkel->pros_jasa) / 100;
+                }
+
+                $sum_pokok += $ra->wajib_pokok;
+                $sum_jasa += $ra->wajib_jasa;
             @endphp
             <tr>
                 <td class="l" align="center">{{ $ra->angsuran_ke }}</td>
@@ -140,9 +150,9 @@
                     style="font-size: 11px; table-layout: fixed;">
                     <tr style="font-weight: bold;">
                         <td class="l t b" width="18%" height="15" align="center" colspan="2">Jumlah</td>
-                        <td class="l t b" width="13%" align="right">{{ number_format($alokasi) }}</td>
+                        <td class="l t b" width="13%" align="right">{{ number_format($sum_pokok) }}</td>
                         <td class="l t b" width="13%" align="right">
-                            {{ number_format(($alokasi * $pinkel->pros_jasa) / 100) }}
+                            {{ number_format($sum_jasa) }}
                         </td>
                         <td class="l t b" width="15%" align="right">{{ number_format($jumlah_angsuran) }}</td>
                         <td class="l t b" width="15%" align="right">{{ number_format($jumlah_angsuran) }}</td>

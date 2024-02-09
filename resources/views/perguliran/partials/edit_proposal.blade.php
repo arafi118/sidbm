@@ -97,6 +97,12 @@
             </div>
         </div>
     </div>
+
+    <div class="card">
+        <div class="card-body p-2">
+            <div class="d-none d-sm-block p-4"></div>
+        </div>
+    </div>
 </form>
 
 <script>
