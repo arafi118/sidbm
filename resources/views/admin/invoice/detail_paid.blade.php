@@ -1,6 +1,12 @@
 @extends('admin.layout.base')
 
 @section('content')
+    <div class="alert alert-info text-white fw-bold">
+        #Invoice{{ $invoice->id }} - {{ $invoice->kec->id }} {{ $invoice->kec->nama_kec }} -
+        {{ $invoice->kec->kabupaten->nama_kab }} {{ $invoice->tgl_lunas }}
+        Rp. {{ number_format($invoice->jumlah) }}
+    </div>
+
     <div class="row">
         <div class="col-lg-8 mb-4">
             <div class="card">
