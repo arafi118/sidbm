@@ -1476,7 +1476,7 @@ class PinjamanKelompokController extends Controller
 
     public function rencanaAngsuran($id, $data)
     {
-        if (request()->get('status') == 'A') {
+        if (request()->get('status') == 'A' || request()->get('status') == 'W') {
             $data['rencana'] = RencanaAngsuran::where([
                 ['loan_id', $id],
                 ['angsuran_ke', '!=', '0']
