@@ -15,7 +15,8 @@
         $jumlah += 1;
     }
 
-    $path = explode('/', Request::path())[0];
+    $path = explode('/', Request::path());
+    $show = ((in_array('perguliran', $path) ? false : in_array('detail', $path)) ? false : in_array('kelompok', $path)) ? true : false;
 @endphp
 
 <nav class="navbar navbar-main navbar-expand-lg position-sticky mt-4 top-1 px-0 mx-4 shadow-none border-radius-xl z-index-sticky"
@@ -31,7 +32,7 @@
             </a>
         </div>
         <div class="ms-md-3 pe-md-3 d-flex align-items-center w-100">
-            @if (Session::get('angsuran') == true)
+            @if (Session::get('angsuran') == true && !$show)
                 <div class="input-group input-group-outline">
                     <label class="form-label">Cari Kelompok</label>
                     @if (Request::get('pinkel'))
@@ -47,7 +48,7 @@
         </div>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 justify-content-between" id="navbar">
             <ul class="navbar-nav justify-content-end align-items-center">
-                @if (Session::get('angsuran') == true)
+                @if (Session::get('angsuran') == true && !$show)
                     <li class="nav-item">
                         <a href="#" class="nav-link text-body p-0 position-relative" id="btnScanKartu"
                             data-bs-toggle="tooltip" data-bs-placement="top" title="Scan Kartu Angsuran"
