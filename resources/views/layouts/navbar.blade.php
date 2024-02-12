@@ -14,6 +14,8 @@
     if (!$tanggal) {
         $jumlah += 1;
     }
+
+    $path = explode('/', Request::path())[0];
 @endphp
 
 <nav class="navbar navbar-main navbar-expand-lg position-sticky mt-4 top-1 px-0 mx-4 shadow-none border-radius-xl z-index-sticky"

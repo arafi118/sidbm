@@ -34,7 +34,7 @@
                 if ($dot == '.') {
                     $bg = '150, 150, 150';
                 } else {
-                    $bg = '100, 100, 100';
+                    $bg = '128, 128, 128';
                 }
 
                 $section = false;
@@ -107,7 +107,7 @@
                 @php
                     $total1 = $array_saldo[0] - ($array_saldo[1] + $array_saldo[2]);
                 @endphp
-                <tr style="background: rgb(100, 100, 100)">
+                <tr style="background: rgb(128, 128, 128)">
                     <td align="center">&nbsp;</td>
                     <td>Kas Bersih yang diperoleh dari aktivitas Operasi (A-B-C)</td>
                     <td align="right">{{ number_format($array_saldo[0] - ($array_saldo[1] + $array_saldo[2]), 2) }}</td>
@@ -118,7 +118,7 @@
                 @php
                     $total2 = $array_saldo[3] - $array_saldo[4];
                 @endphp
-                <tr style="background: rgb(100, 100, 100)">
+                <tr style="background: rgb(128, 128, 128)">
                     <td align="center">&nbsp;</td>
                     <td>Kas Bersih yang diperoleh dari aktivitas Investasi (A-B)</td>
                     <td align="right">{{ number_format($array_saldo[3] - $array_saldo[4], 2) }}</td>
@@ -129,7 +129,7 @@
                 @php
                     $total3 = $array_saldo[5] - $array_saldo[6];
                 @endphp
-                <tr style="background: rgb(100, 100, 100)">
+                <tr style="background: rgb(128, 128, 128)">
                     <td align="center">&nbsp;</td>
                     <td>Kas Bersih yang diperoleh dari aktivitas Pendanaan (A-B)</td>
                     <td align="right">{{ number_format($array_saldo[5] - $array_saldo[6], 2) }}</td>
@@ -141,12 +141,12 @@
             <td colspan="3" style="padding: 0px !important;">
                 <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                     style="font-size: 11px;">
-                    <tr style="background: rgb(100, 100, 100)">
+                    <tr style="background: rgb(128, 128, 128)">
                         <td width="5%" align="center">&nbsp;</td>
                         <td width="80%">Kenaikan (Penurunan) Kas</td>
                         <td width="15%" align="right">{{ number_format($total1 + $total2 + $total3, 2) }}</td>
                     </tr>
-                    <tr style="background: rgb(100, 100, 100)">
+                    <tr style="background: rgb(128, 128, 128)">
                         <td align="center">&nbsp;</td>
                         <td>SALDO AKHIR KAS SETARA KAS</td>
                         <td align="right">{{ number_format($total1 + $total2 + $total3 + $saldo_bulan_lalu, 2) }}</td>
