@@ -225,7 +225,7 @@ if (isset($_GET['lokasi']) && isset($_GET['where'])) {
 
             if ($ke == $jangka) {
                 $sumj = $wajas * ($ke / $sajasa - 1);
-                $wajas = bulatkan($alokasi * ($pk['pros_jasa'] / 100)) - $sumj;
+                $wajas = bulatkan($alokasi_pokok * ($pk['pros_jasa'] / 100)) - $sumj;
             }
 
             if ($pk['jenis_jasa'] == '2') {
