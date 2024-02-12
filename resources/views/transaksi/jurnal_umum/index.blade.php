@@ -174,9 +174,9 @@
                     <div id="LayoutdetailTransaksi"></div>
                 </div>
                 <div class="modal-footer">
-                    {{-- <button type="button" id="BtnCetakBuktiTransaksi" class="btn btn-sm btn-info">
+                    <button type="button" id="BtnCetakBuktiTransaksi" class="btn btn-sm btn-info">
                         Cetak Bukti Transaksi
-                    </button> --}}
+                    </button>
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>

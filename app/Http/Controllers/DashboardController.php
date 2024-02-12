@@ -791,7 +791,7 @@ class DashboardController extends Controller
         $tahun = request()->get('tahun') ?: date('Y');
         $bulan = request()->get('bulan') ?: date('m');
 
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('desa')->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('desa')->first();
 
         $data_id = [];
         $saldo = [];

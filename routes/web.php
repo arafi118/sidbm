@@ -37,6 +37,7 @@ Route::post('/master/login', [AdminAuthController::class, 'login'])->middleware(
 
 Route::group(['prefix' => 'master', 'as' => 'master.', 'middleware' => 'master'], function () {
     Route::get('/', [AdminController::class, 'index']);
+    Route::get('/simpan_saldo', [DashboardController::class, 'simpanSaldo']);
 
     Route::get('/kecamatan/{kd_prov}/{kd_kab}/{kd_kec}', [AdminController::class, 'kecamatan']);
 
@@ -68,6 +69,7 @@ Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 Route::get('/pelaporan', [PelaporanController::class, 'index'])->middleware('basic');
 Route::get('/pelaporan/sub_laporan/{file}', [PelaporanController::class, 'subLaporan'])->middleware('basic');
 Route::post('/pelaporan/preview', [PelaporanController::class, 'preview'])->middleware('basic');
+Route::post('/pelaporan/preview/{lokasi?}', [PelaporanController::class, 'preview'])->middleware('basic');
 
 Route::get('/pelaporan/mou', [PelaporanController::class, 'mou'])->middleware('auth');
 Route::get('/pelaporan/ts', [PelaporanController::class, 'ts'])->middleware('auth');

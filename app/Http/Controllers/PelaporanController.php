@@ -103,8 +103,12 @@ class PelaporanController extends Controller
         return view('pelaporan.partials.sub_laporan')->with(compact('file'));
     }
 
-    public function preview(Request $request)
+    public function preview(Request $request, $lokasi = null)
     {
+        if ($lokasi != null) {
+            Session::put('lokasi', $lokasi);
+        }
+
         $data = $request->only([
             'tahun',
             'bulan',

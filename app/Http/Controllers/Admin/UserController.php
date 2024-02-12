@@ -22,12 +22,12 @@ class UserController extends Controller
                         return '';
                     }
 
-                    $kec = $row->kec->sebutan_kec . ' ' . $row->kec->nama_kec;
+                    $kec = $row->kec->nama_kec;
                     if ($row->kec->kabupaten) {
                         if (Keuangan::startWith($row->kec->kabupaten->nama_kab, 'KOTA') || Keuangan::startWith($row->kec->kabupaten->nama_kab, 'KAB')) {
-                            $kec .= ' ' . ucwords(strtolower($row->kec->kabupaten->nama_kab));
+                            $kec .= ', ' . ucwords(strtolower($row->kec->kabupaten->nama_kab));
                         } else {
-                            $kec .= ' Kabupaten ' . ucwords(strtolower($row->kec->kabupaten->nama_kab));
+                            $kec .= ', Kab. ' . ucwords(strtolower($row->kec->kabupaten->nama_kab));
                         }
                     }
 

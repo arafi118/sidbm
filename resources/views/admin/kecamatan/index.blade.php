@@ -6,9 +6,17 @@
 
 @section('content')
     <div class="card mb-3">
-        <div class="card-body pb-0">
+        <div class="card-header pt-3">
+            <div>
+                {{ strtoupper($kec->nama_lembaga_long) }}
+            </div>
+            <div class="fw-bold">
+                <small>{{ strtoupper($nama_kec) }}</small>
+            </div>
+        </div>
+        <div class="card-body pt-0 pb-0">
 
-            <form action="/pelaporan/preview" method="post" id="FormPelaporan" target="_blank">
+            <form action="/pelaporan/preview/{{ $kec->id }}" method="post" id="FormPelaporan" target="_blank">
                 @csrf
                 <div class="row">
                     <div class="col-md-4">
@@ -95,6 +103,7 @@
             </form>
 
             <div class="d-flex justify-content-end">
+                <button type="button" id="SimpanSaldo" class="btn btn-sm btn-danger me-2">Simpan Saldo</button>
                 <button type="button" id="Excel" class="btn btn-sm btn-success me-2">Excel</button>
                 <button type="button" id="Preview" class="btn btn-sm btn-github">Preview</button>
             </div>
@@ -179,6 +188,31 @@
             console.log(form.serialize())
             if (file != '') {
                 form.submit()
+            }
+        })
+
+        let childWindow, loading;
+        $(document).on('click', '#SimpanSaldo', function(e) {
+            e.preventDefault()
+
+            var tahun = $('select#tahun').val()
+            loading = Swal.fire({
+                title: "Mohon Menunggu..",
+                html: "Menyimpan Saldo Januari sampai Desember Th. " + tahun,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            })
+
+            childWindow = window.open('/master/simpan_saldo?bulan=00&tahun=' + tahun, '_blank');
+        })
+
+        window.addEventListener('message', function(event) {
+            if (event.data === 'closed') {
+                loading.close()
+                window.location.reload()
             }
         })
     </script>
