@@ -45,15 +45,17 @@
         </div>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 justify-content-between" id="navbar">
             <ul class="navbar-nav justify-content-end align-items-center">
-                <li class="nav-item">
-                    <a href="#" class="nav-link text-body p-0 position-relative" id="btnScanKartu"
-                        data-bs-toggle="tooltip" data-bs-placement="top" title="Scan Kartu Angsuran"
-                        data-container="body" data-animation="true">
-                        <i class="material-icons me-sm-1">
-                            search
-                        </i>
-                    </a>
-                </li>
+                @if (Session::get('angsuran') == true)
+                    <li class="nav-item">
+                        <a href="#" class="nav-link text-body p-0 position-relative" id="btnScanKartu"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="Scan Kartu Angsuran"
+                            data-container="body" data-animation="true">
+                            <i class="material-icons me-sm-1">
+                                search
+                            </i>
+                        </a>
+                    </li>
+                @endif
                 <li class="nav-item ps-3">
                     <a href="#" class="nav-link text-body p-0 position-relative" target="_blank"
                         id="btnLaporanPelunasan" data-bs-toggle="tooltip" data-bs-placement="top" title="Reminder"
