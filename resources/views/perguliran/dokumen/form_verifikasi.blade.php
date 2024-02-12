@@ -2,11 +2,13 @@
     use App\Utils\Tanggal;
 
     $data_nia = [];
-    foreach ($pinkel->pinkel->pinjaman_anggota as $pinj) {
-        $data_nia[$pinj->nia] = [
-            'nama' => $pinj->anggota->namadepan,
-            'alokasi' => $pinj->alokasi,
-        ];
+    if ($pinkel->pinkel) {
+        foreach ($pinkel->pinkel->pinjaman_anggota as $pinj) {
+            $data_nia[$pinj->nia] = [
+                'nama' => $pinj->anggota->namadepan,
+                'alokasi' => $pinj->alokasi,
+            ];
+        }
     }
 @endphp
 
