@@ -54,7 +54,7 @@ class PinjamanAnggotaController extends Controller
 
             $data_pemanfaat = DataPemanfaat::where([
                 ['nik', request()->get('value')],
-                ['lokasi', '!=', auth()->user()->lokasi]
+                ['lokasi', '!=', Session::get('lokasi')]
             ])->where(function (Builder $query) {
                 $query->where('status', 'P')->orwhere('status', 'V')->orwhere('status', 'W');
             });
@@ -63,7 +63,7 @@ class PinjamanAnggotaController extends Controller
 
             $data_pemanfaat_a = DataPemanfaat::where([
                 ['nik', request()->get('value')],
-                ['lokasi', '!=', auth()->user()->lokasi]
+                ['lokasi', '!=', Session::get('lokasi')]
             ])->where('status', 'A');
             $jumlah_data_pemanfaat_a = $data_pemanfaat_a->count();
             $data_pemanfaat_a = $data_pemanfaat_a->with('sts', 'kec')->first();
@@ -146,7 +146,7 @@ class PinjamanAnggotaController extends Controller
 
         $pinjaman_anggota = PinjamanAnggota::create($insert);
         $data_pemanfaat = DataPemanfaat::create([
-            'lokasi' => auth()->user()->lokasi,
+            'lokasi' => Session::get('lokasi'),
             'nik' => $anggota->nik,
             'id_pinkel' => $insert['id_pinkel'],
             'idpa' => $pinjaman_anggota->id,
@@ -433,7 +433,7 @@ class PinjamanAnggotaController extends Controller
             PinjamanAnggota::where('id', $id)->delete();
             DataPemanfaat::where([
                 ['idpa', $id],
-                ['lokasi', auth()->user()->lokasi]
+                ['lokasi', Session::get('lokasi')]
             ])->delete();
 
             return response()->json([

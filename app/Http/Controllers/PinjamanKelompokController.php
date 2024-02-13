@@ -199,9 +199,9 @@ class PinjamanKelompokController extends Controller
     public function lunas()
     {
         if (request()->ajax()) {
-            $tb_pinkel = 'pinjaman_kelompok_' . auth()->user()->lokasi;
+            $tb_pinkel = 'pinjaman_kelompok_' . Session::get('lokasi');
             $pinkel = PinjamanKelompok::where('status', 'A')
-                ->whereRaw($tb_pinkel . '.alokasi<=(SELECT SUM(realisasi_pokok) FROM real_angsuran_' . auth()->user()->lokasi . ' WHERE loan_id=' . $tb_pinkel . '.id)')
+                ->whereRaw($tb_pinkel . '.alokasi<=(SELECT SUM(realisasi_pokok) FROM real_angsuran_' . Session::get('lokasi') . ' WHERE loan_id=' . $tb_pinkel . '.id)')
                 ->with('kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
 
             return DataTables::of($pinkel)
@@ -256,7 +256,7 @@ class PinjamanKelompokController extends Controller
     public function register($id_kel)
     {
         $kelompok = Kelompok::where('id', $id_kel)->first();
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $jenis_jasa = JenisJasa::all();
         $sistem_angsuran = SistemAngsuran::all();
         $jenis_pp = JenisProdukPinjaman::where('lokasi', '0')->get();
@@ -348,7 +348,7 @@ class PinjamanKelompokController extends Controller
             'pinjaman_anggota.anggota.pemanfaat' => function ($query) {
                 $query->where([
                     ['status', 'A'],
-                    ['lokasi', '!=', auth()->user()->lokasi]
+                    ['lokasi', '!=', Session::get('lokasi')]
                 ]);
             },
             'pinjaman_anggota.anggota.pemanfaat.kec',
@@ -443,9 +443,9 @@ class PinjamanKelompokController extends Controller
         $title = 'Cetak Keterangan Pelunasan ' . $perguliran->kelompok->nama_kelompok;
         $real = RealAngsuran::where('loan_id', $perguliran->id)->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC')->first();
         $ra = RencanaAngsuran::where('loan_id', $perguliran->id)->orderBy('jatuh_tempo', 'DESC')->first();
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $dir = User::where([
-            ['lokasi', auth()->user()->lokasi],
+            ['lokasi', Session::get('lokasi')],
             ['level', '1'],
             ['jabatan', '1']
         ])->first();
@@ -475,7 +475,7 @@ class PinjamanKelompokController extends Controller
      */
     public function update(Request $request, PinjamanKelompok $perguliran)
     {
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         if ($request->status == 'P') {
             $tgl = 'tgl_proposal';
             $alokasi = 'proposal';
@@ -496,7 +496,7 @@ class PinjamanKelompokController extends Controller
                 'tgl_lunas' => date('Y-m-d')
             ]);
 
-            DataPemanfaat::where('id_pinkel', $perguliran->id)->where('lokasi', auth()->user()->lokasi)->update([
+            DataPemanfaat::where('id_pinkel', $perguliran->id)->where('lokasi', Session::get('lokasi'))->update([
                 'status' => 'L'
             ]);
 
@@ -554,7 +554,7 @@ class PinjamanKelompokController extends Controller
                 'nomor_spk'
             ]);
 
-            $table = 'pinjaman_kelompok_' . auth()->user()->lokasi;
+            $table = 'pinjaman_kelompok_' . Session::get('lokasi');
             $validate = [
                 $tgl => 'required',
                 $alokasi => 'required',
@@ -640,7 +640,7 @@ class PinjamanKelompokController extends Controller
                 'status' => 'A'
             ]);
 
-            DataPemanfaat::where([['id_pinkel', $perguliran->id], ['lokasi', auth()->user()->lokasi]])->update([
+            DataPemanfaat::where([['id_pinkel', $perguliran->id], ['lokasi', Session::get('lokasi')]])->update([
                 'status' => 'A'
             ]);
 
@@ -672,7 +672,7 @@ class PinjamanKelompokController extends Controller
                         'status' => $data['status']
                     ]);
 
-                    DataPemanfaat::where([['idpa', $idpa], ['lokasi', auth()->user()->lokasi]])->update([
+                    DataPemanfaat::where([['idpa', $idpa], ['lokasi', Session::get('lokasi')]])->update([
                         'status' => $data['status']
                     ]);
                 }
@@ -703,7 +703,7 @@ class PinjamanKelompokController extends Controller
                         'status' => $data['status']
                     ]);
 
-                    DataPemanfaat::where([['idpa', $idpa], ['lokasi', auth()->user()->lokasi]])->update([
+                    DataPemanfaat::where([['idpa', $idpa], ['lokasi', Session::get('lokasi')]])->update([
                         'status' => $data['status']
                     ]);
                 }
@@ -790,7 +790,7 @@ class PinjamanKelompokController extends Controller
 
         $pemanfaat = DataPemanfaat::where([
             ['id_pinkel', $id->id],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->update([
             'status' => 'P'
         ]);
@@ -1045,12 +1045,12 @@ class PinjamanKelompokController extends Controller
     {
         $param = request()->get('query');
         if (strlen($param) >= '0') {
-            $kelompok = Kelompok::leftJoin('desa', 'desa.kd_desa', '=', 'kelompok_' . auth()->user()->lokasi . '.desa')
-                ->leftJoin('pinjaman_kelompok_' . auth()->user()->lokasi . ' as pk', 'pk.id_kel', '=', 'kelompok_' . auth()->user()->lokasi . '.id')
+            $kelompok = Kelompok::leftJoin('desa', 'desa.kd_desa', '=', 'kelompok_' . Session::get('lokasi') . '.desa')
+                ->leftJoin('pinjaman_kelompok_' . Session::get('lokasi') . ' as pk', 'pk.id_kel', '=', 'kelompok_' . Session::get('lokasi') . '.id')
                 ->where(function ($query) use ($param) {
-                    $query->where('kelompok_' . auth()->user()->lokasi . '.nama_kelompok', 'like', '%' . $param . '%')
-                        ->orwhere('kelompok_' . auth()->user()->lokasi . '.kd_kelompok', 'like', '%' . $param . '%')
-                        ->orwhere('kelompok_' . auth()->user()->lokasi . '.ketua', 'like', '%' . $param . '%');
+                    $query->where('kelompok_' . Session::get('lokasi') . '.nama_kelompok', 'like', '%' . $param . '%')
+                        ->orwhere('kelompok_' . Session::get('lokasi') . '.kd_kelompok', 'like', '%' . $param . '%')
+                        ->orwhere('kelompok_' . Session::get('lokasi') . '.ketua', 'like', '%' . $param . '%');
                 })
                 ->where('pk.status', 'A')
                 ->get();
@@ -1068,10 +1068,10 @@ class PinjamanKelompokController extends Controller
         $data['hari'] = date('d');
         $data['type'] = 'pdf';
 
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten', 'kabupaten.wilayah', 'desa', 'ttd')->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten', 'kabupaten.wilayah', 'desa', 'ttd')->first();
         $kab = $kec->kabupaten;
         $dir = User::where([
-            ['lokasi', auth()->user()->lokasi],
+            ['lokasi', Session::get('lokasi')],
             ['jabatan', '1'],
             ['level', '1'],
             ['sejak', '<=', date('Y-m-t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'))]
@@ -1277,7 +1277,7 @@ class PinjamanKelompokController extends Controller
         $data['dir'] = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->first();
 
         $data['judul'] = 'Daftar Pemanfaat (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
@@ -1408,7 +1408,7 @@ class PinjamanKelompokController extends Controller
         ])->first();
 
         $data['user'] = User::where([
-            ['lokasi', auth()->user()->lokasi],
+            ['lokasi', Session::get('lokasi')],
             ['level', '4']
         ])->with('j')->orderBy('id')->get();
 
@@ -1498,7 +1498,7 @@ class PinjamanKelompokController extends Controller
         $data['dir'] = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->first();
 
         $data['keuangan'] = $keuangan;
@@ -1525,7 +1525,7 @@ class PinjamanKelompokController extends Controller
         $data['dir'] = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->first();
 
         $data['transaksi'] = Transaksi::where('id_pinj', $id)->orderBy('tgl_transaksi', 'ASC')->with('user')->orderBy('idtp', 'ASC')->get();
@@ -1625,7 +1625,7 @@ class PinjamanKelompokController extends Controller
         $data['dir'] = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->first();
 
         $data['keuangan'] = $keuangan;
@@ -1655,7 +1655,7 @@ class PinjamanKelompokController extends Controller
         $data['dir'] = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->first();
 
         $data['keuangan'] = $keuangan;
@@ -1714,7 +1714,7 @@ class PinjamanKelompokController extends Controller
         ])->withCount('pinjaman_anggota')->first();
 
         $data['user'] = User::where([
-            ['lokasi', auth()->user()->lokasi],
+            ['lokasi', Session::get('lokasi')],
             ['level', '4']
         ])->with('j')->orderBy('id')->get();
 
@@ -1766,7 +1766,7 @@ class PinjamanKelompokController extends Controller
         $data['dir'] = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->first();
 
         $data['judul'] = 'Tanda Terima (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
@@ -1782,7 +1782,7 @@ class PinjamanKelompokController extends Controller
 
     public function kartuAngsuran($id)
     {
-        $data['kec'] = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten')->first();
+        $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'kelompok',
             'jpp',
@@ -1802,7 +1802,7 @@ class PinjamanKelompokController extends Controller
         $data['barcode'] = DNS1D::getBarcodePNG($id, 'C128');
 
         $data['dir'] = User::where([
-            ['lokasi', auth()->user()->lokasi],
+            ['lokasi', Session::get('lokasi')],
             ['level', '1'],
             ['jabatan', '1']
         ])->first();
@@ -1815,7 +1815,7 @@ class PinjamanKelompokController extends Controller
     public function kartuAngsuranAnggota($id, $nia = null)
     {
         $data['nia'] = $nia;
-        $data['kec'] = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten')->first();
+        $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'kelompok',
             'jpp',
@@ -1833,7 +1833,7 @@ class PinjamanKelompokController extends Controller
         $data['barcode'] = DNS1D::getBarcodePNG($id, 'C128');
 
         $data['dir'] = User::where([
-            ['lokasi', auth()->user()->lokasi],
+            ['lokasi', Session::get('lokasi')],
             ['level', '1'],
             ['jabatan', '1']
         ])->first();
@@ -1867,7 +1867,7 @@ class PinjamanKelompokController extends Controller
         $data['dir'] = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->first();
 
         $data['judul'] = 'Pemberitahuan Ke Desa (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
@@ -1893,7 +1893,7 @@ class PinjamanKelompokController extends Controller
         $data['dir'] = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->first();
 
         $data['keuangan'] = $keuangan;
@@ -1945,19 +1945,19 @@ class PinjamanKelompokController extends Controller
         $data['dir'] = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->first();
 
         $data['bend'] = User::where([
             ['level', '1'],
             ['jabatan', '3'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->first();
 
         $data['bp'] = User::where([
             ['level', '3'],
             ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->first();
 
         $data['keuangan'] = $keuangan;
@@ -1993,7 +1993,7 @@ class PinjamanKelompokController extends Controller
         $data['dir'] = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', auth()->user()->lokasi]
+            ['lokasi', Session::get('lokasi')]
         ])->first();
 
         $data['keuangan'] = $keuangan;
@@ -2011,7 +2011,7 @@ class PinjamanKelompokController extends Controller
 
     public function cetakPadaKartu($id, $idtp)
     {
-        $data['kec'] = Kecamatan::where('id', auth()->user()->lokasi)->with('kabupaten')->first();
+        $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'kelompok',
             'jpp',
@@ -2028,7 +2028,7 @@ class PinjamanKelompokController extends Controller
 
         $data['idtp'] = $idtp;
         $data['dir'] = User::where([
-            ['lokasi', auth()->user()->lokasi],
+            ['lokasi', Session::get('lokasi')],
             ['level', '1'],
             ['jabatan', '1']
         ])->first();

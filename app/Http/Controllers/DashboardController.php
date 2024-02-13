@@ -50,7 +50,7 @@ class DashboardController extends Controller
         $data['pinjaman_anggota'] = $pinj_anggota;
         $data['pinjaman_kelompok'] = $pinkel;
 
-        $tb = 'pinjaman_kelompok_' . auth()->user()->lokasi;
+        $tb = 'pinjaman_kelompok_' . Session::get('lokasi');
         $pinj = PinjamanKelompok::select([
             DB::raw("(SELECT count(*) FROM $tb WHERE status='P') as p"),
             DB::raw("(SELECT count(*) FROM $tb WHERE status='V') as v"),
@@ -66,7 +66,7 @@ class DashboardController extends Controller
             $data['waiting'] = $pinj->w;
         }
 
-        $tb = 'transaksi_' . auth()->user()->lokasi;
+        $tb = 'transaksi_' . Session::get('lokasi');
         $trx = Transaksi::select([
             DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_debit LIKE '1.1.01.%' AND rekening_kredit='1.1.03.01' AND tgl_transaksi='$tgl') as pokok_spp"),
             DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_debit LIKE '1.1.01.%' AND rekening_kredit='1.1.03.02' AND tgl_transaksi='$tgl') as pokok_uep"),
@@ -540,7 +540,7 @@ class DashboardController extends Controller
     {
         $tahun = date('Y');
         $bulan = date('m');
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('desa')->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('desa')->first();
 
         if (Saldo::where([['kode_akun', 'LIKE', '%' . $kec->kd_kec . '%']])->count() <= 0) {
             $saldo_desa = [];
@@ -770,7 +770,7 @@ class DashboardController extends Controller
     public function unpaid()
     {
         $invoice = AdminInvoice::where([
-            ['lokasi', auth()->user()->lokasi],
+            ['lokasi', Session::get('lokasi')],
             ['status', 'UNPAID']
         ])->orderBy('tgl_invoice', 'DESC');
 

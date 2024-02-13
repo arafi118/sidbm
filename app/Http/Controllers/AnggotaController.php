@@ -12,6 +12,7 @@ use App\Utils\Tanggal;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Session;
 use Yajra\DataTables\DataTables;
 
 class AnggotaController extends Controller
@@ -78,7 +79,7 @@ class AnggotaController extends Controller
      */
     public function create()
     {
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $desa = Desa::where('kd_kec', $kec->kd_kec)->with('sebutan_desa')->get();
         $jenis_usaha = Usaha::orderBy('nama_usaha', 'ASC')->get();
         $hubungan = Keluarga::orderBy('kekeluargaan', 'ASC')->get();
@@ -155,7 +156,7 @@ class AnggotaController extends Controller
 
 
         $rules = [
-            'nik' => 'required|unique:anggota_' . auth()->user()->lokasi . ',nik|min:16|max:16',
+            'nik' => 'required|unique:anggota_' . Session::get('lokasi') . ',nik|min:16|max:16',
             'nama_lengkap' => 'required',
             'desa' => 'required',
             'tempat_lahir' => 'required',
@@ -171,7 +172,7 @@ class AnggotaController extends Controller
         ];
 
         if (strlen($request->no_kk) >= 16) {
-            $rules['no_kk'] = 'required|unique:anggota_' . auth()->user()->lokasi . ',kk';
+            $rules['no_kk'] = 'required|unique:anggota_' . Session::get('lokasi') . ',kk';
         }
 
         $validate = Validator::make($data, $rules);
@@ -188,7 +189,7 @@ class AnggotaController extends Controller
             'tgl_lahir' => Tanggal::tglNasional($request->tgl_lahir),
             'alamat' => $request->alamat,
             'desa' => $request->desa,
-            'lokasi' => auth()->user()->lokasi,
+            'lokasi' => Session::get('lokasi'),
             'hp' => $request->no_telp,
             'kk' => $request->no_kk,
             'nik_penjamin' => $request->nik_penjamin,
@@ -212,7 +213,7 @@ class AnggotaController extends Controller
      */
     public function show(Anggota $penduduk)
     {
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $desa = Desa::where('kd_kec', $kec->kd_kec)->with('sebutan_desa')->get();
         $jenis_usaha = Usaha::orderBy('nama_usaha', 'ASC')->get();
         $hubungan = Keluarga::orderBy('kekeluargaan', 'ASC')->get();
@@ -279,13 +280,13 @@ class AnggotaController extends Controller
         ];
 
         if ($request->nik != $penduduk->nik) {
-            $rules['nik'] = 'required|unique:anggota_' . auth()->user()->lokasi . ',nik|min:16|max:16';
+            $rules['nik'] = 'required|unique:anggota_' . Session::get('lokasi') . ',nik|min:16|max:16';
         }
 
         if (strlen($request->no_kk) >= 16) {
             $rules['no_kk'] = 'required';
             if ($request->no_kk != $penduduk->kk) {
-                $rules['no_kk'] = 'required|unique:anggota_' . auth()->user()->lokasi . ',kk';
+                $rules['no_kk'] = 'required|unique:anggota_' . Session::get('lokasi') . ',kk';
             }
         }
 
@@ -303,7 +304,7 @@ class AnggotaController extends Controller
             'tgl_lahir' => Tanggal::tglNasional($request->tgl_lahir),
             'alamat' => $request->alamat,
             'desa' => $request->desa,
-            'lokasi' => auth()->user()->lokasi,
+            'lokasi' => Session::get('lokasi'),
             'hp' => $request->no_telp,
             'kk' => $request->no_kk,
             'nik_penjamin' => $request->nik_penjamin,

@@ -8,6 +8,7 @@ use App\Models\SebutanDesa;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Session;
 use Yajra\DataTables\Facades\DataTables;
 
 class DesaController extends Controller
@@ -18,7 +19,7 @@ class DesaController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
+            $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
             $data = Desa::where('kd_kec', $kec->kd_kec)->get();
             return DataTables::of($data)
                 ->make(true);

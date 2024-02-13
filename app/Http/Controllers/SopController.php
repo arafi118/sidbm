@@ -23,7 +23,7 @@ class SopController extends Controller
     {
         $api = env('APP_API', 'https://api-whatsapp.sidbm.net');
 
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('ttd')->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('ttd')->first();
         $token = str_replace('.', '', $kec->kd_kec) . str_replace('-', '', $kec->tgl_pakai);
 
         $title = "Personalisasi SOP";
@@ -290,7 +290,7 @@ class SopController extends Controller
     public function ttdPelaporan()
     {
         $title = "Pengaturan Tanda Tangan Pelaporan";
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('ttd')->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('ttd')->first();
         $ttd = TandaTanganLaporan::where([['lokasi', Session::get('lokasi')]])->first();
 
         $tanggal = false;
@@ -308,7 +308,7 @@ class SopController extends Controller
     public function ttdSpk()
     {
         $title = "Pengaturan Tanda Tangan SPK";
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->with('ttd')->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('ttd')->first();
         $keyword = Pinjaman::keyword();
 
         return view('sop.partials.ttd_spk')->with(compact('title', 'kec', 'keyword'));
@@ -331,10 +331,10 @@ class SopController extends Controller
         $data['tanda_tangan'] = str_replace('colgroup', 'tr', $data['tanda_tangan']);
         $data['tanda_tangan'] = preg_replace('/<col([^>]*)>/', '<td$1>&nbsp;</td>', $data['tanda_tangan']);
 
-        $ttd = TandaTanganLaporan::where('lokasi', auth()->user()->lokasi)->count();
+        $ttd = TandaTanganLaporan::where('lokasi', Session::get('lokasi'))->count();
         if ($ttd <= 0) {
             $insert = [
-                'lokasi' => auth()->user()->lokasi
+                'lokasi' => Session::get('lokasi')
             ];
 
             if ($data['field'] == 'tanda_tangan_pelaporan') {
@@ -348,7 +348,7 @@ class SopController extends Controller
             $tanda_tangan = TandaTanganLaporan::create($insert);
         } else {
             // dd($data['tanda_tangan']);
-            $tanda_tangan = TandaTanganLaporan::where('lokasi', auth()->user()->lokasi)->update([
+            $tanda_tangan = TandaTanganLaporan::where('lokasi', Session::get('lokasi'))->update([
                 $data['field'] => json_encode($data['tanda_tangan'])
             ]);
         }
@@ -362,7 +362,7 @@ class SopController extends Controller
     public function invoice()
     {
         if (request()->ajax()) {
-            $invoice = AdminInvoice::where('lokasi', auth()->user()->lokasi)->with('jp')->withSum('trx', 'jumlah')->get();
+            $invoice = AdminInvoice::where('lokasi', Session::get('lokasi'))->with('jp')->withSum('trx', 'jumlah')->get();
 
             return DataTables::of($invoice)
                 ->editColumn('tgl_invoice', function ($row) {

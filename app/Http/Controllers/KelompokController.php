@@ -15,6 +15,7 @@ use App\Utils\Tanggal;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Session;
 use Yajra\DataTables\DataTables;
 
 class KelompokController extends Controller
@@ -67,7 +68,7 @@ class KelompokController extends Controller
 
     public function generateKode()
     {
-        $lokasi = auth()->user()->lokasi;
+        $lokasi = Session::get('lokasi');
         $kd_desa = request()->get('kode');
 
         $jumlah_kelompok_by_kd_desa = Kelompok::where('desa', $kd_desa)->orderBy('kd_kelompok', 'DESC');
@@ -101,7 +102,7 @@ class KelompokController extends Controller
      */
     public function create()
     {
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $desa = Desa::where('kd_kec', $kec['kd_kec'])->with('sebutan_desa')->get();
         $jenis_produk_pinjaman = JenisProdukPinjaman::where('lokasi', '0')->orderBy('id', 'ASC')->get();
         $jenis_usaha = JenisUsaha::all();
@@ -140,7 +141,7 @@ class KelompokController extends Controller
 
         $validate = Validator::make($data, [
             'desa' => 'required',
-            'kode_kelompok' => 'required|unique:kelompok_' . auth()->user()->lokasi . ',kd_kelompok',
+            'kode_kelompok' => 'required|unique:kelompok_' . Session::get('lokasi') . ',kd_kelompok',
             'nama_kelompok' => 'required',
             'jenis_produk_pinjaman' => 'required',
             'alamat_kelompok' => 'required',
@@ -160,7 +161,7 @@ class KelompokController extends Controller
         }
 
         $insert = [
-            'lokasi' => auth()->user()->lokasi,
+            'lokasi' => Session::get('lokasi'),
             'desa' => $request->desa,
             'kd_kelompok' => $request->kode_kelompok,
             'nama_kelompok' => $request->nama_kelompok,
@@ -203,7 +204,7 @@ class KelompokController extends Controller
             'pinkel.sts',
             'pinkel.saldo'
         ])->where('id', $kelompok->id)->first();
-        $kec = Kecamatan::where('id', auth()->user()->lokasi)->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $desa = Desa::where('kd_kec', $kec['kd_kec'])->with('sebutan_desa')->get();
         $jenis_produk_pinjaman = JenisProdukPinjaman::where('lokasi', '0')->orderBy('id', 'ASC')->get();
         $jenis_usaha = JenisUsaha::all();
@@ -264,7 +265,7 @@ class KelompokController extends Controller
         ];
 
         if ($request->kode_kelompok != $kelompok->kd_kelompok) {
-            $rules['kode_kelompok'] = 'required|unique:kelompok_' . auth()->user()->lokasi . ',kd_kelompok';
+            $rules['kode_kelompok'] = 'required|unique:kelompok_' . Session::get('lokasi') . ',kd_kelompok';
         }
 
         $validate = Validator::make($data, $rules);
@@ -274,7 +275,7 @@ class KelompokController extends Controller
         }
 
         $update = [
-            'lokasi' => auth()->user()->lokasi,
+            'lokasi' => Session::get('lokasi'),
             'desa' => $request->desa,
             'kd_kelompok' => $request->kode_kelompok,
             'nama_kelompok' => $request->nama_kelompok,

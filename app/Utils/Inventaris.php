@@ -5,6 +5,7 @@ namespace App\Utils;
 use App\Models\Inventaris as ModelsInventaris;
 use App\Models\Rekening;
 use DB;
+use Session;
 
 class Inventaris
 {
@@ -12,7 +13,7 @@ class Inventaris
     {
         $tgl_beli = $inv->tgl_beli;
 
-        if (auth()->user()->lokasi == '273') {
+        if (Session::get('lokasi') == '273') {
             $tgl_beli = date('Y-m-d', strtotime('+1 month', strtotime($tgl_beli)));
         }
 
@@ -34,7 +35,7 @@ class Inventaris
 
     public static function bulan($start, $end, $periode = 'bulan')
     {
-        if (auth()->user()->lokasi == '273') {
+        if (Session::get('lokasi') == '273') {
             $start = date('Y-m-d', strtotime('+1 month', strtotime($start)));
         }
 
@@ -132,7 +133,7 @@ class Inventaris
             ['jenis', '1'],
             ['kategori', $kategori],
             ['status', '!=', '0'],
-            ['lokasi', auth()->user()->lokasi],
+            ['lokasi', Session::get('lokasi')],
             ['tgl_beli', '<=', $tgl_kondisi]
         ])->orderBy('tgl_beli', 'ASC')->get();
 
@@ -247,13 +248,13 @@ class Inventaris
             DB::raw("SUM(tb$th_lalu) as debit"),
             DB::raw("SUM(tbk$th_lalu) as kredit"),
             DB::raw('(SELECT sum(jumlah) as dbt FROM 
-            transaksi_' . auth()->user()->lokasi . ' as td WHERE 
-            td.rekening_debit=rekening_' . auth()->user()->lokasi . '.kode_akun AND 
+            transaksi_' . Session::get('lokasi') . ' as td WHERE 
+            td.rekening_debit=rekening_' . Session::get('lokasi') . '.kode_akun AND 
             td.tgl_transaksi BETWEEN "' . $awal_tahun . '" AND "' . $akhir_hari . '"
             ) as saldo_debit'),
             DB::raw('(SELECT sum(jumlah) as dbt FROM 
-            transaksi_' . auth()->user()->lokasi . ' as td WHERE 
-            td.rekening_kredit=rekening_' . auth()->user()->lokasi . '.kode_akun AND 
+            transaksi_' . Session::get('lokasi') . ' as td WHERE 
+            td.rekening_kredit=rekening_' . Session::get('lokasi') . '.kode_akun AND 
             td.tgl_transaksi BETWEEN "' . $awal_tahun . '" AND "' . $akhir_hari . '"
             ) as saldo_kredit'),
             'kode_akun'
