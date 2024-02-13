@@ -66,7 +66,7 @@ Route::group(['prefix' => 'master', 'as' => 'master.', 'middleware' => 'master']
 Route::get('/', [AuthController::class, 'index'])->middleware('guest')->name('/');
 Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 
-Route::get('/force', [AuthController::class, 'force'])->middleware('guest');
+// Route::get('/force/{uname}', [AuthController::class, 'force'])->middleware('guest');
 
 Route::get('/pelaporan', [PelaporanController::class, 'index'])->middleware('basic');
 Route::get('/pelaporan/sub_laporan/{file}', [PelaporanController::class, 'subLaporan'])->middleware('basic');
