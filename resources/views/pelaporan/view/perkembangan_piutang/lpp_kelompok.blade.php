@@ -388,6 +388,14 @@
                     if ($tl_target_pokok != 0) {
                         $tl_pross = $tl_real_bi_pokok / $tl_target_pokok;
                     }
+
+                    if ($tl_saldo_pokok < 0) {
+                        $tl_saldo_pokok = 0;
+                    }
+
+                    if ($tl_saldo_jasa < 0) {
+                        $tl_saldo_jasa = 0;
+                    }
                 @endphp
 
                 <tr style="font-weight: bold;">
