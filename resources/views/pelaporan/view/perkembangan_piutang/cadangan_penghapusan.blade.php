@@ -210,7 +210,7 @@
                     <td align="right">{{ number_format($t_kolek1) }}</td>
                     <td align="right">{{ number_format(($t_kolek1 * 0) / 100) }}</td>
                     <td align="center" rowspan="4">
-                        {{ round((($t_kolek2 + $t_kolek3) / ($t_kolek1 + $t_kolek2 + $t_kolek3)) * 100, 2) }}%
+                        {{ round($t_kolek1 + $t_kolek2 + $t_kolek3 > 0 ? (($t_kolek2 + $t_kolek3) / ($t_kolek1 + $t_kolek2 + $t_kolek3)) * 100 : 0, 2) }}%
                     </td>
                 </tr>
                 <tr>
