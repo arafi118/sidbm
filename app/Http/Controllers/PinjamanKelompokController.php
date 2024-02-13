@@ -1476,6 +1476,9 @@ class PinjamanKelompokController extends Controller
 
     public function rencanaAngsuran($id, $data)
     {
+
+        $keuangan = new Keuangan;
+
         if (request()->get('status') == 'A') {
             $data['rencana'] = RencanaAngsuran::where([
                 ['loan_id', $id],
@@ -1498,6 +1501,7 @@ class PinjamanKelompokController extends Controller
             ['lokasi', auth()->user()->lokasi]
         ])->first();
 
+        $data['keuangan'] = $keuangan;
         $data['judul'] = 'Rencana Angsuran (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.rencana_angsuran', $data)->render();
 
