@@ -20,6 +20,7 @@ use App\Utils\Inventaris as UtilsInventaris;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
 use DB;
+use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
@@ -1957,9 +1958,11 @@ class TransaksiController extends Controller
         ])->first();
 
         $logo = $kec->logo;
-        $gambar = '/storage/logo/' . $logo;
+        $gambar = $logo;
 
-        return view('transaksi.dokumen.bkk')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
+        $view = view('transaksi.dokumen.bkk')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'))->render();
+        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+        return $pdf->stream();
     }
 
     public function bkm($id)
@@ -1983,9 +1986,11 @@ class TransaksiController extends Controller
         ])->first();
 
         $logo = $kec->logo;
-        $gambar = '/storage/logo/' . $logo;
+        $gambar = $logo;
 
-        return view('transaksi.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
+        $view = view('transaksi.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'))->render();
+        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+        return $pdf->stream();
     }
 
     public function bm($id)
@@ -2009,9 +2014,11 @@ class TransaksiController extends Controller
         ])->first();
 
         $logo = $kec->logo;
-        $gambar = '/storage/logo/' . $logo;
+        $gambar = $logo;
 
-        return view('transaksi.dokumen.bm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
+        $view = view('transaksi.dokumen.bm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'))->render();
+        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+        return $pdf->stream();
     }
 
     public function bkmAngsuran($id)
@@ -2035,9 +2042,11 @@ class TransaksiController extends Controller
         ])->first();
 
         $logo = $kec->logo;
-        $gambar = '/storage/logo/' . $logo;
+        $gambar = $logo;
 
-        return view('transaksi.jurnal_angsuran.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
+        $view = view('transaksi.jurnal_angsuran.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'))->render();
+        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+        return $pdf->stream();
     }
 
     public function cetak(Request $request)
@@ -2061,10 +2070,12 @@ class TransaksiController extends Controller
         ])->first();
 
         $logo = $data['kec']->logo;
-        $data['gambar'] = '/storage/logo/' . $logo;
+        $data['gambar'] = $logo;
         $data['keuangan'] = $keuangan;
 
-        return view('transaksi.dokumen.cetak', $data);
+        $view = view('transaksi.dokumen.cetak', $data)->render();
+        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+        return $pdf->stream();
     }
 
     public function lpp($id)

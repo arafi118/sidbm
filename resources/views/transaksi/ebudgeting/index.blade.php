@@ -19,7 +19,7 @@
                         <div class="input-group input-group-static my-3">
                             <label for="bulan">Bulan</label>
                             <input autocomplete="off" type="number" name="bulan" id="bulan" class="form-control"
-                                value="{{ date('m') }}" max="12">
+                                value="{{ date('m') }}" max="12" min="01">
                             <small class="text-danger" id="msg_bulan"></small>
                         </div>
                     </div>
