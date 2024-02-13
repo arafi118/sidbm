@@ -398,10 +398,10 @@
                                     Kegiatan sosial kemasyarakatan dan bantuan rumah tangga miskin
                                     <ul style="list-style: lower-alpha">
                                         <li>
-                                            s/d Tahun Lalu Rp. {{ number_format($calk[0]['th_lalu'], 2) }}
+                                            s/d Tahun {{ $tahun - 1 }} Rp. {{ number_format($calk[0]['th_lalu'], 2) }}
                                         </li>
                                         <li>
-                                            dan Tahun Ini Rp. {{ number_format($calk[0]['th_ini'], 2) }}
+                                            dan Tahun {{ $tahun }} Rp. {{ number_format($calk[0]['th_ini'], 2) }}
                                         </li>
                                     </ul>
                                 </li>
@@ -409,10 +409,10 @@
                                     Pengembangan kapasitas kelompok simpan pinjam perempuan/usaha ekonomi produktif
                                     <ul style="list-style: lower-alpha">
                                         <li>
-                                            s/d Tahun Lalu Rp. {{ number_format($calk[1]['th_lalu'], 2) }}
+                                            s/d Tahun {{ $tahun - 1 }} Rp. {{ number_format($calk[1]['th_lalu'], 2) }}
                                         </li>
                                         <li>
-                                            dan Tahun Ini Rp. {{ number_format($calk[1]['th_ini'], 2) }}
+                                            dan Tahun {{ $tahun }} Rp. {{ number_format($calk[1]['th_ini'], 2) }}
                                         </li>
                                     </ul>
                                 </li>
@@ -420,10 +420,10 @@
                                     Pelatihan masyarakat, dan kelompok pemanfaat umum
                                     <ul style="list-style: lower-alpha">
                                         <li>
-                                            s/d Tahun Lalu Rp. {{ number_format($calk[2]['th_lalu'], 2) }}
+                                            s/d Tahun {{ $tahun - 1 }} Rp. {{ number_format($calk[2]['th_lalu'], 2) }}
                                         </li>
                                         <li>
-                                            dan Tahun Ini Rp. {{ number_format($calk[2]['th_ini'], 2) }}
+                                            dan Tahun {{ $tahun }} Rp. {{ number_format($calk[2]['th_ini'], 2) }}
                                         </li>
                                     </ul>
                                 </li>
