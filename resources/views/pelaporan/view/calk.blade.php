@@ -361,9 +361,9 @@
                                     <table cellspacing="0" cellpadding="0">
                                         <tr>
                                             <td class="b" colspan="3" align="center">Desa</td>
-                                            <td class="b" align="center">s/d Tahun lalu</td>
-                                            <td class="b" align="center">Tahun ini</td>
-                                            <td class="b" align="center">s/d Tahun Ini</td>
+                                            <td class="b" align="center">s/d Tahun {{ $tahun - 1 }}</td>
+                                            <td class="b" align="center">Tahun {{ $tahun }}</td>
+                                            <td class="b" align="center">s/d Tahun {{ $tahun }}</td>
                                         </tr>
 
                                         @foreach ($kec->desa as $desa)
@@ -381,9 +381,10 @@
                                                 <td>:</td>
                                                 <td width="70" align="right">{{ number_format($laba_th_lalu, 2) }}
                                                 </td>
-                                                <td width="70" align="right">
-                                                    {{ number_format($laba_th_ini - $laba_th_lalu, 2) }}</td>
                                                 <td width="70" align="right">{{ number_format($laba_th_ini, 2) }}</td>
+                                                <td width="70" align="right">
+                                                    {{ number_format($laba_th_ini + $laba_th_lalu, 2) }}
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </table>
