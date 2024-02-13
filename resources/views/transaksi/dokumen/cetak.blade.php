@@ -145,18 +145,24 @@
                     <table width="100%">
                         <tr>
                             <td colspan="5" align="center">
-                                <h1 style="margin-bottom: 4px;">{{ $files }}</h1>
+                                @if (strtolower($kuitansi) != 'bm')
+                                    <h1 style="margin-bottom: 4px;">{{ $files }}</h1>
+                                @else
+                                    <h1>{{ $files }}</h1>
+                                @endif
                             </td>
                         </tr>
-                        <tr>
-                            <td width="30%">Dibayar Kepada</td>
-                            <td width="2%">:</td>
-                            @if ($trx->id_pinj > 0)
-                                <td colspan="3" class="keterangan">{{ ucwords('Kelompok ' . $trx->relasi) }}</td>
-                            @else
-                                <td colspan="3" class="keterangan">{{ ucwords($trx->relasi) }}</td>
-                            @endif
-                        </tr>
+                        @if (strtolower($kuitansi) != 'bm')
+                            <tr>
+                                <td width="30%">Dibayar Kepada</td>
+                                <td width="2%">:</td>
+                                @if ($trx->id_pinj > 0)
+                                    <td colspan="3" class="keterangan">{{ ucwords('Kelompok ' . $trx->relasi) }}</td>
+                                @else
+                                    <td colspan="3" class="keterangan">{{ ucwords($trx->relasi) }}</td>
+                                @endif
+                            </tr>
+                        @endif
                         <tr>
                             <td width="30%">Keterangan</td>
                             <td width="2%">:</td>
