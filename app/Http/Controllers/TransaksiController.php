@@ -1958,11 +1958,9 @@ class TransaksiController extends Controller
         ])->first();
 
         $logo = $kec->logo;
-        $gambar = $logo;
+        $gambar = '/storage/logo/' . $logo;
 
-        $view = view('transaksi.dokumen.bkk')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'))->render();
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
-        return $pdf->stream();
+        return view('transaksi.dokumen.bkk')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
     }
 
     public function bkm($id)
@@ -1986,11 +1984,9 @@ class TransaksiController extends Controller
         ])->first();
 
         $logo = $kec->logo;
-        $gambar = $logo;
+        $gambar = '/storage/logo/' . $logo;
 
-        $view = view('transaksi.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'))->render();
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
-        return $pdf->stream();
+        return view('transaksi.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
     }
 
     public function bm($id)
@@ -2014,11 +2010,9 @@ class TransaksiController extends Controller
         ])->first();
 
         $logo = $kec->logo;
-        $gambar = $logo;
+        $gambar = '/storage/logo/' . $logo;
 
-        $view = view('transaksi.dokumen.bm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'))->render();
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
-        return $pdf->stream();
+        return view('transaksi.dokumen.bm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
     }
 
     public function bkmAngsuran($id)
@@ -2042,11 +2036,9 @@ class TransaksiController extends Controller
         ])->first();
 
         $logo = $kec->logo;
-        $gambar = $logo;
+        $gambar = '/storage/logo/' . $logo;
 
-        $view = view('transaksi.jurnal_angsuran.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'))->render();
-        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
-        return $pdf->stream();
+        return view('transaksi.jurnal_angsuran.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
     }
 
     public function cetak(Request $request)

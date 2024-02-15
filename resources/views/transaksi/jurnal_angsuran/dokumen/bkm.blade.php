@@ -8,32 +8,88 @@
     <title>BUKTI KAS MASUK</title>
     <style>
         body {
-            font-size: 10px;
+            font-size: 9px;
             color: rgba(0, 0, 0, 0.8);
             font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .container {
-            width: 100%;
-            overflow: auto;
-            margin: auto;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .box {
-            display: inline-block;
-            box-sizing: border-box;
-            vertical-align: top;
-            width: 47%;
-            height: 8cm;
+            width: 14cm;
+            height: 9cm;
             border: 2px solid #000;
-            padding: 10px;
-            margin-bottom: 4px;
+            padding-top: 16px;
+            padding-bottom: 12px;
+            padding-right: 22px;
+            padding-left: 12px;
+        }
+
+        .box-header {
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .block {
+            display: block;
+        }
+
+        .inline-block {
+            display: inline-block;
+        }
+
+        .fw-bold {
+            font-weight: bold;
+        }
+
+        .fs-8 {
+            font-size: 8px;
+        }
+
+        .fs-10 {
+            font-size: 10px;
+        }
+
+        .fs-12 {
+            font-size: 12px;
+        }
+
+        .fs-14 {
+            font-size: 14px;
+        }
+
+        .fs-16 {
+            font-size: 16px;
+        }
+
+        .-mt-2 {
+            margin-top: -2px;
+        }
+
+        .ml-4 {
+            margin-left: 4px;
+        }
+
+        .align-items-center {
+            align-items: center;
+        }
+
+        .justify-content-between {
+            justify-content: space-between;
         }
 
         .box-body {
             padding-top: 0px;
-            padding-left: 20px;
-            padding-right: 20px;
+            padding-left: 24px;
+            padding-right: 24px;
         }
 
         .keterangan {
@@ -41,52 +97,63 @@
             font-weight: bold;
         }
 
-        .fw-bold {
-            font-weight: bold;
+        .jajargenjang {
+            background-color: rgba(0, 0, 0, 0.2);
+            -ms-transform: skew(-20deg);
+            -webkit-transform: skew(-20deg);
+            transform: skew(-20deg);
+            text-align: center;
+        }
+
+        .border-b {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+        }
+
+        .text-left {
+            padding-left: 6px;
+            padding-right: 6px;
+            padding-top: 2px;
+            padding-bottom: 4px;
+            text-align: left;
         }
     </style>
 </head>
 
-<body>
+<body onLoad="window.print()">
     <div class="container">
         <div class="box">
-            <table border="0" width="100%" style="border-bottom: 1px solid #000;">
-                <tr>
-                    <td width="40">
-                        <img src="../storage/app/public/logo/{{ $gambar }}" width="50" height="50">
-                    </td>
-                    <td>
-                        <div class="fw-bold">{{ strtoupper($kec->nama_lembaga_sort) }}</div>
-                        <div class="fw-bold">
+            <div class="box-header flex align-items-center justify-content-between fs-10">
+                <div class="flex align-items-center">
+                    <img src="<?php echo $gambar; ?>" width="50" height="50">
+                    <div class="ml-4">
+                        <div class="block fw-bold">{{ strtoupper($kec->nama_lembaga_sort) }}</div>
+                        <div class="block fw-bold">
                             {{ strtoupper('Kec. ' . $kec->nama_kec . ' Kab. ' . $kec->kabupaten->nama_kab . ' ' . $kec->kabupaten->nama_prov) }}
                         </div>
-                        <div style="font-size: 8px;">{{ 'SK Kemenkumham RI No. ' . $kec->nomor_bh }}</div>
-                        <div style="font-size: 8px;">{{ $kec->alamat_kec . ', Telp. ' . $kec->telpon_kec }}</div>
-                    </td>
-                    <td>
-                        <div style="display: flex; align-items: center; font-size: 8px;">
-                            <table>
-                                <tr>
-                                    <td>Nomor</td>
-                                    <td>:</td>
-                                    <td><?php echo $trx->idt . '/BKM'; ?></td>
-                                </tr>
-                                <tr>
-                                    <td>Tanggal</td>
-                                    <td>:</td>
-                                    <td>{{ Tanggal::tglIndo($trx->tgl_transaksi) }}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
-            <div class="box-body">
+                        <div class="block fs-10">{{ 'SK Kemenkumham RI No. ' . $kec->nomor_bh }}</div>
+                        <div class="block fs-10">{{ $kec->alamat_kec . ', Telp. ' . $kec->telpon_kec }}</div>
+                    </div>
+                </div>
+                <div class="justify-right">
+                    <table>
+                        <tr>
+                            <td>Nomor</td>
+                            <td>:</td>
+                            <td><?php echo $trx->idt . '/BKM'; ?></td>
+                        </tr>
+                        <tr>
+                            <td>Tanggal</td>
+                            <td>:</td>
+                            <td>{{ Tanggal::tglIndo($trx->tgl_transaksi) }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="box-body fs-12">
                 <table width="100%">
                     <tr>
-                        <td colspan="5" align="center">
-                            <h1 style="margin-bottom: 4px;">BUKTI KAS MASUK</h1>
+                        <td colspan="5" class="fs-10" align="center">
+                            <h1>BUKTI KAS MASUK</h1>
                         </td>
                     </tr>
                     <tr>
@@ -144,7 +211,7 @@
                     @endfor
                 </table>
 
-                <table width="100%">
+                <table width="100%" class="fs-12">
                     <tr>
                         <td align="center">Disetujui,</td>
                         <td align="center">Diverifikasi,</td>
