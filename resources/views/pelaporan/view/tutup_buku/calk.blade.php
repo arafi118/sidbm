@@ -39,6 +39,8 @@
 
         $i++;
     }
+
+    $rek_alokasi_laba = ['2.1.04.01', '2.1.04.02'];
 @endphp
 
 @extends('pelaporan.layout.base')
@@ -262,8 +264,13 @@
                                             $saldo = $keuangan->laba_rugi($tgl_kondisi);
                                         }
 
-                                        $sum_saldo += $saldo;
+                                        if (in_array($rek->kode_akun, $rek_alokasi_laba)) {
+                                            foreach ($rek->trx_kredit as $saldo_utang) {
+                                                $saldo += $saldo_utang->jumlah;
+                                            }
+                                        }
 
+                                        $sum_saldo += $saldo;
                                         $akun_lev4[] = [
                                             'kode_akun' => $rek->kode_akun,
                                             'nama_akun' => $rek->nama_akun,

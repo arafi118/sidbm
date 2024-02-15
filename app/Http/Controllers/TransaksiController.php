@@ -445,7 +445,11 @@ class TransaksiController extends Controller
                 $id = str_replace('.', '', $rek->kode_akun) . $tahun_tb . '00';
 
                 if ($rek->kode_akun == '3.2.01.01') {
-                    $saldo_kredit += floatval($data['surplus']);
+                    $saldo_kredit += floatval($alokasi_laba['3.2.01.01']);
+                }
+
+                if ($rek->kode_akun == '2.1.04.03') {
+                    $saldo_kredit += floatval($alokasi_laba['2.1.04.03']);
                 }
 
                 $saldo_tutup_buku[] = [

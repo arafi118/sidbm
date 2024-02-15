@@ -1937,6 +1937,9 @@ class PelaporanController extends Controller
                     ['bulan', '0']
                 ]);
             },
+            'akun2.akun3.rek.trx_kredit' => function ($query) use ($data) {
+                $query->where('keterangan_transaksi', 'Like', '%tahun ' . $data['tahun'] - 1);
+            },
         ])->orderBy('kode_akun', 'ASC')->get();
 
         $data['sekr'] = User::where([
