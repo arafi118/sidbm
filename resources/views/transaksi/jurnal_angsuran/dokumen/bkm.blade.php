@@ -94,7 +94,7 @@
 
         .keterangan {
             padding: 1.5px 4px;
-            font-weight: bold;
+            font-weight: normal;
         }
 
         .jajargenjang {
