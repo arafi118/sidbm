@@ -40,7 +40,7 @@
         $i++;
     }
 
-    $rek_alokasi_laba = ['2.1.04.01', '2.1.04.02'];
+    $rek_alokasi_laba = ['2.1.04.01', '2.1.04.02', '2.1.04.03'];
 @endphp
 
 @extends('pelaporan.layout.base')

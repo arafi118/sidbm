@@ -449,7 +449,22 @@ class TransaksiController extends Controller
                 }
 
                 if ($rek->kode_akun == '2.1.04.03') {
-                    $saldo_kredit += floatval($alokasi_laba['2.1.04.03']);
+                    $keterangan = 'Laba Bagian Penyerta Modal tahun ' . $tahun;
+                    $trx['insert'][] = [
+                        'tgl_transaksi' => date('Y-m-d'),
+                        'rekening_debit' => '3.2.01.01',
+                        'rekening_kredit' => '2.1.04.03',
+                        'idtp' => '0',
+                        'id_pinj' => '0',
+                        'id_pinj_i' => '0',
+                        'keterangan_transaksi' => $keterangan,
+                        'relasi' => '-',
+                        'jumlah' => floatval($alokasi_laba['2.1.04.03']),
+                        'urutan' => '0',
+                        'id_user' => auth()->user()->id
+                    ];
+
+                    $trx['delete'][] = $keterangan;
                 }
 
                 $saldo_tutup_buku[] = [
