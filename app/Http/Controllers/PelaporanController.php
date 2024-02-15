@@ -599,7 +599,7 @@ class PelaporanController extends Controller
         $data['d_bulan_lalu'] = $keuangan->saldoD($awal_bulan, $data['kode_akun']);
         $data['k_bulan_lalu'] = $keuangan->saldoK($awal_bulan, $data['kode_akun']);
 
-        if ($tgl != $thn . '-01-01') {
+        if ($tgl == $thn . '-01-01') {
             $data['d_bulan_lalu'] = '0';
             $data['k_bulan_lalu'] = '0';
         }
