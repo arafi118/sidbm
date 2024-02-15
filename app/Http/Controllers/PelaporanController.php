@@ -584,7 +584,10 @@ class PelaporanController extends Controller
             $data['judul'] = 'Laporan Harian';
             $data['sub_judul'] = 'Tanggal ' . $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tglLatin($tgl);
-            $awal_bulan = date('Y-m-d', strtotime('-1 day', strtotime($tgl)));
+            $awal_bulan = $tgl;
+            if ($tgl != $thn . '-01-01') {
+                $awal_bulan = date('Y-m-d', strtotime('-1 day', strtotime($tgl)));
+            }
         }
 
         $data['rek'] = Rekening::where('kode_akun', $data['kode_akun'])->first();
