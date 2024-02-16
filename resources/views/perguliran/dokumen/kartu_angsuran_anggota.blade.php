@@ -300,6 +300,14 @@
                     $kom_pokok = json_decode($pinj->kom_pokok, true);
                     $kom_jasa = json_decode($pinj->kom_jasa, true);
 
+                    if (!is_array($kom_pokok)) {
+                        $kom_pokok = [];
+                    }
+
+                    if (!is_array($kom_jasa)) {
+                        $kom_jasa = [];
+                    }
+
                     $alokasi_pokok = $pinj->alokasi;
                     $alokasi_jasa = ($pinkel->pros_jasa / 100) * $alokasi_pokok;
 
@@ -332,8 +340,8 @@
                         $tunggakan_jasa = 0;
 
                         if (!array_key_exists($real->id, $kom_pokok)) {
-                            $pros_pokok_anggota = round(($pinj->alokasi / $pinkel->alokasi) * 100, 2);
-                            $pokok = round(($pros_pokok_anggota / 100) * $real->realisasi_pokok, 2);
+                            $pros_pokok_anggota = ($pinj->alokasi / $pinkel->alokasi) * 100;
+                            $pokok = ($pros_pokok_anggota / 100) * $real->realisasi_pokok;
                         } else {
                             $pokok = $kom_pokok[$real->id];
                         }
@@ -341,8 +349,8 @@
                         if (!array_key_exists($real->id, $kom_jasa)) {
                             $jasa_pinjaman = ($pinkel->pros_jasa / 100) * $pinkel->alokasi;
 
-                            $pros_jasa_anggota = round(((($pinj->pros_jasa / 100) * $pinj->alokasi) / $jasa_pinjaman) * 100, 2);
-                            $jasa = round(($pros_jasa_anggota / 100) * $real->realisasi_jasa, 2);
+                            $pros_jasa_anggota = ((($pinj->pros_jasa / 100) * $pinj->alokasi) / $jasa_pinjaman) * 100;
+                            $jasa = ($pros_jasa_anggota / 100) * $real->realisasi_jasa;
                         } else {
                             $jasa = $kom_jasa[$real->id];
                         }
