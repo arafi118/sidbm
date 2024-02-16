@@ -189,7 +189,7 @@
                     <td align="center">{{ $loop->iteration }}</td>
                     <td align="center">{{ $pa->anggota->nik }}</td>
                     <td>{{ $pa->anggota->namadepan }}</td>
-                    <td align="center">{{ $pa->anggota->hp }}1234567890</td>
+                    <td align="center">{{ $pa->anggota->hp }}</td>
                     <td>{{ $pa->anggota->alamat }}</td>
                     <td align="right">{{ number_format($pa->alokasi) }}</td>
                 </tr>
