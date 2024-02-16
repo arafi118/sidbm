@@ -174,14 +174,14 @@
         {{ $kec->nama_kec }} sesuai
         dengan registrasi pinjaman nomor {{ $pinkel->kelompok->kd_kelompok }} dan data pinjaman sebagai berikut :
 
-        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; table-layout: fixed;">
             <tr style="background: rgb(232, 232, 232)">
-                <th width="10" height="20">No</th>
-                <th width="80">Nik</th>
-                <th width="100">Nama Anggota</th>
-                <th width="70">Nomor HP</th>
-                <th>Alamat</th>
-                <th width="90">Alokasi</th>
+                <th width="3%" height="20">No</th>
+                <th width="17%">Nik</th>
+                <th width="20%">Nama Anggota</th>
+                <th width="15%">Nomor HP</th>
+                <th width="30%">Alamat</th>
+                <th width="15%">Alokasi</th>
             </tr>
 
             @foreach ($pinkel->pinjaman_anggota as $pa)
@@ -189,7 +189,7 @@
                     <td align="center">{{ $loop->iteration }}</td>
                     <td align="center">{{ $pa->anggota->nik }}</td>
                     <td>{{ $pa->anggota->namadepan }}</td>
-                    <td align="center">{{ $pa->anggota->hp }}</td>
+                    <td align="center">{{ $pa->anggota->hp }}1234567890</td>
                     <td>{{ $pa->anggota->alamat }}</td>
                     <td align="right">{{ number_format($pa->alokasi) }}</td>
                 </tr>
