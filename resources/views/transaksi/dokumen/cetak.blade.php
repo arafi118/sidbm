@@ -156,7 +156,13 @@
                             <tr>
                                 <td width="30%">Dibayar Kepada</td>
                                 <td width="2%">:</td>
-                                @if ($trx->id_pinj > 0)
+                                @if (
+                                    $trx->id_pinj > 0 &&
+                                        !(
+                                            $trx->rekening_debit != '1.1.03.01' ||
+                                            $trx->rekening_debit != '1.1.03.02' ||
+                                            $trx->rekening_debit != '1.1.03.03'
+                                        ))
                                     <td colspan="3" class="keterangan">{{ ucwords('Kelompok ' . $trx->relasi) }}</td>
                                 @else
                                     <td colspan="3" class="keterangan">{{ ucwords($trx->relasi) }}</td>
@@ -167,7 +173,13 @@
                             <td width="30%">Keterangan</td>
                             <td width="2%">:</td>
                             <td colspan="3" class="keterangan">
-                                @if ($trx->id_pinj != 0)
+                                @if (
+                                    $trx->id_pinj != 0 &&
+                                        !(
+                                            $trx->rekening_debit != '1.1.03.01' ||
+                                            $trx->rekening_debit != '1.1.03.02' ||
+                                            $trx->rekening_debit != '1.1.03.03'
+                                        ))
                                     {{ ucwords('Angsuran Pokok dan Jasa') }}
                                 @else
                                     {{ ucwords($trx->keterangan_transaksi) }}
@@ -178,7 +190,13 @@
                             <td width="30%">Jumlah</td>
                             <td width="2%">:</td>
                             <td colspan="3" class="keterangan">
-                                @if ($trx->id_pinj != 0)
+                                @if (
+                                    $trx->id_pinj != 0 &&
+                                        !(
+                                            $trx->rekening_debit != '1.1.03.01' ||
+                                            $trx->rekening_debit != '1.1.03.02' ||
+                                            $trx->rekening_debit != '1.1.03.03'
+                                        ))
                                     Rp. {{ number_format($trx->tr_idtp_sum_jumlah, 2) }}
                                 @else
                                     Rp. {{ number_format($trx->jumlah, 2) }}
