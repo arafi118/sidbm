@@ -195,9 +195,11 @@
 
                         @if (
                             $trx->id_pinj != 0 &&
-                                ($trx->rekening_debit != '1.1.03.01' ||
+                                !(
+                                    $trx->rekening_debit != '1.1.03.01' ||
                                     $trx->rekening_debit != '1.1.03.02' ||
-                                    $trx->rekening_debit != '1.1.03.03'))
+                                    $trx->rekening_debit != '1.1.03.03'
+                                ))
                             @php
                                 $count = 3;
                             @endphp
