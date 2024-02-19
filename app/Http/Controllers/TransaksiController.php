@@ -339,6 +339,10 @@ class TransaksiController extends Controller
             $alokasi_laba['3.2.01.01'] += floatval($value);
         }
 
+        $alokasi_laba['3.2.01.01'] += floatval($alokasi_laba['2.1.04.01']);
+        $alokasi_laba['3.2.01.01'] += floatval($alokasi_laba['2.1.04.02']);
+        $alokasi_laba['3.2.01.01'] += floatval($alokasi_laba['2.1.04.03']);
+
         $pembagian_laba_desa = $data['desa'];
         $pembagian_laba_ditahan = $data['laba_ditahan'];
         $pembagian_laba_masyarakat = $data['masyarakat'];
