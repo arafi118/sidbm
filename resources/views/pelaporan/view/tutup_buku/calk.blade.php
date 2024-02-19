@@ -266,7 +266,7 @@
 
                                         if (in_array($rek->kode_akun, $rek_alokasi_laba)) {
                                             foreach ($rek->trx_kredit as $saldo_utang) {
-                                                $saldo += $saldo_utang->jumlah;
+                                                $saldo += floatval($saldo_utang->jumlah);
                                             }
                                         }
 
