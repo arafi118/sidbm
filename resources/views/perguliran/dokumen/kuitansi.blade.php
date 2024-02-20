@@ -119,7 +119,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="9" height="40">&nbsp;</td>
+                <td colspan="9" height="55">&nbsp;</td>
             </tr>
             <tr>
                 <td align="center" colspan="3">
