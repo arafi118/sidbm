@@ -2072,7 +2072,13 @@ class PelaporanController extends Controller
 
     public function invoice(AdminInvoice $invoice)
     {
+        $kec = Kecamatan::where('web_kec', explode('//', request()->url(''))[1])->orwhere('web_alternatif', explode('//', request()->url(''))[1])->first();
         $data['inv'] = AdminInvoice::where('idv', $invoice->idv)->with('jp', 'trx', 'kec', 'kec.kabupaten')->first();
+
+        if ($kec->id != $data['inv']->lokasi) {
+            abort(404);
+        }
+
         $view = view('pelaporan.view.invoice', $data)->render();
         $pdf = PDF::loadHTML($view)->setPaper('A4', 'potrait');
         return $pdf->stream();
