@@ -241,3 +241,5 @@ Route::get('/download/{file}', function ($file) {
 
 Route::get('/unpaid', [DashboardController::class, 'unpaid'])->middleware('auth');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
+
+Route::get('/{invoice}', [PelaporanController::class, 'invoice']);

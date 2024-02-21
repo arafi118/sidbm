@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminInvoice;
+use App\Models\AdminJenisPembayaran;
 use App\Models\Kecamatan;
 use App\Models\Menu;
 use App\Models\User;
 use App\Utils\Keuangan;
+use App\Utils\Tanggal;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
@@ -50,9 +53,7 @@ class AuthController extends Controller
             ]);
         }
 
-
-
-        $kec = Kecamatan::where('web_kec', $url)->orwhere('web_alternatif', $url)->first();
+        $kec = Kecamatan::where('web_kec', $url)->orwhere('web_alternatif', $url)->with('kabupaten')->first();
         $lokasi = $kec->id;
 
         $icon = '/assets/img/icon/favicon.png';
@@ -68,6 +69,8 @@ class AuthController extends Controller
                 'lokasi' => $lokasi
             ]);
         }
+
+        $this->generateInvoice($kec);
 
         $user = User::where([['uname', $username], ['lokasi', $lokasi]])->first();
         if ($user) {
@@ -181,5 +184,58 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/')->with('pesan', 'Terima Kasih ' . $user);
+    }
+
+    private function generateInvoice($kec)
+    {
+        $return = [
+            'invoice' => false,
+            'msg' => ''
+        ];
+
+        $bulan_pakai = date('m-d', strtotime($kec->tgl_pakai));
+        $tgl_pakai = date('Y') . '-' . $bulan_pakai;
+
+        $tgl_invoice = date('Y-m-d', strtotime('-1 month', strtotime($tgl_pakai)));
+
+        $invoice = AdminInvoice::where([
+            ['lokasi', $kec->id],
+            ['jenis_pembayaran', '2'],
+            ['status', 'UNPAID']
+        ])->whereBetween('tgl_invoice', [$tgl_invoice, $tgl_pakai]);
+
+        $pesan = "";
+        if ($invoice->count() <= 0 && (date('Y-m-d') <= $tgl_pakai && date('Y-m-d') >= $tgl_invoice)) {
+
+            $tanggal = date('Y-m-d');
+            $nomor_invoice = date('ymd', strtotime($tanggal));
+            $invoice = AdminInvoice::where('tgl_invoice', $tanggal)->count();
+            $nomor_urut = str_pad($invoice + 1, '2', '0', STR_PAD_LEFT);
+            $nomor_invoice .= $nomor_urut;
+
+            $invoice = AdminInvoice::create([
+                'lokasi' => $kec->id,
+                'nomor' => $nomor_invoice,
+                'jenis_pembayaran' => 2,
+                'tgl_invoice' => date('Y-m-d'),
+                'tgl_lunas' => date('Y-m-d'),
+                'status' => 'UNPAID',
+                'jumlah' => $kec->biaya_tahunan,
+                'id_user' => 1
+            ]);
+
+            $jenis_pembayaran = AdminJenisPembayaran::where('id', '2')->first();
+            $pesan .= "_#Invoice - " . str_pad($kec->id, '3', '0', STR_PAD_LEFT) . " " . $kec->nama_kec . " - " . $kec->kabupaten->nama_kab . "_\n";
+            $pesan .= $jenis_pembayaran->nama_jp . "\n";
+            $pesan .= "Jumlah           : Rp. " . number_format($kec->biaya_tahunan) . "\n";
+            $pesan .= "Jatuh Tempo  : " . Tanggal::tglIndo($tgl_pakai) . "\n\n";
+            $pesan .= "*Detail Invoice*\n";
+            $pesan .= "_https://" . $kec->web_alternatif . "/" . $invoice->id . "_";
+
+            $return['invoice'] = true;
+            $return['pesan'] = $pesan;
+        }
+
+        return $return;
     }
 }

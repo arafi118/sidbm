@@ -5,7 +5,7 @@
     $sampai = date('Y-m-d', strtotime('+1 years', strtotime($dari)));
 
     if ($inv->status == 'UNPAID') {
-        $tanggal = $inv->tgl_invoice;
+        $tanggal = $dari;
         $keterangan_tanggal = 'Jatuh Tempo';
         $status = 'U N P A I D';
         $keterangan = 'Masa Pakai Sejak Tanggal ' . Tanggal::tglIndo($inv->kec->tgl_pakai);
@@ -16,7 +16,7 @@
         $keterangan = 'Masa Aktif Tanggal ' . Tanggal::tglIndo($dari) . ' - ' . Tanggal::tglIndo($sampai);
     }
 
-    $batas_waktu = date('Y-m-d', strtotime('+1 month', strtotime($inv->tgl_invoice)));
+    $batas_waktu = $tanggal;
     $total = 0;
 
     $kecamatan = $inv->kec->sebutan_kec . ' ' . $inv->kec->nama_kec;
@@ -136,9 +136,12 @@
             <tr class="top">
                 <td width="70%">
                     <div style="font-size: 16px; font-weight: bold;">INVOICE #{{ $inv->nomor }}</div>
-                    <div style="margin-top: 2px; font-size: 10px">Tanggal Invoice :
-                        {{ Tanggal::tglIndo($inv->tgl_invoice) }}</div>
-                    <div style="font-size: 10px">Jatuh Tempo : {{ Tanggal::tglIndo($batas_waktu) }}</div>
+                    <div style="margin-top: 2px; font-size: 10px">
+                        Tanggal Invoice : {{ Tanggal::tglIndo($inv->tgl_invoice) }}
+                    </div>
+                    <div style="font-size: 10px">
+                        {{ $keterangan_tanggal }} : {{ Tanggal::tglIndo($batas_waktu) }}
+                    </div>
                 </td>
                 <td width="30%" align="center">
                     <div style="font-size: 16px; font-weight: bold; color: #ff0000">{{ $status }}</div>
