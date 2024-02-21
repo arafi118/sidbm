@@ -200,8 +200,7 @@ class AuthController extends Controller
 
         $invoice = AdminInvoice::where([
             ['lokasi', $kec->id],
-            ['jenis_pembayaran', '2'],
-            ['status', 'UNPAID']
+            ['jenis_pembayaran', '2']
         ])->whereBetween('tgl_invoice', [$tgl_invoice, $tgl_pakai]);
 
         $pesan = "";
