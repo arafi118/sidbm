@@ -1,41 +1,41 @@
 @if ($relasi)
-<div class="col-sm-4">
-    <div class="input-group input-group-static my-3">
-        <label for="relasi">Relasi</label>
-        <input autocomplete="off" type="text" name="relasi" id="relasi" class="form-control">
-        <small class="text-danger" id="msg_relasi"></small>
+    <div class="col-sm-4">
+        <div class="input-group input-group-static my-3">
+            <label for="relasi">Relasi</label>
+            <input autocomplete="off" type="text" name="relasi" id="relasi" class="form-control">
+            <small class="text-danger" id="msg_relasi"></small>
+        </div>
     </div>
-</div>
-<div class="col-sm-4">
-    <div class="input-group input-group-static my-3">
-        <label for="nama_barang">Nama Barang</label>
-        <input autocomplete="off" type="text" name="nama_barang" id="nama_barang" class="form-control">
-        <small class="text-danger" id="msg_nama_barang"></small>
+    <div class="col-sm-4">
+        <div class="input-group input-group-static my-3">
+            <label for="nama_barang">Nama Barang</label>
+            <input autocomplete="off" type="text" name="nama_barang" id="nama_barang" class="form-control">
+            <small class="text-danger" id="msg_nama_barang"></small>
+        </div>
     </div>
-</div>
-<div class="col-sm-4">
-    <div class="input-group input-group-static my-3">
-        <label for="jumlah">Jumlah</label>
-        <input autocomplete="off" type="number" name="jumlah" id="jumlah" class="form-control">
-        <small class="text-danger" id="msg_jumlah"></small>
+    <div class="col-sm-4">
+        <div class="input-group input-group-static my-3">
+            <label for="jumlah">Jml. Unit</label>
+            <input autocomplete="off" type="number" name="jumlah" id="jumlah" class="form-control">
+            <small class="text-danger" id="msg_jumlah"></small>
+        </div>
     </div>
-</div>
 @else
-<input type="hidden" name="relasi" id="relasi" value="">
-<div class="col-sm-6">
-    <div class="input-group input-group-static my-3">
-        <label for="nama_barang">Nama Barang</label>
-        <input autocomplete="off" type="text" name="nama_barang" id="nama_barang" class="form-control">
-        <small class="text-danger" id="msg_nama_barang"></small>
+    <input type="hidden" name="relasi" id="relasi" value="">
+    <div class="col-sm-6">
+        <div class="input-group input-group-static my-3">
+            <label for="nama_barang">Nama Barang</label>
+            <input autocomplete="off" type="text" name="nama_barang" id="nama_barang" class="form-control">
+            <small class="text-danger" id="msg_nama_barang"></small>
+        </div>
     </div>
-</div>
-<div class="col-sm-6">
-    <div class="input-group input-group-static my-3">
-        <label for="jumlah">Jumlah</label>
-        <input autocomplete="off" type="number" name="jumlah" id="jumlah" class="form-control">
-        <small class="text-danger" id="msg_jumlah"></small>
+    <div class="col-sm-6">
+        <div class="input-group input-group-static my-3">
+            <label for="jumlah">Jml. Unit</label>
+            <input autocomplete="off" type="number" name="jumlah" id="jumlah" class="form-control">
+            <small class="text-danger" id="msg_jumlah"></small>
+        </div>
     </div>
-</div>
 @endif
 <div class="col-sm-4">
     <div class="input-group input-group-static my-3">
@@ -64,5 +64,4 @@
     $("#harga_satuan").maskMoney({
         allowNegative: true
     });
-
 </script>
