@@ -616,6 +616,8 @@ Terima kasih atas perhatiannya!
         $b = $saldo[5];
         $surplus = $saldo['surplus'];
     @endphp
+
+    <textarea name="msgInvoice" id="msgInvoice" class="d-none">{{ Session::get('msg') }}</textarea>
 @endsection
 
 @section('script')
@@ -849,6 +851,48 @@ Terima kasih atas perhatiannya!
             $('#FormLaporanDashboard #sub_laporan').val(subLaporan);
         }
     </script>
+
+    @if (Session::get('invoice'))
+        <script>
+            function msgInvoice(number, msg, repeat = 0) {
+                $.ajax({
+                    type: 'post',
+                    url: '{{ $api }}/send-text',
+                    timeout: 0,
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    data: JSON.stringify({
+                        token: "33081920220815",
+                        number: number,
+                        text: msg
+                    }),
+                    success: function(result) {
+                        if (!result.status) {
+                            setTimeout(function() {
+                                msgInvoice(number, msg, repeat + 1)
+                            }, 1000)
+                        }
+                    },
+                    error: function(result) {
+                        if (repeat < 1) {
+                            setTimeout(function() {
+                                msgInvoice(number, msg, repeat + 1)
+                            }, 1000)
+                        }
+                    }
+                })
+            }
+
+            msgInvoice("{{ Session::get('hp_dir') }}", $('#msgInvoice').val())
+            setTimeout(() => {
+                msgInvoice('0882006644656', $('#msgInvoice').val())
+            }, 1000);
+        </script>
+    @endif
 
     <script>
         var formatter = new Intl.NumberFormat('en-US', {

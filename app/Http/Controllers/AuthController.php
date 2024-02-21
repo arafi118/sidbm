@@ -70,8 +70,6 @@ class AuthController extends Controller
             ]);
         }
 
-        $this->generateInvoice($kec);
-
         $user = User::where([['uname', $username], ['lokasi', $lokasi]])->first();
         if ($user) {
             if ($password === $user->pass) {
@@ -91,6 +89,8 @@ class AuthController extends Controller
                         $angsuran = false;
                     }
 
+                    $inv = $this->generateInvoice($kec);
+
                     $request->session()->regenerate();
                     session([
                         'nama_lembaga' => str_replace('DBM ', '', $kec->nama_lembaga_sort),
@@ -101,10 +101,15 @@ class AuthController extends Controller
                         'lokasi_user' => $user->lokasi,
                         'menu' => $menu,
                         'icon' => $icon,
-                        'angsuran' => $angsuran
+                        'angsuran' => $angsuran,
                     ]);
 
-                    return redirect('/dashboard')->with('pesan', 'Selamat Datang ' . $user->namadepan . ' ' . $user->namabelakang);
+                    return redirect('/dashboard')->with([
+                        'pesan' => 'Selamat Datang ' . $user->namadepan . ' ' . $user->namabelakang,
+                        'invoice' => $inv['invoice'],
+                        'msg' => $inv['msg'],
+                        'hp_dir' => $inv['dir'],
+                    ]);
                 }
             }
         }
@@ -190,7 +195,8 @@ class AuthController extends Controller
     {
         $return = [
             'invoice' => false,
-            'msg' => ''
+            'msg' => '',
+            'dir' => ''
         ];
 
         $bulan_pakai = date('m-d', strtotime($kec->tgl_pakai));
@@ -232,7 +238,15 @@ class AuthController extends Controller
             $pesan .= "_https://" . $kec->web_alternatif . "/" . $invoice->id . "_";
 
             $return['invoice'] = true;
-            $return['pesan'] = $pesan;
+            $return['msg'] = $pesan;
+
+            $dir = User::where([
+                ['lokasi', $kec->id],
+                ['jabatan', '1'],
+                ['level', '1']
+            ])->first();
+
+            $return['dir'] = $dir->hp;
         }
 
         return $return;
