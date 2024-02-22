@@ -1269,7 +1269,7 @@ class TransaksiController extends Controller
 
             $rek2 = Rekening::where('lev1', '1')->orderBy('kode_akun', 'ASC')->get();
 
-            $label2 = 'Pilih Brangkas';
+            $label2 = 'Disimpan Ke';
         } elseif ($id == 2) {
             $rek1 = Rekening::where(function ($query) {
                 $query->where('lev1', '1')->orwhere('lev1', '2');
@@ -1279,13 +1279,13 @@ class TransaksiController extends Controller
 
             $rek2 = Rekening::where('lev1', '2')->orwhere('lev1', '3')->orwhere('lev1', '5')->orderBy('kode_akun', 'ASC')->get();
 
-            $label2 = 'Pilih Biaya';
+            $label2 = 'Keperluan';
         } elseif ($id == 3) {
             $rek1 = Rekening::all();
 
             $rek2 = Rekening::all();
 
-            $label2 = 'Pilih Brangkas Tujuan';
+            $label2 = 'Disimpan Ke';
         }
 
         return view('transaksi.jurnal_umum.partials.rekening')->with(compact('rek1', 'rek2', 'label1', 'label2'));

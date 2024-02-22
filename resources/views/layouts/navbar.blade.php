@@ -34,7 +34,7 @@
         <div class="ms-md-3 pe-md-3 d-flex align-items-center w-100">
             @if (Session::get('angsuran') == true && !$show)
                 <div class="input-group input-group-outline">
-                    <label class="form-label">Cari Kelompok</label>
+                    <label class="form-label">Angsuran Kelompok</label>
                     @if (Request::get('pinkel'))
                         <input type="text" id="cariKelompok" name="cariKelompok" class="form-control"
                             autocomplete="off"
