@@ -75,7 +75,7 @@
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td><b>{{ $i }}.</b></td>
+                <td>{{ $i }}.</td>
             </tr>
         @endfor
     </table>
