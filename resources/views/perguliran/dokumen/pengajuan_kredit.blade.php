@@ -173,7 +173,7 @@
         <td width="30">&nbsp;</td>
         <td>Jabatan</td>
         <td width="5" align="right">:</td>
-        <td style="font-weight: bold;">Sekertaris Kelompok</td>
+        <td style="font-weight: bold;">Sekretaris Kelompok</td>
     </tr>
     <tr>
         <td width="30">&nbsp;</td>
