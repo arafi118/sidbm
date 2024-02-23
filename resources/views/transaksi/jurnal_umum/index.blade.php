@@ -490,6 +490,26 @@
             $('#CetakBuktiTransaksi').modal('toggle')
         })
 
+        $(document).on('click', '.btn-struk', function(e) {
+            e.preventDefault()
+
+            var idtp = $(this).attr('data-idtp')
+            Swal.fire({
+                title: "Cetak Struk Angsuran",
+                showDenyButton: true,
+                confirmButtonText: "Biasa",
+                denyButtonText: "Dot Matrix",
+                confirmButtonColor: "#3085d6",
+                denyButtonColor: "#3085d6",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    open_window('/transaksi/angsuran/struk/' + idtp)
+                } else if (result.isDenied) {
+                    open_window('/transaksi/angsuran/struk_matrix/' + idtp)
+                }
+            });
+        })
+
         $(document).on('click', '.btn-link', function(e) {
             var action = $(this).attr('data-action')
 

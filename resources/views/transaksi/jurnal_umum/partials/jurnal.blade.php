@@ -144,23 +144,17 @@
                     <div class="btn-group">
                         @if ($kuitansi)
                             @if ($trx->idtp > 0 && $trx->id_pinj != 0)
-                                <button type="button" data-action="/transaksi/angsuran/struk/{{ $trx->idtp }}"
-                                    class="btn btn-linkedin btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Struk" data-container="body" data-animation="true">
-                                    <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
-                                </button>
-                                <button type="button"
-                                    data-action="/transaksi/angsuran/struk_matrix/{{ $trx->idtp }}"
-                                    class="btn btn-linkedin btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Struk Dot Matrix" data-container="body"
-                                    data-animation="true">
+                                <button type="button" data-idtp="{{ $trx->idtp }}"
+                                    class="btn btn-instagram btn-icon-only btn-tooltip btn-struk"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Struk"
+                                    data-container="body" data-animation="true">
                                     <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
                                 </button>
                             @else
                                 <button type="button" data-action="/transaksi/dokumen/kuitansi/{{ $trx->idt }}"
-                                    class="btn btn-linkedin btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Kuitansi" data-container="body"
-                                    data-animation="true">
+                                    class="btn btn-instagram btn-icon-only btn-tooltip btn-link"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Kuitansi"
+                                    data-container="body" data-animation="true">
                                     <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
                                 </button>
                             @endif
@@ -168,7 +162,7 @@
                         @if ($trx->idtp > 0 && $trx->id_pinj != 0)
                             <button type="button"
                                 data-action="/transaksi/dokumen/{{ $files }}_angsuran/{{ $trx->idt }}"
-                                class="btn btn-instagram btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
+                                class="btn btn-tumblr btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
                                 data-bs-placement="top" title="{{ $files }}" data-container="body"
                                 data-animation="true">
                                 <span class="btn-inner--icon"><i class="fas fa-file-circle-exclamation"></i></span>
@@ -176,7 +170,7 @@
                         @else
                             <button type="button"
                                 data-action="/transaksi/dokumen/{{ $files }}/{{ $trx->idt }}"
-                                class="btn btn-instagram btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
+                                class="btn btn-tumblr btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
                                 data-bs-placement="top" title="{{ $files }}" data-container="body"
                                 data-animation="true">
                                 <span class="btn-inner--icon"><i class="fas fa-file-circle-exclamation"></i></span>
@@ -184,17 +178,10 @@
                         @endif
 
                         @if ($is_dir)
-                            <button type="button" data-idt="{{ $trx->idt }}"
-                                class="btn btn-tumblr btn-icon-only btn-tooltip btn-reversal" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Reversal" data-container="body"
-                                data-animation="true">
-                                <span class="btn-inner--icon"><i class="fas fa-code-pull-request"></i></span>
-                            </button>
                             @if (!$is_ben)
                                 <button type="button" data-idt="{{ $trx->idt }}"
-                                    class="btn btn-github btn-icon-only btn-tooltip btn-delete"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus"
-                                    data-container="body" data-animation="true">
+                                    class="btn btn-github btn-icon-only btn-tooltip btn-delete" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Hapus" data-container="body" data-animation="true">
                                     <span class="btn-inner--icon"><i class="fas fa-trash-can"></i></span>
                                 </button>
                             @endif
