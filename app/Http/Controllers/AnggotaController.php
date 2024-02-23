@@ -7,6 +7,7 @@ use App\Models\Desa;
 use App\Models\Kecamatan;
 use App\Models\Keluarga;
 use App\Models\PinjamanAnggota;
+use App\Models\StatusPinjaman;
 use App\Models\Usaha;
 use App\Utils\Tanggal;
 use Illuminate\Http\Request;
