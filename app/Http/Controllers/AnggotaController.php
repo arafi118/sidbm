@@ -55,8 +55,10 @@ class AnggotaController extends Controller
                 ->make(true);
         }
 
+        $status_pinjaman = StatusPinjaman::all();
+
         $title = 'Daftar Penduduk';
-        return view('penduduk.index')->with(compact('title'));
+        return view('penduduk.index')->with(compact('title', 'status_pinjaman'));
     }
 
     public function register()

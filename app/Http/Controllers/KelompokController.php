@@ -10,6 +10,7 @@ use App\Models\JenisUsaha;
 use App\Models\Kecamatan;
 use App\Models\Kelompok;
 use App\Models\PinjamanKelompok;
+use App\Models\StatusPinjaman;
 use App\Models\TingkatKelompok;
 use App\Utils\Tanggal;
 use Illuminate\Http\Request;
@@ -56,8 +57,10 @@ class KelompokController extends Controller
                 ->make(true);
         }
 
+        $status_pinjaman = StatusPinjaman::all();
+
         $title = 'Daftar Kelompok';
-        return view('kelompok.index')->with(compact('title'));
+        return view('kelompok.index')->with(compact('title', 'status_pinjaman'));
     }
 
     public function register()
