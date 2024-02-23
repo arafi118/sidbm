@@ -854,7 +854,7 @@
                         $.get('/perguliran/{{ $perguliran->id }}', function(result) {
                             $('#layout').html(result)
 
-                            $('#EditProposal').modal('toggle')
+                            $('#EditProposal').modal('hide')
                         })
                     })
                 },

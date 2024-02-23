@@ -30,7 +30,7 @@ class Keuangan
         return $akhir;
     }
 
-    public static function pembulatan($angka, $pembulatan = null)
+    public static function pembulatan($angka, $pembulatan = null, $dump = false)
     {
         $angka = round($angka);
 
@@ -50,7 +50,8 @@ class Keuangan
             $pembulatan = intval($pembulatan * -1);
         }
 
-        $ratusan = substr($angka, -3);
+        $ratusan = substr($angka, -strlen($pembulatan / 2));
+        // $ratusan = substr($angka, -3);
         $nilai_tengah = $pembulatan / 2;
 
         if ($sistem == 'keatas') {
@@ -62,7 +63,7 @@ class Keuangan
         }
 
         if ($sistem == 'auto') {
-            if ($ratusan < $nilai_tengah) {
+            if ($ratusan <= $nilai_tengah) {
                 $akhir = $angka - $ratusan;
             } else {
                 $akhir = $angka + ($pembulatan - $ratusan);
