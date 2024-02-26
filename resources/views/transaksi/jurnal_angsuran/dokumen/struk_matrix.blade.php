@@ -122,7 +122,7 @@
 
         <tr>
             <th colspan="4" class="bottom">
-                <b>{{ strtoupper($kec->nama_lembaga_sort . '' . $kec->nama_kec) }}</b>
+                <b>{{ strtoupper($kec->nama_lembaga_sort . ' ' . $kec->nama_kec) }}</b>
                 <br>
                 {{ $kec->alamat_kec }}
                 <br>

@@ -214,20 +214,6 @@ Route::get('/link', function () {
     symlink($target, $shortcut);
 });
 
-Route::get('/generate/{id}', function ($id) {
-    $pinjaman = new PinjamanKelompokController;
-    $transaksi = new TransaksiController;
-
-    $pinkel = PinjamanKelompok::where('id', $id)->first();
-
-    $pinjaman->generate($pinkel);
-    $transaksi->regenerateReal($pinkel);
-
-    return response()->json([
-        'msg' => 'Generate Real dan Rencana Berhasil'
-    ]);
-});
-
 Route::get('/user', function () {
     $kec = Kecamatan::where('web_kec', request()->getHost())->orwhere('web_alternatif', request()->getHost())->with('kabupaten')->first();
     $users = User::where('lokasi', $kec->id)->with('l', 'j')->orderBy('level', 'ASC')->orderBy('jabatan', 'ASC')->get();

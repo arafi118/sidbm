@@ -4,10 +4,12 @@
     $data_nia = [];
     if ($pinkel->pinkel) {
         foreach ($pinkel->pinkel->pinjaman_anggota as $pinj) {
-            $data_nia[$pinj->nia] = [
-                'nama' => $pinj->anggota->namadepan,
-                'alokasi' => $pinj->alokasi,
-            ];
+            if ($pinj->anggota) {
+                $data_nia[$pinj->nia] = [
+                    'nama' => $pinj->anggota->namadepan,
+                    'alokasi' => $pinj->alokasi,
+                ];
+            }
         }
     }
 @endphp
