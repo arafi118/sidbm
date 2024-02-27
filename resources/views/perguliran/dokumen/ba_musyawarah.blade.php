@@ -157,9 +157,9 @@
                         ______________________________________________</td>
                     @if ($i % 2 == 0)
                         <td style="padding: 0px;" width="25%">&nbsp;</td>
-                        <td style="padding: 0px;" width="25%">{{ $i }}. _________________________</td>
+                        <td style="padding: 0px;" width="25%">{{ $i }}. _____________________</td>
                     @else
-                        <td style="padding: 0px;" width="25%">{{ $i }}. _________________________</td>
+                        <td style="padding: 0px;" width="25%">{{ $i }}. _____________________</td>
                         <td style="padding: 0px;" width="25%">&nbsp;</td>
                     @endif
                 </tr>
