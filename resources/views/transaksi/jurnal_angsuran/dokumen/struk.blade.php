@@ -20,6 +20,11 @@
         $angsuran_ke = $ra_bulan_ini->angsuran_ke;
     }
 
+    $jum_angsuran = $pinkel->jangka / $pinkel->sis_pokok->sistem;
+    if ($real->saldo_pokok + $real->saldo_jasa <= 0) {
+        $angsuran_ke = $jum_angsuran;
+    }
+
     if ($ra->jatuh_tempo <= $real->tgl_transaksi) {
         $angsur_bulan_depan = false;
     }
@@ -32,7 +37,8 @@
         $tunggakan_jasa = 0;
     }
 
-    $jum_angsuran = $pinkel->jangka / $pinkel->sis_pokok->sistem;
+    $pokok_bulan_depan = $pinkel->alokasi - $real->sum_pokok;
+    $jasa_bulan_depan = ($pinkel->alokasi * $pinkel->pros_jasa) / 100 - $real->sum_jasa;
 
     $pokok_bulan_depan = $pinkel->alokasi - $real->sum_pokok;
     $jasa_bulan_depan = ($pinkel->alokasi * $pinkel->pros_jasa) / 100 - $real->sum_jasa;
