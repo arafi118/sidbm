@@ -34,7 +34,7 @@
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 12px;">
             <td height="20">
-                <b>Laba/Rugi Tahun {{ $tahun }}</b>
+                <b>Laba/Rugi Tahun {{ $tahun - 1 }}</b>
             </td>
             <td align="right">
                 <b>Rp. {{ number_format($surplus, 2) }}</b>
