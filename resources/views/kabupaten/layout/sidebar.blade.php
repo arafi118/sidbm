@@ -75,13 +75,14 @@
                 <div class="collapse" id="MenuKecamatan">
                     <ul class="nav nav-sm flex-column">
                         @foreach (Session::get('kecamatan') as $kec)
-                            <li class="nav-item nav-item-link {{ active($kec->kd_kec) }}">
-                                <a class="nav-link text-white {{ active($kec->kd_kec) }}"
-                                    href="/kab/kecamatan/{{ $kec->kd_kec }}"">
+                            <li class="nav-item nav-item-link {{ active($kec->kode) }}">
+                                <a class="nav-link text-white {{ active($kec->kode) }}"
+                                    href="/kab/kecamatan/{{ $kec->kode }}"">
                                     <span class="sidenav-mini-icon">
-                                        {{ str_pad($kec->id, 3, '0', STR_PAD_LEFT) }}
+                                        {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}
                                     </span>
-                                    <span class="sidenav-normal  ms-2  ps-1"> {{ $kec->nama_kec }} </span>
+                                    <span class="sidenav-normal  ms-2  ps-1"> {{ ucwords(strtolower($kec->nama)) }}
+                                    </span>
                                 </a>
                             </li>
                         @endforeach

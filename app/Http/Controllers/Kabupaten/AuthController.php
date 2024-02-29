@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Kabupaten;
 use App\Http\Controllers\Controller;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
+use App\Models\Wilayah;
 use App\Utils\Keuangan;
 use Auth;
 use Illuminate\Http\Request;
@@ -44,7 +45,7 @@ class AuthController extends Controller
                 if (Auth::guard('kab')->loginUsingId($login_kab->id)) {
                     $request->session()->regenerate();
 
-                    $kecamatan = Kecamatan::where('kd_kab', $login_kab->kd_kab)->orderBy('nama_kec', 'ASC')->get();
+                    $kecamatan = Wilayah::where('kode', 'LIKE', $login_kab->kd_kab . '%')->whereRaw('LENGTH(kode) = 8')->orderBy('nama', 'ASC')->get();
                     session([
                         'nama_kab' => ucwords(strtolower($login_kab->nama_kab)),
                         'kecamatan' => $kecamatan

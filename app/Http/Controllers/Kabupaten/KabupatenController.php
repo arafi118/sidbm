@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Kabupaten;
 use App\Http\Controllers\Controller;
 use App\Models\JenisLaporan;
 use App\Models\Kecamatan;
+use App\Models\Wilayah;
 use App\Utils\Keuangan;
 use Session;
 
@@ -20,6 +21,13 @@ class KabupatenController extends Controller
     {
         $kec = Kecamatan::where('kd_kec', $kd_kec)->with('kabupaten')->first();
         $laporan = JenisLaporan::where('file', '!=', '0')->orderBy('urut', 'ASC')->get();
+
+        if (!$kec) {
+            $kec = Wilayah::where('kode', $kd_kec)->first();
+
+            $title = 'Kecamatan Belum Terdaftar';
+            return view('kabupaten._kecamatan')->with(compact('title', 'kec'));
+        }
 
         $kab = $kec->kabupaten;
         $nama_kec = $kec->sebutan_kec . ' ' . $kec->nama_kec;
