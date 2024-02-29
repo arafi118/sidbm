@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class GuestMiddleware
+class KabMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,12 +15,10 @@ class GuestMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->guard('master')->user()) {
-            if (auth()->guard('master')->user()->akses == 'master') {
-                return redirect('/master');
-            }
+        if (auth()->guard('kab')->check()) {
+            return $next($request);
         }
 
-        return $next($request);
+        return redirect('/kab');
     }
 }

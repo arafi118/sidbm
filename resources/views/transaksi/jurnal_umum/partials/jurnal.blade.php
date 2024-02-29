@@ -146,7 +146,7 @@
                             @if ($trx->idtp > 0 && $trx->id_pinj != 0)
                                 <button type="button" data-idtp="{{ $trx->idtp }}"
                                     class="btn btn-instagram btn-icon-only btn-tooltip btn-struk"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Struk"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Kuitansi"
                                     data-container="body" data-animation="true">
                                     <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
                                 </button>

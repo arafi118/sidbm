@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AdminInvoice;
 use App\Models\AdminJenisPembayaran;
+use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Menu;
 use App\Models\User;
@@ -26,7 +27,12 @@ class AuthController extends Controller
 
         $kec = Kecamatan::where('web_kec', explode('//', request()->url(''))[1])->orwhere('web_alternatif', explode('//', request()->url(''))[1])->first();
         if (!$kec) {
-            abort(404);
+            $kab = Kabupaten::where('web_kab', explode('//', request()->url(''))[1])->orwhere('web_kab_alternatif', explode('//', request()->url(''))[1])->first();
+            if (!$kab) {
+                abort(404);
+            }
+
+            return redirect('/kab');
         }
 
         $logo = '/assets/img/icon/favicon.png';

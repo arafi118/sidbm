@@ -15,12 +15,12 @@ class MasterMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->guard('master')->user()) {
+        if (auth()->guard('master')->check()) {
             if (auth()->guard('master')->user()->akses == 'master') {
                 return $next($request);
             }
         }
 
-        return redirect('/master/login');
+        return redirect('/master');
     }
 }

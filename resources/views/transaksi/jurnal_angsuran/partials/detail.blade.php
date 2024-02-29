@@ -57,25 +57,19 @@
                 <td align="right">{{ number_format($denda) }}</td>
                 <td align="right">
                     <div class="btn-group">
-                        <button type="button" data-action="/transaksi/angsuran/struk/{{ $real->id }}"
-                            class="btn btn-linkedin btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Struk" data-container="body" data-animation="true">
-                            <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
-                        </button>
-                        <button type="button" data-action="/transaksi/angsuran/struk_matrix/{{ $real->id }}"
-                            class="btn btn-linkedin btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Struk Dot Matrix" data-container="body"
-                            data-animation="true">
+                        <button type="button" data-idtp="{{ $real->id }}"
+                            class="btn btn-instagram btn-icon-only btn-tooltip btn-struk" data-bs-toggle="tooltip"
+                            data-bs-placement="top" title="Kuitansi" data-container="body" data-animation="true">
                             <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
                         </button>
                         <button type="button" data-action="/transaksi/dokumen/bkm_angsuran/{{ $idt }}"
-                            class="btn btn-instagram btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
+                            class="btn btn-tumblr btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="BKM" data-container="body" data-animation="true">
                             <span class="btn-inner--icon"><i class="fas fa-file-circle-exclamation"></i></span>
                         </button>
                         <button type="button"
                             data-action="/perguliran/dokumen/kartu_angsuran/{{ $real->loan_id }}/{{ $real->id }}"
-                            class="btn btn-tumblr btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
+                            class="btn btn-github btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="Cetak Pada Kartu Angsuran" data-container="body"
                             data-animation="true">
                             <span class="btn-inner--icon"><i class="fas fa-file-invoice"></i></span>

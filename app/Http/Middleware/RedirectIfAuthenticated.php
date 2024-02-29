@@ -19,6 +19,20 @@ class RedirectIfAuthenticated
     {
         $guards = empty($guards) ? [null] : $guards;
 
+        if (auth()->guard('master')->check()) {
+            if (auth()->guard('master')->user()->akses == 'master') {
+                return redirect('/master/dashboard');
+            }
+        }
+
+        if (auth()->guard('kab')->check()) {
+            return redirect('/kab/dashboard');
+        }
+
+        if (auth()->guard('web')->check()) {
+            return redirect('/dashboard');
+        }
+
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 return redirect('/dashboard');

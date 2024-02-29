@@ -495,7 +495,7 @@
 
             var idtp = $(this).attr('data-idtp')
             Swal.fire({
-                title: "Cetak Struk Angsuran",
+                title: "Cetak Kuitansi Angsuran",
                 showDenyButton: true,
                 confirmButtonText: "Biasa",
                 denyButtonText: "Dot Matrix",

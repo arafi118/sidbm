@@ -55,7 +55,7 @@
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
-        <a class="navbar-brand text-center" href="/master">
+        <a class="navbar-brand text-center" href="/master/dashboard">
             <span class="ms-1 font-weight-bold text-white" id="nama_lembaga_sort">
                 Admin Page
             </span>
@@ -73,8 +73,8 @@
             </li>
             <hr class="horizontal light mt-0">
 
-            <li class="nav-item nav-item-link {{ active('master') }}">
-                <a class="nav-link text-white {{ active('master') }}" href="/master">
+            <li class="nav-item nav-item-link {{ active('dashboard') }}">
+                <a class="nav-link text-white {{ active('dashboard') }}" href="/master/dashboard">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">dashboard</i>
                     </div>

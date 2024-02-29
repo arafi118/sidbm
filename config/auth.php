@@ -45,6 +45,11 @@ return [
             'driver' => 'session',
             'provider' => 'masters',
         ],
+
+        'kab' => [
+            'driver' => 'session',
+            'provider' => 'regencies',
+        ],
     ],
 
     /*
@@ -73,6 +78,11 @@ return [
         'masters' => [
             'driver' => 'eloquent',
             'model' => App\Models\AdminUser::class,
+        ],
+
+        'regencies' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Kabupaten::class,
         ],
     ],
 

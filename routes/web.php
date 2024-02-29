@@ -9,6 +9,8 @@ use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DesaController;
+use App\Http\Controllers\Kabupaten\AuthController as KabupatenAuthController;
+use App\Http\Controllers\Kabupaten\KabupatenController;
 use App\Http\Controllers\KelompokController;
 use App\Http\Controllers\PelaporanController;
 use App\Http\Controllers\PinjamanAnggotaController;
@@ -32,11 +34,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/master/login', [AdminAuthController::class, 'index'])->middleware('master.quest');
-Route::post('/master/login', [AdminAuthController::class, 'login'])->middleware('master.quest');
+Route::get('/master', [AdminAuthController::class, 'index'])->middleware('guest');
+Route::post('/master/login', [AdminAuthController::class, 'login'])->middleware('guest');
 
 Route::group(['prefix' => 'master', 'as' => 'master.', 'middleware' => 'master'], function () {
-    Route::get('/', [AdminController::class, 'index']);
+    Route::get('/dashboard', [AdminController::class, 'index']);
     Route::get('/simpan_saldo', [DashboardController::class, 'simpanSaldo']);
 
     Route::get('/kecamatan/{kd_prov}/{kd_kab}/{kd_kec}', [AdminController::class, 'kecamatan']);
@@ -61,6 +63,17 @@ Route::group(['prefix' => 'master', 'as' => 'master.', 'middleware' => 'master']
     Route::resource('/menu', MenuController::class);
 
     Route::post('/logout', [AdminAuthController::class, 'logout']);
+});
+
+Route::get('/kab', [KabupatenAuthController::class, 'index'])->middleware('guest');
+Route::post('/kab/login', [KabupatenAuthController::class, 'login'])->middleware('guest');
+
+Route::group(['prefix' => 'kab', 'as' => 'kab.', 'middleware' => 'kab'], function () {
+    Route::get('/dashboard', [KabupatenController::class, 'index']);
+    Route::get('/simpan_saldo', [DashboardController::class, 'simpanSaldo']);
+    Route::get('/kecamatan/{kd_kec}', [KabupatenController::class, 'kecamatan']);
+
+    Route::post('/logout', [KabupatenAuthController::class, 'logout']);
 });
 
 Route::get('/', [AuthController::class, 'index'])->middleware('guest')->name('/');

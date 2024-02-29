@@ -41,6 +41,6 @@ class AuthController extends Controller
         $user = auth()->guard('master')->user()->nama_lengkap;
         Auth::guard('master')->logout();
 
-        return redirect('/master/login')->with('pesan', 'Terima Kasih ' . $user);
+        return redirect('/master')->with('pesan', 'Terima Kasih ' . $user);
     }
 }
