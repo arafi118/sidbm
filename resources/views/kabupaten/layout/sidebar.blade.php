@@ -40,7 +40,7 @@
                 <a href="#" class="nav-link text-white">
                     <img src="https://w7.pngwing.com/pngs/326/629/png-transparent-desktop-pc-pc-computer-calculator-icon.png"
                         class="avatar" id="profil_avatar">
-                    <span class="nav-link-text ms-2 ps-1 nama_user">Kab. {{ Session::get('nama_kab') }}</span>
+                    <span class="nav-link-text ms-2 ps-1 nama_user">{{ Session::get('nama_kab') }}</span>
                 </a>
             </li>
             <hr class="horizontal light mt-0">
