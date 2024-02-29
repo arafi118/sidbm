@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Kabupaten;
 use App\Http\Controllers\Controller;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
+use App\Utils\Keuangan;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,16 @@ class AuthController extends Controller
 {
     public function index()
     {
-        return view('kabupaten.auth.login');
+        $url = request()->getHost();
+        $kab = Kabupaten::where('web_kab', $url)->orwhere('web_kab_alternatif', $url)->first();
+
+        if (Keuangan::startWith($kab->nama_kab, 'KOTA') || Keuangan::startWith($kab->nama_kab, 'KAB')) {
+            $nama_kab = ucwords(strtolower($kab->nama_kab));
+        } else {
+            $nama_kab = ' Kabupaten ' . ucwords(strtolower($kab->nama_kab));
+        }
+
+        return view('kabupaten.auth.login')->with(compact('nama_kab'));
     }
 
     public function login(Request $request)
