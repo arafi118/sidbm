@@ -82,43 +82,85 @@
 
                 $kuitansi = false;
                 $files = 'bm';
-                if ($keuangan->startWith($trx->rekening_debit, '1.1.01') && !$keuangan->startWith($trx->rekening_kredit, '1.1.01')) {
+                if (
+                    $keuangan->startWith($trx->rekening_debit, '1.1.01') &&
+                    !$keuangan->startWith($trx->rekening_kredit, '1.1.01')
+                ) {
                     $files = 'bkm';
                     $kuitansi = true;
                 }
-                if (!$keuangan->startWith($trx->rekening_debit, '1.1.01') && $keuangan->startWith($trx->rekening_kredit, '1.1.01')) {
+                if (
+                    !$keuangan->startWith($trx->rekening_debit, '1.1.01') &&
+                    $keuangan->startWith($trx->rekening_kredit, '1.1.01')
+                ) {
                     $files = 'bkk';
                     $kuitansi = true;
                 }
-                if ($keuangan->startWith($trx->rekening_debit, '1.1.01') && $keuangan->startWith($trx->rekening_kredit, '1.1.01')) {
+                if (
+                    $keuangan->startWith($trx->rekening_debit, '1.1.01') &&
+                    $keuangan->startWith($trx->rekening_kredit, '1.1.01')
+                ) {
                     $files = 'bm';
                     $kuitansi = false;
                 }
-                if ($keuangan->startWith($trx->rekening_debit, '1.1.02') && !($keuangan->startWith($trx->rekening_kredit, '1.1.01') || $keuangan->startWith($trx->rekening_kredit, '1.1.02'))) {
+                if (
+                    $keuangan->startWith($trx->rekening_debit, '1.1.02') &&
+                    !(
+                        $keuangan->startWith($trx->rekening_kredit, '1.1.01') ||
+                        $keuangan->startWith($trx->rekening_kredit, '1.1.02')
+                    )
+                ) {
                     $files = 'bkm';
                     $kuitansi = true;
                 }
-                if ($keuangan->startWith($trx->rekening_debit, '1.1.02') && $keuangan->startWith($trx->rekening_kredit, '1.1.02')) {
+                if (
+                    $keuangan->startWith($trx->rekening_debit, '1.1.02') &&
+                    $keuangan->startWith($trx->rekening_kredit, '1.1.02')
+                ) {
                     $files = 'bm';
                     $kuitansi = false;
                 }
-                if ($keuangan->startWith($trx->rekening_debit, '1.1.02') && $keuangan->startWith($trx->rekening_kredit, '1.1.01')) {
+                if (
+                    $keuangan->startWith($trx->rekening_debit, '1.1.02') &&
+                    $keuangan->startWith($trx->rekening_kredit, '1.1.01')
+                ) {
                     $files = 'bm';
                     $kuitansi = false;
                 }
-                if ($keuangan->startWith($trx->rekening_debit, '1.1.01') && $keuangan->startWith($trx->rekening_kredit, '1.1.02')) {
+                if (
+                    $keuangan->startWith($trx->rekening_debit, '1.1.01') &&
+                    $keuangan->startWith($trx->rekening_kredit, '1.1.02')
+                ) {
                     $files = 'bm';
                     $kuitansi = false;
                 }
-                if ($keuangan->startWith($trx->rekening_debit, '5.') && !($keuangan->startWith($trx->rekening_kredit, '1.1.01') || $keuangan->startWith($trx->rekening_kredit, '1.1.02'))) {
+                if (
+                    $keuangan->startWith($trx->rekening_debit, '5.') &&
+                    !(
+                        $keuangan->startWith($trx->rekening_kredit, '1.1.01') ||
+                        $keuangan->startWith($trx->rekening_kredit, '1.1.02')
+                    )
+                ) {
                     $files = 'bm';
                     $kuitansi = false;
                 }
-                if (!($keuangan->startWith($trx->rekening_debit, '1.1.01') || $keuangan->startWith($trx->rekening_debit, '1.1.02')) && $keuangan->startWith($trx->rekening_kredit, '1.1.02')) {
+                if (
+                    !(
+                        $keuangan->startWith($trx->rekening_debit, '1.1.01') ||
+                        $keuangan->startWith($trx->rekening_debit, '1.1.02')
+                    ) &&
+                    $keuangan->startWith($trx->rekening_kredit, '1.1.02')
+                ) {
                     $files = 'bm';
                     $kuitansi = false;
                 }
-                if (!($keuangan->startWith($trx->rekening_debit, '1.1.01') || $keuangan->startWith($trx->rekening_debit, '1.1.02')) && $keuangan->startWith($trx->rekening_kredit, '4.')) {
+                if (
+                    !(
+                        $keuangan->startWith($trx->rekening_debit, '1.1.01') ||
+                        $keuangan->startWith($trx->rekening_debit, '1.1.02')
+                    ) &&
+                    $keuangan->startWith($trx->rekening_kredit, '4.')
+                ) {
                     $files = 'bm';
                     $kuitansi = false;
                 }
@@ -178,10 +220,16 @@
                         @endif
 
                         @if ($is_dir)
+                            <button type="button" data-idt="{{ $trx->idt }}"
+                                class="btn btn-tumblr btn-icon-only btn-tooltip btn-reversal" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Reversal" data-container="body" data-animation="true">
+                                <span class="btn-inner--icon"><i class="fas fa-code-pull-request"></i></span>
+                            </button>
                             @if (!$is_ben)
                                 <button type="button" data-idt="{{ $trx->idt }}"
-                                    class="btn btn-github btn-icon-only btn-tooltip btn-delete" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Hapus" data-container="body" data-animation="true">
+                                    class="btn btn-github btn-icon-only btn-tooltip btn-delete"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus"
+                                    data-container="body" data-animation="true">
                                     <span class="btn-inner--icon"><i class="fas fa-trash-can"></i></span>
                                 </button>
                             @endif
