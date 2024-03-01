@@ -154,9 +154,6 @@
                                 @if (in_array($saldo->bulan, $bulan_tampil) && $urutan <= 3)
                                     @php
                                         $_saldo -= $saldo_bula_lalu;
-                                        if ($_saldo < 0) {
-                                            $_saldo = 0;
-                                        }
 
                                         $nomor++;
                                         if ($nomor == 1) {
