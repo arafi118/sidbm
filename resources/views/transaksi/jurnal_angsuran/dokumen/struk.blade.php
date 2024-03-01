@@ -51,7 +51,7 @@
         $jasa_bulan_depan = $wajib_jasa;
     }
 
-    if ($angsuran_ke == $jum_angsuran) {
+    if ($angsuran_ke >= $jum_angsuran) {
         $pokok_bulan_depan = 0;
         $jasa_bulan_depan = 0;
     }
@@ -67,7 +67,11 @@
 @foreach ($real->trx as $trx)
     @php
         $keterangan .= $trx->keterangan_transaksi . '<br>';
-        if ($trx->rekening_kredit == '4.1.01.04' || $trx->rekening_kredit == '4.1.01.05' || $trx->rekening_kredit == '4.1.01.06') {
+        if (
+            $trx->rekening_kredit == '4.1.01.04' ||
+            $trx->rekening_kredit == '4.1.01.05' ||
+            $trx->rekening_kredit == '4.1.01.06'
+        ) {
             $denda += $trx->jumlah;
         }
 
