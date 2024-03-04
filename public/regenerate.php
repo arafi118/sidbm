@@ -101,7 +101,6 @@ if (isset($_GET['generate']) && isset($_GET['lokasi'])) {
             }
         }
 
-
         $tgl_angsur = $tgl_cair;
         $tanggal_cair = date('d', strtotime($tgl_cair));
 
