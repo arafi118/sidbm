@@ -182,6 +182,11 @@
             'file' => 'suratTagihan',
             'withExcel' => false,
         ],
+        [
+            'title' => 'Surat Ahli Waris',
+            'file' => 'suratAhliWaris',
+            'withExcel' => false,
+        ],
     ];
 @endphp
 

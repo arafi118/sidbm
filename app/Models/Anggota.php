@@ -39,13 +39,18 @@ class Anggota extends Model
         return $this->hasOne(DataPemanfaat::class, 'nik', 'nik');
     }
 
-    public function getRouteKeyName()
-    {
-        return 'nik';
-    }
-
     public function u()
     {
         return $this->belongsTo(Usaha::class, 'usaha', 'id');
+    }
+
+    public function keluarga()
+    {
+        return $this->belongsTo(Keluarga::class, 'hubungan', 'id');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'nik';
     }
 }
