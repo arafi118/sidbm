@@ -193,8 +193,6 @@ Route::post('/transaksi/hapus', [TransaksiController::class, 'hapus'])->middlewa
 
 Route::get('/transaksi/angsuran/lpp/{id}', [TransaksiController::class, 'lpp'])->middleware('auth');
 Route::get('/transaksi/angsuran/detail_angsuran/{id}', [TransaksiController::class, 'detailAngsuran'])->middleware('auth');
-Route::get('/transaksi/angsuran/struk/{id}', [TransaksiController::class, 'struk'])->middleware('auth');
-Route::get('/transaksi/angsuran/struk_matrix/{id}', [TransaksiController::class, 'strukMatrix'])->middleware('auth');
 Route::get('/transaksi/detail_transaksi/', [TransaksiController::class, 'detailTransaksi'])->middleware('auth');
 Route::post('/transaksi/angsuran', [TransaksiController::class, 'angsuran'])->middleware('auth');
 Route::get('/transaksi/generate_real/{id_pinkel}', [TransaksiController::class, 'generateReal'])->middleware('auth');
@@ -204,10 +202,14 @@ Route::get('/transaksi/angsuran/form_anggota/{id_pinkel}', [TransaksiController:
 Route::get('/angsuran/notifikasi/{idtp}', [TransaksiController::class, 'notifikasi'])->middleware('auth');
 
 Route::get('/transaksi/dokumen/kuitansi/{id}', [TransaksiController::class, 'kuitansi'])->middleware('auth');
+Route::get('/transaksi/dokumen/kuitansi_thermal/{id}', [TransaksiController::class, 'kuitansi_thermal'])->middleware('auth');
 Route::get('/transaksi/dokumen/bkk/{id}', [TransaksiController::class, 'bkk'])->middleware('auth');
 Route::get('/transaksi/dokumen/bkm/{id}', [TransaksiController::class, 'bkm'])->middleware('auth');
 Route::get('/transaksi/dokumen/bm/{id}', [TransaksiController::class, 'bm'])->middleware('auth');
 
+Route::get('/transaksi/dokumen/struk/{id}', [TransaksiController::class, 'struk'])->middleware('auth');
+Route::get('/transaksi/dokumen/struk_matrix/{id}', [TransaksiController::class, 'strukMatrix'])->middleware('auth');
+Route::get('/transaksi/dokumen/struk_thermal/{id}', [TransaksiController::class, 'strukThermal'])->middleware('auth');
 Route::get('/transaksi/dokumen/bkm_angsuran/{id}', [TransaksiController::class, 'bkmAngsuran'])->middleware('auth');
 Route::get('/transaksi/dokumen/bkk_angsuran/{id}', [TransaksiController::class, 'bkkAngsuran'])->middleware('auth');
 Route::post('/transaksi/dokumen/cetak', [TransaksiController::class, 'cetak'])->middleware('auth');

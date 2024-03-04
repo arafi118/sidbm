@@ -39,7 +39,11 @@
             @foreach ($real->trx as $trx)
                 @php
                     $keterangan .= $trx->keterangan_transaksi . '<br>';
-                    if ($trx->rekening_kredit == '4.1.01.04' || $trx->rekening_kredit == '4.1.01.05' || $trx->rekening_kredit == '4.1.01.06') {
+                    if (
+                        $trx->rekening_kredit == '4.1.01.04' ||
+                        $trx->rekening_kredit == '4.1.01.05' ||
+                        $trx->rekening_kredit == '4.1.01.06'
+                    ) {
                         $denda += $trx->jumlah;
                     }
 
@@ -57,6 +61,12 @@
                 <td align="right">{{ number_format($denda) }}</td>
                 <td align="right">
                     <div class="btn-group">
+                        <button type="button" data-action="/transaksi/dokumen/struk_thermal/{{ $real->id }}"
+                            class="btn btn-linkedin btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
+                            data-bs-placement="top" title="Kuitansi Thermal" data-container="body"
+                            data-animation="true">
+                            <span class="btn-inner--icon"><i class="fas fa-file-circle-exclamation"></i></span>
+                        </button>
                         <button type="button" data-idtp="{{ $real->id }}"
                             class="btn btn-instagram btn-icon-only btn-tooltip btn-struk" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="Kuitansi" data-container="body" data-animation="true">

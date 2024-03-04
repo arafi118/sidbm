@@ -177,7 +177,7 @@
         <div class="box">
             <div class="box-header flex align-items-center justify-content-between">
                 <div class="flex align-items-center">
-                    <img src="<?php echo $gambar; ?>" width="50" height="50">
+                    <img src="{{ $gambar }}" width="50" height="50">
                     <div class="ml-4">
                         <div class="block fw-bold">{{ strtoupper($kec->nama_lembaga_sort) }}</div>
                         <div class="block fw-bold">
@@ -188,7 +188,7 @@
                     </div>
                 </div>
                 <div class="fw-medium">
-                    Nomor &nbsp; &nbsp; : <?php echo $trx->idt . '/' . $jenis; ?>
+                    Nomor &nbsp; &nbsp; : {{ $trx->idt . '/' . $jenis }}
                 </div>
             </div>
             <div class="box-body fs-14">
@@ -207,8 +207,8 @@
                         <td width="30%">Uang Sebanyak</td>
                         <td width="2%">:</td>
                         <td colspan="3" class="keterangan fw-medium terbilang jajargenjang">
-                            <h4 <?= strlen($keuangan->terbilang($trx->jumlah)) > 30 ? 'style="font-size: 8px;"' : '' ?>>
-                                <span><?php echo ucwords($keuangan->terbilang($trx->jumlah)); ?> Rupiah</span>
+                            <h4 {{ strlen($keuangan->terbilang($trx->jumlah)) > 30 ? 'style="font-size: 8px;"' : '' }}>
+                                <span>{{ ucwords($keuangan->terbilang($trx->jumlah)) }} Rupiah</span>
                             </h4>
                         </td>
                     </tr>
@@ -231,7 +231,8 @@
                         <td width="50%" align="center" rowspan="6">
                             <i>
                                 <h3 class="flex" style="padding-left: 18px;">
-                                    Terbilang Rp. &nbsp; <div class="jajargenjang text-left"><?php echo number_format($trx->jumlah, 2); ?></div>
+                                    Terbilang Rp. &nbsp; <div class="jajargenjang text-left">
+                                        {{ number_format($trx->jumlah, 2) }}</div>
                                 </h3>
                             </i>
                         </td>
@@ -253,14 +254,14 @@
                         <td align="center">&nbsp;</td>
                     </tr>
                     <tr>
-                        <td align="center"><?php echo $dibayar; ?></td>
-                        <td align="center"><?php echo $oleh; ?></td>
+                        <td align="center">{{ $dibayar }}</td>
+                        <td align="center">{{ $oleh }}</td>
                     </tr>
                 </table>
             </div>
         </div>
 
-        <div class="tanggal">Dicetak pada <?php echo date('Y-m-d H:i:s'); ?></div>
+        <div class="tanggal">Dicetak pada {{ date('Y-m-d H:i:s') }}</div>
     </div>
 </body>
 

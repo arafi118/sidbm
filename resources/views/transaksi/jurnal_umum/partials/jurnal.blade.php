@@ -187,20 +187,52 @@
                         @if ($kuitansi)
                             @if ($trx->idtp > 0 && $trx->id_pinj != 0)
                                 <button type="button" data-idtp="{{ $trx->idtp }}"
-                                    class="btn btn-instagram btn-icon-only btn-tooltip btn-struk"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Kuitansi"
-                                    data-container="body" data-animation="true">
+                                    class="btn btn-instagram btn-icon-only btn-tooltip" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
                                     <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
                                 </button>
+                                <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <a class="dropdown-item border-radius-md" target="_blank"
+                                            href="/transaksi/dokumen/struk/{{ $trx->idtp }}">
+                                            Kuitansi
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item border-radius-md" target="_blank"
+                                            href="/transaksi/dokumen/struk_matrix/{{ $trx->idtp }}">
+                                            Kuitansi Dot Matrix
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item border-radius-md" target="_blank"
+                                            href="/transaksi/dokumen/struk_thermal/{{ $trx->idtp }}">
+                                            Kuitansi Thermal
+                                        </a>
+                                    </li>
+                                </ul>
                             @else
-                                <button type="button" data-action="/transaksi/dokumen/kuitansi/{{ $trx->idt }}"
-                                    class="btn btn-instagram btn-icon-only btn-tooltip btn-link"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Kuitansi"
-                                    data-container="body" data-animation="true">
+                                <button type="button" class="btn btn-instagram btn-icon-only btn-tooltip"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
                                 </button>
+                                <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <a class="dropdown-item border-radius-md" target="_blank"
+                                            href="/transaksi/dokumen/kuitansi/{{ $trx->idt }}">
+                                            Kuitansi
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item border-radius-md" target="_blank"
+                                            href="/transaksi/dokumen/kuitansi_thermal/{{ $trx->idt }}">
+                                            Kuitansi Thermal
+                                        </a>
+                                    </li>
+                                </ul>
                             @endif
                         @endif
+
                         @if ($trx->idtp > 0 && $trx->id_pinj != 0)
                             <button type="button"
                                 data-action="/transaksi/dokumen/{{ $files }}_angsuran/{{ $trx->idt }}"
@@ -222,7 +254,8 @@
                         @if ($is_dir)
                             <button type="button" data-idt="{{ $trx->idt }}"
                                 class="btn btn-tumblr btn-icon-only btn-tooltip btn-reversal" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Reversal" data-container="body" data-animation="true">
+                                data-bs-placement="top" title="Reversal" data-container="body"
+                                data-animation="true">
                                 <span class="btn-inner--icon"><i class="fas fa-code-pull-request"></i></span>
                             </button>
                             @if (!$is_ben)

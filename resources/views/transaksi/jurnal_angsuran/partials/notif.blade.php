@@ -1,7 +1,7 @@
 <div class="card card-body p-2 pb-0 mb-4">
     <div class="row">
         <div class="col-md-3 d-grid">
-            <button type="button" data-action="/transaksi/angsuran/struk/{{ $idtp }}"
+            <button type="button" data-action="/transaksi/dokumen/struk/{{ $idtp }}"
                 class="btn btn-linkedin btn-tooltip btn-sm btn-link mb-2" data-bs-toggle="tooltip" data-bs-placement="top"
                 title="Struk" data-container="body" data-animation="true">
                 <span class="btn-inner--icon">
@@ -10,7 +10,7 @@
             </button>
         </div>
         <div class="col-md-3 d-grid">
-            <button type="button" data-action="/transaksi/angsuran/struk_matrix/{{ $idtp }}"
+            <button type="button" data-action="/transaksi/dokumen/struk_matrix/{{ $idtp }}"
                 class="btn btn-linkedin btn-tooltip btn-sm btn-link mb-2" data-bs-toggle="tooltip"
                 data-bs-placement="top" title="Struk Dot Matrix" data-container="body" data-animation="true">
                 <span class="btn-inner--icon">

@@ -1861,6 +1861,36 @@ class TransaksiController extends Controller
         return view('transaksi.jurnal_angsuran.dokumen.struk_matrix', $data);
     }
 
+    public function strukThermal($id)
+    {
+
+        $data['kertas'] = '80';
+        if (request()->get('kertas')) {
+            $data['kertas'] = request()->get('kertas');
+        }
+
+        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'trx.user')->firstOrFail();
+        $data['ra'] = RencanaAngsuran::where([
+            ['loan_id', $data['real']->loan_id]
+        ])->orderBy('jatuh_tempo', 'DESC')->first();
+        $data['ra_bulan_ini'] = RencanaAngsuran::where([
+            ['loan_id', $data['real']->loan_id],
+            ['jatuh_tempo', '<=', date('Y-m-t', strtotime($data['real']->tgl_transaksi))]
+        ])->orderBy('jatuh_tempo', 'DESC')->first();
+        $data['pinkel'] = PinjamanKelompok::where('id', $data['real']->loan_id)->with([
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+            'jpp',
+            'sis_pokok'
+        ])->first();
+        $data['user'] = User::where('id', $data['real']->id_user)->first();
+        $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
+        $data['keuangan'] = new Keuangan;
+
+        return view('transaksi.jurnal_angsuran.dokumen.struk_thermal', $data);
+    }
+
     public function saldo($kode_akun)
     {
         $keuangan = new Keuangan;
@@ -1958,6 +1988,40 @@ class TransaksiController extends Controller
         }
 
         return view('transaksi.dokumen.kuitansi')->with(compact('trx', 'kec', 'jenis', 'dari', 'oleh', 'dibayar', 'gambar', 'keuangan'));
+    }
+
+    public function kuitansi_thermal($id)
+    {
+        $kertas = '80';
+        if (request()->get('kertas')) {
+            $kertas = request()->get('kertas');
+        }
+
+        $keuangan = new Keuangan;
+
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
+        $trx = Transaksi::where('idt', $id)->first();
+        $user = User::where('id', $trx->id_user)->first();
+
+        $jenis = 'BKM';
+        $dari = ucwords($trx->relasi);
+        $oleh = ucwords(auth()->user()->namadepan . ' ' . auth()->user()->namabelakang);
+        $dibayar = ucwords($trx->relasi);
+        if ($trx->rekening_kredit == '1.1.01.01' or ($keuangan->startWith($trx->rekening_kredit, '1.1.02') || $keuangan->startWith($trx->rekening_kredit, '1.1.01'))) {
+            $jenis = 'BKK';
+            $dari = $kec->sebutan_level_3 . " " . ucwords($kec->nama_lembaga_sort);
+            $oleh = ucwords($trx->relasi);
+            $dibayar = ucwords($user->namadepan . ' ' . $user->namabelakang);
+        }
+
+        $logo = $kec->logo;
+        if (empty($logo)) {
+            $gambar = '/storage/logo/1.png';
+        } else {
+            $gambar = '/storage/logo/' . $logo;
+        }
+
+        return view('transaksi.dokumen.kuitansi_thermal')->with(compact('trx', 'kec', 'jenis', 'dari', 'oleh', 'dibayar', 'gambar', 'keuangan', 'kertas'));
     }
 
     public function bkk($id)
