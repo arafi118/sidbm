@@ -74,8 +74,10 @@
             </li>
             <li>
                 Sanggup menerima sanksi dari {{ $kec->nama_lembaga_sort }} yang disepakati dalam forum Musyawarah Antar
-                Desa
-                (MAD) dan/atau penyelesaian secara hukum yang berlaku, apabila kami ingkar terhadap pernyataan ini.
+                {{ $pinkel->kelompok->d->sebutan_desa->sebutan_desa }}
+                (MA{{ strtoupper(substr($pinkel->kelompok->d->sebutan_desa->sebutan_desa, 0, 1)) }}) dan/atau penyelesaian
+                secara hukum
+                yang berlaku, apabila kami ingkar terhadap pernyataan ini.
             </li>
         </ol>
     </div>
