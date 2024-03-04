@@ -61,17 +61,30 @@
                 <td align="right">{{ number_format($denda) }}</td>
                 <td align="right">
                     <div class="btn-group">
-                        <button type="button" data-action="/transaksi/dokumen/struk_thermal/{{ $real->id }}"
-                            class="btn btn-linkedin btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Kuitansi Thermal" data-container="body"
-                            data-animation="true">
-                            <span class="btn-inner--icon"><i class="fas fa-file-circle-exclamation"></i></span>
-                        </button>
-                        <button type="button" data-idtp="{{ $real->id }}"
-                            class="btn btn-instagram btn-icon-only btn-tooltip btn-struk" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Kuitansi" data-container="body" data-animation="true">
+                        <button type="button" class="btn btn-instagram btn-icon-only btn-tooltip"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
                         </button>
+                        <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
+                            <li>
+                                <a class="dropdown-item border-radius-md" target="_blank"
+                                    href="/transaksi/dokumen/struk/{{ $real->id }}">
+                                    Kuitansi
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item border-radius-md" target="_blank"
+                                    href="/transaksi/dokumen/struk_matrix/{{ $real->id }}">
+                                    Kuitansi Dot Matrix
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item border-radius-md" target="_blank"
+                                    href="/transaksi/dokumen/struk_thermal/{{ $real->id }}">
+                                    Kuitansi Thermal
+                                </a>
+                            </li>
+                        </ul>
                         <button type="button" data-action="/transaksi/dokumen/bkm_angsuran/{{ $idt }}"
                             class="btn btn-tumblr btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="BKM" data-container="body" data-animation="true">
