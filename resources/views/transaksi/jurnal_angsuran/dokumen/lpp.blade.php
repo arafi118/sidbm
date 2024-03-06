@@ -85,7 +85,7 @@
             </td>
             <td width="50">Prosentase, Jenis Jasa</td>
             <td width="100">: &nbsp;
-                <b>{{ $pinkel->jangka > 0 ? $pinkel->pros_jasa / $pinkel->jangka : '0' }}% / Bulan,
+                <b>{{ $pinkel->pros_jasa > 0 ? $pinkel->pros_jasa / $pinkel->jangka : '0' }}% / Bulan,
                     {{ $pinkel->jasa->nama_jj }}</b>
             </td>
         </tr>
