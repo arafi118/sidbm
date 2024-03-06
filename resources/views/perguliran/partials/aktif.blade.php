@@ -285,23 +285,33 @@
                             <td>{{ number_format($real->saldo_pokok) }}</td>
                             <td>
                                 <div class="btn-group">
-                                    <button type="button"
-                                        data-action="/transaksi/angsuran/struk/{{ $real->transaksi->idtp }}"
-                                        class="btn btn-linkedin btn-icon-only btn-tooltip btn-link"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Struk"
-                                        data-container="body" data-animation="true">
+                                    <button type="button" class="btn btn-instagram btn-icon-only btn-tooltip"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
                                         <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
                                     </button>
-                                    <button type="button"
-                                        data-action="/transaksi/angsuran/struk_matrix/{{ $real->transaksi->idtp }}"
-                                        class="btn btn-linkedin btn-icon-only btn-tooltip btn-link"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Struk Dot Matrix"
-                                        data-container="body" data-animation="true">
-                                        <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
-                                    </button>
+                                    <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
+                                        <li>
+                                            <a class="dropdown-item border-radius-md" target="_blank"
+                                                href="/transaksi/dokumen/struk/{{ $real->id }}">
+                                                Kuitansi
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item border-radius-md" target="_blank"
+                                                href="/transaksi/dokumen/struk_matrix/{{ $real->id }}">
+                                                Kuitansi Dot Matrix
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item border-radius-md" target="_blank"
+                                                href="/transaksi/dokumen/struk_thermal/{{ $real->id }}">
+                                                Kuitansi Thermal
+                                            </a>
+                                        </li>
+                                    </ul>
                                     <button type="button"
                                         data-action="/transaksi/dokumen/bkm_angsuran/{{ $real->transaksi->idt }}"
-                                        class="btn btn-instagram btn-icon-only btn-tooltip btn-link"
+                                        class="btn btn-tumblr btn-icon-only btn-tooltip btn-link"
                                         data-bs-toggle="tooltip" data-bs-placement="top" title="bkm"
                                         data-container="body" data-animation="true">
                                         <span class="btn-inner--icon"><i
