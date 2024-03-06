@@ -61,11 +61,7 @@
                                             }
                                         }
 
-                                        if ($pinkel->status == 'H') {
-                                            $link = '#';
-                                        }
-
-                                        if ($pinkel->status == 'L') {
+                                        if ($pinkel->status == 'L' || $pinkel->status == 'H') {
                                             $link = '/detail' . '/' . $pinkel->id;
                                         }
                                         $status = $pinkel->status;

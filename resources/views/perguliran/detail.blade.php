@@ -227,11 +227,13 @@
 
     <div class="card mt-3">
         <div class="card-body p-2">
-            @if ($perguliran->status == 'L')
-                <button class="btn btn-warning btn-sm float-end ms-2"
-                    onclick="window.open('/cetak_keterangan_lunas/{{ $perguliran->id }}')" type="button">
-                    <i class="fa fa-print"></i> Cetak Keterangan Pelunasan
-                </button>
+            @if ($perguliran->status == 'L' || $perguliran->status == 'H')
+                @if ($perguliran->status != 'H')
+                    <button class="btn btn-warning btn-sm float-end ms-2"
+                        onclick="window.open('/cetak_keterangan_lunas/{{ $perguliran->id }}')" type="button">
+                        <i class="fa fa-print"></i> Cetak Keterangan Pelunasan
+                    </button>
+                @endif
                 <a href="/database/kelompok/{{ $perguliran->kelompok->kd_kelompok }}"
                     class="btn btn-info float-end btn-sm mb-0">Kembali</a>
             @else

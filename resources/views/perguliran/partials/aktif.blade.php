@@ -172,9 +172,9 @@
                             $verifikasi += $pinjaman_anggota->verifikasi;
                             $alokasi += $pinjaman_anggota->alokasi;
 
-                            $warna = $pinjaman_anggota->status == 'A' ? '' : 'class="text-danger fw-bold"';
+                            $warna = $perguliran->status == 'A' ? '' : 'class="text-danger fw-bold"';
                         @endphp
-                        <tr class="{{ $pinjaman_anggota->status == 'A' ? 'pointer btn-click' : '' }}"
+                        <tr class="{{ $perguliran->status == 'A' ? 'pointer btn-click' : '' }}"
                             data-id="{{ $pinjaman_anggota->id }}">
                             <td {!! $warna !!} align="center">{{ $loop->iteration }}</td>
                             <td {!! $warna !!}>
