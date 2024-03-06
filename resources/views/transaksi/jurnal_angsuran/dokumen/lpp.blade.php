@@ -1,11 +1,11 @@
 @php
     use App\Utils\Tanggal;
-    
+
     $pokok = 0;
     $jasa = 0;
     $target_pokok = 0;
     $target_jasa = 0;
-    
+
     $t_real_pokok = 0;
     $t_real_jasa = 0;
     $t_saldo = 0;
@@ -85,7 +85,8 @@
             </td>
             <td width="50">Prosentase, Jenis Jasa</td>
             <td width="100">: &nbsp;
-                <b>{{ $pinkel->pros_jasa / $pinkel->jangka }}% / Bulan, {{ $pinkel->jasa->nama_jj }}</b>
+                <b>{{ $pinkel->jangka > 0 ? $pinkel->pros_jasa / $pinkel->jangka : '0' }}% / Bulan,
+                    {{ $pinkel->jasa->nama_jj }}</b>
             </td>
         </tr>
         <tr>
@@ -140,7 +141,7 @@
                 if ($bulan_ini <= $bulan) {
                     $target_pokok = $ra->target_pokok;
                     $target_jasa = $ra->target_jasa;
-                
+
                     $real_pokok = $ra->sum_pokok - $pokok;
                     $real_jasa = $ra->sum_jasa - $jasa;
                     $saldo = $pinkel->alokasi - $ra->sum_pokok;
@@ -155,14 +156,14 @@
                     if ($nunggak_jasa == 0) {
                         $nunggak_jasa = 0;
                     }
-                
+
                     $t_real_pokok = $ra->sum_pokok;
                     $t_real_jasa = $ra->sum_jasa;
                     $t_saldo = $saldo;
                     $t_tunggakan_pokok = $nunggak_pokok;
                     $t_tunggakan_jasa = $nunggak_jasa;
                 }
-                
+
                 if ($nunggak_pokok > 0 && $nunggak_jasa > 0 && $bulan_ini < $bulan) {
                     $warna = 'red;';
                 }
@@ -205,7 +206,7 @@
                 if ($ra->sum_pokok != $pokok) {
                     $pokok = $ra->sum_pokok;
                 }
-                
+
                 if ($ra->sum_jasa != $jasa) {
                     $jasa = $ra->sum_jasa;
                 }
