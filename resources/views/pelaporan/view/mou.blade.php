@@ -276,7 +276,7 @@
                             <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                                 style="font-size: 12px;">
                                 <tr>
-                                    <td width="90">Nama Kelompok</td>
+                                    <td width="90">Nama Domain</td>
                                     <td width="10">:</td>
                                     <td>
                                         <b>{{ Request::getHost() }}</b>
