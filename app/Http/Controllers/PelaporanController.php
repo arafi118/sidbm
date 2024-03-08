@@ -1601,7 +1601,7 @@ class PelaporanController extends Controller
                         ['status', '!=', '0'],
                         ['tgl_beli', '<=', $data['tgl_kondisi']],
                         ['tgl_beli', 'NOT LIKE', '']
-                    ]);
+                    ])->orderBy('tgl_beli', 'ASC');
                 }
             ])
             ->get();
@@ -1639,7 +1639,7 @@ class PelaporanController extends Controller
                         ['status', '!=', '0'],
                         ['tgl_beli', '<=', $data['tgl_kondisi']],
                         ['tgl_beli', 'NOT LIKE', '']
-                    ]);
+                    ])->orderBy('tgl_beli', 'ASC');
                 }
             ])
             ->get();
