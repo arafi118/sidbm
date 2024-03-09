@@ -5,11 +5,13 @@
 @endphp
 
 <div class="card">
-    <div class="card-body">
-        <div class="alert alert-warning text-white">
+    <div class="card-header p-3 pt-2">
+        <div class="alert alert-warning text-white shadow text-center border-radius-xl mt-n4 me-3">
             Kelompok <b>{{ $kelompok->nama_kelompok }}</b> masih memiliki pinjaman dengan status
             <b>{{ $perguliran->sts->nama_status }} ({{ $perguliran->status }})</b>
         </div>
+    </div>
+    <div class="card-body pt-0">
         <div class="row mt-0">
             @if ($perguliran->status == 'P')
                 <div class="col-md-6 mb-3">
