@@ -200,7 +200,8 @@
                                     <div class="input-group input-group-static my-3">
                                         <label for="telpon">No. HP (Aktif WA)</label>
                                         <input autocomplete="off" type="text" name="telpon" id="telpon"
-                                            class="form-control" value="{{ $kelompok->telpon }}">
+                                            class="form-control"
+                                            value="{{ strlen($kelompok->telpon) < 11 ? '628' : $kelompok->telpon }}">
                                         <small class="text-danger" id="msg_telpon"></small>
                                     </div>
                                 </div>

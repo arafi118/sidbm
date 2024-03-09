@@ -150,7 +150,7 @@
         <hr class="horizontal dark">
 
         <div class="table-responsive">
-            <table class="table table-striped align-items-center mb-0" width="100%">
+            <table class="table table-striped table-hover align-items-center mb-0" width="100%">
                 <thead class="bg-dark text-white">
                     <tr>
                         <th>#</th>
@@ -264,9 +264,9 @@
         </h5>
 
         <div class="table-responsive">
-            <table class="table align-items-center mb-0" width="100%">
+            <table class="table table-striped align-items-center mb-0" width="100%">
                 <thead>
-                    <tr>
+                    <tr class="bg-dark text-white">
                         <th>#</th>
                         <th>Tgl transaksi</th>
                         <th>Pokok</th>
@@ -278,12 +278,12 @@
                 <tbody>
                     @foreach ($perguliran->real as $real)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ Tanggal::tglIndo($real->tgl_transaksi) }}</td>
-                            <td>{{ number_format($real->realisasi_pokok) }}</td>
-                            <td>{{ number_format($real->realisasi_jasa) }}</td>
-                            <td>{{ number_format($real->saldo_pokok) }}</td>
-                            <td>
+                            <td align="center">{{ $loop->iteration }}</td>
+                            <td align="center">{{ Tanggal::tglIndo($real->tgl_transaksi) }}</td>
+                            <td align="right">{{ number_format($real->realisasi_pokok) }}</td>
+                            <td align="right">{{ number_format($real->realisasi_jasa) }}</td>
+                            <td align="right">{{ number_format($real->saldo_pokok) }}</td>
+                            <td align="center">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-instagram btn-icon-only btn-tooltip"
                                         data-bs-toggle="dropdown" aria-expanded="false">

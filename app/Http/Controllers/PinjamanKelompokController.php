@@ -242,26 +242,39 @@ class PinjamanKelompokController extends Controller
 
     public function DaftarKelompok()
     {
-        $id_kel = request()->get('id_kel');
+        $id_kel = request()->get('id_kel') ?: 0;
         $kelompok = Kelompok::with([
             'd',
             'pinjaman' => function ($query) {
                 $query->orderBy('tgl_proposal', 'DESC');
             }
-        ])->withCount('pinjaman')->get();
+        ])->withCount('pinjaman')->orderBy('nama_kelompok', 'ASC')->get();
 
         return view('pinjaman.partials.kelompok')->with(compact('kelompok', 'id_kel'));
     }
 
     public function register($id_kel)
     {
-        $kelompok = Kelompok::where('id', $id_kel)->first();
+        $kelompok = Kelompok::where('id', $id_kel)->with([
+            'pinjaman' => function ($query) {
+                $query->orderBy('tgl_proposal', 'DESC');
+            },
+            'pinjaman.sts'
+        ])->first();
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $jenis_jasa = JenisJasa::all();
         $sistem_angsuran = SistemAngsuran::all();
         $jenis_pp = JenisProdukPinjaman::where('lokasi', '0')->get();
 
         $jenis_pp_dipilih = $kelompok->jenis_produk_pinjaman;
+
+        if ($kelompok->pinjaman) {
+            $status = $kelompok->pinjaman->status;
+            if ($status == 'P' || $status == 'V' || $status == 'W') {
+                return view('pinjaman.partials.pinjaman')->with(compact('kelompok', 'kec', 'jenis_jasa', 'sistem_angsuran', 'jenis_pp', 'jenis_pp_dipilih'));
+            }
+        }
+
         return view('pinjaman.partials.register')->with(compact('kelompok', 'kec', 'jenis_jasa', 'sistem_angsuran', 'jenis_pp', 'jenis_pp_dipilih'));
     }
 
@@ -1490,6 +1503,8 @@ class PinjamanKelompokController extends Controller
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'jpp',
             'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
             'sis_pokok',
             'jasa',
             'saldo_pinjaman'

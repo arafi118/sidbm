@@ -1137,7 +1137,7 @@ class TransaksiController extends Controller
 
             $whatsapp = false;
             $pesan = '';
-            if (strlen($pinkel->kelompok->telpon) >= 11 && strlen(auth()->user()->hp) >= 11) {
+            if (strlen($pinkel->kelompok->telpon) >= 11 && strlen(auth()->user()->hp) >= 11 && (Keuangan::startWith($pinkel->kelompok->telpon, '08') || Keuangan::startWith($pinkel->kelompok->telpon, '628'))) {
                 $nama_kelompok = $pinkel->kelompok->nama_kelompok;
                 $desa = $pinkel->kelompok->d->sebutan_desa->sebutan_desa . ' ' . $pinkel->kelompok->d->nama_desa;
 

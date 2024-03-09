@@ -102,7 +102,8 @@
                                     <div class="input-group input-group-static my-3">
                                         <label for="no_telp">No. Telp</label>
                                         <input autocomplete="off" type="text" name="no_telp" id="no_telp"
-                                            class="form-control" value="{{ $penduduk->hp }}">
+                                            class="form-control"
+                                            value="{{ strlen($penduduk->hp) < 11 ? '628' : $penduduk->hp }}">
                                         <small class="text-danger" id="msg_no_telp"></small>
                                     </div>
                                 </div>

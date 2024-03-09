@@ -322,6 +322,9 @@
                     url: form.attr('action'),
                     data: form.serialize() + '&' + form2.serialize(),
                     success: function(result) {
+                        var ch_pokok = document.getElementById('chartP').getContext("2d");
+                        var ch_jasa = document.getElementById('chartJ').getContext("2d");
+
                         loading.close()
                         if (result.success) {
                             $.get('/angsuran/notifikasi/' + result.idtp, function(res) {

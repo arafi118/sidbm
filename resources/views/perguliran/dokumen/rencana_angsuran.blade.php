@@ -44,7 +44,11 @@
                     <b>RENCANA ANGSURAN PINJAMAN {{ $pinkel->jpp->nama_jpp }}</b>
                 </div>
                 <div style="font-size: 16px;">
-                    <b>KELOMPOK {{ strtoupper($pinkel->kelompok->nama_kelompok) }}</b>
+                    <b>
+                        KELOMPOK {{ strtoupper($pinkel->kelompok->nama_kelompok) }}
+                        {{ strtoupper($pinkel->kelompok->d->sebutan_desa->sebutan_desa) }}
+                        {{ strtoupper($pinkel->kelompok->d->nama_desa) }}
+                    </b>
                 </div>
             </td>
         </tr>
