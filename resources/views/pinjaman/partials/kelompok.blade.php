@@ -32,9 +32,9 @@
                 <option {{ $select ? 'selected' : '' }} value="{{ $kel->id }}">
                     @if (isset($kel->d))
                         [{{ $pinjaman }}] {{ $kel->nama_kelompok }} [{{ $kel->d->nama_desa }}]
-                        [{{ "$selected" }}]
+                        [{{ $kel->ketua }}]
                     @else
-                        [{{ $pinjaman }}] {{ $kel->nama_kelompok }} [] [{{ "$selected" }}]
+                        [{{ $pinjaman }}] {{ $kel->nama_kelompok }} [] [{{ $kel->ketua }}]
                     @endif
                 </option>
             @endforeach
