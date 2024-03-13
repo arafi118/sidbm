@@ -59,7 +59,8 @@ class TransaksiController extends Controller
             $pinkel = '0';
         }
 
-        return view('transaksi.jurnal_angsuran.index')->with(compact('title', 'pinkel', 'kec'));
+        $api = env('APP_API', 'https://api-whatsapp.sidbm.net');
+        return view('transaksi.jurnal_angsuran.index')->with(compact('title', 'pinkel', 'kec', 'api'));
     }
 
     public function ebudgeting()

@@ -456,7 +456,7 @@
         function sendMsg(number, nama, msg, repeat = 0) {
             $.ajax({
                 type: 'post',
-                url: 'https://whatsapp.sidbm.net/send-text',
+                url: '{{ $api }}/send-text',
                 timeout: 0,
                 headers: {
                     "Content-Type": "application/json"
@@ -465,11 +465,12 @@
                     withCredentials: true
                 },
                 data: JSON.stringify({
+                    token: "{{ auth()->user()->ip }}",
                     number: number,
                     text: msg
                 }),
                 success: function(result) {
-                    if (result.success) {
+                    if (result.status) {
                         MultiToast('success', 'Pesan untuk kelompok ' + nama + ' berhasil dikirim')
                     } else {
                         if (repeat < 1) {

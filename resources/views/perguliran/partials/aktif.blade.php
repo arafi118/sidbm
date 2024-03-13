@@ -309,10 +309,28 @@
                                             </a>
                                         </li>
                                     </ul>
+                                    <button type="button" class="btn btn-tumblr btn-icon-only btn-tooltip"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="btn-inner--icon"><i class="fas fa-file-invoice"></i></span>
+                                    </button>
+                                    <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
+                                        <li>
+                                            <a class="dropdown-item border-radius-md" target="_blank"
+                                                href="/perguliran/dokumen/kartu_angsuran/{{ $real->loan_id }}/{{ $real->id }}">
+                                                Kelompok
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item border-radius-md" target="_blank"
+                                                href="/perguliran/dokumen/cetak_kartu_angsuran_anggota/{{ $real->loan_id }}/{{ $real->id }}">
+                                                Anggota
+                                            </a>
+                                        </li>
+                                    </ul>
                                     <button type="button"
                                         data-action="/transaksi/dokumen/bkm_angsuran/{{ $real->transaksi->idt }}"
-                                        class="btn btn-tumblr btn-icon-only btn-tooltip btn-link"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="bkm"
+                                        class="btn btn-github btn-icon-only btn-tooltip btn-link"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="BKM"
                                         data-container="body" data-animation="true">
                                         <span class="btn-inner--icon"><i
                                                 class="fas fa-file-circle-exclamation"></i></span>
