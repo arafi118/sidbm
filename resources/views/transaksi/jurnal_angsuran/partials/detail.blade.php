@@ -85,17 +85,28 @@
                                 </a>
                             </li>
                         </ul>
+                        <button type="button" class="btn btn-tumblr btn-icon-only btn-tooltip"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="btn-inner--icon"><i class="fas fa-file-invoice"></i></span>
+                        </button>
+                        <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
+                            <li>
+                                <a class="dropdown-item border-radius-md" target="_blank"
+                                    href="/perguliran/dokumen/kartu_angsuran/{{ $real->loan_id }}/{{ $real->id }}">
+                                    Kelompok
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item border-radius-md" target="_blank"
+                                    href="/perguliran/dokumen/cetak_kartu_angsuran_anggota/{{ $real->loan_id }}/{{ $real->id }}">
+                                    Anggota
+                                </a>
+                            </li>
+                        </ul>
                         <button type="button" data-action="/transaksi/dokumen/bkm_angsuran/{{ $idt }}"
-                            class="btn btn-tumblr btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
+                            class="btn btn-github btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
                             data-bs-placement="top" title="BKM" data-container="body" data-animation="true">
                             <span class="btn-inner--icon"><i class="fas fa-file-circle-exclamation"></i></span>
-                        </button>
-                        <button type="button"
-                            data-action="/perguliran/dokumen/kartu_angsuran/{{ $real->loan_id }}/{{ $real->id }}"
-                            class="btn btn-github btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Cetak Pada Kartu Angsuran" data-container="body"
-                            data-animation="true">
-                            <span class="btn-inner--icon"><i class="fas fa-file-invoice"></i></span>
                         </button>
                     </div>
                 </td>

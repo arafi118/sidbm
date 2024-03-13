@@ -1869,6 +1869,49 @@ class PinjamanKelompokController extends Controller
         return view('perguliran.dokumen.kartu_angsuran_anggota', $data);
     }
 
+    public function cetakKartuAngsuranAnggota($id, $idtp, $nia = null)
+    {
+        $data['idtp'] = $idtp;
+        $data['nia'] = $nia;
+        $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'kelompok',
+            'jpp',
+            'sis_pokok',
+            'real',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota',
+        ])->withCount('real')->first();
+
+        $rencana = [];
+        foreach ($data['pinkel']->pinjaman_anggota as $pinj) {
+            $rencana[$pinj->id] = $this->generate($id, $data['pinkel'], $pinj->alokasi, $pinj->tgl_cair)->getData()->rencana;
+        }
+        $data['rencana'] = $rencana;
+        $data['barcode'] = DNS1D::getBarcodePNG($id, 'C128');
+
+        $data['dir'] = User::where([
+            ['lokasi', Session::get('lokasi')],
+            ['level', $data['kec']->ttd_mengetahui_lap],
+            ['jabatan', '1']
+        ])->first();
+
+        $data['laporan'] = 'Kartu Angsuran Anggota ' . $data['pinkel']->kelompok->nama_kelompok;
+        if ($nia != null) {
+            $anggota = PinjamanAnggota::where([
+                ['id_pinkel', $id],
+                ['nia', $nia]
+            ])->with('anggota')->first();
+
+            if (!$anggota) abort(404);
+
+            $data['laporan'] = 'Kartu Angsuran ' . $anggota->anggota->namadepan . ' - ' . $data['pinkel']->kelompok->nama_kelompok;
+        }
+
+        $data['laporan'] .= ' Loan ID. ' . $id;
+        return view('perguliran.dokumen.cetak_kartu_angsuran_anggota', $data);
+    }
+
     public function pemberitahuanDesa($id, $data)
     {
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
