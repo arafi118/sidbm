@@ -1669,7 +1669,7 @@ class PelaporanController extends Controller
         }
 
         $data['dir'] = User::where([
-            ['level', '1'],
+            ['level', $data['kec']->ttd_mengetahui_lap],
             ['jabatan', '1'],
             ['lokasi', Session::get('lokasi')]
         ])->first();

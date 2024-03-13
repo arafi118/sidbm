@@ -459,7 +459,7 @@ class PinjamanKelompokController extends Controller
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $dir = User::where([
             ['lokasi', Session::get('lokasi')],
-            ['level', '1'],
+            ['level', $kec->ttd_mengetahui_lap],
             ['jabatan', '1']
         ])->first();
 
@@ -1086,7 +1086,7 @@ class PinjamanKelompokController extends Controller
         $dir = User::where([
             ['lokasi', Session::get('lokasi')],
             ['jabatan', '1'],
-            ['level', '1'],
+            ['level', $kec->ttd_mengetahui_lap],
             ['sejak', '<=', date('Y-m-t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'))]
         ])->first();
 
@@ -1288,7 +1288,7 @@ class PinjamanKelompokController extends Controller
         ])->first();
 
         $data['dir'] = User::where([
-            ['level', '1'],
+            ['level', $data['kec']->ttd_mengetahui_lap],
             ['jabatan', '1'],
             ['lokasi', Session::get('lokasi')]
         ])->first();
@@ -1511,7 +1511,7 @@ class PinjamanKelompokController extends Controller
         ])->first();
 
         $data['dir'] = User::where([
-            ['level', '1'],
+            ['level', $data['kec']->ttd_mengetahui_lap],
             ['jabatan', '1'],
             ['lokasi', Session::get('lokasi')]
         ])->first();
@@ -1538,7 +1538,7 @@ class PinjamanKelompokController extends Controller
         ])->first();
 
         $data['dir'] = User::where([
-            ['level', '1'],
+            ['level', $data['kec']->ttd_mengetahui_lap],
             ['jabatan', '1'],
             ['lokasi', Session::get('lokasi')]
         ])->first();
@@ -1638,7 +1638,7 @@ class PinjamanKelompokController extends Controller
         ])->first();
 
         $data['dir'] = User::where([
-            ['level', '1'],
+            ['level', $data['kec']->ttd_mengetahui_lap],
             ['jabatan', '1'],
             ['lokasi', Session::get('lokasi')]
         ])->first();
@@ -1668,7 +1668,7 @@ class PinjamanKelompokController extends Controller
         ])->withCount('pinjaman_anggota')->first();
 
         $data['dir'] = User::where([
-            ['level', '1'],
+            ['level', $data['kec']->ttd_mengetahui_lap],
             ['jabatan', '1'],
             ['lokasi', Session::get('lokasi')]
         ])->first();
@@ -1779,7 +1779,7 @@ class PinjamanKelompokController extends Controller
         ])->first();
 
         $data['dir'] = User::where([
-            ['level', '1'],
+            ['level', $data['kec']->ttd_mengetahui_lap],
             ['jabatan', '1'],
             ['lokasi', Session::get('lokasi')]
         ])->first();
@@ -1818,7 +1818,7 @@ class PinjamanKelompokController extends Controller
 
         $data['dir'] = User::where([
             ['lokasi', Session::get('lokasi')],
-            ['level', '1'],
+            ['level', $data['kec']->ttd_mengetahui_lap],
             ['jabatan', '1']
         ])->first();
 
@@ -1849,7 +1849,7 @@ class PinjamanKelompokController extends Controller
 
         $data['dir'] = User::where([
             ['lokasi', Session::get('lokasi')],
-            ['level', '1'],
+            ['level', $data['kec']->ttd_mengetahui_lap],
             ['jabatan', '1']
         ])->first();
 
@@ -1880,7 +1880,7 @@ class PinjamanKelompokController extends Controller
         ])->first();
 
         $data['dir'] = User::where([
-            ['level', '1'],
+            ['level', $data['kec']->ttd_mengetahui_lap],
             ['jabatan', '1'],
             ['lokasi', Session::get('lokasi')]
         ])->first();
@@ -1906,7 +1906,7 @@ class PinjamanKelompokController extends Controller
         ])->first();
 
         $data['dir'] = User::where([
-            ['level', '1'],
+            ['level', $data['kec']->ttd_mengetahui_lap],
             ['jabatan', '1'],
             ['lokasi', Session::get('lokasi')]
         ])->first();
@@ -1958,7 +1958,7 @@ class PinjamanKelompokController extends Controller
         ])->first();
 
         $data['dir'] = User::where([
-            ['level', '1'],
+            ['level', $data['kec']->ttd_mengetahui_lap],
             ['jabatan', '1'],
             ['lokasi', Session::get('lokasi')]
         ])->first();
@@ -2006,7 +2006,7 @@ class PinjamanKelompokController extends Controller
         ])->orderBy('jatuh_tempo', 'DESC')->first();
 
         $data['dir'] = User::where([
-            ['level', '1'],
+            ['level', $data['kec']->ttd_mengetahui_lap],
             ['jabatan', '1'],
             ['lokasi', Session::get('lokasi')]
         ])->first();
@@ -2067,7 +2067,7 @@ class PinjamanKelompokController extends Controller
         $data['idtp'] = $idtp;
         $data['dir'] = User::where([
             ['lokasi', Session::get('lokasi')],
-            ['level', '1'],
+            ['level', $data['kec']->ttd_mengetahui_lap],
             ['jabatan', '1']
         ])->first();
 
