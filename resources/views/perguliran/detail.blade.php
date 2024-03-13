@@ -1101,8 +1101,6 @@
                             }
                         }
                     })
-                } else {
-                    $('#PinjamanAnggota').modal('hide')
                 }
             })
         })

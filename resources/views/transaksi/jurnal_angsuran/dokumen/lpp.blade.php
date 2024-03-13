@@ -149,11 +149,11 @@
                         $saldo = 0;
                     }
                     $nunggak_pokok = $ra->target_pokok - $ra->sum_pokok;
-                    if ($nunggak_pokok == 0) {
+                    if ($nunggak_pokok < 0) {
                         $nunggak_pokok = 0;
                     }
                     $nunggak_jasa = $ra->target_jasa - $ra->sum_jasa;
-                    if ($nunggak_jasa == 0) {
+                    if ($nunggak_jasa < 0) {
                         $nunggak_jasa = 0;
                     }
 
