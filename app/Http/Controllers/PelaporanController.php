@@ -132,11 +132,7 @@ class PelaporanController extends Controller
         $kab = $kec->kabupaten;
 
         $jabatan = '1';
-        $level = '1';
-        if (Session::get('lokasi') == '207') {
-            $jabatan = '1';
-            $level = '2';
-        }
+        $level = $kec->ttd_mengetahui_lap;
 
         $dir = User::where([
             ['lokasi', Session::get('lokasi')],
