@@ -539,42 +539,8 @@
                     </tr>
                 </table>
 
-                <div style="margin-top: 24px;"></div>
-                <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
-                    <tr>
-                        <td colspan="4">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" width="75%">&nbsp;</td>
-                        <td align="center" width="25%">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($tgl_kondisi) }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td align="center">Disetujui</td>
-                        <td align="center">Diperiksa Oleh:</td>
-                        <td align="center">Dibuat Oleh:</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" height="40">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td align="center">{{ $dir->namadepan }} {{ $dir->namabelakang }}</td>
-                        @if ($pengawas)
-                            <td align="center">{{ $pengawas->namadepan }} {{ $pengawas->namabelakang }}</td>
-                        @else
-                            <td align="center">(...............................................)</td>
-                        @endif
-                        <td align="center">{{ $bendahara->namadepan }} {{ $bendahara->namabelakang }}</td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td align="center">{{ $kec->sebutan_level_1 }}</td>
-                        <td align="center">Pengawas</td>
-                        <td align="center">{{ $kec->sebutan_level_3 }}</td>
-                    </tr>
-                </table>
+                <div style="margin-top: 16px;"></div>
+                {!! json_decode(str_replace('{tanggal}', $tanggal_kondisi, $kec->ttd->tanda_tangan_pelaporan), true) !!}
             </td>
         </tr>
     </table>
