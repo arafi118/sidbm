@@ -866,6 +866,7 @@
                             $('#layout').html(result)
 
                             $('#EditProposal').modal('hide')
+                            window.location.reload()
                         })
                     })
                 },

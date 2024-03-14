@@ -733,6 +733,10 @@ class PinjamanKelompokController extends Controller
                 'status' => $data['status']
             ];
 
+            if ($request->status == 'P') {
+                $update['jenis_pp'] = $request->jenis_produk_pinjaman;
+            }
+
             if ($request->status == 'V') {
                 $update['catatan_verifikasi'] = $data['catatan_verifikasi'];
             }
