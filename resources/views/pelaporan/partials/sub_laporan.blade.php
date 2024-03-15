@@ -8,6 +8,22 @@
         </select>
         <small class="text-danger" id="msg_sub_laporan"></small>
     </div>
+@elseif ($file == 'calk')
+    <div class="my-3">
+        <div id="editor">
+            <ol>
+                {!! $keterangan !!}
+            </ol>
+        </div>
+    </div>
+
+    <textarea name="sub_laporan" id="sub_laporan" class="d-none"></textarea>
+
+    <script>
+        quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+    </script>
 @elseif ($file == 5)
     <div class="my-2">
         <label class="form-label" for="sub_laporan">Nama Sub Laporan</label>

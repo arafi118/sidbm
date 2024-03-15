@@ -44,6 +44,24 @@ class PelaporanController extends Controller
             return view('pelaporan.partials.sub_laporan')->with(compact('file', 'rekening'));
         }
 
+        if ($file == 'calk') {
+            $tahun = request()->get('tahun');
+            $bulan = request()->get('bulan');
+
+            $trx = Transaksi::where([
+                ['rekening_debit', '0'],
+                ['rekening_kredit', '0'],
+                ['tgl_transaksi', 'LIKE', $tahun . '-' . $bulan . '%']
+            ])->first();
+
+            $keterangan = '';
+            if ($trx) {
+                $keterangan = $trx->keterangan_transaksi;
+            }
+
+            return view('pelaporan.partials.sub_laporan')->with(compact('file', 'keterangan'));
+        }
+
         if ($file == 5) {
             $jenis_laporan = JenisLaporanPinjaman::where('file', '!=', '0')->orderBy('urut', 'ASC')->get();
 
@@ -117,6 +135,28 @@ class PelaporanController extends Controller
             'sub_laporan',
             'type'
         ]);
+
+        if ($data['laporan'] == 'calk' && strlen($data['sub_laporan']) > 22) {
+            Transaksi::where([
+                ['rekening_debit', '0'],
+                ['rekening_kredit', '0'],
+                ['tgl_transaksi', 'LIKE', $data['tahun'] . '-' . $data['bulan'] . '%']
+            ])->delete();
+
+            Transaksi::create([
+                'tgl_transaksi' => $data['tahun'] . '-' . $data['bulan'] . '-01',
+                'rekening_debit' => '0',
+                'rekening_kredit' => '0',
+                'idtp' => '0',
+                'id_pinj' => '0',
+                'id_pinj_i' => '0',
+                'keterangan_transaksi' => $data['sub_laporan'],
+                'relasi' => '-',
+                'jumlah' => 0,
+                'urutan' => '0',
+                'id_user' => auth()->user()->id
+            ]);
+        }
 
         $request->hari = ($request->hari) ?: 31;
         $kec = Kecamatan::where('id', Session::get('lokasi'))->with([
@@ -474,6 +514,12 @@ class PelaporanController extends Controller
             },
         ])->orderBy('kode_akun', 'ASC')->get();
 
+        $data['keterangan'] = Transaksi::where([
+            ['rekening_debit', '0'],
+            ['rekening_kredit', '0'],
+            ['tgl_transaksi', 'LIKE', $data['tahun'] . '-' . $data['bulan'] . '%']
+        ])->first();
+
         $data['sekr'] = User::where([
             ['level', '1'],
             ['jabatan', '2'],
@@ -523,7 +569,9 @@ class PelaporanController extends Controller
             $data['transaksi'] = Transaksi::whereBetween('tgl_transaksi', [
                 $thn . '-01-01',
                 $thn . '-12-31'
-            ])->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
+            ])->where(function ($query) {
+                $query->where('rekening_debit', '!=', '0')->orwhere('rekening_kredit', '!=', '0');
+            })->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
         } else {
             if (!$data['harian']) {
                 $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
@@ -531,11 +579,15 @@ class PelaporanController extends Controller
                 $data['transaksi'] = Transaksi::whereBetween('tgl_transaksi', [
                     $thn . '-' . $bln . '-01',
                     $thn . '-' . $bln . '-' . date('t', strtotime($thn . '-' . $bln . '-01'))
-                ])->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
+                ])->where(function ($query) {
+                    $query->where('rekening_debit', '!=', '0')->orwhere('rekening_kredit', '!=', '0');
+                })->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
             } else {
                 $data['sub_judul'] = 'Tanggal ' . $hari . ' Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
                 $data['tgl'] = Tanggal::tglLatin($tgl);
-                $data['transaksi'] = Transaksi::where('tgl_transaksi', $tgl)->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
+                $data['transaksi'] = Transaksi::where('tgl_transaksi', $tgl)->where(function ($query) {
+                    $query->where('rekening_debit', '!=', '0')->orwhere('rekening_kredit', '!=', '0');
+                })->with('user', 'rek_debit', 'rek_kredit', 'angs', 'angs.rek_debit', 'angs.rek_kredit')->orderBy('tgl_transaksi', 'ASC')->orderBy('idt', 'ASC')->get();
             }
         }
 

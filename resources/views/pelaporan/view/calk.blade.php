@@ -447,6 +447,19 @@
                 </li>
             </ol>
         </li>
+
+        @if ($keterangan)
+            <li style="margin-top: 12px;">
+                <div style="text-transform: uppercase;">
+                    Lain Lain
+                </div>
+                <div style="text-align: justify">
+                    {!! $keterangan->keterangan_transaksi !!}.
+                </div>
+            </li>
+            </li>
+        @endif
+
         <li style="margin-top: 12px;">
             <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
                 <tr>

@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div id="namaLaporan" class="col-md-6">
                         <div class="my-2">
                             <label class="form-label" for="laporan">Nama Laporan</label>
                             <select class="form-control" name="laporan" id="laporan">
@@ -147,21 +147,48 @@
             }
         })
 
+        $(document).on('change', '#tahun, #bulan', function(e) {
+            e.preventDefault()
+
+            var file = $('select#laporan').val()
+            subLaporan(file)
+        })
+
         $(document).on('change', '#laporan', function(e) {
             e.preventDefault()
 
             var file = $(this).val()
-            $.get('/pelaporan/sub_laporan/' + file, function(result) {
-                $('#subLaporan').html(result)
-            })
+            subLaporan(file)
         })
 
-        $(document).on('click', '#Preview', function(e) {
+        function subLaporan(file) {
+            var tahun = $('select#tahun').val()
+            var bulan = $('select#bulan').val()
+
+            if (file == 'calk') {
+                $('#namaLaporan').removeClass('col-md-6')
+                $('#namaLaporan').addClass('col-md-12')
+                $('#subLaporan').removeClass('col-md-6')
+                $('#subLaporan').addClass('col-md-12')
+            }
+
+            $.get('/pelaporan/sub_laporan/' + file + '?tahun=' + tahun + '&bulan=' + bulan, function(result) {
+                $('#subLaporan').html(result)
+            })
+        }
+
+        var quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+
+        $(document).on('click', '#Preview', async function(e) {
             e.preventDefault()
 
             $(this).parent('div').parent('div').find('form').find('#type').val('pdf')
             var file = $('select#laporan').val()
-            var sub = $('select#sub_laporan').val()
+            if (file == 'calk') {
+                await $('textarea#sub_laporan').val(quill.container.firstChild.innerHTML)
+            }
 
             var form = $('#FormPelaporan')
             if (file != '') {
@@ -169,12 +196,14 @@
             }
         })
 
-        $(document).on('click', '#Excel', function(e) {
+        $(document).on('click', '#Excel', async function(e) {
             e.preventDefault()
 
             $(this).parent('div').parent('div').find('form').find('#type').val('excel')
             var file = $('select#laporan').val()
-            var sub = $('select#sub_laporan').val()
+            if (file == 'calk') {
+                await $('textarea#sub_laporan').val(quill.container.firstChild.innerHTML)
+            }
 
             var form = $('#FormPelaporan')
             console.log(form.serialize())
