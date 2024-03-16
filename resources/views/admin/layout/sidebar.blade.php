@@ -158,6 +158,36 @@
                 </div>
             </li>
             <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#MenuMigrasi"
+                    class="nav-link text-white {{ active('', 'migrasi_baru', 'migrasi_upk') }}"
+                    aria-controls="MenuMigrasi" role="button" aria-expanded="false">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons-round opacity-10">move_to_inbox</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Migrasi</span>
+                </a>
+                <div class="collapse" id="MenuMigrasi">
+                    <ul class="nav nav-sm flex-column">
+                        <li class="nav-item nav-item-link {{ active('migrasi_baru') }}">
+                            <a class="nav-link text-white {{ active('migrasi_baru') }}" href="/master/migrasi_baru">
+                                <span class="sidenav-mini-icon">
+                                    <i class="material-icons-round opacity-10">add_to_queue</i>
+                                </span>
+                                <span class="sidenav-normal  ms-2  ps-1"> Pengguna Baru </span>
+                            </a>
+                        </li>
+                        <li class="nav-item nav-item-link {{ active('migrasi_upk') }}">
+                            <a class="nav-link text-white {{ active('migrasi_upk') }}" href="/master/migrasi_upk">
+                                <span class="sidenav-mini-icon">
+                                    <i class="material-icons-round opacity-10">redo</i>
+                                </span>
+                                <span class="sidenav-normal  ms-2  ps-1"> Pengguna UPK </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-white {{ active('menu') }}" href="/master/menu">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">dns</i>
