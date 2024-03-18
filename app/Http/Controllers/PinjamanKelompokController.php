@@ -2260,7 +2260,7 @@ class PinjamanKelompokController extends Controller
                     $wajib_pokok = Keuangan::pembulatan((($alokasi / 10) - $ra[$i]['jasa']) / 2, 5000);
                 }
 
-                if ($alokasi < 20000000) {
+                if ($alokasi != 20000000) {
                     if ($alokasi >= 8000000) {
                         $wajib_pokok -= 5000;
                     }
