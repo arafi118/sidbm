@@ -167,7 +167,32 @@
                     <div id="LayoutDetailAngsuran"></div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-info btn-sm" id="cetakBuktiAngsuran">
+                        Cetak Bukti Angsuran
+                    </button>
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="BuktiAngsuran" tabindex="-1" aria-labelledby="BuktiAngsuranLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="BuktiAngsuranLabel">
+
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="LayoutBuktiAngsuran"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="BtnCetakBkm" class="btn btn-info btn-sm">
+                        Print
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" id="tutupBuktiAngsuran">Tutup</button>
                 </div>
             </div>
         </div>
@@ -419,7 +444,23 @@
 
                 $('#DetailAngsuranLabel').html(result.label)
                 $('#LayoutDetailAngsuran').html(result.view)
+
+                $('#BuktiAngsuranLabel').html(result.label_cetak)
+                $('#LayoutBuktiAngsuran').html(result.cetak)
             })
+        })
+
+        $(document).on('click', '#cetakBuktiAngsuran, #tutupBuktiAngsuran', function(e) {
+            e.preventDefault()
+
+            $('#BuktiAngsuran').modal('toggle');
+        })
+
+        $(document).on('click', '#BtnCetakBkm', function(e) {
+            e.preventDefault()
+
+            $('#FormCetakBuktiAngsuran').attr('action', '/transaksi/angsuran/cetak_bkm');
+            $('#FormCetakBuktiAngsuran').submit();
         })
 
         $(document).on('click', '#btnAngsuranAnggota', function(e) {

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\UpkController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AuthController;
@@ -61,6 +62,8 @@ Route::group(['prefix' => 'master', 'as' => 'master.', 'middleware' => 'master']
     Route::put('/{invoice}/simpan', [InvoiceController::class, 'simpan']);
 
     Route::resource('/menu', MenuController::class);
+
+    Route::resource('/migrasi_upk', UpkController::class);
 
     Route::post('/logout', [AdminAuthController::class, 'logout']);
 });
@@ -196,7 +199,10 @@ Route::post('/transaksi/hapus', [TransaksiController::class, 'hapus'])->middlewa
 Route::get('/transaksi/angsuran/lpp/{id}', [TransaksiController::class, 'lpp'])->middleware('auth');
 Route::get('/transaksi/angsuran/detail_angsuran/{id}', [TransaksiController::class, 'detailAngsuran'])->middleware('auth');
 Route::get('/transaksi/detail_transaksi/', [TransaksiController::class, 'detailTransaksi'])->middleware('auth');
+
 Route::post('/transaksi/angsuran', [TransaksiController::class, 'angsuran'])->middleware('auth');
+Route::post('/transaksi/angsuran/cetak_bkm', [TransaksiController::class, 'cetakBkm'])->middleware('auth');
+
 Route::get('/transaksi/generate_real/{id_pinkel}', [TransaksiController::class, 'generateReal'])->middleware('auth');
 Route::get('/transaksi/regenerate_real/{id_pinkel}', [TransaksiController::class, 'realisasi'])->middleware('auth');
 

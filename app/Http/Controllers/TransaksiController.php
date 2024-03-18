@@ -1799,7 +1799,9 @@ class TransaksiController extends Controller
 
         return [
             'label' => '<i class="fas fa-book"></i> Detail Angsuran Kelompok ' . $pinkel->kelompok->nama_kelompok,
-            'view' => view('transaksi.jurnal_angsuran.partials.detail')->with(compact('pinkel'))->render()
+            'label_cetak' => '<i class="fas fa-book"></i> Cetak Dokumen Angsuran Kelompok ' . $pinkel->kelompok->nama_kelompok,
+            'view' => view('transaksi.jurnal_angsuran.partials.detail')->with(compact('pinkel'))->render(),
+            'cetak' => view('transaksi.jurnal_angsuran.partials._detail')->with(compact('pinkel'))->render()
         ];
     }
 
@@ -2153,6 +2155,39 @@ class TransaksiController extends Controller
         $view = view('transaksi.dokumen.cetak', $data)->render();
         $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
         return $pdf->stream();
+    }
+
+    public function cetakBkm(Request $request)
+    {
+        $keuangan = new Keuangan;
+        $idt = $request->cetak;
+
+        $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
+        $data['transaksi'] = Transaksi::whereIn('idt', $idt)->with('rek_debit', 'rek_kredit', 'tr_idtp', 'tr_idtp.rek_kredit')->withSum('tr_idtp', 'jumlah')->get();
+
+        $data['dir'] = User::where([
+            ['level', '1'],
+            ['jabatan', '1'],
+            ['lokasi', Session::get('lokasi')]
+        ])->first();
+
+        $data['sekr'] = User::where([
+            ['level', '1'],
+            ['jabatan', '3'],
+            ['lokasi', Session::get('lokasi')]
+        ])->first();
+
+        $logo = $data['kec']->logo;
+        $data['gambar'] = $logo;
+        $data['keuangan'] = $keuangan;
+
+        $view = view('transaksi.dokumen.cetak', $data)->render();
+        $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+        return $pdf->stream();
+    }
+
+    public function cetakKuitansi(Request $request)
+    {
     }
 
     public function lpp($id)
