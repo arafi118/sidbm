@@ -178,6 +178,11 @@
             'withExcel' => false,
         ],
         [
+            'title' => 'Kuitansi Anggota',
+            'file' => 'kuitansiAnggota',
+            'withExcel' => false,
+        ],
+        [
             'title' => 'Surat Tagihan',
             'file' => 'suratTagihan',
             'withExcel' => false,

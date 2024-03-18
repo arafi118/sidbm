@@ -2035,6 +2035,48 @@ class PinjamanKelompokController extends Controller
         }
     }
 
+    public function kuitansiAnggota($id, $data)
+    {
+        $keuangan = new Keuangan;
+        $data['pinjaman'] = PinjamanAnggota::where('id_pinkel', $id)->with([
+            'kelompok',
+            'pinkel',
+            'anggota',
+            'anggota.d',
+            'anggota.d.sebutan_desa',
+        ])->get();
+
+        $data['dir'] = User::where([
+            ['level', '1'],
+            ['jabatan', '1'],
+            ['lokasi', Session::get('lokasi')]
+        ])->first();
+
+        $data['bend'] = User::where([
+            ['level', '1'],
+            ['jabatan', '3'],
+            ['lokasi', Session::get('lokasi')]
+        ])->first();
+
+        $data['bp'] = User::where([
+            ['level', '3'],
+            ['jabatan', '1'],
+            ['lokasi', Session::get('lokasi')]
+        ])->first();
+
+        $data['keuangan'] = $keuangan;
+
+        $data['judul'] = 'Kuitansi Pencairan Anggota Loan ID. ' . $id;
+        $view = view('perguliran.dokumen.kuitansi_anggota', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
     public function suratTagihan($id, $data)
     {
         $keuangan = new Keuangan;

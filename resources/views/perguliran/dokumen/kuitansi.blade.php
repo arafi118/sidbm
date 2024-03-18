@@ -18,7 +18,7 @@
 @extends('perguliran.dokumen.layout.base')
 
 @section('content')
-    <div style="text-align: center; font-size: 18px; margin-bottom: 12px;">
+    <div style="text-align: center; font-size: 18px; margin-bottom: 12px; text-transform: uppercase;">
         <div>Bukti Transaksi</div>
         <div>Pinjaman Kelompok</div>
     </div>
@@ -92,7 +92,7 @@
             </tr>
             <tr>
                 <td colspan="6">&nbsp;</td>
-                <td colspan="3">
+                <td colspan="3" align="center">
                     {{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}
                 </td>
             </tr>
