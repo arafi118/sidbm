@@ -393,6 +393,10 @@
                             loading.close()
                             Swal.fire('Error', result.msg, 'warning')
                         }
+                    },
+                    error: function(e) {
+                        loading.close()
+                        Swal.fire('Error', '', 'warning')
                     }
                 })
             }
