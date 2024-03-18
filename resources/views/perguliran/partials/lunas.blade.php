@@ -1,3 +1,10 @@
+@php
+    $is_dir = false;
+    if (auth()->user()->jabatan == '1' && auth()->user()->level == '1') {
+        $is_dir = true;
+    }
+@endphp
+
 @extends('layouts.base')
 
 @section('content')
@@ -108,9 +115,12 @@
                             onclick="window.open('/cetak_keterangan_lunas/{{ $perguliran->id }}')" type="button">
                             <i class="fa fa-print"></i> Cetak Keterangan Pelunasan
                         </button>
-                        <button class="btn btn-danger btn-sm" type="button" id="TombolLunaskan" disabled>
-                            <i class="fa fa-gavel"></i> Validasi Lunas
-                        </button>
+
+                        @if ($is_dir)
+                            <button class="btn btn-danger btn-sm" type="button" id="TombolLunaskan" disabled>
+                                <i class="fa fa-gavel"></i> Validasi Lunas
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>
