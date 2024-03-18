@@ -192,6 +192,11 @@
             'file' => 'suratAhliWaris',
             'withExcel' => false,
         ],
+        [
+            'title' => 'Form Verifikasi',
+            'file' => 'formVerifikasi',
+            'withExcel' => false,
+        ],
     ];
 @endphp
 
