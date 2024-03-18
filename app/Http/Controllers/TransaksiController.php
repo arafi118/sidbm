@@ -1165,6 +1165,7 @@ class TransaksiController extends Controller
                 'pesan' => $pesan
             ]);
         } catch (\Exception $e) {
+            return $e;
             DB::rollback();
         }
     }
