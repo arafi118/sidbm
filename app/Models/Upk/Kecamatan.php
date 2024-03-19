@@ -13,4 +13,9 @@ class Kecamatan extends Model
     protected $table = 'kecamatan';
     protected $connection = 'upk';
     protected $guarded = ['id'];
+
+    public function kab()
+    {
+        return $this->belongsTo(Kabupaten::class, 'kd_kab', 'id');
+    }
 }

@@ -63,6 +63,8 @@ Route::group(['prefix' => 'master', 'as' => 'master.', 'middleware' => 'master']
 
     Route::resource('/menu', MenuController::class);
 
+    Route::get('/migrasi_upk/server/{server}', [UpkController::class, 'Server']);
+
     Route::resource('/migrasi_upk', UpkController::class);
 
     Route::post('/logout', [AdminAuthController::class, 'logout']);

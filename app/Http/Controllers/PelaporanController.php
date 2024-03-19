@@ -7,6 +7,7 @@ use App\Models\AkunLevel1;
 use App\Models\AkunLevel2;
 use App\Models\AkunLevel3;
 use App\Models\ArusKas;
+use App\Models\Calk;
 use App\Models\Desa;
 use App\Models\JenisLaporan;
 use App\Models\JenisLaporanPinjaman;
@@ -48,15 +49,14 @@ class PelaporanController extends Controller
             $tahun = request()->get('tahun');
             $bulan = request()->get('bulan');
 
-            $trx = Transaksi::where([
-                ['rekening_debit', '0'],
-                ['rekening_kredit', '0'],
-                ['tgl_transaksi', 'LIKE', $tahun . '-' . $bulan . '%']
+            $calk = Calk::where([
+                ['lokasi', Session::get('lokasi')],
+                ['tanggal', 'LIKE', $tahun . '-' . $bulan . '%']
             ])->first();
 
             $keterangan = '';
-            if ($trx) {
-                $keterangan = $trx->keterangan_transaksi;
+            if ($calk) {
+                $keterangan = $calk->catatan;
             }
 
             return view('pelaporan.partials.sub_laporan')->with(compact('file', 'keterangan'));
@@ -137,24 +137,15 @@ class PelaporanController extends Controller
         ]);
 
         if ($data['laporan'] == 'calk' && strlen($data['sub_laporan']) > 22) {
-            Transaksi::where([
-                ['rekening_debit', '0'],
-                ['rekening_kredit', '0'],
-                ['tgl_transaksi', 'LIKE', $data['tahun'] . '-' . $data['bulan'] . '%']
+            Calk::where([
+                ['lokasi', Session::get('lokasi')],
+                ['tanggal', 'LIKE', $data['tahun'] . '-' . $data['bulan'] . '%']
             ])->delete();
 
-            Transaksi::create([
-                'tgl_transaksi' => $data['tahun'] . '-' . $data['bulan'] . '-01',
-                'rekening_debit' => '0',
-                'rekening_kredit' => '0',
-                'idtp' => '0',
-                'id_pinj' => '0',
-                'id_pinj_i' => '0',
-                'keterangan_transaksi' => $data['sub_laporan'],
-                'relasi' => '-',
-                'jumlah' => 0,
-                'urutan' => '0',
-                'id_user' => auth()->user()->id
+            Calk::create([
+                'lokasi' => Session::get('lokasi'),
+                'tanggal' => $data['tahun'] . '-' . $data['bulan'] . '-01',
+                'catatan' => $data['sub_laporan'],
             ]);
         }
 
@@ -514,10 +505,9 @@ class PelaporanController extends Controller
             },
         ])->orderBy('kode_akun', 'ASC')->get();
 
-        $data['keterangan'] = Transaksi::where([
-            ['rekening_debit', '0'],
-            ['rekening_kredit', '0'],
-            ['tgl_transaksi', 'LIKE', $data['tahun'] . '-' . $data['bulan'] . '%']
+        $data['keterangan'] = Calk::where([
+            ['lokasi', Session::get('lokasi')],
+            ['tanggal', 'LIKE', $data['tahun'] . '-' . $data['bulan'] . '%']
         ])->first();
 
         $data['sekr'] = User::where([

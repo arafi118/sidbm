@@ -454,9 +454,8 @@
                     Lain Lain
                 </div>
                 <div style="text-align: justify">
-                    {!! $keterangan->keterangan_transaksi !!}.
+                    {!! $keterangan->catatan !!}.
                 </div>
-            </li>
             </li>
         @endif
 
