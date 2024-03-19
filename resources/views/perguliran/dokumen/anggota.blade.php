@@ -24,9 +24,9 @@
     <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="background: rgb(232, 232, 232)">
             <th width="10" height="20" align="center">No</th>
-            <th width="50" align="center">Tgl Lahir</th>
             <th width="80" align="center">NIK</th>
             <th width="130" align="center">Nama anggota</th>
+            <th width="70" align="center">No HP</th>
             <th align="center">Alamat</th>
         </tr>
         @foreach ($pinjaman as $pa)
@@ -35,9 +35,9 @@
             @endphp
             <tr>
                 <td align="center">{{ $no }}.</td>
-                <td align="center">{{ Tanggal::tglIndo($pa->anggota->tgl_lahir) }}</td>
                 <td align="center">{{ $pa->anggota->nik }}</td>
                 <td>{{ $pa->anggota->namadepan }}</td>
+                <td align="center">{{ $pa->anggota->hp }}</td>
                 <td>{{ $pa->anggota->alamat }}</td>
             </tr>
         @endforeach

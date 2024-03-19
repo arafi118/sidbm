@@ -60,11 +60,10 @@
             <th width="60">Nik</th>
             <th width="60">Nama Anggota</th>
             <th width="10">JK</th>
-            <th width="50">Nomor HP</th>
             <th>Alamat</th>
             <th width="60">Penjamin</th>
             <th width="50">Pengajuan</th>
-            <th width="20">Ttd</th>
+            <th width="50">Ttd</th>
         </tr>
 
         @php
@@ -76,7 +75,6 @@
                 <td>{{ $pa->anggota->nik }}</td>
                 <td>{{ $pa->anggota->namadepan }}</td>
                 <td align="center">{{ $pa->anggota->jk }}</td>
-                <td align="center">{{ $pa->anggota->hp }}</td>
                 <td>{{ $pa->anggota->alamat }}</td>
                 <td>{{ $pa->anggota->penjamin }}</td>
                 <td align="right">{{ number_format($pa->proposal) }}</td>
@@ -88,7 +86,7 @@
         @endforeach
 
         <tr style="font-weight: bold;">
-            <td height="15" colspan="7" align="center">JUMLAH</td>
+            <td height="15" colspan="6" align="center">JUMLAH</td>
             <td align="right">{{ number_format($proposal) }}</td>
             <td>&nbsp;</td>
         </tr>
