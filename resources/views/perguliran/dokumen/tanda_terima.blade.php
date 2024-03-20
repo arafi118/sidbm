@@ -60,10 +60,9 @@
             <th class="t l b" width="18%">Nik</th>
             <th class="t l b" width="22%">Nama Anggota</th>
             <th class="t l b" width="3%">JK</th>
-            <th class="t l b" width="20%">Alamat</th>
-            <th class="t l b" width="12%">Penjamin</th>
-            <th class="t l b" width="12%">Pengajuan</th>
-            <th class="t l b r" width="10%">Ttd</th>
+            <th class="t l b" width="26%">Alamat</th>
+            <th class="t l b" width="14%">Pengajuan</th>
+            <th class="t l b r" width="14%">Ttd</th>
         </tr>
 
         @php
@@ -72,6 +71,9 @@
         @foreach ($pinkel->pinjaman_anggota as $pa)
             @php
                 $no = $loop->iteration;
+                if ($pa->alokasi == 0) {
+                    continue;
+                }
             @endphp
             <tr>
                 <td class="t l b" height="15" align="center">{{ $no }}</td>
@@ -79,7 +81,6 @@
                 <td class="t l b">{{ $pa->anggota->namadepan }}</td>
                 <td class="t l b" align="center">{{ $pa->anggota->jk }}</td>
                 <td class="t l b">{{ $pa->anggota->alamat }}</td>
-                <td class="t l b">{{ $pa->anggota->penjamin }}</td>
                 <td class="t l b" align="right">{{ number_format($pa->alokasi) }}</td>
                 <td class="t l b r">{{ $no }}.</td>
             </tr>
@@ -89,13 +90,13 @@
         @endforeach
 
         <tr>
-            <td colspan="8" style="padding: 0px !important;">
+            <td colspan="7" style="padding: 0px !important;">
                 <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                     style="font-size: 11px; table-layout: fixed;">
                     <tr style="font-weight: bold;">
-                        <td class="t l b" height="15" width="78%" align="center">JUMLAH</td>
-                        <td class="t l b" align="right" width="12%">{{ number_format($alokasi) }}</td>
-                        <td class="t l b r" width="10%">&nbsp;</td>
+                        <td class="t l b" height="15" width="72%" align="center">JUMLAH</td>
+                        <td class="t l b" align="right" width="14%">{{ number_format($alokasi) }}</td>
+                        <td class="t l b r" width="14%">&nbsp;</td>
                     </tr>
                 </table>
 
