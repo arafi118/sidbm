@@ -1185,7 +1185,7 @@ class PinjamanKelompokController extends Controller
             'kelompok.d.sebutan_desa'
         ])->withCount('pinjaman_anggota')->first();
 
-        $data['judul'] = 'Surat Perngajuran Kredit (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $data['judul'] = 'Surat Pengajuan Kredit (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.pengajuan_kredit', $data)->render();
 
         if ($data['type'] == 'pdf') {
@@ -1434,6 +1434,30 @@ class PinjamanKelompokController extends Controller
 
         $data['judul'] = 'Form Verifikasi (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.form_verifikasi', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
+    public function BaPendanaan($id, $data)
+    {
+        $pinkel = PinjamanKelompok::where('id', $id)->first();
+        $data['pinjaman'] = PinjamanKelompok::where([
+            ['tgl_tunggu', $pinkel->tgl_tunggu],
+            ['status', 'W']
+        ])->with([
+            'jpp',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa'
+        ])->withCount('pinjaman_anggota')->get();
+
+        $data['judul'] = 'BA Pendanaan ' . Tanggal::tglLatin($pinkel->tgl_tunggu);
+        $view = view('perguliran.dokumen.ba_pendanaan', $data)->render();
 
         if ($data['type'] == 'pdf') {
             $pdf = PDF::loadHTML($view);

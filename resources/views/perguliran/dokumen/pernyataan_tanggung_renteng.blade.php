@@ -24,10 +24,10 @@
             <tr style="background: rgb(233,233,233);">
                 <th width="10">No</th>
                 <th width="80">NIK</th>
-                <th width="120">Nama Anggota</th>
+                <th width="100">Nama Anggota</th>
                 <th width="10">JK</th>
                 <th>Alamat</th>
-                <th width="40">Tanda Tangan</th>
+                <th width="70">Tanda Tangan</th>
             </tr>
 
             @foreach ($pinkel->pinjaman_anggota as $pa)
