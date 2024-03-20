@@ -1,6 +1,8 @@
 @php
     use App\Utils\Tanggal;
     $batas_pemanfaat = ceil($pinkel->pinjaman_anggota_count / 2);
+
+    $minus = 0;
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
@@ -38,8 +40,17 @@
         </tr>
 
         @foreach ($pinkel->pinjaman_anggota as $pa)
+            @php
+                if ($pa->alokasi == 0) {
+                    $minus += 1;
+                    continue;
+                }
+
+                $no = $loop->iteration - $minus;
+            @endphp
+
             <tr>
-                <td height="15" class="l b" align="center">{{ $loop->iteration }}</td>
+                <td height="15" class="l b" align="center">{{ $no }}</td>
                 <td class="l b">{{ $pa->anggota->namadepan }}</td>
                 <td class="l b" align="center">{{ $pa->anggota->nik }}</td>
                 <td class="l b r">
