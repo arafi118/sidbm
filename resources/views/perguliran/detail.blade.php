@@ -25,7 +25,7 @@
             'withExcel' => false,
         ],
         [
-            'title' => 'Surat Pengajuan Pinjaman',
+            'title' => 'Surat Permohonan Pinjaman',
             'file' => 'suratPengajuanPinjaman',
             'withExcel' => false,
         ],
@@ -197,6 +197,11 @@
             'file' => 'formVerifikasi',
             'withExcel' => false,
         ],
+        // [
+        //     'title' => 'Berita Acara Pendanaan',
+        //     'file' => 'formVerifikasi',
+        //     'withExcel' => false,
+        // ],
     ];
 @endphp
 
