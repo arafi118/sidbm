@@ -12,6 +12,7 @@
         $tempat = $wt_cair[1];
     }
 
+    $minus = 0;
     $no = 0;
 @endphp
 
@@ -71,18 +72,23 @@
             <th width="130" align="center">Nama Lengkap</th>
             <th width="70" align="center">Unsur / Jabatan</th>
             <th align="center">Alamat</th>
-            <th width="70" align="center">Tanda Tangan</th>
+            <th width="80" align="center">Tanda Tangan</th>
         </tr>
         @foreach ($pinkel->pinjaman_anggota as $pa)
             @php
-                $no = $loop->iteration;
+                if ($pa->alokasi == 0) {
+                    $minus += 1;
+                    continue;
+                }
+
+                $no = $loop->iteration - $minus;
             @endphp
             <tr>
                 <td height="15" align="center"><b>{{ $no }}.</b></td>
                 <td>{{ $pa->anggota->namadepan }}</td>
                 <td align="center">Pemanfaat</td>
                 <td>{{ $pa->anggota->alamat }}</td>
-                <td><b>{{ $no }}.</b></td>
+                <td>{{ $no }}.</td>
             </tr>
         @endforeach
 
@@ -92,7 +98,7 @@
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td><b>{{ $i }}.</b></td>
+                <td>{{ $i }}.</td>
             </tr>
         @endfor
     </table>

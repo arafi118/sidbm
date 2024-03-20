@@ -1,5 +1,7 @@
 @php
     use App\Utils\Tanggal;
+
+    $minus = 0;
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
@@ -70,10 +72,12 @@
         @endphp
         @foreach ($pinkel->pinjaman_anggota as $pa)
             @php
-                $no = $loop->iteration;
                 if ($pa->alokasi == 0) {
+                    $minus += 1;
                     continue;
                 }
+
+                $no = $loop->iteration - $minus;
             @endphp
             <tr>
                 <td class="t l b" height="15" align="center">{{ $no }}</td>
