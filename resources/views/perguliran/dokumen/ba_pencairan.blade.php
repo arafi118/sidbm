@@ -11,6 +11,8 @@
         $waktu = $wt_cair[0];
         $tempat = $wt_cair[1];
     }
+
+    $minus = 0;
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
@@ -185,8 +187,16 @@
             </tr>
 
             @foreach ($pinkel->pinjaman_anggota as $pa)
+                @php
+                    if ($pa->alokasi == 0) {
+                        $minus += 1;
+                        continue;
+                    }
+
+                    $no = $loop->iteration - $minus;
+                @endphp
                 <tr>
-                    <td align="center">{{ $loop->iteration }}</td>
+                    <td align="center">{{ $no }}</td>
                     <td align="center">{{ $pa->anggota->nik }}</td>
                     <td>{{ $pa->anggota->namadepan }}</td>
                     <td align="center">{{ $pa->anggota->hp }}</td>
