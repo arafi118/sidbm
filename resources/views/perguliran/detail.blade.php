@@ -197,11 +197,11 @@
             'file' => 'formVerifikasi',
             'withExcel' => false,
         ],
-        // [
-        //     'title' => 'Berita Acara Pendanaan',
-        //     'file' => 'formVerifikasi',
-        //     'withExcel' => false,
-        // ],
+        [
+            'title' => 'Berita Acara Pendanaan',
+            'file' => 'BaPendanaan',
+            'withExcel' => false,
+        ],
     ];
 @endphp
 

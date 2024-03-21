@@ -117,6 +117,7 @@ Route::put('/pengaturan/asuransi/{kec}', [SopController::class, 'asuransi'])->mi
 Route::put('/pengaturan/spk/{kec}', [SopController::class, 'spk'])->middleware('auth');
 Route::put('/pengaturan/logo/{kec}', [SopController::class, 'logo'])->middleware('auth');
 Route::put('/pengaturan/calk/{kec}', [SopController::class, 'calk'])->middleware('auth');
+Route::put('/pengaturan/pesan_whatsapp/{kec}', [SopController::class, 'pesanWhatsapp'])->middleware('auth');
 
 Route::post('/pengaturan/whatsapp/{token}', [SopController::class, 'whatsapp'])->middleware('auth');
 

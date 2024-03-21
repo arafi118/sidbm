@@ -501,9 +501,19 @@ class DashboardController extends Controller
 
     public function tagihan(Request $request)
     {
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
+        $pesan_wa = json_decode($kec->whatsapp, true);
+
         $tanggal = Tanggal::tglNasional($request->tgl_tagihan);
         $tgl_bayar = Tanggal::tglNasional($request->tgl_pembayaran);
-        $pesan = $request->pesan_whatsapp;
+        $pesan = $pesan_wa['tagihan'];
+
+        $pesan = strtr($pesan, [
+            '{Tanggal Jatuh Tempo}' => $request->tgl_tagihan,
+            '{Tanggal Bayar}' => $request->tgl_pembayaran,
+            '{User Login}' => auth()->user()->namadepan . ' ' . auth()->user()->namabelakang,
+            '{Telpon}' => auth()->user()->hp
+        ]);
 
         $pinjaman = PinjamanKelompok::where('status', 'A')->whereDay('tgl_cair', date('d', strtotime($tanggal)))->with([
             'target' => function ($query) use ($tanggal) {

@@ -819,6 +819,8 @@ class TransaksiController extends Controller
     {
         DB::beginTransaction();
 
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
+
         try {
             $data = $request->only([
                 'id',
@@ -1033,108 +1035,108 @@ class TransaksiController extends Controller
             }
             Transaksi::insert($transaksi);
 
-            $jasa_pinjaman = ($pinkel->pros_jasa / 100) * $pinkel->alokasi;
-            foreach ($pinjaman_anggota as $pa) {
-                $pokok_anggota = 0;
-                if ($request->pokok_anggota) {
-                    if ($request->pokok_anggota[$pa->id]) {
-                        $pokok_anggota = floatval(str_replace(',', '', str_replace('.00', '', $request->pokok_anggota[$pa->id])));
-                    }
-                }
+            // $jasa_pinjaman = ($pinkel->pros_jasa / 100) * $pinkel->alokasi;
+            // foreach ($pinjaman_anggota as $pa) {
+            //     $pokok_anggota = 0;
+            //     if ($request->pokok_anggota) {
+            //         if ($request->pokok_anggota[$pa->id]) {
+            //             $pokok_anggota = floatval(str_replace(',', '', str_replace('.00', '', $request->pokok_anggota[$pa->id])));
+            //         }
+            //     }
 
-                $jasa_anggota = 0;
-                if ($request->jasa_anggota) {
-                    if ($request->jasa_anggota[$pa->id]) {
-                        $jasa_anggota = str_replace(',', '', str_replace('.00', '', $request->jasa_anggota[$pa->id]));
-                    }
-                }
+            //     $jasa_anggota = 0;
+            //     if ($request->jasa_anggota) {
+            //         if ($request->jasa_anggota[$pa->id]) {
+            //             $jasa_anggota = str_replace(',', '', str_replace('.00', '', $request->jasa_anggota[$pa->id]));
+            //         }
+            //     }
 
-                if ($pokok_anggota <= 0) {
-                    $pros_pokok_anggota = round(($pa->alokasi / $pinkel->alokasi) * 100, 2);
-                    $pokok_anggota = round(($pros_pokok_anggota / 100) * $_pokok, 2);
-                }
+            //     if ($pokok_anggota <= 0) {
+            //         $pros_pokok_anggota = round(($pa->alokasi / $pinkel->alokasi) * 100, 2);
+            //         $pokok_anggota = round(($pros_pokok_anggota / 100) * $_pokok, 2);
+            //     }
 
-                if ($jasa_anggota <= 0) {
-                    $pros_jasa_anggota = 0;
-                    if ($jasa_pinjaman != 0) {
-                        $pros_jasa_anggota = round((($pa->pros_jasa / 100 * $pa->alokasi) / $jasa_pinjaman) * 100, 2);
-                    }
-                    $jasa_anggota = round(($pros_jasa_anggota / 100) * $_jasa, 2);
-                }
+            //     if ($jasa_anggota <= 0) {
+            //         $pros_jasa_anggota = 0;
+            //         if ($jasa_pinjaman != 0) {
+            //             $pros_jasa_anggota = round((($pa->pros_jasa / 100 * $pa->alokasi) / $jasa_pinjaman) * 100, 2);
+            //         }
+            //         $jasa_anggota = round(($pros_jasa_anggota / 100) * $_jasa, 2);
+            //     }
 
-                $kom_pokok = json_decode($pa->kom_pokok, true);
-                $kom_jasa = json_decode($pa->kom_jasa, true);
+            //     $kom_pokok = json_decode($pa->kom_pokok, true);
+            //     $kom_jasa = json_decode($pa->kom_jasa, true);
 
-                if (is_array($kom_pokok)) {
-                    $kom_pokok[$idtp] = $pokok_anggota;
-                } else {
-                    $kom_pokok = [];
-                    $kom_pokok[$idtp] = $pokok_anggota;
-                }
+            //     if (is_array($kom_pokok)) {
+            //         $kom_pokok[$idtp] = $pokok_anggota;
+            //     } else {
+            //         $kom_pokok = [];
+            //         $kom_pokok[$idtp] = $pokok_anggota;
+            //     }
 
-                if (is_array($kom_jasa)) {
-                    $kom_jasa[$idtp] = $jasa_anggota;
-                } else {
-                    $kom_jasa = [];
-                    $kom_jasa[$idtp] = $jasa_anggota;
-                }
+            //     if (is_array($kom_jasa)) {
+            //         $kom_jasa[$idtp] = $jasa_anggota;
+            //     } else {
+            //         $kom_jasa = [];
+            //         $kom_jasa[$idtp] = $jasa_anggota;
+            //     }
 
-                PinjamanAnggota::where('id', $pa->id)->update([
-                    'kom_pokok' => $kom_pokok,
-                    'kom_jasa' => $kom_jasa
-                ]);
-            }
+            //     PinjamanAnggota::where('id', $pa->id)->update([
+            //         'kom_pokok' => $kom_pokok,
+            //         'kom_jasa' => $kom_jasa
+            //     ]);
+            // }
 
-            $rek_pokok = ['1.1.03.01', '1.1.03.02', '1.1.03.03'];
-            $rek_jasa = ['1.1.03.04', '1.1.03.05', '1.1.03.06', '4.1.01.01', '4.1.01.02', '4.1.01.03'];
+            // $rek_pokok = ['1.1.03.01', '1.1.03.02', '1.1.03.03'];
+            // $rek_jasa = ['1.1.03.04', '1.1.03.05', '1.1.03.06', '4.1.01.01', '4.1.01.02', '4.1.01.03'];
 
-            $alokasi_pokok = intval($pinkel->alokasi);
-            $alokasi_jasa = intval($pinkel->pros_jasa == 0 ? 0 : $pinkel->alokasi * ($pinkel->pros_jasa / 100));
+            // $alokasi_pokok = intval($pinkel->alokasi);
+            // $alokasi_jasa = intval($pinkel->pros_jasa == 0 ? 0 : $pinkel->alokasi * ($pinkel->pros_jasa / 100));
 
-            $real_angsuran = [
-                'id' => $idtp,
-                'loan_id' => $pinkel->id,
-                'tgl_transaksi' => $tgl_transaksi,
-                'realisasi_pokok' => 0,
-                'realisasi_jasa' => 0,
-                'sum_pokok' => $sum_pokok,
-                'sum_jasa' => $sum_jasa,
-                'saldo_pokok' => ($alokasi_pokok - $sum_pokok),
-                'saldo_jasa' => ($alokasi_jasa - $sum_jasa),
-                'tunggakan_pokok' => $tunggakan_pokok,
-                'tunggakan_jasa' => $tunggakan_jasa,
-                'lu' => date('Y-m-d H:i:s', strtotime($tgl_transaksi)),
-                'id_user' => auth()->user()->id,
-            ];
+            // $real_angsuran = [
+            //     'id' => $idtp,
+            //     'loan_id' => $pinkel->id,
+            //     'tgl_transaksi' => $tgl_transaksi,
+            //     'realisasi_pokok' => 0,
+            //     'realisasi_jasa' => 0,
+            //     'sum_pokok' => $sum_pokok,
+            //     'sum_jasa' => $sum_jasa,
+            //     'saldo_pokok' => ($alokasi_pokok - $sum_pokok),
+            //     'saldo_jasa' => ($alokasi_jasa - $sum_jasa),
+            //     'tunggakan_pokok' => $tunggakan_pokok,
+            //     'tunggakan_jasa' => $tunggakan_jasa,
+            //     'lu' => date('Y-m-d H:i:s', strtotime($tgl_transaksi)),
+            //     'id_user' => auth()->user()->id,
+            // ];
 
-            foreach ($transaksi as $key => $trx) {
-                if (in_array($trx['rekening_kredit'], $rek_pokok)) {
-                    $sum_pokok += $trx['jumlah'];
-                    $alokasi_pokok -= $sum_pokok;
-                    $tunggakan_pokok -= $trx['jumlah'];
-                    if ($tunggakan_pokok <= 0) $tunggakan_pokok = 0;
+            // foreach ($transaksi as $key => $trx) {
+            //     if (in_array($trx['rekening_kredit'], $rek_pokok)) {
+            //         $sum_pokok += $trx['jumlah'];
+            //         $alokasi_pokok -= $sum_pokok;
+            //         $tunggakan_pokok -= $trx['jumlah'];
+            //         if ($tunggakan_pokok <= 0) $tunggakan_pokok = 0;
 
-                    $real_angsuran['realisasi_pokok'] = $trx['jumlah'];
-                    $real_angsuran['sum_pokok'] = $sum_pokok;
-                    $real_angsuran['saldo_pokok'] = $alokasi_pokok;
-                    $real_angsuran['tunggakan_pokok'] = $tunggakan_pokok;
-                }
+            //         $real_angsuran['realisasi_pokok'] = $trx['jumlah'];
+            //         $real_angsuran['sum_pokok'] = $sum_pokok;
+            //         $real_angsuran['saldo_pokok'] = $alokasi_pokok;
+            //         $real_angsuran['tunggakan_pokok'] = $tunggakan_pokok;
+            //     }
 
-                if (in_array($trx['rekening_kredit'], $rek_jasa)) {
-                    $sum_jasa += $trx['jumlah'];
-                    $alokasi_jasa -= $sum_jasa;
-                    $tunggakan_jasa -= $trx['jumlah'];
-                    if ($tunggakan_jasa <= 0) $tunggakan_jasa = 0;
+            //     if (in_array($trx['rekening_kredit'], $rek_jasa)) {
+            //         $sum_jasa += $trx['jumlah'];
+            //         $alokasi_jasa -= $sum_jasa;
+            //         $tunggakan_jasa -= $trx['jumlah'];
+            //         if ($tunggakan_jasa <= 0) $tunggakan_jasa = 0;
 
-                    $real_angsuran['realisasi_jasa'] = $trx['jumlah'];
-                    $real_angsuran['sum_jasa'] = $sum_jasa;
-                    $real_angsuran['saldo_jasa'] = $alokasi_jasa;
-                    $real_angsuran['tunggakan_jasa'] = $tunggakan_jasa;
-                }
-            }
+            //         $real_angsuran['realisasi_jasa'] = $trx['jumlah'];
+            //         $real_angsuran['sum_jasa'] = $sum_jasa;
+            //         $real_angsuran['saldo_jasa'] = $alokasi_jasa;
+            //         $real_angsuran['tunggakan_jasa'] = $tunggakan_jasa;
+            //     }
+            // }
 
-            RealAngsuran::insert($real_angsuran);
-            DB::commit();
+            // RealAngsuran::insert($real_angsuran);
+            // DB::commit();
 
             $whatsapp = false;
             $pesan = '';
@@ -1143,15 +1145,19 @@ class TransaksiController extends Controller
                 $desa = $pinkel->kelompok->d->sebutan_desa->sebutan_desa . ' ' . $pinkel->kelompok->d->nama_desa;
 
                 $whatsapp = true;
-                $pesan .= "Yth. " . $nama_kelompok . " " . $desa . ",\n\n";
-                $pesan .= "Terima kasih atas pembayaran angsuran anda.\n";
-                $pesan .= "Rincian Pembayaran:\n";
-                $pesan .= "Pokok   : Rp. " . number_format($request->pokok) . "\n";
-                $pesan .= "Jasa      : Rp. " . number_format($request->jasa) . "\n\n";
-                $pesan .= "Pembayaran telah kami terima pada " . Tanggal::tglIndo($tgl_transaksi) . ".\n\n";
-                $pesan .= "Salam,\n" . auth()->user()->namadepan . " " . auth()->user()->namabelakang . "\n";
-                $pesan .= "Nomor Telepon: " . auth()->user()->hp;
+                $pesan_wa = json_decode($kec->whatsapp, true);
+                $pesan = $pesan_wa['angsuran'];
+                $pesan = strtr($pesan, [
+                    '{Nama Kelompok}' => $pinkel->kelompok->nama_kelompok,
+                    '{Nama Desa}' => $pinkel->kelompok->d->sebutan_desa->sebutan_desa . ' ' . $pinkel->kelompok->d->nama_desa,
+                    '{Angsuran Pokok}' => number_format($request->pokok),
+                    '{Angsuran Jasa}' => number_format($request->jasa),
+                    '{Tanggal Angsuran}' => Tanggal::tglIndo($tgl_transaksi),
+                    '{User Login}' => auth()->user()->namadepan . ' ' . auth()->user()->namabelakang,
+                    '{Telpon}' => auth()->user()->hp
+                ]);
             }
+
 
             return response()->json([
                 'success' => true,

@@ -447,6 +447,41 @@ class SopController extends Controller
         ]);
     }
 
+    public function pesanWhatsapp(Request $request, Kecamatan $kec)
+    {
+        if ($kec->id != Session::get('lokasi')) {
+            abort(404);
+        }
+
+        $data = $request->only([
+            'tagihan',
+            'angsuran'
+        ]);
+
+        $validate = Validator::make($data, [
+            'tagihan' => 'required',
+            'angsuran' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
+        }
+
+        $wa = [
+            'tagihan' => $data['tagihan'],
+            'angsuran' => $data['angsuran']
+        ];
+
+        Kecamatan::where('id', $kec->id)->update([
+            'whatsapp' => $wa
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Pengaturan Pesan Whatsapp Berhasil Diperbarui.',
+        ]);
+    }
+
     public function detailInvoice($inv)
     {
         $inv = AdminInvoice::where('idv', $inv)->with('jp')->first();
