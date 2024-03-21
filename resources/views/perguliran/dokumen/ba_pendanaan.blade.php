@@ -8,13 +8,13 @@
     <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; table-layout: fixed;">
         <thead>
             <tr>
-                <th width="3%">No</th>
-                <th width="20%">Nama Kelompok</th>
+                <th width="4%">No</th>
+                <th width="21%">Nama Kelompok</th>
                 <th width="">Alamat</th>
-                <th width="9%">Jenis Pinjaman</th>
+                <th width="6%">Jenis</th>
                 <th width="8%">Anggota</th>
-                <th width="15%">Ketua Kelompok</th>
-                <th width="15%">Alokasi Pendanaan</th>
+                <th width="16%">Ketua Kelompok</th>
+                <th width="13%">Alokasi Pendanaan</th>
             </tr>
         </thead>
 
@@ -45,6 +45,12 @@
                     </td>
                 </tr>
             @endforeach
+
+            <tr>
+                <td>
+
+                </td>
+            </tr>
         </tbody>
     </table>
 @endsection
