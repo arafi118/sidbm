@@ -53,7 +53,7 @@
             <td>{{ $pinkel->spk_no }}</td>
             <td>Pinjaman Ke-</td>
             <td align="right">:</td>
-            <td>0</td>
+            <td>______________</td>
         </tr>
     </table>
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; table-layout: fixed;">
