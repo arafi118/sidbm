@@ -1638,7 +1638,8 @@ class PelaporanController extends Controller
                         ['jenis', '1'],
                         ['status', '!=', '0'],
                         ['tgl_beli', '<=', $data['tgl_kondisi']],
-                        ['tgl_beli', 'NOT LIKE', '']
+                        ['tgl_beli', 'NOT LIKE', ''],
+                        ['harsat', '>', '0']
                     ])->orderBy('tgl_beli', 'ASC');
                 }
             ])
