@@ -169,7 +169,7 @@
             $skor_b5 = 7.5;
             $status_b5 = 'Cukup Sehat';
         } elseif ($saldo_piuang > 75) {
-            $skor_b5 = 6.25;
+            $skor_b5 = 6.5;
             $status_b5 = 'Cukup Sehat';
         } elseif ($saldo_piuang > 70) {
             $skor_b5 = 5;
