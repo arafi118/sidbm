@@ -1445,9 +1445,9 @@ class PinjamanKelompokController extends Controller
 
     public function BaPendanaan($id, $data)
     {
-        $pinkel = PinjamanKelompok::where('id', $id)->first();
+        $data['pinj'] = PinjamanKelompok::where('id', $id)->first();
         $data['pinjaman'] = PinjamanKelompok::where([
-            ['tgl_tunggu', $pinkel->tgl_tunggu],
+            ['tgl_tunggu', $data['pinj']->tgl_tunggu],
             ['status', 'W']
         ])->with([
             'jpp',
@@ -1456,7 +1456,7 @@ class PinjamanKelompokController extends Controller
             'kelompok.d.sebutan_desa'
         ])->withCount('pinjaman_anggota')->get();
 
-        $data['judul'] = 'BA Pendanaan ' . Tanggal::tglLatin($pinkel->tgl_tunggu);
+        $data['judul'] = 'BA Pendanaan ' . Tanggal::tglLatin($data['pinj']->tgl_tunggu);
         $view = view('perguliran.dokumen.ba_pendanaan', $data)->render();
 
         if ($data['type'] == 'pdf') {
