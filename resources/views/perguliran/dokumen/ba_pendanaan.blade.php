@@ -23,8 +23,10 @@
     <p style="text-align: justify;">
         Dalam rangka menindak lanjuti proses tahapan perguliran atas kelompok kelompok permohonan pinjaman
         {{ $kec->nama_lembaga_sort }} yang sudah diterbitkan rekomendasi pada tahapan verifikasi maka pada hari ini
-        {{ Tanggal::namaHari($pinj->tgl_tunggu) }} Tanggal {{ Tanggal::hari($pinj->tgl_tunggu) }} bulan
-        {{ Tanggal::bulan($pinj->tgl_tunggu) }} tahun {{ Tanggal::tahun($pinj->tgl_tunggu) }}
+        {{ Tanggal::namaHari($pinj->tgl_tunggu) }} tanggal {{ Tanggal::hari($pinj->tgl_tunggu) }} bulan
+        {{ Tanggal::namaBulan($pinj->tgl_tunggu) }} tahun {{ Tanggal::tahun($pinj->tgl_tunggu) }} bertempat di kantor
+        {{ $kec->nama_lembaga_sort }} telah dilakukan pembahasan dan ditetapkan alokasi pendanaan dan rencana tanggal
+        pencairan kepada kelompok sebagai berikut:
     </p>
 
     <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; table-layout: fixed;">
@@ -80,5 +82,60 @@
                 </td>
             </tr>
         </tbody>
+    </table>
+
+    <p style="text-align: justify;">
+        Demikian Berita Acara ini dibuat dan ditanda tangani untuk menjadi dasar pencairan pinjaman kepada kelompok kelompok
+        tersebut diatas.
+    </p>
+
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; table-layout: fixed;">
+        <tr>
+            <td width="25%">&nbsp;</td>
+            <td width="25%">&nbsp;</td>
+            <td width="25%">Ditanda tangani di</td>
+            <td width="25%">: {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>Pada tanggal</td>
+            <td>: {{ Tanggal::tglLatin($pinj->tgl_tunggu) }}</td>
+        </tr>
+
+        <tr>
+            <td colspan="4">&nbsp;</td>
+        </tr>
+
+        <tr>
+            <td height="20">
+                <div>{{ $pendanaan->namadepan }} {{ $pendanaan->namabelakang }}</div>
+                <div>
+                    <b>{{ $pendanaan->j->nama_jabatan }}</b>
+                </div>
+            </td>
+            <td align="right" style="vertical-align: bottom;">___________________________</td>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="20">
+                <div>{{ $direktur->namadepan }} {{ $direktur->namabelakang }}</div>
+                <div>
+                    <b>{{ $kec->sebutan_level_1 }}</b>
+                </div>
+            </td>
+            <td align="right" style="vertical-align: bottom;">___________________________</td>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="20">
+                <div>{{ $sekretaris->namadepan }} {{ $sekretaris->namabelakang }}</div>
+                <div>
+                    <b>{{ $kec->sebutan_level_2 }}</b>
+                </div>
+            </td>
+            <td align="right" style="vertical-align: bottom;">___________________________</td>
+            <td colspan="2">&nbsp;</td>
+        </tr>
     </table>
 @endsection

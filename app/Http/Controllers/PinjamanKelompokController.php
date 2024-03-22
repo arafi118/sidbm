@@ -1456,6 +1456,23 @@ class PinjamanKelompokController extends Controller
             'kelompok.d.sebutan_desa'
         ])->withCount('pinjaman_anggota')->get();
 
+        $data['pendanaan'] = User::where([
+            ['lokasi', Session::get('lokasi')],
+            ['level', '5']
+        ])->with('j')->first();
+
+        $data['direktur'] = User::where([
+            ['lokasi', Session::get('lokasi')],
+            ['level', '1'],
+            ['jabatan', '1']
+        ])->with('j')->first();
+
+        $data['sekretaris'] = User::where([
+            ['lokasi', Session::get('lokasi')],
+            ['level', '1'],
+            ['jabatan', '2']
+        ])->with('j')->first();
+
         $data['judul'] = 'BA Pendanaan ' . Tanggal::tglLatin($data['pinj']->tgl_tunggu);
         $view = view('perguliran.dokumen.ba_pendanaan', $data)->render();
 
