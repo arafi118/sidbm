@@ -585,7 +585,7 @@ class TransaksiController extends Controller
             ]);
         }
 
-        if (Keuangan::startWith($request->sumber_dana, '1.2.02') && Keuangan::startWith($request->disimpan_ke, '5.3.02.01') && $request->jenis_transaksi == '2') {
+        if (Keuangan::startWith($request->sumber_dana, '1.2.01') && Keuangan::startWith($request->disimpan_ke, '5.3.02.01') && $request->jenis_transaksi == '2') {
             $data = $request->only([
                 'tgl_transaksi',
                 'jenis_transaksi',
@@ -597,6 +597,8 @@ class TransaksiController extends Controller
                 'unit',
                 'harga_jual'
             ]);
+
+            // dd($data);
 
             $validate = Validator::make($data, [
                 'tgl_transaksi' => 'required',
