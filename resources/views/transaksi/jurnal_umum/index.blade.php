@@ -416,6 +416,7 @@
 
             $('#unit').val(unit)
             $('#harsat').val(harga)
+            $('#_nilai_buku').val(nilai_buku)
             $('#nilai_buku').val(formatter.format(nilai_buku))
             $('#harga_jual').val(formatter.format(nilai_buku))
         })
@@ -437,6 +438,7 @@
             var harga = parseInt($('#harsat').val())
             var nilai_buku = unit * harga
 
+            $('#_nilai_buku').val(nilai_buku)
             $('#nilai_buku').val(formatter.format(nilai_buku))
             $('#harga_jual').val(formatter.format(nilai_buku))
         })
@@ -445,7 +447,20 @@
             var status = $(this).val()
             console.log(status)
 
+            var col_harga_jual = false
             if (status == "dijual") {
+                var col_harga_jual = true
+
+                $('#col_harga_jual').find('label[for="harga_jual"]').text('Harga Jual')
+            }
+
+            if (status == "revaluasi") {
+                var col_harga_jual = true
+
+                $('#col_harga_jual').find('label[for="harga_jual"]').text('Harga Revaluasi')
+            }
+
+            if (col_harga_jual) {
                 $('#col_nilai_buku,#col_unit').attr('class', 'col-sm-4')
                 $('#col_harga_jual').show()
                 $("#col_harga_jual").focus()

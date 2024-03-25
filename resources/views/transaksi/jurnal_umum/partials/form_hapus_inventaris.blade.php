@@ -2,6 +2,7 @@
     use App\Utils\Inventaris as Inv;
 @endphp
 
+<input type="hidden" name="_nilai_buku" id="_nilai_buku">
 <input type="hidden" name="harsat" id="harsat">
 <input type="hidden" name="relasi" id="relasi">
 <div class="col-sm-8">
@@ -31,6 +32,7 @@
             <option value="hilang">Hilang</option>
             <option value="rusak">Rusak</option>
             <option value="dijual">Dijual</option>
+            <option value="revaluasi">Revaluasi</option>
         </select>
         <small class="text-danger" id="msg_alasan"></small>
     </div>

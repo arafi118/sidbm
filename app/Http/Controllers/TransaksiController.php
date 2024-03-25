@@ -595,10 +595,9 @@ class TransaksiController extends Controller
                 'nama_barang',
                 'alasan',
                 'unit',
-                'harga_jual'
+                'harga_jual',
+                '_nilai_buku'
             ]);
-
-            // dd($data);
 
             $validate = Validator::make($data, [
                 'tgl_transaksi' => 'required',
@@ -689,10 +688,51 @@ class TransaksiController extends Controller
             if ($request->unit < $jumlah_barang) {
                 $transaksi = Transaksi::create($trx_penghapusan);
                 Inventaris::where('id', $id_inv)->update($update_inventaris);
-                Inventaris::create($insert_inventaris);
+
+                if ($status != 'revaluasi') {
+                    Inventaris::create($insert_inventaris);
+                }
             } else {
                 $transaksi = Transaksi::create($trx_penghapusan);
                 Inventaris::where('id', $id_inv)->update($update_sts_inventaris);
+            }
+
+            if ($status == 'revaluasi') {
+                $harga_jual = floatval(str_replace(',', '', str_replace('.00', '', $request->harga_jual)));
+
+                $insert_inventaris_baru = [
+                    'lokasi' => Session::get('lokasi'),
+                    'nama_barang' => $barang,
+                    'tgl_beli' => Tanggal::tglNasional($request->tgl_transaksi),
+                    'unit' => $request->unit,
+                    'harsat' => $harga_jual / $request->unit,
+                    'umur_ekonomis' => $umur_ekonomis,
+                    'jenis' => $jenis,
+                    'kategori' => $kategori,
+                    'status' => 'Baik',
+                    'tgl_validasi' => Tanggal::tglNasional($request->tgl_transaksi),
+                ];
+
+                if ($harga_jual != $request->_nilai_buku) {
+                    $jumlah = $harga_jual - $request->_nilai_buku;
+                    $trx_revaluasi = [
+                        'tgl_transaksi' => (string) Tanggal::tglNasional($request->tgl_transaksi),
+                        'rekening_debit' => '1.1.01.01',
+                        'rekening_kredit' => '4.3.01.01',
+                        'idtp' => '0',
+                        'id_pinj' => '0',
+                        'id_pinj_i' => '0',
+                        'keterangan_transaksi' => (string) 'Revaluasi ' . $request->unit . ' unit ' . $barang,
+                        'relasi' => '',
+                        'jumlah' => $jumlah,
+                        'urutan' => '0',
+                        'id_user' => auth()->user()->id,
+                    ];
+
+                    Transaksi::create($trx_revaluasi);
+                }
+
+                Inventaris::create($insert_inventaris_baru);
             }
 
             $msg = 'Penghapusan ' . $request->unit . ' unit ' . $barang . ' karena ' . $status;
