@@ -264,12 +264,6 @@
                                             $saldo = $keuangan->laba_rugi($tgl_kondisi);
                                         }
 
-                                        if (in_array($rek->kode_akun, $rek_alokasi_laba)) {
-                                            foreach ($rek->trx_kredit as $saldo_utang) {
-                                                $saldo += floatval($saldo_utang->jumlah);
-                                            }
-                                        }
-
                                         $sum_saldo += $saldo;
                                         $akun_lev4[] = [
                                             'kode_akun' => $rek->kode_akun,
