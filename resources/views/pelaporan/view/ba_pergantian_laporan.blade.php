@@ -11,9 +11,9 @@
 
     $nama_hari = Tanggal::namaHari($tgl_pakai);
     $nama_bulan = Tanggal::namaBulan($tgl_pakai);
-    $hari = Tanggal::hari($tgl_pakai);
-    $bulan = Tanggal::bulan($tgl_pakai);
-    $tahun = Tanggal::tahun($tgl_pakai);
+    $hari = $keuangan->terbilang(Tanggal::hari($tgl_pakai));
+    $bulan = $keuangan->terbilang(Tanggal::bulan($tgl_pakai));
+    $tahun = $keuangan->terbilang(Tanggal::tahun($tgl_pakai));
 
     $penggolongan_inventaris = [
         'Tanah dengan umur ekonomis selamanya',
@@ -282,12 +282,12 @@
         <tr>
             <td width="60%">&nbsp;</td>
             <td width="10%">Dibuat di</td>
-            <td width="30%">: ...........................</td>
+            <td width="30%">: {{ $kec->nama_kec }}</td>
         </tr>
         <tr>
             <td width="60%">&nbsp;</td>
             <td width="10%">Tanggal</td>
-            <td width="30%">: ...........................</td>
+            <td width="30%">: {{ Tanggal::tglLatin($tgl_pakai) }}</td>
         </tr>
     </table>
 
@@ -303,8 +303,8 @@
             <td colspan="2" height="50">&nbsp;</td>
         </tr>
         <tr>
-            <td align="center">(..............................)</td>
-            <td align="center">(..............................)</td>
+            <td align="center">( {{ $direktur->namadepan }} {{ $direktur->namabelakang }} )</td>
+            <td align="center">( {{ $bendahara->namadepan }} {{ $bendahara->namabelakang }} )</td>
         </tr>
 
         <tr>

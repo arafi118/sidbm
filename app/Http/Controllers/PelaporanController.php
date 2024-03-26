@@ -2103,6 +2103,18 @@ class PelaporanController extends Controller
             }
         ])->get();
 
+        $data['direktur'] = User::where([
+            ['jabatan', '1'],
+            ['level', '1'],
+            ['lokasi', Session::get('lokasi')]
+        ])->first();
+
+        $data['bendahara'] = User::where([
+            ['jabatan', '3'],
+            ['level', '1'],
+            ['lokasi', Session::get('lokasi')]
+        ])->first();
+
         $view = view('pelaporan.view.ba_pergantian_laporan', $data)->render();
 
         $pdf = PDF::loadHTML($view);
