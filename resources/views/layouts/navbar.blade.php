@@ -118,16 +118,6 @@
                                     </div>
                                 </a>
                             @endif
-                            <a class="dropdown-item border-radius-md" href="/pelaporan/ba_bumdesma" target="_blank">
-                                <div class="d-flex align-items-center py-1">
-                                    <span class="material-icons">attach_file</span>
-                                    <div class="ms-2">
-                                        <h6 class="text-sm font-weight-normal my-auto">
-                                            BA Pergantian Pelaporan
-                                        </h6>
-                                    </div>
-                                </div>
-                            </a>
                             <a class="dropdown-item border-radius-md" href="/pelaporan/ts" target="_blank">
                                 <div class="d-flex align-items-center py-1">
                                     <span class="material-icons">contact_phone</span>
@@ -144,6 +134,16 @@
                                     <div class="ms-2">
                                         <h6 class="text-sm font-weight-normal my-auto">
                                             MoU
+                                        </h6>
+                                    </div>
+                                </div>
+                            </a>
+                            <a class="dropdown-item border-radius-md" href="/pelaporan/ba_bumdesma" target="_blank">
+                                <div class="d-flex align-items-center py-1">
+                                    <span class="material-icons">attach_file</span>
+                                    <div class="ms-2">
+                                        <h6 class="text-sm font-weight-normal my-auto">
+                                            BA Pergantian Pelaporan
                                         </h6>
                                     </div>
                                 </div>
