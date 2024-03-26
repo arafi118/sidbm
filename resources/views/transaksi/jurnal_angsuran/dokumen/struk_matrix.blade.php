@@ -41,11 +41,17 @@
     $jasa_bulan_depan = ($pinkel->alokasi * $pinkel->pros_jasa) / 100 - $real->sum_jasa;
 
     if ($pokok_bulan_depan > 0 && $angsuran_ke + 1 <= $jum_angsuran) {
-        $pokok_bulan_depan = $wajib_pokok;
+        $pokok_bulan_depan = $target_pokok - $real->sum_pokok;
+        if ($pokok_bulan_depan < 0) {
+            $pokok_bulan_depan = 0;
+        }
     }
 
     if ($jasa_bulan_depan > 0 && $angsuran_ke + 1 <= $jum_angsuran) {
-        $jasa_bulan_depan = $wajib_jasa;
+        $jasa_bulan_depan = $target_jasa - $real->sum_jasa;
+        if ($jasa_bulan_depan < 0) {
+            $jasa_bulan_depan = 0;
+        }
     }
 
     if ($angsuran_ke >= $jum_angsuran) {
