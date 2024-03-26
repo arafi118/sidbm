@@ -2057,6 +2057,58 @@ class PelaporanController extends Controller
         }
     }
 
+    public function beritaAcara()
+    {
+        $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with([
+            'kabupaten'
+        ])->first();
+
+        $tgl_pakai = $data['kec']->tgl_pakai;
+        $minimal_pakai = '2023-01-01';
+        if (strtotime($tgl_pakai) < strtotime($minimal_pakai)) {
+            $tgl_pakai = $minimal_pakai;
+        }
+
+        $tahun_pakai = Tanggal::tahun($tgl_pakai);
+        $data['aset_tetap'] = Rekening::where([
+            ['kode_akun', 'like', '1.2.01%'],
+            ['kode_akun', '!=', '1.2.01.01']
+        ])->with([
+            'kom_saldo' => function ($query) use ($tahun_pakai) {
+                $query->where([
+                    ['tahun', $tahun_pakai],
+                    ['bulan', '0']
+                ]);
+            }
+        ])->get();
+
+        $data['aset_tak_berwujud'] = Rekening::where('kode_akun', 'like', '1.2.03%')->with([
+            'kom_saldo' => function ($query) use ($tahun_pakai) {
+                $query->where([
+                    ['tahun', $tahun_pakai],
+                    ['bulan', '0']
+                ]);
+            }
+        ])->get();
+
+        $data['cadangan_piutang'] = Rekening::where(function ($query) {
+            $query->where('kode_akun', 'like', '1.1.04.01')
+                ->orwhere('kode_akun', 'like', '1.1.04.02');
+        })->with([
+            'kom_saldo' => function ($query) use ($tahun_pakai) {
+                $query->where([
+                    ['tahun', $tahun_pakai],
+                    ['bulan', '0']
+                ]);
+            }
+        ])->get();
+
+        $view = view('pelaporan.view.ba_pergantian_laporan', $data)->render();
+
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
     public function mou()
     {
         $keuangan = new Keuangan;

@@ -91,6 +91,7 @@ Route::get('/pelaporan/sub_laporan/{file}', [PelaporanController::class, 'subLap
 Route::post('/pelaporan/preview', [PelaporanController::class, 'preview'])->middleware('basic');
 Route::post('/pelaporan/preview/{lokasi?}', [PelaporanController::class, 'preview'])->middleware('basic');
 
+Route::get('/pelaporan/ba_bumdesma', [PelaporanController::class, 'beritaAcara'])->middleware('auth');
 Route::get('/pelaporan/mou', [PelaporanController::class, 'mou'])->middleware('auth');
 Route::get('/pelaporan/ts', [PelaporanController::class, 'ts'])->middleware('auth');
 

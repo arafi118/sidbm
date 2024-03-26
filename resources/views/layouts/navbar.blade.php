@@ -16,7 +16,13 @@
     }
 
     $path = explode('/', Request::path());
-    $show = ((in_array('perguliran', $path) ? true : in_array('detail', $path)) ? true : in_array('kelompok', $path)) ? true : false;
+    $show = ((in_array('perguliran', $path)
+                ? true
+                : in_array('detail', $path))
+            ? true
+            : in_array('kelompok', $path))
+        ? true
+        : false;
 @endphp
 
 <nav class="navbar navbar-main navbar-expand-lg position-sticky mt-4 top-1 px-0 mx-4 shadow-none border-radius-xl z-index-sticky"
@@ -112,6 +118,16 @@
                                     </div>
                                 </a>
                             @endif
+                            <a class="dropdown-item border-radius-md" href="/pelaporan/ba_bumdesma" target="_blank">
+                                <div class="d-flex align-items-center py-1">
+                                    <span class="material-icons">attach_file</span>
+                                    <div class="ms-2">
+                                        <h6 class="text-sm font-weight-normal my-auto">
+                                            BA Pergantian Pelaporan
+                                        </h6>
+                                    </div>
+                                </div>
+                            </a>
                             <a class="dropdown-item border-radius-md" href="/pelaporan/ts" target="_blank">
                                 <div class="d-flex align-items-center py-1">
                                     <span class="material-icons">contact_phone</span>
