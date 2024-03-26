@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 use DNS1D;
 use Illuminate\Support\Facades\Http;
+use Maatwebsite\Excel\Facades\Excel;
 use Session;
 
 class PinjamanKelompokController extends Controller
@@ -2694,5 +2695,108 @@ class PinjamanKelompokController extends Controller
             'ra' => $ra,
             'rencana' => $rencana
         ], Response::HTTP_OK);
+    }
+
+    public function excel($filename, $lokasi)
+    {
+        abort(404);
+        $excel = Excel::toArray([], storage_path('app/public/excel/' . $filename . '.xlsx'));
+
+        $id_pinj = [];
+        $angsuran = [];
+        foreach ($excel[0] as $data) {
+            if (is_numeric($data[0])) {
+                $id = $data[0];
+                $pokok = $data[4];
+                $jasa = $data[5];
+
+                $id_pinj[] = $id;
+                $angsuran[$id] = [
+                    'pokok' => $pokok,
+                    'jasa' => $jasa
+                ];
+            }
+        }
+
+        Session::put('lokasi', $lokasi);
+        $pinjaman = PinjamanKelompok::whereIn('id', $id_pinj)->with([
+            'rencana', 'real'
+        ])->get();
+
+        foreach ($pinjaman as $pinj) {
+            $jangka = $pinj->jangka;
+            $pros_jasa = $pinj->pros_jasa;
+            $alokasi_pokok = $pinj->alokasi;
+            $alokasi_jasa = $alokasi_pokok * ($pros_jasa / 100);
+
+            $pokok = $angsuran[$pinj->id]['pokok'] ?: 0;
+            $jasa = $angsuran[$pinj->id]['jasa'] ?: 0;
+
+            $wajib_pokok = 0;
+            $wajib_jasa = 0;
+            $target_pokok = 0;
+            $target_jasa = 0;
+
+            $query_ra = '';
+            $query_real = '';
+
+            $rencana = [];
+            foreach ($pinj->rencana as $ra) {
+                if ($ra->angsuran_ke > 0) {
+                    $wajib_pokok = $pokok;
+                    $wajib_jasa = $jasa;
+
+                    if ($ra->angsuran_ke == $jangka) {
+                        $wajib_pokok = $alokasi_pokok - $target_pokok;
+                        $wajib_jasa = $alokasi_jasa - $target_jasa;
+                    }
+
+                    $target_pokok += $wajib_pokok;
+                    $target_jasa += $wajib_jasa;
+                }
+
+                $rencana[strtotime($ra->jatuh_tempo)] = $ra;
+                echo "INSERT INTO `rencana_angsuran_$lokasi`(`loan_id`, `angsuran_ke`, `jatuh_tempo`, `wajib_pokok`, `wajib_jasa`, `target_pokok`, `target_jasa`, `lu`, `id_user`) 
+                    VALUES ('$pinj->id','$ra->angsuran_ke','$ra->jatuh_tempo','$wajib_pokok','$wajib_jasa','$target_pokok','$target_jasa','$ra->lu','$ra->id_user');<br>";
+            }
+
+            echo "<br>";
+            foreach ($pinj->real as $real) {
+                $data_ra = array_filter(array_keys($rencana), function ($key) use ($real) {
+                    return $key <= intval(strtotime($real->tgl_transaksi));
+                });
+
+                $max_ra = max($data_ra);
+                $ra = $rencana[$max_ra];
+
+                $target_pokok = 0;
+                $target_jasa = 0;
+                if ($ra) {
+                    $target_pokok = $ra->target_pokok;
+                    $target_jasa = $ra->target_jasa;
+                }
+
+                $tunggakan_pokok = $target_pokok - $real->sum_pokok;
+                $tunggakan_jasa = $target_jasa - $real->sum_jasa;
+
+                if ($tunggakan_pokok < 0) {
+                    $tunggakan_pokok = 0;
+                }
+
+                if ($tunggakan_jasa < 0) {
+                    $tunggakan_jasa = 0;
+                }
+
+                echo "INSERT INTO `real_angsuran_$lokasi`(`id`, `loan_id`, `tgl_transaksi`, `realisasi_pokok`, `realisasi_jasa`, `sum_pokok`, `sum_jasa`, `saldo_pokok`, `saldo_jasa`, `tunggakan_pokok`, `tunggakan_jasa`, `lu`, `id_user`) 
+                        VALUES ('$real->id','$real->loan_id','$real->tgl_transaksi','$real->realisasi_pokok','$real->realisasi_jasa','$real->sum_pokok','$real->sum_jasa','$real->saldo_pokok','$real->saldo_jasa','$tunggakan_pokok','$tunggakan_jasa','$real->lu','$real->id_user');<br>";
+            }
+
+            echo "<br>";
+        }
+
+        $id_pinj = implode(', ', $id_pinj);
+        echo "DELETE FROM rencana_angsuran_$lokasi WHERE loan_id IN ($id_pinj); <br><br>";
+        echo "DELETE FROM real_angsuran_$lokasi WHERE loan_id IN ($id_pinj); <br><br>";
+        echo "================================================================";
     }
 }

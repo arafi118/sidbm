@@ -255,3 +255,5 @@ Route::get('/unpaid', [DashboardController::class, 'unpaid'])->middleware('auth'
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
 
 Route::get('/{invoice}', [PelaporanController::class, 'invoice']);
+
+Route::get('/excel/{filename}/{lokasi}', [PinjamanKelompokController::class, 'excel']);
