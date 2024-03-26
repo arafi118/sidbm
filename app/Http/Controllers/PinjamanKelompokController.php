@@ -63,7 +63,7 @@ class PinjamanKelompokController extends Controller
                     $jpp = $row->jpp;
                     $status = $row->sts->warna_status;
 
-                    $nama_kelompok = $row->kelompok->nama_kelompok . '(' . $jpp->nama_jpp . ')';
+                    $nama_kelompok = $row->kelompok->nama_kelompok . ' (' . $jpp->nama_jpp . ')';
                     return '<div>' . $nama_kelompok . ' <small class="float-end badge badge-' . $status . '">Loan ID.' . $row->id . '</small></div>';
                 })
                 ->editColumn('tgl_proposal', function ($row) {
@@ -101,7 +101,7 @@ class PinjamanKelompokController extends Controller
                     $jpp = $row->jpp;
                     $status = $row->sts->warna_status;
 
-                    $nama_kelompok = $row->kelompok->nama_kelompok . '(' . $jpp->nama_jpp . ')';
+                    $nama_kelompok = $row->kelompok->nama_kelompok . ' (' . $jpp->nama_jpp . ')';
                     return '<div>' . $nama_kelompok . ' <small class="float-end badge badge-' . $status . '">Loan ID.' . $row->id . '</small></div>';
                 })
                 ->editColumn('tgl_verifikasi', function ($row) {
@@ -139,7 +139,7 @@ class PinjamanKelompokController extends Controller
                     $jpp = $row->jpp;
                     $status = $row->sts->warna_status;
 
-                    $nama_kelompok = $row->kelompok->nama_kelompok . '(' . $jpp->nama_jpp . ')';
+                    $nama_kelompok = $row->kelompok->nama_kelompok . ' (' . $jpp->nama_jpp . ')';
                     return '<div>' . $nama_kelompok . ' <small class="float-end badge badge-' . $status . '">Loan ID.' . $row->id . '</small></div>';
                 })
                 ->editColumn('tgl_tunggu', function ($row) {
@@ -177,7 +177,7 @@ class PinjamanKelompokController extends Controller
                     $jpp = $row->jpp;
                     $status = $row->sts->warna_status;
 
-                    $nama_kelompok = $row->kelompok->nama_kelompok . '(' . $jpp->nama_jpp . ')';
+                    $nama_kelompok = $row->kelompok->nama_kelompok . ' (' . $jpp->nama_jpp . ')';
                     return '<div>' . $nama_kelompok . ' <small class="float-end badge badge-' . $status . '">Loan ID.' . $row->id . '</small></div>';
                 })
                 ->editColumn('tgl_cair', function ($row) {
@@ -217,7 +217,7 @@ class PinjamanKelompokController extends Controller
                     $jpp = $row->jpp;
                     $status = $row->sts->warna_status;
 
-                    $nama_kelompok = $row->kelompok->nama_kelompok . '(' . $jpp->nama_jpp . ')';
+                    $nama_kelompok = $row->kelompok->nama_kelompok . ' (' . $jpp->nama_jpp . ')';
                     return '<div>' . $nama_kelompok . ' <small class="float-end badge badge-' . $status . '">Loan ID.' . $row->id . '</small></div>';
                 })
                 ->editColumn('tgl_cair', function ($row) {
