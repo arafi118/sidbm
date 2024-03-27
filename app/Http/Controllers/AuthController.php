@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
 use Auth;
+use Cookie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Session;
@@ -97,7 +98,21 @@ class AuthController extends Controller
 
                     $inv = $this->generateInvoice($kec);
 
+                    if (Cookie::has('config')) {
+                        $config = json_decode(request()->cookie('config'), true);
+                    } else {
+                        $config = [
+                            'sidebarColor' => 'success',
+                            'sidebarType' => 'bg-gradient-dark',
+                            'navbarFixed' => 'position-sticky blur shadow-blur mt-4 left-auto top-1 z-index-sticky',
+                            'sidebarMini' => 'g-sidenav-pinned',
+                            'darkMode' => '',
+                        ];
+                    }
+
                     $request->session()->regenerate();
+
+                    cookie('config', json_encode($config), 60 * 24 * 365);
                     session([
                         'nama_lembaga' => str_replace('DBM ', '', $kec->nama_lembaga_sort),
                         'nama' => $user->namadepan . ' ' . $user->namabelakang,
@@ -108,6 +123,7 @@ class AuthController extends Controller
                         'menu' => $menu,
                         'icon' => $icon,
                         'angsuran' => $angsuran,
+                        'config' => json_encode($config)
                     ]);
 
                     return redirect('/dashboard')->with([
