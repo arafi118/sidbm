@@ -135,16 +135,21 @@
 
                 $sum_pokok += $ra->wajib_pokok;
                 $sum_jasa += $ra->wajib_jasa;
+
+                $b = '';
+                if ($ra->angsuran_ke == $pinkel->jangka) {
+                    $b = 'b';
+                }
             @endphp
             <tr>
-                <td class="l" align="center">{{ $ra->angsuran_ke }}</td>
-                <td class="l" align="center">{{ Tanggal::tglIndo($ra->jatuh_tempo) }}</td>
-                <td class="l" align="right">{{ number_format($ra->wajib_pokok) }}</td>
-                <td class="l" align="right">{{ number_format($ra->wajib_jasa) }}</td>
-                <td class="l" align="right">{{ number_format($wajib_angsur) }}</td>
-                <td class="l" align="right">{{ number_format($jumlah_angsuran) }}</td>
-                <td class="l" align="right">{{ number_format($saldo_pokok) }}</td>
-                <td class="l r" align="right">{{ number_format($saldo_jasa) }}</td>
+                <td class="l {{ $b }}" align="center">{{ $ra->angsuran_ke }}</td>
+                <td class="l {{ $b }}" align="center">{{ Tanggal::tglIndo($ra->jatuh_tempo) }}</td>
+                <td class="l {{ $b }}" align="right">{{ number_format($ra->wajib_pokok) }}</td>
+                <td class="l {{ $b }}" align="right">{{ number_format($ra->wajib_jasa) }}</td>
+                <td class="l {{ $b }}" align="right">{{ number_format($wajib_angsur) }}</td>
+                <td class="l {{ $b }}" align="right">{{ number_format($jumlah_angsuran) }}</td>
+                <td class="l {{ $b }}" align="right">{{ number_format($saldo_pokok) }}</td>
+                <td class="l {{ $b }} r" align="right">{{ number_format($saldo_jasa) }}</td>
             </tr>
         @endforeach
 
