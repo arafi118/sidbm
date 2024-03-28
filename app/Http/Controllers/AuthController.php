@@ -112,7 +112,7 @@ class AuthController extends Controller
 
                     $request->session()->regenerate();
 
-                    cookie('config', json_encode($config), 60 * 24 * 365);
+                    $cookie = cookie('config', json_encode($config), 60 * 24 * 365);
                     session([
                         'nama_lembaga' => str_replace('DBM ', '', $kec->nama_lembaga_sort),
                         'nama' => $user->namadepan . ' ' . $user->namabelakang,
@@ -131,7 +131,7 @@ class AuthController extends Controller
                         'invoice' => $inv['invoice'],
                         'msg' => $inv['msg'],
                         'hp_dir' => $inv['dir'],
-                    ]);
+                    ])->cookie($cookie);
                 }
             }
         }
