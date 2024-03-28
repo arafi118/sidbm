@@ -35,6 +35,11 @@ class AdminController extends Controller
         return view('admin.kecamatan.index')->with(compact('title', 'kec', 'laporan', 'nama_kec'));
     }
 
+    public function kabupaten($kd_prov, $kd_kab)
+    {
+        //
+    }
+
     public function laporan()
     {
         $wilayah = Wilayah::WhereRaw('LENGTH(kode)=2')->orderBy('nama', 'ASC')->get();

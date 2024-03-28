@@ -212,7 +212,7 @@
                     <h6 class="mb-0">Mode Malam</h6>
                     <div class="form-check form-switch ps-0 ms-auto my-auto is-filled">
                         <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version"
-                            onclick="darkMode(this)" {{ $config['darkMode'] == 'dark-version' ? 'checked' : '' }}>
+                            onclick="darkMode(this)" {!! $config['darkMode'] == 'dark-version' ? 'checked="true"' : '' !!}>
                     </div>
                 </div>
                 <hr class="horizontal my-sm-4 dark">

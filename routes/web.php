@@ -43,6 +43,7 @@ Route::group(['prefix' => 'master', 'as' => 'master.', 'middleware' => 'master']
     Route::get('/simpan_saldo', [DashboardController::class, 'simpanSaldo']);
 
     Route::get('/kecamatan/{kd_prov}/{kd_kab}/{kd_kec}', [AdminController::class, 'kecamatan']);
+    Route::get('/kabupaten/{kd_prov}/{kd_kab}/', [AdminController::class, 'kabupaten']);
 
     Route::resource('/users', AdminUserController::class);
 
