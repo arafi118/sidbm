@@ -195,7 +195,7 @@
                     <h6 class="mb-0">Navbar Fixed</h6>
                     <div class="form-check form-switch ps-0 ms-auto my-auto">
                         <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarFixed"
-                            onclick="navbarFixed(this)" {{ $config['navbarFixed'] != '' ? '' : 'checked' }}>
+                            onclick="navbarFixed(this)" {!! $config['navbarFixed'] != '' ? '' : 'checked="true"' !!}>
                     </div>
                 </div>
                 <hr class="horizontal my-3 dark">
@@ -203,8 +203,7 @@
                     <h6 class="mb-0">Sidebar Mini</h6>
                     <div class="form-check form-switch ps-0 ms-auto my-auto is-filled">
                         <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarMinimize"
-                            onclick="navbarMinimize(this)"
-                            {{ $config['sidebarMini'] == 'g-sidenav-hidden' ? 'checked' : '' }}>
+                            onclick="navbarMinimize(this)" {!! $config['sidebarMini'] == 'g-sidenav-hidden' ? 'checked="true"' : '' !!}>
                     </div>
                 </div>
                 <hr class="horizontal my-3 dark">
