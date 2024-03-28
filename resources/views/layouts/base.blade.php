@@ -87,6 +87,12 @@
         #html5-qrcode-button-camera-start {
             display: none !important;
         }
+
+        .active>.page-link,
+        .page-link.active {
+            background-color: var(--bs-{{ $config['sidebarColor'] }}) !important;
+            border-color: var(--bs-{{ $config['sidebarColor'] }}) !important;
+        }
     </style>
 </head>
 
