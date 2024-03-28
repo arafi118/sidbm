@@ -9,6 +9,7 @@ use App\Models\TandaTanganLaporan;
 use App\Models\User;
 use App\Utils\Pinjaman;
 use App\Utils\Tanggal;
+use Cookie;
 use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -489,4 +490,63 @@ class SopController extends Controller
         $title = 'Invoice #' . $inv->nomor . ' - ' . $inv->jp->nama_jp;
         return view('sop.detail_invoice')->with(compact('title', 'inv'));
     }
+
+    public function localView($key, $val = '')
+    {
+        if (Cookie::has('config')) {
+            $config = json_decode(request()->cookie('config'), true);
+            cookie()->forget('config');
+        } else {
+            $config = [
+                'sidebarColor' => 'success',
+                'sidebarType' => 'bg-gradient-dark',
+                'navbarFixed' => 'position-sticky blur shadow-blur mt-4 left-auto top-1 z-index-sticky',
+                'sidebarMini' => 'g-sidenav-pinned',
+                'darkMode' => '',
+            ];
+        }
+
+        $config[$key] = $val;
+
+        $cookie = cookie('config', json_encode($config), 60 * 24 * 365);
+        Session::put('config', json_encode($config));
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Pengaturan Halaman berhasil disimpan'
+        ])->cookie($cookie);
+    }
 }
+
+[
+    'sidebar-color' => [
+        'target' => '#sidenav-main',
+        'attr' => 'data-color',
+        'default-value' => 'success',
+        'value' => ''
+    ],
+    'sidebar-tipe' => [
+        'target' => '#sidenav-main',
+        'attr' => 'class',
+        'default-value' => 'bg-gradient-dark',
+        'value' => ''
+    ],
+    'navbar-fixed' => [
+        'target' => '#navbarBlur',
+        'attr' => 'class',
+        'default-value' => 'position-sticky blur shadow-blur mt-4 left-auto top-1 z-index-sticky',
+        'value' => ''
+    ],
+    'sidebar-mini' => [
+        'target' => 'body',
+        'attr' => 'class',
+        'default-value' => 'g-sidenav-pinned',
+        'value' => 'g-sidenav-hidden'
+    ],
+    'sidebar-mini' => [
+        'target' => 'body',
+        'attr' => 'class',
+        'default-value' => '',
+        'value' => 'dark-version'
+    ],
+];

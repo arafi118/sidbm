@@ -1,29 +1,10 @@
-{{-- @php
+@php
 
-    function active($curent, ...$_url)
-    {
-        $jumlah_url = count(request()->segments());
-        $url = request()->segment($jumlah_url);
-
-        if ($curent == $url) {
-            return 'active';
-        }
-
-        if (in_array($url, $_url)) {
-            return 'active';
-        }
-
-        if (in_array(request()->segment($jumlah_url - 1), $_url)) {
-            return 'active';
-        }
-
-        return '';
-    }
-@endphp --}}
+@endphp
 
 <aside
-    class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
-    id="sidenav-main" data-color="success">
+    class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 {{ $config['sidebarType'] }}"
+    id="sidenav-main" data-color="{{ $config['sidebarColor'] }}">
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>

@@ -9,6 +9,8 @@
     if ($invoice->count() > 0) {
         $jumlah = $invoice->count();
     }
+
+    $config = json_decode(Session::get('config'), true);
 @endphp
 
 <!DOCTYPE html>
@@ -31,7 +33,6 @@
     <link rel="canonical" href="https://www.creative-tim.com/product/material-dashboard-pro" />
 
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css" /> --}}
-
 
     <link rel="stylesheet" type="text/css"
         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
@@ -89,13 +90,14 @@
     </style>
 </head>
 
-<body class="g-sidenav-show  bg-gray-200">
+<body class="g-sidenav-show  bg-gray-200 {{ $config['darkMode'] }} {{ $config['sidebarMini'] }}">
 
     @include('layouts.sidebar')
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         @include('layouts.navbar')
 
         <div class="container-fluid py-3">
+            <input type="hidden" name="localConfig" id="localConfig" value="{{ Session::get('config') }}">
             @yield('content')
 
             <footer class="footer py-4  ">
@@ -146,18 +148,24 @@
                 </div>
                 <a href="javascript:void(0)" class="switch-trigger background-color">
                     <div class="badge-colors my-2 text-start">
-                        <span class="badge filter bg-gradient-primary active" data-color="primary"
-                            onclick="sidebarColor(this)"></span>
-                        <span class="badge filter bg-gradient-dark" data-color="dark"
-                            onclick="sidebarColor(this)"></span>
-                        <span class="badge filter bg-gradient-info" data-color="info"
-                            onclick="sidebarColor(this)"></span>
-                        <span class="badge filter bg-gradient-success" data-color="success"
-                            onclick="sidebarColor(this)"></span>
-                        <span class="badge filter bg-gradient-warning" data-color="warning"
-                            onclick="sidebarColor(this)"></span>
-                        <span class="badge filter bg-gradient-danger" data-color="danger"
-                            onclick="sidebarColor(this)"></span>
+                        <span
+                            class="badge filter bg-gradient-primary {{ $config['sidebarColor'] == 'primary' ? 'active' : '' }}"
+                            data-color="primary" onclick="sidebarColor(this)"></span>
+                        <span
+                            class="badge filter bg-gradient-dark {{ $config['sidebarColor'] == 'dark' ? 'active' : '' }}"
+                            data-color="dark" onclick="sidebarColor(this)"></span>
+                        <span
+                            class="badge filter bg-gradient-info {{ $config['sidebarColor'] == 'info' ? 'active' : '' }}"
+                            data-color="info" onclick="sidebarColor(this)"></span>
+                        <span
+                            class="badge filter bg-gradient-success {{ $config['sidebarColor'] == 'success' ? 'active' : '' }}"
+                            data-color="success" onclick="sidebarColor(this)"></span>
+                        <span
+                            class="badge filter bg-gradient-warning {{ $config['sidebarColor'] == 'warning' ? 'active' : '' }}"
+                            data-color="warning" onclick="sidebarColor(this)"></span>
+                        <span
+                            class="badge filter bg-gradient-danger {{ $config['sidebarColor'] == 'danger' ? 'active' : '' }}"
+                            data-color="danger" onclick="sidebarColor(this)"></span>
                     </div>
                 </a>
 
@@ -165,12 +173,15 @@
                     <h6 class="mb-0">Tipe Sidebar</h6>
                 </div>
                 <div class="d-flex">
-                    <button class="btn bg-gradient-dark px-3 mb-2 active" data-class="bg-gradient-dark"
-                        onclick="sidebarType(this)">Dark</button>
-                    <button class="btn bg-gradient-dark px-3 mb-2 ms-2" data-class="bg-transparent"
-                        onclick="sidebarType(this)">Transparent</button>
-                    <button class="btn bg-gradient-dark px-3 mb-2 ms-2" data-class="bg-white"
-                        onclick="sidebarType(this)">White</button>
+                    <button
+                        class="btn bg-gradient-dark px-3 mb-2 {{ $config['sidebarType'] == 'bg-gradient-dark' ? 'active' : '' }}"
+                        data-class="bg-gradient-dark" onclick="sidebarType(this)">Dark</button>
+                    <button
+                        class="btn bg-gradient-dark px-3 mb-2 ms-2 {{ $config['sidebarType'] == 'bg-transparent' ? 'active' : '' }}"
+                        data-class="bg-transparent" onclick="sidebarType(this)">Transparent</button>
+                    <button
+                        class="btn bg-gradient-dark px-3 mb-2 ms-2 {{ $config['sidebarType'] == 'bg-white' ? 'active' : '' }}"
+                        data-class="bg-white" onclick="sidebarType(this)">White</button>
                 </div>
                 <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
 
@@ -178,7 +189,7 @@
                     <h6 class="mb-0">Navbar Fixed</h6>
                     <div class="form-check form-switch ps-0 ms-auto my-auto">
                         <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarFixed"
-                            onclick="navbarFixed(this)" checked="true">
+                            onclick="navbarFixed(this)" {{ $config['navbarFixed'] != '' ? '' : 'checked' }}>
                     </div>
                 </div>
                 <hr class="horizontal my-3 dark">
@@ -186,7 +197,8 @@
                     <h6 class="mb-0">Sidebar Mini</h6>
                     <div class="form-check form-switch ps-0 ms-auto my-auto is-filled">
                         <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarMinimize"
-                            onclick="navbarMinimize(this)">
+                            onclick="navbarMinimize(this)"
+                            {{ $config['sidebarMini'] == 'g-sidenav-hidden' ? 'checked' : '' }}>
                     </div>
                 </div>
                 <hr class="horizontal my-3 dark">
@@ -194,7 +206,7 @@
                     <h6 class="mb-0">Mode Malam</h6>
                     <div class="form-check form-switch ps-0 ms-auto my-auto is-filled">
                         <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version"
-                            onclick="darkMode(this)">
+                            onclick="darkMode(this)" {{ $config['darkMode'] == 'dark-version' ? 'checked' : '' }}>
                     </div>
                 </div>
                 <hr class="horizontal my-sm-4 dark">

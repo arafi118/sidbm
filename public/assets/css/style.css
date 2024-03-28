@@ -328,3 +328,57 @@ select.html5-qrcode-element {
     word-wrap: break-word;
     margin-bottom: 5px;
 }
+
+body.dark-version .sidenav.navbar.bg-white .collapse .nav-item .nav-link.active.text-dark .nav-link-text,
+body.dark-version .sidenav.navbar.bg-white .collapse .nav-item .nav-link.active.text-dark *,
+body:not(.dark-version) .sidenav.navbar.bg-transparent .collapse .nav-item .nav-link.active.text-dark .nav-link-text,
+body:not(.dark-version) .sidenav.navbar.bg-transparent .collapse .nav-item .nav-link.active.text-dark *,
+body:not(.dark-version) .sidenav.navbar.bg-white .collapse .nav-item .nav-link.active.text-dark .nav-link-text,
+body:not(.dark-version) .sidenav.navbar.bg-white .collapse .nav-item .nav-link.active.text-dark * {
+    color: #fff !important;
+}
+
+.navbar-vertical:not(.bg-gradient-dark) .navbar-brand *,
+.navbar-vertical:not(.bg-gradient-dark) .navbar-nav .nav-link,
+.navbar-vertical:not(.bg-gradient-dark) .navbar-nav .nav-link .text-white,
+.navbar-vertical:not(.bg-gradient-dark) .navbar-nav .nav-item .collapse .nav .nav-item .nav-link,
+.navbar-vertical:not(.bg-gradient-dark) .navbar-nav .nav-item .collapsing .nav .nav-item .nav-link {
+    color: #344767 !important;
+}
+
+.dark-version .sidenav.navbar.bg-white .collapse .nav-item .nav-link.active.text-dark .nav-link-text,
+.dark-version .sidenav.navbar.bg-white .collapse .nav-item .nav-link.active.text-dark * {
+    color: #fff !important;
+}
+
+.dark-version .blur {
+    background: rgb(32, 41, 64) !important;
+}
+
+.dark-version .shadow-blur {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12) !important;
+}
+
+.dark-version .modal-content {
+    background-color: #202940 !important;
+}
+
+.dark-version .nav.nav-pills {
+    background: #202940;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12) !important;
+}
+
+.dark-version .swal2-popup.swal2-toast {
+    background: #202940;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
+}
+
+.dark-version .nav.nav-pills .nav-link {
+    color: #fff !important;
+    background-color: #202940 !important;
+}
+
+.dark-version .moving-tab .nav-link.active {
+    color: #fff;
+    box-shadow: 0 1px 5px 1px #323a54;
+}
