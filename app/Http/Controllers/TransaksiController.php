@@ -2249,13 +2249,13 @@ class TransaksiController extends Controller
 
         $tb_ra = 'rencana_angsuran_' . $data['kec']->id;
         $tb_real = 'real_angsuran_' . $data['kec']->id;
-        $data['rencana'] = RencanaAngsuran::select(
-            '*',
-            DB::raw('(SELECT sum(realisasi_pokok) as rp FROM ' . $tb_real . ' WHERE ' . $tb_real . '.loan_id=' . $id . ' AND ' . $tb_real . '.tgl_transaksi<=' . $tb_ra . '.jatuh_tempo) as sum_pokok'),
-            DB::raw('(SELECT sum(realisasi_jasa) as rj FROM ' . $tb_real . ' WHERE ' . $tb_real . '.loan_id=' . $id . ' AND ' . $tb_real . '.tgl_transaksi<=' . $tb_ra . '.jatuh_tempo) as sum_jasa')
-        )->where([
+        $data['rencana'] = RencanaAngsuran::where([
             ['loan_id', $id],
             ['angsuran_ke', '!=', '0']
+        ])->with([
+            'real' => function ($query) {
+                $query->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
+            }
         ])->get();
 
         $data['laporan'] = 'LPP Kelompok ' . $data['pinkel']->kelompok->nama_kelompok;
