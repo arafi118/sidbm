@@ -2079,6 +2079,9 @@ class PelaporanController extends Controller
                     ['tahun', $tahun_pakai],
                     ['bulan', '0']
                 ]);
+            },
+            'trx_kredit' => function ($query) use ($tahun_pakai) {
+                $query->where('tgl_transaksi', $tahun_pakai . '-01-01');
             }
         ])->get();
 
@@ -2088,6 +2091,9 @@ class PelaporanController extends Controller
                     ['tahun', $tahun_pakai],
                     ['bulan', '0']
                 ]);
+            },
+            'trx_kredit' => function ($query) use ($tahun_pakai) {
+                $query->where('tgl_transaksi', $tahun_pakai . '-01-01');
             }
         ])->get();
 
@@ -2100,6 +2106,9 @@ class PelaporanController extends Controller
                     ['tahun', $tahun_pakai],
                     ['bulan', '0']
                 ]);
+            },
+            'trx_debit' => function ($query) use ($tahun_pakai) {
+                $query->where('tgl_transaksi', $tahun_pakai . '-01-01');
             }
         ])->get();
 

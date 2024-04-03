@@ -25,17 +25,32 @@
 
     $data_ati = [];
     foreach ($aset_tetap as $a1) {
-        $data_ati[] = $keuangan->komSaldo($a1);
+        $saldo = $keuangan->komSaldo($a1);
+        foreach ($a1->trx_kredit as $kredit) {
+            $saldo += $kredit->jumlahl;
+        }
+
+        $data_ati[] = $saldo;
     }
 
     $data_atb = [];
     foreach ($aset_tak_berwujud as $a2) {
-        $data_atb[] = $keuangan->komSaldo($a2);
+        $saldo = $keuangan->komSaldo($a2);
+        foreach ($a2->trx_kredit as $kredit) {
+            $saldo += $kredit->jumlahl;
+        }
+
+        $data_atb[] = $saldo;
     }
 
     $data_ckp = [];
     foreach ($cadangan_piutang as $cad) {
-        $data_ckp[] = $keuangan->komSaldo($cad);
+        $saldo = $keuangan->komSaldo($cad);
+        foreach ($cad->trx_debit as $debit) {
+            $saldo -= $debit->jumlahl;
+        }
+
+        $data_ckp[] = $saldo;
     }
 
     $ati = ['Gedung', 'Kendaraan', 'Komputer dan pendukungnya dan Peralatan umum (Inventaris)'];
