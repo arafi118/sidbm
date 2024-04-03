@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\KabupatenController as AdminKabupatenController;
+use App\Http\Controllers\Admin\KecamatanController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\UpkController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -42,8 +44,12 @@ Route::group(['prefix' => 'master', 'as' => 'master.', 'middleware' => 'master']
     Route::get('/dashboard', [AdminController::class, 'index']);
     Route::get('/simpan_saldo', [DashboardController::class, 'simpanSaldo']);
 
-    Route::get('/kecamatan/{kd_prov}/{kd_kab}/{kd_kec}', [AdminController::class, 'kecamatan']);
-    Route::get('/kabupaten/{kd_prov}/{kd_kab}/', [AdminController::class, 'kabupaten']);
+    Route::get('/kecamatan/{kd_prov}/{kd_kab}/{kd_kec}', [KecamatanController::class, 'index']);
+
+    Route::get('/kabupaten/{kd_prov}/{kd_kab}/', [AdminKabupatenController::class, 'index']);
+    Route::get('/kabupaten/laporan/sub_laporan/{laporan}/', [AdminKabupatenController::class, 'subLaporan']);
+    Route::get('/kabupaten/laporan/data/{lokasi}/', [AdminKabupatenController::class, 'data']);
+    Route::post('/kabupaten/laporan/preview/{kd_kab}', [AdminKabupatenController::class, 'preview']);
 
     Route::resource('/users', AdminUserController::class);
 
