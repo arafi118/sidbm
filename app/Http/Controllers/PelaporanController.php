@@ -349,7 +349,7 @@ class PelaporanController extends Controller
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
         if ($data['bulanan']) {
-            $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($thn . '-' . $bln . '-01') . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
+            $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($thn . '-01-01') . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['bulan_lalu'] = date('Y-m-t', strtotime('-1 month', strtotime($thn . '-' . $bln . '-10')));
             $data['header_lalu'] = 'Bulan Lalu';
