@@ -98,6 +98,12 @@ class KabupatenController extends Controller
                     $query->where('tahun', $tahun)->where(function ($query) use ($bulan) {
                         $query->where('bulan', '0')->orwhere('bulan', $bulan);
                     });
+                },
+                'saldo' => function ($query) use ($tahun, $bulan) {
+                    $query->where([
+                        ['tahun', $tahun],
+                        ['bulan', ($bulan - 1)]
+                    ]);
                 }
             ])->orderBy('kode_akun', 'ASC')->get();
             $jumlah_rekening = (count($rekening) + count($laba_rugi));
@@ -236,16 +242,175 @@ class KabupatenController extends Controller
         $data['logo'] = '1.png';
 
         $view = view('admin.kabupaten.laporan.views.neraca', $data)->render();
-        if ($data['type'] == 'pdf') {
-            $pdf = PDF::loadHTML($view);
-            return $pdf->stream();
-        } else {
-            return $view;
-        }
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
     }
 
     public function laba_rugi($data)
     {
-        //
+        $data_laba_rugi = [];
+        $pph = [
+            'saldo' => 0,
+            'saldo_bln_lalu' => 0
+        ];
+        $akun1 = AkunLevel1::where('lev1', '>', '3')->with([
+            'akun2',
+        ])->orderBy('kode_akun', 'ASC')->get();
+
+        foreach ($akun1 as $lev1) {
+            foreach ($lev1->akun2 as $lev2) {
+                // Pendapatan
+                if ($lev2->lev1 == '4' && $lev2->lev2 == '1') {
+                    $data_laba_rugi['pendapatan'][$lev2->kode_akun] = [
+                        'kode_akun' => $lev2->kode_akun,
+                        'nama_akun' => $lev2->nama_akun,
+                        'rek'       => []
+                    ];
+                }
+
+                // Beban
+                if ($lev2->lev1 == '5' && ($lev2->lev2 == '1' || $lev2->lev2 == '2')) {
+                    $data_laba_rugi['beban'][$lev2->kode_akun] = [
+                        'kode_akun' => $lev2->kode_akun,
+                        'nama_akun' => $lev2->nama_akun,
+                        'rek'       => []
+                    ];
+                }
+
+                // Pendapatan Non Operasional
+                if ($lev2->lev1 == '4' && ($lev2->lev2 == '2' || $lev2->lev2 == '3')) {
+                    $data_laba_rugi['pendapatan_non_ops'][$lev2->kode_akun] = [
+                        'kode_akun' => $lev2->kode_akun,
+                        'nama_akun' => $lev2->nama_akun,
+                        'rek'       => []
+                    ];
+                }
+
+                // Beban Non Operasional
+                if ($lev2->lev1 == '5' && $lev2->lev2 == '3') {
+                    $data_laba_rugi['beban_non_ops'][$lev2->kode_akun] = [
+                        'kode_akun' => $lev2->kode_akun,
+                        'nama_akun' => $lev2->nama_akun,
+                        'rek'       => []
+                    ];
+                }
+            }
+        }
+
+        $data_saldo = Session::get('data_saldo');
+        foreach ($data['kab']->kec as $kec) {
+            // if ($kec->kd_kec != '35.07.07') continue;
+            foreach ($data_saldo[$kec->kd_kec]['laba_rugi'] as $rek) {
+                $awal_debit = 0;
+                $awal_kredit = 0;
+
+                $saldo_debit = 0;
+                $saldo_kredit = 0;
+
+                $kredit_bulan_lalu = 0;
+                $debit_bulan_lalu = 0;
+
+                foreach ($rek->kom_saldo as $kom_saldo) {
+                    if ($kom_saldo->bulan == 0) {
+                        $awal_debit += floatval($kom_saldo->debit);
+                        $awal_kredit += floatval($kom_saldo->kredit);
+                    } else {
+                        $saldo_debit += floatval($kom_saldo->debit);
+                        $saldo_kredit += floatval($kom_saldo->kredit);
+                    }
+                }
+
+                if ($rek->lev1 == 1 || $rek->lev1 == '5') {
+                    $saldo_awal = $awal_debit - $awal_kredit;
+                    $saldo_sd_bulan_ini = $saldo_awal + ($saldo_debit - $saldo_kredit);
+                } else {
+                    $saldo_awal = $awal_kredit - $awal_debit;
+                    $saldo_sd_bulan_ini = $saldo_awal + ($saldo_kredit - $saldo_debit);
+                }
+
+                if ($rek->saldo && $data['bulan'] > 1) {
+                    $debit_bulan_lalu += $rek->saldo->debit;
+                    $kredit_bulan_lalu += $rek->saldo->kredit;
+                }
+
+                if ($rek->lev1 == 1 || $rek->lev1 == '5') {
+                    $saldo_bulan_lalu = $saldo_awal + ($debit_bulan_lalu - $kredit_bulan_lalu);
+                } else {
+                    $saldo_bulan_lalu = $saldo_awal + ($kredit_bulan_lalu - $debit_bulan_lalu);
+                }
+
+                $kode_akun = explode('.', $rek->kode_akun);
+                $lev1 = $kode_akun[0];
+                $lev2 = $kode_akun[1];
+                $lev3 = $kode_akun[2];
+
+                $akun_level1 = $lev1 . '.0.00.00';
+                $akun_level2 = $lev1 . '.' . $lev2 . '.00.00';
+                $akun_level3 = $lev1 . '.' . $lev2 . '.' . $lev3 . '.00';
+
+                // Pendapatan
+                if ($lev1 == '4' && $lev2 == '1') {
+                    $laba_rugi = 'pendapatan';
+                }
+
+                // Beban
+                if ($lev1 == '5' && ($lev2 == '1' || $lev2 == '2')) {
+                    $laba_rugi = 'beban';
+                }
+
+                // Pendapatan Non Operasional
+                if ($lev1 == '4' && ($lev2 == '2' || $lev2 == '3')) {
+                    $laba_rugi = 'pendapatan_non_ops';
+                }
+
+                // Beban Non Operasional
+                if ($lev1 == '5' && $lev2 == '3') {
+                    $laba_rugi = 'beban_non_ops';
+                }
+
+                if ($rek->kode_akun == '5.4.01.01') {
+                    $pph = [
+                        'kode_akun' => $rek->kode_akun,
+                        'nama_akun' => $rek->nama_akun,
+                        'saldo' => $saldo_sd_bulan_ini,
+                        'saldo_bln_lalu' => $saldo_bulan_lalu
+                    ];
+
+                    $pph['saldo'] += $saldo_sd_bulan_ini;
+                    $pph['saldo_bln_lalu'] += $saldo_bulan_lalu;
+                } else {
+                    if (!array_key_exists($rek->kode_akun, $data_laba_rugi[$laba_rugi][$akun_level2]['rek'])) {
+                        $data_laba_rugi[$laba_rugi][$akun_level2]['rek'][$rek->kode_akun] = [
+                            'kode_akun' => $rek->kode_akun,
+                            'nama_akun' => $rek->nama_akun,
+                            'saldo' => $saldo_sd_bulan_ini,
+                            'saldo_bln_lalu' => $saldo_bulan_lalu
+                        ];
+                    } else {
+                        $data_laba_rugi[$laba_rugi][$akun_level2]['rek'][$rek->kode_akun]['saldo'] += $saldo_sd_bulan_ini;
+                        $data_laba_rugi[$laba_rugi][$akun_level2]['rek'][$rek->kode_akun]['saldo_bln_lalu'] += $saldo_bulan_lalu;
+                    }
+                }
+            }
+        }
+
+        $data['laba_rugi'] = [
+            'pendapatan' => $data_laba_rugi['pendapatan'],
+            'beban' => $data_laba_rugi['beban'],
+            'pendapatan_non_ops' => $data_laba_rugi['pendapatan_non_ops'],
+            'beban_non_ops' => $data_laba_rugi['beban_non_ops']
+        ];
+
+        $data['pph'] = $pph;
+        $data['sub_judul'] = 'Periode ' . Tanggal::tglLatin($data['tahun'] . '-01-01') . ' S.D ' . Tanggal::tglLatin($data['tgl_kondisi']);
+        $data['tgl'] = Tanggal::namaBulan($data['tgl_kondisi']) . ' ' . Tanggal::tahun($data['tgl_kondisi']);
+        $data['bulan_lalu'] = date('Y-m-t', strtotime('-1 month', strtotime($data['tahun'] . '-' . $data['bulan'] . '-10')));
+        $data['header_lalu'] = 'Bulan Lalu';
+        $data['header_sekarang'] = 'Bulan Ini';
+        $data['logo'] = '1.png';
+
+        $view = view('admin.kabupaten.laporan.views.laba_rugi', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
     }
 }
