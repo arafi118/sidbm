@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AkunLevel1;
+use App\Models\ArusKas;
 use App\Models\JenisLaporan;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Rekening;
+use App\Models\Transaksi;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
 use Dompdf\Dompdf;
@@ -79,9 +81,37 @@ class KabupatenController extends Controller
         $keuangan = new Keuangan;
         $tahun = request()->get('tahun');
         $bulan = request()->get('bulan');
+        $laporan = request()->get('laporan');
 
         if ($lokasi && $tahun && $bulan) {
             Session::put('lokasi', $lokasi);
+            $kec = Kecamatan::where('id', $lokasi)->first();
+
+            if ($laporan == 'arus_kas') {
+                $data_saldo = (Session::get('data_saldo')) ? Session::get('data_saldo') : [];
+                $awal_bulan = date('Y-m-d', strtotime($tahun . '-' . $bulan . '-01'));
+                $akhir_bulan = date('Y-m-t', strtotime($awal_bulan));
+                $akhir_bulan_lalu = date('Y-m-d', strtotime('-1 days', strtotime($awal_bulan)));
+
+                $trx = Transaksi::where([
+                    ['tgl_transaksi', '>=', $awal_bulan],
+                    ['tgl_transaksi', '<=', $akhir_bulan]
+                ])->get()->toArray();
+                $saldo_bulan_lalu = $keuangan->saldoKas($akhir_bulan_lalu);
+
+                $data_saldo[$kec->kd_kec] = [
+                    'transaksi' => $trx,
+                    'saldo_bulan_lalu' => $saldo_bulan_lalu
+                ];
+
+                Session::put('data_saldo', $data_saldo);
+                return response()->json([
+                    'success' => true,
+                    'lokasi' => Session::get('lokasi'),
+                    'kd_kec' => $kec->kd_kec,
+                    'msg' => 'Transaksi ' . $kec->sebutan_kec . ' ' . $kec->nama_kec . ' berhasil disimpan'
+                ]);
+            }
 
             $data_saldo = (Session::get('data_saldo')) ? Session::get('data_saldo') : [];
             $tgl_kondisi = $tahun . '-' . $bulan . '-01';
@@ -112,8 +142,6 @@ class KabupatenController extends Controller
                 Session::put('jumlah', $jumlah_rekening);
                 Session::put('lokasi_terpilih', $lokasi);
             }
-
-            $kec = Kecamatan::where('id', $lokasi)->first();
             $data_saldo[$kec->kd_kec] = [
                 'saldo' => $rekening,
                 'laba_rugi' => $laba_rugi
@@ -161,6 +189,7 @@ class KabupatenController extends Controller
             $data['bulan'] = '12';
         }
 
+        $data['logo'] = '1.png';
         $data['hari'] = date('t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'));
         $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
 
@@ -239,7 +268,6 @@ class KabupatenController extends Controller
         $data['neraca'] = $neraca;
         $data['sub_judul'] = 'Per ' . date('t', strtotime($data['tgl_kondisi'])) . ' ' . Tanggal::namaBulan($data['tgl_kondisi']) . ' ' . Tanggal::tahun($data['tgl_kondisi']);
         $data['tgl'] = Tanggal::namaBulan($data['tgl_kondisi']) . ' ' . Tanggal::tahun($data['tgl_kondisi']);
-        $data['logo'] = '1.png';
 
         $view = view('admin.kabupaten.laporan.views.neraca', $data)->render();
         $pdf = PDF::loadHTML($view);
@@ -407,9 +435,70 @@ class KabupatenController extends Controller
         $data['bulan_lalu'] = date('Y-m-t', strtotime('-1 month', strtotime($data['tahun'] . '-' . $data['bulan'] . '-10')));
         $data['header_lalu'] = 'Bulan Lalu';
         $data['header_sekarang'] = 'Bulan Ini';
-        $data['logo'] = '1.png';
 
         $view = view('admin.kabupaten.laporan.views.laba_rugi', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function arus_kas($data)
+    {
+        $keuangan = new Keuangan;
+        $data_saldo = Session::get('data_saldo');
+        $arus_kas = ArusKas::where('rekening', '!=', '0')->orderBy('id', 'ASC')->get();
+        $saldo_bulan_lalu = 0;
+
+        $data_transaksi = [];
+        foreach ($data['kab']->kec as $kec) {
+            foreach ($data_saldo[$kec->kd_kec]['transaksi'] as $trx) {
+
+                $key = $trx['rekening_debit'] . '#' . $trx['rekening_kredit'];
+                if (!array_key_exists($key, $data_transaksi)) {
+                    $data_transaksi[$key] = [
+                        'rekening_debit' => $trx['rekening_debit'],
+                        'rekening_kredit' => $trx['rekening_kredit'],
+                        'jumlah' => floatval($trx['jumlah'])
+                    ];
+                } else {
+                    $data_transaksi[$key]['jumlah'] += floatval($trx['jumlah']);
+                }
+            }
+
+            $saldo_bulan_lalu += $data_saldo[$kec->kd_kec]['saldo_bulan_lalu'];
+        }
+
+        $data_arus_kas = [];
+        foreach ($arus_kas as $ak) {
+            $rekening = explode('#', $ak->rekening);
+
+            if (!array_key_exists($ak->id, $data_arus_kas)) {
+                $data_arus_kas[$ak->id] = [
+                    'jumlah' => 0
+                ];
+            }
+
+            foreach ($rekening as $rek) {
+                $rk = explode('~', $rek);
+                $rek_debit = str_replace('%', '', $rk[0]);
+                $rek_kredit = str_replace('%', '', $rk[1]);
+
+                foreach ($data_transaksi as $d_trx) {
+                    if (Keuangan::startWith($d_trx['rekening_debit'], $rek_debit) && Keuangan::startWith($d_trx['rekening_kredit'], $rek_kredit)) {
+                        $data_arus_kas[$ak->id]['jumlah'] += floatval($d_trx['jumlah']);
+                    }
+                }
+            }
+        }
+
+        $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($data['tgl_kondisi']) . ' ' . Tanggal::tahun($data['tgl_kondisi']);
+        $data['tgl'] = Tanggal::namaBulan($data['tgl_kondisi']) . ' ' . Tanggal::tahun($data['tgl_kondisi']);
+
+        $data['data_arus_kas'] = $data_arus_kas;
+        $data['arus_kas'] = ArusKas::where('sub', '0')->with('child')->orderBy('id', 'ASC')->get();
+        $data['saldo_bulan_lalu'] = $saldo_bulan_lalu;
+
+        $data['keuangan'] = $keuangan;
+        $view = view('admin.kabupaten.laporan.views.arus_kas', $data)->render();
         $pdf = PDF::loadHTML($view);
         return $pdf->stream();
     }

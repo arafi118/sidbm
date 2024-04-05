@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="description" content="Jembatan Akuntabilitas Bumdesma">
+    <meta name="description" content="Sistem Informasi Dana Bergulir Masyarakat - SIDBM">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="keywords"
         content="dbm, sidbm, sidbm.net, demo.sidbm.net, app.sidbm.net, asta brata teknologi, abt, dbm, kepmendesa 136, kepmendesa nomor 136 tahun 2022">
@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{{ $logo }}">
     <link rel="icon" type="image/png" href="{{ $logo }}">
     <title>
-        SIDBM &mdash; Jembatan Akuntabilitas Bumdesma
+        SIDBM &mdash; {{ $kec->nama_lembaga_sort }}
     </title>
 
     <link rel="stylesheet" type="text/css"

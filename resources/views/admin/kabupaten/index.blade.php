@@ -33,7 +33,6 @@
                         <div class="my-2">
                             <label class="form-label" for="tahun">Tahunan</label>
                             <select class="form-control" name="tahun" id="tahun">
-                                <option value="">---</option>
                                 @for ($i = $thn_awal; $i <= date('Y'); $i++)
                                     <option {{ $i == date('Y') ? 'selected' : '' }} value="{{ $i }}">
                                         {{ $i }}
@@ -47,7 +46,6 @@
                         <div class="my-2">
                             <label class="form-label" for="bulan">Bulanan</label>
                             <select class="form-control" name="bulan" id="bulan">
-                                <option value="">---</option>
                                 <option {{ date('m') == '01' ? 'selected' : '' }} value="01">01. JANUARI</option>
                                 <option {{ date('m') == '02' ? 'selected' : '' }} value="02">02. FEBRUARI</option>
                                 <option {{ date('m') == '03' ? 'selected' : '' }} value="03">03. MARET</option>
@@ -181,6 +179,7 @@
             $('#Preview').attr('disabled', true);
             var tahun = $('select#tahun').val()
             var bulan = $('select#bulan').val()
+            var laporan = $('select#laporan').val()
 
             var lokasi = $('#lokasi_ke_' + number).val()
             $.ajax({
@@ -188,7 +187,8 @@
                 url: '/master/kabupaten/laporan/data/' + lokasi,
                 data: {
                     tahun,
-                    bulan
+                    bulan,
+                    laporan
                 },
                 success: function(result) {
                     if (result.success) {

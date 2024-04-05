@@ -3,7 +3,7 @@
     $j_saldo = 0;
 @endphp
 
-@extends('pelaporan.layout.base')
+@extends('admin.kabupaten.laporan.layouts.base')
 
 @section('content')
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
@@ -11,6 +11,9 @@
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
                     <b>ARUS KAS</b>
+                </div>
+                <div style="font-size: 18px;">
+                    <b>REKAP KABUPATEN {{ strtoupper($kab->nama_kab) }}</b>
                 </div>
                 <div style="font-size: 16px;">
                     <b>{{ strtoupper($sub_judul) }}</b>
@@ -20,8 +23,8 @@
         <tr>
             <td colspan="3" height="5"></td>
         </tr>
-
     </table>
+
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="background: rgb(200, 200, 200)">
             <th colspan="2">Nama Akun</th>
@@ -55,7 +58,7 @@
 
             @foreach ($ak->child as $child)
                 @php
-                    $arus_kas = $keuangan->arus_kas($child->rekening, $tgl_kondisi, $jenis);
+                    $arus_kas = $data_arus_kas[$child->id]['jumlah'];
                     if ($loop->iteration % 2 == 0) {
                         $bg = '240, 240, 240';
                     } else {
@@ -136,25 +139,15 @@
             @endif
         @endforeach
 
-        <tr>
-            <td colspan="3" style="padding: 0px !important;">
-                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
-                    style="font-size: 11px;">
-                    <tr style="background: rgb(128, 128, 128)">
-                        <td width="5%" align="center">&nbsp;</td>
-                        <td width="80%">Kenaikan (Penurunan) Kas</td>
-                        <td width="15%" align="right">{{ number_format($total1 + $total2 + $total3, 2) }}</td>
-                    </tr>
-                    <tr style="background: rgb(128, 128, 128)">
-                        <td align="center">&nbsp;</td>
-                        <td>SALDO AKHIR KAS SETARA KAS</td>
-                        <td align="right">{{ number_format($total1 + $total2 + $total3 + $saldo_bulan_lalu, 2) }}</td>
-                    </tr>
-                </table>
-
-                <div style="margin-top: 16px;"></div>
-                {!! json_decode(str_replace('{tanggal}', $tanggal_kondisi, $kec->ttd->tanda_tangan_pelaporan), true) !!}
-            </td>
+        <tr style="background: rgb(128, 128, 128)">
+            <td width="5%" align="center">&nbsp;</td>
+            <td width="80%">Kenaikan (Penurunan) Kas</td>
+            <td width="15%" align="right">{{ number_format($total1 + $total2 + $total3, 2) }}</td>
+        </tr>
+        <tr style="background: rgb(128, 128, 128)">
+            <td align="center">&nbsp;</td>
+            <td>SALDO AKHIR KAS SETARA KAS</td>
+            <td align="right">{{ number_format($total1 + $total2 + $total3 + $saldo_bulan_lalu, 2) }}</td>
         </tr>
     </table>
 @endsection
