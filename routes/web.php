@@ -14,6 +14,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DesaController;
 use App\Http\Controllers\Kabupaten\AuthController as KabupatenAuthController;
 use App\Http\Controllers\Kabupaten\KabupatenController;
+use App\Http\Controllers\Kabupaten\LaporanController;
 use App\Http\Controllers\KelompokController;
 use App\Http\Controllers\PelaporanController;
 use App\Http\Controllers\PinjamanAnggotaController;
@@ -84,6 +85,11 @@ Route::group(['prefix' => 'kab', 'as' => 'kab.', 'middleware' => 'kab'], functio
     Route::get('/dashboard', [KabupatenController::class, 'index']);
     Route::get('/simpan_saldo', [DashboardController::class, 'simpanSaldo']);
     Route::get('/kecamatan/{kd_kec}', [KabupatenController::class, 'kecamatan']);
+
+    Route::get('/laporan', [LaporanController::class, 'index']);
+    Route::get('/laporan/sub_laporan/{laporan}/', [LaporanController::class, 'subLaporan']);
+    Route::get('/laporan/data/{lokasi}/', [LaporanController::class, 'data']);
+    Route::post('/laporan/preview/{kd_kab}', [LaporanController::class, 'preview']);
 
     Route::post('/logout', [KabupatenAuthController::class, 'logout']);
 });
