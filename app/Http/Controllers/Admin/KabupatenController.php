@@ -502,4 +502,48 @@ class KabupatenController extends Controller
         $pdf = PDF::loadHTML($view);
         return $pdf->stream();
     }
+
+    public function LPM($data)
+    {
+        $lpm = [];
+        $keuangan = new Keuangan;
+
+        $data_saldo = Session::get('data_saldo');
+        foreach ($data['kab']->kec as $kec) {
+            foreach ($data_saldo[$kec->kd_kec]['saldo'] as $rek) {
+                if ($rek->lev1 != '3') continue;
+
+                $saldo = $keuangan->komSaldo($rek);
+                if ($rek->kode_akun == '3.2.02.01') {
+                    $saldo = 0;
+                    foreach ($data_saldo[$kec->kd_kec]['laba_rugi'] as $lb) {
+                        if ($lb->lev1 == 5) {
+                            $saldo -= $keuangan->komSaldo($lb);
+                        } else {
+                            $saldo += $keuangan->komSaldo($lb);
+                        }
+                    }
+                }
+
+                if (!array_key_exists($rek->kode_akun, $lpm)) {
+                    $lpm[$rek->kode_akun] = [
+                        'kode_akun' => $rek->kode_akun,
+                        'nama_akun' => $rek->nama_akun,
+                        'saldo' => $saldo
+                    ];
+                } else {
+                    $lpm[$rek->kode_akun]['saldo'] += $saldo;
+                }
+            }
+        }
+
+        $data['perubahan_modal'] = $lpm;
+        $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($data['tgl_kondisi']) . ' ' . Tanggal::tahun($data['tgl_kondisi']);
+        $data['tgl'] = Tanggal::namaBulan($data['tgl_kondisi']) . ' ' . Tanggal::tahun($data['tgl_kondisi']);
+
+        $data['keuangan'] = $keuangan;
+        $view = view('admin.kabupaten.laporan.views.perubahan_modal', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
 }
