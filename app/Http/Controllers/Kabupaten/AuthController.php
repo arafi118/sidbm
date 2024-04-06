@@ -48,7 +48,9 @@ class AuthController extends Controller
                     $kecamatan = Wilayah::where('kode', 'LIKE', $login_kab->kd_kab . '%')->whereRaw('LENGTH(kode) = 8')->orderBy('nama', 'ASC')->get();
                     session([
                         'nama_kab' => ucwords(strtolower($login_kab->nama_kab)),
-                        'kecamatan' => $kecamatan
+                        'kecamatan' => $kecamatan,
+                        'kd_kab' => $login_kab->kd_kab,
+                        'kd_prov' => $login_kab->kd_prov,
                     ]);
 
                     return redirect('/kab/dashboard')->with([
