@@ -164,14 +164,27 @@
         <tr style="background: rgb(150, 150, 150); font-weight: bold;">
             <td colspan="4" height="14">5.4 Beban Pajak</td>
         </tr>
-        <tr style="background: rgb(200, 200, 200); font-weight: bold;">
-            <td width="55%" align="left">C. Laba Rugi Setelah Taksiran Pajak (A + B) </td>
-            <td width="15%" align="right">
-                {{ number_format($saldo_bln_lalu1 + $saldo_bln_lalu2 - $pph['saldo_bln_lalu'], 2) }}</td>
-            <td width="15%" align="right">
-                {{ number_format($saldo1 - $saldo_bln_lalu1 + ($saldo2 - $saldo_bln_lalu2) - ($pph['saldo'] - $pph['saldo_bln_lalu']), 2) }}
-            </td>
-            <td width="15%" align="right">{{ number_format($saldo1 + $saldo2 - $pph['saldo'], 2) }}
+
+        <tr>
+            <td colspan="4" style="padding: 0px !important;">
+                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 11px;">
+                    <tr style="background: rgb(200, 200, 200); font-weight: bold;">
+                        <td width="55%" align="left">C. Laba Rugi Setelah Taksiran Pajak (A + B) </td>
+                        <td width="15%" align="right">
+                            {{ number_format($saldo_bln_lalu1 + $saldo_bln_lalu2 - $pph['saldo_bln_lalu'], 2) }}
+                        </td>
+                        <td width="15%" align="right">
+                            {{ number_format($saldo1 - $saldo_bln_lalu1 + ($saldo2 - $saldo_bln_lalu2) - ($pph['saldo'] - $pph['saldo_bln_lalu']), 2) }}
+                        </td>
+                        <td width="15%" align="right">
+                            {{ number_format($saldo1 + $saldo2 - $pph['saldo'], 2) }}
+                        </td>
+                    </tr>
+                </table>
+
+                <div style="margin-top: 16px;"></div>
+                {!! json_decode(str_replace('{tanggal}', $tanggal_kondisi, $kab->tanda_tangan), true) !!}
             </td>
         </tr>
     </table>

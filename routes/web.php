@@ -83,6 +83,9 @@ Route::post('/kab/login', [KabupatenAuthController::class, 'login'])->middleware
 
 Route::group(['prefix' => 'kab', 'as' => 'kab.', 'middleware' => 'kab'], function () {
     Route::get('/dashboard', [KabupatenController::class, 'index']);
+    Route::get('/tanda_tangan', [KabupatenController::class, 'tandaTangan']);
+    Route::post('/tanda_tangan/simpan', [KabupatenController::class, 'simpanTandaTangan']);
+
     Route::get('/simpan_saldo', [DashboardController::class, 'simpanSaldo']);
     Route::get('/kecamatan/{kd_kec}', [KabupatenController::class, 'kecamatan']);
 

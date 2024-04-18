@@ -8,8 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Kabupaten extends Authenticatable
 {
     use HasFactory;
-
     protected $table = 'kabupaten';
+    public $timestamps = false;
 
     public function wilayah()
     {

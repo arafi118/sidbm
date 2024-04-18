@@ -94,11 +94,21 @@
             </tr>
         @endforeach
 
-        <tr style="background: rgb(167, 167, 167); font-weight: bold;">
-            <td colspan="2" height="15" align="left">
-                <b>Jumlah Liabilitas + Ekuitas </b>
+        <tr>
+            <td colspan="3" style="padding: 0px !important;">
+                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 11px;">
+                    <tr style="background: rgb(167, 167, 167); font-weight: bold;">
+                        <td height="15" width="80%" align="left">
+                            <b>Jumlah Liabilitas + Ekuitas </b>
+                        </td>
+                        <td align="right" width="20%">{{ number_format($kredit, 2) }}</td>
+                    </tr>
+                </table>
+
+                <div style="margin-top: 16px;"></div>
+                {!! json_decode(str_replace('{tanggal}', $tanggal_kondisi, $kab->tanda_tangan), true) !!}
             </td>
-            <td align="right">{{ number_format($kredit, 2) }}</td>
         </tr>
     </table>
 @endsection

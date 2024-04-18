@@ -51,5 +51,12 @@
             <td class="l t b" align="right">{{ number_format($t_saldo, 2) }}</td>
             <td class="l t r b">&nbsp;</td>
         </tr>
+
+        <tr>
+            <td colspan="4">
+                <div style="margin-top: 16px;"></div>
+                {!! json_decode(str_replace('{tanggal}', $tanggal_kondisi, $kab->tanda_tangan), true) !!}
+            </td>
+        </tr>
     </table>
 @endsection

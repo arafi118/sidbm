@@ -48,9 +48,18 @@
             <li class="nav-item nav-item-link {{ active('dashboard') }}">
                 <a class="nav-link text-white {{ active('dashboard') }}" href="/kab/dashboard">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">dashboard</i>
+                        <i class="material-icons opacity-10">edit</i>
                     </div>
                     <span class="nav-link-text ms-1">Dashboard</span>
+                </a>
+            </li>
+
+            <li class="nav-item nav-item-link {{ active('tanda_tangan') }}">
+                <a class="nav-link text-white {{ active('tanda_tangan') }}" href="/kab/tanda_tangan">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">dashboard</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Tanda Tangan Laporan</span>
                 </a>
             </li>
 

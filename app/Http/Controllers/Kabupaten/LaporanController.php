@@ -195,6 +195,7 @@ class LaporanController extends Controller
         $data['logo'] = '1.png';
         $data['hari'] = date('t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'));
         $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
+        $data['tanggal_kondisi'] = Tanggal::tglLatin($data['tgl_kondisi']);
 
         $file = $request->laporan;
         return $this->$file($data);
