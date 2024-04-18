@@ -75,7 +75,8 @@
         <table width="100%" style="border-bottom: 1px solid grey;">
             <tr>
                 <td width="30">
-                    <img src="../storage/app/public/logo/{{ $logo }}" width="40" alt="{{ $logo }}">
+                    <img src="../storage/app/public/logo_kab/{{ $logo }}" width="40"
+                        alt="{{ $logo }}">
                 </td>
                 <td>
                     <div style="font-size: 12px;">{{ strtoupper($kab->nama_lembaga) }}</div>
