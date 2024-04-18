@@ -3,7 +3,7 @@
     $kredit = 0;
 @endphp
 
-@extends('admin.kabupaten.laporan.layouts.base')
+@extends('kabupaten.laporan.layouts.base')
 
 @section('content')
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
