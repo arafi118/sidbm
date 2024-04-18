@@ -27,8 +27,12 @@ class KabupatenController extends Controller
             $saldo_kec[$wl->kode] = [
                 'nama' => $wl->nama,
                 'kode' => $wl->kode,
-                'laba_rugi' => [],
-                'surplus' => 0
+                'laba_rugi' => [
+                    'pendapatan' => 0,
+                    'biaya' => 0,
+                ],
+                'surplus' => 0,
+                'used_dbm' => false
             ];
 
             if ($wl->kec) {
@@ -64,6 +68,7 @@ class KabupatenController extends Controller
                 ];
 
                 $saldo_kec[$wl->kode]['surplus'] = $pendapatan - $biaya;
+                $saldo_kec[$wl->kode]['used_dbm'] = true;
             }
         }
 
