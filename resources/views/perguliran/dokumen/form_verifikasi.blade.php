@@ -296,7 +296,11 @@
                                 <td width="70" height="20">
                                     <div>{{ $u->namadepan }} {{ $u->namabelakang }}</div>
                                     <div>
-                                        <b>{{ $u->j->nama_jabatan }}</b>
+                                        @if ($u->jabatan == '1' && $u->level == '4')
+                                            Ketua
+                                        @else
+                                            <b>{{ $u->j->nama_jabatan }}</b>
+                                        @endif
                                     </div>
                                 </td>
                                 <td align="right" style="vertical-align: bottom;">
