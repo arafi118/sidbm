@@ -56,8 +56,6 @@
                             <span class="text-sm">Whatsapp</span>
                         </a>
                     </li>
-                    {{-- @if (auth()->user()->level == '1' && auth()->user()->jabatan == '1')
-                    @endif --}}
                 </ul>
             </div>
         </div>
