@@ -2,7 +2,7 @@
     $pesan_wa = json_decode($kec->whatsapp, true);
 @endphp
 
-<form action="/pengaturan/pesan_whatsapp/{{ $kec->id }}" method="post" id="FormWhatsapp">
+<form action="/pengaturan/pesan_whatsapp/{{ $kec->id }}" method="post" id="FormScanWhatsapp">
     @csrf
     @method('PUT')
 
@@ -29,7 +29,7 @@
         </button>
     @endif
 
-    <button type="button" id="SimpanWhatsapp" data-target="#FormWhatsapp"
+    <button type="button" id="SimpanWhatsapp" data-target="#FormScanWhatsapp"
         class="btn btn-sm btn-github ms-2 mb-0 btn-simpan">
         Simpan Perubahan
     </button>
