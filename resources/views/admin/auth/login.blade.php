@@ -25,10 +25,6 @@
     <link rel="stylesheet" href="/assets/css/style.css">
 
     <style>
-        .async-hide {
-            opacity: 0 !important
-        }
-
         .swal2-container {
             height: unset !important;
         }
