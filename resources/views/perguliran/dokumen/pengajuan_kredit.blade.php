@@ -86,7 +86,7 @@
         <td width="5" align="right">:</td>
         <td width="500">
             <b>
-                ______/{{ $pinkel->id }}/{{ $pinkel->jpp->nama_jpp }}/{{ Tanggal::tglRomawi($pinkel->tgl_proposal) }}
+                ______/{{ $pinkel->jpp->nama_jpp }}/{{ Tanggal::tglRomawi($pinkel->tgl_proposal) }}
             </b>
         </td>
     </tr>
