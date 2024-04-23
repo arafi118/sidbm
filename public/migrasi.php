@@ -122,10 +122,11 @@ if (isset($_POST['copy'])) {
     mysqli_query($trigger, $update);
     mysqli_query($trigger, $delete);
 
-    mysqli_query($koneksi, "UPDATE dbm_laravel.inventaris_$lokasi SET kategori='1', jenis='1' WHERE kategori='1' AND jenis='3'");
-    mysqli_query($koneksi, "UPDATE dbm_laravel.inventaris_$lokasi SET kategori='1', jenis='3' WHERE kategori='5' AND jenis='2'");
-    mysqli_query($koneksi, "UPDATE dbm_laravel.inventaris_$lokasi SET kategori='2', jenis='3' WHERE kategori='6' AND jenis='2'");
-    mysqli_query($koneksi, "UPDATE dbm_laravel.inventaris_$lokasi SET kategori='3', jenis='3' WHERE kategori='7' AND jenis='2'");
+    mysqli_query($koneksi, "UPDATE dbm_laravel.inventaris_$lokasi SET jenis='1', kategori='1' WHERE kategori='1' AND jenis='3'");
+    mysqli_query($koneksi, "UPDATE dbm_laravel.inventaris_$lokasi SET jenis='3', kategori='1' WHERE kategori='5' AND jenis='2'");
+    mysqli_query($koneksi, "UPDATE dbm_laravel.inventaris_$lokasi SET jenis='3', kategori='2' WHERE kategori='6' AND jenis='2'");
+    mysqli_query($koneksi, "UPDATE dbm_laravel.inventaris_$lokasi SET jenis='3', kategori='3' WHERE kategori='7' AND jenis='2'");
+    mysqli_query($koneksi, "UPDATE dbm_laravel.inventaris_$lokasi SET jenis='3', kategori='4' WHERE kategori='8' AND jenis='2'");
 
     $_SESSION['success'] = "Copy Tabel Lokasi <b>$lokasi</b> Berhasil.";
     echo "<script>location.href = '/migrasi.php';</script>";
