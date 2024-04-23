@@ -32,7 +32,7 @@
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="background: rgb(230, 230, 230); font-weight: bold;">
             <th rowspan="2" class="t l b" width="40%" height="30">Rekening</th>
-            <th colspan="2" class="t l b" width="20%">Necaca Saldo</th>
+            <th colspan="2" class="t l b" width="20%">Neraca Saldo</th>
             <th colspan="2" class="t l b" width="20%">Laba Rugi</th>
             <th colspan="2" class="t l b r" width="20%">Neraca</th>
         </tr>
