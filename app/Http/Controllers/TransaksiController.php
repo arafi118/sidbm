@@ -560,6 +560,14 @@ class TransaksiController extends Controller
         ]);
     }
 
+    public function taksiranPajak()
+    {
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
+
+        $title = 'Taksiran Pajak';
+        return view('transaksi.taksiran_pajak.index')->with(compact('title', 'kec'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
