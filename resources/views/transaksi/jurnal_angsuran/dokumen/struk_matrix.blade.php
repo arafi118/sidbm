@@ -40,6 +40,9 @@
     $pokok_bulan_depan = $pinkel->alokasi - $real->sum_pokok;
     $jasa_bulan_depan = ($pinkel->alokasi * $pinkel->pros_jasa) / 100 - $real->sum_jasa;
 
+    $pokok_bulan_depan = $pinkel->alokasi - $real->sum_pokok;
+    $jasa_bulan_depan = ($pinkel->alokasi * $pinkel->pros_jasa) / 100 - $real->sum_jasa;
+
     if ($pokok_bulan_depan > 0 && $angsuran_ke + 1 <= $jum_angsuran) {
         $pokok_bulan_depan = $wajib_pokok;
     }
@@ -58,6 +61,7 @@
         $jasa_bulan_depan = 0;
     }
     $nama_user = '';
+
     $no_kuitansi = '';
 @endphp
 @foreach ($real->trx as $trx)
