@@ -94,6 +94,9 @@
                             {{ strtoupper($pinkel->kelompok->d->nama_desa) }}
                         </b>
                     </div>
+                    <div style="font-size: 10px; color: grey;">
+                        <i>{{ $pinkel->kelompok->d->alamat_desa }}</i>
+                    </div>
                 </td>
             </tr>
         </table>
