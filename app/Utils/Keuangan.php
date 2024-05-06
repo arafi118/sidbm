@@ -210,6 +210,54 @@ class Keuangan
         return $saldo;
     }
 
+    public function saldoBulanIni($rek)
+    {
+        $awal_debit = 0;
+        $saldo_debit = 0;
+        $awal_kredit = 0;
+        $saldo_kredit = 0;
+
+        $nomor = 0;
+
+        $bulan_terbesar = 0;
+        foreach ($rek->kom_saldo as $kom_saldo) {
+            if ($nomor > 2) {
+                continue;
+            }
+
+            if ($bulan_terbesar == 0) {
+                if ($kom_saldo->bulan - 1 >= 0) {
+                    $bulan_terbesar = $kom_saldo->bulan;
+                    $saldo_debit -= floatval($kom_saldo->debit);
+                    $saldo_kredit -= floatval($kom_saldo->kredit);
+                } else {
+                    $bulan_terbesar += 1;
+                }
+
+                continue;
+            }
+
+            if ($bulan_terbesar != 0) {
+                $saldo_debit += floatval($kom_saldo->debit);
+                $saldo_kredit += floatval($kom_saldo->kredit);
+
+                $bulan_terbesar = $kom_saldo->bulan;
+            }
+
+            $nomor++;
+        }
+
+        if ($rek->lev1 == 1 || $rek->lev1 == '5') {
+            $saldo_awal = $awal_debit - $awal_kredit;
+            $saldo = $saldo_awal + ($saldo_debit - $saldo_kredit);
+        } else {
+            $saldo_awal = $awal_kredit - $awal_debit;
+            $saldo = $saldo_awal + ($saldo_kredit - $saldo_debit);
+        }
+
+        return $saldo;
+    }
+
     public function saldoKas($tgl_kondisi)
     {
         $tanggal = explode('-', $tgl_kondisi);

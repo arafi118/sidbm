@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AkunLevel1;
+use App\Models\AkunLevel2;
 use App\Models\Desa;
 use App\Models\Ebudgeting;
 use App\Models\Inventaris;
@@ -562,10 +563,132 @@ class TransaksiController extends Controller
 
     public function taksiranPajak()
     {
+        $keuangan = new Keuangan;
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
+        $akun2 = AkunLevel2::where('lev1', '4')->with([
+            'rek' => function ($query) {
+                $query->where('kode_akun', 'NOT LIKE', '4.1.02.%');
+            },
+            'rek.kom_saldo' => function ($query) {
+                $query->where('tahun', date('Y'))->where(function ($query) {
+                    $query->where('bulan', (date('m') - 1))->orwhere('bulan', date('m'));
+                })->orderBy('bulan', 'asc');
+            }
+        ])->get();
+
+        $biaya = Rekening::where([
+            ['lev1', '5'],
+            ['lev2', '!=', '4']
+        ])->with([
+            'kom_saldo' => function ($query) {
+                $query->where('tahun', date('Y'))->where(function ($query) {
+                    $query->where('bulan', (date('m') - 1))->orwhere('bulan', date('m'));
+                })->orderBy('bulan', 'asc');
+            }
+        ])->get();
+
+        $beban = 0;
+        foreach ($biaya as $b) {
+            $beban += $keuangan->saldoBulanIni($b);
+        }
 
         $title = 'Taksiran Pajak';
-        return view('transaksi.taksiran_pajak.index')->with(compact('title', 'kec'));
+        return view('transaksi.taksiran_pajak.index')->with(compact('title', 'kec', 'akun2', 'keuangan', 'beban'));
+    }
+
+    public function cetakTaksiranPajak(Request $request)
+    {
+        $data = $request->only([
+            "nama_lembaga",
+            "npwp",
+            "tanggal_npwp",
+            "tahun_pajak",
+            "masa_pajak",
+            "pph_final",
+            "pph_badan",
+            "rekening",
+            "pendapatan",
+            "beban",
+            "laba",
+            "pph"
+        ]);
+
+        $data['kode_akun'] = array_keys($data['rekening']);
+        $data['akun2'] = AkunLevel2::where('lev1', '4')->with([
+            'rek' => function ($query) use ($data) {
+                $query->whereIn('kode_akun', $data['kode_akun'])->where('lev1', '4');
+            },
+        ])->get();
+
+        if ($data['masa_pajak'] < '0') {
+            $awal_tahun = $data['tahun_pajak'] . '-01-01';
+            $akhir_tahun = $data['tahun_pajak'] . '-12-31';
+
+            $data['bulan_masa_pajak'] = Tanggal::namaBulan($awal_tahun) . ' - ' . Tanggal::namaBulan($akhir_tahun);
+        } else {
+            $data['bulan_masa_pajak'] = Tanggal::namaBulan($data['tahun_pajak'] . '-' . $data['masa_pajak'] . '-01');
+        }
+
+        $view = view('transaksi.taksiran_pajak.dokumen.taksiran_pajak', $data)->render();
+        $pdf = PDF::loadHTML($view);
+        return $pdf->stream();
+    }
+
+    public function pendapatan($tahun, $bulan)
+    {
+        $keuangan = new Keuangan;
+
+        $bulan_lalu = $bulan - 1;
+        if ($bulan < 0) {
+            $bulan = 12;
+            $bulan_lalu = 0;
+        }
+
+        $rekening = Rekening::where([
+            ['lev1', '4'],
+            ['kode_akun', 'NOT LIKE', '4.1.02.%']
+        ])->with([
+            'kom_saldo' => function ($query) use ($tahun, $bulan, $bulan_lalu) {
+                $query->where('tahun', $tahun)->where(function ($query) use ($bulan, $bulan_lalu) {
+                    $query->where('bulan', $bulan_lalu)->orwhere('bulan', $bulan);
+                })->orderBy('bulan', 'asc');
+            }
+        ])->get();
+
+        $pendapatan = [];
+        foreach ($rekening as $rek) {
+            if ($bulan == 12 && $bulan_lalu == 0) {
+                $pendapatan[$rek->kode_akun] = $keuangan->komSaldo($rek);
+            } else {
+                $pendapatan[$rek->kode_akun] = $keuangan->saldoBulanIni($rek);
+            }
+        }
+
+        $biaya = Rekening::where([
+            ['lev1', '5'],
+            ['lev2', '!=', '4']
+        ])->with([
+            'kom_saldo' => function ($query) use ($tahun, $bulan, $bulan_lalu) {
+                $query->where('tahun', $tahun)->where(function ($query) use ($bulan, $bulan_lalu) {
+                    $query->where('bulan', $bulan_lalu)->orwhere('bulan', $bulan);
+                })->orderBy('bulan', 'asc');
+            }
+        ])->get();
+
+        $beban = 0;
+        foreach ($biaya as $b) {
+            if ($bulan == 12 && $bulan_lalu == 0) {
+                $beban += $keuangan->komSaldo($b);
+            } else {
+                $beban += $keuangan->saldoBulanIni($b);
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'pendapatan' => $pendapatan,
+            'beban' => $beban
+        ]);
     }
 
     /**

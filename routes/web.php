@@ -250,6 +250,8 @@ Route::post('/transaksi/anggaran', [TransaksiController::class, 'formAnggaran'])
 Route::post('/transaksi/simpan_anggaran', [TransaksiController::class, 'simpanAnggaran'])->middleware('auth');
 
 Route::get('/transaksi/taksiran_pajak', [TransaksiController::class, 'taksiranPajak'])->middleware('auth');
+Route::post('/transaksi/taksiran_pajak', [TransaksiController::class, 'cetakTaksiranPajak'])->middleware('auth');
+Route::get('/transaksi/pendapatan/{tahun}/{bulan}', [TransaksiController::class, 'pendapatan'])->middleware('auth');
 
 Route::resource('/transaksi', TransaksiController::class)->middleware('auth');
 
