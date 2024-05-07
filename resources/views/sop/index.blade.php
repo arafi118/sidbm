@@ -263,6 +263,10 @@
     </script>
 
     <script>
+        $(".date").flatpickr({
+            dateFormat: "d/m/Y"
+        })
+
         var tahun = "{{ date('Y') }}"
         var bulan = "{{ date('m') }}"
 

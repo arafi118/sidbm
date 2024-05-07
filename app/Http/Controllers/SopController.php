@@ -52,6 +52,8 @@ class SopController extends Controller
             'email',
             'alamat',
             'peraturan_desa',
+            'npwp',
+            'tanggal_npwp'
         ]);
 
         $validate = Validator::make($data, [
@@ -60,7 +62,9 @@ class SopController extends Controller
             'telpon' => 'required',
             'email' => 'required',
             'alamat' => 'required',
-            'peraturan_desa' => 'required'
+            'peraturan_desa' => 'required',
+            'npwp' => 'required',
+            'tanggal_npwp' => 'required',
         ]);
 
         if ($validate->fails()) {
@@ -92,6 +96,8 @@ class SopController extends Controller
             'telpon_kec' => $data['telpon'],
             'email_kec' => $data['email'],
             'alamat_kec' => $data['alamat'],
+            'npwp' => $data['npwp'],
+            'tgl_npwp' => Tanggal::tglNasional($data['tanggal_npwp']),
             'calk' => json_encode($calk),
         ]);
 

@@ -18,15 +18,16 @@
                     <div class="col-sm-4">
                         <div class="input-group input-group-static my-2">
                             <label for="npwp">NPWP</label>
-                            <input autocomplete="off" type="text" name="npwp" id="npwp" class="form-control">
+                            <input autocomplete="off" readonly type="text" name="npwp" id="npwp"
+                                class="form-control" value="{{ $kec->npwp }}">
                             <small class="text-danger" id="msg_npwp"></small>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="input-group input-group-static my-2">
                             <label for="tanggal_npwp">Tanggal NPWP</label>
-                            <input autocomplete="off" type="text" name="tanggal_npwp" id="tanggal_npwp"
-                                class="form-control date">
+                            <input autocomplete="off" readonly type="text" name="tanggal_npwp" id="tanggal_npwp"
+                                class="form-control" value="{{ Tanggal::tglIndo($kec->tgl_npwp) }}">
                             <small class="text-danger" id="msg_tanggal_npwp"></small>
                         </div>
                     </div>

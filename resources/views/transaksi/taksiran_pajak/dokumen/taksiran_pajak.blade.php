@@ -1,3 +1,7 @@
+@php
+    use App\Utils\Tanggal;
+@endphp
+
 <!DOCTYPE html>
 <html lang="en" translate="no">
 
@@ -117,9 +121,84 @@
 
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr>
-                <td>Nama Lembaga</td>
-                <td>:</td>
+                <td width="28%">Nama Lembaga</td>
+                <td width="2%">:</td>
                 <td>{{ $nama_lembaga }}</td>
+            </tr>
+            <tr>
+                <td>NPWP</td>
+                <td>:</td>
+                <td>{{ $npwp }}</td>
+            </tr>
+            <tr>
+                <td>Tanggal NPWP</td>
+                <td>:</td>
+                <td>{{ Tanggal::tglLatin(Tanggal::tglNasional($tanggal_npwp) ?: date('Y-m-d')) }}</td>
+            </tr>
+            <tr>
+                <td>Tahun Pajak</td>
+                <td>:</td>
+                <td>{{ $tahun_pajak }}</td>
+            </tr>
+            <tr>
+                <td>Masa Pajak</td>
+                <td>:</td>
+                <td>{{ $bulan_masa_pajak }}</td>
+            </tr>
+            <tr>
+                <td>Taksiran Pajak ({{ $pph }}%)</td>
+                <td>:</td>
+                @if ($pph == '11')
+                    <td>Rp. {{ $pph_badan }}</td>
+                @else
+                    <td>Rp. {{ $pph_final }}</td>
+                @endif
+            </tr>
+            <tr>
+                <td colspan="3">&nbsp;</td>
+            </tr>
+        </table>
+
+        @foreach ($akun2 as $akun)
+            @php
+                if ($akun->rek->isEmpty()) {
+                    continue;
+                }
+            @endphp
+            <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+                <tr style="background: rgb(74, 74, 74); font-weight: bold; color: #fff;">
+                    <td colspan="2">{{ $akun->nama_akun }}</td>
+                </tr>
+
+                @foreach ($akun->rek as $rek)
+                    <tr>
+                        <td width="50%">
+                            {{ $rek->kode_akun }}. {{ $rek->nama_akun }}
+                        </td>
+                        <td width="50%" align="right">
+                            Rp. {{ number_format($rekening[$rek->kode_akun], 2) }}
+                        </td>
+                    </tr>
+                @endforeach
+
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+            </table>
+        @endforeach
+
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+            <tr style="background: rgb(74, 74, 74); font-weight: bold; color: #fff;">
+                <td width="50%">Total Pendapatan</td>
+                <td width="50%" align="right">Rp. {{ number_format($pendapatan, 2) }}</td>
+            </tr>
+            <tr style="background: rgb(74, 74, 74); font-weight: bold; color: #fff;">
+                <td width="50%">Total Biaya (tidak termasuk Pajak)</td>
+                <td width="50%" align="right">Rp. {{ number_format($beban, 2) }}</td>
+            </tr>
+            <tr style="background: rgb(74, 74, 74); font-weight: bold; color: #fff;">
+                <td width="50%">Laba Sebelum Taksiran Pajak</td>
+                <td width="50%" align="right">Rp. {{ number_format($laba, 2) }}</td>
             </tr>
         </table>
     </main>

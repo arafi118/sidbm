@@ -32,6 +32,22 @@
                 <small class="text-danger" id="msg_nama_bumdesma"></small>
             </div>
         </div>
+        <div class="col-md-8">
+            <div class="input-group input-group-static my-3">
+                <label>NPWP</label>
+                <input type="text" name="npwp" id="npwp" class="form-control"
+                    placeholder="{{ $kec->npwp }}" value="{{ $kec->npwp }}">
+                <small class="text-danger" id="msg_npwp"></small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="input-group input-group-static my-3">
+                <label for="tanggal_npwp">Tanggal NPWP</label>
+                <input autocomplete="off" type="text" name="tanggal_npwp" id="tanggal_npwp" class="form-control date"
+                    value="{{ Tanggal::tglIndo($kec->tgl_npwp) }}">
+                <small class="text-danger" id="msg_tanggal_npwp"></small>
+            </div>
+        </div>
         <div class="col-md-4">
             <div class="input-group input-group-static my-3">
                 <label for="nomor_badan_hukum">Badan Hukum No. </label>
@@ -74,8 +90,8 @@
         <div class="col-md-4">
             <div class="input-group input-group-static my-3">
                 <label for="web_alternatif">Web Alternatif</label>
-                <input autocomplete="off" type="text" name="web_alternatif" id="web_alternatif" class="form-control"
-                    value="{{ $kec->web_alternatif }}" readonly>
+                <input autocomplete="off" type="text" name="web_alternatif" id="web_alternatif"
+                    class="form-control" value="{{ $kec->web_alternatif }}" readonly>
                 <small class="text-danger" id="msg_web_alternatif"></small>
             </div>
         </div>

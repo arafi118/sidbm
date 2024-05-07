@@ -616,7 +616,7 @@ class TransaksiController extends Controller
         $data['kode_akun'] = array_keys($data['rekening']);
         $data['akun2'] = AkunLevel2::where('lev1', '4')->with([
             'rek' => function ($query) use ($data) {
-                $query->whereIn('kode_akun', $data['kode_akun'])->where('lev1', '4');
+                $query->whereIn('kode_akun', $data['kode_akun']);
             },
         ])->get();
 
