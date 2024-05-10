@@ -991,6 +991,8 @@ class PinjamanKelompokController extends Controller
             'id_user' => auth()->user()->id,
         ];
 
+        RealAngsuran::insert($real_angsuran);
+
         foreach ($pinkel->pinjaman_anggota as $pa) {
             $pinjaman_anggota = [
                 'jenis_pinjaman' => $pa->jenis_pinjaman,
@@ -1024,7 +1026,6 @@ class PinjamanKelompokController extends Controller
 
             $pinj_a = PinjamanAnggota::create($pinjaman_anggota);
         }
-
 
         return response()->json([
             'success' => true,
