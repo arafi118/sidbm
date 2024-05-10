@@ -48,8 +48,10 @@ class PinjamanKelompokController extends Controller
     public function proposal()
     {
         if (request()->ajax()) {
-            $pinkel = PinjamanKelompok::where('status', 'P')
-                ->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota')->get();
+            $pinkel = PinjamanKelompok::where([
+                ['status', 'P'],
+                ['jenis_pp', '!=', '3']
+            ])->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota')->get();
 
             return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
@@ -86,8 +88,10 @@ class PinjamanKelompokController extends Controller
     public function verified()
     {
         if (request()->ajax()) {
-            $pinkel = PinjamanKelompok::where('status', 'V')
-                ->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota')->get();
+            $pinkel = PinjamanKelompok::where([
+                ['status', 'V'],
+                ['jenis_pp', '!=', '3']
+            ])->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota')->get();
 
             return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
@@ -124,8 +128,10 @@ class PinjamanKelompokController extends Controller
     public function waiting()
     {
         if (request()->ajax()) {
-            $pinkel = PinjamanKelompok::where('status', 'W')
-                ->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota')->get();
+            $pinkel = PinjamanKelompok::where([
+                ['status', 'W'],
+                ['jenis_pp', '!=', '3']
+            ])->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota')->get();
 
             return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
@@ -162,8 +168,10 @@ class PinjamanKelompokController extends Controller
     public function aktif()
     {
         if (request()->ajax()) {
-            $pinkel = PinjamanKelompok::where('status', 'A')
-                ->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota')->get();
+            $pinkel = PinjamanKelompok::where([
+                ['status', 'A'],
+                ['jenis_pp', '!=', '3']
+            ])->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota')->get();
 
             return DataTables::of($pinkel)
                 ->addColumn('jasa', function ($row) {
@@ -201,8 +209,10 @@ class PinjamanKelompokController extends Controller
     {
         if (request()->ajax()) {
             $tb_pinkel = 'pinjaman_kelompok_' . Session::get('lokasi');
-            $pinkel = PinjamanKelompok::where('status', 'A')
-                ->whereRaw($tb_pinkel . '.alokasi<=(SELECT SUM(realisasi_pokok) FROM real_angsuran_' . Session::get('lokasi') . ' WHERE loan_id=' . $tb_pinkel . '.id)')
+            $pinkel = PinjamanKelompok::where([
+                ['status', 'A'],
+                ['jenis_pp', '!=', '3']
+            ])->whereRaw($tb_pinkel . '.alokasi<=(SELECT SUM(realisasi_pokok) FROM real_angsuran_' . Session::get('lokasi') . ' WHERE loan_id=' . $tb_pinkel . '.id)')
                 ->with('kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
 
             return DataTables::of($pinkel)
@@ -835,8 +845,43 @@ class PinjamanKelompokController extends Controller
             'kelompok',
             'sis_pokok',
             'sis_jasa',
-            'pinjaman_anggota'
+            'pinjaman_anggota',
+            'saldo' => function ($query) use ($request, $tgl_resceduling) {
+                $query->where([
+                    ['loan_id', $request->id],
+                    ['tgl_transaksi', '<=', $tgl_resceduling]
+                ]);
+            },
+            'target' => function ($query) use ($request, $tgl_resceduling) {
+                $query->where([
+                    ['loan_id', $request->id],
+                    ['jatuh_tempo', '<=', $tgl_resceduling]
+                ]);
+            }
         ])->withCount('pinjaman_anggota')->first();
+
+        $sum_pokok = 0;
+        $sum_jasa = 0;
+        if ($pinkel->saldo) {
+            $sum_pokok = $pinkel->saldo->sum_pokok;
+            $sum_jasa = $pinkel->saldo->sum_jasa;
+        }
+
+        $target_pokok = 0;
+        $target_jasa = 0;
+        if ($pinkel->target) {
+            $target_pokok = $pinkel->target->target_pokok;
+            $target_jasa = $pinkel->target->target_jasa;
+        }
+
+        $tunggakan_pokok = $target_pokok - $sum_pokok;
+        if ($tunggakan_pokok < '0') $tunggakan_pokok = '0';
+
+        $tunggakan_jasa = $target_jasa - $sum_jasa;
+        if ($tunggakan_jasa < '0') $tunggakan_jasa = '0';
+
+        $alokasi_pokok = intval($pinkel->alokasi);
+        $alokasi_jasa = intval($pinkel->pros_jasa == 0 ? 0 : $pinkel->alokasi * ($pinkel->pros_jasa / 100));
 
         if ($pinkel->jenis_pp == '1') {
             $rekening_1 = '1.1.01.01';
@@ -916,6 +961,35 @@ class PinjamanKelompokController extends Controller
             'urutan' => '0',
             'id_user' => auth()->user()->id
         ]);
+
+        $realisasi_pokok = $trx_resc['jumlah'];
+        $realisasi_jasa = 0;
+
+        $sum_pokok += $trx_resc['jumlah'];
+        $alokasi_pokok -= $sum_pokok;
+        $tunggakan_pokok -= $trx_resc['jumlah'];
+        if ($tunggakan_pokok <= 0) $tunggakan_pokok = 0;
+
+        $sum_jasa += $trx_resc['jumlah'];
+        $alokasi_jasa -= $sum_jasa;
+        $tunggakan_jasa -= $trx_resc['jumlah'];
+        if ($tunggakan_jasa <= 0) $tunggakan_jasa = 0;
+
+        $real_angsuran = [
+            'id' => $trx_resc['idtp'],
+            'loan_id' => $pinkel->id,
+            'tgl_transaksi' => $tgl_resceduling,
+            'realisasi_pokok' => $realisasi_pokok,
+            'realisasi_jasa' => $realisasi_jasa,
+            'sum_pokok' => $sum_pokok,
+            'sum_jasa' => $sum_jasa,
+            'saldo_pokok' => $alokasi_pokok,
+            'saldo_jasa' => $alokasi_jasa,
+            'tunggakan_pokok' => $tunggakan_pokok,
+            'tunggakan_jasa' => $tunggakan_jasa,
+            'lu' => date('Y-m-d H:i:s', strtotime($tgl_resceduling)),
+            'id_user' => auth()->user()->id,
+        ];
 
         foreach ($pinkel->pinjaman_anggota as $pa) {
             $pinjaman_anggota = [
