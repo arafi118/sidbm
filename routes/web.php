@@ -12,10 +12,12 @@ use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DesaController;
+use App\Http\Controllers\GenerateController;
 use App\Http\Controllers\Kabupaten\AuthController as KabupatenAuthController;
 use App\Http\Controllers\Kabupaten\KabupatenController;
 use App\Http\Controllers\Kabupaten\LaporanController;
 use App\Http\Controllers\KelompokController;
+use App\Http\Controllers\LembagaLainController;
 use App\Http\Controllers\PelaporanController;
 use App\Http\Controllers\PinjamanAnggotaController;
 use App\Http\Controllers\PinjamanKelompokController;
@@ -144,17 +146,20 @@ Route::get('/pengaturan/{inv}/invoice', [SopController::class, 'detailInvoice'])
 
 Route::post('/pengaturan/sop/simpanttdpelaporan', [SopController::class, 'simpanTtdPelaporan'])->middleware('auth');
 
+Route::resource('/database/desa', DesaController::class)->middleware('auth');
+
+Route::get('/database/lembaga_lain/register_lembaga', [LembagaLainController::class, 'register'])->middleware('auth');
+Route::get('/database/lembaga_lain/generatekode', [LembagaLainController::class, 'generateKode'])->middleware('auth');
+Route::resource('/database/lembaga_lain', LembagaLainController::class)->middleware('auth');
+
+Route::get('/database/kelompok/detail_kelompok/{id}', [KelompokController::class, 'detailKelompok'])->middleware('auth');
 Route::get('/database/kelompok/register_kelompok', [KelompokController::class, 'register'])->middleware('auth');
 Route::get('/database/kelompok/generatekode', [KelompokController::class, 'generateKode'])->middleware('auth');
+Route::resource('/database/kelompok', KelompokController::class)->middleware('auth');
 
 Route::get('/database/penduduk/register_penduduk', [AnggotaController::class, 'register'])->middleware('auth');
 Route::get('/database/penduduk/cari_nik', [AnggotaController::class, 'cariNik'])->middleware('auth');
-
 Route::post('/database/penduduk/{nik}/blokir', [AnggotaController::class, 'blokir'])->middleware('auth');
-
-Route::get('/database/kelompok/detail_kelompok/{id}', [KelompokController::class, 'detailKelompok'])->middleware('auth');
-Route::resource('/database/desa', DesaController::class)->middleware('auth');
-Route::resource('/database/kelompok', KelompokController::class)->middleware('auth');
 Route::resource('/database/penduduk', AnggotaController::class)->middleware('auth');
 
 Route::get('/register_proposal', [PinjamanKelompokController::class, 'create'])->middleware('auth');
@@ -274,6 +279,10 @@ Route::get('/user', function () {
 Route::get('/download/{file}', function ($file) {
     return response()->download(storage_path('app/public/docs/' . $file));
 })->name('download');
+
+Route::get('/generate', [GenerateController::class, 'index']);
+Route::get('/generate/kelompok', [GenerateController::class, 'kelompok']);
+Route::post('/generate/save/{offset?}', [GenerateController::class, 'generate']);
 
 Route::get('/unpaid', [DashboardController::class, 'unpaid'])->middleware('auth');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
