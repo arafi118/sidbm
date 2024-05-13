@@ -138,7 +138,7 @@
             </div>
         </div>
 
-        @if ($perguliran->status == 'A')
+        @if ($perguliran->status == 'A' || $perguliran->status == 'R')
             <div class="d-grid">
                 <button type="button" id="BtnTambahPemanfaat" data-bs-toggle="modal" data-bs-target="#TambahPemanfaat"
                     class="btn btn-success btn-sm mb-1">

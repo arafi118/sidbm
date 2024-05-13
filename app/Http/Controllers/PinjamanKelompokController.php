@@ -978,7 +978,7 @@ class PinjamanKelompokController extends Controller
         $real_angsuran = [
             'id' => $trx_resc['idtp'],
             'loan_id' => $pinkel->id,
-            'tgl_transaksi' => $tgl_resceduling,
+            'tgl_transaksi' => Tanggal::tglNasional($tgl_resceduling),
             'realisasi_pokok' => $realisasi_pokok,
             'realisasi_jasa' => $realisasi_jasa,
             'sum_pokok' => $sum_pokok,

@@ -114,6 +114,11 @@ class PinjamanAnggotaController extends Controller
         $pinkel = PinjamanKelompok::where('id', $request->id_pinkel)->first();
         $anggota = Anggota::where('id', $request->nia_pemanfaat)->first();
 
+        $pros_jasa = $pinkel->pros_jasa;
+        if ($pinkel->pros_jasa / $pinkel->jangka == '1.5' && Session::get('lokasi') == '68') {
+            $pros_jasa = 1.8 * $pinkel->jangka;
+        }
+
         $insert = [
             'jenis_pinjaman' => 'K',
             'id_kel' => $pinkel->id_kel,
@@ -133,7 +138,7 @@ class PinjamanAnggotaController extends Controller
             'kom_jasa' => '0',
             'spk_no' => $pinkel->spk_no,
             'sumber' => $pinkel->sumber,
-            'pros_jasa' => $pinkel->pros_jasa,
+            'pros_jasa' => $pros_jasa,
             'jenis_jasa' => $pinkel->jenis_jasa,
             'jangka' => $pinkel->jangka,
             'sistem_angsuran' => $pinkel->sistem_angsuran,

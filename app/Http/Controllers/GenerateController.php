@@ -126,29 +126,16 @@ class GenerateController extends Controller
         }
 
         $limit = 30;
-        if ($is_pinkel) {
-            $pinjaman = PinjamanKelompok::where($where)->with([
-                'sis_pokok',
-                'sis_jasa',
-                'trx' => function ($query) {
-                    $query->where('idtp', '!=', '0');
-                },
-                'trx.tr_idtp',
-                'kelompok',
-                'kelompok.d'
-            ]);
-        } else {
-            $pinjaman = PinjamanIndividu::where($where)->with([
-                'sis_pokok',
-                'sis_jasa',
-                'trx' => function ($query) {
-                    $query->where('idtp', '!=', '0');
-                },
-                'trx.tr_idtp',
-                'anggota',
-                'anggota.d'
-            ]);
-        }
+        $pinjaman = PinjamanKelompok::where($where)->with([
+            'sis_pokok',
+            'sis_jasa',
+            'trx' => function ($query) {
+                $query->where('idtp', '!=', '0');
+            },
+            'trx.tr_idtp',
+            'kelompok',
+            'kelompok.d'
+        ]);
 
         if (count($whereIn) > 0) {
             foreach ($whereIn as $key => $value) {
@@ -191,13 +178,8 @@ class GenerateController extends Controller
                 }
             }
 
-            if ($is_pinkel) {
-                $desa = $pinkel->kelompok->d;
-            } else {
-                $desa = $pinkel->anggota->d;
-            }
-
             $tgl_angsur = $tgl_cair;
+            $desa = $pinkel->kelompok->d;
             $tanggal_cair = date('d', strtotime($tgl_cair));
 
             if ($desa->jadwal_angsuran_desa > 0) {
@@ -456,19 +438,11 @@ class GenerateController extends Controller
             }
         }
 
-        if ($is_pinkel) {
-            RencanaAngsuran::whereIn('loan_id', $data_id_pinj)->delete();
-            RealAngsuran::whereIn('id', $data_id_real)->delete();
+        RencanaAngsuran::whereIn('loan_id', $data_id_pinj)->delete();
+        RealAngsuran::whereIn('loan_id', $data_id_pinj)->delete();
 
-            RencanaAngsuran::insert($rencana);
-            RealAngsuran::insert($real);
-        } else {
-            RencanaAngsuranI::whereIn('loan_id', $data_id_pinj)->delete();
-            RealAngsuranI::whereIn('id', $data_id_real)->delete();
-
-            RencanaAngsuranI::insert($rencana);
-            RealAngsuranI::insert($real);
-        }
+        RencanaAngsuran::insert($rencana);
+        RealAngsuran::insert($real);
 
         $data = $request->all();
         $offset = $offset + $limit;

@@ -36,4 +36,9 @@ class Desa extends Model
     {
         return $this->hasOne(Saldo::class, 'kode_akun', 'kode_desa');
     }
+
+    public function kec()
+    {
+        return $this->belongsTo(Kecamatan::class, 'kd_kec', 'kd_kec');
+    }
 }
