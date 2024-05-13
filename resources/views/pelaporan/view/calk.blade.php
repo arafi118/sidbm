@@ -2,6 +2,7 @@
     use App\Utils\Keuangan;
     $keuangan = new Keuangan();
 
+    $saldo_aset = 0;
     $calk = json_decode($kec->calk, true);
     $peraturan_desa = $calk['peraturan_desa'];
 
@@ -327,6 +328,12 @@
                         <tr>
                             <td colspan="3" height="2"></td>
                         </tr>
+
+                        @php
+                            if ($lev1->lev1 == '1') {
+                                $saldo_aset = $sum_akun1;
+                            }
+                        @endphp
                     @endforeach
                     <tr style="background: rgb(167, 167, 167); font-weight: bold;">
                         <td height="20" colspan="2" align="left">
@@ -336,6 +343,18 @@
                     </tr>
                 </table>
             </div>
+
+            @php
+                $saldo_aset = intval($saldo_aset);
+                $kredit = intval($kredit);
+            @endphp
+
+            @if ($saldo_aset - $kredit != '0')
+                <div style="color: #f44335">
+                    Ada selisih antara Jumlah Aset dan Jumlah Liabilitas + Ekuitas sebesar
+                    <b>Rp. {{ number_format($saldo_aset - $kredit, 2) }}</b>
+                </div>
+            @endif
         </li>
         <li style="margin-top: 12px;">
             <div style="text-transform: uppercase;">
