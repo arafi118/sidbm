@@ -73,7 +73,7 @@
 
     <div style="text-align: justify;">
         Bertindak untuk dan atas nama Manajemen {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }}
-        {{ $kec->nama_kec }} selaku pengelola Dana Bergulir Masyarakat untuk {{ $pinkel->jpp->deskripsi_jpp }}
+        {{ $kec->nama_kec }} selaku pengelola Pelayanan Kredit untuk {{ $pinkel->jpp->deskripsi_jpp }}
         ({{ $pinkel->jpp->nama_jpp }}) di {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}, selanjutnya disebut PIHAK
         PERTAMA, dan
     </div>
