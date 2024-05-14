@@ -190,6 +190,13 @@ class GenerateController extends Controller
                 }
             }
 
+            if ($kec->batas_angsuran > 0) {
+                $batas_tgl_angsuran = $kec->batas_angsuran;
+                if ($tanggal_cair >= $batas_tgl_angsuran) {
+                    $tgl_cair = date('Y-m-d', strtotime('+1 month', strtotime($tgl_cair)));
+                }
+            }
+
             $jenis_jasa = $pinkel->jenis_jasa;
             $jangka = $pinkel->jangka;
             $sa_pokok = $pinkel->sistem_angsuran;
