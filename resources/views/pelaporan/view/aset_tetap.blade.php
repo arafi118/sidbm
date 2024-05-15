@@ -102,7 +102,8 @@
                         <td class="t l b r" align="right">{{ number_format($nilai_buku, 2) }}</td>
                     @else
                         @php
-                            $satuan_susut = $inv->harsat <= 0 ? 0 : round(($inv->harsat * $inv->unit) / $inv->umur_ekonomis, 2);
+                            $satuan_susut =
+                                $inv->harsat <= 0 ? 0 : round(($inv->harsat * $inv->unit) / $inv->umur_ekonomis, 2);
                             $pakai_lalu = Inventaris::bulan($inv->tgl_beli, $tahun - 1 . '-12-31');
                             $nilai_buku = Inventaris::nilaiBuku($tgl_kondisi, $inv);
 
@@ -137,7 +138,11 @@
                             $umur_pakai = $akum_umur - $pakai_lalu;
                             $penyusutan = $satuan_susut * $umur_pakai;
 
-                            if (($inv->status == 'Hilang' and $tgl_kondisi >= $inv->tgl_validasi) || ($inv->status == 'Dijual' && $tgl_kondisi >= $inv->tgl_validasi) || ($inv->status == 'Hapus' && $tgl_kondisi >= $inv->tgl_validasi)) {
+                            if (
+                                ($inv->status == 'Hilang' and $tgl_kondisi >= $inv->tgl_validasi) ||
+                                ($inv->status == 'Dijual' && $tgl_kondisi >= $inv->tgl_validasi) ||
+                                ($inv->status == 'Hapus' && $tgl_kondisi >= $inv->tgl_validasi)
+                            ) {
                                 $akum_susut = $inv->harsat * $inv->unit;
                                 $nilai_buku = 0;
                                 $penyusutan = 0;
@@ -199,19 +204,22 @@
                     @endif
                 </tr>
             @endforeach
-            <tr>
-                <td class="t l b" height="15" colspan="5">
-                    Jumlah Daftar {{ $rek->nama_akun }} (Hapus, Hilang, Jual) s.d. Tahun {{ $tahun - 1 }}
-                </td>
-                <td class="t l b" align="center">{{ $j_unit }}</td>
-                <td class="t l b">&nbsp;</td>
-                <td class="t l b" align="right">{{ number_format($j_harga, 2) }}</td>
-                <td class="t l b">&nbsp;</td>
-                <td class="t l b">&nbsp;</td>
-                <td class="t l b" align="right" colspan="2">{{ number_format($j_penyusutan, 2) }}</td>
-                <td class="t l b" align="right" colspan="2">{{ number_format($j_akum_susut, 2) }}</td>
-                <td class="t l b r" align="right">{{ number_format($j_nilai_buku, 2) }}</td>
-            </tr>
+
+            @if ($rek->lev4 != '1')
+                <tr>
+                    <td class="t l b" height="15" colspan="5">
+                        Jumlah Daftar {{ $rek->nama_akun }} (Hapus, Hilang, Jual) s.d. Tahun {{ $tahun - 1 }}
+                    </td>
+                    <td class="t l b" align="center">{{ $j_unit }}</td>
+                    <td class="t l b">&nbsp;</td>
+                    <td class="t l b" align="right">{{ number_format($j_harga, 2) }}</td>
+                    <td class="t l b">&nbsp;</td>
+                    <td class="t l b">&nbsp;</td>
+                    <td class="t l b" align="right" colspan="2">{{ number_format($j_penyusutan, 2) }}</td>
+                    <td class="t l b" align="right" colspan="2">{{ number_format($j_akum_susut, 2) }}</td>
+                    <td class="t l b r" align="right">{{ number_format($j_nilai_buku, 2) }}</td>
+                </tr>
+            @endif
 
             <tr>
                 <td colspan="15" style="padding: 0px !important">
