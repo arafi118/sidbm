@@ -77,7 +77,6 @@
                         @php
                             $t_unit += $inv->unit;
                             $t_harga += $inv->harsat * $inv->unit;
-                            $t_nilai_buku += $inv->harsat * $inv->unit;
 
                             $nilai_buku = $inv->harsat * $inv->unit;
                             if ($inv->status == 'Dijual' || $inv->status == 'Hapus') {
@@ -88,6 +87,8 @@
                                 $j_unit += $inv->unit;
                                 $j_harga += $inv->harsat * $inv->unit;
                                 $j_nilai_buku += $inv->harsat * $inv->unit;
+                            } else {
+                                $t_nilai_buku += $inv->harsat * $inv->unit;
                             }
                         @endphp
                         <td class="t l b" align="center">{{ $no++ }}</td>
