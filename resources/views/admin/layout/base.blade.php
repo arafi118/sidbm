@@ -13,7 +13,7 @@
     <link rel="canonical" href="https://www.creative-tim.com/product/material-dashboard-pro" />
 
     <meta name="keywords" content="">
-    <meta name="description" content="">
+    <meta name="description" content="Sistem Informasi Dana Bergulir Masyarakat &mdash; Siap Audit Kapanpun Siapapun">
 
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css" /> --}}
 

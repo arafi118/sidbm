@@ -10,7 +10,7 @@
         SIDBM &mdash; Jembatan Akuntabilitas Bumdesma
     </title>
     <meta name="keywords" content="">
-    <meta name="description" content="">
+    <meta name="description" content="Sistem Informasi Dana Bergulir Masyarakat &mdash; Siap Audit Kapanpun Siapapun">
 
     <link rel="stylesheet" type="text/css"
         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
