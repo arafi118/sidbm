@@ -79,10 +79,12 @@
                         alt="{{ $logo }}">
                 </td>
                 <td>
-                    <div style="font-size: 12px;">{{ strtoupper($kab->nama_lembaga) }}</div>
+                    <div style="font-size: 12px;">
+                        <b>{{ strtoupper($kab->nama_lembaga) }}</b>
+                    </div>
                     <div style="font-size: 12px;">
                         @if ($kab->alamat_kab)
-                            <b>{{ strtoupper($kab->alamat_kab) }}</b>
+                            {{ strtoupper($kab->alamat_kab) }}
                         @else
                             <b>&nbsp;</b>
                         @endif
