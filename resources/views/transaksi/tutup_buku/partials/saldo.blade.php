@@ -4,10 +4,10 @@
     $laba_rugi = 0;
 @endphp
 
-<div class="alert alert-warning text-white">
+{{-- <div class="alert alert-warning text-white">
     <b>Saldo Tutup Buku</b> tidak sama dengan <b>Saldo Neraca?</b> Klik
     <a href="#" id="SimpanSaldo" class="alert-link text-white">Disini</a>.
-</div>
+</div> --}}
 
 @foreach ($akun1 as $lev1)
     @php
