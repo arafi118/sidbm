@@ -46,7 +46,7 @@
             data: {
                 labels: labels,
                 datasets: [{
-                    label: "Sales",
+                    label: "Surplus",
                     tension: 0.4,
                     borderWidth: 0,
                     borderRadius: 4,
