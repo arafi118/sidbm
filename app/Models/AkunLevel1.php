@@ -20,4 +20,14 @@ class AkunLevel1 extends Model
     {
         return $this->hasMany(AkunLevel2::class, 'parent_id', 'id')->orderBy('kode_akun', 'ASC');
     }
+
+    public function saldo_awal()
+    {
+        return $this->belongsTo(Saldo::class, 'kode_akun', 'kode_akun')->where('bulan', '12')->orderBy('id', 'ASC');
+    }
+
+    public function saldo()
+    {
+        return $this->belongsTo(Saldo::class, 'kode_akun', 'kode_akun');
+    }
 }

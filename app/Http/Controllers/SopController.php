@@ -294,6 +294,42 @@ class SopController extends Controller
         ]);
     }
 
+    public function beritaAcara(Request $request, Kecamatan $kec)
+    {
+        $data = $request->only([
+            'ba'
+        ]);
+
+        $validate = Validator::make($data, [
+            'ba' => 'required'
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
+        }
+
+        $ba = $data['ba'];
+        $ba = str_replace("<p>", "<div>", $ba);
+        $ba = str_replace("</p>", "</div>", $ba);
+
+        if ($ba != "<div><br></div>") {
+            $ba = json_encode($ba);
+            $kecamatan = Kecamatan::where('id', $kec->id)->update([
+                'berita_acara' => $ba
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'Berita Acara Berhasil Diperbarui.',
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'msg' => 'Berita Acara Gagal Diperbarui.',
+        ]);
+    }
+
     public function ttdPelaporan()
     {
         $title = "Pengaturan Tanda Tangan Pelaporan";

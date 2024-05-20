@@ -1,8 +1,8 @@
 <?php
 ini_set('display_errors', '1');
 session_start();
-$koneksi = mysqli_connect('localhost', 'dbm_sidbm', 'dbm_sidbm', 'information_schema');
-$trigger = mysqli_connect('localhost', 'dbm_sidbm', 'dbm_sidbm', 'dbm_laravel');
+$koneksi = mysqli_connect('cpanel.sidbm.net', 'dbm', 'Indonesia78!', 'information_schema');
+$trigger = mysqli_connect('cpanel.sidbm.net', 'dbm', 'Indonesia78!', 'dbm_laravel');
 
 if (isset($_POST['copy'])) {
     $lokasi = htmlspecialchars($_POST['lokasi']);

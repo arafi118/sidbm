@@ -38,12 +38,12 @@
                             <span class="text-sm">Redaksi Dok. SPK</span>
                         </a>
                     </li>
-                    {{-- <li class="nav-item pt-2">
-                        <a class="nav-link text-dark d-flex" data-scroll="" href="#calk">
+                    <li class="nav-item pt-2">
+                        <a class="nav-link text-dark d-flex" data-scroll="" href="#berita_acara">
                             <i class="material-icons text-lg me-2">insert_drive_file</i>
-                            <span class="text-sm">Pengaturan CALK</span>
+                            <span class="text-sm">Berita Acara</span>
                         </a>
-                    </li> --}}
+                    </li>
                     <li class="nav-item pt-2">
                         <a class="nav-link text-dark d-flex" data-scroll="" href="#logo">
                             <i class="material-icons text-lg me-2">crop_original</i>
@@ -99,6 +99,14 @@
                 </div>
                 <div class="card-body pt-0">
                     @include('sop.partials._spk')
+                </div>
+            </div>
+            <div class="card mt-4" id="berita_acara">
+                <div class="card-header">
+                    <h5 class="mb-0">Berita Acara SI DBM</h5>
+                </div>
+                <div class="card-body pt-0">
+                    @include('sop.partials._berita_acara')
                 </div>
             </div>
             <div class="card mt-4" id="logo">
@@ -297,11 +305,19 @@
             theme: 'snow'
         });
 
+        var quill1 = new Quill('#ba-editor', {
+            theme: 'snow'
+        });
+
         $(document).on('click', '.btn-simpan', async function(e) {
             e.preventDefault()
 
             if ($(this).attr('id') == 'SimpanSPK') {
                 await $('#spk').val(quill.container.firstChild.innerHTML)
+            }
+
+            if ($(this).attr('id') == 'SimpanBeritaAcara') {
+                await $('#ba').val(quill1.container.firstChild.innerHTML)
             }
 
             var form = $($(this).attr('data-target'))

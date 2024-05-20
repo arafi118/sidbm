@@ -23,39 +23,15 @@
         'Peralatan umum dengan umur ekonomis 5 tahun.',
     ];
 
-    $data_ati = [];
-    foreach ($aset_tetap as $a1) {
-        $saldo = $keuangan->komSaldo($a1);
-        foreach ($a1->trx_kredit as $kredit) {
-            $saldo += $kredit->jumlahl;
-        }
-
-        $data_ati[] = $saldo;
+    $saldo_excel = 0;
+    if ($kom_aset->saldo_awal) {
+        $saldo_excel = intval($kom_aset->saldo_awal->debit) - intval($kom_aset->saldo_awal->kredit);
     }
 
-    $data_atb = [];
-    foreach ($aset_tak_berwujud as $a2) {
-        $saldo = $keuangan->komSaldo($a2);
-        foreach ($a2->trx_kredit as $kredit) {
-            $saldo += $kredit->jumlahl;
-        }
-
-        $data_atb[] = $saldo;
+    $saldo_revaluasi = 0;
+    if ($kom_aset->saldo) {
+        $saldo_revaluasi = intval($kom_aset->saldo->debit) - intval($kom_aset->saldo->kredit);
     }
-
-    $data_ckp = [];
-    foreach ($cadangan_piutang as $cad) {
-        $saldo = $keuangan->komSaldo($cad);
-        foreach ($cad->trx_debit as $debit) {
-            $saldo -= $debit->jumlahl;
-        }
-
-        $data_ckp[] = $saldo;
-    }
-
-    $ati = ['Gedung', 'Kendaraan', 'Komputer dan pendukungnya dan Peralatan umum (Inventaris)'];
-    $atb = ['Perijinan ', 'Lisensi', 'Sewa'];
-    $ckp = ['Kelompok SPP', 'Kelompok UEP'];
 @endphp
 
 <!DOCTYPE html>
@@ -99,6 +75,12 @@
             padding: 0 !important;
         }
 
+        table.p tr th,
+        table.p tr td,
+        table.p tr td table.p tr td {
+            padding: 2 4px !important;
+        }
+
         table.p0 tr th,
         table.p0 tr td {
             padding: 0px !important;
@@ -122,6 +104,10 @@
 
         .b {
             border-bottom: 1px solid #000;
+        }
+
+        table.vtop tr td {
+            vertical-align: text-top;
         }
     </style>
 </head>
@@ -186,34 +172,6 @@
                     sebagai asset UPK sebelum bertransformasi menjadi Bumdesma Lkd.
                 </li>
                 <li>
-                    Hasil perhitungan ulang (revaluasi) akumulasi penyusutan per tanggal 1 Januari 2023 menjadi
-                    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
-                        @foreach ($ati as $pi => $val)
-                            @php
-                                $no = $loop->iteration;
-                            @endphp
-                            <tr>
-                                <td width="7%" align="right">{{ $no }})</td>
-                                <td>{{ $val }} Sebesar Rp. {{ number_format($data_ati[$no - 1], 2) }}</td>
-                            </tr>
-                        @endforeach
-                    </table>
-                </li>
-                <li>
-                    Hasil perhitungan ulang (revaluasi) akumulasi amortisasi per tanggal 1 Januari 2023 menjadi;
-                    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
-                        @foreach ($atb as $pi => $val)
-                            @php
-                                $no = $loop->iteration;
-                            @endphp
-                            <tr>
-                                <td width="7%" align="right">{{ $no }})</td>
-                                <td>{{ $val }} Sebesar Rp. {{ number_format($data_atb[$no - 1], 2) }}</td>
-                            </tr>
-                        @endforeach
-                    </table>
-                </li>
-                <li>
                     Dalam hal Reklasifikasi dan revaluasi asset tetap dan inventaris serta asset tak berwujud
                     menghasilkan saldo perolehan dan akumulasi menyusutan yang berbeda dari pola hitung lama
                     (menggunakan kaidah penyajian laporan eks PNPM Mandiri Perdesaan) maka perbedaan nilai tersebut akan
@@ -238,27 +196,6 @@
                     perhitungannya.
                 </li>
                 <li>
-                    Adapun besaran Cadangan Kerugian Piutang (CKP) yang diakui dalam proses migrasi ini adalah :
-                    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
-                        @foreach ($ckp as $pi => $val)
-                            @php
-                                $no = $loop->iteration;
-                            @endphp
-                            <tr>
-                                <td width="7%" align="right">{{ $no }})</td>
-                                @if ($data_ckp[$no - 1] < 0)
-                                    <td>{{ $val }} Sebesar Rp.
-                                        ({{ number_format($data_ckp[$no - 1] * -1, 2) }})
-                                    </td>
-                                @else
-                                    <td>{{ $val }} Sebesar Rp. {{ number_format($data_ckp[$no - 1], 2) }}
-                                    </td>
-                                @endif
-                            </tr>
-                        @endforeach
-                    </table>
-                </li>
-                <li>
                     Dalam hal Reklasifikasi dan revaluasi cadangan kerugian piutang (CKP) menghasilkan saldo yang
                     berbeda dari pola hitung lama (menggunakan kaidah penyajian laporan eks PNPM Mandiri Perdesaan) maka
                     perbedaan nilai tersebut akan berpengaruh menambah atau mengurangi laba ditahan dan total aset
@@ -266,10 +203,91 @@
             </ul>
         </li>
         <li>
-            Dalam hal didapati ada kelebihan angsuran pokok untuk sejumlah pinjman yang telah berstatus lunas dan
-            mengakibatkan terjadi saldo minus yang selanjutnya berpengarus pada total saldo pinjaman se-kecamatan maka
-            diakui sebagai tembahan pendapatan lain-lain yang akan dicatatkan menjadi pengurangan di saldo piutang dan
-            penambahan saldo laba ditahan dan total aset.
+            Hasil perhitungan ulang (revaluasi) aset per tanggal 1 Januari 2023
+            <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                style="font-size: 11px;">
+                <tr style="background: rgb(74, 74, 74); color: #fff;">
+                    <td height="20" align="center">Laporan Lama</td>
+                    <td align="center">Revaluasi</td>
+                    <td align="center">Laporan Baru</td>
+                </tr>
+                @foreach ($rekening as $rek)
+                    @php
+                        $no = $loop->iteration;
+                        $saldo = $keuangan->komSaldo($rek);
+
+                        $saldo_awal = 0;
+                        if ($rek->saldo) {
+                            $saldo_awal = $rek->saldo->kredit - $rek->saldo->debit;
+                        }
+
+                        $revaluasi = $saldo - $saldo_awal;
+                        if ($revaluasi == 0) {
+                            continue;
+                        }
+                    @endphp
+
+                    <tr style="background: rgb(167, 167, 167); font-weight: bold;">
+                        <td colspan="3">{{ $rek->nama_akun }}</td>
+                    </tr>
+                    <tr style="background: rgb(230, 230, 230);">
+                        <td align="right">
+                            @if ($saldo_awal < 0)
+                                Rp. ({{ number_format($saldo_awal * -1, 2) }})
+                            @else
+                                Rp. {{ number_format($saldo_awal, 2) }}
+                            @endif
+                        </td>
+                        <td align="right">
+                            @if ($revaluasi < 0)
+                                Rp. ({{ number_format($revaluasi * -1, 2) }})
+                            @else
+                                Rp. {{ number_format($revaluasi, 2) }}
+                            @endif
+                        </td>
+                        <td align="right">
+                            @if ($saldo < 0)
+                                Rp. ({{ number_format($saldo * -1, 2) }})
+                            @else
+                                Rp. {{ number_format($saldo, 2) }}
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+
+                @php
+                    $revaluasi = $saldo_revaluasi - $saldo_excel;
+                @endphp
+                <tr style="background: rgb(167, 167, 167); font-weight: bold;">
+                    <td colspan="3">Total {{ $kom_aset->nama_akun }}</td>
+                </tr>
+                <tr style="background: rgb(230, 230, 230);">
+                    <td align="right">
+                        @if ($saldo_excel < 0)
+                            Rp. ({{ number_format($saldo_excel * -1, 2) }})
+                        @else
+                            Rp. {{ number_format($saldo_excel, 2) }}
+                        @endif
+                    </td>
+                    <td align="right">
+                        @if ($revaluasi < 0)
+                            Rp. ({{ number_format($revaluasi * -1, 2) }})
+                        @else
+                            Rp. {{ number_format($revaluasi, 2) }}
+                        @endif
+                    </td>
+                    <td align="right">
+                        @if ($saldo_revaluasi < 0)
+                            Rp. ({{ number_format($saldo_revaluasi * -1, 2) }})
+                        @else
+                            Rp. {{ number_format($saldo_revaluasi, 2) }}
+                        @endif
+                    </td>
+                </tr>
+            </table>
+        </li>
+        <li>
+            {!! json_decode($kec->berita_acara, true) !!}
         </li>
         <li>
             Terlampir Laporan Posisi Keuangan hasil migrasi data ke dalam Format pelaporan sesuai Kepmendesa PDTT Nomor

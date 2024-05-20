@@ -2076,47 +2076,30 @@ class PelaporanController extends Controller
         }
 
         $tahun_pakai = Tanggal::tahun($tgl_pakai);
-        $data['aset_tetap'] = Rekening::where([
-            ['kode_akun', 'like', '1.2.01%'],
-            ['kode_akun', '!=', '1.2.01.01']
-        ])->with([
+        $data['rekening'] = Rekening::with([
             'kom_saldo' => function ($query) use ($tahun_pakai) {
                 $query->where([
                     ['tahun', $tahun_pakai],
                     ['bulan', '0']
                 ]);
             },
-            'trx_kredit' => function ($query) use ($tahun_pakai) {
-                $query->where('tgl_transaksi', $tahun_pakai . '-01-01');
+            'saldo' => function ($query) use ($tahun_pakai) {
+                $query->where([
+                    ['tahun', $tahun_pakai - 1],
+                    ['bulan', '12']
+                ]);
             }
         ])->get();
 
-        $data['aset_tak_berwujud'] = Rekening::where('kode_akun', 'like', '1.2.03%')->with([
-            'kom_saldo' => function ($query) use ($tahun_pakai) {
+        $data['kom_aset'] = AkunLevel1::where('lev1', '1')->with([
+            'saldo_awal',
+            'saldo' => function ($query) use ($tahun_pakai) {
                 $query->where([
                     ['tahun', $tahun_pakai],
                     ['bulan', '0']
                 ]);
-            },
-            'trx_kredit' => function ($query) use ($tahun_pakai) {
-                $query->where('tgl_transaksi', $tahun_pakai . '-01-01');
             }
-        ])->get();
-
-        $data['cadangan_piutang'] = Rekening::where(function ($query) {
-            $query->where('kode_akun', 'like', '1.1.04.01')
-                ->orwhere('kode_akun', 'like', '1.1.04.02');
-        })->with([
-            'kom_saldo' => function ($query) use ($tahun_pakai) {
-                $query->where([
-                    ['tahun', $tahun_pakai],
-                    ['bulan', '0']
-                ]);
-            },
-            'trx_debit' => function ($query) use ($tahun_pakai) {
-                $query->where('tgl_transaksi', $tahun_pakai . '-01-01');
-            }
-        ])->get();
+        ])->first();
 
         $data['direktur'] = User::where([
             ['jabatan', '1'],
