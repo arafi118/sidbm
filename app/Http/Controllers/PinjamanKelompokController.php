@@ -49,8 +49,7 @@ class PinjamanKelompokController extends Controller
     {
         if (request()->ajax()) {
             $pinkel = PinjamanKelompok::where([
-                ['status', 'P'],
-                ['jenis_pp', '!=', '3']
+                ['status', 'P']
             ])->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota')->get();
 
             return DataTables::of($pinkel)
@@ -89,8 +88,7 @@ class PinjamanKelompokController extends Controller
     {
         if (request()->ajax()) {
             $pinkel = PinjamanKelompok::where([
-                ['status', 'V'],
-                ['jenis_pp', '!=', '3']
+                ['status', 'V']
             ])->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota')->get();
 
             return DataTables::of($pinkel)
@@ -129,8 +127,7 @@ class PinjamanKelompokController extends Controller
     {
         if (request()->ajax()) {
             $pinkel = PinjamanKelompok::where([
-                ['status', 'W'],
-                ['jenis_pp', '!=', '3']
+                ['status', 'W']
             ])->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota')->get();
 
             return DataTables::of($pinkel)
@@ -169,8 +166,7 @@ class PinjamanKelompokController extends Controller
     {
         if (request()->ajax()) {
             $pinkel = PinjamanKelompok::where([
-                ['status', 'A'],
-                ['jenis_pp', '!=', '3']
+                ['status', 'A']
             ])->with('kelompok', 'kelompok.d', 'jpp', 'sts', 'pinjaman_anggota')->get();
 
             return DataTables::of($pinkel)
