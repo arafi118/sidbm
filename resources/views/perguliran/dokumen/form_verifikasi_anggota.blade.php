@@ -261,7 +261,7 @@
                                             @endif
                                         </div>
                                     </td>
-                                    <td align="right">
+                                    <td align="right" style="vertical-align: bottom;">
                                         <b>____________________________________</b>
                                     </td>
                                 </tr>
