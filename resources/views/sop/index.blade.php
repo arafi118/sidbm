@@ -39,12 +39,6 @@
                         </a>
                     </li>
                     <li class="nav-item pt-2">
-                        <a class="nav-link text-dark d-flex" data-scroll="" href="#berita_acara">
-                            <i class="material-icons text-lg me-2">insert_drive_file</i>
-                            <span class="text-sm">Berita Acara</span>
-                        </a>
-                    </li>
-                    <li class="nav-item pt-2">
                         <a class="nav-link text-dark d-flex" data-scroll="" href="#logo">
                             <i class="material-icons text-lg me-2">crop_original</i>
                             <span class="text-sm">Logo</span>
@@ -54,6 +48,12 @@
                         <a class="nav-link text-dark d-flex" data-scroll="" href="#whatsapp">
                             <i class="material-icons text-lg me-2">priority_high</i>
                             <span class="text-sm">Whatsapp</span>
+                        </a>
+                    </li>
+                    <li class="nav-item pt-2">
+                        <a class="nav-link text-dark d-flex" data-scroll="" href="#berita_acara">
+                            <i class="material-icons text-lg me-2">insert_drive_file</i>
+                            <span class="text-sm">Berita Acara</span>
                         </a>
                     </li>
                 </ul>
@@ -101,14 +101,6 @@
                     @include('sop.partials._spk')
                 </div>
             </div>
-            <div class="card mt-4" id="berita_acara">
-                <div class="card-header">
-                    <h5 class="mb-0">Berita Acara SI DBM</h5>
-                </div>
-                <div class="card-body pt-0">
-                    @include('sop.partials._berita_acara')
-                </div>
-            </div>
             <div class="card mt-4" id="logo">
                 <div class="card-header">
                     <h5 class="mb-0">Upload Logo</h5>
@@ -123,6 +115,14 @@
                 </div>
                 <div class="card-body pt-0">
                     @include('sop.partials._whatsapp')
+                </div>
+            </div>
+            <div class="card mt-4" id="berita_acara">
+                <div class="card-header">
+                    <h5 class="mb-0">Berita Acara SI DBM</h5>
+                </div>
+                <div class="card-body pt-0">
+                    @include('sop.partials._berita_acara')
                 </div>
             </div>
         </div>
