@@ -1579,8 +1579,7 @@ class PinjamanKelompokController extends Controller
 
         $data['verifikator'] = User::where([
             ['lokasi', Session::get('lokasi')],
-            ['level', '4'],
-            ['jabatan', '5']
+            ['level', '4']
         ])->orderBy('id', 'ASC')->get();
 
         $data['judul'] = 'Form Verifikasi Anggota (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
