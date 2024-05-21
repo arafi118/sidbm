@@ -107,7 +107,10 @@ class KelompokController extends Controller
     {
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $desa = Desa::where('kd_kec', $kec['kd_kec'])->with('sebutan_desa')->get();
-        $jenis_produk_pinjaman = JenisProdukPinjaman::where('lokasi', '0')->orderBy('id', 'ASC')->get();
+        $jenis_produk_pinjaman = JenisProdukPinjaman::where([
+            ['lokasi', '0'],
+            ['id', '!=', '3']
+        ])->orderBy('id', 'ASC')->get();
         $jenis_usaha = JenisUsaha::all();
         $jenis_kegiatan = JenisKegiatan::all();
         $tingkat_kelompok = TingkatKelompok::all();
@@ -203,13 +206,18 @@ class KelompokController extends Controller
     public function show(Kelompok $kelompok)
     {
         $kelompok = $kelompok->with([
-            'pinkel',
+            'pinkel' => function ($query) use ($kelompok) {
+                $query->where('jenis_pp', $kelompok->jenis_produk_pinjaman);
+            },
             'pinkel.sts',
             'pinkel.saldo'
         ])->where('id', $kelompok->id)->first();
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $desa = Desa::where('kd_kec', $kec['kd_kec'])->with('sebutan_desa')->get();
-        $jenis_produk_pinjaman = JenisProdukPinjaman::where('lokasi', '0')->orderBy('id', 'ASC')->get();
+        $jenis_produk_pinjaman = JenisProdukPinjaman::where([
+            ['lokasi', '0'],
+            ['id', '!=', '3']
+        ])->orderBy('id', 'ASC')->get();
         $jenis_usaha = JenisUsaha::all();
         $jenis_kegiatan = JenisKegiatan::all();
         $tingkat_kelompok = TingkatKelompok::all();

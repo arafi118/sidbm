@@ -61,14 +61,15 @@
                 </div>
             </div>
 
-            <div class="d-grid">
-                <button type="button" id="BtnTambahPemanfaat" data-bs-toggle="modal" data-bs-target="#TambahPemanfaat"
-                    class="btn btn-success btn-sm mb-1">
-                    Tambah Pemanfaat
-                </button>
-            </div>
-
-            <hr class="horizontal dark">
+            @if (!($perguliran->jenis_pp == '3' && $perguliran->kelompok->fungsi_kelompok == '2'))
+                <div class="d-grid">
+                    <button type="button" id="BtnTambahPemanfaat" data-bs-toggle="modal"
+                        data-bs-target="#TambahPemanfaat" class="btn btn-success btn-sm mb-1">
+                        Tambah Pemanfaat
+                    </button>
+                </div>
+                <hr class="horizontal dark">
+            @endif
 
             <div class="table-responsive">
                 <table class="table table-striped align-items-center mb-0" width="100%">

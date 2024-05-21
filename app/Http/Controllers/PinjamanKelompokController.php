@@ -349,8 +349,12 @@ class PinjamanKelompokController extends Controller
 
         $pinjaman_kelompok = PinjamanKelompok::create($insert);
 
+        $jenis_pp = 'Pinjaman Kelompok';
+        if ($insert['jenis_pp'] == '3') {
+            $jenis_pp = 'Pinjaman Lembaga Lain';
+        }
         return response()->json([
-            'msg' => 'Proposal Pinjaman Kelompok ' . $kel->nama_kelompok . ' berhasil dibuat',
+            'msg' => 'Proposal ' . $jenis_pp . ' ' . $kel->nama_kelompok . ' berhasil dibuat',
             'kode_kelompok' => $kel->kd_kelompok + 1,
             'desa' => $kel->desa,
             'id' => $pinjaman_kelompok->id

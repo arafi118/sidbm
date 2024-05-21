@@ -17,6 +17,17 @@
             if (in_array(str_replace('#', '', $menu->link), explode('/', $path))) {
                 $active = 'active';
             }
+
+            foreach ($menu->child as $child) {
+                if ($active == 'active') {
+                    break;
+                }
+
+                $child_link = explode('/', $child);
+                if (in_array(Request::path(), $child_link)) {
+                    $active = 'active';
+                }
+            }
         @endphp
         <li class="nav-item">
             <a data-bs-toggle="collapse" href="#menu_{{ str_replace('#', '', $menu->link) }}"
