@@ -1978,12 +1978,6 @@ class PelaporanController extends Controller
             }
         ])->orderBy('kode_akun', 'ASC')->get();
 
-        $data['dir'] = User::where([
-            ['level', '1'],
-            ['jabatan', '1'],
-            ['lokasi', Session::get('lokasi')],
-        ])->first();
-
         $data['sekr'] = User::where([
             ['level', '1'],
             ['jabatan', '2'],
