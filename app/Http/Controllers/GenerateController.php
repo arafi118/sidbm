@@ -447,6 +447,7 @@ class GenerateController extends Controller
 
         RencanaAngsuran::whereIn('loan_id', $data_id_pinj)->delete();
         RealAngsuran::whereIn('loan_id', $data_id_pinj)->delete();
+        RealAngsuran::whereIn('id', $data_id_real)->delete();
 
         RencanaAngsuran::insert($rencana);
         RealAngsuran::insert($real);
