@@ -29,7 +29,15 @@
                                 {{ Session::get('nama') }}
                             </h5>
                             <p class="mb-0 font-weight-normal text-sm">
-                                {{ $user->j ? $user->j->nama_jabatan : '' }}
+                                @if ($user->level == '1' && $user->jabatan == '1')
+                                    {{ $kec->sebutan_level_1 }}
+                                @elseif ($user->level == '1' && $user->jabatan == '2')
+                                    {{ $kec->sebutan_level_2 }}
+                                @elseif ($user->level == '1' && $user->jabatan == '3')
+                                    {{ $kec->sebutan_level_3 }}
+                                @else
+                                    {{ $user->j ? $user->j->nama_jabatan : '' }}
+                                @endif
                             </p>
                         </div>
                     </div>

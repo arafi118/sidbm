@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kecamatan;
 use App\Models\Pendidikan;
 use App\Models\User;
 use App\Utils\Tanggal;
@@ -19,13 +20,14 @@ class UserController extends Controller
      */
     public function index()
     {
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $user = User::where('id', auth()->user()->id)->with('l', 'j', 'kec', 'kec.kabupaten')->first();
         $pendidikan = Pendidikan::all();
 
         $pass = $this->RandomString(strlen($user->pass));
 
         $title = 'Profil User';
-        return view('profil.index')->with(compact('title', 'user', 'pendidikan', 'pass'));
+        return view('profil.index')->with(compact('title', 'kec', 'user', 'pendidikan', 'pass'));
     }
 
     /**
