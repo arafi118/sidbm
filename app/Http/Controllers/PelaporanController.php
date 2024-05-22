@@ -435,7 +435,7 @@ class PelaporanController extends Controller
 
     private function LPM(array $data)
     {
-        $data['laporan'] = 'Laporan Perubahan Modal';
+        $data['laporan'] = 'Laporan Perubahan Equitas';
         $keuangan = new Keuangan;
 
         $thn = $data['tahun'];
