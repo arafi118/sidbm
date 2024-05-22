@@ -720,7 +720,6 @@ class PinjamanKelompokController extends Controller
                 foreach ($request->idpa as $idpa => $val) {
                     $val = str_replace(',', '', str_replace('.00', '', $val));
                     if ($val == '') $val = 0;
-                    // echo $val . ', ';
                     PinjamanAnggota::where('id', $idpa)->update([
                         $tgl => Tanggal::tglNasional($data[$tgl]),
                         $alokasi => $val,

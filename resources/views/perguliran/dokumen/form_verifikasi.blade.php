@@ -158,7 +158,9 @@
             <td align="center"><b>Data Proposal</b></td>
             <td align="center">{{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
             <td align="right">{{ number_format($pinkel->proposal) }}</td>
-            <td align="center">{{ $pinkel->pros_jasa / $pinkel->jangka }}%/{{ $pinkel->jasa->nama_jj }}</td>
+            <td align="center">
+                {{ number_format($pinkel->pros_jasa / $pinkel->jangka, 2) }}%/{{ $pinkel->jasa->nama_jj }}
+            </td>
             <td align="center">{{ $pinkel->jangka }} bulan</td>
             <td align="center">{{ $pinkel->sis_pokok->nama_sistem }}</td>
         </tr>
