@@ -8,7 +8,7 @@
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
-                    <b>LAPORAN PERUBAHAN EQUITAS</b>
+                    <b>LAPORAN PERUBAHAN Ekuitas</b>
                 </div>
                 <div style="font-size: 16px;">
                     <b>{{ strtoupper($sub_judul) }}</b>
