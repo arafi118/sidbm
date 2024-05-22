@@ -25,7 +25,6 @@
         <tr style="background: rgb(232, 232, 232)">
             <th class="l t" width="5%" height="20">No</th>
             <th class="l t" width="55%">Rekening Modal</th>
-            <th class="l t" width="20%">&nbsp;</th>
             <th class="l r t" width="20%">&nbsp;</th>
         </tr>
 
@@ -42,19 +41,17 @@
             <tr>
                 <td class="l t" align="center">{{ $loop->iteration }}</td>
                 <td class="l t">{{ $rek->nama_akun }}</td>
-                <td class="l t" align="right">{{ number_format($saldo, 2) }}</td>
-                <td class="l t r">&nbsp;</td>
+                <td class="l t r" align="right">{{ number_format($saldo, 2) }}</td>
             </tr>
         @endforeach
 
         <tr>
             <td class="l t b" colspan="2" height="15">&nbsp;</td>
-            <td class="l t b" align="right">{{ number_format($t_saldo, 2) }}</td>
-            <td class="l t r b">&nbsp;</td>
+            <td class="l t b r" align="right">{{ number_format($t_saldo, 2) }}</td>
         </tr>
 
         <tr>
-            <td colspan="4">
+            <td colspan="3">
                 <div style="margin-top: 16px;"></div>
                 {!! json_decode(str_replace('{tanggal}', $tanggal_kondisi, $kec->ttd->tanda_tangan_pelaporan), true) !!}
             </td>
