@@ -88,7 +88,7 @@ return [
             'url' => env('DATABASE_URL'),
             'host' => env('DB_UPK_HOST', '127.0.0.1'),
             'port' => env('DB_UPK_PORT', '3306'),
-            'database' => env('DB_UPK_DATABASE', 'forge'),
+            'database' => env('DB_UPK_NET_DATABASE', 'forge'),
             'username' => env('DB_UPK_USERNAME', 'forge'),
             'password' => env('DB_UPK_PASSWORD', ''),
             'unix_socket' => env('DB_UPK_SOCKET', ''),
