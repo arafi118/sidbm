@@ -374,9 +374,9 @@ class GenerateController extends Controller
             foreach ($pinkel->trx as $trx) {
                 $poko_kredit = '1.1.03';
                 $jasa_kredit = '4.1.01';
-                $dend_kredit = '4.1.02';
+                $dend_kredit = ['4.1.01.04', '4.1.01.05', '4.1.01.06'];
 
-                if (Keuangan::startWith($trx->rekening_kredit, $dend_kredit)) continue;
+                if (in_array($trx->rekening_kredit, $dend_kredit)) continue;
                 if (in_array($trx->idtp, $data_idtp)) continue;
 
                 $tgl_transaksi = $trx->tgl_transaksi;
