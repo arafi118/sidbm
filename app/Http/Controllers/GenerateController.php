@@ -373,7 +373,7 @@ class GenerateController extends Controller
             ksort($data_rencana);
             foreach ($pinkel->trx as $trx) {
                 $poko_kredit = '1.1.03';
-                $jasa_kredit = '4.1.01';
+                $jasa_kredit = ['4.1.01.01', '4.1.01.02', '4.1.01.03'];
                 $dend_kredit = ['4.1.01.04', '4.1.01.05', '4.1.01.06'];
 
                 if (in_array($trx->rekening_kredit, $dend_kredit)) continue;
@@ -390,7 +390,7 @@ class GenerateController extends Controller
                         $alokasi_pokok -= $realisasi_pokok;
                     }
 
-                    if (Keuangan::startWith($idtp->rekening_kredit, $jasa_kredit)) {
+                    if (in_array($trx->rekening_kredit, $jasa_kredit)) {
                         $realisasi_jasa = intval($idtp->jumlah);
                         $sum_jasa += $realisasi_jasa;
                         $alokasi_jasa -= $realisasi_jasa;
