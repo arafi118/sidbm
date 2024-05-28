@@ -206,9 +206,7 @@ class KelompokController extends Controller
     public function show(Kelompok $kelompok)
     {
         $kelompok = $kelompok->with([
-            'pinkel' => function ($query) use ($kelompok) {
-                $query->where('jenis_pp', $kelompok->jenis_produk_pinjaman);
-            },
+            'pinkel',
             'pinkel.sts',
             'pinkel.saldo'
         ])->where('id', $kelompok->id)->first();
