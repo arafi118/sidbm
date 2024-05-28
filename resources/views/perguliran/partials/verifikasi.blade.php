@@ -119,6 +119,13 @@
                             @php
                                 $proposal += $pinjaman_anggota->proposal;
                                 $verifikasi += $pinjaman_anggota->verifikasi;
+
+                                $class1 = '';
+                                $class2 = '';
+                                if (auth()->user()->level == '5' || auth()->user()->level == '1') {
+                                    $class1 = 'idpa_proposal';
+                                    $class2 = 'idpa';
+                                }
                             @endphp
                             <tr>
                                 <td align="center">{{ $loop->iteration }}</td>
@@ -128,7 +135,8 @@
                                 </td>
                                 <td>
                                     <div class="input-group input-group-static">
-                                        <input type="text" disabled readonly class="form-control money idpa_proposal"
+                                        <input type="text" disabled readonly
+                                            class="form-control money {{ $class1 }}"
                                             value="{{ number_format($pinjaman_anggota->proposal, 2) }}">
                                     </div>
                                 </td>
@@ -136,14 +144,14 @@
                                     <div class="input-group input-group-static">
                                         <input type="text" id="{{ $pinjaman_anggota->id }}"
                                             name="idpa_proposal[{{ $pinjaman_anggota->id }}]"
-                                            class="form-control money idpa_proposal"
+                                            class="form-control money {{ $class1 }}"
                                             value="{{ number_format($pinjaman_anggota->verifikasi, 2) }}">
                                     </div>
                                 </td>
                                 <td>
                                     <div class="input-group input-group-static">
                                         <input type="text" name="idpa[{{ $pinjaman_anggota->id }}]"
-                                            class="form-control money idpa idpa-{{ $pinjaman_anggota->id }}"
+                                            class="form-control money {{ $class2 }} idpa-{{ $pinjaman_anggota->id }}"
                                             value="{{ number_format($pinjaman_anggota->verifikasi, 2) }}">
                                     </div>
                                     <input type="hidden" name="catatan[{{ $pinjaman_anggota->id }}]"
@@ -290,9 +298,12 @@
                 <button type="button" id="kembaliProposal" class="btn btn-warning btn-sm">
                     Kembalikan Ke Proposal
                 </button>
-                <button type="button" id="Simpan" class="btn btn-github ms-1 btn-sm">
-                    Simpan Keputusan Pendanaan
-                </button>
+
+                @if (auth()->user()->level == '5' || auth()->user()->level == '1')
+                    <button type="button" id="Simpan" class="btn btn-github ms-1 btn-sm">
+                        Simpan Keputusan Pendanaan
+                    </button>
+                @endif
             </div>
         </div>
     </div>

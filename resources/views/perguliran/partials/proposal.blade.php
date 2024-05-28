@@ -90,6 +90,13 @@
                         @foreach ($perguliran->pinjaman_anggota as $pinjaman_anggota)
                             @php
                                 $proposal += $pinjaman_anggota->proposal;
+
+                                $class1 = '';
+                                $class2 = '';
+                                if (auth()->user()->level == '4') {
+                                    $class1 = 'idpa_proposal';
+                                    $class2 = 'idpa';
+                                }
                             @endphp
                             <tr>
                                 <td align="center">{{ $loop->iteration }}</td>
@@ -101,14 +108,14 @@
                                     <div class="input-group input-group-static">
                                         <input type="text" id="{{ $pinjaman_anggota->id }}"
                                             name="idpa_proposal[{{ $pinjaman_anggota->id }}]"
-                                            class="form-control money idpa_proposal"
+                                            class="form-control money {{ $class1 }}"
                                             value="{{ number_format($pinjaman_anggota->proposal, 2) }}">
                                     </div>
                                 </td>
                                 <td>
                                     <div class="input-group input-group-static">
                                         <input type="text" name="idpa[{{ $pinjaman_anggota->id }}]"
-                                            class="form-control money idpa idpa-{{ $pinjaman_anggota->id }}"
+                                            class="form-control money idpa-{{ $pinjaman_anggota->id }}"
                                             value="{{ number_format($pinjaman_anggota->proposal, 2) }}">
                                     </div>
                                 </td>
@@ -256,9 +263,11 @@
                 </div>
             </div>
 
-            <button type="button" id="Simpan" class="btn btn-github float-end btn-sm">
-                Simpan Rekom Verifikator
-            </button>
+            @if (auth()->user()->level == '4')
+                <button type="button" id="Simpan" class="btn btn-github float-end btn-sm">
+                    Simpan Rekom Verifikator
+                </button>
+            @endif
         </div>
     </div>
 </form>
