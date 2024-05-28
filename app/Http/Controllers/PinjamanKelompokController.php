@@ -206,8 +206,7 @@ class PinjamanKelompokController extends Controller
         if (request()->ajax()) {
             $tb_pinkel = 'pinjaman_kelompok_' . Session::get('lokasi');
             $pinkel = PinjamanKelompok::where([
-                ['status', 'A'],
-                ['jenis_pp', '!=', '3']
+                ['status', 'A']
             ])->whereRaw($tb_pinkel . '.alokasi<=(SELECT SUM(realisasi_pokok) FROM real_angsuran_' . Session::get('lokasi') . ' WHERE loan_id=' . $tb_pinkel . '.id)')
                 ->with('kelompok', 'jpp', 'sts')->withCount('pinjaman_anggota')->get();
 
