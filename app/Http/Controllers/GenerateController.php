@@ -390,7 +390,7 @@ class GenerateController extends Controller
                         $alokasi_pokok -= $realisasi_pokok;
                     }
 
-                    if (in_array($trx->rekening_kredit, $jasa_kredit)) {
+                    if (in_array($idtp->rekening_kredit, $jasa_kredit)) {
                         $realisasi_jasa = intval($idtp->jumlah);
                         $sum_jasa += $realisasi_jasa;
                         $alokasi_jasa -= $realisasi_jasa;
