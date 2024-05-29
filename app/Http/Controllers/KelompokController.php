@@ -74,12 +74,12 @@ class KelompokController extends Controller
         $lokasi = Session::get('lokasi');
         $kd_desa = request()->get('kode');
 
-        $jumlah_kelompok_by_kd_desa = Kelompok::where([['desa', $kd_desa], ['jenis_produk_pinjaman', '!=', '3']])->orderBy('kd_kelompok', 'DESC');
+        $jumlah_kelompok_by_kd_desa = Kelompok::where([['desa', $kd_desa]])->orderBy('kd_kelompok', 'DESC');
         if ($jumlah_kelompok_by_kd_desa->count() > 0) {
             $data_kelompok = $jumlah_kelompok_by_kd_desa->first();
             $kd_kelompok = $data_kelompok->kd_kelompok + 1;
         } else {
-            $jumlah_kelompok = str_pad(Kelompok::where([['desa', $kd_desa], ['jenis_produk_pinjaman', '!=', '3']])->count() + 1, 4, "0", STR_PAD_LEFT);
+            $jumlah_kelompok = str_pad(Kelompok::where([['desa', $kd_desa]])->count() + 1, 4, "0", STR_PAD_LEFT);
             $kd_kelompok = $kd_desa . $jumlah_kelompok;
         }
 
