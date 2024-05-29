@@ -1848,7 +1848,17 @@ class PelaporanController extends Controller
         $hari = 1;
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
-        $data['tanggal_kondisi'] = Tanggal::tglLatin(date('Y-m-d', strtotime($tgl)));
+        $trx_pembagian_laba = Transaksi::where([
+            ['rekening_debit', '3.2.01.01'],
+            ['keterangan_transaksi', 'LIKE', '%tahun 2023%']
+        ])->first();
+
+        $tgl_kondisi = $tgl;
+        if ($trx_pembagian_laba) {
+            $tgl_kondisi = $trx_pembagian_laba->tgl_transaksi;
+        }
+
+        $data['tanggal_kondisi'] = Tanggal::tglLatin(date('Y-m-d', strtotime($tgl_kondisi)));
         $data['sub_judul'] = 'Tahun ' . ($thn - 1);
         $data['tgl'] = Tanggal::tahun($tgl) - 1;
 
