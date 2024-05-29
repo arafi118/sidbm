@@ -163,7 +163,7 @@ class PelaporanController extends Controller
         $kab = $kec->kabupaten;
 
         $jabatan = '1';
-        $level = $kec->ttd_mengetahui_lap;
+        $level = '1';
 
         $dir = User::where([
             ['lokasi', Session::get('lokasi')],
@@ -524,6 +524,12 @@ class PelaporanController extends Controller
 
         $data['pengawas'] = User::where([
             ['level', '3'],
+            ['jabatan', '1'],
+            ['lokasi', Session::get('lokasi')],
+        ])->first();
+
+        $data['dir_utama'] = User::where([
+            ['level', '2'],
             ['jabatan', '1'],
             ['lokasi', Session::get('lokasi')],
         ])->first();
@@ -2002,6 +2008,12 @@ class PelaporanController extends Controller
 
         $data['pengawas'] = User::where([
             ['level', '3'],
+            ['jabatan', '1'],
+            ['lokasi', Session::get('lokasi')],
+        ])->first();
+
+        $data['dir_utama'] = User::where([
+            ['level', '2'],
             ['jabatan', '1'],
             ['lokasi', Session::get('lokasi')],
         ])->first();

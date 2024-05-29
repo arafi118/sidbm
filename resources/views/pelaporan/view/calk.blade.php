@@ -128,13 +128,23 @@
                         {{ $pengawas ? $pengawas->namadepan . ' ' . $pengawas->namabelakang : '......................................' }}
                     </td>
                 </tr>
-                <tr>
-                    <td style="padding: 0px; 4px;">{{ $kec->sebutan_level_1 }}</td>
-                    <td style="padding: 0px; 4px;">:</td>
-                    <td style="padding: 0px; 4px;">
-                        {{ $dir ? $dir->namadepan . ' ' . $dir->namabelakang : '......................................' }}
-                    </td>
-                </tr>
+                @if ($dir_utama)
+                    <tr>
+                        <td style="padding: 0px; 4px;">Direktur</td>
+                        <td style="padding: 0px; 4px;">:</td>
+                        <td style="padding: 0px; 4px;">
+                            {{ $dir_utama->namadepan . ' ' . $dir_utama->namabelakang }}
+                        </td>
+                    </tr>
+                @else
+                    <tr>
+                        <td style="padding: 0px; 4px;">{{ $kec->sebutan_level_1 }}</td>
+                        <td style="padding: 0px; 4px;">:</td>
+                        <td style="padding: 0px; 4px;">
+                            {{ $dir ? $dir->namadepan . ' ' . $dir->namabelakang : '......................................' }}
+                        </td>
+                    </tr>
+                @endif
                 <tr>
                     <td style="padding: 0px; 4px;">{{ $kec->sebutan_level_2 }}</td>
                     <td style="padding: 0px; 4px;">:</td>
@@ -149,6 +159,15 @@
                         {{ $bend ? $bend->namadepan . ' ' . $bend->namabelakang : '......................................' }}
                     </td>
                 </tr>
+                @if ($dir_utama)
+                    <tr>
+                        <td style="padding: 0px; 4px;">{{ $kec->sebutan_level_1 }}</td>
+                        <td style="padding: 0px; 4px;">:</td>
+                        <td style="padding: 0px; 4px;">
+                            {{ $dir ? $dir->namadepan . ' ' . $dir->namabelakang : '......................................' }}
+                        </td>
+                    </tr>
+                @endif
                 {{-- <tr>
                     <td style="padding: 0px; 4px;">Unit Usaha</td>
                     <td style="padding: 0px; 4px;">:</td>
@@ -400,7 +419,8 @@
                                                 <td>:</td>
                                                 <td width="70" align="right">{{ number_format($laba_th_lalu, 2) }}
                                                 </td>
-                                                <td width="70" align="right">{{ number_format($laba_th_ini, 2) }}</td>
+                                                <td width="70" align="right">{{ number_format($laba_th_ini, 2) }}
+                                                </td>
                                                 <td width="70" align="right">
                                                     {{ number_format($laba_th_ini + $laba_th_lalu, 2) }}
                                                 </td>
