@@ -79,12 +79,12 @@ class LembagaLainController extends Controller
         $lokasi = Session::get('lokasi');
         $kd_desa = request()->get('kode');
 
-        $jumlah_lembaga_by_kd_desa = Kelompok::where([['desa', $kd_desa], ['jenis_produk_pinjaman', '=', '3']])->orderBy('kd_kelompok', 'DESC');
+        $jumlah_lembaga_by_kd_desa = Kelompok::where([['desa', $kd_desa]])->orderBy('kd_kelompok', 'DESC');
         if ($jumlah_lembaga_by_kd_desa->count() > 0) {
             $data_lembaga = $jumlah_lembaga_by_kd_desa->first();
             $kd_lembaga = $data_lembaga->kd_kelompok + 1;
         } else {
-            $jumlah_lembaga = str_pad(Kelompok::where([['desa', $kd_desa], ['jenis_produk_pinjaman', '=', '3']])->count() + 1, 4, "0", STR_PAD_LEFT);
+            $jumlah_lembaga = str_pad(Kelompok::where([['desa', $kd_desa]])->count() + 1, 4, "0", STR_PAD_LEFT);
             $kd_lembaga = $kd_desa . '03' . $jumlah_lembaga;
         }
 
