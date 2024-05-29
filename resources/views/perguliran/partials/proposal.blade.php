@@ -115,7 +115,7 @@
                                 <td>
                                     <div class="input-group input-group-static">
                                         <input type="text" name="idpa[{{ $pinjaman_anggota->id }}]"
-                                            class="form-control money idpa-{{ $pinjaman_anggota->id }}"
+                                            class="form-control money {{ $class2 }} idpa-{{ $pinjaman_anggota->id }}"
                                             value="{{ number_format($pinjaman_anggota->proposal, 2) }}">
                                     </div>
                                 </td>
