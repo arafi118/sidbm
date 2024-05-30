@@ -216,12 +216,14 @@
                         $no = $loop->iteration;
                         $saldo = 0;
                         if ($rek->kom_saldo) {
-                            $saldo = $rek->kom_saldo->kredit - $rek->kom_saldo->debit;
-                            if (
-                                Keuangan::startWith($rek->kode_akun, '1.') ||
-                                Keuangan::startWith($rek->kode_akun, '5.')
-                            ) {
-                                $saldo = $rek->kom_saldo->debit - $rek->kom_saldo->kredit;
+                            foreach ($rek->kom_saldo as $kom_saldo) {
+                                $saldo = $kom_saldo->kredit - $kom_saldo->debit;
+                                if (
+                                    Keuangan::startWith($rek->kode_akun, '1.') ||
+                                    Keuangan::startWith($rek->kode_akun, '5.')
+                                ) {
+                                    $saldo = $kom_saldo->debit - $kom_saldo->kredit;
+                                }
                             }
                         }
 
