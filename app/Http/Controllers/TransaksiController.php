@@ -262,6 +262,8 @@ class TransaksiController extends Controller
             Saldo::insert($saldo_tutup_buku);
 
             $success = true;
+
+            return redirect('/transaksi/tutup_buku')->with('success', 'Tutup Buku Tahun ' . $tahun . ' berhasil.');
         }
 
         $surplus = $keuangan->laba_rugi($tahun . '-13-00');

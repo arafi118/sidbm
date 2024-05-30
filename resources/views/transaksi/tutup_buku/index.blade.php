@@ -124,4 +124,10 @@
             $('#FormTahunTutupBuku').submit()
         })
     </script>
+
+    @if (Session::get('success'))
+        <script>
+            Swal.fire('Selamat', "{{ Session::get('success') }}", 'success')
+        </script>
+    @endif
 @endsection

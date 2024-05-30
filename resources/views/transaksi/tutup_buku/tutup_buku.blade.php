@@ -188,7 +188,7 @@
 
                             <div class="d-flex justify-content-end">
                                 <a href="/transaksi/tutup_buku" class="btn btn-warning btn-sm">
-                                    Kembali
+                                    Batal
                                 </a>
                                 <button type="button" id="btnSimpanLaba" class="btn btn-github btn-sm ms-2">
                                     Simpan Alokasi Laba
