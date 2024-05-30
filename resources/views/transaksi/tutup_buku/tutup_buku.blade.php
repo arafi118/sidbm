@@ -187,7 +187,10 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <button type="button" id="btnSimpanLaba" class="btn btn-github btn-sm">
+                                <a href="/transaksi/tutup_buku" class="btn btn-warning btn-sm">
+                                    Kembali
+                                </a>
+                                <button type="button" id="btnSimpanLaba" class="btn btn-github btn-sm ms-2">
                                     Simpan Alokasi Laba
                                 </button>
                             </div>
@@ -310,7 +313,7 @@
                 success: function(result) {
                     if (result.success) {
                         Swal.fire('Selamat', result.msg, 'success').then(() => {
-                            // window.location.href = '/transaksi/tutup_buku'
+                            window.location.href = '/transaksi/tutup_buku'
                         })
                     }
                 }

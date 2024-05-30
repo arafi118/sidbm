@@ -354,32 +354,36 @@ class TransaksiController extends Controller
         $saldo_tutup_buku = [];
         foreach ($desa as $d) {
             $id = str_replace('.', '', $d->kode_desa) . $tahun_tb . 0;
-            $saldo_tutup_buku[] = [
-                'id' => $id,
-                'kode_akun' => $d->kode_desa,
-                'tahun' => $tahun_tb,
-                'bulan' => '0',
-                'debit' => (string) $d->saldo->kredit,
-                'kredit' => str_replace(',', '', str_replace('.00', '', $pembagian_laba_desa[$d->kd_desa]))
-            ];
+            $pembagian_desa = str_replace(',', '', str_replace('.00', '', $pembagian_laba_desa[$d->kd_desa]));
 
-            $keterangan = 'Alokasi laba bagian ' . $d->sebutan_desa->sebutan_desa . ' ' . $d->nama_desa . ' tahun ' . $tahun;
-            $trx['insert'][] = [
-                'tgl_transaksi' => date('Y-m-d'),
-                'rekening_debit' => '3.2.01.01',
-                'rekening_kredit' => '2.1.04.02',
-                'idtp' => '0',
-                'id_pinj' => '0',
-                'id_pinj_i' => '0',
-                'keterangan_transaksi' => $keterangan,
-                'relasi' => '-',
-                'jumlah' => str_replace(',', '', str_replace('.00', '', $pembagian_laba_desa[$d->kd_desa])),
-                'urutan' => '0',
-                'id_user' => auth()->user()->id
-            ];
+            if (intval($pembagian_desa) > 0) {
+                $saldo_tutup_buku[] = [
+                    'id' => $id,
+                    'kode_akun' => $d->kode_desa,
+                    'tahun' => $tahun_tb,
+                    'bulan' => '0',
+                    'debit' => (string) $d->saldo->kredit,
+                    'kredit' => $pembagian_desa
+                ];
 
-            $trx['delete'][] = $keterangan;
-            $data_id[] = $id;
+                $keterangan = 'Alokasi laba bagian ' . $d->sebutan_desa->sebutan_desa . ' ' . $d->nama_desa . ' tahun ' . $tahun;
+                $trx['insert'][] = [
+                    'tgl_transaksi' => date('Y-m-d'),
+                    'rekening_debit' => '3.2.01.01',
+                    'rekening_kredit' => '2.1.04.02',
+                    'idtp' => '0',
+                    'id_pinj' => '0',
+                    'id_pinj_i' => '0',
+                    'keterangan_transaksi' => $keterangan,
+                    'relasi' => '-',
+                    'jumlah' => $pembagian_desa,
+                    'urutan' => '0',
+                    'id_user' => auth()->user()->id
+                ];
+
+                $trx['delete'][] = $keterangan;
+                $data_id[] = $id;
+            }
         }
 
         foreach ($kec->saldo as $saldo) {
