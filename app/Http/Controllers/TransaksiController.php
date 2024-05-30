@@ -514,7 +514,7 @@ class TransaksiController extends Controller
 
         return response()->json([
             'success' => true,
-            'msg' => 'Tutup Buku Tahun ' . $tahun . ' berhasil.'
+            'msg' => 'Alokasi Pembagian Laba tahun ' . $tahun . ' berhasil.'
         ]);
     }
 
