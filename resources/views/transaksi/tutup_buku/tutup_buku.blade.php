@@ -327,12 +327,24 @@
                 if (result.isConfirmed) {
                     $('#tgl_mad').val($('#tanggal').val())
 
+                    var loading = Swal.fire({
+                        title: "Mohon Menunggu..",
+                        html: "Menyimpan Alokasi Pembagian Laba",
+                        timerProgressBar: true,
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    })
+
                     var form = $('#SimpanAlokasiLaba')
                     $.ajax({
                         type: form.attr('method'),
                         url: form.attr('action'),
                         data: form.serialize(),
                         success: function(result) {
+                            loading.close()
+
                             if (result.success) {
                                 Swal.fire('Selamat', result.msg, 'success').then(() => {
                                     window.location.href = '/transaksi/tutup_buku'
