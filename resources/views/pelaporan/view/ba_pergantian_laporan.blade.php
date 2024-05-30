@@ -214,11 +214,26 @@
                 @foreach ($rekening as $rek)
                     @php
                         $no = $loop->iteration;
-                        $saldo = $keuangan->komSaldo($rek);
+                        $saldo = 0;
+                        if ($rek->kom_saldo) {
+                            $saldo = $rek->kom_saldo->kredit - $rek->kom_saldo->debit;
+                            if (
+                                Keuangan::startWith($rek->kode_akun, '1.') ||
+                                Keuangan::startWith($rek->kode_akun, '5.')
+                            ) {
+                                $saldo = $rek->kom_saldo->debit - $rek->kom_saldo->kredit;
+                            }
+                        }
 
                         $saldo_awal = 0;
                         if ($rek->saldo) {
                             $saldo_awal = $rek->saldo->kredit - $rek->saldo->debit;
+                            if (
+                                Keuangan::startWith($rek->kode_akun, '1.') ||
+                                Keuangan::startWith($rek->kode_akun, '5.')
+                            ) {
+                                $saldo_awal = $rek->saldo->debit - $rek->saldo->kredit;
+                            }
                         }
 
                         $revaluasi = $saldo - $saldo_awal;
