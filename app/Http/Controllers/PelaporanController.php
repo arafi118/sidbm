@@ -477,6 +477,12 @@ class PelaporanController extends Controller
         $bln = $data['bulan'];
         $hari = $data['hari'];
 
+        $trx = Transaksi::where([
+            ['keterangan_transaksi', 'LIKE', '%tahun ' . $data['tahun'] - 1],
+            ['rekening_debit', '3.2.01.01']
+        ])->first();
+
+        $data['tgl_mad'] = $trx->tgl_transaksi;
         if ($bln == '1' && $hari == '1') {
             return $this->CALK_tutup_buku($data);
         }

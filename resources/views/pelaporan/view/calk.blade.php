@@ -35,8 +35,10 @@
 
     $i = 0;
     foreach ($saldo_calk as $_saldo) {
-        $calk["$i"]['th_lalu'] = floatval($_saldo->debit);
-        $calk["$i"]['th_ini'] = floatval($_saldo->kredit);
+        if ($tgl_kondisi >= $tgl_mad) {
+            $calk["$i"]['th_lalu'] = floatval($_saldo->debit);
+            $calk["$i"]['th_ini'] = floatval($_saldo->kredit);
+        }
 
         $i++;
     }
@@ -408,7 +410,7 @@
                                             @php
                                                 $laba_th_lalu = 0;
                                                 $laba_th_ini = 0;
-                                                if ($desa->saldo) {
+                                                if ($desa->saldo && $tgl_kondisi >= $tgl_mad) {
                                                     $laba_th_lalu = floatval($desa->saldo->debit);
                                                     $laba_th_ini = floatval($desa->saldo->kredit);
                                                 }
