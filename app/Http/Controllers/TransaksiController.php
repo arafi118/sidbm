@@ -295,8 +295,10 @@ class TransaksiController extends Controller
             "total_laba_bagian_desa",
             "total_laba_bagian_penyerta_modal",
             "laba_ditahan",
+            'tgl_mad'
         ]);
 
+        $data['tgl_mad'] = Tanggal::tglNasional($data['tgl_mad']);
         $tanggal = $request->tgl_kondisi ?: date('Y-m-d');
         $tahun = Tanggal::tahun($tanggal);
         $tahun_tb = $tahun + 1;
@@ -370,7 +372,7 @@ class TransaksiController extends Controller
 
                 $keterangan = 'Alokasi laba bagian ' . $d->sebutan_desa->sebutan_desa . ' ' . $d->nama_desa . ' tahun ' . $tahun;
                 $trx['insert'][] = [
-                    'tgl_transaksi' => date('Y-m-d'),
+                    'tgl_transaksi' => $data['tgl_mad'],
                     'rekening_debit' => '3.2.01.01',
                     'rekening_kredit' => '2.1.04.02',
                     'idtp' => '0',
@@ -404,7 +406,7 @@ class TransaksiController extends Controller
 
                 $keterangan = $title_form[$urut] . ' tahun ' . $tahun;
                 $trx['insert'][] = [
-                    'tgl_transaksi' => date('Y-m-d'),
+                    'tgl_transaksi' => $data['tgl_mad'],
                     'rekening_debit' => '3.2.01.01',
                     'rekening_kredit' => '2.1.04.01',
                     'idtp' => '0',
@@ -463,7 +465,7 @@ class TransaksiController extends Controller
                 if ($rek->kode_akun == '2.1.04.03') {
                     $keterangan = 'Laba Bagian Penyerta Modal tahun ' . $tahun;
                     $trx['insert'][] = [
-                        'tgl_transaksi' => date('Y-m-d'),
+                        'tgl_transaksi' => $data['tgl_mad'],
                         'rekening_debit' => '3.2.01.01',
                         'rekening_kredit' => '2.1.04.03',
                         'idtp' => '0',

@@ -93,6 +93,10 @@
             background-color: var(--bs-{{ $config['sidebarColor'] }}) !important;
             border-color: var(--bs-{{ $config['sidebarColor'] }}) !important;
         }
+
+        .flatpickr-wrapper {
+            width: 100%;
+        }
     </style>
 </head>
 

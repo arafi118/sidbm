@@ -14,6 +14,16 @@
 @extends('layouts.base')
 
 @section('content')
+    <style>
+        .swal2-popup.swal2-modal.swal2-show {
+            margin-bottom: 62px;
+        }
+
+        .swal2-actions {
+            z-index: 0 !important;
+        }
+    </style>
+
     <div class="card">
         <div class="card-body">
             @if ($success)
@@ -45,6 +55,7 @@
                 @csrf
 
                 <input type="hidden" name="tgl_kondisi" id="tgl_kondisi" value="{{ $tgl_kondisi }}">
+                <input type="hidden" name="tgl_mad" id="tgl_mad">
                 <div class="row">
                     <input type="hidden" name="surplus" id="surplus" value="{{ $surplus }}">
                     <div class="card">
@@ -305,18 +316,36 @@
         $(document).on('click', '#btnSimpanLaba', function(e) {
             e.preventDefault()
 
-            var form = $('#SimpanAlokasiLaba')
-            $.ajax({
-                type: form.attr('method'),
-                url: form.attr('action'),
-                data: form.serialize(),
-                success: function(result) {
-                    if (result.success) {
-                        Swal.fire('Selamat', result.msg, 'success').then(() => {
-                            window.location.href = '/transaksi/tutup_buku'
-                        })
-                    }
+            Swal.fire({
+                title: 'Masukkan Tanggal MAD',
+                html: `<div class="input-group input-group-static"><input autocomplete="off" type="text" name="tanggal" id="tanggal" class="form-control date" value="{{ date('d/m/Y') }}"></div>`,
+                showDenyButton: true,
+                confirmButtonText: "Simpan",
+                denyButtonText: "Batal",
+                stopKeydownPropagation: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#tgl_mad').val($('#tanggal').val())
+
+                    var form = $('#SimpanAlokasiLaba')
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        success: function(result) {
+                            if (result.success) {
+                                Swal.fire('Selamat', result.msg, 'success').then(() => {
+                                    // window.location.href = '/transaksi/tutup_buku'
+                                })
+                            }
+                        }
+                    })
                 }
+            });
+
+            flatpickr("#tanggal", {
+                dateFormat: "d/m/Y",
+                static: true
             })
         })
     </script>
