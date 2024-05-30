@@ -482,7 +482,11 @@ class PelaporanController extends Controller
             ['rekening_debit', '3.2.01.01']
         ])->first();
 
-        $data['tgl_mad'] = $trx->tgl_transaksi;
+        $data['tgl_mad'] = $data['tgl_kondisi'];
+        if ($trx) {
+            $data['tgl_mad'] = $trx->tgl_transaksi;
+        }
+
         if ($bln == '1' && $hari == '1') {
             return $this->CALK_tutup_buku($data);
         }
