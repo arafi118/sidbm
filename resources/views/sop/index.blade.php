@@ -119,7 +119,7 @@
             </div>
             <div class="card mt-4" id="berita_acara">
                 <div class="card-header">
-                    <h5 class="mb-0">Berita Acara SI DBM</h5>
+                    <h5 class="mb-0">Berita Acara Pergantian Laporan</h5>
                 </div>
                 <div class="card-body pt-0">
                     @include('sop.partials._berita_acara')

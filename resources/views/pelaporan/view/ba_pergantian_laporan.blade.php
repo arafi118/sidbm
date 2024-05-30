@@ -25,12 +25,12 @@
 
     $saldo_excel = 0;
     if ($kom_aset->saldo_awal) {
-        $saldo_excel = intval($kom_aset->saldo_awal->debit) - intval($kom_aset->saldo_awal->kredit);
+        $saldo_excel = floatval($kom_aset->saldo_awal->debit) - floatval($kom_aset->saldo_awal->kredit);
     }
 
     $saldo_revaluasi = 0;
     if ($kom_aset->saldo) {
-        $saldo_revaluasi = intval($kom_aset->saldo->debit) - intval($kom_aset->saldo->kredit);
+        $saldo_revaluasi = floatval($kom_aset->saldo->debit) - floatval($kom_aset->saldo->kredit);
     }
 @endphp
 
