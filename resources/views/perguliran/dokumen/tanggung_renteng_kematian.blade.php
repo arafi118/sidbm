@@ -133,13 +133,13 @@
         </tr>
         <tr>
             <td align="center" width="50%">
-                {!! Session::get('lokasi') == '88' ? '&nbsp;' : 'Mengetahui,' !!}
+                {!! Session::get('lokasi') == '188' ? '&nbsp;' : 'Mengetahui,' !!}
             </td>
             <td align="center" width="50%">Kelompok</td>
         </tr>
         <tr>
             <td align="center">
-                @if (Session::get('lokasi') != '88')
+                @if (Session::get('lokasi') != '188')
                     {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }}
                     {{ $pinkel->kelompok->d->nama_desa }}
                 @else
@@ -153,7 +153,7 @@
         </tr>
         <tr>
             <td align="center">
-                @if (Session::get('lokasi') != '88')
+                @if (Session::get('lokasi') != '188')
                     <b>{{ $pinkel->kelompok->d->kades }}</b>
                     @if ($pinkel->kelompok->d->nip)
                         <div><small>NIP. {{ $pinkel->kelompok->d->nip }}</small></div>
