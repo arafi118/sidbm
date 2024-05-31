@@ -88,12 +88,8 @@
         </tr>
         <tr>
             <td colspan="2">&nbsp;</td>
-            <td align="center">Mengetahui,</td>
-        </tr>
-        <tr>
-            <td colspan="2">&nbsp;</td>
             <td align="center">
-                {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }}
+                Ketua Kelompok
             </td>
         </tr>
         <tr>
@@ -103,7 +99,7 @@
             <td colspan="2">&nbsp;</td>
             <td align="center">
                 <b>
-                    <u>{{ $pinkel->kelompok->d->kades }}</u>
+                    <u>{{ $pinkel->kelompok->ketua }}</u>
                 </b>
             </td>
         </tr>

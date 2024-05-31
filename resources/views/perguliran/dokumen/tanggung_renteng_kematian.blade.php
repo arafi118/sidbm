@@ -125,29 +125,46 @@
 
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
-            <td colspan="2">&nbsp;</td>
+            <td colspan="2" height="24">&nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
             <td align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
         </tr>
         <tr>
-            <td align="center" width="50%">Pihak Pertama</td>
-            <td align="center" width="50%">Pihak Kedua</td>
-        </tr>
-        <tr>
-            <td align="center">{{ $kec->sebutan_level_1 }} {{ $kec->nama_lembaga_sort }},</td>
-            <td align="center">Ketua Kelompok,</td>
-        </tr>
-        <tr>
-            <td colspan="2" height="50">&nbsp;</td>
+            <td align="center" width="50%">
+                {!! Session::get('lokasi') == '88' ? '&nbsp;' : 'Mengetahui,' !!}
+            </td>
+            <td align="center" width="50%">Kelompok</td>
         </tr>
         <tr>
             <td align="center">
-                <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
+                @if (Session::get('lokasi') != '88')
+                    {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }}
+                    {{ $pinkel->kelompok->d->nama_desa }}
+                @else
+                    &nbsp;
+                @endif
+            </td>
+            <td align="center">{{ $pinkel->kelompok->nama_kelompok }}</td>
+        </tr>
+        <tr>
+            <td colspan="2" height="30"></td>
+        </tr>
+        <tr>
+            <td align="center">
+                @if (Session::get('lokasi') != '88')
+                    <b>{{ $pinkel->kelompok->d->kades }}</b>
+                    @if ($pinkel->kelompok->d->nip)
+                        <div><small>NIP. {{ $pinkel->kelompok->d->nip }}</small></div>
+                    @endif
+                @else
+                    &nbsp;
+                @endif
             </td>
             <td align="center">
                 <b>{{ $pinkel->kelompok->ketua }}</b>
+                <div>Ketua</div>
             </td>
         </tr>
     </table>
