@@ -127,6 +127,7 @@ if (isset($_POST['copy'])) {
     mysqli_query($koneksi, "UPDATE dbm_laravel.inventaris_$lokasi SET jenis='3', kategori='2' WHERE kategori='6' AND jenis='2'");
     mysqli_query($koneksi, "UPDATE dbm_laravel.inventaris_$lokasi SET jenis='3', kategori='3' WHERE kategori='7' AND jenis='2'");
     mysqli_query($koneksi, "UPDATE dbm_laravel.inventaris_$lokasi SET jenis='3', kategori='4' WHERE kategori='8' AND jenis='2'");
+    mysqli_query($koneksi, "UPDATE dbm_laravel.anggota_$lokasi AS a JOIN usaha AS u ON a.usaha = u.id SET a.usaha = u.nama_usaha WHERE a.usaha REGEXP '^-?[0-9]+(\.[0-9]+)?$'");
 
     $_SESSION['success'] = "Copy Tabel Lokasi <b>$lokasi</b> Berhasil.";
     echo "<script>location.href = '/migrasi.php';</script>";
