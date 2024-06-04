@@ -1,7 +1,15 @@
 @php
     if ($type == 'excel') {
-        header('Content-type: application/vnd-ms-excel');
-        header('Content-Disposition: attachment; filename=' . ucwords(str_replace('_', ' ', $laporan)) . ' (' . ucwords($tgl) . ').xls');
+        $nama_file = ucwords(str_replace('_', ' ', $laporan)) . ' (' . ucwords($tgl) . ')';
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="' . $nama_file . '.xls"');
+        header('Cache-Control: max-age=0');
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
     }
 @endphp
 

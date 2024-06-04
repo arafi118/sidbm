@@ -733,6 +733,37 @@ class PelaporanController extends Controller
         }
     }
 
+    private function kelompok(array $data)
+    {
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        if ($data['bulanan']) {
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        }
+
+        $data['desa'] = Desa::where('kd_kec', $data['kec']->kd_kec)->with([
+            'kelompok' => function ($query) {
+                $query->where('jenis_produk_pinjaman', '!=', '3');
+            },
+            'sebutan_desa'
+        ])->get();
+
+        $view = view('pelaporan.view.basis_data.kelompok', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
     private function kelompok_aktif(array $data)
     {
         $thn = $data['tahun'];

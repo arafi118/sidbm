@@ -9,7 +9,7 @@
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
-                    <b>DAFTAR PENDUDUK</b>
+                    <b>DAFTAR KELOMPOK</b>
                 </div>
                 <div style="font-size: 16px;">
                     <b>{{ strtoupper($kec->nama_lembaga_sort) }}</b>
@@ -25,15 +25,16 @@
         <tr>
             <th height="4%" width="3%">No</th>
             <th width="10%">NIK</th>
-            <th width="17%">Nama Anggota</th>
+            <th width="16%">Nama Anggota</th>
             <th width="23%">Alamat</th>
-            <th width="20%">Tgl Lahir</th>
             <th width="9%">Telpon</th>
-            <th width="18%">Usaha</th>
+            <th width="13%">Ketua</th>
+            <th width="13%">Sekretaris</th>
+            <th width="13%">Bendahara</th>
         </tr>
         @foreach ($desa as $ds)
             <tr style="font-weight: bold;">
-                <td colspan="7" align="left">
+                <td colspan="8" align="left">
                     {{ $ds->kode_desa }}. {{ $ds->sebutan_desa->sebutan_desa }} {{ $ds->nama_desa }}
                 </td>
             </tr>
@@ -41,25 +42,16 @@
             @php
                 $no = 0;
             @endphp
-            @foreach ($ds->anggota as $ang)
+            @foreach ($ds->kelompok as $kel)
                 <tr>
                     <td align="center">{{ ++$no }}</td>
-                    <td align="center">{{ $ang->nik }}</td>
-                    <td>{{ $ang->namadepan }}</td>
-                    <td>{{ $ang->alamat }}</td>
-                    <td align="left">
-                        @if ($ang->tgl_lahir)
-                            {{ $ang->tempat_lahir }}, {{ Tanggal::tglLatin($ang->tgl_lahir) }}
-                        @endif
-                    </td>
-                    <td align="center">{{ $ang->hp }}</td>
-                    <td align="left">
-                        @if (is_numeric($ang->usaha))
-                            {{ $ang->u->nama_usaha }}
-                        @else
-                            {{ $ang->usaha }}
-                        @endif
-                    </td>
+                    <td align="center">{{ $kel->kd_kelompok }}</td>
+                    <td>{{ $kel->nama_kelompok }}</td>
+                    <td>{{ $kel->alamat_kelompok }}</td>
+                    <td align="center">{{ $kel->telpon }}</td>
+                    <td align="left">{{ $kel->ketua }}</td>
+                    <td align="left">{{ $kel->sekretaris }}</td>
+                    <td align="left">{{ $kel->bendahara }}</td>
                 </tr>
             @endforeach
         @endforeach
