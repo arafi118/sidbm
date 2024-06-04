@@ -284,6 +284,12 @@ class PelaporanController extends Controller
             $data['tgl'] = Tanggal::tahun($tgl);
         }
 
+        $data['dir_utama'] = User::where([
+            ['level', '2'],
+            ['jabatan', '1'],
+            ['lokasi', Session::get('lokasi')],
+        ])->first();
+
         $view = view('pelaporan.view.surat_pengantar', $data)->render();
 
         if ($data['type'] == 'pdf') {

@@ -68,7 +68,11 @@
                 <br>
                 <br>
                 <div>
-                    <b>{{ $dir->namadepan . ' ' . $dir->namabelakang }}</b>
+                    @if ($dir_utama)
+                        <b>{{ $dir_utama->namadepan . ' ' . $dir_utama->namabelakang }}</b>
+                    @else
+                        <b>{{ $dir->namadepan . ' ' . $dir->namabelakang }}</b>
+                    @endif
                 </div>
             </td>
         </tr>
