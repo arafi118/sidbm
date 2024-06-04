@@ -421,6 +421,7 @@
             e.preventDefault()
 
             $('input#laporan').val('pelunasan')
+            $('input#type').val('pdf')
             $('#FormLaporanSisipan').submit()
         })
     </script>

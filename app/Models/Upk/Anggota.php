@@ -19,4 +19,9 @@ class Anggota extends Model
     {
         $this->table = 'anggota_' . Session::get('id_kab');
     }
+
+    public function pinj()
+    {
+        return $this->hasMany(PinjamanAnggota::class, 'nia', 'id');
+    }
 }

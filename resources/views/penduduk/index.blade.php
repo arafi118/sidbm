@@ -1,6 +1,16 @@
 @extends('layouts.base')
 
 @section('content')
+    <div class="card mb-3">
+        <div class="card-body p-2">
+            <div class="d-flex justify-content-end align-items-center">
+                <button type="submit" class="btn btn-success btn-sm mb-0" id="ExportExcel">
+                    Export Excel
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
@@ -83,6 +93,14 @@
             var data = table.row(this).data();
 
             window.location.href = '/database/penduduk/' + data.nik
+        })
+
+        $(document).on('click', '#ExportExcel', function(e) {
+            e.preventDefault()
+
+            $('input#laporan').val('penduduk')
+            $('input#type').val('excel')
+            $('#FormLaporanSisipan').submit()
         })
     </script>
 @endsection
