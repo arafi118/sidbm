@@ -93,7 +93,7 @@
 
                                 $class1 = '';
                                 $class2 = '';
-                                if (auth()->user()->level == '4') {
+                                if (auth()->user()->level == '4' || auth()->user()->level == '1') {
                                     $class1 = 'idpa_proposal';
                                     $class2 = 'idpa';
                                 }
@@ -263,7 +263,7 @@
                 </div>
             </div>
 
-            @if (auth()->user()->level == '4')
+            @if (auth()->user()->level == '4' || auth()->user()->level == '1')
                 <button type="button" id="Simpan" class="btn btn-github float-end btn-sm">
                     Simpan Rekom Verifikator
                 </button>
