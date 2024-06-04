@@ -13,6 +13,11 @@
         $saldo_pokok = 0;
     }
 
+    $jenis_pinjaman = '';
+    if ($perguliran->jenis_pp != '3') {
+        $jenis_pinjaman = 'Kelompok';
+    }
+
     $dokumen_proposal = [
         [
             'title' => 'Cover',
@@ -35,7 +40,7 @@
             'withExcel' => false,
         ],
         [
-            'title' => 'Profil Kelompok',
+            'title' => 'Profil ' . $jenis_pinjaman,
             'file' => 'profilKelompok',
             'withExcel' => false,
         ],
@@ -45,7 +50,7 @@
             'withExcel' => false,
         ],
         [
-            'title' => 'Daftar Anggota Kelompok',
+            'title' => 'Daftar Anggota ' . $jenis_pinjaman,
             'file' => 'anggotaKelompok',
             'withExcel' => false,
         ],
@@ -70,7 +75,7 @@
             'withExcel' => false,
         ],
         [
-            'title' => 'BA Musyawarah Kelompok',
+            'title' => 'BA Musyawarah ' . $jenis_pinjaman,
             'file' => 'baMusyawarahDesa',
             'withExcel' => false,
         ],
@@ -211,7 +216,7 @@
     <div class="card mb-3">
         <div class="card-body p-3">
             <h5 class="mb-1">
-                Kelompok {{ $perguliran->kelompok->nama_kelompok }} Loan ID. {{ $perguliran->id }}
+                {{ $jenis_pinjaman }} {{ $perguliran->kelompok->nama_kelompok }} Loan ID. {{ $perguliran->id }}
                 ({{ $perguliran->jpp->nama_jpp }})
             </h5>
             <p class="mb-0">
@@ -264,7 +269,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="EditProposalLabel">
-                        Edit Proposal Kelompok {{ $perguliran->kelompok->nama_kelompok }} Loan ID. {{ $perguliran->id }}
+                        Edit Proposal {{ $jenis_pinjaman }} {{ $perguliran->kelompok->nama_kelompok }} Loan ID.
+                        {{ $perguliran->id }}
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
