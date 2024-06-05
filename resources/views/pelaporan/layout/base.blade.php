@@ -95,7 +95,7 @@
                             alt="{{ $kec->id }}">
                     </td>
                     <td align="center">
-                        <div>{{ strtoupper($nama_lembaga) }}</div>
+                        <div><b>{{ strtoupper($nama_lembaga) }}</b></div>
                         <div>
                             <b>{{ strtoupper($nama_kecamatan) }}</b>
                         </div>

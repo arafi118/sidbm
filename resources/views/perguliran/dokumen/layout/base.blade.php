@@ -124,7 +124,9 @@
                             alt="{{ $logo }}">
                     </td>
                     <td>
-                        <div style="font-size: 12px;">{{ strtoupper($nama_lembaga) }}</div>
+                        <div style="font-size: 12px;">
+                            <b>{{ strtoupper($nama_lembaga) }}</b>
+                        </div>
                         <div style="font-size: 12px;">
                             <b>{{ strtoupper($nama_kecamatan) }}</b>
                         </div>
