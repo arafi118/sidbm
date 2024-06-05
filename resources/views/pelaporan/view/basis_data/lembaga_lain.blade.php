@@ -44,7 +44,7 @@
             @foreach ($ds->kelompok as $kel)
                 <tr>
                     <td align="center">{{ ++$no }}</td>
-                    <td align="center">{{ $kel->kd_kelompok }}</td>
+                    <td align="center" style="mso-number-format:\@;">{{ $kel->kd_kelompok }}</td>
                     <td>{{ $kel->nama_kelompok }}</td>
                     <td>{{ $kel->alamat_kelompok }}</td>
                     <td align="center">{{ $kel->telpon }}</td>

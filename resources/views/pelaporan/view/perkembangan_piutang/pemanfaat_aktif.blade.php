@@ -131,7 +131,7 @@
 
                 <tr>
                     <td class="t l b" align="center">{{ $nom++ }}</td>
-                    <td class="t l b" align="center">{{ $pinj->nik }}</td>
+                    <td class="t l b" align="center" style="mso-number-format:\@;">{{ $pinj->nik }}</td>
                     <td class="t l b" align="center">{{ $pinj->kk }}</td>
                     <td class="t l b">{{ $pinj->namadepan }}</td>
                     <td class="t l b">

@@ -44,7 +44,7 @@
             @foreach ($ds->anggota as $ang)
                 <tr>
                     <td align="center">{{ ++$no }}</td>
-                    <td align="center">{{ $ang->nik }}</td>
+                    <td align="center" style="mso-number-format:\@;">{{ $ang->nik }}</td>
                     <td>{{ $ang->namadepan }}</td>
                     <td>{{ $ang->alamat }}</td>
                     <td align="left">
