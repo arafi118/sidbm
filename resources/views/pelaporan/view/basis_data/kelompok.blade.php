@@ -24,8 +24,8 @@
     <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
             <th height="4%" width="3%">No</th>
-            <th width="10%">NIK</th>
-            <th width="16%">Nama Anggota</th>
+            <th width="10%">Kode Kelompok</th>
+            <th width="16%">Nama Kelompok</th>
             <th width="23%">Alamat</th>
             <th width="9%">Telpon</th>
             <th width="13%">Ketua</th>
