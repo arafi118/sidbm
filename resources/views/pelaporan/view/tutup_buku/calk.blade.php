@@ -134,7 +134,7 @@
                 </tr>
                 @if ($dir_utama)
                     <tr>
-                        <td style="padding: 0px; 4px;">Direktur</td>
+                        <td style="padding: 0px; 4px;">{{ $dir_utama->j->nama_jabatan }}</td>
                         <td style="padding: 0px; 4px;">:</td>
                         <td style="padding: 0px; 4px;">
                             {{ $dir_utama->namadepan . ' ' . $dir_utama->namabelakang }}

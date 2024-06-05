@@ -62,7 +62,13 @@
             <td colspan="2"></td>
             <td align="center">
                 <div>{{ $nama_lembaga }} {{ $kec->nama_kec }}</div>
-                <div>{{ $kec->ttd_mengetahui_lap == '2' ? 'Direktur' : $kec->sebutan_level_1 }},</div>
+                <div>
+                    @if ($dir_utama)
+                        {{ $dir_utama->j->nama_jabatan }},
+                    @else
+                        {{ $dir->j->nama_jabatan }},
+                    @endif
+                </div>
                 <br>
                 <br>
                 <br>

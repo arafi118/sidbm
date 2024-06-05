@@ -546,7 +546,7 @@ class PelaporanController extends Controller
 
         $data['dir_utama'] = User::where([
             ['level', '2'],
-            ['jabatan', '1'],
+            ['jabatan', '65'],
             ['lokasi', Session::get('lokasi')],
         ])->first();
 
@@ -2122,7 +2122,7 @@ class PelaporanController extends Controller
 
         $data['dir_utama'] = User::where([
             ['level', '2'],
-            ['jabatan', '1'],
+            ['jabatan', '65'],
             ['lokasi', Session::get('lokasi')],
         ])->first();
 
