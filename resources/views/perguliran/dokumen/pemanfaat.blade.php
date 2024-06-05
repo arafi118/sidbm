@@ -117,7 +117,7 @@
             <td align="center" width="50%">&nbsp;</td>
         </tr>
         <tr>
-            <td align="center">{{ $kec->sebutan_level_1 }} {{ $kec->nama_lembaga_sort }}</td>
+            <td align="center">{{ $kec->sebutan_level_1 }} DBM {{ $kec->nama_lembaga_sort }}</td>
             <td align="center">Ketua Kelompok</td>
         </tr>
         <tr>
