@@ -312,7 +312,7 @@
 
                                         <div class="d-flex justify-content-end">
                                             <button type="button" id="CekTagihan" class="btn btn-sm btn-github"
-                                                {{ strlen($user->hp) >= 11 ? '' : 'disabled' }}>Preview</button>
+                                                {{ strlen($user->hp) >= 10 ? '' : 'disabled' }}>Preview</button>
                                         </div>
                                     </div>
                                 </div>
