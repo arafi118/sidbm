@@ -1973,7 +1973,6 @@ class TransaksiController extends Controller
                     ['jenis', $jenis],
                     ['kategori', $kategori],
                     ['tgl_beli', $trx->tgl_transaksi],
-                    ['harsat', $trx->jumlah],
                     ['nama_barang', $nama_barang]
                 ])->delete();
             }
