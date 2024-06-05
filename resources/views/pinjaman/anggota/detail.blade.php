@@ -78,9 +78,11 @@
                         </button>
                     </div>
                     <div class="col-6 d-grid">
-                        <button type="button" id="Pelunasan" class="mb-0 btn btn-sm btn-github">
-                            Pelunasan Pinjaman
-                        </button>
+                        @if (Session::get('level') == '1' && Session::get('jabatan') == '1')
+                            <button type="button" id="Pelunasan" class="mb-0 btn btn-sm btn-github">
+                                Pelunasan Pinjaman
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>
