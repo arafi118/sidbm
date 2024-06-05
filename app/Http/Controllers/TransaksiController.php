@@ -1961,6 +1961,23 @@ class TransaksiController extends Controller
                 ]);
             }
 
+            $rek_inventaris = ['1.2.01.01', '1.2.01.02', '1.2.01.03', '1.2.01.04', '1.2.03.01', '1.2.03.02', '1.2.03.03', '1.2.03.04'];
+
+            $trx = Transaksi::where('idt', $idt)->first();
+            if (in_array($trx->rekening_debit, $rek_inventaris)) {
+                $jenis = intval(explode('.', $trx->rekening_debit)[2]);
+                $kategori = intval(explode('.', $trx->rekening_debit)[3]);
+                $nama_barang = trim(explode(')', $trx->keterangan_transaksi)[1]);
+
+                $inv = Inventaris::Where([
+                    ['jenis', $jenis],
+                    ['kategori', $kategori],
+                    ['tgl_beli', $trx->tgl_transaksi],
+                    ['harsat', $trx->jumlah],
+                    ['nama_barang', $nama_barang]
+                ])->delete();
+            }
+
             $trx = Transaksi::where('idt', $idt)->delete();
         }
 

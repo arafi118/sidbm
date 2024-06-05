@@ -62,43 +62,77 @@
 
                 $kuitansi = 'bm';
                 $files = 'BUKTI MEMORIAL';
-                if ($keuangan->startWith($trx->rekening_debit, '1.1.01') && !$keuangan->startWith($trx->rekening_kredit, '1.1.01')) {
+                if (
+                    $keuangan->startWith($trx->rekening_debit, '1.1.01') &&
+                    !$keuangan->startWith($trx->rekening_kredit, '1.1.01')
+                ) {
                     $files = 'BUKTI KAS MASUK';
                     $kuitansi = 'bkm';
                 }
-                if (!$keuangan->startWith($trx->rekening_debit, '1.1.01') && $keuangan->startWith($trx->rekening_kredit, '1.1.01')) {
+                if (
+                    !$keuangan->startWith($trx->rekening_debit, '1.1.01') &&
+                    $keuangan->startWith($trx->rekening_kredit, '1.1.01')
+                ) {
                     $files = 'BUKTI KAS KELUAR';
                     $kuitansi = 'bkk';
                 }
-                if ($keuangan->startWith($trx->rekening_debit, '1.1.01') && $keuangan->startWith($trx->rekening_kredit, '1.1.01')) {
+                if (
+                    $keuangan->startWith($trx->rekening_debit, '1.1.01') &&
+                    $keuangan->startWith($trx->rekening_kredit, '1.1.01')
+                ) {
                     $files = 'BUKTI MEMORIAL';
                     $kuitansi = 'bm';
                 }
-                if ($keuangan->startWith($trx->rekening_debit, '1.1.02') && !($keuangan->startWith($trx->rekening_kredit, '1.1.01') || $keuangan->startWith($trx->rekening_kredit, '1.1.02'))) {
+                if (
+                    $keuangan->startWith($trx->rekening_debit, '1.1.02') &&
+                    ($keuangan->startWith($trx->rekening_kredit, '1.1.01') ||
+                        $keuangan->startWith($trx->rekening_kredit, '1.1.02'))
+                ) {
                     $files = 'BUKTI KAS MASUK';
                     $kuitansi = 'bm';
                 }
-                if ($keuangan->startWith($trx->rekening_debit, '1.1.02') && $keuangan->startWith($trx->rekening_kredit, '1.1.02')) {
+                if (
+                    $keuangan->startWith($trx->rekening_debit, '1.1.02') &&
+                    $keuangan->startWith($trx->rekening_kredit, '1.1.02')
+                ) {
                     $files = 'BUKTI MEMORIAL';
                     $kuitansi = 'bm';
                 }
-                if ($keuangan->startWith($trx->rekening_debit, '1.1.02') && $keuangan->startWith($trx->rekening_kredit, '1.1.01')) {
+                if (
+                    $keuangan->startWith($trx->rekening_debit, '1.1.02') &&
+                    $keuangan->startWith($trx->rekening_kredit, '1.1.01')
+                ) {
                     $files = 'BUKTI MEMORIAL';
                     $kuitansi = 'bm';
                 }
-                if ($keuangan->startWith($trx->rekening_debit, '1.1.01') && $keuangan->startWith($trx->rekening_kredit, '1.1.02')) {
+                if (
+                    $keuangan->startWith($trx->rekening_debit, '1.1.01') &&
+                    $keuangan->startWith($trx->rekening_kredit, '1.1.02')
+                ) {
                     $files = 'BUKTI MEMORIAL';
                     $kuitansi = 'bm';
                 }
-                if ($keuangan->startWith($trx->rekening_debit, '5.') && !($keuangan->startWith($trx->rekening_kredit, '1.1.01') || $keuangan->startWith($trx->rekening_kredit, '1.1.02'))) {
+                if (
+                    $keuangan->startWith($trx->rekening_debit, '5.') &&
+                    ($keuangan->startWith($trx->rekening_kredit, '1.1.01') ||
+                        $keuangan->startWith($trx->rekening_kredit, '1.1.02'))
+                ) {
                     $files = 'BUKTI MEMORIAL';
                     $kuitansi = 'bm';
                 }
-                if (!($keuangan->startWith($trx->rekening_debit, '1.1.01') || $keuangan->startWith($trx->rekening_debit, '1.1.02')) && $keuangan->startWith($trx->rekening_kredit, '1.1.02')) {
+                if (
+                    ($keuangan->startWith($trx->rekening_debit, '1.1.01') ||
+                        $keuangan->startWith($trx->rekening_debit, '1.1.02')) &&
+                    $keuangan->startWith($trx->rekening_kredit, '1.1.02')
+                ) {
                     $files = 'BUKTI MEMORIAL';
                     $kuitansi = 'bm';
                 }
-                if (!($keuangan->startWith($trx->rekening_debit, '1.1.01') || $keuangan->startWith($trx->rekening_debit, '1.1.02')) && $keuangan->startWith($trx->rekening_kredit, '4.')) {
+                if (
+                    ($keuangan->startWith($trx->rekening_debit, '1.1.01') ||
+                        $keuangan->startWith($trx->rekening_debit, '1.1.02')) &&
+                    $keuangan->startWith($trx->rekening_kredit, '4.')
+                ) {
                     $files = 'BUKTI MEMORIAL';
                     $kuitansi = 'bm';
                 }
@@ -158,11 +192,9 @@
                                 <td width="2%">:</td>
                                 @if (
                                     $trx->id_pinj > 0 &&
-                                        !(
-                                            $trx->rekening_debit != '1.1.03.01' ||
-                                            $trx->rekening_debit != '1.1.03.02' ||
-                                            $trx->rekening_debit != '1.1.03.03'
-                                        ))
+                                        ($trx->rekening_kredit == '1.1.03.01' ||
+                                            $trx->rekening_kredit == '1.1.03.02' ||
+                                            $trx->rekening_kredit == '1.1.03.03'))
                                     <td colspan="3" class="keterangan">{{ ucwords('Kelompok ' . $trx->relasi) }}</td>
                                 @else
                                     <td colspan="3" class="keterangan">{{ ucwords($trx->relasi) }}</td>
@@ -175,11 +207,9 @@
                             <td colspan="3" class="keterangan">
                                 @if (
                                     $trx->id_pinj != 0 &&
-                                        !(
-                                            $trx->rekening_debit != '1.1.03.01' ||
-                                            $trx->rekening_debit != '1.1.03.02' ||
-                                            $trx->rekening_debit != '1.1.03.03'
-                                        ))
+                                        ($trx->rekening_kredit == '1.1.03.01' ||
+                                            $trx->rekening_kredit == '1.1.03.02' ||
+                                            $trx->rekening_kredit == '1.1.03.03'))
                                     {{ ucwords('Angsuran Pokok dan Jasa') }}
                                 @else
                                     {{ ucwords($trx->keterangan_transaksi) }}
@@ -192,11 +222,9 @@
                             <td colspan="3" class="keterangan">
                                 @if (
                                     $trx->id_pinj != 0 &&
-                                        !(
-                                            $trx->rekening_debit != '1.1.03.01' ||
-                                            $trx->rekening_debit != '1.1.03.02' ||
-                                            $trx->rekening_debit != '1.1.03.03'
-                                        ))
+                                        ($trx->rekening_kredit == '1.1.03.01' ||
+                                            $trx->rekening_kredit == '1.1.03.02' ||
+                                            $trx->rekening_kredit == '1.1.03.03'))
                                     Rp. {{ number_format($trx->tr_idtp_sum_jumlah, 2) }}
                                 @else
                                     Rp. {{ number_format($trx->jumlah, 2) }}
@@ -213,11 +241,9 @@
 
                         @if (
                             $trx->id_pinj != 0 &&
-                                !(
-                                    $trx->rekening_debit != '1.1.03.01' ||
-                                    $trx->rekening_debit != '1.1.03.02' ||
-                                    $trx->rekening_debit != '1.1.03.03'
-                                ))
+                                ($trx->rekening_kredit == '1.1.03.01' ||
+                                    $trx->rekening_kredit == '1.1.03.02' ||
+                                    $trx->rekening_kredit == '1.1.03.03'))
                             @php
                                 $count = 3;
                             @endphp
