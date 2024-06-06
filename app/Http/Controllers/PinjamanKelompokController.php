@@ -915,7 +915,10 @@ class PinjamanKelompokController extends Controller
             'user_id' => auth()->user()->id
         ]);
 
-        $update_pinj_a = PinjamanAnggota::where('id_pinkel', $id)->update([
+        $update_pinj_a = PinjamanAnggota::where([
+            ['id_pinkel', $id],
+            ['status', 'A']
+        ])->update([
             'tgl_lunas' => Tanggal::tglNasional($tgl_resceduling),
             'status' => 'R',
             'lu' => date('Y-m-d H:i:s'),
@@ -993,7 +996,11 @@ class PinjamanKelompokController extends Controller
 
         RealAngsuran::insert($real_angsuran);
 
-        foreach ($pinkel->pinjaman_anggota as $pa) {
+        $pinjaman_anggota = PinjamanAnggota::where([
+            ['id_pinkel', $pinkel->id],
+            ['status', 'R']
+        ])->get();
+        foreach ($pinjaman_anggota as $pa) {
             $pinjaman_anggota = [
                 'jenis_pinjaman' => $pa->jenis_pinjaman,
                 'id_kel' => $pa->id_kel,
