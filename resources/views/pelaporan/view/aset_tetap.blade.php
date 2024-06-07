@@ -67,9 +67,11 @@
                 @php
                     $nama_barang = $inv->nama_barang;
                     $warna = '0, 0, 0';
+                    $is_valid = true;
                     if (!($inv->status == 'Baik') && $tgl_kondisi >= $inv->tgl_validasi) {
                         $nama_barang .= ' (' . $inv->status . ' ' . Tanggal::tglIndo($inv->tgl_validasi) . ')';
                         $warna = '255, 0, 0';
+                        $is_valid = false;
                     }
                 @endphp
                 <tr style="color: rgb({{ $warna }})">
@@ -79,7 +81,7 @@
                             $t_harga += $inv->harsat * $inv->unit;
 
                             $nilai_buku = $inv->harsat * $inv->unit;
-                            if ($inv->status == 'Dijual' || $inv->status == 'Hapus') {
+                            if (!$is_valid) {
                                 $nilai_buku = '0';
                             }
 
