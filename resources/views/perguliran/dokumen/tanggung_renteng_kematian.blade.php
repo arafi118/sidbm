@@ -131,11 +131,7 @@
         </tr>
         <tr>
             <td align="center">
-                @if (Session::get('lokasi') != '188')
-                    Pihak Pertama
-                @else
-                    &nbsp;
-                @endif
+                Pihak Pertama
             </td>
             <td align="center">Pihak Kedua</td>
         </tr>
@@ -144,11 +140,7 @@
         </tr>
         <tr>
             <td align="center">
-                @if (Session::get('lokasi') != '188')
-                    <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
-                @else
-                    &nbsp;
-                @endif
+                <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
             </td>
             <td align="center">
                 <b>{{ $pinkel->kelompok->ketua }}</b>

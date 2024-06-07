@@ -96,17 +96,13 @@
         </tr>
         <tr>
             <td align="center" width="50%">
-                {!! Session::get('lokasi') == '188' ? '&nbsp;' : 'Mengetahui,' !!}
+                Mengetahui,
             </td>
             <td align="center" width="50%">Ketua Kelompok</td>
         </tr>
         <tr>
             <td align="center">
-                @if (Session::get('lokasi') != '188')
-                    {{ $kec->sebutan_level_1 }} {{ $kec->nama_lembaga_sort }}
-                @else
-                    &nbsp;
-                @endif
+                {{ $kec->sebutan_level_1 }} Bumdesma
             </td>
             <td align="center">{{ $pinkel->kelompok->nama_kelompok }}</td>
         </tr>
@@ -115,11 +111,7 @@
         </tr>
         <tr>
             <td align="center">
-                @if (Session::get('lokasi') != '188')
-                    <b><b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b></b>
-                @else
-                    &nbsp;
-                @endif
+                <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
             </td>
             <td align="center">
                 <b>{{ $pinkel->kelompok->ketua }}</b>
