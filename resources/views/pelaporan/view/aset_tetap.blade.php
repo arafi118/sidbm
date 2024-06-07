@@ -86,9 +86,9 @@
                             if (!($inv->status == 'Baik') && $tgl_kondisi >= $inv->tgl_validasi) {
                                 $j_unit += $inv->unit;
                                 $j_harga += $inv->harsat * $inv->unit;
-                                $j_nilai_buku += $inv->harsat * $inv->unit;
+                                $j_nilai_buku += $nilai_buku;
                             } else {
-                                $t_nilai_buku += $inv->harsat * $inv->unit;
+                                $t_nilai_buku += $nilai_buku;
                             }
                         @endphp
                         <td class="t l b" align="center">{{ $no++ }}</td>
