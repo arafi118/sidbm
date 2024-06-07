@@ -20,7 +20,10 @@
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
-                    <b>SURAT PERNYATAAN KESANGGUPAN TANGGUNG RENTENG KEMATIAN</b>
+                    <b>SURAT PERNYATAAN</b>
+                </div>
+                <div style="font-size: 18px;">
+                    <b>KESANGGUPAN TANGGUNG RENTENG KEMATIAN</b>
                 </div>
             </td>
         </tr>
@@ -34,8 +37,8 @@
             <td colspan="3">Kami yang bertanda tangan di bawah ini :</td>
         </tr>
         <tr>
-            <td>Nama</td>
-            <td>:</td>
+            <td width="15%">Nama</td>
+            <td width="2%" align="center">:</td>
             <td>
                 <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
             </td>
