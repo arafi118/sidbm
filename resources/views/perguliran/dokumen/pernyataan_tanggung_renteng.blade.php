@@ -95,14 +95,20 @@
             <td align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
         </tr>
         <tr>
+            <td align="center" width="50%">
+                {!! Session::get('lokasi') == '188' ? '&nbsp;' : 'Mengetahui,' !!}
+            </td>
+            <td align="center" width="50%">Ketua Kelompok</td>
+        </tr>
+        <tr>
             <td align="center">
                 @if (Session::get('lokasi') != '188')
-                    Pihak Pertama
+                    {{ $kec->sebutan_level_1 }} {{ $kec->nama_lembaga_sort }}
                 @else
                     &nbsp;
                 @endif
             </td>
-            <td align="center">Pihak Kedua</td>
+            <td align="center">{{ $pinkel->kelompok->nama_kelompok }}</td>
         </tr>
         <tr>
             <td colspan="2" height="30"></td>
@@ -110,7 +116,7 @@
         <tr>
             <td align="center">
                 @if (Session::get('lokasi') != '188')
-                    <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
+                    <b><b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b></b>
                 @else
                     &nbsp;
                 @endif
