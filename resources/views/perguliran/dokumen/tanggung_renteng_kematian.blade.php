@@ -31,11 +31,6 @@
 
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
-            <td width="100">Tanggal</td>
-            <td width="5" align="center">:</td>
-            <td>{{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
-        </tr>
-        <tr>
             <td colspan="3">Kami yang bertanda tangan di bawah ini :</td>
         </tr>
         <tr>
