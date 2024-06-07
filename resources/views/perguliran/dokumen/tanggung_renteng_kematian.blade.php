@@ -98,7 +98,7 @@
         <tr>
             <td colspan="3">
                 <p style="text-align: justify;">
-                    Dalam hal ini bertindak untuk dan atas nama diri sendiri dan anggota-anggota kelompok peminjam
+                    Dalam hal ini bertindak untuk dan atas nama diri sendiri dan anggota-anggota kelompok
                     {{ $pinkel->kelompok->nama_kelompok }} yang telah memberikan kuasa secara tertulis sebagaimana Surat
                     Kuasa terlampir yang menjadi bagian tidak terpisahkan dari dokumen perjanjian iuran tanggung renteng
                     kematian ini, selanjutnya disebut Pihak Kedua
