@@ -1354,7 +1354,7 @@ class PinjamanKelompokController extends Controller
         $data['pinjaman'] = PinjamanAnggota::where('id_pinkel', $id)->with([
             'anggota',
             'anggota.d'
-        ])->get();
+        ])->orderBy('id', 'ASC')->get();
 
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with('kelompok')->first();
         $data['judul'] = 'Daftar Anggota (Loan ID. ' . $id . ')';
@@ -1374,7 +1374,9 @@ class PinjamanKelompokController extends Controller
             'jpp',
             'sis_pokok',
             'kelompok',
-            'pinjaman_anggota',
+            'pinjaman_anggota' => function ($query) {
+                $query->orderBy('id', 'ASC');
+            },
             'pinjaman_anggota.anggota'
         ])->first();
 
