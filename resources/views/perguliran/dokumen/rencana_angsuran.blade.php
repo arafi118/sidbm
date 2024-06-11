@@ -136,8 +136,16 @@
                 $sum_pokok += $ra->wajib_pokok;
                 $sum_jasa += $ra->wajib_jasa;
 
+                $sa_pokok = $pinkel->sistem_angsuran;
+                $sa_jasa = $pinkel->sa_jasa;
+
+                $jangka = $pinkel->jangka;
+                if ($sa_pokok == 11 || $sa_jasa == 11) {
+                    $jangka += 24;
+                }
+
                 $b = '';
-                if ($ra->angsuran_ke == $pinkel->jangka) {
+                if ($ra->angsuran_ke == $jangka) {
                     $b = 'b';
                 }
             @endphp
