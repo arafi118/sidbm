@@ -2382,6 +2382,8 @@ class PinjamanKelompokController extends Controller
             $mulai_angsuran_pokok = 0;
         }
 
+        if ($tempo_pokok < 1) $tempo_pokok = 1;
+
         if ($sa_jasa == 11) {
             $tempo_jasa = ($jangka) - 24 / $sistem_jasa;
             $mulai_angsuran_jasa = $jangka - $tempo_jasa;
@@ -2398,6 +2400,8 @@ class PinjamanKelompokController extends Controller
             $tempo_jasa = floor($jangka / $sistem_jasa);
             $mulai_angsuran_jasa = 0;
         }
+
+        if ($tempo_jasa < 1) $tempo_jasa = 1;
 
         $ra = [];
         $alokasi_pokok = $alokasi;
