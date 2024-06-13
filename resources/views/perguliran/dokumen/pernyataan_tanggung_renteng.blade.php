@@ -37,7 +37,7 @@
                     <td>{{ $pa->anggota->namadepan }}</td>
                     <td align="center">{{ $pa->anggota->jk }}</td>
                     <td>
-                        {{ $pa->anggota->alamat }} {{ $pa->anggota->d->sebutan_desa->sebutan_desa }}
+                        sdadas {{ $pa->anggota->alamat }} {{ $pa->anggota->d->sebutan_desa->sebutan_desa }}
                         {{ $pa->anggota->d->nama_desa }}
                     </td>
                     <td>&nbsp;</td>
@@ -88,7 +88,7 @@
 
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
-            <td colspan="2" height="24">&nbsp;</td>
+            <td colspan="2">&nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
