@@ -428,10 +428,12 @@ class PinjamanKelompokController extends Controller
                     $pinj_a['pinjaman'][] = $pinj_aktif;
                 }
 
-                $pemanfaat_aktif = $pa->anggota->pemanfaat;
-                if ($pemanfaat_aktif) {
-                    $pinj_a['jumlah_pemanfaat'] += 1;
-                    $pinj_a['pemanfaat'][$pa->anggota->nik] = $pemanfaat_aktif;
+                if ($pa->anggota) {
+                    $pemanfaat_aktif = $pa->anggota->pemanfaat;
+                    if ($pemanfaat_aktif) {
+                        $pinj_a['jumlah_pemanfaat'] += 1;
+                        $pinj_a['pemanfaat'][$pa->anggota->nik] = $pemanfaat_aktif;
+                    }
                 }
             }
 
