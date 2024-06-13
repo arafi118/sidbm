@@ -37,7 +37,7 @@
                     <td>{{ $pa->anggota->namadepan }}</td>
                     <td align="center">{{ $pa->anggota->jk }}</td>
                     <td>
-                        sdadas {{ $pa->anggota->alamat }} {{ $pa->anggota->d->sebutan_desa->sebutan_desa }}
+                        {{ $pa->anggota->alamat }} {{ $pa->anggota->d->sebutan_desa->sebutan_desa }}
                         {{ $pa->anggota->d->nama_desa }}
                     </td>
                     <td>&nbsp;</td>
