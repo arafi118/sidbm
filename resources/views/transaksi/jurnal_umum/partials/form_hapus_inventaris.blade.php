@@ -15,7 +15,7 @@
                     $nilai_buku = Inv::nilaiBuku($tgl_transaksi, $inv);
                 @endphp
                 <option value="{{ $inv->id }}#{{ $inv->unit }}#{{ $nilai_buku }}">
-                    {{ $inv->nama_barang }} ({{ $inv->unit }} unit x
+                    {{ $inv->id }}. {{ $inv->nama_barang }} ({{ $inv->unit }} unit x
                     {{ number_format($inv->harsat) }}) | NB. {{ number_format($nilai_buku, 2) }}
                 </option>
             @endforeach
