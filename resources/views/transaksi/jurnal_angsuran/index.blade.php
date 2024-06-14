@@ -28,7 +28,7 @@
                             <div class="col-sm-6">
                                 <div class="input-group input-group-static my-3">
                                     <label for="pokok">Pokok</label>
-                                    <input autocomplete="off" type="text" name="pokok" id="pokok"
+                                    <input autocomplete="off" type="tel" name="pokok" id="pokok"
                                         class="form-control">
                                     <small class="text-danger" id="msg_pokok"></small>
                                 </div>
@@ -36,7 +36,7 @@
                             <div class="col-sm-6">
                                 <div class="input-group input-group-static my-3">
                                     <label for="jasa">Jasa</label>
-                                    <input autocomplete="off" type="text" name="jasa" id="jasa"
+                                    <input autocomplete="off" type="tel" name="jasa" id="jasa"
                                         class="form-control">
                                     <small class="text-danger" id="msg_jasa"></small>
                                 </div>
@@ -44,7 +44,7 @@
                             <div class="col-sm-6">
                                 <div class="input-group input-group-static my-3">
                                     <label for="denda">Denda</label>
-                                    <input autocomplete="off" type="text" name="denda" id="denda"
+                                    <input autocomplete="off" type="tel" name="denda" id="denda"
                                         class="form-control">
                                     <small class="text-danger" id="msg_denda"></small>
                                 </div>
