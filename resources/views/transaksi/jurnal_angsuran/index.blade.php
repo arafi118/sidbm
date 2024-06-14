@@ -463,8 +463,12 @@
         $(document).on('click', '#BtnCetakBkm', function(e) {
             e.preventDefault()
 
-            $('#FormCetakBuktiAngsuran').attr('action', '/transaksi/angsuran/cetak_bkm');
-            $('#FormCetakBuktiAngsuran').submit();
+            if ($('#FormCetakBuktiAngsuran').serializeArray().length > 1) {
+                $('#FormCetakBuktiAngsuran').attr('action', '/transaksi/angsuran/cetak_bkm');
+                $('#FormCetakBuktiAngsuran').submit();
+            } else {
+                Swal.fire('Error', "Tidak ada angsuran yang dipilih.", 'error')
+            }
         })
 
         $(document).on('click', '#btnAngsuranAnggota', function(e) {
