@@ -1922,32 +1922,37 @@ class TransaksiController extends Controller
 
         if ($idtp != '0') {
             $trx = Transaksi::where('idtp', $idtp)->delete();
-            $pinkel = PinjamanKelompok::where('id', $id_pinj)->with('pinjaman_anggota')->first();
 
-            $pinjaman_anggota = $pinkel->pinjaman_anggota;
-            foreach ($pinjaman_anggota as $pa) {
-                $kom_pokok = json_decode($pa->kom_pokok, true);
-                $kom_jasa = json_decode($pa->kom_jasa, true);
+            if ($id_pinj != '0') {
+                $pinkel = PinjamanKelompok::where('id', $id_pinj)->with('pinjaman_anggota')->first();
 
-                if (is_array($kom_pokok)) {
-                    unset($kom_pokok[$idtp]);
-                } else {
-                    $kom_pokok = [];
+                $pinjaman_anggota = $pinkel->pinjaman_anggota;
+                foreach ($pinjaman_anggota as $pa) {
+                    $kom_pokok = json_decode($pa->kom_pokok, true);
+                    $kom_jasa = json_decode($pa->kom_jasa, true);
+
+                    if (is_array($kom_pokok)) {
+                        unset($kom_pokok[$idtp]);
+                    } else {
+                        $kom_pokok = [];
+                    }
+
+                    if (is_array($kom_jasa)) {
+                        unset($kom_jasa[$idtp]);
+                    } else {
+                        $kom_jasa = [];
+                    }
+
+                    PinjamanAnggota::where('id', $pa->id)->update([
+                        'kom_pokok' => $kom_pokok,
+                        'kom_jasa' => $kom_jasa
+                    ]);
                 }
 
-                if (is_array($kom_jasa)) {
-                    unset($kom_jasa[$idtp]);
-                } else {
-                    $kom_jasa = [];
-                }
-
-                PinjamanAnggota::where('id', $pa->id)->update([
-                    'kom_pokok' => $kom_pokok,
-                    'kom_jasa' => $kom_jasa
-                ]);
+                $this->regenerateReal($pinkel);
             }
 
-            $this->regenerateReal($pinkel);
+            $transaksi = Transaksi::where('idtp', $idtp)->get();
         } else {
             if ($id_pinj != '0') {
                 $pinkel = PinjamanKelompok::where('id', $id_pinj)->update([
@@ -1978,12 +1983,54 @@ class TransaksiController extends Controller
             }
 
             $trx = Transaksi::where('idt', $idt)->delete();
+
+            $transaksi = Transaksi::where('idt', $idt)->get();
         }
+
+        $bulan = 0;
+        $tahun = 0;
+        $kode_akun = [];
+        foreach ($transaksi as $trx) {
+            $tgl = explode('-', $trx->tgl_transaksi);
+            $tahun = $tgl[0];
+            $bulan = $tgl[1];
+
+            $kode_akun[$trx->rekening_debit] = $trx->rekening_debit;
+            $kode_akun[$trx->rekening_kredit] = $trx->rekening_kredit;
+        }
+        $kode_akun = array_values($kode_akun);
+
+        $this->simpanSaldo($kode_akun, $bulan, $tahun);
 
         return response()->json([
             'success' => true,
             'msg' => 'Transaksi Berhasil Dihapus.'
         ]);
+    }
+
+    public function simpanSaldo(array $kode_akun, $bulan, $tahun)
+    {
+        $date = $tahun . '-' . $bulan . '-01';
+        $tgl_kondisi = date('Y-m-t', strtotime($date));
+
+        $rekening = Rekening::withSum([
+            'trx_debit' => function ($query) use ($tgl_kondisi, $tahun) {
+                $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
+            }
+        ], 'jumlah')->withSum([
+            'trx_kredit' => function ($query) use ($tgl_kondisi, $tahun) {
+                $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
+            }
+        ], 'jumlah')->whereIn('kode_akun', $kode_akun)->orderBy('kode_akun', 'ASC')->get();
+
+        foreach ($rekening as $rek) {
+            $simpan_saldo = Saldo::where('tahun', $tahun)->whereBetween('bulan', [$bulan, '12'])->update([
+                'debit' => $rek->trx_debit_sum_jumlah,
+                'kredit' => $rek->trx_kredit_sum_jumlah,
+            ]);
+        }
+
+        return true;
     }
 
     public function detailAngsuran($id)
