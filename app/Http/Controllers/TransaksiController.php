@@ -1937,6 +1937,7 @@ class TransaksiController extends Controller
         $id_pinj = $request->del_id_pinj;
 
         if ($idtp != '0') {
+            $transaksi = Transaksi::where('idtp', $idtp)->get();
             $trx = Transaksi::where('idtp', $idtp)->delete();
 
             if ($id_pinj != '0') {
@@ -1967,8 +1968,6 @@ class TransaksiController extends Controller
 
                 $this->regenerateReal($pinkel);
             }
-
-            $transaksi = Transaksi::where('idtp', $idtp)->get();
         } else {
             if ($id_pinj != '0') {
                 $pinkel = PinjamanKelompok::where('id', $id_pinj)->update([
@@ -1998,9 +1997,8 @@ class TransaksiController extends Controller
                 ])->delete();
             }
 
-            $trx = Transaksi::where('idt', $idt)->delete();
-
             $transaksi = Transaksi::where('idt', $idt)->get();
+            $trx = Transaksi::where('idt', $idt)->delete();
         }
 
         $bulan = 0;

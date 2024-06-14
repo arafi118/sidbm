@@ -800,6 +800,7 @@ class DashboardController extends Controller
     {
         $tahun = request()->get('tahun') ?: date('Y');
         $bulan = request()->get('bulan') ?: date('m');
+        $kode_akun = request()->get('kode_akun') ?: '0';
 
         $kec = Kecamatan::where('id', Session::get('lokasi'))->with('desa')->first();
 
@@ -907,7 +908,13 @@ class DashboardController extends Controller
                 'trx_kredit' => function ($query) use ($tgl_kondisi, $tahun) {
                     $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
                 }
-            ], 'jumlah')->orderBy('kode_akun', 'ASC')->get();
+            ], 'jumlah')->orderBy('kode_akun', 'ASC');
+            if ($kode_akun != '0') {
+                $kode = explode(',', $kode_akun);
+                $rekening = $rekening->whereIn('kode_akun', $kode);
+            }
+
+            $rekening = $rekening->get();
 
             foreach ($rekening as $rek) {
                 $id = str_replace('.', '', $rek->kode_akun) . $tahun . str_pad($bulan, 2, "0", STR_PAD_LEFT);
@@ -953,6 +960,11 @@ class DashboardController extends Controller
 
         $query['bulan'] = str_pad($query['bulan'], 2, '0', STR_PAD_LEFT);
         $next = $link . '?' . http_build_query($query);
+
+        if (($kode_akun != '0' && $bulan >= date('m'))) {
+            echo '<script>window.opener.postMessage("closed", "*"); window.close();</script>';
+            exit;
+        }
 
         if ($query['bulan'] < 13) {
             echo '<a href="' . $next . '" id="next"></a><script>document.querySelector("#next").click()</script>';
