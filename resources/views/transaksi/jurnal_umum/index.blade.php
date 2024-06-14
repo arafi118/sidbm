@@ -614,7 +614,11 @@
         $(document).on('click', '#BtnCetak', function(e) {
             e.preventDefault()
 
-            $('#FormCetakDokumenTransaksi').submit()
+            if ($('#FormCetakDokumenTransaksi').serializeArray().length > 1) {
+                $('#FormCetakDokumenTransaksi').submit();
+            } else {
+                Swal.fire('Error', "Tidak ada tramsaksi yang dipilih.", 'error')
+            }
         })
 
         function initializeBootstrapTooltip() {
