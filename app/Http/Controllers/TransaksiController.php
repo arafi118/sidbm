@@ -1330,7 +1330,6 @@ class TransaksiController extends Controller
                 }
 
                 RealAngsuran::insert($real_angsuran);
-                DB::commit();
 
                 $whatsapp = false;
                 $pesan = '';
