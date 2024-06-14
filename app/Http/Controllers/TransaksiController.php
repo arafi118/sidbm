@@ -22,6 +22,7 @@ use App\Utils\Keuangan;
 use App\Utils\Tanggal;
 use DB;
 use PDF;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
@@ -1000,7 +1001,7 @@ class TransaksiController extends Controller
     {
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
 
-        $maxRetries = 5;
+        $maxRetries = 2;
         $retryCount = 0;
 
         while ($retryCount < $maxRetries) {
