@@ -19,4 +19,14 @@ class PinjamanAnggota extends Model
     {
         $this->table = 'pinjaman_anggota_' . Session::get('id_kab');
     }
+
+    public function anggota()
+    {
+        return $this->belongsTo(Anggota::class, 'nia', 'id');
+    }
+
+    public function pinkel()
+    {
+        return $this->belongsTo(PinjamanKelompok::class, 'id_pinkel', 'id');
+    }
 }

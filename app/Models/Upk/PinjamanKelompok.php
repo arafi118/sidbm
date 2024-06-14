@@ -19,4 +19,14 @@ class PinjamanKelompok extends Model
     {
         $this->table = 'pinjaman_kelompok' . Session::get('id_kab');
     }
+
+    public function kel()
+    {
+        return $this->belongsTo(Kelompok::class, 'id_kel', 'id');
+    }
+
+    public function pinj()
+    {
+        return $this->hasMany(PinjamanAnggota::class, 'id_pinkel', 'id');
+    }
 }

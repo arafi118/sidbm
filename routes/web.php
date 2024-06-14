@@ -74,6 +74,10 @@ Route::group(['prefix' => 'master', 'as' => 'master.', 'middleware' => 'master']
     Route::resource('/menu', MenuController::class);
 
     Route::get('/migrasi_upk/server/{server}', [UpkController::class, 'Server']);
+    Route::get('/migrasi_upk/{id}/rekening', [UpkController::class, 'Rekening']);
+    Route::get('/migrasi_upk/{id}/rekening/insert', [UpkController::class, 'InsertRekening']);
+    Route::get('/migrasi_upk/{id}/transaksi', [UpkController::class, 'Transaksi']);
+    Route::get('/migrasi_upk/{id}/desa', [UpkController::class, 'Desa']);
 
     Route::resource('/migrasi_upk', UpkController::class);
 

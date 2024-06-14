@@ -749,8 +749,8 @@ class DashboardController extends Controller
 
                             $kom_saldo[$lev1->lev1][$saldo->bulan] += $_saldo;
                             if ($saldo->bulan > 1) {
-                                if ($kom_saldo[$lev1->lev1][$saldo->bulan] < $kom_saldo[$lev1->lev1][$saldo->bulan - 1]) {
-                                    $kom_saldo[$lev1->lev1][$saldo->bulan] = $kom_saldo[$lev1->lev1][$saldo->bulan - 1];
+                                if ($saldo->bulan > date('m')) {
+                                    $kom_saldo[$lev1->lev1][$saldo->bulan] = 0;
                                 }
                             }
                         }
