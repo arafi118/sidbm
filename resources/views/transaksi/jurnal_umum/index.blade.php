@@ -617,7 +617,7 @@
             if ($('#FormCetakDokumenTransaksi').serializeArray().length > 1) {
                 $('#FormCetakDokumenTransaksi').submit();
             } else {
-                Swal.fire('Error', "Tidak ada tramsaksi yang dipilih.", 'error')
+                Swal.fire('Error', "Tidak ada transaksi yang dipilih.", 'error')
             }
         })
 
