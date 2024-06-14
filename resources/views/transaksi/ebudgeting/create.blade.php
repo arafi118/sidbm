@@ -26,7 +26,7 @@
                         @foreach ($lev3->rek as $rek)
                             @php
                                 $nominal = 0;
-                                if ($jumlah > 0) {
+                                if ($rek->eb) {
                                     $nominal = $rek->eb->jumlah;
                                 }
 
