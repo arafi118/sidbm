@@ -2000,14 +2000,13 @@ class TransaksiController extends Controller
         }
         $kode_akun = array_values($kode_akun);
 
-        $this->simpanSaldo($kode_akun, $bulan, $tahun);
-
         return response()->json([
             'success' => true,
             'msg' => 'Transaksi Berhasil Dihapus.'
         ]);
     }
 
+    // Inavctive
     public function simpanSaldo(array $kode_akun, $bulan, $tahun)
     {
         $date = $tahun . '-' . $bulan . '-01';
