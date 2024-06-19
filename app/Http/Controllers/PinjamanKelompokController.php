@@ -1564,6 +1564,12 @@ class PinjamanKelompokController extends Controller
             ['jabatan', '2']
         ])->with('j')->first();
 
+        $data['dir_utama'] = User::where([
+            ['level', '2'],
+            ['jabatan', '65'],
+            ['lokasi', Session::get('lokasi')],
+        ])->first();
+
         $data['judul'] = 'BA Pendanaan ' . Tanggal::tglLatin($data['pinj']->tgl_tunggu);
         $view = view('perguliran.dokumen.ba_pendanaan', $data)->render();
 
@@ -1776,12 +1782,6 @@ class PinjamanKelompokController extends Controller
             ['level', '1'],
             ['jabatan', '1'],
             ['lokasi', Session::get('lokasi')]
-        ])->first();
-
-        $data['dir_utama'] = User::where([
-            ['level', '2'],
-            ['jabatan', '65'],
-            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $data['keuangan'] = $keuangan;
