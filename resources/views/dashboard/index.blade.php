@@ -811,7 +811,7 @@
                         withCredentials: true
                     },
                     data: JSON.stringify({
-                        token: "DBM-330819-0001",
+                        token: "DBM-0001",
                         number: number,
                         text: msg
                     }),
