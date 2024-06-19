@@ -1778,6 +1778,12 @@ class PinjamanKelompokController extends Controller
             ['lokasi', Session::get('lokasi')]
         ])->first();
 
+        $data['dir_utama'] = User::where([
+            ['level', '2'],
+            ['jabatan', '65'],
+            ['lokasi', Session::get('lokasi')],
+        ])->first();
+
         $data['keuangan'] = $keuangan;
         $data['ttd'] = Pinjaman::keyword($data['kec']->ttd->tanda_tangan_spk, $data);
 

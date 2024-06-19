@@ -107,16 +107,30 @@
             <td colspan="4">&nbsp;</td>
         </tr>
 
-        <tr>
-            <td height="20">
-                <div>{{ $pendanaan->namadepan }} {{ $pendanaan->namabelakang }}</div>
-                <div>
-                    <b>{{ $pendanaan->j->nama_jabatan }}</b>
-                </div>
-            </td>
-            <td align="right" style="vertical-align: bottom;">___________________________</td>
-            <td colspan="2">&nbsp;</td>
-        </tr>
+        @if ($dir_utama)
+            <tr>
+                <td height="20">
+                    <div>{{ $dir_utama->namadepan }} {{ $dir_utama->namabelakang }}</div>
+                    <div>
+                        <b>{{ $dir_utama->j->nama_jabatan }}</b>
+                    </div>
+                </td>
+                <td align="right" style="vertical-align: bottom;">___________________________</td>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+        @else
+            <tr>
+                <td height="20">
+                    <div>{{ $pendanaan->namadepan }} {{ $pendanaan->namabelakang }}</div>
+                    <div>
+                        <b>{{ $pendanaan->j->nama_jabatan }}</b>
+                    </div>
+                </td>
+                <td align="right" style="vertical-align: bottom;">___________________________</td>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+        @endif
+
         <tr>
             <td height="20">
                 <div>{{ $direktur->namadepan }} {{ $direktur->namabelakang }}</div>
