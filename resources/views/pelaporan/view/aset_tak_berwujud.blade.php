@@ -99,7 +99,11 @@
                     $umur_pakai = $akum_umur - $pakai_lalu;
                     $penyusutan = $satuan_susut * $umur_pakai;
 
-                    if (($inv->status == 'Hilang' and $tgl_kondisi >= $inv->tgl_validasi) || ($inv->status == 'Dijual' && $tgl_kondisi >= $inv->tgl_validasi) || ($inv->status == 'Hapus' && $tgl_kondisi >= $inv->tgl_validasi)) {
+                    if (
+                        ($inv->status == 'Hilang' and $tgl_kondisi >= $inv->tgl_validasi) ||
+                        ($inv->status == 'Dijual' && $tgl_kondisi >= $inv->tgl_validasi) ||
+                        ($inv->status == 'Hapus' && $tgl_kondisi >= $inv->tgl_validasi)
+                    ) {
                         $akum_susut = $inv->harsat * $inv->unit;
                         $nilai_buku = 0;
                         $penyusutan = 0;
@@ -122,6 +126,10 @@
 
                     if ($akum_umur == $inv->umur_ekonomis && $umur_pakai > '0') {
                         $penyusutan = $_satuan_susut * ($umur_pakai - 1) + $satuan_susut;
+                    }
+
+                    if ($akum_umur == $inv->umur_ekonomis) {
+                        $akum_susut = 0;
                     }
 
                     $t_unit += $inv->unit;
