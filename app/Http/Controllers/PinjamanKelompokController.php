@@ -71,7 +71,7 @@ class PinjamanKelompokController extends Controller
                     return Tanggal::tglIndo($row->tgl_proposal);
                 })
                 ->editColumn('proposal', function ($row) {
-                    return number_format($row->proposal);
+                    return number_format(intval($row->proposal));
                 })
                 ->editColumn('kelompok.alamat_kelompok', function ($row) {
                     return $row->kelompok->alamat_kelompok . ' ' . $row->kelompok->d->nama_desa;
@@ -2366,10 +2366,6 @@ class PinjamanKelompokController extends Controller
 
         $sistem_pokok = $pinkel->sis_pokok->sistem;
         $sistem_jasa = $pinkel->sis_jasa->sistem;
-
-        if ($sa_pokok == 11 || $sa_jasa == 11) {
-            $jangka += 24;
-        }
 
         if ($sa_pokok == 11) {
             $tempo_pokok = ($jangka) - 24 / $sistem_pokok;

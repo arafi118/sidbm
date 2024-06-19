@@ -140,9 +140,6 @@
                 $sa_jasa = $pinkel->sa_jasa;
 
                 $jangka = $pinkel->jangka;
-                if ($sa_pokok == 11 || $sa_jasa == 11) {
-                    $jangka += 24;
-                }
 
                 $b = '';
                 if ($ra->angsuran_ke == $jangka) {
