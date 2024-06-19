@@ -156,7 +156,7 @@
         </tr>
         <tr>
             <td align="center"><b>Data Proposal</b></td>
-            <td align="center">{{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
+            <td>{{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
             <td align="right">{{ number_format($pinkel->proposal) }}</td>
             <td align="center">
                 {{ number_format($pinkel->pros_jasa / $pinkel->jangka, 2) }}%/{{ $pinkel->jasa->nama_jj }}
@@ -164,14 +164,27 @@
             <td align="center">{{ $pinkel->jangka }} bulan</td>
             <td align="center">{{ $pinkel->sis_pokok->nama_sistem }}</td>
         </tr>
-        <tr>
-            <td align="center">Data Verifikasi</td>
-            <td align="center">&nbsp;</td>
-            <td align="right">&nbsp;</td>
-            <td align="center">&nbsp;</td>
-            <td align="center">&nbsp;</td>
-            <td align="center">&nbsp;</td>
-        </tr>
+        @if (!($pinkel->status == 'P' || $pinkel->status == 'V'))
+            <tr>
+                <td align="center">Data Verifikasi</td>
+                <td>{{ Tanggal::tglLatin($pinkel->tgl_verifikasi) }}</td>
+                <td align="right">{{ number_format($pinkel->verifikasi) }}</td>
+                <td align="center">
+                    {{ number_format($pinkel->pros_jasa / $pinkel->jangka, 2) }}%/{{ $pinkel->jasa->nama_jj }}
+                </td>
+                <td align="center">{{ $pinkel->jangka }} bulan</td>
+                <td align="center">{{ $pinkel->sis_pokok->nama_sistem }}</td>
+            </tr>
+        @else
+            <tr>
+                <td align="center">Data Verifikasi</td>
+                <td align="center">&nbsp;</td>
+                <td align="right">&nbsp;</td>
+                <td align="center">&nbsp;</td>
+                <td align="center">&nbsp;</td>
+                <td align="center">&nbsp;</td>
+            </tr>
+        @endif
         <tr>
             <td colspan="6" height="20">
                 Catatan Verifikasi :
