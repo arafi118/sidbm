@@ -2407,57 +2407,59 @@ class PinjamanKelompokController extends Controller
 
         $ra = [];
         $alokasi_pokok = $alokasi;
-        for ($j = 1; $j <= $jangka; $j++) {
-            $sisa = $j % $sistem_jasa;
-            $ke = $j / $sistem_jasa;
-            $alokasi_jasa = $alokasi_pokok * ($pros_jasa / 100);
-            $wajib_jasa = $alokasi_jasa / $tempo_jasa;
+        if ($jenis_jasa == '1') {
+            for ($j = 1; $j <= $jangka; $j++) {
+                $sisa = $j % $sistem_jasa;
+                $ke = $j / $sistem_jasa;
 
-            if ($kec->pembulatan != '5000') {
+                $alokasi_jasa = $alokasi_pokok * ($pros_jasa / 100);
+                $wajib_jasa = $alokasi_jasa / $tempo_jasa;
                 $wajib_jasa = Keuangan::pembulatan($wajib_jasa, (string) $kec->pembulatan);
+                $sum_jasa = $wajib_jasa * ($tempo_jasa - 1);
+
+                if ($sisa == 0 and $ke != $tempo_jasa) {
+                    $angsuran_jasa = $wajib_jasa;
+                } elseif ($sisa == 0 and $ke == $tempo_jasa) {
+                    $angsuran_jasa = $alokasi_jasa - $sum_jasa;
+                } else {
+                    $angsuran_jasa = 0;
+                }
+
+                if ($jenis_jasa == '2') {
+                    $angsuran_jasa = $wajib_jasa;
+                    $alokasi_pokok -= $ra[$j]['pokok'];
+                }
+
+                $ra[$j]['jasa'] = $angsuran_jasa;
             }
-
-            $sum_jasa = $wajib_jasa * ($tempo_jasa - 1);
-
-            if ($sisa == 0 and $ke != $jangka && $ke > $mulai_angsuran_jasa) {
-                $angsuran_jasa = $wajib_jasa;
-            } elseif ($sisa == 0 and $ke == $jangka) {
-                $angsuran_jasa = $alokasi_jasa - $sum_jasa;
-            } else {
-                $angsuran_jasa = 0;
-            }
-
-            if ($jenis_jasa == '2') {
-                $angsuran_jasa = $wajib_jasa;
-                $alokasi_pokok -= $ra[$j]['pokok'];
-            }
-
-            $ra[$j]['jasa'] = $angsuran_jasa;
         }
 
         for ($i = 1; $i <= $jangka; $i++) {
             $sisa = $i % $sistem_pokok;
             $ke = $i / $sistem_pokok;
 
-            $wajib_pokok = ($alokasi / 10) - $ra[$i]['jasa'];
-            if ($jangka == 24) {
-                $wajib_pokok = Keuangan::pembulatan((($alokasi / 10) - $ra[$i]['jasa']) / 2, -500);
+            $wajib_pokok = Keuangan::pembulatan($alokasi / $tempo_pokok, (string) $kec->pembulatan);
+            if ($jenis_jasa == '1') {
+                $wajib_pokok = ($alokasi / 10) - $ra[$i]['jasa'];
+                if ($jangka == 24) {
+                    $wajib_pokok = Keuangan::pembulatan((($alokasi / 10) - $ra[$i]['jasa']) / 2, -500);
 
-                if ($alokasi > 1000000) {
-                    $wajib_pokok = Keuangan::pembulatan((($alokasi / 10) - $ra[$i]['jasa']) / 2, 5000);
-                }
-
-                if ($alokasi != 20000000) {
-                    if ($alokasi >= 8000000) {
-                        $wajib_pokok -= 5000;
+                    if ($alokasi > 1000000) {
+                        $wajib_pokok = Keuangan::pembulatan((($alokasi / 10) - $ra[$i]['jasa']) / 2, 5000);
                     }
 
-                    if ($alokasi == 12000000 || $alokasi >= 14000000) {
-                        $wajib_pokok -= 5000;
-                    }
+                    if ($alokasi != 20000000) {
+                        if ($alokasi >= 8000000) {
+                            $wajib_pokok -= 5000;
+                        }
 
-                    if ($alokasi == 18000000 || $alokasi == 6000000) {
-                        $wajib_pokok -= 5000;
+                        if ($alokasi == 12000000 || $alokasi >= 14000000) {
+                            $wajib_pokok -= 5000;
+                        }
+
+                        if ($alokasi == 18000000 || $alokasi == 6000000) {
+                            $wajib_pokok -= 5000;
+                        }
                     }
                 }
             }
@@ -2477,6 +2479,33 @@ class PinjamanKelompokController extends Controller
             }
 
             $ra[$i]['pokok'] = $angsuran_pokok;
+        }
+
+        if ($jenis_jasa != '1') {
+            for ($j = 1; $j <= $jangka; $j++) {
+                $sisa = $j % $sistem_jasa;
+                $ke = $j / $sistem_jasa;
+
+                $alokasi_jasa = $alokasi_pokok * ($pros_jasa / 100);
+                $wajib_jasa = $alokasi_jasa / $tempo_jasa;
+                $wajib_jasa = Keuangan::pembulatan($wajib_jasa, (string) $kec->pembulatan);
+                $sum_jasa = $wajib_jasa * ($tempo_jasa - 1);
+
+                if ($sisa == 0 and $ke != $tempo_jasa) {
+                    $angsuran_jasa = $wajib_jasa;
+                } elseif ($sisa == 0 and $ke == $tempo_jasa) {
+                    $angsuran_jasa = $alokasi_jasa - $sum_jasa;
+                } else {
+                    $angsuran_jasa = 0;
+                }
+
+                if ($jenis_jasa == '2') {
+                    $angsuran_jasa = $wajib_jasa;
+                    $alokasi_pokok -= $ra[$j]['pokok'];
+                }
+
+                $ra[$j]['jasa'] = $angsuran_jasa;
+            }
         }
 
         $ra['alokasi'] = $alokasi;
