@@ -51,22 +51,24 @@ class Keuangan
         }
 
         $ratusan = substr($angka, -strlen($pembulatan / 2));
-        // $ratusan = substr($angka, -3);
         $nilai_tengah = $pembulatan / 2;
 
-        if ($sistem == 'keatas') {
-            $akhir = $angka + ($pembulatan - $ratusan);
-        }
-
-        if ($sistem == 'kebawah') {
-            $akhir = $angka - $ratusan;
-        }
-
-        if ($sistem == 'auto') {
-            if ($ratusan <= $nilai_tengah) {
-                $akhir = $angka - $ratusan;
-            } else {
+        $akhir = $angka;
+        if ($ratusan > 0) {
+            if ($sistem == 'keatas') {
                 $akhir = $angka + ($pembulatan - $ratusan);
+            }
+
+            if ($sistem == 'kebawah') {
+                $akhir = $angka - $ratusan;
+            }
+
+            if ($sistem == 'auto') {
+                if ($ratusan <= $nilai_tengah) {
+                    $akhir = $angka - $ratusan;
+                } else {
+                    $akhir = $angka + ($pembulatan - $ratusan);
+                }
             }
         }
 
