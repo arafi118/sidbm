@@ -121,7 +121,7 @@
             <td height="20">
                 <div>{{ $direktur->namadepan }} {{ $direktur->namabelakang }}</div>
                 <div>
-                    <b>{{ $direktur->j->nama_jabatan }}</b>
+                    <b>{{ $kec->sebutan_level_1 }}</b>
                 </div>
             </td>
             <td align="right" style="vertical-align: bottom;">___________________________</td>

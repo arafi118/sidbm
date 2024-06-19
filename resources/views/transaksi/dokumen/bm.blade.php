@@ -198,7 +198,7 @@
                         <td align="center">Disiapkan Oleh :</td>
                     </tr>
                     <tr>
-                        <td align="center"><?php echo $dir->j->nama_jabatan; ?></td>
+                        <td align="center"><?php echo $kec->sebutan_level_1; ?></td>
                         <td align="center"><?php echo $kec->sebutan_level_3; ?></td>
                         <td align="center">&nbsp;</td>
                     </tr>
