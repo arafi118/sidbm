@@ -2462,10 +2462,10 @@ class PinjamanKelompokController extends Controller
                         }
                     }
                 }
-            }
 
-            if ($kec->pembulatan != '5000') {
-                $wajib_pokok = Keuangan::pembulatan($alokasi / $tempo_pokok, (string) $kec->pembulatan);
+                if ($kec->pembulatan != '5000') {
+                    $wajib_pokok = Keuangan::pembulatan($alokasi / $tempo_pokok, (string) $kec->pembulatan);
+                }
             }
 
             $sum_pokok = $wajib_pokok * ($tempo_pokok - 1);
