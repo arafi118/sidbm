@@ -249,7 +249,7 @@ class GenerateController extends Controller
 
                     $alokasi_jasa = $alokasi_pokok * ($pros_jasa / 100);
                     $wajib_jasa = $alokasi_jasa / $tempo_jasa;
-                    $wajib_jasa = Keuangan::pembulatan($wajib_jasa, (string) $kec->pembulatan);
+                    $wajib_jasa = Keuangan::pembulatan(intval($wajib_jasa), (string) $kec->pembulatan);
                     $sum_jasa = $wajib_jasa * ($tempo_jasa - 1);
 
                     if ($sisa == 0 and $ke != $tempo_jasa) {
@@ -294,7 +294,7 @@ class GenerateController extends Controller
 
                     $alokasi_jasa = $alokasi_pokok * ($pros_jasa / 100);
                     $wajib_jasa = $alokasi_jasa / $tempo_jasa;
-                    $wajib_jasa = Keuangan::pembulatan($wajib_jasa, (string) $kec->pembulatan);
+                    $wajib_jasa = Keuangan::pembulatan(intval($wajib_jasa), (string) $kec->pembulatan);
                     $sum_jasa = $wajib_jasa * ($tempo_jasa - 1);
 
                     if ($sisa == 0 and $ke != $tempo_jasa) {
