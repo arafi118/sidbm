@@ -226,9 +226,17 @@
             if (bulan < 1) {
                 bulan = 0
             }
+
+            var nama_bulan = namaBulan(bulan)
+
+            var pesan = nama_bulan + " sampai Desember "
+            if (bulan == '12') {
+                pesan = nama_bulan + " "
+            }
+
             loading = Swal.fire({
                 title: "Mohon Menunggu..",
-                html: "Menyimpan Saldo Tahun " + tahun,
+                html: "Menyimpan Saldo Bulan " + pesan + tahun,
                 timerProgressBar: true,
                 allowOutsideClick: false,
                 didOpen: () => {
@@ -245,5 +253,48 @@
                 window.location.reload()
             }
         })
+
+        function namaBulan(bulan) {
+            switch (bulan) {
+                case '01':
+                    return 'Januari';
+                    break;
+                case '02':
+                    return 'Februari';
+                    break;
+                case '03':
+                    return 'Maret';
+                    break;
+                case '04':
+                    return 'April';
+                    break;
+                case '05':
+                    return 'Mei';
+                    break;
+                case '06':
+                    return 'Juni';
+                    break;
+                case '07':
+                    return 'Juli';
+                    break;
+                case '08':
+                    return 'Agustus';
+                    break;
+                case '09':
+                    return 'September';
+                    break;
+                case '10':
+                    return 'Oktober';
+                    break;
+                case '11':
+                    return 'November';
+                    break;
+                case '12':
+                    return 'Desember';
+                    break;
+            }
+
+            return 'Januari';
+        }
     </script>
 @endsection
