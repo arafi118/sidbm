@@ -40,8 +40,12 @@ class PelaporanController extends Controller
 
     public function subLaporan($file)
     {
+        $tahun = request()->get('tahun');
+        $bulan = request()->get('bulan');
+
+        $tgl_kondisi = date('Y-m-t', strtotime($tahun . '-' . $bulan . '-01'));
         if ($file == 3) {
-            $rekening = Rekening::orderBy('kode_akun', 'ASC')->get();
+            $rekening = Rekening::whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi)->orderBy('kode_akun', 'ASC')->get();
             return view('pelaporan.partials.sub_laporan')->with(compact('file', 'rekening'));
         }
 
@@ -457,7 +461,9 @@ class PelaporanController extends Controller
         }
 
         $data['keuangan'] = $keuangan;
-        $data['rekening'] = Rekening::where('lev1', '3')->with([
+        $data['rekening'] = Rekening::where('lev1', '3')->where(function ($query) use ($data) {
+            $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $data['tgl_kondisi']);
+        })->with([
             'kom_saldo' => function ($query) use ($data) {
                 $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
                     $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
@@ -693,7 +699,7 @@ class PelaporanController extends Controller
         }
 
         $data['keuangan'] = $keuangan;
-        $data['rekening'] = Rekening::orderBy('kode_akun', 'ASC')->with([
+        $data['rekening'] = Rekening::whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $data['tgl_kondisi'])->orderBy('kode_akun', 'ASC')->with([
             'kom_saldo' => function ($query) use ($data) {
                 $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
                     $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
@@ -1747,7 +1753,9 @@ class PelaporanController extends Controller
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
         }
 
-        $data['inventaris'] = Rekening::where('kode_akun', 'LIKE', '1.2.01%')
+        $data['inventaris'] = Rekening::where('kode_akun', 'LIKE', '1.2.01%')->where(function ($query) use ($data) {
+            $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $data['tgl_kondisi']);
+        })
             ->with([
                 'inventaris' => function ($query) use ($data) {
                     $query->where([
@@ -1786,7 +1794,9 @@ class PelaporanController extends Controller
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
         }
 
-        $data['inventaris'] = Rekening::where('kode_akun', 'LIKE', '1.2.03%')
+        $data['inventaris'] = Rekening::where('kode_akun', 'LIKE', '1.2.03%')->where(function ($query) use ($data) {
+            $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $data['tgl_kondisi']);
+        })
             ->with([
                 'inventaris' => function ($query) use ($data) {
                     $query->where([
@@ -1883,7 +1893,9 @@ class PelaporanController extends Controller
         $data['akun1'] = AkunLevel1::where('lev1', '>=', '4')->with([
             'akun2',
             'akun2.akun3',
-            'akun2.akun3.rek',
+            'akun2.akun3.rek' => function ($query) use ($data) {
+                $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $data['tgl_kondisi']);
+            },
             'akun2.akun3.rek.kom_saldo' => function ($query) use ($data, $awal, $akhir) {
                 $tahun = date('Y', strtotime($data['tgl_kondisi']));
                 $query->where('tahun', $tahun)->orderBy('bulan', 'ASC')->orderBy('kode_akun', 'ASC');
@@ -1980,7 +1992,9 @@ class PelaporanController extends Controller
 
         $data['tahun_tb'] = $thn;
         $data['surplus'] = $keuangan->laba_rugi(($data['tahun'] - 1) . '-13-00');
-        $data['rekening'] = Rekening::where('kode_akun', 'like', '2.1.04%')->with([
+        $data['rekening'] = Rekening::where('kode_akun', 'like', '2.1.04%')->where(function ($query) use ($data) {
+            $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $data['tgl_kondisi']);
+        })->with([
             'saldo' => function ($query) use ($data) {
                 $query->where('tahun', $data['tahun_tb']);
             }
@@ -2055,7 +2069,9 @@ class PelaporanController extends Controller
         $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with([
             'akun2',
             'akun2.akun3',
-            'akun2.akun3.rek',
+            'akun2.akun3.rek' => function ($query) use ($data) {
+                $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $data['tgl_kondisi']);
+            },
             'akun2.akun3.rek.saldo' => function ($query) use ($data) {
                 $query->where([
                     ['tahun', $data['tahun']],
@@ -2095,7 +2111,9 @@ class PelaporanController extends Controller
         $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with([
             'akun2',
             'akun2.akun3',
-            'akun2.akun3.rek',
+            'akun2.akun3.rek' => function ($query) use ($data) {
+                $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $data['tgl_kondisi']);
+            },
             'akun2.akun3.rek.kom_saldo' => function ($query) use ($data) {
                 $query->where([
                     ['tahun', $data['tahun']],

@@ -176,7 +176,9 @@ class TransaksiController extends Controller
             }
 
             $tahun_tb = $tahun + 1;
-            $kode_rekening = Rekening::with([
+            $kode_rekening = Rekening::where(function ($query) use ($tgl_kondisi) {
+                $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
+            })->with([
                 'kom_saldo' => function ($query) use ($tahun, $bulan) {
                     $query->where('tahun', $tahun)->where(function ($query) use ($bulan) {
                         $query->where('bulan', '0')->orwhere('bulan', $bulan);
@@ -274,7 +276,9 @@ class TransaksiController extends Controller
                 $query->where('tahun', $tahun);
             },
         ])->first();
-        $rekening = Rekening::where('kode_akun', 'like', '2.1.04%')->get();
+        $rekening = Rekening::where('kode_akun', 'like', '2.1.04%')->where(function ($query) use ($tgl_kondisi) {
+            $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
+        })->get();
         $desa = Desa::where('kd_kec', $kec->kd_kec)->with([
             'saldo' => function ($query) use ($tahun, $bulan) {
                 $query->where('tahun', $tahun);
@@ -316,7 +320,7 @@ class TransaksiController extends Controller
             }
         ])->first();
         $desa = $kec->desa;
-        $rekening = Rekening::with([
+        $rekening = Rekening::whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tanggal)->with([
             'kom_saldo' => function ($query) use ($tahun, $bulan) {
                 $query->where('tahun', $tahun)->where(function ($query) use ($bulan) {
                     $query->where('bulan', '0')->orwhere('bulan', $bulan);
@@ -541,11 +545,14 @@ class TransaksiController extends Controller
 
         $jumlah = $cek->count();
 
+        $tgl_kondisi = date('Y-m-t', strtotime($request->tahun . '-' . $request->bulan . '-01'));
         if ($jumlah > 0) {
             $akun1 = AkunLevel1::where('lev1', '>=', '4')->with([
                 'akun2',
                 'akun2.akun3',
-                'akun2.akun3.rek',
+                'akun2.akun3.rek' => function ($query) use ($tgl_kondisi) {
+                    $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
+                },
                 'akun2.akun3.rek.eb' => function ($query) use ($data) {
                     $query->where([
                         ['tahun', $data['tahun']],
@@ -557,7 +564,9 @@ class TransaksiController extends Controller
             $akun1 = AkunLevel1::where('lev1', '>=', '4')->with([
                 'akun2',
                 'akun2.akun3',
-                'akun2.akun3.rek',
+                'akun2.akun3.rek' => function ($query) use ($tgl_kondisi) {
+                    $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
+                },
                 'akun2.akun3.rek.eb' => function ($query) use ($data) {
                     $query->where([
                         ['tahun', $data['tahun']],
@@ -659,10 +668,13 @@ class TransaksiController extends Controller
             $bulan_lalu = 0;
         }
 
+        $tgl_kondisi = date('Y-m-t', strtotime($tahun . '-' . $bulan . '-01'));
         $rekening = Rekening::where([
             ['lev1', '4'],
             ['kode_akun', 'NOT LIKE', '4.1.02.%']
-        ])->with([
+        ])->where(function ($query) use ($tgl_kondisi) {
+            $query->$query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
+        })->with([
             'kom_saldo' => function ($query) use ($tahun, $bulan, $bulan_lalu) {
                 $query->where('tahun', $tahun)->where(function ($query) use ($bulan, $bulan_lalu) {
                     $query->where('bulan', $bulan_lalu)->orwhere('bulan', $bulan);
@@ -682,7 +694,9 @@ class TransaksiController extends Controller
         $biaya = Rekening::where([
             ['lev1', '5'],
             ['lev2', '!=', '4']
-        ])->with([
+        ])->where(function ($query) use ($tgl_kondisi) {
+            $query->$query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
+        })->with([
             'kom_saldo' => function ($query) use ($tahun, $bulan, $bulan_lalu) {
                 $query->where('tahun', $tahun)->where(function ($query) use ($bulan, $bulan_lalu) {
                     $query->where('bulan', $bulan_lalu)->orwhere('bulan', $bulan);
@@ -1466,35 +1480,47 @@ class TransaksiController extends Controller
         $jenis_transaksi = JenisTransaksi::where('id', $id)->firstOrFail();
         $label1 = 'Pilih Sumber Dana';
 
+        $tahun = request()->get('tahun');
+        $bulan = request()->get('bulan');
+
+        $tgl_kondisi = date('Y-m-t', strtotime($tahun . '-' . $bulan . '-01'));
         if ($id == 1) {
             $rek1 = Rekening::where(function ($query) {
-                $query->where('lev1', '2')->orwhere('lev1', '3')->orwhere('lev1', '4');
-            })->where([
-                ['kode_akun', '!=', '2.1.04.01'],
-                ['kode_akun', '!=', '2.1.04.02'],
-                ['kode_akun', '!=', '2.1.04.03'],
-                ['kode_akun', '!=', '2.1.02.01'],
-                ['kode_akun', '!=', '2.1.03.01'],
-                ['kode_akun', 'NOT LIKE', '4.1.01%']
-            ])->orderBy('kode_akun', 'ASC')->get();
+                $query->where(function ($query) {
+                    $query->where('lev1', '2')->orwhere('lev1', '3')->orwhere('lev1', '4');
+                })->where([
+                    ['kode_akun', '!=', '2.1.04.01'],
+                    ['kode_akun', '!=', '2.1.04.02'],
+                    ['kode_akun', '!=', '2.1.04.03'],
+                    ['kode_akun', '!=', '2.1.02.01'],
+                    ['kode_akun', '!=', '2.1.03.01'],
+                    ['kode_akun', 'NOT LIKE', '4.1.01%']
+                ]);
+            })->where(function ($query) use ($tgl_kondisi) {
+                $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
+            })->orderBy('kode_akun', 'ASC')->get();
 
             $rek2 = Rekening::where('lev1', '1')->orderBy('kode_akun', 'ASC')->get();
 
             $label2 = 'Disimpan Ke';
         } elseif ($id == 2) {
             $rek1 = Rekening::where(function ($query) {
-                $query->where('lev1', '1')->orwhere('lev1', '2');
-            })->where([
-                ['kode_akun', 'NOT LIKE', '2.1.04%']
-            ])->orderBy('kode_akun', 'ASC')->get();
+                $query->where(function ($query) {
+                    $query->where('lev1', '1')->orwhere('lev1', '2');
+                })->where([
+                    ['kode_akun', 'NOT LIKE', '2.1.04%']
+                ]);
+            })->where(function ($query) use ($tgl_kondisi) {
+                $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
+            })->orderBy('kode_akun', 'ASC')->get();
 
             $rek2 = Rekening::where('lev1', '2')->orwhere('lev1', '3')->orwhere('lev1', '5')->orderBy('kode_akun', 'ASC')->get();
 
             $label2 = 'Keperluan';
         } elseif ($id == 3) {
-            $rek1 = Rekening::all();
+            $rek1 = Rekening::whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi)->get();
 
-            $rek2 = Rekening::all();
+            $rek2 = Rekening::whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi)->get();
 
             $label2 = 'Disimpan Ke';
         }

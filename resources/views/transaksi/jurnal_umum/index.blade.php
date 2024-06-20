@@ -284,10 +284,16 @@
         $(document).on('change', '#jenis_transaksi', function(e) {
             e.preventDefault()
 
+            var tgl_transaksi = $('#tgl_transaksi').val().split('/')
+            var tahun = tgl_transaksi[2];
+            var bulan = tgl_transaksi[1];
+            var hari = tgl_transaksi[0];
+
             if ($(this).val().length > 0) {
-                $.get('/transaksi/ambil_rekening/' + $(this).val(), function(result) {
-                    $('#kd_rekening').html(result)
-                })
+                $.get('/transaksi/ambil_rekening/' + $(this).val() + '?tahun=' + tahun + '&bulan=' + bulan,
+                    function(result) {
+                        $('#kd_rekening').html(result)
+                    })
             }
         })
 
