@@ -87,7 +87,6 @@ class UserController extends Controller
                 'nik' => 'required',
                 'inisial' => 'required',
                 'nama_depan' => 'required',
-                'nama_belakang' => 'required',
                 'tempat_lahir' => 'required',
                 'tanggal_lahir' => 'required',
                 'telpon' => 'required',
