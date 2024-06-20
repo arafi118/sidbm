@@ -2063,10 +2063,13 @@ class TransaksiController extends Controller
             'kelompok'
         ])->first();
 
+        $is_dir = (auth()->guard('web')->user()->level == 1 && (auth()->guard('web')->user()->jabatan == 1 || auth()->guard('web')->user()->jabatan == 3)) ? true : false;
+        $is_ben = (auth()->guard('web')->user()->level == 1 && (auth()->guard('web')->user()->jabatan == 3)) ? true : false;
+
         return [
             'label' => '<i class="fas fa-book"></i> Detail Angsuran Kelompok ' . $pinkel->kelompok->nama_kelompok,
             'label_cetak' => '<i class="fas fa-book"></i> Cetak Dokumen Angsuran Kelompok ' . $pinkel->kelompok->nama_kelompok,
-            'view' => view('transaksi.jurnal_angsuran.partials.detail')->with(compact('pinkel'))->render(),
+            'view' => view('transaksi.jurnal_angsuran.partials.detail')->with(compact('pinkel', 'is_dir', 'is_ben'))->render(),
             'cetak' => view('transaksi.jurnal_angsuran.partials._detail')->with(compact('pinkel'))->render()
         ];
     }

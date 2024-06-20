@@ -513,7 +513,9 @@ class PelaporanController extends Controller
         $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with([
             'akun2',
             'akun2.akun3',
-            'akun2.akun3.rek',
+            'akun2.akun3.rek' => function ($query) use ($data) {
+                $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $data['tgl_kondisi']);
+            },
             'akun2.akun3.rek.kom_saldo' => function ($query) use ($data) {
                 $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
                     $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
