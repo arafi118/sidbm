@@ -1885,12 +1885,23 @@ class TransaksiController extends Controller
         $id_pinj = $request->rev_id_pinj;
         $idtp_baru = $last_idtp + 1;
 
+        $bulan = 0;
+        $tahun = 0;
+        $kode_akun = [];
+
         $angsuran = false;
         if ($idtp != '0') {
             $trx_reversal = [];
             $pinkel = PinjamanKelompok::where('id', $id_pinj)->with('pinjaman_anggota')->first();
             $transaksi = Transaksi::where('idtp', $idtp)->orderBy('idtp', 'ASC')->get();
             foreach ($transaksi as $trx) {
+                $tgl = explode('-', $trx->tgl_transaksi);
+                $tahun = $tgl[0];
+                $bulan = $tgl[1];
+
+                $kode_akun[$trx->rekening_debit] = $trx->rekening_debit;
+                $kode_akun[$trx->rekening_kredit] = $trx->rekening_kredit;
+
                 $trx_reversal[] = [
                     'tgl_transaksi' => (string) date('Y-m-d'),
                     'rekening_debit' => (string) $trx->rekening_debit,
@@ -1934,6 +1945,13 @@ class TransaksiController extends Controller
         } else {
             $trx = Transaksi::where('idt', $idt)->first();
 
+            $tgl = explode('-', $trx->tgl_transaksi);
+            $tahun = $tgl[0];
+            $bulan = $tgl[1];
+
+            $kode_akun[$trx->rekening_debit] = $trx->rekening_debit;
+            $kode_akun[$trx->rekening_kredit] = $trx->rekening_kredit;
+
             $reversal = Transaksi::create([
                 'tgl_transaksi' => (string) date('Y-m-d'),
                 'rekening_debit' => (string) $trx->rekening_debit,
@@ -1958,7 +1976,10 @@ class TransaksiController extends Controller
             'msg' => 'Transaksi Reversal untuk id ' . $idt . ' dengan nominal berhasil.',
             'idtp' => $last_idtp + 1,
             'tgl_transaksi' => date('Y-m-d'),
-            'id_pinkel' => $id_pinj
+            'id_pinkel' => $id_pinj,
+            'kode_akun' => implode(',', $kode_akun),
+            'bulan' => str_pad($bulan, 2, "0", STR_PAD_LEFT),
+            'tahun' => $tahun
         ]);
     }
 

@@ -557,6 +557,11 @@
                                 if (result.success) {
                                     Swal.fire('Berhasil!', result.msg, 'success')
                                         .then(() => {
+                                            childWindow = window.open(
+                                                '/simpan_saldo?bulan=' + result
+                                                .bulan + '&tahun=' +
+                                                result.tahun + '&kode_akun=' +
+                                                result.kode_akun, '_blank');
                                             $('#DetailAngsuran').modal('hide')
                                         })
                                 }
