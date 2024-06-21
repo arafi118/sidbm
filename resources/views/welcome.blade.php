@@ -122,6 +122,12 @@
                 $('#formLogin').submit()
             }, 500);
         })
+
+        function openUserPage() {
+            history.replaceState({}, '', '{{ $http }}://{{ $host }}');
+        }
+
+        openUserPage();
     </script>
 </body>
 
