@@ -50,10 +50,10 @@
             <td align="left" width="140">
                 <div>Kepada Yth.</div>
                 <div>
-                    {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }},
+                    1. {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }},
                 </div>
                 <div>
-                    Ketua Kelompok {{ $pinkel->kelompok->nama_kelompok }}
+                    2. Ketua Kelompok {{ $pinkel->kelompok->nama_kelompok }}
                 </div>
                 <div>Di</div>
                 <div style="font-weight: bold; text-align: center;">

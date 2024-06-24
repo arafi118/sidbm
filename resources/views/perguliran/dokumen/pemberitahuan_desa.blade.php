@@ -22,14 +22,14 @@
             <td width="50">Nomor</td>
             <td width="10" align="center">:</td>
             <td colspan="2">
-                <b>______/DBM/{{ Tanggal::tglRomawi($pinkel->tgl_cair) }}</b>
+                ______/DBM/{{ Tanggal::tglRomawi($pinkel->tgl_cair) }}
             </td>
         </tr>
         <tr>
             <td>Sifat</td>
             <td align="center">:</td>
             <td colspan="2">
-                <b>Penting dan Rahasia</b>
+                Penting dan Rahasia
             </td>
         </tr>
         <tr>
@@ -42,16 +42,16 @@
         <tr>
             <td colspan="3">&nbsp;</td>
             <td align="left" width="140">
-                <div>KEPADA YTH.</div>
-                <div style="font-weight: bold;">
-                    {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }}
+                <div>Kepada Yth.</div>
+                <div>
+                    1. {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }},
                 </div>
-                <div style="font-weight: bold;">
-                    {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}
+                <div>
+                    2. Ketua Kelompok {{ $pinkel->kelompok->nama_kelompok }}
                 </div>
-                <div style="font-weight: bold;">Di</div>
+                <div>Di</div>
                 <div style="font-weight: bold; text-align: center;">
-                    {{ strtoupper($pinkel->kelompok->d->nama_desa) }}
+                    Tempat
                 </div>
             </td>
         </tr>
