@@ -48,7 +48,7 @@
         <tr>
             <td colspan="3">&nbsp;</td>
             <td align="left" width="140">
-                <div>KEPADA YTH.</div>
+                <div>Kepada Yth.</div>
                 <div>
                     {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }},
                 </div>
