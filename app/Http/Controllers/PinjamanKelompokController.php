@@ -726,7 +726,8 @@ class PinjamanKelompokController extends Controller
                     PinjamanAnggota::where('id', $idpa)->update([
                         $tgl => Tanggal::tglNasional($data[$tgl]),
                         $alokasi => $val,
-                        'status' => $data['status']
+                        'status' => $data['status'],
+                        'catatan_verifikasi' => $request->catatan[$idpa]
                     ]);
 
                     DataPemanfaat::where([['idpa', $idpa], ['lokasi', Session::get('lokasi')]])->update([
