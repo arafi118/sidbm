@@ -154,7 +154,7 @@
                                 <tr>
                                     <td colspan="2">&nbsp;</td>
                                     <td align="center">
-                                        {{ $kec->sebutan_level_1 }} {{ $kec->nama_lembaga_sort }}
+                                        {{ $kec->sebutan_level_1 }}
                                     </td>
                                 </tr>
                                 <tr>

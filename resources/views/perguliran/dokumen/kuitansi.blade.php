@@ -18,11 +18,6 @@
 @extends('perguliran.dokumen.layout.base')
 
 @section('content')
-    <div style="text-align: center; font-size: 18px; margin-bottom: 12px; text-transform: uppercase;">
-        <div>Bukti Transaksi</div>
-        <div>Pinjaman Kelompok</div>
-    </div>
-
     <div style="padding: 60px; padding-top: 0px; border: 1px solid #000; height: 82%;">
         <table border="0" width="100%" class="p">
             <tr>
@@ -34,7 +29,7 @@
                 <td width="90">Telah Diterima Dari</td>
                 <td width="10" align="center">:</td>
                 <td class="b">
-                    <b>{{ $kec->sebutan_level_3 }} {{ $kec->nama_lembaga_sort }}</b>
+                    <b>{{ $kec->sebutan_level_3 }}</b>
                 </td>
             </tr>
             <tr>

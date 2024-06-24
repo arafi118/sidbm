@@ -229,7 +229,7 @@
         </tr>
         <tr>
             <td align="center">
-                {{ $kec->sebutan_level_1 }} {{ $kec->nama_lembaga_sort }}
+                {{ $kec->sebutan_level_1 }}
             </td>
             <td colspan="2" align="center">Ketua Kelompok</td>
         </tr>

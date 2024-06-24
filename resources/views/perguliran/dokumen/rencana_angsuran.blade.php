@@ -185,7 +185,7 @@
                     </tr>
                     <tr>
                         <td align="center" colspan="5">
-                            {{ $kec->sebutan_level_1 }} {{ $kec->nama_lembaga_sort }}
+                            {{ $kec->sebutan_level_1 }}
                         </td>
                         <td align="center" colspan="3">
                             Ketua Kelompok {{ $pinkel->kelompok->nama_kelompok }}
