@@ -95,6 +95,25 @@
             </td>
         </tr>
         <tr>
+            <td colspan="4">
+                <div style="text-align: justify;">
+                    Untuk menandatangani Surat Perjanjian Kredit (SPK) dan seluruh dokumen perjanjian sebagai bagian yang
+                    tidak terpisahkan dari Surat Perjanjian Kredit (SPK)
+                    kepada {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}.
+                </div>
+
+                <div style="text-align: justify;">
+                    Berkaitan dengan pemberian kuasa ini, kami seluruh anggota kelompok
+                    {{ $pinkel->kelompok->nama_kelompok }}
+                    menyatakan bersedia menanggung segala resiko dan tanggungjawab yang muncul sebagai akibat
+                    ditandatanganinya Surat perjanjian Kredit (SPK) tersebut.
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">&nbsp;</td>
+        </tr>
+        <tr>
             <td colspan="3">&nbsp;</td>
             <td align="center">
                 {{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}
