@@ -164,7 +164,8 @@
                     kelompok sebagaimana kelompok {{ $pinkel->kelompok->nama_kelompok }} adalah termasuk dalam kategori
                     kelompok yang sepakat memberikan dukungan operasional dan pengembangan kepada
                     {{ $kec->nama_lembaga_sort }} secara progresif proporsional berupa jasa pinjaman sebesar
-                    {{ $pinkel->pros_jasa / $pinkel->jangka }}% {{ $pinkel->jasa->nama_jj }} per-bulan dikalikan pokok
+                    {{ number_format($pinkel->pros_jasa / $pinkel->jangka, 2) }}% {{ $pinkel->jasa->nama_jj }} per-bulan
+                    dikalikan pokok
                     pinjaman.
                 </li>
                 <li>
