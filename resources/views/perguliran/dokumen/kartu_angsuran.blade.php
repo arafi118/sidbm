@@ -323,7 +323,7 @@
                     <div>Lembar 2 : Arsip Lembaga</div>
                 </td>
                 <td style="font-weight: bold; font-size: 12px;" width="350" align="center">
-                    <div>{{ $kec->sebutan_level_1 }} {{ $kec->nama_lembaga_sort }}</div>
+                    <div>{{ $kec->sebutan_level_1 }}</div>
                 </td>
                 <td style="font-weight: bold; font-size: 12px;" width="350" align="center">Ketua Kelompok</td>
             </tr>
