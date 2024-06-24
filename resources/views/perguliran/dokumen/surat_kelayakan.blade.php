@@ -21,21 +21,21 @@
             <td width="50">Nomor</td>
             <td width="10" align="center">:</td>
             <td colspan="2">
-                <b>______/DBM/{{ Tanggal::tglRomawi($pinkel->tgl_dana) }}</b>
+                ______/DBM/{{ Tanggal::tglRomawi($pinkel->tgl_dana) }}
             </td>
         </tr>
         <tr>
             <td>Tanggal</td>
             <td align="center">:</td>
             <td colspan="2">
-                <b>{{ Tanggal::tglLatin($pinkel->tgl_dana) }}</b>
+                {{ Tanggal::tglLatin($pinkel->tgl_dana) }}
             </td>
         </tr>
         <tr>
             <td>Sifat</td>
             <td align="center">:</td>
             <td colspan="2">
-                <b>Penting dan Rahasia</b>
+                Penting dan Rahasia
             </td>
         </tr>
         <tr>
@@ -49,20 +49,20 @@
             <td colspan="3">&nbsp;</td>
             <td align="left" width="140">
                 <div>KEPADA YTH.</div>
-                <div style="font-weight: bold;">
-                    {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }}
+                <div>
+                    {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }},
                 </div>
-                <div style="font-weight: bold;">
-                    {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}
+                <div>
+                    Ketua Kelompok {{ $pinkel->kelompok->nama_kelompok }}
                 </div>
-                <div style="font-weight: bold;">Di</div>
+                <div>Di</div>
                 <div style="font-weight: bold; text-align: center;">
-                    {{ strtoupper($pinkel->kelompok->d->nama_desa) }} {{ strtoupper($kec->nama_kec) }}
+                    Tempat
                 </div>
             </td>
         </tr>
         <tr>
-            <td colspan="4">&nbsp;</td>
+            <td colspan="4" height="16">&nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
