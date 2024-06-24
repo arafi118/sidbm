@@ -673,7 +673,7 @@ class TransaksiController extends Controller
             ['lev1', '4'],
             ['kode_akun', 'NOT LIKE', '4.1.02.%']
         ])->where(function ($query) use ($tgl_kondisi) {
-            $query->$query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
+            $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
         })->with([
             'kom_saldo' => function ($query) use ($tahun, $bulan, $bulan_lalu) {
                 $query->where('tahun', $tahun)->where(function ($query) use ($bulan, $bulan_lalu) {
@@ -695,7 +695,7 @@ class TransaksiController extends Controller
             ['lev1', '5'],
             ['lev2', '!=', '4']
         ])->where(function ($query) use ($tgl_kondisi) {
-            $query->$query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
+            $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
         })->with([
             'kom_saldo' => function ($query) use ($tahun, $bulan, $bulan_lalu) {
                 $query->where('tahun', $tahun)->where(function ($query) use ($bulan, $bulan_lalu) {
