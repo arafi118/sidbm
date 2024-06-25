@@ -156,7 +156,7 @@
                         </div>
                     </div>
                     <div class="w-40 text-end">
-                        <button type="button" id="btnDetailAngsuran" class="btn bg-light mb-0 text-end">Detail</button>
+                        {{-- <button type="button" id="btnDetailAngsuran" class="btn bg-light mb-0 text-end">Detail</button> --}}
                     </div>
                 </div>
             </div>
