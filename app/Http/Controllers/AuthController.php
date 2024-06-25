@@ -36,12 +36,33 @@ class AuthController extends Controller
             return redirect('/kab');
         }
 
+        $invoice = AdminInvoice::where([
+            ['lokasi', $kec->id],
+            ['status', 'UNPAID']
+        ])->with(['jp'])->orderBy('tgl_invoice', 'DESC')->first();
+
+        $setting = [
+            'login' => true
+        ];
+
+        Session::put('login', true);
+        if ($invoice) {
+            $tgl_pakai = $kec->tgl_pakai;
+            $tgl_aktif = date('Y') . '-' . date('m-d', strtotime($tgl_pakai));
+            $batas_akhir_pembayaran = date('Y-m-d', strtotime('+1 month', strtotime($tgl_aktif)));
+
+            if (date('Y-m-d') > $batas_akhir_pembayaran) {
+                $setting['login'] = false;
+                Session::put('login', false);
+            }
+        }
+
         $logo = '/assets/img/icon/favicon.png';
         if ($kec->logo) {
             $logo = '/storage/logo/' . $kec->logo;
         }
 
-        return view('auth.login')->with(compact('kec', 'logo'));
+        return view('auth.login')->with(compact('kec', 'logo', 'setting'));
     }
 
     public function login(Request $request)
@@ -58,6 +79,10 @@ class AuthController extends Controller
                 'username' => 'required',
                 'password' => 'required'
             ]);
+        }
+
+        if (!Session::get('login')) {
+            return redirect()->back()->with('error', 'Invoice belum terbayar');
         }
 
         $kec = Kecamatan::where('web_kec', $url)->orwhere('web_alternatif', $url)->with('kabupaten')->first();
@@ -136,7 +161,7 @@ class AuthController extends Controller
             }
         }
 
-        return redirect()->back();
+        return redirect()->back()->with('warning', 'Username atau Password Salah')->withInput($request->only('username'));
     }
 
     public function force($uname)

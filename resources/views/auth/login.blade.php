@@ -1,3 +1,11 @@
+@php
+    $username = '';
+    if (old('username') != '') {
+        $username = 'value="' . old('username') . '"';
+    }
+
+@endphp
+
 <!DOCTYPE html>
 <html lang="en" translate="no">
 
@@ -62,7 +70,8 @@
                                         @csrf
                                         <div class="input-group input-group-outline mb-3">
                                             <label class="form-label">Username</label>
-                                            <input type="text" name="username" id="username" class="form-control">
+                                            <input type="text" name="username" id="username" class="form-control"
+                                                {!! $username !!}>
                                         </div>
                                         <div class="input-group input-group-outline mb-3">
                                             <label class="form-label">Password</label>
@@ -156,6 +165,50 @@
             }
 
             Toastr('success', "{{ session('pesan') }}")
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                title: '{{ session('error') }}',
+                text: 'Silahkan hubungi technical support untuk informasi lebih lengkapnya.',
+                icon: 'error'
+            })
+        </script>
+    @endif
+
+    @if (session('warning'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            function Toastr(icon, text) {
+                font = "1.2rem Nimrod MT";
+
+                canvas = document.createElement("canvas");
+                context = canvas.getContext("2d");
+                context.font = font;
+                width = context.measureText(text).width;
+                formattedWidth = Math.ceil(width) + 100;
+
+                Toast.fire({
+                    icon: icon,
+                    title: text,
+                    width: formattedWidth
+                })
+            }
+
+            Toastr('warning', "{{ session('warning') }}")
         </script>
     @endif
 </body>
