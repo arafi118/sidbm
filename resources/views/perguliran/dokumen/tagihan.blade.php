@@ -41,14 +41,14 @@
             <td width="50">Nomor</td>
             <td width="10" align="center">:</td>
             <td colspan="2">
-                <b>______/DBM/{{ Tanggal::tglRomawi(date('Y-m-d')) }}</b>
+                ______/DBM/{{ Tanggal::tglRomawi(date('Y-m-d')) }}
             </td>
         </tr>
         <tr>
             <td>Sifat</td>
             <td align="center">:</td>
             <td colspan="2">
-                <b>Penting dan Rahasia</b>
+                Penting dan Rahasia
             </td>
         </tr>
         <tr>
@@ -61,15 +61,12 @@
         <tr>
             <td colspan="3">&nbsp;</td>
             <td align="left" width="140">
-                <div>KEPADA YTH.</div>
-                <div style="font-weight: bold;">
-                    {{ $pinkel->kelompok->ketua }}
+                <div>Kepada Yth.</div>
+                <div>
+                    Ketua dan Anggota Kelompok {{ $pinkel->kelompok->nama_kelompok }}
                 </div>
-                <div style="font-weight: bold;">
-                    a.n. Ketua Kelompok {{ $pinkel->kelompok->nama_kelompok }}
-                </div>
-                <div style="font-weight: bold;">Di</div>
-                <div style="font-weight: bold; text-align: center;">
+                <div>Di</div>
+                <div style=" text-align: center;">
                     {{ strtoupper($pinkel->kelompok->d->nama_desa) }}
                 </div>
             </td>
@@ -183,7 +180,7 @@
         </tr>
         <tr>
             <td>&nbsp;</td>
-            <td align="center">{{ $kec->sebutan_level_1 }} DBM</td>
+            <td align="center">{{ $kec->sebutan_level_1 }}</td>
         </tr>
         <tr>
             <td colspan="2" height="40">&nbsp;</td>
