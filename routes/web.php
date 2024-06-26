@@ -279,6 +279,7 @@ Route::get('/user', function () {
     $kec = Kecamatan::where('web_kec', request()->getHost())->orwhere('web_alternatif', request()->getHost())->with('kabupaten')->first();
     $users = User::where('lokasi', $kec->id)->with('l', 'j')->orderBy('level', 'ASC')->orderBy('jabatan', 'ASC')->get();
 
+    Session::put('login', true);
     $http = 'http';
     if (request()->secure()) {
         $http .= 's';
