@@ -21,7 +21,7 @@
 @extends('perguliran.dokumen.layout.base')
 
 @section('content')
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
@@ -40,7 +40,7 @@
         </tr>
     </table>
 
-    <div style="text-align: justify;">
+    <div style="text-align: justify; font-size: 14px;">
         Dengan memohon rahmat Tuhan Yang Maha Kuasa serta kesadaran akan cita-cita luhur pemberdayaan masyarakat desa untuk
         mencapai kemajuan ekonomi dan kemakmuran bersama, pada hari ini {{ Tanggal::namaHari($pinkel->tgl_cair) }} tanggal
         {{ $keuangan->terbilang(Tanggal::hari($pinkel->tgl_cair)) }} bulan {{ Tanggal::namaBulan($pinkel->tgl_cair) }} tahun
@@ -48,7 +48,7 @@
         tangan dibawah ini;
     </div>
 
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr>
             <td width="90">Nama Lengkap</td>
             <td width="10" align="center">:</td>
@@ -71,14 +71,14 @@
         </tr>
     </table>
 
-    <div style="text-align: justify;">
+    <div style="text-align: justify; font-size: 14px;">
         Bertindak untuk dan atas nama Manajemen {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }}
         {{ $kec->nama_kec }} selaku pengelola Dana Bergulir Masyarakat untuk {{ $pinkel->jpp->deskripsi_jpp }}
         ({{ $pinkel->jpp->nama_jpp }}) di {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}, selanjutnya disebut PIHAK
         PERTAMA, dan
     </div>
 
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr>
             <td width="90">Nama Lengkap</td>
             <td width="10" align="center">:</td>
@@ -111,7 +111,7 @@
         </tr>
     </table>
 
-    <div style="text-align: justify;">
+    <div style="text-align: justify; font-size: 14px;">
         Bertindak untuk dan atas nama kelompok {{ $pinkel->jpp->nama_jpp }} {{ $pinkel->kelompok->nama_kelompok }} yang
         berkedudukan di {{ $pinkel->kelompok->alamat_kelompok }} {{ $pinkel->kelompok->d->sebutan_desa->sebutan_desa }}
         {{ $pinkel->kelompok->d->nama_desa }} {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}, dan beserta anggota yang
@@ -119,7 +119,7 @@
         dokumen perjanjian kredit ini, selanjutnya disebut PIHAK KEDUA.
     </div>
 
-    <p style="text-align: justify;">
+    <p style="text-align: justify; font-size: 14px;">
         Dalam kedudukan para pihak sebagaimana tertulis diatas, dengan sadar dan sukarela serta rasa penuh tanggung jawab
         menyatakan telah membuat surat perjanjian kredit (SPK) dengan ketentuan-ketentuan yang disepakati bersama sebagai
         berikut :
@@ -128,7 +128,7 @@
     <div style="text-align: center;">
         <b style="font-size: 14px;">PASAL 1</b>
 
-        <ol style="text-align: justify;">
+        <ol style="text-align: justify; font-size: 14px;">
             <li>
                 Pihak Pertama setuju memberikan kredit/pinjaman kepada Pihak Kedua sebesar Rp.
                 {{ number_format($pinkel->alokasi) }} ({{ $keuangan->terbilang($pinkel->alokasi) }} Rupiah) yaitu jumlah
@@ -148,7 +148,7 @@
 
     <div style="text-align: center;">
         <b style="font-size: 14px;">PASAL 2</b>
-        <div style="text-align: justify;">
+        <div style="text-align: justify; font-size: 14px;">
             Kedua belah Pihak secara sukarela menerima syarat-syarat perjanjian utang-piutang sebagaimana
             dinyatakan dalam ketentuan-ketentuan dibawah ini :
 
@@ -181,11 +181,11 @@
     </div>
 
     <div style="text-align: center;">
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;"class="p0">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;"class="p0">
             <tr>
                 <td style="padding: 0px !important;">
                     <table class="p0" border="0" width="100%" cellspacing="0" cellpadding="0"
-                        style="font-size: 12px;">
+                        style="font-size: 14px;">
                         <tr>
                             <td style="padding: 0px !important;">
                                 <div style="text-align: center;">
