@@ -349,8 +349,12 @@
                         if (!array_key_exists($real->id, $kom_jasa)) {
                             $jasa_pinjaman = ($pinkel->pros_jasa / 100) * $pinkel->alokasi;
 
-                            $pros_jasa_anggota = ((($pinj->pros_jasa / 100) * $pinj->alokasi) / $jasa_pinjaman) * 100;
-                            $jasa = ($pros_jasa_anggota / 100) * $real->realisasi_jasa;
+                            $jasa = 0;
+                            if ($pinj->pros_jasa > 0) {
+                                $pros_jasa_anggota =
+                                    ((($pinj->pros_jasa / 100) * $pinj->alokasi) / $jasa_pinjaman) * 100;
+                                $jasa = ($pros_jasa_anggota / 100) * $real->realisasi_jasa;
+                            }
                         } else {
                             $jasa = $kom_jasa[$real->id];
                         }
