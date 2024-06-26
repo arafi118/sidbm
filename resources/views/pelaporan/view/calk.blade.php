@@ -384,7 +384,7 @@
         </li>
         <li style="margin-top: 12px;">
             <div style="text-transform: uppercase;">
-                Ketentuan Pembagian Laba Usaha
+                Pembagian Laba Usaha
             </div>
             <ol>
                 <li>
@@ -400,14 +400,14 @@
                             dalamanggaran dasar.
                         </li>
                         <li>
-                            <div>Bagian Desa;</div>
+                            <div>Alokasi laba Bagian Desa;</div>
                             <ul>
                                 <li style="list-style: none; margin-left: -20px;">
                                     <table cellspacing="0" cellpadding="0">
                                         <tr>
                                             <td class="b" colspan="3" align="center">Desa</td>
-                                            <td class="b" align="center">s/d Tahun {{ $tahun - 1 }}</td>
-                                            <td class="b" align="center">Tahun {{ $tahun }}</td>
+                                            <td class="b" align="center">s/d Tahun {{ $tahun - 2 }}</td>
+                                            <td class="b" align="center">Tahun {{ $tahun - 1 }}</td>
                                             <td class="b" align="center">s/d Tahun {{ $tahun }}</td>
                                         </tr>
 
@@ -444,10 +444,12 @@
                                     Kegiatan sosial kemasyarakatan dan bantuan rumah tangga miskin
                                     <ul style="list-style: lower-alpha">
                                         <li>
-                                            s/d Tahun {{ $tahun - 1 }} Rp. {{ number_format($calk[0]['th_lalu'], 2) }}
+                                            Pembagian laba s/d Tahun {{ $tahun - 2 }} Rp.
+                                            {{ number_format($calk[0]['th_lalu'], 2) }}
                                         </li>
                                         <li>
-                                            dan Tahun {{ $tahun }} Rp. {{ number_format($calk[0]['th_ini'], 2) }}
+                                            Ditambah dari pembagian laba Tahun {{ $tahun - 1 }} Rp.
+                                            {{ number_format($calk[0]['th_ini'], 2) }}
                                         </li>
                                     </ul>
                                 </li>
@@ -455,10 +457,12 @@
                                     Pengembangan kapasitas kelompok simpan pinjam perempuan/usaha ekonomi produktif
                                     <ul style="list-style: lower-alpha">
                                         <li>
-                                            s/d Tahun {{ $tahun - 1 }} Rp. {{ number_format($calk[1]['th_lalu'], 2) }}
+                                            Pembagian laba s/d Tahun {{ $tahun - 2 }} Rp.
+                                            {{ number_format($calk[1]['th_lalu'], 2) }}
                                         </li>
                                         <li>
-                                            dan Tahun {{ $tahun }} Rp. {{ number_format($calk[1]['th_ini'], 2) }}
+                                            Ditambah dari pembagian laba Tahun {{ $tahun - 1 }} Rp.
+                                            {{ number_format($calk[1]['th_ini'], 2) }}
                                         </li>
                                     </ul>
                                 </li>
@@ -466,10 +470,12 @@
                                     Pelatihan masyarakat, dan kelompok pemanfaat umum
                                     <ul style="list-style: lower-alpha">
                                         <li>
-                                            s/d Tahun {{ $tahun - 1 }} Rp. {{ number_format($calk[2]['th_lalu'], 2) }}
+                                            Pembagian laba s/d Tahun {{ $tahun - 2 }} Rp.
+                                            {{ number_format($calk[2]['th_lalu'], 2) }}
                                         </li>
                                         <li>
-                                            dan Tahun {{ $tahun }} Rp. {{ number_format($calk[2]['th_ini'], 2) }}
+                                            Ditambah dari pembagian laba Tahun {{ $tahun - 1 }} Rp.
+                                            {{ number_format($calk[2]['th_ini'], 2) }}
                                         </li>
                                     </ul>
                                 </li>
@@ -478,7 +484,7 @@
                     </ol>
                 </li>
                 <li>
-                    <div>Laba Ditahan</div>
+                    <div>Laba Ditahan Dari Laba Tahun {{ $tahun - 1 }}</div>
                     <ol style="list-style: lower-latin;">
                         <li>
                             Laba Ditahan untuk Penambahan Modal Kegiatan DBM Rp. {{ number_format($calk[3]['th_ini'], 2) }}
