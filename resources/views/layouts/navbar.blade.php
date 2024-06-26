@@ -66,6 +66,15 @@
                     </li>
                 @endif
                 <li class="nav-item ps-3">
+                    <a href="/download/profil-sidbm-baru.ppt" class="nav-link text-body p-0 position-relative"
+                        target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Profil Sidbm"
+                        data-container="body" data-animation="true">
+                        <i class="material-icons me-sm-1">
+                            info_outline
+                        </i>
+                    </a>
+                </li>
+                <li class="nav-item ps-3">
                     <a href="#" class="nav-link text-body p-0 position-relative" target="_blank"
                         id="btnLaporanPelunasan" data-bs-toggle="tooltip" data-bs-placement="top" title="Reminder"
                         data-container="body" data-animation="true">

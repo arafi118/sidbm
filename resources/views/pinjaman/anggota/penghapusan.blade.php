@@ -23,6 +23,8 @@
     @csrf
 
     <input type="hidden" name="id_pinjaman" id="id_pinjaman" value="{{ $pinj->id }}">
+    <input type="hidden" name="jasa_pinjaman" id="jasa_pinjaman" value="{{ $jasa_pinjaman }}">
+    <input type="hidden" name="pokok_pinjaman" id="pokok_pinjaman" value="{{ $pinj->alokasi }}">
     <div class="row">
         <div class="col-md-4 my-3">
             <div class="input-group input-group-static">

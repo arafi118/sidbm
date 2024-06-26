@@ -254,6 +254,7 @@ class PinjamanAnggotaController extends Controller
         $data = $request->only([
             'id_pinjaman',
             'tgl_penghapusan',
+            'jasa_pinjaman',
             'jumlah_penghapusan_pokok',
             'jumlah_penghapusan_jasa'
         ]);
@@ -394,7 +395,7 @@ class PinjamanAnggotaController extends Controller
             $kom_jasa[$idtp] = $jasa_anggota;
         }
 
-        $this->generate($pinjaman->id_pinkel);
+        $this->generate($pinjaman->id_pinkel, $data['jasa_pinjaman']);
 
         PinjamanAnggota::where('id', $pinjaman->id)->update([
             'status' => 'H',
@@ -453,7 +454,7 @@ class PinjamanAnggotaController extends Controller
         ]);
     }
 
-    public function generate($id_pinj)
+    public function generate($id_pinj, $jasa_penghapusan = 0)
     {
         $pinkel = PinjamanKelompok::where('id', $id_pinj)->with([
             'kelompok',
@@ -557,7 +558,7 @@ class PinjamanAnggotaController extends Controller
             $ke_pokok = $i / $sistem_pokok;
             $sisa_jasa = $i % $sistem_jasa;
             $ke_jasa = $i / $sistem_jasa;
-            $alokasi_jasa = $alokasi * ($pros_jasa / 100);
+            $alokasi_jasa = ($alokasi * ($pros_jasa / 100)) - $jasa_penghapusan;
 
             $wajib_pokok = Keuangan::bulatkan($alokasi / $tempo_pokok);
             $wajib_jasa = Keuangan::bulatkan($alokasi_jasa / $tempo_jasa);
@@ -613,13 +614,13 @@ class PinjamanAnggotaController extends Controller
             $pokok = $angsuran_pokok;
             $jasa = $angsuran_jasa;
 
-            if ($i == 1) {
-                $target_pokok = $pokok;
-                $target_jasa = $jasa;
-            } else {
-                $target_pokok += $pokok;
-                $target_jasa += $jasa;
-            }
+            // if ($i == 1) {
+            //     $target_pokok = $pokok;
+            //     $target_jasa = $jasa;
+            // } else {
+            // }
+            $target_pokok += $pokok;
+            $target_jasa += $jasa;
 
             $rencana[] = [
                 'loan_id' => $id_pinj,
