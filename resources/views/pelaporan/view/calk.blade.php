@@ -368,9 +368,14 @@
             @php
                 $saldo_aset = intval($saldo_aset);
                 $kredit = intval($kredit);
+
+                $saldo_calk = $saldo_aset - $kredit;
+                if ($saldo_calk < 0) {
+                    $saldo_calk *= -1;
+                }
             @endphp
 
-            @if ($saldo_aset - $kredit != '0')
+            @if (floor($saldo_calk) != '0')
                 <div style="color: #f44335">
                     Ada selisih antara Jumlah Aset dan Jumlah Liabilitas + Ekuitas sebesar
                     <b>Rp. {{ number_format($saldo_aset - $kredit, 2) }}</b>
