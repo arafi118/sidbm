@@ -81,9 +81,9 @@ class AuthController extends Controller
             ]);
         }
 
-        // if (!Session::get('login')) {
-        //     return redirect()->back()->with('error', 'Invoice belum terbayar');
-        // }
+        if (!Session::get('login')) {
+            return redirect()->back()->with('error', 'Invoice belum terbayar');
+        }
 
         $kec = Kecamatan::where('web_kec', $url)->orwhere('web_alternatif', $url)->with('kabupaten')->first();
         $lokasi = $kec->id;
