@@ -38,6 +38,7 @@ class AuthController extends Controller
 
         $invoice = AdminInvoice::where([
             ['lokasi', $kec->id],
+            ['jenis_pembayaran', '2'],
             ['status', 'UNPAID']
         ])->with(['jp'])->orderBy('tgl_invoice', 'DESC')->first();
 
