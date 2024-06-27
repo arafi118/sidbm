@@ -129,7 +129,7 @@
                     }
 
                     if ($akum_umur == $inv->umur_ekonomis) {
-                        $akum_susut = 0;
+                        $akum_susut = $inv->harsat * $inv->unit;
                     }
 
                     $t_unit += $inv->unit;
