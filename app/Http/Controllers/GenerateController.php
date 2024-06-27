@@ -127,6 +127,9 @@ class GenerateController extends Controller
 
         $limit = 30;
         $pinjaman = PinjamanKelompok::where($where)->with([
+            'pinjaman' => function ($query) {
+                $query->where('status', 'H')->orwhere('status', 'R');
+            },
             'sis_pokok',
             'sis_jasa',
             'trx' => function ($query) {
@@ -176,6 +179,10 @@ class GenerateController extends Controller
                 if ($tgl_cair == "0000-00-00") {
                     $tgl_cair = $pinkel->tgl_tunggu;
                 }
+            }
+
+            if ($pinkel->pinjaman) {
+                continue;
             }
 
             $tgl_angsur = $tgl_cair;

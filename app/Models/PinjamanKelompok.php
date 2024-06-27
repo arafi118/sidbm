@@ -64,6 +64,11 @@ class PinjamanKelompok extends Model
         return $this->hasMany(PinjamanAnggota::class, 'id_pinkel')->orderBy('id', 'asc');
     }
 
+    public function pinjaman()
+    {
+        return $this->hasOne(PinjamanAnggota::class, 'id_pinkel')->orderBy('id', 'asc');
+    }
+
     public function sis_pokok()
     {
         return $this->belongsTo(SistemAngsuran::class, 'sistem_angsuran');
