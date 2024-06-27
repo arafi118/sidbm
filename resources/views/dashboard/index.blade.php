@@ -104,7 +104,7 @@
                         <button type="button"
                             class="btn btn-icon-only btn-rounded btn-outline-secondary mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center"
                             data-bs-toggle="tooltip" data-bs-placement="bottom" title=""
-                            data-bs-original-title="See traffic channels">
+                            data-bs-original-title="Grafik Angsuran Hari Ini">
                             <i class="material-icons text-sm">priority_high</i>
                         </button>
                     </div>
@@ -169,7 +169,7 @@
                         <button type="button"
                             class="btn btn-icon-only btn-rounded btn-outline-secondary mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center"
                             data-bs-toggle="tooltip" data-bs-placement="left"
-                            data-bs-original-title="See which ads perform better">
+                            data-bs-original-title="Grafik Pendapatan dan Beban s.d. bulan ini">
                             <i class="material-icons text-sm">priority_high</i>
                         </button>
                     </div>
@@ -580,6 +580,15 @@
         $p = $saldo[4];
         $b = $saldo[5];
         $surplus = $saldo['surplus'];
+
+        $bulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        for ($i = 0; $i < date('m'); $i++) {
+            if ($i == 0) {
+                $label = $bulan[$i];
+            } else {
+                $label .= ',' . $bulan[$i];
+            }
+        }
     @endphp
 
     <textarea name="msgInvoice" id="msgInvoice" class="d-none">{{ Session::get('msg') }}</textarea>
@@ -849,23 +858,11 @@
         var ctx2 = document.getElementById("chart-pie").getContext("2d");
 
         // Line chart
+        var label = "{{ $label }}"
         new Chart(ctx1, {
             type: "line",
             data: {
-                labels: [
-                    "Jan",
-                    "Feb",
-                    "Mar",
-                    "Apr",
-                    "Mei",
-                    "Jun",
-                    "Jul",
-                    "Agu",
-                    "Sep",
-                    "Okt",
-                    "Nov",
-                    "Des",
-                ],
+                labels: label.split(','),
                 datasets: [{
                         label: "Pendapatan",
                         tension: 0,
