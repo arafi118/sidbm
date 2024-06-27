@@ -433,14 +433,25 @@
     </script>
 
     <script>
-        tinymce.init({
-            selector: '.tiny-mce-editor',
-            plugins: 'table visualblocks fullscreen',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align | table fullscreen | removeformat',
-            font_family_formats: 'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace;',
-            tinycomments_mode: 'embedded',
-            tinycomments_author: 'ARAFII'
-        });
+        function initTinyMCE(skin = 'oxide', content_css = 'default') {
+            tinymce.init({
+                selector: '.tiny-mce-editor',
+                plugins: 'table visualblocks fullscreen',
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | align | table fullscreen | removeformat',
+                font_family_formats: 'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace;',
+                tinycomments_mode: 'embedded',
+                tinycomments_author: 'ARAFII',
+                skin: skin,
+                content_css: content_css
+            });
+        }
+
+        var skin = "{{ $config['darkMode'] }}"
+        if (skin == 'false') {
+            initTinyMCE()
+        } else {
+            initTinyMCE('oxide-dark', 'dark')
+        }
 
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
