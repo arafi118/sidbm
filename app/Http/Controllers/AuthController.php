@@ -47,7 +47,7 @@ class AuthController extends Controller
 
         Session::put('login', true);
         if ($invoice) {
-            $tgl_pakai = $kec->tgl_pakai;
+            $tgl_pakai = $kec->tgl_registrasi;
             $tgl_aktif = date('Y') . '-' . date('m-d', strtotime($tgl_pakai));
             $batas_akhir_pembayaran = date('Y-m-d', strtotime('+1 month', strtotime($tgl_aktif)));
 
@@ -246,7 +246,7 @@ class AuthController extends Controller
             'dir' => ''
         ];
 
-        $bulan_pakai = date('m-d', strtotime($kec->tgl_pakai));
+        $bulan_pakai = date('m-d', strtotime($kec->tgl_registrasi));
         $tgl_pakai = date('Y') . '-' . $bulan_pakai;
 
         $tgl_invoice = date('Y-m-d', strtotime('-1 month', strtotime($tgl_pakai)));
