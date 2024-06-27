@@ -66,6 +66,11 @@
             border: 1px solid #d2d6da !important;
         }
 
+        table.dataTable thead th,
+        table.dataTable tbody td {
+            white-space: nowrap;
+        }
+
         #progress-container {
             width: 100%;
             height: 6px;
@@ -238,6 +243,7 @@
     </form>
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>

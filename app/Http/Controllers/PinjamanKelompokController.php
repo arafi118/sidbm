@@ -67,9 +67,9 @@ class PinjamanKelompokController extends Controller
                     $nama_kelompok = $row->kelompok->nama_kelompok . ' (' . $jpp->nama_jpp . ')';
                     return '<div>' . $nama_kelompok . ' <small class="float-end badge badge-' . $status . '">Loan ID.' . $row->id . '</small></div>';
                 })
-                ->editColumn('tgl_proposal', function ($row) {
-                    return Tanggal::tglIndo($row->tgl_proposal);
-                })
+                // ->editColumn('tgl_proposal', function ($row) {
+                //     return Tanggal::tglIndo($row->tgl_proposal);
+                // })
                 ->editColumn('proposal', function ($row) {
                     return number_format(intval($row->proposal));
                 })
@@ -106,9 +106,9 @@ class PinjamanKelompokController extends Controller
                     $nama_kelompok = $row->kelompok->nama_kelompok . ' (' . $jpp->nama_jpp . ')';
                     return '<div>' . $nama_kelompok . ' <small class="float-end badge badge-' . $status . '">Loan ID.' . $row->id . '</small></div>';
                 })
-                ->editColumn('tgl_verifikasi', function ($row) {
-                    return Tanggal::tglIndo($row->tgl_verifikasi);
-                })
+                // ->editColumn('tgl_verifikasi', function ($row) {
+                //     return Tanggal::tglIndo($row->tgl_verifikasi);
+                // })
                 ->editColumn('verifikasi', function ($row) {
                     return number_format($row->verifikasi);
                 })
@@ -145,9 +145,9 @@ class PinjamanKelompokController extends Controller
                     $nama_kelompok = $row->kelompok->nama_kelompok . ' (' . $jpp->nama_jpp . ')';
                     return '<div>' . $nama_kelompok . ' <small class="float-end badge badge-' . $status . '">Loan ID.' . $row->id . '</small></div>';
                 })
-                ->editColumn('tgl_tunggu', function ($row) {
-                    return Tanggal::tglIndo($row->tgl_tunggu);
-                })
+                // ->editColumn('tgl_tunggu', function ($row) {
+                //     return Tanggal::tglIndo($row->tgl_tunggu);
+                // })
                 ->editColumn('alokasi', function ($row) {
                     return number_format($row->alokasi);
                 })
@@ -184,9 +184,9 @@ class PinjamanKelompokController extends Controller
                     $nama_kelompok = $row->kelompok->nama_kelompok . ' (' . $jpp->nama_jpp . ')';
                     return '<div>' . $nama_kelompok . ' <small class="float-end badge badge-' . $status . '">Loan ID.' . $row->id . '</small></div>';
                 })
-                ->editColumn('tgl_cair', function ($row) {
-                    return Tanggal::tglIndo($row->tgl_cair);
-                })
+                // ->editColumn('tgl_cair', function ($row) {
+                //     return Tanggal::tglIndo($row->tgl_cair);
+                // })
                 ->editColumn('alokasi', function ($row) {
                     return number_format($row->alokasi);
                 })
@@ -225,9 +225,9 @@ class PinjamanKelompokController extends Controller
                     $nama_kelompok = $row->kelompok->nama_kelompok . ' (' . $jpp->nama_jpp . ')';
                     return '<div>' . $nama_kelompok . ' <small class="float-end badge badge-' . $status . '">Loan ID.' . $row->id . '</small></div>';
                 })
-                ->editColumn('tgl_cair', function ($row) {
-                    return Tanggal::tglIndo($row->tgl_cair);
-                })
+                // ->editColumn('tgl_cair', function ($row) {
+                //     return Tanggal::tglIndo($row->tgl_cair);
+                // })
                 ->editColumn('alokasi', function ($row) {
                     return number_format($row->alokasi);
                 })

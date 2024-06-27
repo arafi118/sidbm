@@ -185,7 +185,10 @@
             name: 'kelompok.alamat_kelompok'
         }, {
             data: 'tgl_proposal',
-            name: 'tgl_proposal'
+            name: 'tgl_proposal',
+            render: function(data, type, row) {
+                return moment(new Date(data).toString()).format('DD/MM/YYYY');
+            }
         }, {
             data: 'proposal',
             name: 'proposal'
@@ -207,7 +210,10 @@
             name: 'kelompok.alamat_kelompok'
         }, {
             data: 'tgl_verifikasi',
-            name: 'tgl_verifikasi'
+            name: 'tgl_verifikasi',
+            render: function(data, type, row) {
+                return moment(new Date(data).toString()).format('DD/MM/YYYY');
+            }
         }, {
             data: 'verifikasi',
             name: 'verifikasi'
@@ -229,7 +235,10 @@
             name: 'kelompok.alamat_kelompok'
         }, {
             data: 'tgl_tunggu',
-            name: 'tgl_tunggu'
+            name: 'tgl_tunggu',
+            render: function(data, type, row) {
+                return moment(new Date(data).toString()).format('DD/MM/YYYY');
+            }
         }, {
             data: 'alokasi',
             name: 'alokasi'
@@ -251,7 +260,10 @@
             name: 'kelompok.alamat_kelompok'
         }, {
             data: 'tgl_cair',
-            name: 'tgl_cair'
+            name: 'tgl_cair',
+            render: function(data, type, row) {
+                return moment(new Date(data).toString()).format('DD/MM/YYYY');
+            }
         }, {
             data: 'alokasi',
             name: 'alokasi'
@@ -273,7 +285,10 @@
             name: 'kelompok.alamat_kelompok'
         }, {
             data: 'tgl_cair',
-            name: 'tgl_cair'
+            name: 'tgl_cair',
+            render: function(data, type, row) {
+                return moment(new Date(data).toString()).format('DD/MM/YYYY');
+            }
         }, {
             data: 'alokasi',
             name: 'alokasi'
