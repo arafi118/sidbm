@@ -74,7 +74,7 @@
     $logo = $kec->logo;
     $nama_lembaga = $kec->nama_lembaga_sort;
     $nama_kecamatan = $kec->sebutan_kec . ' ' . $kec->nama_kec;
-    
+
     if (Keuangan::startWith($kab->nama_kab, 'KOTA') || Keuangan::startWith($kab->nama_kab, 'KAB')) {
         $nama_kecamatan .= ' ' . ucwords(strtolower($kab->nama_kab));
         $nama_kabupaten = ucwords(strtolower($kab->nama_kab));
@@ -82,7 +82,7 @@
         $nama_kecamatan .= ' Kabupaten ' . ucwords(strtolower($kab->nama_kab));
         $nama_kabupaten = ' Kabupaten ' . ucwords(strtolower($kab->nama_kab));
     }
-    
+
     $nomor_usaha = 'SK Kemenkumham RI No.' . $kec->nomor_bh;
     $info = $kec->alamat_kec . ', Telp.' . $kec->telpon_kec;
     $email = $kec->email_kec;
@@ -117,7 +117,7 @@
             <table width="100%" style="border-bottom: 1px solid grey;">
                 <tr>
                     <td width="30">
-                        <img src="/storage/logo/{{ $logo }}" width="40" alt="{{ $logo }}">
+                        <img src="/storage/logo/{{ $logo }}" width="35" alt="{{ $logo }}">
                     </td>
                     <td>
                         <div style="font-size: 12px;">{{ strtoupper($nama_lembaga) }}</div>
@@ -145,7 +145,7 @@
     </header>
 
     @php
-        $style = 'position: relative; top: 60px; font-size: 12px;';
+        $style = 'position: relative; top: 65px; font-size: 12px;';
         if ($laporan == 'surat_pengantar') {
             $style = 'margin-top: 75px; font-size: 12px;';
         }
