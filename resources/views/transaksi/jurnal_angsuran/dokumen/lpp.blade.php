@@ -145,7 +145,10 @@
                     $target_jasa = $ra->target_jasa;
 
                     foreach ($ra->real as $real) {
-                        if (Tanggal::bulan($real->tgl_transaksi) == Tanggal::bulan($ra->jatuh_tempo)) {
+                        if (
+                            Tanggal::bulan($real->tgl_transaksi) == Tanggal::bulan($ra->jatuh_tempo) &&
+                            Tanggal::tahun($real->tgl_transaksi) == Tanggal::tahun($ra->jatuh_tempo)
+                        ) {
                             $real_pokok += $real->realisasi_pokok;
                             $real_jasa += $real->realisasi_jasa;
                             $sum_pokok += $real->realisasi_pokok;
