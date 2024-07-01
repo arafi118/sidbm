@@ -361,8 +361,8 @@
             </div>
 
             @php
-                $saldo_aset = floor($saldo_aset);
-                $kredit = floor($kredit);
+                $saldo_aset = $saldo_aset;
+                $kredit = $kredit;
 
                 $saldo_calk = $saldo_aset - $kredit;
                 if ($saldo_calk < 0) {
