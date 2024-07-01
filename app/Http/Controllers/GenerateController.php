@@ -181,10 +181,6 @@ class GenerateController extends Controller
                 }
             }
 
-            if ($pinkel->pinjaman) {
-                continue;
-            }
-
             $tgl_angsur = $tgl_cair;
             $desa = $pinkel->kelompok->d;
             $tanggal_cair = date('d', strtotime($tgl_cair));
