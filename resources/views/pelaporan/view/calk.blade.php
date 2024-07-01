@@ -378,7 +378,7 @@
             @if (floor($saldo_calk) != '0')
                 <div style="color: #f44335">
                     Ada selisih antara Jumlah Aset dan Jumlah Liabilitas + Ekuitas sebesar
-                    <b>Rp. {{ number_format($saldo_aset - $kredit, 2) }}</b>
+                    <b>Rp. {{ number_format(floor($saldo_aset - $kredit), 2) }}</b>
                 </div>
             @endif
         </li>
