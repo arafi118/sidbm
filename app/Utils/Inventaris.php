@@ -21,7 +21,7 @@ class Inventaris
         $harga_satuan = $inv->harsat * $unit;
         $umur = $inv->umur_ekonomis;
 
-        if ($inv->kategori == 1) {
+        if ($inv->kategori == 1 && $inv->jenis == 1) {
             return $harga_satuan;
         }
 
