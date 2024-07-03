@@ -157,6 +157,10 @@ class GenerateController extends Controller
         $data_id_pinj = [];
         $data_id_real = [];
         foreach ($pinjaman as $pinkel) {
+            if ($pinkel->pinjaman) {
+                continue;
+            }
+
             $data_id_pinj[] = $pinkel->id;
 
             if ($pinkel->status == 'P') {
