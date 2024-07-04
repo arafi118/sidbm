@@ -931,6 +931,7 @@ class PelaporanController extends Controller
                     })
                     ->orderBy($tb_angg . '.desa', 'ASC')
                     ->orderBy($tb_pinj . '.id_pinkel', 'ASC')
+                    ->orderBy($tb_pinj . '.id', 'ASC')
                     ->orderBy($tb_pinj . '.tgl_cair', 'ASC');
             }
         ])->get();
