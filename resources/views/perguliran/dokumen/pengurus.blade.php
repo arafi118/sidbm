@@ -89,7 +89,11 @@
         <tr>
             <td colspan="2">&nbsp;</td>
             <td align="center">
-                Ketua Kelompok
+                @if ($kec->ttd_pengurus_kelompok == '1')
+                    Ketua Kelompok
+                @else
+                    {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }}
+                @endif
             </td>
         </tr>
         <tr>
@@ -99,7 +103,11 @@
             <td colspan="2">&nbsp;</td>
             <td align="center">
                 <b>
-                    <u>{{ $pinkel->kelompok->ketua }}</u>
+                    @if ($kec->ttd_pengurus_kelompok == '1')
+                        <u>{{ $pinkel->kelompok->ketua }}</u>
+                    @else
+                        <u>{{ $pinkel->kelompok->d->kades }}</u>
+                    @endif
                 </b>
             </td>
         </tr>
