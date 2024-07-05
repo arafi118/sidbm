@@ -904,6 +904,14 @@ class TransaksiController extends Controller
                 $transaksi = Transaksi::create($trx_penjualan);
                 $msg = 'Penjualan ' . $request->unit . ' unit ' . $barang;
             }
+
+            if ($status == 'rusak') {
+                return response()->json([
+                    'success' => true,
+                    'msg' => $msg,
+                    'view' => ''
+                ]);
+            }
         } else {
             if (Keuangan::startWith($request->disimpan_ke, '1.2.01') || Keuangan::startWith($request->disimpan_ke, '1.2.03')) {
                 $data = $request->only([
