@@ -846,14 +846,18 @@ class TransaksiController extends Controller
             ];
 
             if ($request->unit < $jumlah_barang) {
-                $transaksi = Transaksi::create($trx_penghapusan);
+                if ($status != 'rusak') {
+                    $transaksi = Transaksi::create($trx_penghapusan);
+                }
                 Inventaris::where('id', $id_inv)->update($update_inventaris);
 
                 if ($status != 'revaluasi') {
                     Inventaris::create($insert_inventaris);
                 }
             } else {
-                $transaksi = Transaksi::create($trx_penghapusan);
+                if ($status != 'rusak') {
+                    $transaksi = Transaksi::create($trx_penghapusan);
+                }
                 Inventaris::where('id', $id_inv)->update($update_sts_inventaris);
             }
 
