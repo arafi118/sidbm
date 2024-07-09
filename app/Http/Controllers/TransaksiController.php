@@ -53,6 +53,7 @@ class TransaksiController extends Controller
     {
         $title = 'Jurnal Angsuran';
 
+        $rekening = Rekening::where('kode_akun', 'LIKE', '1.1.01.%')->orderBy('kode_akun')->get();
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         if (request()->get('pinkel')) {
             $pinkel = PinjamanKelompok::where('id', request()->get('pinkel'))->with('kelompok');
@@ -62,7 +63,7 @@ class TransaksiController extends Controller
         }
 
         $api = env('APP_API', 'https://api-whatsapp.sidbm.net');
-        return view('transaksi.jurnal_angsuran.index')->with(compact('title', 'pinkel', 'kec', 'api'));
+        return view('transaksi.jurnal_angsuran.index')->with(compact('title', 'rekening', 'pinkel', 'kec', 'api'));
     }
 
     public function ebudgeting()
@@ -1043,14 +1044,16 @@ class TransaksiController extends Controller
                     'tgl_transaksi',
                     'pokok',
                     'jasa',
-                    'denda'
+                    'denda',
+                    'dari'
                 ]);
 
                 $validate = Validator::make($data, [
                     'tgl_transaksi' => 'required',
                     'pokok' => 'required',
                     'jasa' => 'required',
-                    'denda' => 'required'
+                    'denda' => 'required',
+                    'dari' => 'required',
                 ]);
 
                 if ($validate->fails()) {
@@ -1121,7 +1124,7 @@ class TransaksiController extends Controller
                     ]);
                 }
 
-                $kas_umum = '1.1.01.01';
+                $kas_umum = $data['dari'];
                 if ($pinkel->jenis_pp == '1') {
                     $poko_kredit = '1.1.03.01';
                     $jasa_kredit = '4.1.01.01';

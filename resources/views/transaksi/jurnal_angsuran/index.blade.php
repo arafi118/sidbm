@@ -25,7 +25,7 @@
                                     <small class="text-danger" id="msg_tgl_transaksi"></small>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="input-group input-group-static my-3">
                                     <label for="pokok">Pokok</label>
                                     <input autocomplete="off" type="tel" name="pokok" id="pokok"
@@ -33,7 +33,7 @@
                                     <small class="text-danger" id="msg_pokok"></small>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="input-group input-group-static my-3">
                                     <label for="jasa">Jasa</label>
                                     <input autocomplete="off" type="tel" name="jasa" id="jasa"
@@ -41,7 +41,7 @@
                                     <small class="text-danger" id="msg_jasa"></small>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="input-group input-group-static my-3">
                                     <label for="denda">Denda</label>
                                     <input autocomplete="off" type="tel" name="denda" id="denda"
@@ -55,6 +55,19 @@
                                     <input autocomplete="off" readonly disabled type="text" name="total" id="total"
                                         class="form-control">
                                     <small class="text-danger" id="msg_total"></small>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="my-2">
+                                    <label class="form-label" for="dari">Dari</label>
+                                    <select class="form-control" name="dari" id="dari">
+                                        @foreach ($rekening as $rek)
+                                            <option value="{{ $rek->kode_akun }}">
+                                                {{ $rek->kode_akun }}. {{ $rek->nama_akun }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <small class="text-danger" id="msg_dari"></small>
                                 </div>
                             </div>
                         </div>
@@ -260,6 +273,13 @@
             allowNegative: true
         });
 
+        var dari = new Choices($('#dari')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
 
         $(".date").flatpickr({
             dateFormat: "d/m/Y"
