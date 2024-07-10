@@ -664,7 +664,10 @@ class PelaporanController extends Controller
         })->with([
             'user',
             'kas_angs' => function ($query) {
-                $query->where('id_pinj', '!=', '0');
+                $query->where([
+                    ['id_pinj', '!=', '0'],
+                    ['idtp', '!=', '0']
+                ]);
             }
         ])->orderBy('tgl_transaksi', 'ASC')->orderBy('urutan', 'ASC')->orderBy('idt', 'ASC')->get();
 
