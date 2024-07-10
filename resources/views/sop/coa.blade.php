@@ -37,17 +37,17 @@
                     var lev4 = parseInt(kode_akun[3]);
 
                     var items = {};
-                    if ((lev1 > 0 && lev2 > 0 && lev3 > 0 && lev4 > 0) || tree.get_node($node).children
-                        .length === 0) {
-                        items.Rename = {
-                            "separator_before": false,
-                            "separator_after": false,
-                            "label": "Edit",
-                            "action": function(obj) {
-                                tree.edit($node);
-                            }
-                        };
-                    }
+                    // if ((lev1 > 0 && lev2 > 0 && lev3 > 0 && lev4 > 0) || tree.get_node($node).children
+                    //     .length === 0) {
+                    //     items.Rename = {
+                    //         "separator_before": false,
+                    //         "separator_after": false,
+                    //         "label": "Edit",
+                    //         "action": function(obj) {
+                    //             tree.edit($node);
+                    //         }
+                    //     };
+                    // }
                     return items;
                 }
             }
