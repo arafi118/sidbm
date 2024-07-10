@@ -15,6 +15,7 @@
             }
 
             $kd_desa = [];
+            $t_kel = 0;
             $t_angg = 0;
             $t_alokasi = 0;
             $t_saldo = 0;
@@ -48,7 +49,7 @@
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr style="background: rgb(230, 230, 230); font-weight: bold;">
                 <th class="t l b" height="20" width="3%">No</th>
-                <th class="t l b">Kelompok - Loan ID.</th>
+                <th class="t l b" width="40%">Kelompok - Loan ID.</th>
                 <th class="t l b" width="5%">Angg.</th>
                 <th class="t l b" width="8%">Tgl Cair</th>
                 <th class="t l b" width="8%">Tempo</th>
@@ -66,6 +67,7 @@
                 @if (array_count_values($kd_desa)[$pinkel->kd_desa] <= '1')
                     @if ($section != $desa && count($kd_desa) > 1)
                         @php
+                            $t_kel += $j_kel;
                             $t_angg += $j_angg;
                             $t_alokasi += $j_alokasi;
                             $t_saldo += $j_saldo;
@@ -73,7 +75,10 @@
                             $t_tunggakan_jasa += $j_tunggakan_jasa;
                         @endphp
                         <tr style="font-weight: bold;">
-                            <td class="t l b" colspan="5">Jumlah {{ $nama_desa }}</td>
+                            <td class="t l b" align="center">{{ $j_kel }}</td>
+                            <td class="t l b">Jumlah {{ $nama_desa }}</td>
+                            <td class="t l b" align="center">{{ $j_angg }}</td>
+                            <td class="t l b" colspan="2">&nbsp;</td>
                             <td class="t l b" align="right">{{ number_format($j_alokasi) }}</td>
                             <td class="t l b" align="right">{{ number_format($j_saldo) }}</td>
                             <td class="t l b" align="right">{{ number_format($j_tunggakan_pokok) }}
@@ -82,13 +87,15 @@
                     @endif
 
                     <tr style="font-weight: bold;">
-                        <td class="t l b r" colspan="9" align="left">{{ $pinkel->kode_desa }}. {{ $pinkel->nama_desa }}
+                        <td class="t l b r" colspan="9" align="left">{{ $pinkel->kode_desa }}.
+                            {{ $pinkel->nama_desa }}
                         </td>
                     </tr>
 
                     @php
                         $nomor = 1;
                         $j_angg = 0;
+                        $j_kel = 0;
                         $j_alokasi = 0;
                         $j_saldo = 0;
                         $j_tunggakan_pokok = 0;
@@ -142,6 +149,7 @@
                 </tr>
 
                 @php
+                    ++$j_kel;
                     $j_angg += $pinkel->pinjaman_anggota_count;
                     $j_alokasi += $pinkel->alokasi;
                     $j_saldo += $saldo;
@@ -160,7 +168,10 @@
                 @endphp
 
                 <tr style="font-weight: bold;">
-                    <td class="t l b" colspan="5">Jumlah {{ $nama_desa }}</td>
+                    <td class="t l b" align="center">{{ $j_kel }}</td>
+                    <td class="t l b">Jumlah {{ $nama_desa }}</td>
+                    <td class="t l b" align="center">{{ $j_angg }}</td>
+                    <td class="t l b" colspan="2">&nbsp;</td>
                     <td class="t l b" align="right">{{ number_format($j_alokasi) }}</td>
                     <td class="t l b" align="right">{{ number_format($j_saldo) }}</td>
                     <td class="t l b" align="right">{{ number_format($j_tunggakan_pokok) }}
@@ -172,7 +183,10 @@
                         <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                             style="font-size: 11px;">
                             <tr style="background: rgb(74, 74, 74); font-weight: bold; color: #fff;" class="t l b r">
-                                <td height="15" colspan="5" align="center">J U M L A H</td>
+                                <td width="3%" align="center">{{ $t_kel }}</td>
+                                <td width="40%" height="15" align="center">J U M L A H</td>
+                                <td width="5%" align="center">{{ $t_angg }}</td>
+                                <td width="16%" colspan="2">&nbsp;</td>
                                 <td align="right" width="9%">{{ number_format($t_alokasi) }}</td>
                                 <td align="right" width="9%">{{ number_format($t_saldo) }}</td>
                                 <td align="right" width="9%">{{ number_format($t_tunggakan_pokok) }}
