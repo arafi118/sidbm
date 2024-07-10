@@ -663,7 +663,9 @@ class PelaporanController extends Controller
             $query->where('rekening_debit', $data['kode_akun'])->orwhere('rekening_kredit', $data['kode_akun']);
         })->with([
             'user',
-            'kas_angs'
+            'kas_angs' => function ($query) {
+                $query->where('id_pinj', '!=', '0');
+            }
         ])->orderBy('tgl_transaksi', 'ASC')->orderBy('urutan', 'ASC')->orderBy('idt', 'ASC')->get();
 
         $data['saldo'] = $keuangan->saldoAwal($data['tgl_kondisi'], $data['kode_akun']);
