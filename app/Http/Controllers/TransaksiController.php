@@ -1045,7 +1045,7 @@ class TransaksiController extends Controller
                     'pokok',
                     'jasa',
                     'denda',
-                    'dari'
+                    'tujuan'
                 ]);
 
                 $validate = Validator::make($data, [
@@ -1053,7 +1053,7 @@ class TransaksiController extends Controller
                     'pokok' => 'required',
                     'jasa' => 'required',
                     'denda' => 'required',
-                    'dari' => 'required',
+                    'tujuan' => 'required',
                 ]);
 
                 if ($validate->fails()) {
@@ -1124,7 +1124,7 @@ class TransaksiController extends Controller
                     ]);
                 }
 
-                $kas_umum = $data['dari'];
+                $kas_umum = $data['tujuan'];
                 if ($pinkel->jenis_pp == '1') {
                     $poko_kredit = '1.1.03.01';
                     $jasa_kredit = '4.1.01.01';
@@ -2148,7 +2148,7 @@ class TransaksiController extends Controller
         ])->orderBy('jatuh_tempo', 'DESC')->first();
         $data['ra_bulan_ini'] = RencanaAngsuran::where([
             ['loan_id', $data['real']->loan_id],
-            ['jatuh_tempo', '<=', date('Y-m-t', strtotime($data['real']->tgl_transaksi))],
+            ['target_pokok', '>=', $data['real']->sum_pokok],
         ])->orderBy('jatuh_tempo', 'DESC')->first();
         $data['pinkel'] = PinjamanKelompok::where('id', $data['real']->loan_id)->with([
             'kelompok',
@@ -2176,7 +2176,7 @@ class TransaksiController extends Controller
         ])->orderBy('jatuh_tempo', 'DESC')->first();
         $data['ra_bulan_ini'] = RencanaAngsuran::where([
             ['loan_id', $data['real']->loan_id],
-            ['jatuh_tempo', '<=', date('Y-m-t', strtotime($data['real']->tgl_transaksi))]
+            ['target_pokok', '>=', $data['real']->sum_pokok],
         ])->orderBy('jatuh_tempo', 'DESC')->first();
         $data['pinkel'] = PinjamanKelompok::where('id', $data['real']->loan_id)->with([
             'kelompok',
@@ -2206,7 +2206,7 @@ class TransaksiController extends Controller
         ])->orderBy('jatuh_tempo', 'DESC')->first();
         $data['ra_bulan_ini'] = RencanaAngsuran::where([
             ['loan_id', $data['real']->loan_id],
-            ['jatuh_tempo', '<=', date('Y-m-t', strtotime($data['real']->tgl_transaksi))]
+            ['target_pokok', '>=', $data['real']->sum_pokok],
         ])->orderBy('jatuh_tempo', 'DESC')->first();
         $data['pinkel'] = PinjamanKelompok::where('id', $data['real']->loan_id)->with([
             'kelompok',
