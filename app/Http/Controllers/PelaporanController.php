@@ -661,7 +661,10 @@ class PelaporanController extends Controller
         $data['rek'] = Rekening::where('kode_akun', $data['kode_akun'])->first();
         $data['transaksi'] = Transaksi::where('tgl_transaksi', 'LIKE', '%' . $tgl . '%')->where(function ($query) use ($data) {
             $query->where('rekening_debit', $data['kode_akun'])->orwhere('rekening_kredit', $data['kode_akun']);
-        })->with('user')->orderBy('tgl_transaksi', 'ASC')->orderBy('urutan', 'ASC')->orderBy('idt', 'ASC')->get();
+        })->with([
+            'user',
+            'kas_angs'
+        ])->orderBy('tgl_transaksi', 'ASC')->orderBy('urutan', 'ASC')->orderBy('idt', 'ASC')->get();
 
         $data['saldo'] = $keuangan->saldoAwal($data['tgl_kondisi'], $data['kode_akun']);
         $data['d_bulan_lalu'] = $keuangan->saldoD($awal_bulan, $data['kode_akun']);

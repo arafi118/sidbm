@@ -1,5 +1,8 @@
 @php
     use App\Utils\Tanggal;
+
+    $data_idtp = [];
+    $tgl_trx = [];
     $total_saldo = 0;
 
     if ($rek->jenis_mutasi == 'debet') {
@@ -85,20 +88,58 @@
 
         @foreach ($transaksi as $trx)
             @php
-                if ($trx->rekening_debit == $rek->kode_akun) {
-                    $ref = substr($trx->rekening_kredit, 0, 3);
-                    $debit = floatval($trx->jumlah);
-                    $kredit = 0;
-                } else {
-                    $ref = substr($trx->rekening_debit, 0, 3);
-                    $debit = 0;
-                    $kredit = floatval($trx->jumlah);
-                }
+                $data_idtp[] = $trx->idtp;
 
-                if ($rek->jenis_mutasi == 'debet') {
-                    $_saldo = $debit - $kredit;
+                if (
+                    $trx->idtp != '0' &&
+                    array_count_values($data_idtp)[$trx->idtp] > 1 &&
+                    $trx->tgl_transaksi == $tgl_trx[$trx->idtp]
+                ) {
+                    continue;
+                }
+                $tgl_trx[$trx->idtp] = $trx->tgl_transaksi;
+
+                $keterangan = $trx->keterangan_transaksi;
+                if (count($trx->kas_angs) > 1 && $trx->rekening_debit == $rek->kode_akun) {
+                    $debit = 0;
+                    $kredit = 0;
+                    $ref = [];
+
+                    $keterangan = 'Angs Pokok dan Jasa ' . trim(substr($trx->keterangan_transaksi, 9));
+                    foreach ($trx->kas_angs as $angs) {
+                        $ref[] = $trx->idt;
+                        if ($angs->rekening_debit == $rek->kode_akun) {
+                            $debit += floatval($angs->jumlah);
+                            $kredit += 0;
+                        } else {
+                            $debit += 0;
+                            $kredit += floatval($angs->jumlah);
+                        }
+                    }
+
+                    if ($rek->jenis_mutasi == 'debet') {
+                        $_saldo = $debit - $kredit;
+                    } else {
+                        $_saldo = $kredit - $debit;
+                    }
+
+                    $ref = implode('.', $ref);
                 } else {
-                    $_saldo = $kredit - $debit;
+                    if ($trx->rekening_debit == $rek->kode_akun) {
+                        $ref = substr($trx->rekening_kredit, 0, 3) . '-' . $trx->idt;
+                        $debit = floatval($trx->jumlah);
+                        $kredit = 0;
+                    } else {
+                        $ref = substr($trx->rekening_debit, 0, 3) . '-' . $trx->idt;
+                        $debit = 0;
+                        $kredit = floatval($trx->jumlah);
+                    }
+
+                    if ($rek->jenis_mutasi == 'debet') {
+                        $_saldo = $debit - $kredit;
+                    } else {
+                        $_saldo = $kredit - $debit;
+                    }
                 }
 
                 $total_saldo += $_saldo;
@@ -121,8 +162,8 @@
             <tr style="background: {{ $bg }};">
                 <td align="center">{{ $number }}</td>
                 <td align="center">{{ Tanggal::tglIndo($trx->tgl_transaksi) }}</td>
-                <td align="center">{{ $ref . '-' . $trx->idt }}</td>
-                <td>{{ $trx->keterangan_transaksi }}</td>
+                <td align="center">{{ $ref }}</td>
+                <td>{{ $keterangan }}</td>
                 <td align="right">{{ number_format($debit, 2) }}</td>
                 <td align="right">{{ number_format($kredit, 2) }}</td>
                 <td align="right">

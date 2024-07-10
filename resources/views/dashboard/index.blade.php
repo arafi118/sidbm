@@ -101,12 +101,6 @@
                 <div class="card-header pb-0 p-3">
                     <div class="d-flex justify-content-between">
                         <h6 class="mb-0">Angsuran Hari Ini</h6>
-                        <button type="button"
-                            class="btn btn-icon-only btn-rounded btn-outline-secondary mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center"
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" title=""
-                            data-bs-original-title="Grafik Angsuran Hari Ini">
-                            <i class="material-icons text-sm">priority_high</i>
-                        </button>
                     </div>
                 </div>
                 <div class="card-body pb-0 p-3 pt-0 mt-4">
@@ -166,10 +160,9 @@
                 <div class="card-header pb-0 p-3">
                     <div class="d-flex justify-content-between">
                         <h6 class="mb-0">Pendapatan dan Beban</h6>
-                        <button type="button"
+                        <button type="button" id="btnDetailPelaporan"
                             class="btn btn-icon-only btn-rounded btn-outline-secondary mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center"
-                            data-bs-toggle="tooltip" data-bs-placement="left"
-                            data-bs-original-title="Grafik Pendapatan dan Beban s.d. bulan ini">
+                            data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Detail Pelaporan">
                             <i class="material-icons text-sm">priority_high</i>
                         </button>
                     </div>
@@ -194,6 +187,28 @@
                             style="display: block; box-sizing: border-box; height: 210px; width: 844.4px;"
                             width="1688"></canvas>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Detail Pelaporan --}}
+    <div class="modal fade" id="DetailPelaporan" aria-labelledby="DetailPelaporanLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="DetailPelaporanLabel">--//--</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
+                        Tutup
+                    </button>
                 </div>
             </div>
         </div>
@@ -655,6 +670,10 @@
         $(document).on('click', '#closeTagihan', function() {
             $('#tagihanPinjaman').modal('hide')
             $('#jatuhTempo').modal('show')
+        })
+
+        $(document).on('click', '#btnDetailPelaporan', function() {
+            $('#DetailPelaporan').modal('show')
         })
 
         $.get('/dashboard/pinjaman?status=P', function(result) {

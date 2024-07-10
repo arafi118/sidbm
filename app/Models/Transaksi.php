@@ -26,6 +26,11 @@ class Transaksi extends Model
         return $this->hasMany(Transaksi::class, ['idtp', 'tgl_transaksi'], ['idtp', 'tgl_transaksi']);
     }
 
+    public function kas_angs()
+    {
+        return $this->hasMany(Transaksi::class, ['idtp', 'tgl_transaksi', 'rekening_debit'], ['idtp', 'tgl_transaksi', 'rekening_debit']);
+    }
+
     public function rek_debit()
     {
         return $this->belongsTo(Rekening::class, 'rekening_debit', 'kode_akun');
