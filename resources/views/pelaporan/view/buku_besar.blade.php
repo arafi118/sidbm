@@ -103,11 +103,10 @@
                 if (count($trx->kas_angs) > 1 && $trx->rekening_debit == $rek->kode_akun) {
                     $debit = 0;
                     $kredit = 0;
-                    $ref = [];
+                    $ref = substr($trx->rekening_kredit, 0, 3) . '-' . $trx->idt;
 
                     $keterangan = 'Angs Pokok dan Jasa ' . trim(substr($trx->keterangan_transaksi, 9));
                     foreach ($trx->kas_angs as $angs) {
-                        $ref[] = $trx->idt;
                         if ($angs->rekening_debit == $rek->kode_akun) {
                             $debit += floatval($angs->jumlah);
                             $kredit += 0;
@@ -122,8 +121,6 @@
                     } else {
                         $_saldo = $kredit - $debit;
                     }
-
-                    $ref = implode('.', $ref);
                 } else {
                     if ($trx->rekening_debit == $rek->kode_akun) {
                         $ref = substr($trx->rekening_kredit, 0, 3) . '-' . $trx->idt;

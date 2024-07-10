@@ -54,4 +54,9 @@ class Rekening extends Model
     {
         return $this->hasOne(Ebudgeting::class, 'kode_akun', 'kode_akun');
     }
+
+    public function getRouteKeyName()
+    {
+        return 'kode_akun';
+    }
 }
