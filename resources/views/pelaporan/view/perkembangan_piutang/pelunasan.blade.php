@@ -87,6 +87,16 @@
                     $sum_pokok = $pinkel->saldo->sum_pokok;
                     $sum_jasa = $pinkel->saldo->sum_jasa;
                 }
+
+                $target_pokok = 0;
+                $target_jasa = 0;
+                if ($pinkel->saldo) {
+                    $target_pokok = $pinkel->target->target_pokok;
+                    $target_jasa = $pinkel->target->target_jasa;
+                }
+
+                $sisa_pokok = $target_pokok - $sum_pokok;
+                $sisa_jasa = $target_jasa - $sum_jasa;
             @endphp
 
             <tr>
@@ -111,7 +121,10 @@
                 </td>
                 <td class="t l b" align="center">
                     @php
-                        $jatuh_tempo = date('Y-m-d', strtotime('+' . $pinkel->jangka . ' month', strtotime($pinkel->tgl_cair)));
+                        $jatuh_tempo = date(
+                            'Y-m-d',
+                            strtotime('+' . $pinkel->jangka . ' month', strtotime($pinkel->tgl_cair)),
+                        );
                     @endphp
 
                     {{ Tanggal::tglIndo($jatuh_tempo) }}
@@ -119,14 +132,14 @@
                 <td class="t l b" align="center">
                     {{ $pinkel->sisa * -1 }}
                 </td>
-                <td class="t l b" align="right">{{ number_format($sum_pokok) }}</td>
-                <td class="t l b" align="right">{{ number_format($sum_jasa) }}</td>
-                <td class="t l b r" align="right">{{ number_format($sum_pokok + $sum_jasa) }}</td>
+                <td class="t l b" align="right">{{ number_format($sisa_pokok) }}</td>
+                <td class="t l b" align="right">{{ number_format($sisa_jasa) }}</td>
+                <td class="t l b r" align="right">{{ number_format($sisa_pokok + $sisa_jasa) }}</td>
             </tr>
 
             @php
-                $j_pokok += $sum_pokok;
-                $j_jasa += $sum_jasa;
+                $j_pokok += $sisa_pokok;
+                $j_jasa += $sisa_jasa;
             @endphp
         @endforeach
 

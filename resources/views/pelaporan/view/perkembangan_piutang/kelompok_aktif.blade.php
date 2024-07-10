@@ -160,6 +160,7 @@
 
             @if (count($kd_desa) > 0)
                 @php
+                    $t_kel += $j_kel;
                     $t_angg += $j_angg;
                     $t_alokasi += $j_alokasi;
                     $t_saldo += $j_saldo;

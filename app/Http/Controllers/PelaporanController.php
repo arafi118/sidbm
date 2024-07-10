@@ -1963,9 +1963,8 @@ class PelaporanController extends Controller
             ])
             ->whereRaw('(TIMESTAMPDIFF(MONTH, DATE_ADD(' . $tb_pinkel . '.tgl_cair, INTERVAL ' . $tb_pinkel . '.jangka MONTH), CURRENT_DATE)) BETWEEN -3 AND 0')
             ->with([
-                'rencana1' => function ($query) use ($data, $tb_pinkel) {
-                    $query->where('jatuh_tempo', '>=', $data['tahun'] . '-' . $data['bulan'] . '-01')->orWhere('jatuh_tempo', '<', $data['tahun'] . '-' . $data['bulan'] . '-01');
-                }
+                'target',
+                'saldo'
             ])
             ->orderBy($tb_kel . '.desa', 'ASC')
             ->orderBy($tb_pinkel . '.id', 'ASC')->get();
