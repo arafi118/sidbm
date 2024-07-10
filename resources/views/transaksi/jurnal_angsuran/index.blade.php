@@ -58,16 +58,16 @@
                                 </div>
                             </div>
                             <div class="col-sm-6">
-                                <div class="my-2">
-                                    <label class="form-label" for="dari">Dari</label>
-                                    <select class="form-control" name="dari" id="dari">
+                                <div class="my-2 fw-bold">
+                                    <label class="form-label fw-bold" for="tujuan">Tujuan</label>
+                                    <select class="form-control" name="tujuan" id="tujuan">
                                         @foreach ($rekening as $rek)
                                             <option value="{{ $rek->kode_akun }}">
                                                 {{ $rek->kode_akun }}. {{ $rek->nama_akun }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    <small class="text-danger" id="msg_dari"></small>
+                                    <small class="text-danger" id="msg_tujuan"></small>
                                 </div>
                             </div>
                         </div>
@@ -273,7 +273,7 @@
             allowNegative: true
         });
 
-        var dari = new Choices($('#dari')[0], {
+        var tujuan = new Choices($('#tujuan')[0], {
             shouldSort: false,
             fuseOptions: {
                 threshold: 0.1,
