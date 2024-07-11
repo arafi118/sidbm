@@ -90,15 +90,15 @@
             @php
                 if ($trx->rekening_debit != '1.1.01.01') {
                     $data_idtp[] = $trx->idtp;
+                    if (
+                        $trx->idtp != '0' &&
+                        array_count_values($data_idtp)[$trx->idtp] > 1 &&
+                        $trx->tgl_transaksi == $tgl_trx[$trx->idtp]
+                    ) {
+                        continue;
+                    }
                 }
 
-                if (
-                    $trx->idtp != '0' &&
-                    array_count_values($data_idtp)[$trx->idtp] > 1 &&
-                    $trx->tgl_transaksi == $tgl_trx[$trx->idtp]
-                ) {
-                    continue;
-                }
                 $tgl_trx[$trx->idtp] = $trx->tgl_transaksi;
 
                 $keterangan = $trx->keterangan_transaksi;
