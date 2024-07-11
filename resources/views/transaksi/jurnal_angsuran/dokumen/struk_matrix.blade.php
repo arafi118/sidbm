@@ -56,10 +56,6 @@
         $jasa_bulan_depan = 0;
     }
 
-    if (!$angsur_bulan_depan) {
-        $pokok_bulan_depan = 0;
-        $jasa_bulan_depan = 0;
-    }
     $nama_user = '';
 
     $no_kuitansi = '';

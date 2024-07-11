@@ -17,7 +17,7 @@
         $wajib_jasa = $ra_bulan_ini->wajib_jasa;
         $target_pokok = $ra_bulan_ini->target_pokok;
         $target_jasa = $ra_bulan_ini->target_jasa;
-        $angsuran_ke = $ra_bulan_ini->angsuran_ke;
+        $angsuran_ke = intval($ra_bulan_ini->angsuran_ke);
     }
 
     $jum_angsuran = $pinkel->jangka / $pinkel->sis_pokok->sistem;
@@ -56,10 +56,6 @@
         $jasa_bulan_depan = 0;
     }
 
-    if (!$angsur_bulan_depan) {
-        $pokok_bulan_depan = 0;
-        $jasa_bulan_depan = 0;
-    }
     $nama_user = '';
 
     $no_kuitansi = '';
