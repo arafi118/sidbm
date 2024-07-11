@@ -88,7 +88,9 @@
 
         @foreach ($transaksi as $trx)
             @php
-                $data_idtp[] = $trx->idtp;
+                if ($trx->rekening_debit != '1.1.01.01') {
+                    $data_idtp[] = $trx->idtp;
+                }
 
                 if (
                     $trx->idtp != '0' &&
