@@ -82,7 +82,7 @@
         </ol>
     </div>
 
-    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; padding: 0px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; padding: 0px;">
         <tr>
             <td style="padding: 0px !important; text-align: justify;">
                 <div style="margin: 0px; padding: 0px;">
