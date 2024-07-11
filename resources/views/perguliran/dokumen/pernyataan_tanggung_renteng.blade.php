@@ -81,40 +81,50 @@
             </li>
         </ol>
     </div>
-    <div style="text-align: justify;">
-        Demikian surat pernyataan Kesanggupan Tanggung Renteng ini dibuat dengan penuh kesadaran dan tanpa paksaan dari
-        pihak manapun serta untuk dipergunakan dan/ atau dilaksanakan sebagaimana mestinya.
-    </div>
 
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; padding: 0px;">
         <tr>
-            <td colspan="2">&nbsp;</td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
-        </tr>
-        <tr>
-            <td align="center" width="50%">
-                Mengetahui,
-            </td>
-            <td align="center" width="50%">Ketua Kelompok</td>
-        </tr>
-        <tr>
-            <td align="center">
-                {{ $kec->sebutan_level_1 }} Bumdesma
-            </td>
-            <td align="center">{{ $pinkel->kelompok->nama_kelompok }}</td>
-        </tr>
-        <tr>
-            <td colspan="2" height="30"></td>
-        </tr>
-        <tr>
-            <td align="center">
-                <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
-            </td>
-            <td align="center">
-                <b>{{ $pinkel->kelompok->ketua }}</b>
+            <td style="padding: 0px !important; text-align: justify;">
+                <div style="margin: 0px; padding: 0px;">
+                    Demikian surat pernyataan Kesanggupan Tanggung Renteng ini dibuat dengan penuh kesadaran dan tanpa
+                    paksaan
+                    dari
+                    pihak manapun serta untuk dipergunakan dan/ atau dilaksanakan sebagaimana mestinya.
+                </div>
+
+                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 11px;">
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
+                    </tr>
+                    <tr>
+                        <td align="center" width="50%">
+                            Mengetahui,
+                        </td>
+                        <td align="center" width="50%">Ketua Kelompok</td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            {{ $kec->sebutan_level_1 }} Bumdesma
+                        </td>
+                        <td align="center">{{ $pinkel->kelompok->nama_kelompok }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" height="30"></td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
+                        </td>
+                        <td align="center">
+                            <b>{{ $pinkel->kelompok->ketua }}</b>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
