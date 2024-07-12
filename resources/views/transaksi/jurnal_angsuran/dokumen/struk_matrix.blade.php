@@ -27,10 +27,12 @@
     if ($pinkel->jangka >= $ra_bulan_ini->angsuran_ke) {
         $angsur_bulan_depan = false;
     }
+
     $tunggakan_pokok = $target_pokok - $real->sum_pokok;
     if ($tunggakan_pokok < 0) {
         $tunggakan_pokok = 0;
     }
+
     $tunggakan_jasa = $target_jasa - $real->sum_jasa;
     if ($tunggakan_jasa < 0) {
         $tunggakan_jasa = 0;
@@ -51,6 +53,11 @@
     }
 
     if ($angsuran_ke >= $jum_angsuran) {
+        $pokok_bulan_depan = 0;
+        $jasa_bulan_depan = 0;
+    }
+
+    if (!$angsur_bulan_depan) {
         $pokok_bulan_depan = 0;
         $jasa_bulan_depan = 0;
     }
