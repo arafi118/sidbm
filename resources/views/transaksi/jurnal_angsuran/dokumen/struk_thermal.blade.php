@@ -22,8 +22,8 @@
 
     $angsuran_ke = 1;
     $jum_angsuran = $pinkel->jangka / $pinkel->sis_pokok->sistem;
-    if ($angsuran->angsuran_ke > 0) {
-        $angsuran_ke = $angsuran->angsuran_ke;
+    if ($ra_bulan_ini->angsuran_ke > 0) {
+        $angsuran_ke = $ra_bulan_ini->angsuran_ke;
     }
 
     $nama_user = '';
