@@ -176,8 +176,8 @@
             <td>Nama Kelompok </td>
             <td colspan="3"><b>: {{ $pinkel->kelompok->nama_kelompok }} - {{ $pinkel->kelompok->ketua }}</b></td>
             <td>Target Pengembalian (x)</td>
-            <td align="right">{{ number_format($ra->target_pokok) }}</td>
-            <td align="right">{{ number_format($ra->target_jasa) }}</td>
+            <td align="right">{{ number_format($target_pokok) }}</td>
+            <td align="right">{{ number_format($target_jasa) }}</td>
         </tr>
         <tr>
             <td>Alamat</td>
