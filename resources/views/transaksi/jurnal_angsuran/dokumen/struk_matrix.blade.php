@@ -24,7 +24,7 @@
         $angsuran_ke = $ra_bulan_ini->angsuran_ke;
     }
 
-    if ($pinkel->jangka >= $ra_bulan_ini->angsuran_ke) {
+    if ($pinkel->jangka <= $ra_bulan_ini->angsuran_ke) {
         $angsur_bulan_depan = false;
     }
 
