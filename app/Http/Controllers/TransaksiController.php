@@ -2138,7 +2138,8 @@ class TransaksiController extends Controller
 
     public function struk($id)
     {
-        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'trx.user')->firstOrFail();
+        $data['pinkel'] = PinjamanKelompok::where('id', $data['real']->loan_id)->with([
             'kelompok',
             'kelompok.d',
             'kelompok.d.sebutan_desa',
@@ -2146,7 +2147,6 @@ class TransaksiController extends Controller
             'sis_pokok'
         ])->first();
 
-        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'trx.user')->firstOrFail();
         $data['ra_bulan_ini'] = RencanaAngsuran::where([
             ['loan_id', $data['real']->loan_id],
             ['jatuh_tempo', '<=', date('Y-m-t', strtotime($data['real']->tgl_transaksi))],
@@ -2165,7 +2165,8 @@ class TransaksiController extends Controller
 
     public function strukMatrix($id)
     {
-        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'trx.user')->firstOrFail();
+        $data['pinkel'] = PinjamanKelompok::where('id', $data['real']->loan_id)->with([
             'kelompok',
             'kelompok.d',
             'kelompok.d.sebutan_desa',
@@ -2173,7 +2174,6 @@ class TransaksiController extends Controller
             'sis_pokok'
         ])->first();
 
-        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'trx.user')->firstOrFail();
         $data['ra_bulan_ini'] = RencanaAngsuran::where([
             ['loan_id', $data['real']->loan_id],
             ['jatuh_tempo', '<=', date('Y-m-t', strtotime($data['real']->tgl_transaksi))],
@@ -2198,7 +2198,8 @@ class TransaksiController extends Controller
             $data['kertas'] = request()->get('kertas');
         }
 
-        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'trx.user')->firstOrFail();
+        $data['pinkel'] = PinjamanKelompok::where('id', $data['real']->loan_id)->with([
             'kelompok',
             'kelompok.d',
             'kelompok.d.sebutan_desa',
@@ -2206,7 +2207,6 @@ class TransaksiController extends Controller
             'sis_pokok'
         ])->first();
 
-        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'trx.user')->firstOrFail();
         $data['ra_bulan_ini'] = RencanaAngsuran::where([
             ['loan_id', $data['real']->loan_id],
             ['jatuh_tempo', '<=', date('Y-m-t', strtotime($data['real']->tgl_transaksi))],
