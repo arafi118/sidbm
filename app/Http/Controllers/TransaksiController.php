@@ -2138,25 +2138,24 @@ class TransaksiController extends Controller
 
     public function struk($id)
     {
-        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'trx.user')->firstOrFail();
-        // $data['ra'] = RencanaAngsuran::where([
-        //     ['loan_id', $data['real']->loan_id],
-        //     ['target_pokok', '>=', $data['real']->sum_pokok]
-        // ])->orderBy('jatuh_tempo', 'ASC')->first();
-        $data['ra'] = RencanaAngsuran::where([
-            ['loan_id', $data['real']->loan_id]
-        ])->orderBy('jatuh_tempo', 'DESC')->first();
-        $data['ra_bulan_ini'] = RencanaAngsuran::where([
-            ['loan_id', $data['real']->loan_id],
-            ['target_pokok', '<=', $data['real']->sum_pokok],
-        ])->orderBy('jatuh_tempo', 'DESC')->first();
-        $data['pinkel'] = PinjamanKelompok::where('id', $data['real']->loan_id)->with([
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'kelompok',
             'kelompok.d',
             'kelompok.d.sebutan_desa',
             'jpp',
             'sis_pokok'
         ])->first();
+
+        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'trx.user')->firstOrFail();
+        $data['ra_bulan_ini'] = RencanaAngsuran::where([
+            ['loan_id', $data['real']->loan_id],
+            ['jatuh_tempo', '<=', date('Y-m-t', strtotime($data['real']->tgl_transaksi))],
+        ])->orderBy('jatuh_tempo', 'DESC')->first();
+        $data['angsuran'] = RencanaAngsuran::where([
+            ['loan_id', $data['real']->loan_id],
+            ['target_pokok', '<=', $data['real']->sum_pokok],
+        ])->orderBy('jatuh_tempo', 'DESC')->first();
+
         $data['user'] = User::where('id', $data['real']->id_user)->first();
         $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
         $data['keuangan'] = new Keuangan;
@@ -2166,25 +2165,24 @@ class TransaksiController extends Controller
 
     public function strukMatrix($id)
     {
-        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'trx.user')->firstOrFail();
-        // $data['ra'] = RencanaAngsuran::where([
-        //     ['loan_id', $data['real']->loan_id],
-        //     ['target_pokok', '>=', $data['real']->sum_pokok]
-        // ])->orderBy('jatuh_tempo', 'ASC')->first();
-        $data['ra'] = RencanaAngsuran::where([
-            ['loan_id', $data['real']->loan_id]
-        ])->orderBy('jatuh_tempo', 'DESC')->first();
-        $data['ra_bulan_ini'] = RencanaAngsuran::where([
-            ['loan_id', $data['real']->loan_id],
-            ['target_pokok', '<=', $data['real']->sum_pokok],
-        ])->orderBy('jatuh_tempo', 'DESC')->first();
-        $data['pinkel'] = PinjamanKelompok::where('id', $data['real']->loan_id)->with([
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'kelompok',
             'kelompok.d',
             'kelompok.d.sebutan_desa',
             'jpp',
             'sis_pokok'
         ])->first();
+
+        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'trx.user')->firstOrFail();
+        $data['ra_bulan_ini'] = RencanaAngsuran::where([
+            ['loan_id', $data['real']->loan_id],
+            ['jatuh_tempo', '<=', date('Y-m-t', strtotime($data['real']->tgl_transaksi))],
+        ])->orderBy('jatuh_tempo', 'DESC')->first();
+        $data['angsuran'] = RencanaAngsuran::where([
+            ['loan_id', $data['real']->loan_id],
+            ['target_pokok', '<=', $data['real']->sum_pokok],
+        ])->orderBy('jatuh_tempo', 'DESC')->first();
+
         $data['user'] = User::where('id', $data['real']->id_user)->first();
         $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
         $data['keuangan'] = new Keuangan;
@@ -2200,21 +2198,24 @@ class TransaksiController extends Controller
             $data['kertas'] = request()->get('kertas');
         }
 
-        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'trx.user')->firstOrFail();
-        $data['ra'] = RencanaAngsuran::where([
-            ['loan_id', $data['real']->loan_id]
-        ])->orderBy('jatuh_tempo', 'DESC')->first();
-        $data['ra_bulan_ini'] = RencanaAngsuran::where([
-            ['loan_id', $data['real']->loan_id],
-            ['target_pokok', '<=', $data['real']->sum_pokok],
-        ])->orderBy('jatuh_tempo', 'DESC')->first();
-        $data['pinkel'] = PinjamanKelompok::where('id', $data['real']->loan_id)->with([
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'kelompok',
             'kelompok.d',
             'kelompok.d.sebutan_desa',
             'jpp',
             'sis_pokok'
         ])->first();
+
+        $data['real'] = RealAngsuran::where('id', $id)->with('trx', 'trx.user')->firstOrFail();
+        $data['ra_bulan_ini'] = RencanaAngsuran::where([
+            ['loan_id', $data['real']->loan_id],
+            ['jatuh_tempo', '<=', date('Y-m-t', strtotime($data['real']->tgl_transaksi))],
+        ])->orderBy('jatuh_tempo', 'DESC')->first();
+        $data['angsuran'] = RencanaAngsuran::where([
+            ['loan_id', $data['real']->loan_id],
+            ['target_pokok', '<=', $data['real']->sum_pokok],
+        ])->orderBy('jatuh_tempo', 'DESC')->first();
+
         $data['user'] = User::where('id', $data['real']->id_user)->first();
         $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
         $data['keuangan'] = new Keuangan;

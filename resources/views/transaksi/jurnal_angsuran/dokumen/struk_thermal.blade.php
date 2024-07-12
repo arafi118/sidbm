@@ -20,9 +20,10 @@
         $angsuran_ke = $ra_bulan_ini->angsuran_ke;
     }
 
+    $angsuran_ke = 1;
     $jum_angsuran = $pinkel->jangka / $pinkel->sis_pokok->sistem;
-    if ($real->saldo_pokok + $real->saldo_jasa <= 0) {
-        $angsuran_ke = $jum_angsuran;
+    if ($angsuran->angsuran_ke > 0) {
+        $angsuran_ke = $angsuran->angsuran_ke;
     }
 
     $nama_user = '';
@@ -142,7 +143,7 @@
             <td width="24%">{{ substr($no_kuitansi, 0, -1) }}</td>
             <td colspan="2" width="50%">
                 <div align="right">
-                    Angsuran ke: {{ $ra_bulan_ini->angsuran_ke > 0 ? $ra_bulan_ini->angsuran_ke : 1 }}
+                    Angsuran ke: {{ $angsuran_ke }}
                     dari {{ $jum_angsuran }}
                 </div>
             </td>

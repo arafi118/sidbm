@@ -9,7 +9,6 @@
 
     $target_pokok = 0;
     $target_jasa = 0;
-    $angsuran_ke = 1;
     $wajib_pokok = 0;
     $wajib_jasa = 0;
     if ($ra_bulan_ini) {
@@ -17,15 +16,15 @@
         $wajib_jasa = $ra_bulan_ini->wajib_jasa;
         $target_pokok = $ra_bulan_ini->target_pokok;
         $target_jasa = $ra_bulan_ini->target_jasa;
-        $angsuran_ke = $ra_bulan_ini->angsuran_ke;
     }
 
+    $angsuran_ke = 1;
     $jum_angsuran = $pinkel->jangka / $pinkel->sis_pokok->sistem;
-    if ($real->saldo_pokok + $real->saldo_jasa <= 0) {
-        $angsuran_ke = $jum_angsuran;
+    if ($angsuran->angsuran_ke > 0) {
+        $angsuran_ke = $angsuran->angsuran_ke;
     }
 
-    if ($ra->jatuh_tempo <= $real->tgl_transaksi) {
+    if ($pinkel->jangka >= $ra_bulan_ini->angsuran_ke) {
         $angsur_bulan_depan = false;
     }
     $tunggakan_pokok = $target_pokok - $real->sum_pokok;
@@ -76,7 +75,6 @@
         $nama_user = $trx->user->namadepan . ' ' . $trx->user->namabelakang;
     @endphp
 @endforeach
-
 
 <style type="text/css">
     .style1 {

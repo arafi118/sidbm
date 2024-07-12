@@ -20,12 +20,13 @@
         $angsuran_ke = intval($ra_bulan_ini->angsuran_ke);
     }
 
+    $angsuran_ke = 1;
     $jum_angsuran = $pinkel->jangka / $pinkel->sis_pokok->sistem;
-    if ($real->saldo_pokok + $real->saldo_jasa <= 0) {
-        $angsuran_ke = $jum_angsuran;
+    if ($angsuran->angsuran_ke > 0) {
+        $angsuran_ke = $angsuran->angsuran_ke;
     }
 
-    if ($ra->jatuh_tempo <= $real->tgl_transaksi) {
+    if ($pinkel->jangka >= $ra_bulan_ini->angsuran_ke) {
         $angsur_bulan_depan = false;
     }
     $tunggakan_pokok = $target_pokok - $real->sum_pokok;
@@ -152,7 +153,7 @@
             <td width="15%">Loan ID</td>
             <td width="11%"><strong>: {{ $pinkel->id }} - {{ $pinkel->jpp->nama_jpp }}</strong></td>
             <td colspan="2">
-                <div align="right">Angsuran ke: {{ $ra_bulan_ini->angsuran_ke > 0 ? $ra_bulan_ini->angsuran_ke : 1 }}
+                <div align="right">Angsuran ke: {{ $angsuran_ke }}
                     dari {{ $jum_angsuran }}</div>
             </td>
             <th class="bottom top">STATUS PINJAMAN</th>
