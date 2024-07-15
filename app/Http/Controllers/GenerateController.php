@@ -222,6 +222,9 @@ class GenerateController extends Controller
             } else if ($sa_pokok == 15) {
                 $tempo_pokok = ($jangka) - 2 / $sistem_pokok;
                 $mulai_angsuran_pokok = $jangka - $tempo_pokok;
+            } else if ($sa_pokok == 25) {
+                $tempo_pokok = ($jangka) - 1 / $sistem_pokok;
+                $mulai_angsuran_pokok = $jangka - $tempo_pokok;
             } else if ($sa_pokok == 20) {
                 $tempo_pokok = ($jangka) - 12 / $sistem_pokok;
                 $mulai_angsuran_pokok = $jangka - $tempo_pokok;
@@ -238,6 +241,9 @@ class GenerateController extends Controller
                 $mulai_angsuran_jasa = $jangka - $tempo_jasa;
             } else if ($sa_jasa == 15) {
                 $tempo_jasa = ($jangka) - 2 / $sistem_jasa;
+                $mulai_angsuran_jasa = $jangka - $tempo_jasa;
+            } else if ($sa_pokok == 25) {
+                $tempo_jasa = ($jangka) - 1 / $sistem_jasa;
                 $mulai_angsuran_jasa = $jangka - $tempo_jasa;
             } else if ($sa_jasa == 20) {
                 $tempo_jasa = ($jangka) - 12 / $sistem_jasa;
