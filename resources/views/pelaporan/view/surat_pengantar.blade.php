@@ -44,8 +44,8 @@
                     {{ $sub_judul }} sebagai berikut:
                     <ol>
                         <li>Laporan Neraca</li>
-                        <li>Laporan Laba/Rugi</li>
-                        <li>Neraca Saldo</li>
+                        <li>Laporan Laba Rugi</li>
+                        <li>Laporan Arus kas</li>
                         <li>Laporan Perubahan Ekuitas</li>
                         <li>Catatan Atas Laporan Keuangan (CALK)</li>
                     </ol>
