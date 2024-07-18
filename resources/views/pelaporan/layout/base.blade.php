@@ -146,7 +146,7 @@
     @php
         $style = 'position: relative; top: 60px; font-size: 12px; padding-bottom: 37.79px;';
         if ($laporan == 'surat_pengantar') {
-            $style = 'margin-top: 90px; font-size: 12px; padding-bottom: 37.79px;';
+            $style = 'margin-top: 95px; font-size: 12px; padding-bottom: 37.79px;';
         }
     @endphp
 
