@@ -70,6 +70,7 @@
 @endphp
 @foreach ($real->trx as $trx)
     @php
+        $is_tf = false;
         $keterangan .= $trx->keterangan_transaksi . '<br>';
         if (
             $trx->rekening_kredit == '4.1.01.04' ||
@@ -77,6 +78,10 @@
             $trx->rekening_kredit == '4.1.01.06'
         ) {
             $denda += $trx->jumlah;
+        }
+
+        if (!($trx->rekenind_debit == '1.1.01.01' || $trx->rekenind_debit == '1.1.01.02')) {
+            $is_tf = true;
         }
 
         $no_kuitansi .= $trx->idt . '/';
@@ -153,7 +158,7 @@
                 <br>
                 : {{ Tanggal::tglLatin($real->tgl_transaksi) }}
             </td>
-            <th width="14%" class="style26">BUKTI ANGSURAN</th>
+            <th width="14%" class="style26">BUKTI{{ $is_tf ? ' TRANSFER ' : ' ' }}ANGSURAN</th>
         </tr>
 
         <tr>
