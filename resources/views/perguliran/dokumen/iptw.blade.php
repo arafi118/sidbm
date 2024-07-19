@@ -4,10 +4,7 @@
     $jasa = 0;
     $iptw = 0;
 
-    $alokasi_pinjaman = $pinkel->proposal;
-    if (Request::get('status') == 'A') {
-        $alokasi_pinjaman = $pinkel->alokasi;
-    }
+    $alokasi_pinjaman = $pinkel->alokasi;
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
