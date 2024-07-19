@@ -24,12 +24,23 @@
             theme: 'snow'
         });
     </script>
-@elseif ($file == 5)
+@elseif ($file == 5 || $file == 6)
+    @php
+        $mingguan = [5, 6, 8, 9, 10];
+        $nomor = 0;
+    @endphp
     <div class="my-2">
         <label class="form-label" for="sub_laporan">Nama Sub Laporan</label>
         <select class="form-control" name="sub_laporan" id="sub_laporan">
             @foreach ($jenis_laporan as $jl)
-                <option value="{{ $jl->file }}">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}.
+                @php
+                    if ($file == 6 && !in_array($jl->id, $mingguan)) {
+                        continue;
+                    }
+
+                    $nomor++;
+                @endphp
+                <option value="{{ $jl->file }}">{{ str_pad($nomor, 2, '0', STR_PAD_LEFT) }}.
                     {{ $jl->nama_laporan }}
                 </option>
             @endforeach

@@ -41,7 +41,10 @@
             <tr>
                 <td colspan="3" align="center">
                     <div style="font-size: 18px;">
-                        <b>DAFTAR PERKEMBANGAN PINJAMAN PER KELOMPOK {{ strtoupper($jpp->nama_jpp) }}</b>
+                        <b>
+                            DAFTAR PERKEMBANGAN PINJAMAN PER KELOMPOK {{ strtoupper($jpp->nama_jpp) }}
+                            {{ $lpp == 'Minggu' ? 'MINGGUAN' : '' }}
+                        </b>
                     </div>
                     <div style="font-size: 16px;">
                         <b>{{ strtoupper($sub_judul) }}</b>
@@ -62,12 +65,12 @@
                         <small>(dd/mm/yy)</small>
                     </div>
                 </th>
-                <th class="t l b" rowspan="2" width="3%">Bln</th>
+                <th class="t l b" rowspan="2" width="3%">Jasa</th>
                 <th class="t l b" rowspan="2" width="6%">Alokasi</th>
                 <th class="t l b" colspan="2">Target</th>
-                <th class="t l b" colspan="2">Real s.d. Bulan Lalu</th>
-                <th class="t l b" colspan="2">Real Bulan Ini</th>
-                <th class="t l b" colspan="2">Real s.d. Bulan Ini</th>
+                <th class="t l b" colspan="2">Real s.d. {{ $lpp }} Lalu</th>
+                <th class="t l b" colspan="2">Real {{ $lpp }} Ini</th>
+                <th class="t l b" colspan="2">Real s.d. {{ $lpp }} Ini</th>
                 <th class="t l b" colspan="2">Saldo</th>
                 <th class="t l b" rowspan="2" width="2%">%</th>
                 <th class="t l b r" colspan="2">Tunggakan</th>

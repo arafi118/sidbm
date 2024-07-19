@@ -29,7 +29,10 @@
             <tr>
                 <td colspan="3" align="center">
                     <div style="font-size: 18px;">
-                        <b>DAFTAR KOLEKTIBILITAS REKAP KELOMPOK {{ strtoupper($jpp->nama_jpp) }}</b>
+                        <b>
+                            DAFTAR KOLEKTIBILITAS REKAP KELOMPOK {{ strtoupper($jpp->nama_jpp) }}
+                            {{ $lpp == 'Minggu' ? 'MINGGUAN' : '' }}
+                        </b>
                     </div>
                     <div style="font-size: 16px;">
                         <b>{{ strtoupper($sub_judul) }}</b>
@@ -174,15 +177,16 @@
                         $saldo_jasa = 0;
                     }
 
-                    $tgl_cair = explode('-', $pinkel->tgl_cair);
-                    $th_cair = $tgl_cair[0];
-                    $bl_cair = $tgl_cair[1];
-                    $tg_cair = $tgl_cair[2];
+                    $tgl_akhir = new DateTime($tgl_kondisi);
+                    $tgl_awal = new DateTime($pinkel->tgl_cair);
+                    $selisih = $tgl_akhir->diff($tgl_awal);
 
-                    $selisih_tahun = ($tahun - $th_cair) * 12;
-                    $selisih_bulan = $bulan - $bl_cair;
-
-                    $selisih = $selisih_bulan + $selisih_tahun;
+                    if ($lpp == 'Minggu') {
+                        $selisih_hari = $selisih->days;
+                        $selisih = floor($selisih_hari / 7);
+                    } else {
+                        $selisih = $selisih->y * 12 + $selisih->m;
+                    }
 
                     $_kolek = 0;
                     if ($wajib_pokok != '0') {
@@ -212,7 +216,7 @@
                     <td class="t l b" align="center">{{ number_format(floor($pross * 100)) }}</td>
                     <td class="t l b" align="right">{{ number_format($tunggakan_pokok) }}</td>
                     <td class="t l b" align="right">{{ number_format($tunggakan_jasa) }}</td>
-                    <td class="t l b" align="center">{{ $kolek }}</td>
+                    <td class="t l b" align="center">{{ round($kolek) }}</td>
                     <td class="t l b" align="right">{{ number_format($kolek1) }}</td>
                     <td class="t l b" align="right">{{ number_format($kolek2) }}</td>
                     <td class="t l b r" align="right">{{ number_format($kolek3) }}</td>

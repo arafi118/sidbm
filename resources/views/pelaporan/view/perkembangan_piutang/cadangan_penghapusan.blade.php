@@ -130,15 +130,16 @@
                     $saldo_jasa = 0;
                 }
 
-                $tgl_cair = explode('-', $pinkel->tgl_cair);
-                $th_cair = $tgl_cair[0];
-                $bl_cair = $tgl_cair[1];
-                $tg_cair = $tgl_cair[2];
+                $tgl_akhir = new DateTime($tgl_kondisi);
+                $tgl_awal = new DateTime($pinkel->tgl_cair);
+                $selisih = $tgl_akhir->diff($tgl_awal);
 
-                $selisih_tahun = ($tahun - $th_cair) * 12;
-                $selisih_bulan = $bulan - $bl_cair;
-
-                $selisih = $selisih_bulan + $selisih_tahun;
+                if ($lpp == 'Minggu') {
+                    $selisih_hari = $selisih->days;
+                    $selisih = floor($selisih_hari / 7);
+                } else {
+                    $selisih = $selisih->y * 12 + $selisih->m;
+                }
 
                 $_kolek = 0;
                 if ($wajib_pokok != '0') {
