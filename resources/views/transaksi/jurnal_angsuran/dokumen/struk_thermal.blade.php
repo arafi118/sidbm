@@ -31,6 +31,7 @@
 @endphp
 @foreach ($real->trx as $trx)
     @php
+        $is_tf = false;
         $keterangan .= $trx->keterangan_transaksi . '<br>';
         if (
             $trx->rekening_kredit == '4.1.01.04' ||
@@ -38,6 +39,10 @@
             $trx->rekening_kredit == '4.1.01.06'
         ) {
             $denda += $trx->jumlah;
+        }
+
+        if (!($trx->rekening_debit == '1.1.01.01' || $trx->rekening_debit == '1.1.01.02')) {
+            $is_tf = true;
         }
 
         $no_kuitansi .= $trx->idt . '/';

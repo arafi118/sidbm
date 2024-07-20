@@ -80,7 +80,7 @@
             $denda += $trx->jumlah;
         }
 
-        if (!($trx->rekenind_debit == '1.1.01.01' || $trx->rekenind_debit == '1.1.01.02')) {
+        if (!($trx->rekening_debit == '1.1.01.01' || $trx->rekening_debit == '1.1.01.02')) {
             $is_tf = true;
         }
 
