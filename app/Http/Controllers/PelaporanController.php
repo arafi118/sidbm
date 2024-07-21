@@ -32,7 +32,14 @@ class PelaporanController extends Controller
     public function index()
     {
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
-        $laporan = JenisLaporan::where([['file', '!=', '0']])->orderBy('urut', 'ASC')->get();
+        if (Session::get('lokasi') != '277') {
+            $laporan = JenisLaporan::where([
+                ['file', '!=', '0'],
+                ['id', '!=', '32']
+            ])->orderBy('urut', 'ASC')->get();
+        } else {
+            $laporan = JenisLaporan::where([['file', '!=', '0']])->orderBy('urut', 'ASC')->get();
+        }
 
         $title = 'Pelaporan';
         return view('pelaporan.index')->with(compact('title', 'kec', 'laporan'));
