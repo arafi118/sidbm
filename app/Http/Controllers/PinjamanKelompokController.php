@@ -665,9 +665,9 @@ class PinjamanKelompokController extends Controller
                 }
             ])->first();
             $saldo = $keuangan->komSaldo($rek);
-            $alokasi = str_replace(',', '', str_replace('.00', '', $data[$alokasi]));
+            $alokasi_pencairan = str_replace(',', '', str_replace('.00', '', $data[$alokasi]));
 
-            if ($saldo < intval($alokasi)) {
+            if ($saldo < intval($alokasi_pencairan)) {
                 return response()->json([
                     'success' => false,
                     'msg' => 'Alokasi Pencairan melebihi saldo.',
