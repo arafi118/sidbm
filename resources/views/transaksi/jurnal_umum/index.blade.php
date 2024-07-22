@@ -221,6 +221,8 @@
         <input type="hidden" name="del_idtp" id="del_idtp">
         <input type="hidden" name="del_id_pinj" id="del_id_pinj">
     </form>
+
+    <input type="hidden" name="saldo_trx" id="saldo_trx">
 @endsection
 
 @section('script')
@@ -307,6 +309,13 @@
 
             selectTahun.setChoiceByValue(tahun)
             selectBulan.setChoiceByValue(bulan)
+
+            if ($('#sumber_dana').val() != '') {
+                var sumber_dana = $('#sumber_dana').val();
+                var tgl_transaksi = $(this).val().split('/')
+
+                setSaldo(sumber_dana, tgl_transaksi)
+            }
         })
 
         $(document).on('change', '#sumber_dana', function(e) {
@@ -326,14 +335,8 @@
             }
 
             var tgl_transaksi = $('#tgl_transaksi').val().split('/')
-            var tahun = tgl_transaksi[2];
-            var bulan = tgl_transaksi[1];
-            var hari = tgl_transaksi[0];
 
-            $.get('/trasaksi/saldo/' + sumber_dana + '?tahun=' + tahun + '&bulan=' + bulan + '&hari=' + hari,
-                function(result) {
-                    $('#saldo').html(formatter.format(result.saldo))
-                })
+            setSaldo(sumber_dana, tgl_transaksi)
         })
 
         $(document).on('change', '#sumber_dana,#disimpan_ke', function(e) {
@@ -369,44 +372,42 @@
             $('small').html('')
             $('#notifikasi').html('')
 
-            var form = $('#FormTransaksi')
-            $.ajax({
-                type: 'POST',
-                url: form.attr('action'),
-                data: form.serialize(),
-                success: function(result) {
-                    if (result.success) {
-                        Swal.fire('Berhasil', result.msg, 'success').then(() => {
-                            jenis_transaksi.setChoiceByValue('')
+            var nominal = parseFloat($('#nominal').val().split(',').join(''))
+            if (parseFloat($('#saldo_trx').val()) > nominal) {
+                var form = $('#FormTransaksi')
+                $.ajax({
+                    type: 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(result) {
+                        if (result.success) {
+                            Swal.fire('Berhasil', result.msg, 'success').then(() => {
+                                jenis_transaksi.setChoiceByValue('')
 
-                            $('#notifikasi').html(result.view)
-                            var sumber_dana = $('#sumber_dana').val()
-                            var tgl_transaksi = $('#tgl_transaksi').val().split('/')
-                            var tahun = tgl_transaksi[2];
-                            var bulan = tgl_transaksi[1];
-                            var hari = tgl_transaksi[0];
+                                $('#notifikasi').html(result.view)
+                                var sumber_dana = $('#sumber_dana').val()
+                                var tgl_transaksi = $('#tgl_transaksi').val().split('/')
 
-                            $.get('/trasaksi/saldo/' + sumber_dana + '?tahun=' + tahun +
-                                '&bulan=' + bulan + '&hari=' + hari,
-                                function(res) {
-                                    $('#saldo').html(formatter.format(res.saldo))
-                                })
+                                setSaldo(sumber_dana, tgl_transaksi)
+                            })
+                        } else {
+                            Swal.fire('Error', result.msg, 'error')
+                        }
+                    },
+                    error: function(result) {
+                        const respons = result.responseJSON;
+
+                        Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error')
+                        $.map(respons, function(res, key) {
+                            $('#' + key).parent('.input-group.input-group-static').addClass(
+                                'is-invalid')
+                            $('#msg_' + key).html(res)
                         })
-                    } else {
-                        Swal.fire('Error', result.msg, 'error')
                     }
-                },
-                error: function(result) {
-                    const respons = result.responseJSON;
-
-                    Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error')
-                    $.map(respons, function(res, key) {
-                        $('#' + key).parent('.input-group.input-group-static').addClass(
-                            'is-invalid')
-                        $('#msg_' + key).html(res)
-                    })
-                }
-            })
+                })
+            } else {
+                Swal.fire('Error', 'Nominal transaksi melebihi saldo', 'error')
+            }
         })
 
         $(document).on('change', '#nama_barang', function(e) {
@@ -451,7 +452,6 @@
 
         $(document).on('change', '#alasan', function() {
             var status = $(this).val()
-            console.log(status)
 
             var col_harga_jual = false
             if (status == "dijual") {
@@ -637,6 +637,18 @@
                 tooltipList = tooltipTriggerList.map(function(e) {
                     return new bootstrap.Tooltip(e)
                 });
+        }
+
+        function setSaldo(sumber_dana, tgl_transaksi) {
+            var tahun = tgl_transaksi[2];
+            var bulan = tgl_transaksi[1];
+            var hari = tgl_transaksi[0];
+
+            $.get('/trasaksi/saldo/' + sumber_dana + '?tahun=' + tahun + '&bulan=' + bulan + '&hari=' + hari,
+                function(result) {
+                    $('#saldo').html(formatter.format(result.saldo))
+                    $('#saldo_trx').val(result.saldo)
+                })
         }
     </script>
 @endsection
