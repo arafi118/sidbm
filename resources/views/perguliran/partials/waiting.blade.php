@@ -285,7 +285,7 @@
         <div class="card-body p-3">
             <input type="hidden" name="_id" id="_id" value="{{ $perguliran->id }}">
             <input type="hidden" name="status" id="status" value="A">
-            <input type="hidden" name="debet" id="debet" value="{{ $debet->kode_akun }}">
+            <input type="hidden" name="debet" id="debet" value="{{ $debet }}">
             <div class="row">
                 <div class="col-md-4">
                     <div class="input-group input-group-static my-3">

@@ -392,12 +392,7 @@ class PinjamanKelompokController extends Controller
             ['lev3', '1'],
             ['lev4', '!=', '2']
         ])->orderBy('kode_akun', 'asc')->get();
-        $debet = Rekening::where([
-            ['lev1', '1'],
-            ['lev2', '1'],
-            ['lev3', '3'],
-            ['lev4', $perguliran->jenis_pp]
-        ])->first();
+        $debet = '1.1.03.' . str_pad($perguliran->jenis_pp, 2, '0', STR_PAD_LEFT);
 
         if ($perguliran->status == 'A' || $perguliran->status == 'L' || $perguliran->status == 'R' || $perguliran->status == 'H') {
             $view = 'aktif';
@@ -500,6 +495,7 @@ class PinjamanKelompokController extends Controller
      */
     public function update(Request $request, PinjamanKelompok $perguliran)
     {
+        $keuangan = new Keuangan;
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         if ($request->status == 'P') {
             $tgl = 'tgl_proposal';
@@ -652,6 +648,29 @@ class PinjamanKelompokController extends Controller
                 return response()->json([
                     'success' => false,
                     'msg' => 'Tanggal pencairan tidak boleh sebelum tanggal pakai aplikasi.',
+                ], Response::HTTP_ACCEPTED);
+            }
+
+            $tgl_cair = Tanggal::tglNasional($data[$tgl]);
+            $sumber_dana = $data['sumber_pembayaran'];
+
+            $data['tahun'] = Tanggal::tahun($tgl_cair);
+            $data['bulan'] = Tanggal::bulan($tgl_cair);
+
+            $rek = Rekening::where('kode_akun', $sumber_dana)->with([
+                'kom_saldo' => function ($query) use ($data) {
+                    $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
+                        $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
+                    });
+                }
+            ])->first();
+            $saldo = $keuangan->komSaldo($rek);
+            $alokasi = str_replace(',', '', str_replace('.00', '', $data[$alokasi]));
+
+            if ($saldo < intval($alokasi)) {
+                return response()->json([
+                    'success' => false,
+                    'msg' => 'Alokasi Pencairan melebihi saldo.',
                 ], Response::HTTP_ACCEPTED);
             }
 
