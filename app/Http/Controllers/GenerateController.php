@@ -128,7 +128,7 @@ class GenerateController extends Controller
         $limit = 30;
         $pinjaman = PinjamanKelompok::where($where)->with([
             'pinjaman' => function ($query) {
-                $query->where('status', 'H')->orwhere('status', 'R');
+                $query->where('status', 'H');
             },
             'sis_pokok',
             'sis_jasa',
