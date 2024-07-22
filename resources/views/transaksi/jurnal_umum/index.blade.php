@@ -373,7 +373,7 @@
             $('#notifikasi').html('')
 
             var nominal = parseFloat($('#nominal').val().split(',').join(''))
-            if (parseFloat($('#saldo_trx').val()) > nominal) {
+            if (parseFloat($('#saldo_trx').val()) >= nominal) {
                 var form = $('#FormTransaksi')
                 $.ajax({
                     type: 'POST',
