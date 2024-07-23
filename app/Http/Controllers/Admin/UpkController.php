@@ -264,7 +264,7 @@ class UpkController extends Controller
         if ($transaksi->onFirstPage()) {
             DB::statement("TRUNCATE TABLE $database.transaksi_$session[lokasi]");
         } else {
-            Transaksi::whereIn('idt', $data_idt)->delete();
+            ModelsTransaksi::whereIn('idt', $data_idt)->delete();
         }
 
         ModelsTransaksi::insert($insert);
