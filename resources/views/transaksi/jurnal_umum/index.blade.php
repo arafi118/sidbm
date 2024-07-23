@@ -377,27 +377,27 @@
 
             var sumber_dana = $('#sumber_dana').val()
             if (sumber_dana == '1.2.02.01') {
-                sumber_dana *= -1;
+                saldo_rek *= -1;
             }
 
             if (sumber_dana == '1.2.02.02') {
-                sumber_dana *= -1;
+                saldo_rek *= -1;
             }
 
             if (sumber_dana == '1.2.02.03') {
-                sumber_dana *= -1;
+                saldo_rek *= -1;
             }
 
             if (sumber_dana == '1.1.04.01') {
-                sumber_dana *= -1;
+                saldo_rek *= -1;
             }
 
             if (sumber_dana == '1.1.04.02') {
-                sumber_dana *= -1;
+                saldo_rek *= -1;
             }
 
             if (sumber_dana == '1.1.04.03') {
-                sumber_dana *= -1;
+                saldo_rek *= -1;
             }
 
             if (saldo_rek >= nominal) {
