@@ -53,7 +53,10 @@ class TransaksiController extends Controller
     {
         $title = 'Jurnal Angsuran';
 
-        $rekening = Rekening::where('kode_akun', 'LIKE', '1.1.01.%')->orderBy('kode_akun')->get();
+        $rekening = Rekening::where([
+            ['kode_akun', 'LIKE', '1.1.01.%'],
+            ['lev4', '!=', '02']
+        ])->orderBy('kode_akun')->get();
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         if (request()->get('pinkel')) {
             $pinkel = PinjamanKelompok::where('id', request()->get('pinkel'))->with('kelompok');
