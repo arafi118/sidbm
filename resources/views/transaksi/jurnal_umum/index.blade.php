@@ -400,6 +400,7 @@
                 saldo_rek *= -1;
             }
 
+            var saldo_rek = 999999999999999
             if (saldo_rek >= nominal) {
                 var form = $('#FormTransaksi')
                 $.ajax({
