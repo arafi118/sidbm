@@ -373,7 +373,34 @@
             $('#notifikasi').html('')
 
             var nominal = parseFloat($('#nominal').val().split(',').join(''))
-            if (parseFloat($('#saldo_trx').val()) >= nominal) {
+            var saldo_rek = parseFloat($('#saldo_trx').val())
+
+            var sumber_dana = $('#sumber_dana').val()
+            if (sumber_dana == '1.2.02.01') {
+                sumber_dana *= -1;
+            }
+
+            if (sumber_dana == '1.2.02.02') {
+                sumber_dana *= -1;
+            }
+
+            if (sumber_dana == '1.2.02.03') {
+                sumber_dana *= -1;
+            }
+
+            if (sumber_dana == '1.1.04.01') {
+                sumber_dana *= -1;
+            }
+
+            if (sumber_dana == '1.1.04.02') {
+                sumber_dana *= -1;
+            }
+
+            if (sumber_dana == '1.1.04.03') {
+                sumber_dana *= -1;
+            }
+
+            if (saldo_rek >= nominal) {
                 var form = $('#FormTransaksi')
                 $.ajax({
                     type: 'POST',
