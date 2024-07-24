@@ -358,10 +358,14 @@
         })
 
         $(document).on('change', '#harga_satuan,#jumlah', function(e) {
-            var harga = ($('#harga_satuan').val()) ? $('#harga_satuan').val() : 0
+            var harga = $('#harga_satuan').val()
             var jumlah = ($('#jumlah').val()) ? $('#jumlah').val() : 0
 
-            harga = parseInt(harga.split(',').join('').split('.00').join(''))
+            if (harga == '') {
+                harga = 0
+            } else {
+                harga = parseInt(harga.split(',').join('').split('.00').join(''))
+            }
 
             var harga_perolehan = harga * jumlah
             $('#harga_perolehan').val(formatter.format(harga_perolehan))
@@ -372,8 +376,14 @@
             $('small').html('')
             $('#notifikasi').html('')
 
-            var nominal = parseFloat($('#nominal').val().split(',').join(''))
+            var nominal = $('#nominal').val()
             var saldo_rek = parseFloat($('#saldo_trx').val())
+
+            if (!nominal) {
+                nominal = $('#harga_perolehan').val()
+            }
+
+            nominal = parseFloat(nominal.split(',').join(''))
 
             var sumber_dana = $('#sumber_dana').val()
             if (sumber_dana == '1.2.02.01') {
