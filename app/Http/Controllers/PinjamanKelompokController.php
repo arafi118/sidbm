@@ -672,7 +672,9 @@ class PinjamanKelompokController extends Controller
                     'success' => false,
                     'msg' => 'Saldo tidak mencukupi untuk melakukan pencairan pinjaman. Cek saldo tanggal pencairan pinjaman.',
                     "saldo" => $saldo,
-                    "alokasi" => $alokasi_pencairan
+                    "alokasi" => $alokasi_pencairan,
+                    'data' => $data,
+                    'sumber_dana' => $sumber_dana
                 ], Response::HTTP_ACCEPTED);
             }
 
