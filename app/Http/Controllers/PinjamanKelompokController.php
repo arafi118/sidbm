@@ -667,7 +667,7 @@ class PinjamanKelompokController extends Controller
             $saldo = $keuangan->komSaldo($rek);
             $alokasi_pencairan = str_replace(',', '', str_replace('.00', '', $data[$alokasi]));
 
-            if ($saldo < intval($alokasi_pencairan)) {
+            if ($saldo <= intval($alokasi_pencairan)) {
                 return response()->json([
                     'success' => false,
                     'msg' => 'Saldo tidak mencukupi untuk melakukan pencairan pinjaman. Cek saldo tanggal pencairan pinjaman.',
