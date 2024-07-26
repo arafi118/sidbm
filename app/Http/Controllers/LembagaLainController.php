@@ -177,7 +177,7 @@ class LembagaLainController extends Controller
             'pinkel.saldo'
         ])->where('id', $lembaga_lain->id)->first();
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
-        $desa = Desa::where('kd_kec', 'LIKE', $kec['kd_kec'] . '%')->with('sebutan_desa')->get();
+        $desa = Desa::where('kd_kec', 'LIKE', $kec['kd_kab'] . '%')->with('sebutan_desa')->get();
         $fungsi_kelompok = FungsiKelompok::all();
 
         $desa_dipilih = $lembaga_lain->desa;
