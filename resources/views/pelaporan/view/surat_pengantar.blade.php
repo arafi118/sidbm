@@ -28,7 +28,7 @@
             <td>&nbsp;</td>
             <td colspan="2" align="left" style="padding-left: 8px;">
                 <div><b>Kepada Yth.</b></div>
-                <div><b>Kepala Dinas PMD {{ $nama_kabupaten }}</b></div>
+                <div><b>Kepala {{ $kab->nama_lembaga }} {{ $nama_kabupaten }}</b></div>
                 <div><b>Di {{ $kab->alamat_kab }}.</b></div>
             </td>
         </tr>
