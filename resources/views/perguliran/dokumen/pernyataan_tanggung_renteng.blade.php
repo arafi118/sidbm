@@ -5,7 +5,7 @@
 @extends('perguliran.dokumen.layout.base')
 
 @section('content')
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
@@ -20,7 +20,7 @@
 
     <div style="text-align: justify;">
         Yang bertanda tangan di bawah ini,
-        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
             <tr style="background: rgb(233,233,233);">
                 <th width="10">No</th>
                 <th width="80">NIK</th>
@@ -82,7 +82,7 @@
         </ol>
     </div>
 
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; padding: 0px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px; padding: 0px;">
         <tr>
             <td style="padding: 0px !important; text-align: justify;">
                 <div style="margin: 0px; padding: 0px;">
@@ -93,7 +93,7 @@
                 </div>
 
                 <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
-                    style="font-size: 11px;">
+                    style="font-size: 14px;">
                     <tr>
                         <td colspan="2">&nbsp;</td>
                     </tr>
