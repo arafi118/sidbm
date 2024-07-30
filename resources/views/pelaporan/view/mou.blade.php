@@ -541,7 +541,9 @@
                 <td colspan="2" height="40">&nbsp;</td>
             </tr>
             <tr>
-                <td align="center">Maulida Nur Masruroh</td>
+                <td align="center">
+                    MAULIDA NUR MASRUROH
+                </td>
                 <td align="center">..................................................</td>
             </tr>
         </table>
