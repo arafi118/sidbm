@@ -45,18 +45,18 @@
             @endforeach
         </table>
     </div>
-    <div style="text-align: justify;">
+    <div style="text-align: justify; font-size: 14px;">
         Selaku anggota pemanfaat dari Nama Kelompok {{ $pinkel->kelompok->nama_kelompok }} yang beralamatkan di
         {{ $pinkel->kelompok->alamat_kelompok }} {{ $pinkel->kelompok->d->sebutan_desa->sebutan_desa }}
         {{ $pinkel->kelompok->d->nama_desa }}.
     </div>
-    <div style="text-align: justify;">
+    <div style="text-align: justify; font-size: 14px;">
         Dengan ini menyatakan, apabila terjadi tunggakan angsuran pinjaman {{ $pinkel->jpp->nama_jpp }}
         {{ $kec->nama_lembaga_sort }} yang disebabkan adanya anggota pemanfaat yang belum mampu melunasi kewajibannya
         sesuai jadwal angsuran yang ditetapkan, maka masing-masing pemanfaat dalam kedudukan sebagai pribadi anggota
         kelompok, secara sadar dan penuh tanggung jawab menyatakan :
 
-        <ol>
+        <ol style="font-size: 14px;">
             <li>
                 Memberikan kuasa kepada ketua kelompok untuk menarik tabungan anggota yang dikelola kelompok guna melunasi
                 tunggakan angsuran, apabila terjadi tunggakan angsuran dari satu, beberapa atau seluruh anggota kelompok;
