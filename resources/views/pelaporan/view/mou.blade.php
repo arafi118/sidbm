@@ -1,7 +1,7 @@
 @php
     use App\Utils\Tanggal;
 
-    $tgl_mou = date('Y-m-d', strtotime('-1 month', strtotime($kec->tgl_registrasi)));
+    $tgl_mou = $kec->tgl_registrasi;
 
     $jumlah = $kec->id == '340' ? 15000000 : 12500000;
     $nominal = $kec->biaya_tahunan;
