@@ -20,7 +20,6 @@
         $angsuran_ke = intval($ra_bulan_ini->angsuran_ke);
     }
 
-    $angsuran_ke = 1;
     $jum_angsuran = $pinkel->jangka / $pinkel->sis_pokok->sistem;
 
     if ($pinkel->jangka <= $ra_bulan_ini->angsuran_ke) {
