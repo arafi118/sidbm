@@ -72,8 +72,6 @@
             <th rowspan="2">No</th>
             <th rowspan="2">Nama Anggota</th>
             <th rowspan="2">TTL</th>
-            <th rowspan="2">Nama Penjamin</th>
-            <th rowspan="2">Masa Pinjaman</th>
             <th colspan="2">Pinjaman</th>
             <th rowspan="2">Jumlah</th>
             <th rowspan="2">Premi ({{ $kec->besar_premi }}%)</th>
