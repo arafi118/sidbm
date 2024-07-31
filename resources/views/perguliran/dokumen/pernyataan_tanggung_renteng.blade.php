@@ -5,7 +5,7 @@
 @extends('perguliran.dokumen.layout.base')
 
 @section('content')
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
@@ -20,7 +20,7 @@
 
     <div style="text-align: justify;">
         Yang bertanda tangan di bawah ini,
-        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
+        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr style="background: rgb(233,233,233);">
                 <th width="10">No</th>
                 <th width="80">NIK</th>
@@ -45,18 +45,18 @@
             @endforeach
         </table>
     </div>
-    <div style="text-align: justify; font-size: 14px;">
+    <div style="text-align: justify; font-size: 11px;">
         Selaku anggota pemanfaat dari Nama Kelompok {{ $pinkel->kelompok->nama_kelompok }} yang beralamatkan di
         {{ $pinkel->kelompok->alamat_kelompok }} {{ $pinkel->kelompok->d->sebutan_desa->sebutan_desa }}
         {{ $pinkel->kelompok->d->nama_desa }}.
     </div>
-    <div style="text-align: justify; font-size: 14px;">
+    <div style="text-align: justify; font-size: 11px;">
         Dengan ini menyatakan, apabila terjadi tunggakan angsuran pinjaman {{ $pinkel->jpp->nama_jpp }}
         {{ $kec->nama_lembaga_sort }} yang disebabkan adanya anggota pemanfaat yang belum mampu melunasi kewajibannya
         sesuai jadwal angsuran yang ditetapkan, maka masing-masing pemanfaat dalam kedudukan sebagai pribadi anggota
         kelompok, secara sadar dan penuh tanggung jawab menyatakan :
 
-        <ol style="font-size: 14px;">
+        <ol style="font-size: 11px;">
             <li>
                 Memberikan kuasa kepada ketua kelompok untuk menarik tabungan anggota yang dikelola kelompok guna melunasi
                 tunggakan angsuran, apabila terjadi tunggakan angsuran dari satu, beberapa atau seluruh anggota kelompok;
@@ -82,7 +82,7 @@
         </ol>
     </div>
 
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px; padding: 0px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; padding: 0px;">
         <tr>
             <td style="padding: 0px !important; text-align: justify;">
                 <div style="margin: 0px; padding: 0px;">
@@ -93,7 +93,7 @@
                 </div>
 
                 <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
-                    style="font-size: 14px;">
+                    style="font-size: 11px;">
                     <tr>
                         <td colspan="2">&nbsp;</td>
                     </tr>
