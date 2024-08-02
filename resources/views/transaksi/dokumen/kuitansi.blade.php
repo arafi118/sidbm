@@ -239,7 +239,7 @@
                     </tr>
                     <tr>
                         <td align="center">&nbsp;</td>
-                        <td align="center">{{ $kec->nama_kec . ', ' . Tanggal::tglIndo($trx->tgl_transaksi) }}</td>
+                        <td align="center">{{ $kec->nama_kec . ', ' . Tanggal::tglLatin($trx->tgl_transaksi) }}</td>
                     </tr>
                     <tr>
                         <td width="25%" align="center">Dibayar Oleh</td>
