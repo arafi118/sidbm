@@ -1570,25 +1570,7 @@ class PinjamanKelompokController extends Controller
         $data['pendanaan'] = User::where([
             ['lokasi', Session::get('lokasi')],
             ['level', '5']
-        ])->with('j')->first();
-
-        $data['direktur'] = User::where([
-            ['lokasi', Session::get('lokasi')],
-            ['level', '1'],
-            ['jabatan', '1']
-        ])->with('j')->first();
-
-        $data['sekretaris'] = User::where([
-            ['lokasi', Session::get('lokasi')],
-            ['level', '1'],
-            ['jabatan', '2']
-        ])->with('j')->first();
-
-        $data['dir_utama'] = User::where([
-            ['level', '2'],
-            ['jabatan', '65'],
-            ['lokasi', Session::get('lokasi')],
-        ])->first();
+        ])->with('j')->get();
 
         $data['judul'] = 'BA Pendanaan ' . Tanggal::tglLatin($data['pinj']->tgl_tunggu);
         $view = view('perguliran.dokumen.ba_pendanaan', $data)->render();
