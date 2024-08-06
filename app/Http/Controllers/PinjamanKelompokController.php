@@ -670,7 +670,7 @@ class PinjamanKelompokController extends Controller
             if (intval($alokasi_pencairan) > $saldo) {
                 return response()->json([
                     'success' => false,
-                    'msg' => 'Saldo tidak mencukupi untuk melakukan pencairan pinjaman. Cek saldo tanggal pencairan pinjaman.',
+                    'msg' => 'Saldo tidak mencukupi untuk melakukan pencairan pinjaman.',
                 ], Response::HTTP_ACCEPTED);
             }
 

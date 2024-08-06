@@ -132,6 +132,11 @@
                         $akum_susut = $inv->harsat * $inv->unit;
                     }
 
+                    if ($inv->umur_ekonomis == '1') {
+                        $satuan_susut = $inv->harsat * $inv->unit;
+                        $penyusutan = $inv->harsat * $inv->unit;
+                    }
+
                     $t_unit += $inv->unit;
                     $t_harga += $inv->harsat * $inv->unit;
                     $t_penyusutan += $penyusutan;
