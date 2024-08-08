@@ -2115,7 +2115,9 @@ class PinjamanKelompokController extends Controller
             'kelompok',
             'kelompok.d',
             'kelompok.d.sebutan_desa',
-            'pinjaman_anggota',
+            'pinjaman_anggota' => function ($query) {
+                $query->where('alokasi', '>=', '0');
+            },
             'pinjaman_anggota.anggota',
             'pinjaman_anggota.anggota.d',
             'pinjaman_anggota.anggota.d.sebutan_desa',
