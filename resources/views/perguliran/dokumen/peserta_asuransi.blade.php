@@ -126,10 +126,6 @@
                     $asuransi = ($pokok + $jasa) * ($kec->besar_premi / 100);
                 }
 
-                $t_jasa += $jasa;
-                $t_pokok += $pokok;
-                $t_asuransi += $asuransi;
-
                 $tgl_lahir = new DateTime($pa->anggota->tgl_lahir);
                 $tgl_cair = new DateTime($pa->tgl_cair);
 
@@ -137,6 +133,10 @@
                 if ($jarak->y > $kec->usia_mak) {
                     continue;
                 }
+
+                $t_jasa += $jasa;
+                $t_pokok += $pokok;
+                $t_asuransi += $asuransi;
             @endphp
             <tr>
                 <td align="center">{{ $loop->iteration }}</td>
