@@ -118,20 +118,20 @@
         @endphp
         @foreach ($pinkel->pinjaman_anggota as $pa)
             @php
-                $pokok = $pa->alokasi;
-                $jasa = $pa->alokasi * ($pa->pros_jasa / 100);
-
-                $asuransi = $pokok * ($kec->besar_premi / 100);
-                if ($kec->pengaturan_asuransi == 2) {
-                    $asuransi = ($pokok + $jasa) * ($kec->besar_premi / 100);
-                }
-
                 $tgl_lahir = new DateTime($pa->anggota->tgl_lahir);
                 $tgl_cair = new DateTime($pa->tgl_cair);
 
                 $jarak = $tgl_cair->diff($tgl_lahir);
                 if ($jarak->y > $kec->usia_mak) {
                     continue;
+                }
+
+                $pokok = $pa->alokasi;
+                $jasa = $pa->alokasi * ($pa->pros_jasa / 100);
+
+                $asuransi = $pokok * ($kec->besar_premi / 100);
+                if ($kec->pengaturan_asuransi == 2) {
+                    $asuransi = ($pokok + $jasa) * ($kec->besar_premi / 100);
                 }
 
                 $t_jasa += $jasa;
