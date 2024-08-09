@@ -115,6 +115,7 @@
             $t_jasa = 0;
             $t_pokok = 0;
             $t_asuransi = 0;
+            $no = 1;
         @endphp
         @foreach ($pinkel->pinjaman_anggota as $pa)
             @php
@@ -139,7 +140,7 @@
                 $t_asuransi += $asuransi;
             @endphp
             <tr>
-                <td align="center">{{ $loop->iteration }}</td>
+                <td align="center">{{ $no++ }}</td>
                 <td>{{ $pa->anggota->namadepan }}</td>
                 <td>
                     {{ $pa->anggota->tempat_lahir }}, {{ Tanggal::tglLatin($pa->anggota->tgl_lahir) }}
