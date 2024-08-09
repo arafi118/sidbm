@@ -91,8 +91,8 @@
 
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; table-layout: fixed;">
         <tr>
-            <td width="25%">&nbsp;</td>
-            <td width="25%">&nbsp;</td>
+            <td width="15%">&nbsp;</td>
+            <td width="33%">&nbsp;</td>
             <td width="25%">Ditanda tangani di</td>
             <td width="25%">: {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}</td>
         </tr>
@@ -100,7 +100,7 @@
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>Pada tanggal</td>
-            <td>: {{ Tanggal::tglLatin($pinj->tgl_tunggu) }}</td>
+            <td>: {{ Tanggal::tglLatin($pinj->tgl_cair) }}</td>
         </tr>
 
         <tr>
@@ -108,15 +108,38 @@
         </tr>
 
         @foreach ($pendanaan as $pend)
-            <tr>
+            <tr class="vt">
                 <td height="20">
                     <div>{{ $pend->namadepan }} {{ $pend->namabelakang }}</div>
                     <div>
                         <b>{{ $pend->j->nama_jabatan }}</b>
                     </div>
                 </td>
-                <td align="right" style="vertical-align: bottom;">___________________________</td>
-                <td colspan="2">&nbsp;</td>
+                <td align="right">
+                    <div>&nbsp;</div>
+                    <div>________________________________</div>
+                </td>
+                @if ($loop->iteration == '1')
+                    <td colspan="2" rowspan="{{ count($pendanaan) }}">
+                        <table width="100%" border="0" width="100%" cellspacing="0" cellpadding="0"
+                            style="font-size: 11px; table-layout: fixed;" class="p0">
+                            <tr>
+                                <td align="center">Mengetahui</td>
+                            </tr>
+                            <tr>
+                                <td align="center">{{ $kec->sebutan_level_1 }}</td>
+                            </tr>
+                            <tr>
+                                <td height="35">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    {{ $dir->namadepan }} {{ $dir->namabelakang }}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                @endif
             </tr>
         @endforeach
     </table>

@@ -1572,6 +1572,12 @@ class PinjamanKelompokController extends Controller
             ['level', '5']
         ])->with('j')->get();
 
+        $data['dir'] = User::where([
+            ['lokasi', Session::get('lokasi')],
+            ['level', '1'],
+            ['jabatan', '1']
+        ])->first();
+
         $data['judul'] = 'BA Pendanaan ' . Tanggal::tglLatin($data['pinj']->tgl_tunggu);
         $view = view('perguliran.dokumen.ba_pendanaan', $data)->render();
 
