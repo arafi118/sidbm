@@ -125,6 +125,14 @@
                 $t_jasa += $jasa;
                 $t_pokok += $pokok;
                 $t_asuransi += $asuransi;
+
+                $tgl_lahir = new DateTime($pa->anggota->tgl_lahir);
+                $tgl_cair = new DateTime($pa->tgl_cair);
+
+                $jarak = $tgl_cair->diff($tgl_lahir);
+                if ($jarak->y > $kec->usia_mak) {
+                    continue;
+                }
             @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>
