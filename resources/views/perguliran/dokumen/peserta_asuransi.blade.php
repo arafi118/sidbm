@@ -120,7 +120,11 @@
             @php
                 $pokok = $pa->alokasi;
                 $jasa = $pa->alokasi * ($pa->pros_jasa / 100);
+
                 $asuransi = $pokok * ($kec->besar_premi / 100);
+                if ($kec->pengaturan_asuransi == 2) {
+                    $asuransi = ($pokok + $jasa) * ($kec->besar_premi / 100);
+                }
 
                 $t_jasa += $jasa;
                 $t_pokok += $pokok;
@@ -135,7 +139,7 @@
                 }
             @endphp
             <tr>
-                <td>{{ $loop->iteration }}</td>
+                <td align="center">{{ $loop->iteration }}</td>
                 <td>{{ $pa->anggota->namadepan }}</td>
                 <td>
                     {{ $pa->anggota->tempat_lahir }}, {{ Tanggal::tglLatin($pa->anggota->tgl_lahir) }}
