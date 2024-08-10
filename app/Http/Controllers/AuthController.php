@@ -298,4 +298,12 @@ class AuthController extends Controller
 
         return $return;
     }
+
+    public function app()
+    {
+        return response()->json([
+            'success' => true,
+            'time' => date('Y-m-d H:i:s')
+        ]);
+    }
 }
