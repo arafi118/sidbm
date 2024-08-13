@@ -383,7 +383,11 @@
                 nominal = $('#harga_perolehan').val()
             }
 
-            nominal = parseFloat(nominal.split(',').join(''))
+            if (nominal) {
+                nominal = parseFloat(nominal.split(',').join(''))
+            } else {
+                nominal = 0
+            }
 
             var sumber_dana = $('#sumber_dana').val()
             if (sumber_dana == '1.2.02.01') {
