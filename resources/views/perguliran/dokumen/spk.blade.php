@@ -14,8 +14,11 @@
         $tempat = $wt_cair[1];
     }
 
-    $redaksi_spk = str_replace('<ol>', '', str_replace('</ol>', '', $kec->redaksi_spk));
-    $redaksi_spk = str_replace('<ul>', '', str_replace('</ul>', '', $redaksi_spk));
+    $redaksi_spk = '';
+    if ($kec->redaksi_spk) {
+        $redaksi_spk = str_replace('<ol>', '', str_replace('</ol>', '', $kec->redaksi_spk));
+        $redaksi_spk = str_replace('<ul>', '', str_replace('</ul>', '', $redaksi_spk));
+    }
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
@@ -175,7 +178,9 @@
                     {{ $pinkel->sis_jasa->nama_sistem }} ({{ $pinkel->sis_jasa->deskripsi_sistem }}) sebagaimana jadwal
                     angsuran terlampir yang tidak terpisahkan dari Surat Perjanjian Kredit (SPK).
                 </li>
-                {!! json_decode($redaksi_spk, true) !!}
+                @if ($redaksi_spk)
+                    {!! json_decode($redaksi_spk, true) !!}
+                @endif
             </ol>
         </div>
     </div>
