@@ -527,7 +527,7 @@
                         <b>Rp. {{ number_format($saldo_pokok) }}</b> ;
                     </div>
 
-                    <form action="/perguliran/rescedule" method="post" id="formRescedule">
+                    <form action="/perguliran/rescedule?save=true" method="post" id="formRescedule">
                         @csrf
 
                         <input type="hidden" name="id" id="id" value="{{ $perguliran->id }}">
@@ -1027,6 +1027,15 @@
             })
 
             if (spk) {
+                var loading = Swal.fire({
+                    title: "Mohon Menunggu..",
+                    timerProgressBar: true,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                })
+
                 var form = $('#formRescedule')
                 $.ajax({
                     type: 'POST',
@@ -1034,9 +1043,11 @@
                     data: form.serialize(),
                     success: function(result) {
                         if (result.success) {
+                            loading.close()
+
                             var id = result.id
                             $.get('/perguliran/generate/' + result.id + '?status=' + result.status +
-                                '&save',
+                                '&save=true',
                                 function(result) {
                                     if (result.success) {
                                         Swal.fire('Berhasil', result.msg, 'success').then(
@@ -1131,14 +1142,16 @@
             e.preventDefault()
 
             var id_pinj = $(this).attr('data-id')
-            $.get('/pinjaman_anggota/form_hapus/' + id_pinj, function(result) {
-                if (result.success) {
-                    $('#LayoutPenghapusanPinjamanAnggota').html(result.view)
+            if (id_pinj) {
+                $.get('/pinjaman_anggota/form_hapus/' + id_pinj, function(result) {
+                    if (result.success) {
+                        $('#LayoutPenghapusanPinjamanAnggota').html(result.view)
 
-                    $('#PenghapusanPinjamanAnggota').modal('show')
-                    $('#PinjamanAnggota').modal('hide')
-                }
-            })
+                        $('#PenghapusanPinjamanAnggota').modal('show')
+                        $('#PinjamanAnggota').modal('hide')
+                    }
+                })
+            }
         })
 
         $(document).on('click', '#tutupFormPenghapusan', function(e) {

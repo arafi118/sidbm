@@ -2336,21 +2336,21 @@ class PinjamanKelompokController extends Controller
                 $alokasi = $pinkel->alokasi;
                 $tgl = $pinkel->tgl_cair;
             }
+        }
 
-            if (request()->get('status')) {
-                if (request()->get('status') == 'P') {
-                    $alokasi = $pinkel->proposal;
-                    $tgl = $pinkel->tgl_proposal;
-                } elseif (request()->get('status') == 'V') {
-                    $alokasi = $pinkel->verifikasi;
-                    $tgl = $pinkel->tgl_verifikasi;
-                } elseif (request()->get('status') == 'W') {
-                    $alokasi = $pinkel->alokasi;
-                    $tgl = $pinkel->tgl_cair;
-                } else {
-                    $alokasi = $pinkel->alokasi;
-                    $tgl = $pinkel->tgl_cair;
-                }
+        if (request()->get('status')) {
+            if (request()->get('status') == 'P') {
+                $alokasi = $pinkel->proposal;
+                $tgl = $pinkel->tgl_proposal;
+            } elseif (request()->get('status') == 'V') {
+                $alokasi = $pinkel->verifikasi;
+                $tgl = $pinkel->tgl_verifikasi;
+            } elseif (request()->get('status') == 'W') {
+                $alokasi = $pinkel->alokasi;
+                $tgl = $pinkel->tgl_cair;
+            } else {
+                $alokasi = $pinkel->alokasi;
+                $tgl = $pinkel->tgl_cair;
             }
         }
 
