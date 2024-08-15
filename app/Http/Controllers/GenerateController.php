@@ -408,13 +408,13 @@ class GenerateController extends Controller
 
                 foreach ($trx->tr_idtp as $idtp) {
                     if (in_array($idtp->rekening_kredit, $poko_kredit)) {
-                        $realisasi_pokok = intval($idtp->jumlah);
+                        $realisasi_pokok = floatval($idtp->jumlah);
                         $sum_pokok += $realisasi_pokok;
                         $alokasi_pokok -= $realisasi_pokok;
                     }
 
                     if (in_array($idtp->rekening_kredit, $jasa_kredit)) {
-                        $realisasi_jasa = intval($idtp->jumlah);
+                        $realisasi_jasa = floatval($idtp->jumlah);
                         $sum_jasa += $realisasi_jasa;
                         $alokasi_jasa -= $realisasi_jasa;
                     }
