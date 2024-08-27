@@ -74,7 +74,7 @@
         </div>
     </div>
 
-    <form role="form" method="POST" action="/login" id="formLogin">
+    <form style="display: none;" role="form" method="POST" action="/login" id="formLogin">
         @csrf
 
         <input type="hidden" name="username" id="username" class="form-control">
