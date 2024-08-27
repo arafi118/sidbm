@@ -271,8 +271,8 @@ Route::resource('/profil', UserController::class);
 
 Route::get('/sync/{lokasi}', [DashboardController::class, 'sync'])->middleware('auth');
 Route::get('/link', function () {
-    $target = '/home/dbm/public_html/apps/storage/app/public';
-    $shortcut = '/home/dbm/public_html/apps/public/storage';
+    $target = '/home/siupk/public_html/sidbm/storage/app/public';
+    $shortcut = '/home/siupk/public_html/sidbm/public/storage';
     symlink($target, $shortcut);
 });
 
@@ -300,7 +300,6 @@ Route::post('/generate/save/{offset?}', [GenerateController::class, 'generate'])
 
 Route::get('/unpaid', [DashboardController::class, 'unpaid'])->middleware('auth');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
+Route::get('/excel/{filename}/{lokasi}', [PinjamanKelompokController::class, 'excel']);
 
 Route::get('/{invoice}', [PelaporanController::class, 'invoice']);
-
-Route::get('/excel/{filename}/{lokasi}', [PinjamanKelompokController::class, 'excel']);
