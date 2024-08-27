@@ -325,7 +325,7 @@ class SopController extends Controller
             'logo_kec' => 'required|image|mimes:jpg,png,jpeg|max:4096'
         ]);
 
-        if ($request->file('logo_kec')->isValid()) {
+        if ($request->hasFile('logo_kec')) {
             $extension = $request->file('logo_kec')->getClientOriginalExtension();
 
             $filename = time() . '_' . $kec->id . '_' . date('Ymd') . '.' . $extension;
