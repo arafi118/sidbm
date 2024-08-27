@@ -77,8 +77,8 @@
     <form role="form" method="POST" action="/login" id="formLogin">
         @csrf
 
-        <input type="text" name="username" id="username" class="form-control">
-        <input type="password" name="password" id="password" class="form-control">
+        <input type="hidden" name="username" id="username" class="form-control">
+        <input type="hidden" name="password" id="password" class="form-control">
     </form>
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
