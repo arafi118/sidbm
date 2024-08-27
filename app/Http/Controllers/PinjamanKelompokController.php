@@ -1316,6 +1316,12 @@ class PinjamanKelompokController extends Controller
         ])->withCount('pinjaman_anggota')->first();
 
         $data['keuangan'] = $keuangan;
+        $path = '../storage/app/public/logo_kab/' . $data['kab']->id . '.png';
+        $gambar = file_get_contents($path);
+        $base64 = base64_encode($gambar);
+        $mime = mime_content_type($path);
+        $data['logo_kab'] = 'data:' . $mime . ';base64,' . $base64;
+        $data['logo'] = $path;
 
         $data['judul'] = 'Surat Rekomendasi Kredit (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.rekomendasi_kredit', $data)->render();
