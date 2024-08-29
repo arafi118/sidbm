@@ -1,6 +1,6 @@
 @php
     use App\Utils\Tanggal;
-    $logo = $kab->id . '.png';
+    $logo = $kab->id . '.jpg';
 @endphp
 
 <head>
