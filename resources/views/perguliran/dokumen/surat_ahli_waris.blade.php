@@ -86,9 +86,10 @@
                 <td align="center" width="50%">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
             </tr>
             <tr>
-                <td align="center">Ketua Kelompok</td>
+                <td align="center">Peminjam</td>
                 <td align="center">Nama Penjamin</td>
             </tr>
+            
             <tr>
                 <td align="center" colspan="2" height="30">&nbsp;</td>
             </tr>
