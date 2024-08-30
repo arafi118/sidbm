@@ -94,7 +94,7 @@
                 <td align="center" colspan="2" height="30">&nbsp;</td>
             </tr>
             <tr style="font-weight: bold;">
-                <td align="center">{{ $pinkel->kelompok->ketua }}</td>
+                <td align="center">{{ $pinj->anggota->penjamin }}</td>
                 <td align="center">{{ $pinj->anggota->penjamin }}</td>
             </tr>
         </table>
