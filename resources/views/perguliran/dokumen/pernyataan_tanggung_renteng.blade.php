@@ -109,7 +109,7 @@
                     </tr>
                     <tr>
                         <td align="center">
-                            {{ $kec->sebutan_level_1 }} Bumdesma
+                            {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }}
                         </td>
                         <td align="center">{{ $pinkel->kelompok->nama_kelompok }}</td>
                     </tr>
@@ -118,7 +118,7 @@
                     </tr>
                     <tr>
                         <td align="center">
-                            <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
+                            <b>{{ $pinkel->kelompok->d->kades }}</b>
                         </td>
                         <td align="center">
                             <b>{{ $pinkel->kelompok->ketua }}</b>
