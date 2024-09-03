@@ -63,7 +63,7 @@
             <th class="t l b" width="22%">Nama Anggota</th>
             <th class="t l b" width="3%">JK</th>
             <th class="t l b" width="26%">Alamat</th>
-            <th class="t l b" width="14%">Pengajuan</th>
+            <th class="t l b" width="14%">Alokasi</th>
             <th class="t l b r" width="14%">Ttd</th>
         </tr>
 
