@@ -25,12 +25,16 @@
         <tr>
             <th height="4%" width="3%">No</th>
             <th width="10%">NIK</th>
-            <th width="17%">Nama Anggota</th>
-            <th width="23%">Alamat</th>
-            <th width="20%">Tgl Lahir</th>
-            <th width="9%">Telpon</th>
-            <th width="18%">Usaha</th>
+            <th width="15%">Nama Anggota</th>
+            <th width="20%">Alamat</th>
+            <th width="12%">Tgl Lahir</th>
+            <th width="10%">Telpon</th>
+            <th width="10%">Nama Penjamin</th>
+            <th width="10%">NIK Penjamin</th>
+            <th width="10%">Nomor KK</th>
+            <th width="10%">Usaha</th>
         </tr>
+
         @foreach ($desa as $ds)
             <tr style="font-weight: bold;">
                 <td colspan="7" align="left">
@@ -53,6 +57,9 @@
                         @endif
                     </td>
                     <td align="center">{{ $ang->hp }}</td>
+                    <td>{{ $ang->penjamin }}</td>
+                    <td align="center" style="mso-number-format:\@;">{{ $ang->nik_penjamin }}</td>
+                    <td align="center" style="mso-number-format:\@;">{{ $ang->kk }}</td>
                     <td align="left">
                         @if (is_numeric($ang->usaha))
                             {{ $ang->u->nama_usaha }}
