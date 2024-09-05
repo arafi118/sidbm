@@ -242,7 +242,7 @@
                     {!! $statusDokumen == 'W' || $statusDokumen == 'A' ? number_format($pa->alokasi) : '&nbsp;' !!}
                 </td>
                 <td>
-                    {!! $statusDokumen != 'P' || $pinkel->status == 'V' ? $pa->catatan_verifikasi : '&nbsp;' !!}
+                    {!! !($statusDokumen == 'P' || $statusDokumen == 'L') || $pinkel->status == 'V' ? $pa->catatan_verifikasi : '&nbsp;' !!}
                 </td>
             </tr>
         @endforeach

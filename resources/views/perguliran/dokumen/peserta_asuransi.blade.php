@@ -33,7 +33,7 @@
         <tr class="b">
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
-                    <b>DAFTAR PESERTA ASURANSI {{ strtoupper($kec->nama_asuransi_p) }}</b>
+                    <b>DAFTAR PENERIMAAN PREMI {{ strtoupper($kec->nama_asuransi_p) }}</b>
                 </div>
             </td>
         </tr>
