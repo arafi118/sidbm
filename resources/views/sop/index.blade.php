@@ -56,6 +56,12 @@
                             <span class="text-sm">Berita Acara</span>
                         </a>
                     </li>
+                    <li class="nav-item pt-2">
+                        <a class="nav-link text-dark d-flex" data-scroll="" href="#tanggung_renteng">
+                            <i class="material-icons text-lg me-2">insert_drive_file</i>
+                            <span class="text-sm">Tanggung Renteng</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -123,6 +129,14 @@
                 </div>
                 <div class="card-body pt-0">
                     @include('sop.partials._berita_acara')
+                </div>
+            </div>
+            <div class="card mt-4" id="tanggung_renteng">
+                <div class="card-header">
+                    <h5 class="mb-0">Pengaturan Tanggung Renteng Pinjaman</h5>
+                </div>
+                <div class="card-body pt-0">
+                    @include('sop.partials._tanggung_renteng')
                 </div>
             </div>
         </div>
@@ -309,6 +323,10 @@
             theme: 'snow'
         });
 
+        var quill2 = new Quill('#tanggung-renteng-editor', {
+            theme: 'snow'
+        });
+
         $(document).on('click', '.btn-simpan', async function(e) {
             e.preventDefault()
 
@@ -318,6 +336,10 @@
 
             if ($(this).attr('id') == 'SimpanBeritaAcara') {
                 await $('#ba').val(quill1.container.firstChild.innerHTML)
+            }
+
+            if ($(this).attr('id') == 'SimpanTanggungRenteng') {
+                await $('#tanggung-renteng').val(quill2.container.firstChild.innerHTML)
             }
 
             var form = $($(this).attr('data-target'))

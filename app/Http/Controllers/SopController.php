@@ -402,6 +402,37 @@ class SopController extends Controller
         ]);
     }
 
+    public function tanggungRenteng(Request $request, Kecamatan $kec)
+    {
+        $data = $request->only([
+            'tanggung-renteng'
+        ]);
+
+        $validate = Validator::make($data, [
+            'tanggung-renteng' => 'required'
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
+        }
+
+        $data['tanggung-renteng'] = str_replace('<ol>', '', $data['tanggung-renteng']);
+        $data['tanggung-renteng'] = str_replace('</ol>', '', $data['tanggung-renteng']);
+        $data['tanggung-renteng'] = str_replace('<ul>', '', $data['tanggung-renteng']);
+        $data['tanggung-renteng'] = str_replace('</ul>', '', $data['tanggung-renteng']);
+
+        $tanggung_renteng = json_encode($data['tanggung-renteng']);
+
+        $kecamatan = Kecamatan::where('id', $kec->id)->update([
+            'tanggung_renteng' => $tanggung_renteng
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Pengaturan Tanggung Renteng Pinjaman Berhasil Diperbarui.',
+        ]);
+    }
+
     public function ttdPelaporan()
     {
         $title = "Pengaturan Tanda Tangan Pelaporan";

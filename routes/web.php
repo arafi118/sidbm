@@ -144,6 +144,7 @@ Route::put('/pengaturan/logo/{kec}', [SopController::class, 'logo'])->middleware
 Route::put('/pengaturan/calk/{kec}', [SopController::class, 'calk'])->middleware('auth');
 Route::put('/pengaturan/pesan_whatsapp/{kec}', [SopController::class, 'pesanWhatsapp'])->middleware('auth');
 Route::put('/pengaturan/berita_acara/{kec}', [SopController::class, 'beritaAcara'])->middleware('auth');
+Route::put('/pengaturan/tanggung_renteng/{kec}', [SopController::class, 'tanggungRenteng'])->middleware('auth');
 Route::get('/pengaturan/local_view/{key}/{val?}', [SopController::class, 'localView'])->middleware('auth');
 
 Route::post('/pengaturan/whatsapp/{token}', [SopController::class, 'whatsapp'])->middleware('auth');
