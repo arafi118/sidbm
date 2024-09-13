@@ -232,7 +232,7 @@
         </div>
     </div>
 
-    @if ($perguliran->status == 'P')
+    @if ($perguliran->status == 'P' && !in_array(auth()->user()->level, ['4', '5']))
         <div class="card mb-3">
             <div class="card-body p-2 pb-0">
                 <button type="button" class="btn btn-success btn-sm mb-2" id="BtnEditProposal">Edit Proposal</button>

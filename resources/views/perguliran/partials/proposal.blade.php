@@ -61,7 +61,9 @@
                 </div>
             </div>
 
-            @if (!($perguliran->jenis_pp == '3' && $perguliran->kelompok->fungsi_kelompok == '2'))
+            @if (
+                !($perguliran->jenis_pp == '3' && $perguliran->kelompok->fungsi_kelompok == '2') &&
+                    !in_array(auth()->user()->level, ['4', '5']))
                 <div class="d-grid">
                     <button type="button" id="BtnTambahPemanfaat" data-bs-toggle="modal"
                         data-bs-target="#TambahPemanfaat" class="btn btn-success btn-sm mb-1">
