@@ -228,7 +228,7 @@
 
                 <table width="100%" class="fs-12" style="margin-top: 8px;">
                     <tr>
-                        <td width="50%" align="center" rowspan="6">
+                        <td width="40%" align="center" rowspan="6">
                             <i>
                                 <h3 class="flex" style="padding-left: 18px;">
                                     Terbilang Rp. &nbsp; <div class="jajargenjang text-left">
@@ -242,8 +242,8 @@
                         <td align="center">{{ $kec->nama_kec . ', ' . Tanggal::tglLatin($trx->tgl_transaksi) }}</td>
                     </tr>
                     <tr>
-                        <td width="25%" align="center">Dibayar Oleh</td>
-                        <td width="25%%" align="center">Diterima Oleh</td>
+                        <td width="30%" align="center">Dibayar Oleh</td>
+                        <td width="30%" align="center">Diterima Oleh</td>
                     </tr>
                     <tr>
                         <td align="center">&nbsp;</td>
