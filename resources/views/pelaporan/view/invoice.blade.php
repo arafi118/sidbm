@@ -1,7 +1,7 @@
 @php
     use App\Utils\Tanggal;
 
-    $dari = $inv->tgl_invoicel;
+    $dari = $inv->tgl_invoice;
     $sampai = date('Y-m-d', strtotime('+1 years', strtotime($dari)));
 
     if ($inv->status == 'UNPAID') {
