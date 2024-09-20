@@ -272,9 +272,15 @@ Route::resource('/profil', UserController::class);
 
 Route::get('/sync/{lokasi}', [DashboardController::class, 'sync'])->middleware('auth');
 Route::get('/link', function () {
-    $target = '/home/siupk/public_html/sidbm/storage/app/public';
-    $shortcut = '/home/siupk/public_html/sidbm/public/storage';
-    symlink($target, $shortcut);
+    $target = __DIR__ . '/../storage/app/public';
+    $shortcut = __DIR__ . '/../public/storage';
+
+    try {
+        symlink($target, $shortcut);
+        return response()->json("Symlink created successfully.");
+    } catch (\Exception $e) {
+        return response()->json("Failed to create symlink: " . $e->getMessage());
+    }
 });
 
 Route::get('/user', function () {
