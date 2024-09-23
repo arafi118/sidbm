@@ -133,6 +133,17 @@
                     if ($tunggakan_jasa < 0) {
                         $tunggakan_jasa = 0;
                     }
+
+                    if ($pinkel->tgl_lunas <= $tgl_kondisi && $pinkel->status == 'L') {
+                        $tunggakan_pokok = 0;
+                        $tunggakan_jasa = 0;
+                    } elseif ($pinkel->tgl_lunas <= $tgl_kondisi && $pinkel->status == 'R') {
+                        $tunggakan_pokok = 0;
+                        $tunggakan_jasa = 0;
+                    } elseif ($pinkel->tgl_lunas <= $tgl_kondisi && $pinkel->status == 'H') {
+                        $tunggakan_pokok = 0;
+                        $tunggakan_jasa = 0;
+                    }
                 @endphp
                 <tr>
                     <td class="t l b" align="center">{{ $nomor++ }}</td>
