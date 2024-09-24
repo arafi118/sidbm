@@ -2,8 +2,10 @@
     use App\Utils\Tanggal;
 
     $tgl_mou = $kec->tgl_registrasi;
-
     $jumlah = $kec->id == '340' ? 15000000 : 12500000;
+    if (strtotime($kec->tgl_register) >= strtotime('2024-09-01')) {
+        $jumlah = 15000000;
+    }
     $nominal = $kec->biaya_tahunan;
 @endphp
 
