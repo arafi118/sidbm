@@ -331,7 +331,11 @@ class AnggotaController extends Controller
      */
     public function destroy(Anggota $penduduk)
     {
-        //
+        Anggota::where('id', $penduduk->id)->delete();
+        return response()->json([
+            'success' => true,
+            'msg' => 'Data atas nama ' . $penduduk->namadepan . ' berhasil dihapus.'
+        ]);
     }
 
     public function blokir(Request $request, Anggota $nik)
