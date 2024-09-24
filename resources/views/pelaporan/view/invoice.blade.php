@@ -190,15 +190,15 @@
                 </td>
             </tr>
             <tr style="font-weight: bold;">
-                <td align="right" style="font-size: 11px;">PPN 10%</td>
+                <td align="right" style="font-size: 11px;">PPN 11%</td>
                 <td align="right" style="font-size: 11px; color: #fff; background: rgb(130, 164, 176)">
-                    {{ number_format(($inv->jumlah * 10) / 100, 2) }}
+                    {{ number_format(($inv->jumlah * 11) / 100, 2) }}
                 </td>
             </tr>
             <tr style="font-weight: bold;">
-                <td align="right" style="font-size: 11px;">Discount 10%</td>
+                <td align="right" style="font-size: 11px;">Discount 11%</td>
                 <td align="right" style="font-size: 11px; color: #fff; background: rgb(130, 164, 176)">
-                    -{{ number_format(($inv->jumlah * 10) / 100, 2) }}
+                    -{{ number_format(($inv->jumlah * 11) / 100, 2) }}
                 </td>
             </tr>
             <tr style="font-weight: bold;">

@@ -431,7 +431,7 @@
             <ol style="text-align: justify;">
                 <li>
                     Pihak Kedua membayar biaya instalasi dan migrasi data pada server sebesar Rp.
-                    {{ number_format($jumlah) }} ({{ $keu->terbilang($jumlah) }} Rupiah) serta dikenai PPn sebesar 10%
+                    {{ number_format($jumlah) }} ({{ $keu->terbilang($jumlah) }} Rupiah) serta dikenai PPn sebesar 11%
                     dengan
                     tahapan pembayaran 30% sebelum migrasi data
                     dan
