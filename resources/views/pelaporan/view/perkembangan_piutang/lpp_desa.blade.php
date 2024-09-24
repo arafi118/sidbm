@@ -369,8 +369,8 @@
                     <td class="t l b" align="right">{{ number_format($tl_saldo_pokok) }}</td>
                     <td class="t l b" align="right">{{ number_format($tl_saldo_jasa) }}</td>
                     <td class="t l b" align="center">{{ number_format($tl_pross) }}</td>
-                    <td class="t l b" align="right">{{ number_format($tl_tunggakan_pokok) }}</td>
-                    <td class="t l b r" align="right">{{ number_format($tl_tunggakan_jasa) }}</td>
+                    <td class="t l b" align="right">0</td>
+                    <td class="t l b r" align="right">0</td>
                 </tr>
 
                 <tr>
