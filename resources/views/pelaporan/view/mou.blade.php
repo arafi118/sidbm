@@ -544,9 +544,11 @@
             </tr>
             <tr>
                 <td align="center">
-                    {{ strtoupper('Maulida Nur Masruroh') }}
+                    <b>{{ strtoupper('Maulida Nur Masruroh') }}</b>
                 </td>
-                <td align="center">..................................................</td>
+                <td align="center">
+                    ..................................................
+                </td>
             </tr>
         </table>
     </main>
