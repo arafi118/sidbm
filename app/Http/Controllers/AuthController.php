@@ -153,7 +153,10 @@ class AuthController extends Controller
 
                     $redirect = '/dashboard';
                     if (in_array('1', $hak_akses)) {
-                        $menu_redirect = Menu::where('id', $hak_akses[0])->first();
+                        $menu_redirect = Menu::where([
+                            ['parent_id', '0'],
+                            ['aktif', 'Y']
+                        ])->whereNotIn('id', $hak_akses)->where('link', 'LIKE', '/%')->orderBy('sort', 'ASC')->orderBy('id', 'ASC')->first();
                         $redirect = $menu_redirect->link;
                     }
 
