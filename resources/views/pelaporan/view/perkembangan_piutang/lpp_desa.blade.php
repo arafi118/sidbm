@@ -366,7 +366,7 @@
                     <td class="t l b" align="right">{{ number_format(0) }}</td>
                     <td class="t l b" align="right">{{ number_format($tl_real_bi_pokok) }}</td>
                     <td class="t l b" align="right">{{ number_format($tl_real_bi_jasa) }}</td>
-                    <td class="t l b" align="right">0</td>
+                    <td class="t l b" align="right">{{ number_format($tl_saldo_pokok) }}</td>
                     <td class="t l b" align="right">0</td>
                     <td class="t l b" align="center">{{ number_format($tl_pross) }}</td>
                     <td class="t l b" align="right">0</td>
