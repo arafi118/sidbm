@@ -151,7 +151,13 @@ class AuthController extends Controller
                         'config' => json_encode($config)
                     ]);
 
-                    return redirect('/dashboard')->with([
+                    $redirect = '/dashboard';
+                    if (in_array('1', $hak_akses)) {
+                        $menu_redirect = Menu::where('id', $hak_akses[0])->first();
+                        $redirect = $menu_redirect->link;
+                    }
+
+                    return redirect($redirect)->with([
                         'pesan' => 'Selamat Datang ' . $user->namadepan . ' ' . $user->namabelakang,
                         'invoice' => $inv['invoice'],
                         'msg' => $inv['msg'],
