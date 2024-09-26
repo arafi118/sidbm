@@ -869,15 +869,15 @@ class PelaporanController extends Controller
                         ])->orwhere([
                             [$data['tb_pinkel'] . '.status', 'L'],
                             [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', $data['tgl_kondisi']]
                         ])->orwhere([
                             [$data['tb_pinkel'] . '.status', 'R'],
                             [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', $data['tgl_kondisi']]
                         ])->orwhere([
                             [$data['tb_pinkel'] . '.status', 'H'],
                             [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', "$data[tahun]-01-01"]
+                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', $data['tgl_kondisi']]
                         ]);
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')
