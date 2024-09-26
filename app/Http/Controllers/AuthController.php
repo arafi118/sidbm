@@ -106,7 +106,7 @@ class AuthController extends Controller
         if ($user) {
             if ($password === $user->pass) {
                 if (Auth::loginUsingId($user->id)) {
-                    $hak_akses = explode(',', $user->hak_akses);
+                    $hak_akses = explode(',', $user->akses_menu);
                     $menu = Menu::where('parent_id', '0')->whereNotIn('id', $hak_akses)->where('aktif', 'Y')->with([
                         'child' => function ($query) use ($hak_akses) {
                             $query->whereNotIn('id', $hak_akses);
