@@ -51,7 +51,9 @@
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 12px;">
             <th rowspan="2" class="t l b" width="32%">Rekening</th>
-            <th rowspan="2" class="t l b" width="10%">Komulatif Bulan Lalu</th>
+            @if ($triwulan > 1)
+                <th rowspan="2" class="t l b" width="10%">Komulatif Bulan Lalu</th>
+            @endif
             @foreach ($bulan_tampil as $bt)
                 <th colspan="2" class="t l b" width="16%" height="16">
                     {{ Tanggal::namaBulan(date('Y') . '-' . $bt . '-01') }}
@@ -81,13 +83,13 @@
                 $rencana3 = 0;
             @endphp
             <tr style="background: rgb(200, 200, 200); font-weight: bold;">
-                <td colspan="9" class="t l b r">
+                <td colspan="{{ $triwulan == '1' ? '8' : '9' }}" class="t l b r">
                     <b>{{ $lev1->kode_akun }}. {{ $lev1->nama_akun }}</b>
                 </td>
             </tr>
             @foreach ($lev1->akun2 as $lev2)
                 <tr style="background: rgb(150, 150, 150); font-weight: bold;">
-                    <td colspan="9" class="t l b r">
+                    <td colspan="{{ $triwulan == '1' ? '8' : '9' }}" class="t l b r">
                         <b>{{ $lev2->kode_akun }}. {{ $lev2->nama_akun }}</b>
                     </td>
                 </tr>
@@ -110,11 +112,6 @@
                         @endphp
                         <tr style="background: {{ $bg }};">
                             <td class="t l b">{{ $rek->kode_akun }}. {{ $rek->nama_akun }}</td>
-                            @if ($triwulan == 1)
-                                <td class="t l b" align="right">
-                                    {{ number_format($saldo_kom, 2) }}
-                                </td>
-                            @endif
 
                             @foreach ($rek->kom_saldo as $saldo)
                                 @php
@@ -209,7 +206,9 @@
 
             <tr style="background: rgb(150, 150, 150); font-weight: bold;">
                 <td align="center" class="t l b" height="14">Total Realisasi {{ $lev1->nama_akun }}</td>
-                <td align="right" class="t l b">{{ number_format($kom_saldo_lalu, 2) }}</td>
+                @if ($triwulan > 1)
+                    <td align="right" class="t l b">{{ number_format($kom_saldo_lalu, 2) }}</td>
+                @endif
                 <td align="right" class="t l b">{{ number_format($rencana1, 2) }}</td>
                 <td align="right" class="t l b">{{ number_format($bulan1, 2) }}</td>
                 <td align="right" class="t l b">{{ number_format($rencana2, 2) }}</td>
@@ -231,13 +230,15 @@
         @endphp
 
         <tr>
-            <td colspan="9" style="padding: 0px !important;">
+            <td colspan="{{ $triwulan == '1' ? '8' : '9' }}" style="padding: 0px !important;">
                 <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 9px;">
                     <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 10px;">
                         <th width="32%" class="t l b" height="28">Surplus</th>
-                        <th width="10%" class="t l b" align="right">
-                            {{ number_format($komulatif_pendapatan - $komulatif_beban, 2) }}
-                        </th>
+                        @if ($triwulan > 1)
+                            <th width="10%" class="t l b" align="right">
+                                {{ number_format($komulatif_pendapatan - $komulatif_beban, 2) }}
+                            </th>
+                        @endif
                         <th width="8%" class="t l b" align="right">
                             {{ number_format($r_pendapatan1 - $r_beban1, 2) }}
                         </th>
