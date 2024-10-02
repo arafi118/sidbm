@@ -325,16 +325,6 @@
                 </div>
             </div>
         </div>
-    @else
-        @if (in_array('tahapan_perguliran.verifikasi.kembalikan_ke_proposal', Session::get('tombol')))
-            <div class="card card-body p-2 pb-0 mb-3">
-                <div class="d-grid">
-                    <button type="button" id="kembaliProposal" class="btn btn-warning btn-sm mb-2">
-                        Kembalikan Ke Proposal
-                    </button>
-                </div>
-            </div>
-        @endif
     @endif
 
 </form>

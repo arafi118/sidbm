@@ -275,6 +275,24 @@
             @else
                 <a href="/perguliran?status={{ $perguliran->status }}"
                     class="btn btn-info float-end btn-sm mb-0">Kembali</a>
+
+                @if (
+                    !in_array('tahapan_perguliran.verifikasi.simpan_keputusan_pendanaan', Session::get('tombol')) &&
+                        $perguliran->status == 'V')
+                    @if (in_array('tahapan_perguliran.verifikasi.kembalikan_ke_proposal', Session::get('tombol')))
+                        <button type="button" id="kembaliProposal" class="btn float-end btn-warning btn-sm me-2 mb-2">
+                            Kembalikan Ke Proposal
+                        </button>
+                    @endif
+                @endif
+
+                @if (!in_array('tahapan_perguliran.waiting.pencairan', Session::get('tombol')) && $perguliran->status == 'W')
+                    @if (in_array('tahapan_perguliran.waiting.kembalikan_ke_proposal', Session::get('tombol')))
+                        <button type="button" id="kembaliProposal" class="btn float-end btn-warning btn-sm me-2 mb-2">
+                            Kembalikan Ke Proposal
+                        </button>
+                    @endif
+                @endif
             @endif
         </div>
     </div>
@@ -339,12 +357,12 @@
                                 <div class="col-md-3 d-grid">
                                     @if ($val['withExcel'])
                                         <div class="btn-group">
-                                            <button class="btn btn-linkedin btn-sm text-start" type="submit" name="report"
-                                                value="{{ $val['file'] }}#pdf">
+                                            <button class="btn btn-linkedin btn-sm text-start" type="submit"
+                                                name="report" value="{{ $val['file'] }}#pdf">
                                                 {{ $loop->iteration }}. {{ $val['title'] }}
                                             </button>
-                                            <button class="btn btn-icon btn-sm btn-instagram" type="submit" name="report"
-                                                value="{{ $val['file'] }}#excel">
+                                            <button class="btn btn-icon btn-sm btn-instagram" type="submit"
+                                                name="report" value="{{ $val['file'] }}#excel">
                                                 <i class="fas fa-file-excel"></i>
                                             </button>
                                         </div>
