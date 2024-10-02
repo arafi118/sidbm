@@ -1,8 +1,15 @@
+@php
+    $Class = 'col-12 mb-4';
+    if (in_array('jurnal_umum.detail_transaksi', Session::get('tombol'))) {
+        $Class = 'col-lg-9 mb-4';
+    }
+@endphp
+
 @extends('layouts.base')
 
 @section('content')
     <div class="row">
-        <div class="col-lg-9 mb-4">
+        <div class="{{ $Class }}">
             <div class="card">
                 <div class="card-body py-2">
                     <form action="/transaksi" method="post" id="FormTransaksi">
@@ -72,90 +79,102 @@
                         </div>
                     </form>
 
-                    <div class="d-flex justify-content-end">
-                        <button type="button" id="SimpanTransaksi" class="btn btn-sm btn-github">Simpan Transaksi</button>
-                    </div>
+                    @if (in_array('jurnal_umum.simpan_transaksi', Session::get('tombol')))
+                        <div class="d-flex justify-content-end">
+                            <button type="button" id="SimpanTransaksi" class="btn btn-sm btn-github">
+                                Simpan Transaksi
+                            </button>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 mb-4">
-            <div class="card">
-                <div class="card-body p-3 pb-0">
-                    <div class="d-flex justify-content-between">
-                        <div class="text-sm">Saldo:</div>
-                        <div class="text-sm fw-bold">
-                            Rp. <span id="saldo">0.00</span>
-                        </div>
-                    </div>
 
-                    <hr class="horizontal dark">
-                    <div class="text-sm fw-bold text-center">Cetak Buku Bantu</div>
-                    <hr class="horizontal dark mb-0">
-
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="my-2">
-                                <label class="form-label" for="tahun">Tahunan</label>
-                                <select class="form-control" name="tahun" id="tahun">
-                                    @php
-                                        $tgl_pakai = $kec->tgl_pakai;
-                                        $th_pakai = explode('-', $tgl_pakai)[0];
-                                    @endphp
-                                    @for ($i = $th_pakai; $i <= date('Y'); $i++)
-                                        <option value="{{ $i }}" {{ date('Y') == $i ? 'selected' : '' }}>
-                                            {{ $i }}</option>
-                                    @endfor
-                                </select>
-                                <small class="text-danger" id="msg_tahun"></small>
+        @if (in_array('jurnal_umum.detail_transaksi', Session::get('tombol')))
+            <div class="col-lg-3 mb-4">
+                <div class="card">
+                    <div class="card-body p-3 pb-0">
+                        <div class="d-flex justify-content-between">
+                            <div class="text-sm">Saldo:</div>
+                            <div class="text-sm fw-bold">
+                                Rp. <span id="saldo">0.00</span>
                             </div>
                         </div>
-                        <div class="col-12">
-                            <div class="my-2">
-                                <label class="form-label" for="bulan">Bulanan</label>
-                                <select class="form-control" name="bulan" id="bulan">
-                                    <option value="">--</option>
-                                    <option {{ date('m') == '01' ? 'selected' : '' }} value="01">01. JANUARI</option>
-                                    <option {{ date('m') == '02' ? 'selected' : '' }} value="02">02. FEBRUARI</option>
-                                    <option {{ date('m') == '03' ? 'selected' : '' }} value="03">03. MARET</option>
-                                    <option {{ date('m') == '04' ? 'selected' : '' }} value="04">04. APRIL</option>
-                                    <option {{ date('m') == '05' ? 'selected' : '' }} value="05">05. MEI</option>
-                                    <option {{ date('m') == '06' ? 'selected' : '' }} value="06">06. JUNI</option>
-                                    <option {{ date('m') == '07' ? 'selected' : '' }} value="07">07. JULI</option>
-                                    <option {{ date('m') == '08' ? 'selected' : '' }} value="08">08. AGUSTUS</option>
-                                    <option {{ date('m') == '09' ? 'selected' : '' }} value="09">09. SEPTEMBER
-                                    </option>
-                                    <option {{ date('m') == '10' ? 'selected' : '' }} value="10">10. OKTOBER</option>
-                                    <option {{ date('m') == '11' ? 'selected' : '' }} value="11">11. NOVEMBER
-                                    </option>
-                                    <option {{ date('m') == '12' ? 'selected' : '' }} value="12">12. DESEMBER
-                                    </option>
-                                </select>
-                                <small class="text-danger" id="msg_bulan"></small>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="my-2">
-                                <label class="form-label" for="tanggal">Tanggal</label>
-                                <select class="form-control" name="tanggal" id="tanggal">
-                                    <option value="">--</option>
-                                    @for ($j = 1; $j <= 31; $j++)
-                                        @php $no=str_pad($j, 2, "0" , STR_PAD_LEFT) @endphp
-                                        <option value="{{ $no }}">{{ $no }}</option>
-                                    @endfor
-                                </select>
-                                <small class="text-danger" id="msg_tanggal"></small>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="d-flex justify-content-end">
-                        <button type="button" id="BtndetailTransaksi" class="btn btn-sm btn-success">
-                            Detail Transaksi
-                        </button>
+                        <hr class="horizontal dark">
+                        <div class="text-sm fw-bold text-center">Cetak Buku Bantu</div>
+                        <hr class="horizontal dark mb-0">
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="my-2">
+                                    <label class="form-label" for="tahun">Tahunan</label>
+                                    <select class="form-control" name="tahun" id="tahun">
+                                        @php
+                                            $tgl_pakai = $kec->tgl_pakai;
+                                            $th_pakai = explode('-', $tgl_pakai)[0];
+                                        @endphp
+                                        @for ($i = $th_pakai; $i <= date('Y'); $i++)
+                                            <option value="{{ $i }}" {{ date('Y') == $i ? 'selected' : '' }}>
+                                                {{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                    <small class="text-danger" id="msg_tahun"></small>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="my-2">
+                                    <label class="form-label" for="bulan">Bulanan</label>
+                                    <select class="form-control" name="bulan" id="bulan">
+                                        <option value="">--</option>
+                                        <option {{ date('m') == '01' ? 'selected' : '' }} value="01">01. JANUARI
+                                        </option>
+                                        <option {{ date('m') == '02' ? 'selected' : '' }} value="02">02. FEBRUARI
+                                        </option>
+                                        <option {{ date('m') == '03' ? 'selected' : '' }} value="03">03. MARET</option>
+                                        <option {{ date('m') == '04' ? 'selected' : '' }} value="04">04. APRIL
+                                        </option>
+                                        <option {{ date('m') == '05' ? 'selected' : '' }} value="05">05. MEI</option>
+                                        <option {{ date('m') == '06' ? 'selected' : '' }} value="06">06. JUNI</option>
+                                        <option {{ date('m') == '07' ? 'selected' : '' }} value="07">07. JULI</option>
+                                        <option {{ date('m') == '08' ? 'selected' : '' }} value="08">08. AGUSTUS
+                                        </option>
+                                        <option {{ date('m') == '09' ? 'selected' : '' }} value="09">09. SEPTEMBER
+                                        </option>
+                                        <option {{ date('m') == '10' ? 'selected' : '' }} value="10">10. OKTOBER
+                                        </option>
+                                        <option {{ date('m') == '11' ? 'selected' : '' }} value="11">11. NOVEMBER
+                                        </option>
+                                        <option {{ date('m') == '12' ? 'selected' : '' }} value="12">12. DESEMBER
+                                        </option>
+                                    </select>
+                                    <small class="text-danger" id="msg_bulan"></small>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="my-2">
+                                    <label class="form-label" for="tanggal">Tanggal</label>
+                                    <select class="form-control" name="tanggal" id="tanggal">
+                                        <option value="">--</option>
+                                        @for ($j = 1; $j <= 31; $j++)
+                                            @php $no=str_pad($j, 2, "0" , STR_PAD_LEFT) @endphp
+                                            <option value="{{ $no }}">{{ $no }}</option>
+                                        @endfor
+                                    </select>
+                                    <small class="text-danger" id="msg_tanggal"></small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="button" id="BtndetailTransaksi" class="btn btn-sm btn-success">
+                                Detail Transaksi
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
     </div>
 
     <div id="notifikasi"></div>
@@ -197,9 +216,11 @@
                     <div id="LayoutCetakBuktiTransaksi"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="BtnCetak" class="btn btn-sm btn-info">
-                        Print
-                    </button>
+                    @if (in_array('jurnal_umum.cetak_bukti_transaksi', Session::get('tombol')))
+                        <button type="button" id="BtnCetak" class="btn btn-sm btn-info">
+                            Print
+                        </button>
+                    @endif
                     <button type="button" id="BtnCetakBuktiTransaksi" class="btn btn-danger btn-sm">Tutup</button>
                 </div>
             </div>

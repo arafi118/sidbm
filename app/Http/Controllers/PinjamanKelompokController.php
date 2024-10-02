@@ -34,7 +34,18 @@ class PinjamanKelompokController extends Controller
 {
     public function index()
     {
-        $status = 'P';
+        if (in_array('tahapan_perguliran.proposal', Session::get('tombol'))) {
+            $status = 'P';
+        } elseif (in_array('tahapan_perguliran.verifikasi', Session::get('tombol'))) {
+            $status = 'V';
+        } elseif (in_array('tahapan_perguliran.waiting', Session::get('tombol'))) {
+            $status = 'W';
+        } elseif (in_array('tahapan_perguliran.aktif', Session::get('tombol'))) {
+            $status = 'A';
+        } elseif (in_array('tahapan_perguliran.lunas', Session::get('tombol'))) {
+            $status = 'L';
+        }
+
         if (request()->get('status')) {
             $status = request()->get('status');
         }

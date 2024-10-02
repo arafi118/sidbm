@@ -138,7 +138,9 @@
             </div>
         </div>
 
-        @if ($perguliran->status == 'A' || $perguliran->status == 'R')
+        @if (
+            ($perguliran->status == 'A' || $perguliran->status == 'R') &&
+                in_array('tahapan_perguliran.aktif.tambah_pemanfaat', Session::get('tombol')))
             <div class="d-grid">
                 <button type="button" id="BtnTambahPemanfaat" data-bs-toggle="modal" data-bs-target="#TambahPemanfaat"
                     class="btn btn-success btn-sm mb-1">
@@ -173,9 +175,24 @@
                             $alokasi += $pinjaman_anggota->alokasi;
 
                             $warna = $perguliran->status == 'A' ? '' : 'class="text-danger fw-bold"';
+
+                            $Class = '';
+                            if (
+                                in_array(
+                                    'tahapan_perguliran.aktif.penghapusan_pinjaman_anggota',
+                                    Session::get('tombol'),
+                                )
+                            ) {
+                                $Class = 'pointer btn-click';
+                            }
+
+                            if (
+                                in_array('tahapan_perguliran.aktif.pelunasan_pinjaman_anggota', Session::get('tombol'))
+                            ) {
+                                $Class = 'pointer btn-click';
+                            }
                         @endphp
-                        <tr class="{{ $perguliran->status == 'A' ? 'pointer btn-click' : '' }}"
-                            data-id="{{ $pinjaman_anggota->id }}">
+                        <tr class="{{ $Class }}" data-id="{{ $pinjaman_anggota->id }}">
                             <td {!! $warna !!} align="center">{{ $loop->iteration }}</td>
                             <td {!! $warna !!}>
                                 {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
@@ -212,50 +229,74 @@
     </div>
 </div>
 
-<div class="card card-body p-2 pb-0 mb-3">
-    <form action="/perguliran/dokumen?status=A" target="_blank" method="post">
-        @csrf
+@if (in_array('tahapan_perguliran.aktif.cetak_dokumen_pencairan', Session::get('tombol')))
+    <div class="card card-body p-2 pb-0 mb-3">
+        <form action="/perguliran/dokumen?status=A" target="_blank" method="post">
+            @csrf
 
-        <input type="hidden" name="id" value="{{ $perguliran->id }}">
+            <input type="hidden" name="id" value="{{ $perguliran->id }}">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                    <div class="d-grid">
+                        <a href="/perguliran/dokumen/kartu_angsuran/{{ $perguliran->id }}" target="_blank"
+                            class="btn btn-outline-info btn-sm mb-2">Kartu Angsuran</a>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-outline-info btn-sm mb-2" name="report"
+                            value="rencanaAngsuran#pdf">Rencana Angsuran</button>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-outline-info btn-sm mb-2" name="report"
+                            value="rekeningKoran#pdf">Rekening Koran</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+@endif
+
+@php
+    $Class = '';
+    $CetakDokumen = false;
+    if (
+        in_array('tahapan_perguliran.aktif.cetak_dokumen_proposal', Session::get('tombol')) ||
+        in_array('tahapan_perguliran.aktif.cetak_dokumen_pencairan', Session::get('tombol'))
+    ) {
+        $Class = 'col-12 col-sm-6 col-md-6';
+        $CetakDokumen = true;
+
+        if (!in_array('tahapan_perguliran.aktif.cetak_dokumen_proposal', Session::get('tombol'))) {
+            $Class = 'col-12 col-sm-12 col-md-12';
+        }
+
+        if (!in_array('tahapan_perguliran.aktif.cetak_dokumen_pencairan', Session::get('tombol'))) {
+            $Class = 'col-12 col-sm-12 col-md-12';
+        }
+    }
+@endphp
+
+@if ($CetakDokumen)
+    <div class="card card-body p-2 pb-0 mb-3">
         <div class="row">
-            <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+            <div class="{{ $Class }}">
                 <div class="d-grid">
-                    <a href="/perguliran/dokumen/kartu_angsuran/{{ $perguliran->id }}" target="_blank"
-                        class="btn btn-outline-info btn-sm mb-2">Kartu Angsuran</a>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenProposal"
+                        class="btn btn-info btn-sm mb-2">Cetak Dokumen Proposal</button>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+            <div class="{{ $Class }}">
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-outline-info btn-sm mb-2" name="report"
-                        value="rencanaAngsuran#pdf">Rencana Angsuran</button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenPencairan"
+                        class="btn btn-info btn-sm mb-2">Cetak Dokumen Pencairan</button>
                 </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-6 col-lg-4">
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-outline-info btn-sm mb-2" name="report"
-                        value="rekeningKoran#pdf">Rekening Koran</button>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-
-<div class="card card-body p-2 pb-0 mb-3">
-    <div class="row">
-        <div class="col-12 col-sm-6 col-md-6">
-            <div class="d-grid">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenProposal"
-                    class="btn btn-info btn-sm mb-2">Cetak Dokumen Proposal</button>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-6">
-            <div class="d-grid">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenPencairan"
-                    class="btn btn-info btn-sm mb-2">Cetak Dokumen Pencairan</button>
             </div>
         </div>
     </div>
-</div>
+@endif
 
 <div class="card mb-3">
     <div class="card-body pb-2">
@@ -343,12 +384,19 @@
             </table>
         </div>
 
-        @if ($perguliran->status == 'A')
+        @if (
+            $perguliran->status == 'A' &&
+                (in_array('tahapan_perguliran.aktif.resceduling_pinjaman', Session::get('tombol')) ||
+                    in_array('tahapan_perguliran.aktif.penghapusan_pinjaman_kelompok', Session::get('tombol'))))
             <div class="d-flex justify-content-end mt-3">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#Rescedule"
-                    class="btn btn-warning btn-sm">Resceduling Pinjaman</button>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#Penghapusan"
-                    class="btn btn-danger btn-sm ms-1">Penghapusan Pinjaman</button>
+                @if (in_array('tahapan_perguliran.aktif.resceduling_pinjaman', Session::get('tombol')))
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#Rescedule"
+                        class="btn btn-warning btn-sm">Resceduling Pinjaman</button>
+                @endif
+                @if (in_array('tahapan_perguliran.aktif.penghapusan_pinjaman_kelompok', Session::get('tombol')))
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#Penghapusan"
+                        class="btn btn-danger btn-sm ms-1">Penghapusan Pinjaman</button>
+                @endif
             </div>
         @endif
     </div>

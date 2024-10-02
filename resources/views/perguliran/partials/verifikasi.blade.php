@@ -122,8 +122,22 @@
 
                                 $class1 = '';
                                 $class2 = '';
-                                if (auth()->user()->level == '5' || auth()->user()->level == '1') {
+
+                                if (
+                                    in_array(
+                                        'ttahapan_perguliran.verifikasi.edit_verifikasi_anggota',
+                                        Session::get('tombol'),
+                                    )
+                                ) {
                                     $class1 = 'idpa_proposal';
+                                }
+
+                                if (
+                                    in_array(
+                                        'tahapan_perguliran.verifikasi.simpan_keputusan_pendanaan',
+                                        Session::get('tombol'),
+                                    )
+                                ) {
                                     $class2 = 'idpa';
                                 }
                             @endphp
@@ -180,133 +194,149 @@
         </div>
     </div>
 
-    <div class="card card-body p-2 pb-0 mb-3">
-        <div class="d-grid">
-            <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenProposal"
-                class="btn btn-info btn-sm mb-2">Cetak Dokumen Verifikasi</button>
+    @if (in_array('tahapan_perguliran.verifikasi.cetak_dokumen_verifikasi', Session::get('tombol')))
+        <div class="card card-body p-2 pb-0 mb-3">
+            <div class="d-grid">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenProposal"
+                    class="btn btn-info btn-sm mb-2">Cetak Dokumen Verifikasi</button>
+            </div>
         </div>
-    </div>
+    @endif
 
-    <div class="card mb-3">
-        <div class="card-header pb-0 p-3">
-            <h6>
-                Input Keputusan Pendanaan
-            </h6>
-        </div>
-        <div class="card-body p-3">
-            <input type="hidden" name="_id" id="_id" value="{{ $perguliran->id }}">
-            <input type="hidden" name="status" id="status" value="W">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="input-group input-group-static my-3">
-                        <label for="tgl_tunggu">Tgl Tunggu</label>
-                        <input autocomplete="off" type="text" name="tgl_tunggu" id="tgl_tunggu"
-                            class="form-control date" value="{{ Tanggal::tglIndo($perguliran->tgl_verifikasi) }}">
-                        <small class="text-danger" id="msg_tgl_tunggu"></small>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group input-group-static my-3">
-                        <label for="alokasi">Alokasi Rp.</label>
-                        <input autocomplete="off" type="text" name="alokasi" id="alokasi"
-                            class="form-control money" value="{{ number_format($perguliran->verifikasi, 2) }}">
-                        <small class="text-danger" id="msg_alokasi"></small>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group input-group-static my-3">
-                        <label for="jangka">Jangka</label>
-                        <input autocomplete="off" type="number" name="jangka" id="jangka" class="form-control"
-                            value="{{ $perguliran->jangka }}">
-                        <small class="text-danger" id="msg_jangka"></small>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="input-group input-group-static my-3">
-                        <label for="pros_jasa">Prosentase Jasa (%)</label>
-                        <input autocomplete="off" type="number" name="pros_jasa" id="pros_jasa"
-                            class="form-control" value="{{ $perguliran->pros_jasa }}">
-                        <small class="text-danger" id="msg_pros_jasa"></small>
-                    </div>
-                </div>
+    @if (in_array('tahapan_perguliran.verifikasi.simpan_keputusan_pendanaan', Session::get('tombol')))
+        <div class="card mb-3">
+            <div class="card-header pb-0 p-3">
+                <h6>
+                    Input Keputusan Pendanaan
+                </h6>
             </div>
+            <div class="card-body p-3">
+                <input type="hidden" name="_id" id="_id" value="{{ $perguliran->id }}">
+                <input type="hidden" name="status" id="status" value="W">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group input-group-static my-3">
+                            <label for="tgl_tunggu">Tgl Tunggu</label>
+                            <input autocomplete="off" type="text" name="tgl_tunggu" id="tgl_tunggu"
+                                class="form-control date" value="{{ Tanggal::tglIndo($perguliran->tgl_verifikasi) }}">
+                            <small class="text-danger" id="msg_tgl_tunggu"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group input-group-static my-3">
+                            <label for="alokasi">Alokasi Rp.</label>
+                            <input autocomplete="off" type="text" name="alokasi" id="alokasi"
+                                class="form-control money" value="{{ number_format($perguliran->verifikasi, 2) }}">
+                            <small class="text-danger" id="msg_alokasi"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group input-group-static my-3">
+                            <label for="jangka">Jangka</label>
+                            <input autocomplete="off" type="number" name="jangka" id="jangka"
+                                class="form-control" value="{{ $perguliran->jangka }}">
+                            <small class="text-danger" id="msg_jangka"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group input-group-static my-3">
+                            <label for="pros_jasa">Prosentase Jasa (%)</label>
+                            <input autocomplete="off" type="number" name="pros_jasa" id="pros_jasa"
+                                class="form-control" value="{{ $perguliran->pros_jasa }}">
+                            <small class="text-danger" id="msg_pros_jasa"></small>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="my-2">
-                        <label class="form-label" for="jenis_jasa">Jenis Jasa</label>
-                        <select class="form-control" name="jenis_jasa" id="jenis_jasa">
-                            @foreach ($jenis_jasa as $jj)
-                                <option {{ $jj->id == $perguliran->jenis_jasa ? 'selected' : '' }}
-                                    value="{{ $jj->id }}">
-                                    {{ $jj->nama_jj }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <small class="text-danger" id="msg_jenis_jasa"></small>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="my-2">
+                            <label class="form-label" for="jenis_jasa">Jenis Jasa</label>
+                            <select class="form-control" name="jenis_jasa" id="jenis_jasa">
+                                @foreach ($jenis_jasa as $jj)
+                                    <option {{ $jj->id == $perguliran->jenis_jasa ? 'selected' : '' }}
+                                        value="{{ $jj->id }}">
+                                        {{ $jj->nama_jj }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <small class="text-danger" id="msg_jenis_jasa"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="my-2">
+                            <label class="form-label" for="sistem_angsuran_pokok">Sistem Angs. Pokok</label>
+                            <select class="form-control" name="sistem_angsuran_pokok" id="sistem_angsuran_pokok">
+                                @foreach ($sistem_angsuran as $sa)
+                                    <option {{ $sa->id == $perguliran->sistem_angsuran ? 'selected' : '' }}
+                                        value="{{ $sa->id }}">
+                                        {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
+                                    </option>
+                                @endforeach
+                            </select>
+                            <small class="text-danger" id="msg_sistem_angsuran_pokok"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="my-2">
+                            <label class="form-label" for="sistem_angsuran_jasa">Sistem Angs. Jasa</label>
+                            <select class="form-control" name="sistem_angsuran_jasa" id="sistem_angsuran_jasa">
+                                @foreach ($sistem_angsuran as $sa)
+                                    <option {{ $sa->id == $perguliran->sa_jasa ? 'selected' : '' }}
+                                        value="{{ $sa->id }}">
+                                        {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
+                                    </option>
+                                @endforeach
+                            </select>
+                            <small class="text-danger" id="msg_sistem_angsuran_jasa"></small>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="my-2">
-                        <label class="form-label" for="sistem_angsuran_pokok">Sistem Angs. Pokok</label>
-                        <select class="form-control" name="sistem_angsuran_pokok" id="sistem_angsuran_pokok">
-                            @foreach ($sistem_angsuran as $sa)
-                                <option {{ $sa->id == $perguliran->sistem_angsuran ? 'selected' : '' }}
-                                    value="{{ $sa->id }}">
-                                    {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
-                                </option>
-                            @endforeach
-                        </select>
-                        <small class="text-danger" id="msg_sistem_angsuran_pokok"></small>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group input-group-static my-3">
+                            <label for="tgl_cair">Tanggal Cair</label>
+                            <input autocomplete="off" type="text" name="tgl_cair" id="tgl_cair"
+                                class="form-control date"
+                                value="{{ Tanggal::tglIndo($perguliran->tgl_verifikasi) }}">
+                            <small class="text-danger" id="msg_tgl_cair"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group input-group-static my-3">
+                            <label for="nomor_spk">Nomor SPK</label>
+                            <input autocomplete="off" type="text" name="nomor_spk" id="nomor_spk"
+                                class="form-control" value="{{ $perguliran->nomor_spk }}">
+                            <small class="text-danger" id="msg_nomor_spk"></small>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="my-2">
-                        <label class="form-label" for="sistem_angsuran_jasa">Sistem Angs. Jasa</label>
-                        <select class="form-control" name="sistem_angsuran_jasa" id="sistem_angsuran_jasa">
-                            @foreach ($sistem_angsuran as $sa)
-                                <option {{ $sa->id == $perguliran->sa_jasa ? 'selected' : '' }}
-                                    value="{{ $sa->id }}">
-                                    {{ $sa->nama_sistem }} ({{ $sa->deskripsi_sistem }})
-                                </option>
-                            @endforeach
-                        </select>
-                        <small class="text-danger" id="msg_sistem_angsuran_jasa"></small>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="input-group input-group-static my-3">
-                        <label for="tgl_cair">Tanggal Cair</label>
-                        <input autocomplete="off" type="text" name="tgl_cair" id="tgl_cair"
-                            class="form-control date" value="{{ Tanggal::tglIndo($perguliran->tgl_verifikasi) }}">
-                        <small class="text-danger" id="msg_tgl_cair"></small>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="input-group input-group-static my-3">
-                        <label for="nomor_spk">Nomor SPK</label>
-                        <input autocomplete="off" type="text" name="nomor_spk" id="nomor_spk"
-                            class="form-control" value="{{ $perguliran->nomor_spk }}">
-                        <small class="text-danger" id="msg_nomor_spk"></small>
-                    </div>
-                </div>
-            </div>
 
-            <div class="d-flex justify-content-end mt-3">
-                <button type="button" id="kembaliProposal" class="btn btn-warning btn-sm">
-                    Kembalikan Ke Proposal
-                </button>
+                <div class="d-flex justify-content-end mt-3">
+                    @if (in_array('tahapan_perguliran.verifikasi.kembalikan_ke_proposal', Session::get('tombol')))
+                        <button type="button" id="kembaliProposal" class="btn btn-warning btn-sm">
+                            Kembalikan Ke Proposal
+                        </button>
+                    @endif
 
-                @if (auth()->user()->level == '5' || auth()->user()->level == '1')
                     <button type="button" id="Simpan" class="btn btn-github ms-1 btn-sm">
                         Simpan Keputusan Pendanaan
                     </button>
-                @endif
+                </div>
             </div>
         </div>
-    </div>
+    @else
+        @if (in_array('tahapan_perguliran.verifikasi.kembalikan_ke_proposal', Session::get('tombol')))
+            <div class="card card-body p-2 pb-0 mb-3">
+                <div class="d-grid">
+                    <button type="button" id="kembaliProposal" class="btn btn-warning btn-sm mb-2">
+                        Kembalikan Ke Proposal
+                    </button>
+                </div>
+            </div>
+        @endif
+    @endif
+
 </form>
 
 <form action="/perguliran/kembali_proposal/{{ $perguliran->id }}" method="post" id="formKembaliProposal">

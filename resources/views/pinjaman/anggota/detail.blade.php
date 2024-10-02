@@ -71,17 +71,21 @@
                         </div>
                     </div>
 
-                    <div class="col-6 d-grid">
-                        <button type="button" data-id="{{ $pinj->id }}" id="Penghapusan"
-                            class="mb-0 btn btn-sm btn-danger">
-                            Penghapusan Pinjaman
-                        </button>
-                    </div>
-                    <div class="col-6 d-grid">
-                        <button type="button" id="Pelunasan" class="mb-0 btn btn-sm btn-github">
-                            Pelunasan Pinjaman
-                        </button>
-                    </div>
+                    @if (in_array('tahapan_perguliran.aktif.penghapusan_pinjaman_anggota', Session::get('tombol')))
+                        <div class="col-6 d-grid">
+                            <button type="button" data-id="{{ $pinj->id }}" id="Penghapusan"
+                                class="mb-0 btn btn-sm btn-danger">
+                                Penghapusan Pinjaman
+                            </button>
+                        </div>
+                    @endif
+                    @if (in_array('tahapan_perguliran.aktif.pelunasan_pinjaman_anggota', Session::get('tombol')))
+                        <div class="col-6 d-grid">
+                            <button type="button" id="Pelunasan" class="mb-0 btn btn-sm btn-github">
+                                Pelunasan Pinjaman
+                            </button>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -259,78 +259,114 @@
         </div>
     </div>
 
-    <div class="card card-body p-2 pb-0 mb-3">
-        <div class="row">
-            <div class="col-12 col-sm-6 col-md-6">
-                <div class="d-grid">
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenProposal"
-                        class="btn btn-info btn-sm mb-2">Cetak Dokumen Proposal</button>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-6">
-                <div class="d-grid">
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenPencairan"
-                        class="btn btn-info btn-sm mb-2">Cetak Dokumen Pencairan</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    @php
+        $Class = '';
+        $CetakDokumen = false;
+        if (
+            in_array('tahapan_perguliran.waiting.cetak_dokumen_proposal', Session::get('tombol')) ||
+            in_array('tahapan_perguliran.waiting.cetak_dokumen_pencairan', Session::get('tombol'))
+        ) {
+            $Class = 'col-12 col-sm-6 col-md-6';
+            $CetakDokumen = true;
 
-    <div class="card mb-3">
-        <div class="card-header pb-0 p-3">
-            <h6>
-                Input Realisasi Pencairan
-            </h6>
-        </div>
-        <div class="card-body p-3">
-            <input type="hidden" name="_id" id="_id" value="{{ $perguliran->id }}">
-            <input type="hidden" name="status" id="status" value="A">
-            <input type="hidden" name="debet" id="debet" value="{{ $debet }}">
+            if (!in_array('tahapan_perguliran.waiting.cetak_dokumen_proposal', Session::get('tombol'))) {
+                $Class = 'col-12 col-sm-12 col-md-12';
+            }
+
+            if (!in_array('tahapan_perguliran.waiting.cetak_dokumen_pencairan', Session::get('tombol'))) {
+                $Class = 'col-12 col-sm-12 col-md-12';
+            }
+        }
+    @endphp
+
+    @if ($CetakDokumen)
+        <div class="card card-body p-2 pb-0 mb-3">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="input-group input-group-static my-3">
-                        <label for="tgl_cair">Tgl Cair</label>
-                        <input autocomplete="off" type="text" name="tgl_cair" id="tgl_cair"
-                            class="form-control date" value="{{ Tanggal::tglIndo($perguliran->tgl_cair) }}">
-                        <small class="text-danger" id="msg_tgl_cair"></small>
+                <div class="{{ $Class }}">
+                    <div class="d-grid">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenProposal"
+                            class="btn btn-info btn-sm mb-2">Cetak Dokumen Proposal</button>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="input-group input-group-static my-3">
-                        <label for="alokasi">Alokasi Rp.</label>
-                        <input autocomplete="off" readonly type="text" name="alokasi" id="alokasi"
-                            class="form-control money" value="{{ number_format($perguliran->alokasi, 2) }}">
-                        <small class="text-danger" id="msg_alokasi"></small>
+                <div class="{{ $Class }}">
+                    <div class="d-grid">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenPencairan"
+                            class="btn btn-info btn-sm mb-2">Cetak Dokumen Pencairan</button>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="my-2">
-                        <label class="form-label" for="sumber_pembayaran">Sumber Pembayaran (Kredit)</label>
-                        <select class="form-control" name="sumber_pembayaran" id="sumber_pembayaran">
-                            @foreach ($sumber_bayar as $sb)
-                                <option value="{{ $sb->kode_akun }}">
-                                    {{ $sb->kode_akun }}. {{ $sb->nama_akun }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <small class="text-danger" id="msg_sistem_angsuran_jasa"></small>
-                    </div>
-                </div>
-            </div>
-
-            <div class="d-flex justify-content-end mt-3">
-                <button type="button" id="kembaliProposal" class="btn btn-warning btn-sm">
-                    Kembalikan Ke Proposal
-                </button>
-                <button type="button"
-                    {{ $pinj_a['jumlah_pinjaman'] > '0' || $pinj_a['jumlah_pemanfaat'] > '0' || $pinj_a['jumlah_kelompok'] > '0' ? 'disabled' : '' }}
-                    id="Simpan" class="btn btn-github ms-1 btn-sm">
-                    Cairkan Sekarang
-                </button>
-
             </div>
         </div>
-    </div>
+    @endif
+
+    @if (in_array('tahapan_perguliran.waiting.pencairan', Session::get('tombol')))
+        <div class="card mb-3">
+            <div class="card-header pb-0 p-3">
+                <h6>
+                    Input Realisasi Pencairan
+                </h6>
+            </div>
+            <div class="card-body p-3">
+                <input type="hidden" name="_id" id="_id" value="{{ $perguliran->id }}">
+                <input type="hidden" name="status" id="status" value="A">
+                <input type="hidden" name="debet" id="debet" value="{{ $debet }}">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group input-group-static my-3">
+                            <label for="tgl_cair">Tgl Cair</label>
+                            <input autocomplete="off" type="text" name="tgl_cair" id="tgl_cair"
+                                class="form-control date" value="{{ Tanggal::tglIndo($perguliran->tgl_cair) }}">
+                            <small class="text-danger" id="msg_tgl_cair"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group input-group-static my-3">
+                            <label for="alokasi">Alokasi Rp.</label>
+                            <input autocomplete="off" readonly type="text" name="alokasi" id="alokasi"
+                                class="form-control money" value="{{ number_format($perguliran->alokasi, 2) }}">
+                            <small class="text-danger" id="msg_alokasi"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="my-2">
+                            <label class="form-label" for="sumber_pembayaran">Sumber Pembayaran (Kredit)</label>
+                            <select class="form-control" name="sumber_pembayaran" id="sumber_pembayaran">
+                                @foreach ($sumber_bayar as $sb)
+                                    <option value="{{ $sb->kode_akun }}">
+                                        {{ $sb->kode_akun }}. {{ $sb->nama_akun }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <small class="text-danger" id="msg_sistem_angsuran_jasa"></small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end mt-3">
+                    @if (in_array('tahapan_perguliran.waiting.kembalikan_ke_proposal', Session::get('tombol')))
+                        <button type="button" id="kembaliProposal" class="btn btn-warning btn-sm">
+                            Kembalikan Ke Proposal
+                        </button>
+                    @endif
+                    <button type="button"
+                        {{ $pinj_a['jumlah_pinjaman'] > '0' || $pinj_a['jumlah_pemanfaat'] > '0' || $pinj_a['jumlah_kelompok'] > '0' ? 'disabled' : '' }}
+                        id="Simpan" class="btn btn-github ms-1 btn-sm">
+                        Cairkan Sekarang
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    @else
+        @if (in_array('tahapan_perguliran.waiting.kembalikan_ke_proposal', Session::get('tombol')))
+            <div class="card card-body p-2 pb-0 mb-3">
+                <div class="d-grid">
+                    <button type="button" id="kembaliProposal" class="btn btn-warning btn-sm mb-2">
+                        Kembalikan Ke Proposal
+                    </button>
+                </div>
+            </div>
+        @endif
+    @endif
 </form>
 
 <form action="/perguliran/kembali_proposal/{{ $perguliran->id }}" method="post" id="formKembaliProposal">

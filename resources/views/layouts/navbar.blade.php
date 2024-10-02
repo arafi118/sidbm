@@ -23,6 +23,15 @@
             : in_array('kelompok', $path))
         ? true
         : false;
+
+    $angsuran = false;
+    if (in_array('jurnal_angsuran', Session::get('akses_menu'))) {
+        $angsuran = true;
+    }
+
+    if (!in_array('jurnal_angsuran.cari_kelompok', Session::get('tombol')) && !in_array('jurnal_angsuran', $path)) {
+        $angsuran = false;
+    }
 @endphp
 
 <nav class="navbar navbar-main navbar-expand-lg px-0 border-radius-xl {{ $config['navbarFixed'] }}" id="navbarBlur"
@@ -38,7 +47,7 @@
             </a>
         </div>
         <div class="ms-md-3 pe-md-3 d-flex align-items-center w-100">
-            @if (Session::get('angsuran') == true && !$show)
+            @if ($angsuran && !$show)
                 <div class="input-group input-group-outline">
                     <label class="form-label">Angsuran Kelompok</label>
                     @if (Request::get('pinkel'))
@@ -54,7 +63,7 @@
         </div>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 justify-content-between" id="navbar">
             <ul class="navbar-nav justify-content-end align-items-center">
-                @if (Session::get('angsuran') == true && !$show)
+                @if ($angsuran && !$show)
                     <li class="nav-item">
                         <a href="#" class="nav-link text-body p-0 position-relative" id="btnScanKartu"
                             data-bs-toggle="tooltip" data-bs-placement="top" title="Scan Kartu Angsuran"

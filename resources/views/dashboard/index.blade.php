@@ -336,9 +336,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info btn-sm me-2 btn-pelaporan">
-                        Print
-                    </button>
+                    @if (in_array('dashboard.print_dokumen', Session::get('tombol')))
+                        <button type="button" class="btn btn-info btn-sm me-2 btn-pelaporan">
+                            Print
+                        </button>
+                    @endif
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
                         Tutup
                     </button>
@@ -444,9 +446,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info btn-sm me-2 btn-pelaporan">
-                        Print
-                    </button>
+                    @if (in_array('dashboard.print_dokumen', Session::get('tombol')))
+                        <button type="button" class="btn btn-info btn-sm me-2 btn-pelaporan">
+                            Print
+                        </button>
+                    @endif
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
                         Tutup
                     </button>
@@ -532,9 +536,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info btn-sm me-2 btn-pelaporan">
-                        Print
-                    </button>
+                    @if (in_array('dashboard.print_dokumen', Session::get('tombol')))
+                        <button type="button" class="btn btn-info btn-sm me-2 btn-pelaporan">
+                            Print
+                        </button>
+                    @endif
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
                         Tutup
                     </button>
@@ -573,7 +579,9 @@
                     <div id="TbTagihan"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-github btn-sm" id="KirimPesan">Kirim Pesan</button>
+                    @if (in_array('dashboard.kirim_pesan_whatsapp', Session::get('tombol')))
+                        <button type="button" class="btn btn-github btn-sm" id="KirimPesan">Kirim Pesan</button>
+                    @endif
                     <button type="button" class="btn btn-danger btn-sm" id="closeTagihan">Tutup</button>
                 </div>
             </div>

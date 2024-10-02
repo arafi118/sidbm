@@ -74,36 +74,77 @@
                     </form>
 
                     <div class="d-flex justify-content-end">
-                        <button type="button" id="btnDetailKelompok" class="btn btn-info btn-sm me-3">
-                            Detail Kelompok <span class="badge badge-info" id="loan-id"></span>
-                        </button>
-                        <button type="button" id="btnAngsuranAnggota" class="btn btn-warning btn-sm me-3">
-                            Angsuran Anggota
-                        </button>
-                        <button type="button" id="SimpanAngsuran" class="btn btn-github btn-sm">Posting</button>
+                        @if (in_array('jurnal_angsuran.detail_kelompok', Session::get('tombol')))
+                            <button type="button" id="btnDetailKelompok" class="btn btn-info btn-sm me-3">
+                                Detail Kelompok <span class="badge badge-info" id="loan-id"></span>
+                            </button>
+                        @endif
+                        @if (in_array('jurnal_angsuran.angsuran_anggota', Session::get('tombol')))
+                            <button type="button" id="btnAngsuranAnggota" class="btn btn-warning btn-sm me-3">
+                                Angsuran Anggota
+                            </button>
+                        @endif
+                        @if (in_array('jurnal_angsuran.posting_angsuran', Session::get('tombol')))
+                            <button type="button" id="SimpanAngsuran" class="btn btn-github btn-sm">
+                                Posting
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>
 
-            <div class="card card-body p-2 pb-0 mb-3">
-                <div class="row">
-                    <div class="col-4">
-                        <div class="d-grid">
-                            <a id="cetakKartuAngsuran" class="btn btn-success btn-sm mb-2">Kartu</a>
+            @php
+                $CetakDokumen = false;
+                if (
+                    in_array('jurnal_angsuran.cetak_kartu', Session::get('tombol')) ||
+                    in_array('jurnal_angsuran.detail_angsuran', Session::get('tombol')) ||
+                    in_array('jurnal_angsuran.lpp_perbulan', Session::get('tombol'))
+                ) {
+                    $CetakDokumen = true;
+                }
+
+                $Col = 12;
+                $JumlahTombol = 0;
+                if (in_array('jurnal_angsuran.cetak_kartu', Session::get('tombol'))) {
+                    $JumlahTombol += 1;
+                }
+
+                if (in_array('jurnal_angsuran.detail_angsuran', Session::get('tombol'))) {
+                    $JumlahTombol += 1;
+                }
+
+                if (in_array('jurnal_angsuran.lpp_perbulan', Session::get('tombol'))) {
+                    $JumlahTombol += 1;
+                }
+
+                if ($JumlahTombol > 0) {
+                    $Col = $Col / $JumlahTombol;
+                }
+
+                $Class = 'col-' . $Col;
+            @endphp
+
+            @if ($CetakDokumen)
+                <div class="card card-body p-2 pb-0 mb-3">
+                    <div class="row">
+                        <div class="{{ $Class }}">
+                            <div class="d-grid">
+                                <a id="cetakKartuAngsuran" class="btn btn-success btn-sm mb-2">Kartu</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="d-grid">
-                            <button class="btn btn-danger btn-sm mb-2" id="btnDetailAngsuran">Detail</button>
+                        <div class="{{ $Class }}">
+                            <div class="d-grid">
+                                <button class="btn btn-danger btn-sm mb-2" id="btnDetailAngsuran">Detail</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="d-grid">
-                            <button class="btn btn-info btn-sm mb-2" id=cetakLPP>LPP per bulan</button>
+                        <div class="{{ $Class }}">
+                            <div class="d-grid">
+                                <button class="btn btn-info btn-sm mb-2" id=cetakLPP>LPP per bulan</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
         </div>
         <div class="col-md-4 mb-3">
             <div class="nav-wrapper position-relative end-0">

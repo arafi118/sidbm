@@ -160,12 +160,16 @@
         <div class="card mt-3">
             <div class="card-body p-2">
                 <div class="d-flex justify-content-end gap-2">
-                    <button type="submit" name="pph" value="0.5" class="btn btn-info float-end btn-sm mb-0">
-                        Cetak Taksiran PPh (0.5%)
-                    </button>
-                    <button type="submit" name="pph" value="11" class="btn btn-info float-end btn-sm mb-0">
-                        Cetak Taksiran PPh (11%)
-                    </button>
+                    @if (in_array('taksiran_pajak.cetak_taksiran_pajak_pph_0.5', Session::get('tombol')))
+                        <button type="submit" name="pph" value="0.5" class="btn btn-info float-end btn-sm mb-0">
+                            Cetak Taksiran PPh (0.5%)
+                        </button>
+                    @endif
+                    @if (in_array('taksiran_pajak.cetak_taksiran_pajak_pph_11', Session::get('tombol')))
+                        <button type="submit" name="pph" value="11" class="btn btn-info float-end btn-sm mb-0">
+                            Cetak Taksiran PPh (11%)
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>

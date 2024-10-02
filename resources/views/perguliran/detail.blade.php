@@ -208,6 +208,16 @@
             'withExcel' => false,
         ],
     ];
+
+    $TombolEdit = false;
+    if (in_array('tahapan_perguliran.proposal.edit_proposal', Session::get('tombol'))) {
+        $TombolEdit = true;
+    }
+
+    $TombolHapus = false;
+    if (in_array('tahapan_perguliran.proposal.hapus_proposal', Session::get('tombol'))) {
+        $TombolHapus = true;
+    }
 @endphp
 
 @extends('layouts.base')
@@ -232,11 +242,15 @@
         </div>
     </div>
 
-    @if ($perguliran->status == 'P' && !in_array(auth()->user()->level, ['4', '5']))
+    @if ($perguliran->status == 'P' && ($TombolEdit || $TombolHapus))
         <div class="card mb-3">
             <div class="card-body p-2 pb-0">
-                <button type="button" class="btn btn-success btn-sm mb-2" id="BtnEditProposal">Edit Proposal</button>
-                <button type="button" id="HapusProposal" class="btn btn-danger btn-sm mb-2">Hapus Proposal</button>
+                @if ($TombolEdit)
+                    <button type="button" class="btn btn-success btn-sm mb-2" id="BtnEditProposal">Edit Proposal</button>
+                @endif
+                @if ($TombolHapus)
+                    <button type="button" id="HapusProposal" class="btn btn-danger btn-sm mb-2">Hapus Proposal</button>
+                @endif
             </div>
         </div>
     @endif
@@ -248,7 +262,9 @@
     <div class="card mt-3">
         <div class="card-body p-2">
             @if ($perguliran->status == 'L' || $perguliran->status == 'H')
-                @if ($perguliran->status != 'H')
+                @if (
+                    $perguliran->status != 'H' &&
+                        in_array('tahapan_perguliran.lunas.cetak_keterangan_pelunasan', Session::get('tombol')))
                     <button class="btn btn-warning btn-sm float-end ms-2"
                         onclick="window.open('/cetak_keterangan_lunas/{{ $perguliran->id }}')" type="button">
                         <i class="fa fa-print"></i> Cetak Keterangan Pelunasan
