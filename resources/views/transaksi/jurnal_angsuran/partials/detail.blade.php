@@ -61,67 +61,73 @@
                 <td align="right">{{ number_format($denda) }}</td>
                 <td align="right">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-instagram btn-icon-only btn-tooltip"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
-                        </button>
-                        <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
-                            <li>
-                                <a class="dropdown-item border-radius-md" target="_blank"
-                                    href="/transaksi/dokumen/struk/{{ $real->id }}">
-                                    Kuitansi
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item border-radius-md" target="_blank"
-                                    href="/transaksi/dokumen/struk_matrix/{{ $real->id }}">
-                                    Kuitansi Dot Matrix
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item border-radius-md" target="_blank"
-                                    href="/transaksi/dokumen/struk_thermal/{{ $real->id }}">
-                                    Kuitansi Thermal
-                                </a>
-                            </li>
-                        </ul>
-                        <button type="button" class="btn btn-tumblr btn-icon-only btn-tooltip"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="btn-inner--icon"><i class="fas fa-file-invoice"></i></span>
-                        </button>
-                        <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
-                            <li>
-                                <a class="dropdown-item border-radius-md" target="_blank"
-                                    href="/perguliran/dokumen/kartu_angsuran/{{ $real->loan_id }}/{{ $real->id }}">
-                                    Kelompok
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item border-radius-md" target="_blank"
-                                    href="/perguliran/dokumen/cetak_kartu_angsuran_anggota/{{ $real->loan_id }}/{{ $real->id }}">
-                                    Anggota
-                                </a>
-                            </li>
-                        </ul>
-                        <button type="button" data-action="/transaksi/dokumen/bkm_angsuran/{{ $idt }}"
-                            class="btn btn-github btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="BKM" data-container="body" data-animation="true">
-                            <span class="btn-inner--icon"><i class="fas fa-file-circle-exclamation"></i></span>
-                        </button>
 
-                        @if ($is_dir)
+                        @if (in_array('jurnal_angsuran.cetak_dokumen_angsuran', Session::get('tombol')))
+                            <button type="button" class="btn btn-instagram btn-icon-only btn-tooltip"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
+                            </button>
+                            <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
+                                <li>
+                                    <a class="dropdown-item border-radius-md" target="_blank"
+                                        href="/transaksi/dokumen/struk/{{ $real->id }}">
+                                        Kuitansi
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item border-radius-md" target="_blank"
+                                        href="/transaksi/dokumen/struk_matrix/{{ $real->id }}">
+                                        Kuitansi Dot Matrix
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item border-radius-md" target="_blank"
+                                        href="/transaksi/dokumen/struk_thermal/{{ $real->id }}">
+                                        Kuitansi Thermal
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <button type="button" class="btn btn-tumblr btn-icon-only btn-tooltip"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="btn-inner--icon"><i class="fas fa-file-invoice"></i></span>
+                            </button>
+                            <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
+                                <li>
+                                    <a class="dropdown-item border-radius-md" target="_blank"
+                                        href="/perguliran/dokumen/kartu_angsuran/{{ $real->loan_id }}/{{ $real->id }}">
+                                        Kelompok
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item border-radius-md" target="_blank"
+                                        href="/perguliran/dokumen/cetak_kartu_angsuran_anggota/{{ $real->loan_id }}/{{ $real->id }}">
+                                        Anggota
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <button type="button" data-action="/transaksi/dokumen/bkm_angsuran/{{ $idt }}"
+                                class="btn btn-github btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="BKM" data-container="body" data-animation="true">
+                                <span class="btn-inner--icon"><i class="fas fa-file-circle-exclamation"></i></span>
+                            </button>
+                        @endif
+
+                        @if (in_array('jurnal_angsuran.transaksi_reversal', Session::get('tombol')))
                             <button type="button" data-idt="{{ $idt }}"
                                 class="btn btn-tumblr btn-icon-only btn-tooltip btn-reversal" data-bs-toggle="tooltip"
                                 data-bs-placement="top" title="Reversal" data-container="body" data-animation="true">
                                 <span class="btn-inner--icon"><i class="fas fa-code-pull-request"></i></span>
                             </button>
-                            @if (!$is_ben)
-                                <button type="button" data-idt="{{ $idt }}"
-                                    class="btn btn-github btn-icon-only btn-tooltip btn-delete" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Hapus" data-container="body" data-animation="true">
-                                    <span class="btn-inner--icon"><i class="fas fa-trash-can"></i></span>
-                                </button>
-                            @endif
+                        @endif
+
+                        @if (in_array('jurnal_angsuran.penghapusan_transaksi_angsuran', Session::get('tombol')))
+                            <button type="button" data-idt="{{ $idt }}"
+                                class="btn btn-github btn-icon-only btn-tooltip btn-delete" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Hapus" data-container="body" data-animation="true">
+                                <span class="btn-inner--icon"><i class="fas fa-trash-can"></i></span>
+                            </button>
                         @endif
                     </div>
                 </td>

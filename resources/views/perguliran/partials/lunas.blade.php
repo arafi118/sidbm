@@ -111,12 +111,14 @@
                     </div>
 
                     <div class="d-flex justify-content-end" style="gap: .5em;">
-                        <button class="btn btn-warning btn-sm"
-                            onclick="window.open('/cetak_keterangan_lunas/{{ $perguliran->id }}')" type="button">
-                            <i class="fa fa-print"></i> Cetak Keterangan Pelunasan
-                        </button>
+                        @if (in_array('tahapan_perguliran.lunas.cetak_keterangan_pelunasan', Session::get('tombol')))
+                            <button class="btn btn-warning btn-sm"
+                                onclick="window.open('/cetak_keterangan_lunas/{{ $perguliran->id }}')" type="button">
+                                <i class="fa fa-print"></i> Cetak Keterangan Pelunasan
+                            </button>
+                        @endif
 
-                        @if ($is_dir)
+                        @if ($is_dir || in_array('tahapan_perguliran.lunas.validasi_lunas', Session::get('tombol')))
                             <button class="btn btn-danger btn-sm" type="button" id="TombolLunaskan" disabled>
                                 <i class="fa fa-gavel"></i> Validasi Lunas
                             </button>

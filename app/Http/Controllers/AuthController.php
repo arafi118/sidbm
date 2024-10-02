@@ -7,6 +7,7 @@ use App\Models\AdminJenisPembayaran;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Menu;
+use App\Models\MenuTombol;
 use App\Models\User;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
@@ -116,10 +117,11 @@ class AuthController extends Controller
                         }
                     ])->orderBy('sort', 'ASC')->orderBy('id', 'ASC')->get();
 
-                    $angsuran = true;
-                    if (in_array('19', $hak_akses) || in_array('21', $hak_akses)) {
-                        $angsuran = false;
-                    }
+                    $AksesMenu = explode(',', $user->akses_menu);
+                    $Menu = Menu::whereNotIn('id', $AksesMenu)->pluck('akses')->toArray();
+
+                    $AksesTombol = explode(',', $user->akses_tombol);
+                    $MenuTombol = MenuTombol::whereNotIn('id', $AksesTombol)->pluck('akses')->toArray();
 
                     $inv = $this->generateInvoice($kec);
 
@@ -146,8 +148,9 @@ class AuthController extends Controller
                         'lokasi' => $user->lokasi,
                         'lokasi_user' => $user->lokasi,
                         'menu' => $menu,
+                        'tombol' => $MenuTombol,
+                        'akses_menu' => $Menu,
                         'icon' => $icon,
-                        'angsuran' => $angsuran,
                         'config' => json_encode($config)
                     ]);
 
@@ -310,9 +313,13 @@ class AuthController extends Controller
 
     public function app()
     {
-        return response()->json([
-            'success' => true,
-            'time' => date('Y-m-d H:i:s')
-        ]);
+        $menu_key = [];
+        $Menu = Menu::all();
+        foreach ($Menu as $menu) {
+            $ParentMenu = str_replace(' ', '_', strtolower($menu->title));
+            $menu_key[] = $ParentMenu;
+        }
+
+        dd($menu_key);
     }
 }

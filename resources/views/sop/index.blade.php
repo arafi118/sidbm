@@ -8,137 +8,173 @@
                     <li class="nav-item mb-2">
                         <b>Pengaturan</b>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark d-flex" data-scroll="" href="#lembaga">
-                            <i class="material-icons text-lg me-2">business</i>
-                            <span class="text-sm">Identitas Lembaga</span>
-                        </a>
-                    </li>
-                    <li class="nav-item pt-2">
-                        <a class="nav-link text-dark d-flex" data-scroll="" href="#pengelola">
-                            <i class="material-icons text-lg me-2">assignment_ind</i>
-                            <span class="text-sm">Sebutan Pengelola</span>
-                        </a>
-                    </li>
-                    <li class="nav-item pt-2">
-                        <a class="nav-link text-dark d-flex" data-scroll="" href="#pinjaman">
-                            <i class="material-icons text-lg me-2">equalizer</i>
-                            <span class="text-sm">Sistem Pinjaman</span>
-                        </a>
-                    </li>
-                    <li class="nav-item pt-2">
-                        <a class="nav-link text-dark d-flex" data-scroll="" href="#asuransi">
-                            <i class="material-icons text-lg me-2">account_balance_wallet</i>
-                            <span class="text-sm">Pengaturan Asuransi</span>
-                        </a>
-                    </li>
-                    <li class="nav-item pt-2">
-                        <a class="nav-link text-dark d-flex" data-scroll="" href="#redaksi_spk">
-                            <i class="material-icons text-lg me-2">description</i>
-                            <span class="text-sm">Redaksi Dok. SPK</span>
-                        </a>
-                    </li>
-                    <li class="nav-item pt-2">
-                        <a class="nav-link text-dark d-flex" data-scroll="" href="#logo">
-                            <i class="material-icons text-lg me-2">crop_original</i>
-                            <span class="text-sm">Logo</span>
-                        </a>
-                    </li>
-                    <li class="nav-item pt-2">
-                        <a class="nav-link text-dark d-flex" data-scroll="" href="#whatsapp">
-                            <i class="material-icons text-lg me-2">priority_high</i>
-                            <span class="text-sm">Whatsapp</span>
-                        </a>
-                    </li>
-                    <li class="nav-item pt-2">
-                        <a class="nav-link text-dark d-flex" data-scroll="" href="#berita_acara">
-                            <i class="material-icons text-lg me-2">insert_drive_file</i>
-                            <span class="text-sm">Berita Acara</span>
-                        </a>
-                    </li>
-                    <li class="nav-item pt-2">
-                        <a class="nav-link text-dark d-flex" data-scroll="" href="#tanggung_renteng">
-                            <i class="material-icons text-lg me-2">insert_drive_file</i>
-                            <span class="text-sm">Tanggung Renteng</span>
-                        </a>
-                    </li>
+                    @if (in_array('personalisasi_sop.identitas_lembaga', Session::get('tombol')))
+                        <li class="nav-item">
+                            <a class="nav-link text-dark d-flex" data-scroll="" href="#lembaga">
+                                <i class="material-icons text-lg me-2">business</i>
+                                <span class="text-sm">Identitas Lembaga</span>
+                            </a>
+                        </li>
+                    @endif
+                    @if (in_array('personalisasi_sop.sebutan_pengelola', Session::get('tombol')))
+                        <li class="nav-item pt-2">
+                            <a class="nav-link text-dark d-flex" data-scroll="" href="#pengelola">
+                                <i class="material-icons text-lg me-2">assignment_ind</i>
+                                <span class="text-sm">Sebutan Pengelola</span>
+                            </a>
+                        </li>
+                    @endif
+                    @if (in_array('personalisasi_sop.sistem_pinjaman', Session::get('tombol')))
+                        <li class="nav-item pt-2">
+                            <a class="nav-link text-dark d-flex" data-scroll="" href="#pinjaman">
+                                <i class="material-icons text-lg me-2">equalizer</i>
+                                <span class="text-sm">Sistem Pinjaman</span>
+                            </a>
+                        </li>
+                    @endif
+                    @if (in_array('personalisasi_sop.pengaturan_asuransi', Session::get('tombol')))
+                        <li class="nav-item pt-2">
+                            <a class="nav-link text-dark d-flex" data-scroll="" href="#asuransi">
+                                <i class="material-icons text-lg me-2">account_balance_wallet</i>
+                                <span class="text-sm">Pengaturan Asuransi</span>
+                            </a>
+                        </li>
+                    @endif
+                    @if (in_array('personalisasi_sop.redaksi_dokumen_spk', Session::get('tombol')))
+                        <li class="nav-item pt-2">
+                            <a class="nav-link text-dark d-flex" data-scroll="" href="#redaksi_spk">
+                                <i class="material-icons text-lg me-2">description</i>
+                                <span class="text-sm">Redaksi Dok. SPK</span>
+                            </a>
+                        </li>
+                    @endif
+                    @if (in_array('personalisasi_sop.upload_logo', Session::get('tombol')))
+                        <li class="nav-item pt-2">
+                            <a class="nav-link text-dark d-flex" data-scroll="" href="#logo">
+                                <i class="material-icons text-lg me-2">crop_original</i>
+                                <span class="text-sm">Logo</span>
+                            </a>
+                        </li>
+                    @endif
+                    @if (in_array('personalisasi_sop.scan_whatsapp', Session::get('tombol')))
+                        <li class="nav-item pt-2">
+                            <a class="nav-link text-dark d-flex" data-scroll="" href="#whatsapp">
+                                <i class="material-icons text-lg me-2">priority_high</i>
+                                <span class="text-sm">Whatsapp</span>
+                            </a>
+                        </li>
+                    @endif
+                    @if (in_array('personalisasi_sop.berita_acara_pergantian_laporan', Session::get('tombol')))
+                        <li class="nav-item pt-2">
+                            <a class="nav-link text-dark d-flex" data-scroll="" href="#berita_acara">
+                                <i class="material-icons text-lg me-2">insert_drive_file</i>
+                                <span class="text-sm">Berita Acara</span>
+                            </a>
+                        </li>
+                    @endif
+                    @if (in_array('personalisasi_sop.isian_tanggung_renteng_pinjaman', Session::get('tombol')))
+                        <li class="nav-item pt-2">
+                            <a class="nav-link text-dark d-flex" data-scroll="" href="#tanggung_renteng">
+                                <i class="material-icons text-lg me-2">insert_drive_file</i>
+                                <span class="text-sm">Tanggung Renteng</span>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </div>
 
         <div class="col-lg-9 mt-lg-0 mt-4">
-            <div class="card" id="lembaga">
-                <div class="card-header">
-                    <h5 class="mb-0">Identitas Lembaga</h5>
+            @if (in_array('personalisasi_sop.identitas_lembaga', Session::get('tombol')))
+                <div class="card" id="lembaga">
+                    <div class="card-header">
+                        <h5 class="mb-0">Identitas Lembaga</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        @include('sop.partials._lembaga')
+                    </div>
                 </div>
-                <div class="card-body pt-0">
-                    @include('sop.partials._lembaga')
+            @endif
+            @if (in_array('personalisasi_sop.sebutan_pengelola', Session::get('tombol')))
+                <div class="card mt-4" id="pengelola">
+                    <div class="card-header">
+                        <h5 class="mb-0">Sebutan Pengelola Bumdesma</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        @include('sop.partials._pengelola')
+                    </div>
                 </div>
-            </div>
-            <div class="card mt-4" id="pengelola">
-                <div class="card-header">
-                    <h5 class="mb-0">Sebutan Pengelola Bumdesma</h5>
+            @endif
+            @if (in_array('personalisasi_sop.sistem_pinjaman', Session::get('tombol')))
+                <div class="card mt-4" id="pinjaman">
+                    <div class="card-header">
+                        <h5 class="mb-0">Sistem Pinjaman</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        @include('sop.partials._pinjaman')
+                    </div>
                 </div>
-                <div class="card-body pt-0">
-                    @include('sop.partials._pengelola')
+            @endif
+            @if (in_array('personalisasi_sop.pengaturan_asuransi', Session::get('tombol')))
+                <div class="card mt-4" id="asuransi">
+                    <div class="card-header">
+                        <h5 class="mb-0">Pengaturan Asuransi</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        @include('sop.partials._asuransi')
+                    </div>
                 </div>
-            </div>
-            <div class="card mt-4" id="pinjaman">
-                <div class="card-header">
-                    <h5 class="mb-0">Sistem Pinjaman</h5>
+            @endif
+            @if (in_array('personalisasi_sop.redaksi_dokumen_spk', Session::get('tombol')))
+                <div class="card mt-4" id="redaksi_spk">
+                    <div class="card-header">
+                        <h5 class="mb-0">Redaksi Dokumen SPK</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        @include('sop.partials._spk')
+                    </div>
                 </div>
-                <div class="card-body pt-0">
-                    @include('sop.partials._pinjaman')
+            @endif
+            @if (in_array('personalisasi_sop.upload_logo', Session::get('tombol')))
+                <div class="card mt-4" id="logo">
+                    <div class="card-header">
+                        <h5 class="mb-0">Upload Logo</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        @include('sop.partials._logo')
+                    </div>
                 </div>
-            </div>
-            <div class="card mt-4" id="asuransi">
-                <div class="card-header">
-                    <h5 class="mb-0">Pengaturan Asuransi</h5>
+            @endif
+            @if (in_array('personalisasi_sop.scan_whatsapp', Session::get('tombol')))
+                <div class="card mt-4" id="whatsapp">
+                    <div class="card-header">
+                        <h5 class="mb-0">Pengaturan Whatsapp</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        @include('sop.partials._whatsapp')
+                    </div>
                 </div>
-                <div class="card-body pt-0">
-                    @include('sop.partials._asuransi')
+            @endif
+            @if (in_array('personalisasi_sop.berita_acara_pergantian_laporan', Session::get('tombol')))
+                <div class="card mt-4" id="berita_acara">
+                    <div class="card-header">
+                        <h5 class="mb-0">Berita Acara Pergantian Laporan</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        @include('sop.partials._berita_acara')
+                    </div>
                 </div>
-            </div>
-            <div class="card mt-4" id="redaksi_spk">
-                <div class="card-header">
-                    <h5 class="mb-0">Redaksi Dokumen SPK</h5>
+            @endif
+            @if (in_array('personalisasi_sop.isian_tanggung_renteng_pinjaman', Session::get('tombol')))
+                <div class="card mt-4" id="tanggung_renteng">
+                    <div class="card-header">
+                        <h5 class="mb-0">Pengaturan Tanggung Renteng Pinjaman</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        @include('sop.partials._tanggung_renteng')
+                    </div>
                 </div>
-                <div class="card-body pt-0">
-                    @include('sop.partials._spk')
-                </div>
-            </div>
-            <div class="card mt-4" id="logo">
-                <div class="card-header">
-                    <h5 class="mb-0">Upload Logo</h5>
-                </div>
-                <div class="card-body pt-0">
-                    @include('sop.partials._logo')
-                </div>
-            </div>
-            <div class="card mt-4" id="whatsapp">
-                <div class="card-header">
-                    <h5 class="mb-0">Pengaturan Whatsapp</h5>
-                </div>
-                <div class="card-body pt-0">
-                    @include('sop.partials._whatsapp')
-                </div>
-            </div>
-            <div class="card mt-4" id="berita_acara">
-                <div class="card-header">
-                    <h5 class="mb-0">Berita Acara Pergantian Laporan</h5>
-                </div>
-                <div class="card-body pt-0">
-                    @include('sop.partials._berita_acara')
-                </div>
-            </div>
-            <div class="card mt-4" id="tanggung_renteng">
-                <div class="card-header">
-                    <h5 class="mb-0">Pengaturan Tanggung Renteng Pinjaman</h5>
-                </div>
-                <div class="card-body pt-0">
-                    @include('sop.partials._tanggung_renteng')
-                </div>
-            </div>
+            @endif
         </div>
 
         {{-- Modal Scan Whatsapp --}}

@@ -26,6 +26,20 @@
 @endsection
 
 @section('script')
+    @if (in_array('data_desa.edit_data_desa', Session::get('tombol')))
+        <script>
+            $('.table').on('click', 'tbody tr', function(e) {
+                var data = table.row(this).data();
+
+                $.get('/database/desa/' + data.kd_desa + "/edit", function(result) {
+                    $('#EditDesa .modal-dialog').html(result)
+                })
+
+                $('#EditDesa').modal('show')
+            })
+        </script>
+    @endif
+
     <script>
         var table = $('.table').DataTable({
             language: {
@@ -59,16 +73,6 @@
                 }
             ]
         });
-
-        $('.table').on('click', 'tbody tr', function(e) {
-            var data = table.row(this).data();
-
-            $.get('/database/desa/' + data.kd_desa + "/edit", function(result) {
-                $('#EditDesa .modal-dialog').html(result)
-            })
-
-            $('#EditDesa').modal('show')
-        })
 
         $(document).on('click', '#simpanDesa', function(e) {
             e.preventDefault()

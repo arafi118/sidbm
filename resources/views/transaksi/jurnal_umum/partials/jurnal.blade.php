@@ -14,6 +14,17 @@
 
     $total_debit = 0;
     $total_kredit = 0;
+
+    $KolomAksi = true;
+    if (
+        !(
+            in_array('jurnal_umum.cetak_dokumen_transaksi', Session::get('tombol')) ||
+            in_array('jurnal_umum.transaksi_reversal', Session::get('tombol')) ||
+            in_array('jurnal_umum.penghapusan_transaksi', Session::get('tombol'))
+        )
+    ) {
+        $KolomAksi = false;
+    }
 @endphp
 
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="table table-striped midle">
@@ -28,7 +39,9 @@
             <td align="center" width="140">Kredit</td>
             <td align="center" width="150">Saldo</td>
             <td align="center" width="40">Ins</td>
-            <td align="center" width="170">&nbsp;</td>
+            @if ($KolomAksi)
+                <td align="center" width="170">&nbsp;</td>
+            @endif
         </tr>
     </thead>
 
@@ -43,7 +56,9 @@
             <td align="right">{{ number_format($saldo['kredit'], 2) }}</td>
             <td align="right">{{ number_format($saldo_awal_tahun, 2) }}</td>
             <td align="center"></td>
-            <td align="center"></td>
+            @if ($KolomAksi)
+                <td align="center"></td>
+            @endif
         </tr>
         <tr>
             <td align="center"></td>
@@ -55,7 +70,9 @@
             <td align="right">{{ number_format($k_bulan_lalu, 2) }}</td>
             <td align="right">{{ number_format($total_saldo, 2) }}</td>
             <td align="center"></td>
-            <td align="center"></td>
+            @if ($KolomAksi)
+                <td align="center"></td>
+            @endif
         </tr>
 
         @foreach ($transaksi as $trx)
@@ -182,83 +199,92 @@
                 <td align="right">{{ number_format($kredit, 2) }}</td>
                 <td align="right">{{ number_format($total_saldo, 2) }}</td>
                 <td align="center">{{ $ins }}</td>
-                <td align="right">
-                    <div class="btn-group">
-                        @if ($kuitansi)
-                            @if ($trx->idtp > 0 && $trx->id_pinj != 0)
-                                <button type="button" data-idtp="{{ $trx->idtp }}"
-                                    class="btn btn-instagram btn-icon-only btn-tooltip" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
-                                </button>
-                                <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <a class="dropdown-item border-radius-md" target="_blank"
-                                            href="/transaksi/dokumen/struk/{{ $trx->idtp }}">
-                                            Kuitansi
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item border-radius-md" target="_blank"
-                                            href="/transaksi/dokumen/struk_matrix/{{ $trx->idtp }}">
-                                            Kuitansi Dot Matrix
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item border-radius-md" target="_blank"
-                                            href="/transaksi/dokumen/struk_thermal/{{ $trx->idtp }}">
-                                            Kuitansi Thermal
-                                        </a>
-                                    </li>
-                                </ul>
-                            @else
-                                <button type="button" class="btn btn-instagram btn-icon-only btn-tooltip"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
-                                </button>
-                                <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <a class="dropdown-item border-radius-md" target="_blank"
-                                            href="/transaksi/dokumen/kuitansi/{{ $trx->idt }}">
-                                            Kuitansi
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item border-radius-md" target="_blank"
-                                            href="/transaksi/dokumen/kuitansi_thermal/{{ $trx->idt }}">
-                                            Kuitansi Thermal
-                                        </a>
-                                    </li>
-                                </ul>
+                @if ($KolomAksi)
+                    <td align="right">
+                        <div class="btn-group">
+                            @if ($kuitansi && in_array('jurnal_umum.cetak_dokumen_transaksi', Session::get('tombol')))
+                                @if ($trx->idtp > 0 && $trx->id_pinj != 0)
+                                    <button type="button" data-idtp="{{ $trx->idtp }}"
+                                        class="btn btn-instagram btn-icon-only btn-tooltip" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
+                                    </button>
+                                    <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
+                                        <li>
+                                            <a class="dropdown-item border-radius-md" target="_blank"
+                                                href="/transaksi/dokumen/struk/{{ $trx->idtp }}">
+                                                Kuitansi
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item border-radius-md" target="_blank"
+                                                href="/transaksi/dokumen/struk_matrix/{{ $trx->idtp }}">
+                                                Kuitansi Dot Matrix
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item border-radius-md" target="_blank"
+                                                href="/transaksi/dokumen/struk_thermal/{{ $trx->idtp }}">
+                                                Kuitansi Thermal
+                                            </a>
+                                        </li>
+                                    </ul>
+                                @else
+                                    <button type="button" class="btn btn-instagram btn-icon-only btn-tooltip"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="btn-inner--icon"><i class="fas fa-file"></i></span>
+                                    </button>
+                                    <ul class="dropdown-menu px-2 py-3" aria-labelledby="dropdownMenuButton">
+                                        <li>
+                                            <a class="dropdown-item border-radius-md" target="_blank"
+                                                href="/transaksi/dokumen/kuitansi/{{ $trx->idt }}">
+                                                Kuitansi
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item border-radius-md" target="_blank"
+                                                href="/transaksi/dokumen/kuitansi_thermal/{{ $trx->idt }}">
+                                                Kuitansi Thermal
+                                            </a>
+                                        </li>
+                                    </ul>
+                                @endif
                             @endif
-                        @endif
 
-                        @if ($trx->idtp > 0 && $trx->id_pinj != 0)
-                            <button type="button"
-                                data-action="/transaksi/dokumen/{{ $files }}_angsuran/{{ $trx->idt }}"
-                                class="btn btn-tumblr btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="{{ $files }}" data-container="body"
-                                data-animation="true">
-                                <span class="btn-inner--icon"><i class="fas fa-file-circle-exclamation"></i></span>
-                            </button>
-                        @else
-                            <button type="button"
-                                data-action="/transaksi/dokumen/{{ $files }}/{{ $trx->idt }}"
-                                class="btn btn-tumblr btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="{{ $files }}" data-container="body"
-                                data-animation="true">
-                                <span class="btn-inner--icon"><i class="fas fa-file-circle-exclamation"></i></span>
-                            </button>
-                        @endif
+                            @if (in_array('jurnal_umum.cetak_dokumen_transaksi', Session::get('tombol')))
+                                @if ($trx->idtp > 0 && $trx->id_pinj != 0)
+                                    <button type="button"
+                                        data-action="/transaksi/dokumen/{{ $files }}_angsuran/{{ $trx->idt }}"
+                                        class="btn btn-tumblr btn-icon-only btn-tooltip btn-link"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $files }}"
+                                        data-container="body" data-animation="true">
+                                        <span class="btn-inner--icon">
+                                            <i class="fas fa-file-circle-exclamation"></i>
+                                        </span>
+                                    </button>
+                                @else
+                                    <button type="button"
+                                        data-action="/transaksi/dokumen/{{ $files }}/{{ $trx->idt }}"
+                                        class="btn btn-tumblr btn-icon-only btn-tooltip btn-link"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $files }}"
+                                        data-container="body" data-animation="true">
+                                        <span class="btn-inner--icon">
+                                            <i class="fas fa-file-circle-exclamation"></i>
+                                        </span>
+                                    </button>
+                                @endif
+                            @endif
 
-                        @if ($is_dir)
-                            <button type="button" data-idt="{{ $trx->idt }}"
-                                class="btn btn-tumblr btn-icon-only btn-tooltip btn-reversal" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Reversal" data-container="body"
-                                data-animation="true">
-                                <span class="btn-inner--icon"><i class="fas fa-code-pull-request"></i></span>
-                            </button>
-                            @if (!$is_ben)
+                            @if (in_array('jurnal_umum.transaksi_reversal', Session::get('tombol')))
+                                <button type="button" data-idt="{{ $trx->idt }}"
+                                    class="btn btn-tumblr btn-icon-only btn-tooltip btn-reversal"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Reversal"
+                                    data-container="body" data-animation="true">
+                                    <span class="btn-inner--icon"><i class="fas fa-code-pull-request"></i></span>
+                                </button>
+                            @endif
+
+                            @if (in_array('jurnal_umum.penghapusan_transaksi', Session::get('tombol')))
                                 <button type="button" data-idt="{{ $trx->idt }}"
                                     class="btn btn-github btn-icon-only btn-tooltip btn-delete"
                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus"
@@ -266,9 +292,9 @@
                                     <span class="btn-inner--icon"><i class="fas fa-trash-can"></i></span>
                                 </button>
                             @endif
-                        @endif
-                    </div>
-                </td>
+                        </div>
+                    </td>
+                @endif
             </tr>
         @endforeach
 

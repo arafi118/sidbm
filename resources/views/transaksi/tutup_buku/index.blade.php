@@ -29,11 +29,15 @@
             </form>
 
             <div class="d-flex justify-content-end">
-                <button type="button" id="TutupBuku" {{ date('m') <= 10 ? 'disabled' : '' }}
-                    class="btn btn-sm btn-github mb-0 ms-3">1. Tutup Buku</button>
-                <button type="button" id="PembagianLaba" class="btn btn-sm btn-instagram mb-0 ms-3">
-                    2. Simpan Alokasi Laba
-                </button>
+                @if (in_array('tutup_buku.tutup_buku', Session::get('tombol')))
+                    <button type="button" id="TutupBuku" {{ date('m') <= 10 ? 'disabled' : '' }}
+                        class="btn btn-sm btn-github mb-0 ms-3">1. Tutup Buku</button>
+                @endif
+                @if (in_array('tutup_buku.simpan_alokasi_laba', Session::get('tombol')))
+                    <button type="button" id="PembagianLaba" class="btn btn-sm btn-instagram mb-0 ms-3">
+                        2. Simpan Alokasi Laba
+                    </button>
+                @endif
             </div>
         </div>
     </div>

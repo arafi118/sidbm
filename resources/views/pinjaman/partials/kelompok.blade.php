@@ -2,10 +2,15 @@
     use App\Models\PinjamanKelompok;
 
     $selected = false;
+
+    $Kolom = 'col-md-9 col-7';
+    if (!in_array('register_kelompok', Session::get('akses_menu'))) {
+        $Kolom = 'col-md-12 col-12';
+    }
 @endphp
 
 <div class="row">
-    <div class="col-md-9 col-7">
+    <div class="{{ $Kolom }}">
         <select class="form-control mb-0" name="kelompok" id="kelompok">
             @foreach ($kelompok as $kel)
                 @php
@@ -42,11 +47,14 @@
             @endforeach
         </select>
     </div>
-    <div class="col-md-3 col-5 d-flex align-items-end">
-        <div class="d-grid w-100 mb-2">
-            <a href="/database/kelompok/register_kelompok" class="btn btn-info btn-sm mb-0">Register Kelompok</a>
+
+    @if (in_array('register_kelompok', Session::get('akses_menu')))
+        <div class="col-md-3 col-5 d-flex align-items-end">
+            <div class="d-grid w-100 mb-2">
+                <a href="/database/kelompok/register_kelompok" class="btn btn-info btn-sm mb-0">Register Kelompok</a>
+            </div>
         </div>
-    </div>
+    @endif
 </div>
 
 <script>

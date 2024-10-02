@@ -21,4 +21,9 @@ class Menu extends Model
     {
         return $this->belongsTo(Menu::class, 'parent_id', 'id');
     }
+
+    public function tombol()
+    {
+        return $this->hasMany(MenuTombol::class, 'id_menu', 'id');
+    }
 }
