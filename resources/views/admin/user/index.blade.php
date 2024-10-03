@@ -10,6 +10,7 @@
                         @foreach ($kab->kec as $kec)
                             <option value="{{ $kec->kd_kec }}">
                                 {{ ucwords(strtolower($kab->nama_kab)) }}, {{ $kec->nama_kec }}
+                                [{{ str_pad($kec->id, 3, '0', STR_PAD_LEFT) }}]
                             </option>
                         @endforeach
                     @endforeach
