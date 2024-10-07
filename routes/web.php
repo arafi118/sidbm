@@ -286,7 +286,7 @@ Route::get('/link', function () {
     }
 });
 
-Route::get('/user', function () {
+Route::get('/user_lokasi', function () {
     $host = request()->getHost();
     $kec = Kecamatan::where('web_kec', request()->getHost())->orwhere('web_alternatif', request()->getHost())->with('kabupaten')->first();
     $users = User::where('lokasi', $kec->id)->with('l', 'j')->orderBy('level', 'ASC')->orderBy('jabatan', 'ASC')->get();
