@@ -132,8 +132,7 @@
                                 <td>
                                     <div class="input-group input-group-static">
                                         <input type="text" class="form-control"
-                                            name="catatan[{{ $pinjaman_anggota->id }}]"
-                                            value="{{ $pinjaman_anggota->catatan_verifikasi }}">
+                                            name="catatan[{{ $pinjaman_anggota->id }}]" value="">
                                     </div>
                                 </td>
                                 <td>
