@@ -2387,6 +2387,7 @@ class PelaporanController extends Controller
         $awal = $bulan[0];
         $akhir = end($bulan);
 
+        $data['akhir'] = $akhir;
         $data['bulan_akhir'] = $awal - 1;
         $data['bulan_tampil'] = $bulan;
         $data['triwulan'] = array_search($data['sub'], array_keys($title)) + 1;

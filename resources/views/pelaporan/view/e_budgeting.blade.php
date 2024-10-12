@@ -18,6 +18,8 @@
 
     $komulatif_pendapatan = 0;
     $komulatif_beban = 0;
+    $kom_rencana_pendapatan = 0;
+    $kom_rencana_beban = 0;
 @endphp
 
 @extends('pelaporan.layout.base')
@@ -74,6 +76,7 @@
 
         @foreach ($akun1 as $lev1)
             @php
+                $kom_rencana_lalu = 0;
                 $kom_saldo_lalu = 0;
 
                 $bulan1 = 0;
@@ -108,6 +111,7 @@
                             $t_rencana = 0;
                             $saldo_bula_lalu = 0;
                             $bulan_lalu = 0;
+                            $rencana_kom = 0;
                             $saldo_kom = 0;
 
                             $urutan = 1;
@@ -132,6 +136,10 @@
                                         $rencana = $saldo->eb->jumlah;
                                     }
 
+                                    if ($saldo->bulan < $akhir) {
+                                        $t_rencana += $rencana;
+                                        $kom_rencana_lalu += $rencana;
+                                    }
                                     $saldo_lalu = $_saldo;
                                 @endphp
 
@@ -166,8 +174,6 @@
                                         }
 
                                         $t_saldo += $_saldo;
-                                        $t_rencana += $rencana;
-
                                         $urutan++;
                                     @endphp
                                     <td class="t l b" align="right">
@@ -195,6 +201,7 @@
                     $pendapatan2 += $bulan2;
                     $pendapatan3 += $bulan3;
                     $komulatif_pendapatan += $kom_saldo_lalu;
+                    $kom_rencana_pendapatan += $kom_rencana_lalu;
                 } else {
                     $r_beban1 += $rencana1;
                     $r_beban2 += $rencana2;
@@ -204,6 +211,7 @@
                     $beban2 += $bulan2;
                     $beban3 += $bulan3;
                     $komulatif_beban += $kom_saldo_lalu;
+                    $kom_rencana_beban += $kom_rencana_lalu;
                 }
             @endphp
 
@@ -219,7 +227,7 @@
                 <td align="right" class="t l b">{{ number_format($rencana3, 2) }}</td>
                 <td align="right" class="t l b">{{ number_format($bulan3, 2) }}</td>
                 <td align="right" class="t l b">
-                    {{ number_format($rencana1 + $rencana2 + $rencana3, 2) }}
+                    {{ number_format($kom_rencana_lalu, 2) }}
                 </td>
                 <td align="right" class="t l b r">
                     {{ number_format($kom_saldo_lalu + $bulan1 + $bulan2 + $bulan3, 2) }}
@@ -261,7 +269,7 @@
                         <th width="8%" class="t l b" align="right">{{ number_format($pendapatan3 - $beban3, 2) }}
                         </th>
                         <th width="8%" class="t l b" align="right">
-                            {{ number_format($r_pendapatan - $r_beban, 2) }}
+                            {{ number_format($kom_rencana_pendapatan - $kom_rencana_beban, 2) }}
                         </th>
                         <th width="8%" class="t l b r" align="right">
                             {{ number_format($komulatif_pendapatan - $komulatif_beban + ($pendapatan - $beban), 2) }}
