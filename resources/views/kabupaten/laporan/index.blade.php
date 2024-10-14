@@ -202,7 +202,6 @@
         function checkCount(count) {
             var lokasi_count = parseInt($('#count').val())
 
-            console.log(count, lokasi_count);
             if (count == lokasi_count) {
                 $('#Preview').removeAttr('disabled');
                 var form = $('#FormPelaporan')
@@ -210,10 +209,10 @@
                 var file = $('select#laporan').val()
                 var sub = $('select#sub_laporan').val()
 
-                console.log(file, sub, file != '');
                 if (file != '') {
-                    $('form#FormPelaporan').submit()
-                    console.log($('form#FormPelaporan').submit())
+                    $('form#FormPelaporan').submit(function(event) {
+                        console.log('Form submitted');
+                    })
                 }
             } else {
                 setSession(count + 1)
