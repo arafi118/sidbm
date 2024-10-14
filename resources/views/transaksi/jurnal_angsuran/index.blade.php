@@ -667,31 +667,13 @@
         function sendMsg(number, nama, msg, repeat = 0) {
             $.ajax({
                 type: 'post',
-                url: '{{ $api }}/send-text',
-                timeout: 0,
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                xhrFields: {
-                    withCredentials: true
-                },
+                url: '{{ $api }}/api/message/{{ $kec->token }}/send_message',
                 data: JSON.stringify({
-                    token: "{{ auth()->user()->ip }}",
                     number: number,
-                    text: msg
+                    message: msg
                 }),
                 success: function(result) {
-                    if (result.status) {
-                        MultiToast('success', 'Pesan untuk kelompok ' + nama + ' berhasil dikirim')
-                    } else {
-                        if (repeat < 1) {
-                            setTimeout(function() {
-                                sendMsg(number, nama, msg, repeat + 1)
-                            }, 1000)
-                        } else {
-                            MultiToast('error', 'Pesan untuk kelompok ' + nama + ' gagal dikirim')
-                        }
-                    }
+                    MultiToast('success', 'Pesan untuk kelompok ' + nama + ' berhasil dikirim')
                 },
                 error: function(result) {
                     if (repeat < 1) {

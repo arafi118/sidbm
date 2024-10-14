@@ -23,10 +23,10 @@ class SopController extends Controller
 {
     public function index()
     {
-        $api = env('APP_API', 'https://api-whatsapp.sidbm.net');
+        $api = env('APP_API', 'http://localhost:8080');
 
         $kec = Kecamatan::where('id', Session::get('lokasi'))->with('ttd')->first();
-        $token = "DBM-" . str_pad($kec->id, 4, '0', STR_PAD_LEFT);
+        $token = $kec->token;
 
         $title = "Personalisasi SOP";
         return view('sop.index')->with(compact('title', 'kec', 'api', 'token'));

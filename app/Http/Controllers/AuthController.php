@@ -103,6 +103,14 @@ class AuthController extends Controller
             ]);
         }
 
+        $token = $kec->token;
+        if (strlen($kec->token) < 45) {
+            $token = 'dbm-' . str_replace('.', '', $kec->kd_kec) . '-' . str_pad($kec->id, 3, '0', STR_PAD_LEFT);
+            $UpdateKec = Kecamatan::where('id', $kec->id)->update([
+                'token' => $token
+            ]);
+        }
+
         $user = User::where([['uname', $username], ['lokasi', $lokasi]])->first();
         if ($user) {
             if ($password === $user->pass) {
@@ -151,7 +159,8 @@ class AuthController extends Controller
                         'tombol' => $MenuTombol,
                         'akses_menu' => $Menu,
                         'icon' => $icon,
-                        'config' => json_encode($config)
+                        'config' => json_encode($config),
+                        'token' => $token
                     ]);
 
                     $redirect = '/dashboard';
