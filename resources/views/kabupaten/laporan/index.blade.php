@@ -209,6 +209,8 @@
 
                 var file = $('select#laporan').val()
                 var sub = $('select#sub_laporan').val()
+
+                console.log(file, sub);
                 if (file != '') {
                     form.submit()
                 }
