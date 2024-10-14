@@ -210,7 +210,7 @@
                 var file = $('select#laporan').val()
                 var sub = $('select#sub_laporan').val()
 
-                console.log(file, sub);
+                console.log(file, sub, file != '');
                 if (file != '') {
                     $('form#FormPelaporan').submit()
                 }
