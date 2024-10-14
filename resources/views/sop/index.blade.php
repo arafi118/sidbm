@@ -266,7 +266,11 @@
                             socketId
                         },
                         success: function(result) {
-                            $('#ModalScanWA').modal('show')
+                            if (result.success) {
+                                $('#ModalScanWA').modal('show')
+                            } else {
+                                Swal.fire('Error', "Whatsapp sudah terdaftar.", 'error')
+                            }
                         }
                     })
                 }
