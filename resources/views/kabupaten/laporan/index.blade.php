@@ -202,6 +202,7 @@
         function checkCount(count) {
             var lokasi_count = parseInt($('#count').val())
 
+            console.log(count, lokasi_count);
             if (count == lokasi_count) {
                 $('#Preview').removeAttr('disabled');
                 var form = $('#FormPelaporan')
