@@ -212,7 +212,7 @@
 
                 console.log(file, sub);
                 if (file != '') {
-                    form.submit()
+                    $('#FormPelaporan').submit()
                 }
             } else {
                 setSession(count + 1)
