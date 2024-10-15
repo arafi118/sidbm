@@ -28,6 +28,7 @@
                 </div>
 
                 <div class="d-flex justify-content-end">
+                    <button type="submit" name="jenis" value="excel" class="btn btn-sm btn-success me-2">Excel</button>
                     <button type="submit" name="jenis" value="pdf" class="btn btn-sm btn-github">Preview</button>
                 </div>
             </form>

@@ -2,7 +2,7 @@
     use App\Utils\Tanggal;
 
     if ($jenis == 'excel') {
-        $nama_file = ucwords(str_replace('_', ' ', $laporan)) . ' (' . ucwords($tgl) . ')';
+        $nama_file = 'PROYEKSI PENDAPATAN JASA TAHUN ' . $tahun;
 
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment; filename="' . $nama_file . '.xls"');
