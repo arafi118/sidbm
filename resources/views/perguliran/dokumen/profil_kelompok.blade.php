@@ -1,5 +1,14 @@
 @php
     use App\Utils\Tanggal;
+    $ketua = $pinkel->kelompok->ketua;
+    $sekretaris = $pinkel->kelompok->sekretaris;
+    $bendahara = $pinkel->kelompok->bendahara;
+    if ($pinkel->struktur_kelompok) {
+        $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
+        $ketua = $struktur_kelompok['ketua'];
+        $sekretaris = $struktur_kelompok['sekretaris'];
+        $bendahara = $struktur_kelompok['bendahara'];
+    }
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
@@ -85,21 +94,21 @@
             <td align="center">&nbsp;</td>
             <td>1.&nbsp;Ketua</td>
             <td align="right">:</td>
-            <td style="font-weight: bold;">{{ $pinkel->kelompok->ketua }}</td>
+            <td style="font-weight: bold;">{{ $ketua }}</td>
         </tr>
         <tr>
             <td width="30">&nbsp;</td>
             <td align="center">&nbsp;</td>
             <td>2.&nbsp;Sekertaris</td>
             <td align="right">:</td>
-            <td style="font-weight: bold;">{{ $pinkel->kelompok->sekretaris }}</td>
+            <td style="font-weight: bold;">{{ $sekretaris }}</td>
         </tr>
         <tr>
             <td width="30">&nbsp;</td>
             <td align="center">&nbsp;</td>
             <td>3.&nbsp;Bendahara</td>
             <td align="right">:</td>
-            <td style="font-weight: bold;">{{ $pinkel->kelompok->bendahara }}</td>
+            <td style="font-weight: bold;">{{ $bendahara }}</td>
         </tr>
         <tr>
             <td width="30">&nbsp;</td>

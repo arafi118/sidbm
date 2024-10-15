@@ -13,6 +13,16 @@
     }
 
     $minus = 0;
+
+    $ketua = $pinkel->kelompok->ketua;
+    $sekretaris = $pinkel->kelompok->sekretaris;
+    $bendahara = $pinkel->kelompok->bendahara;
+    if ($pinkel->struktur_kelompok) {
+        $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
+        $ketua = $struktur_kelompok['ketua'];
+        $sekretaris = $struktur_kelompok['sekretaris'];
+        $bendahara = $struktur_kelompok['bendahara'];
+    }
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
@@ -93,7 +103,7 @@
                 <td>Nama Ketua</td>
                 <td align="center">:</td>
                 <td>
-                    <b>{{ $pinkel->kelompok->ketua }}</b>
+                    <b>{{ $ketua }}</b>
                 </td>
             </tr>
             <tr>
@@ -242,7 +252,7 @@
                             <td align="center" style="font-weight: bold;">
                                 {{ $dir->namadepan }} {{ $dir->namabelakang }}
                             </td>
-                            <td colspan="2" align="center" style="font-weight: bold;">{{ $pinkel->kelompok->ketua }}
+                            <td colspan="2" align="center" style="font-weight: bold;">{{ $ketua }}
                             </td>
                         </tr>
                     </table>

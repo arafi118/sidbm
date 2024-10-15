@@ -309,7 +309,10 @@ class PinjamanKelompokController extends Controller
             'jenis_jasa',
             'sistem_angsuran_pokok',
             'sistem_angsuran_jasa',
-            'jenis_produk_pinjaman'
+            'jenis_produk_pinjaman',
+            'ketua',
+            'sekretaris',
+            'bendahara'
         ]);
 
         $validate = Validator::make($data, [
@@ -320,7 +323,10 @@ class PinjamanKelompokController extends Controller
             'jenis_jasa' => 'required',
             'sistem_angsuran_pokok' => 'required',
             'sistem_angsuran_jasa' => 'required',
-            'jenis_produk_pinjaman' => 'required'
+            'jenis_produk_pinjaman' => 'required',
+            'ketua' => 'required',
+            'sekretaris' => 'required',
+            'bendahara' => 'required',
         ]);
 
         if ($validate->fails()) {
@@ -348,6 +354,11 @@ class PinjamanKelompokController extends Controller
             'sa_jasa' => $request->sistem_angsuran_jasa,
             'status' => 'P',
             'catatan_verifikasi' => '0',
+            'struktur_kelompok' => json_encode([
+                'ketua' => $request->ketua,
+                'sekretaris' => $request->sekretaris,
+                'bendahara' => $request->bendahara,
+            ]),
             'wt_cair' => '0',
             'lu' => date('Y-m-d H:i:s'),
             'user_id' => auth()->user()->id
@@ -553,7 +564,10 @@ class PinjamanKelompokController extends Controller
                 'pros_jasa_proposal',
                 'jenis_jasa_proposal',
                 'sistem_angsuran_pokok_proposal',
-                'sistem_angsuran_jasa_proposal'
+                'sistem_angsuran_jasa_proposal',
+                'ketua',
+                'sekretaris',
+                'bendahara'
             ]);
 
             $validate = Validator::make($data, [
@@ -563,7 +577,10 @@ class PinjamanKelompokController extends Controller
                 'pros_jasa_proposal' => 'required',
                 'jenis_jasa_proposal' => 'required',
                 'sistem_angsuran_pokok_proposal' => 'required',
-                'sistem_angsuran_jasa_proposal' => 'required'
+                'sistem_angsuran_jasa_proposal' => 'required',
+                'ketua' => 'required',
+                'sekretaris' => 'required',
+                'bendahara' => 'required',
             ]);
 
             $data['jangka'] = $data['jangka_proposal'];
@@ -779,6 +796,11 @@ class PinjamanKelompokController extends Controller
 
             if ($request->status == 'P') {
                 $update['jenis_pp'] = $request->jenis_produk_pinjaman;
+                $update['struktur_kelompok'] = json_encode([
+                    'ketua' => $request->ketua,
+                    'sekretaris' => $request->sekretaris,
+                    'bendahara' => $request->bendahara,
+                ]);
             }
 
             if ($request->status == 'V') {

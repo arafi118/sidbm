@@ -19,6 +19,16 @@
         $redaksi_spk = str_replace('<ol>', '', str_replace('</ol>', '', $kec->redaksi_spk));
         $redaksi_spk = str_replace('<ul>', '', str_replace('</ul>', '', $redaksi_spk));
     }
+
+    $ketua = $pinkel->kelompok->ketua;
+    $sekretaris = $pinkel->kelompok->sekretaris;
+    $bendahara = $pinkel->kelompok->bendahara;
+    if ($pinkel->struktur_kelompok) {
+        $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
+        $ketua = $struktur_kelompok['ketua'];
+        $sekretaris = $struktur_kelompok['sekretaris'];
+        $bendahara = $struktur_kelompok['bendahara'];
+    }
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
@@ -85,7 +95,7 @@
         <tr>
             <td width="90">Nama Lengkap</td>
             <td width="10" align="center">:</td>
-            <td>{{ $pinkel->kelompok->ketua }}</td>
+            <td>{{ $ketua }}</td>
         </tr>
         <tr>
             <td>Jabatan</td>
@@ -95,7 +105,7 @@
         <tr>
             <td>Nama Lengkap</td>
             <td align="center">:</td>
-            <td>{{ $pinkel->kelompok->sekretaris }}</td>
+            <td>{{ $sekretaris }}</td>
         </tr>
         <tr>
             <td>Jabatan</td>
@@ -105,7 +115,7 @@
         <tr>
             <td>Nama Lengkap</td>
             <td align="center">:</td>
-            <td>{{ $pinkel->kelompok->bendahara }}</td>
+            <td>{{ $bendahara }}</td>
         </tr>
         <tr>
             <td>Jabatan</td>

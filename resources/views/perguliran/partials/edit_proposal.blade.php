@@ -1,3 +1,15 @@
+@php
+    $ketua = $perguliran->kelompok->ketua;
+    $sekretaris = $perguliran->kelompok->sekretaris;
+    $bendahara = $perguliran->kelompok->bendahara;
+    if ($perguliran->struktur_kelompok) {
+        $struktur_kelompok = json_decode($perguliran->struktur_kelompok, true);
+        $ketua = $struktur_kelompok['ketua'];
+        $sekretaris = $struktur_kelompok['sekretaris'];
+        $bendahara = $struktur_kelompok['bendahara'];
+    }
+@endphp
+
 <form action="/perguliran/{{ $perguliran->id }}" method="post" id="FormEditProposal">
     @csrf
     @method('PUT')
@@ -100,7 +112,35 @@
 
     <div class="card">
         <div class="card-body p-2">
-            <div class="d-none d-sm-block p-4"></div>
+            <div class="text-center fw-bold">
+                Struktur Kelompok
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="input-group input-group-static my-3">
+                        <label for="ketua">Ketua</label>
+                        <input autocomplete="off" type="text" name="ketua" id="ketua" class="form-control"
+                            value="{{ $ketua }}">
+                        <small class="text-danger" id="msg_ketua"></small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group input-group-static my-3">
+                        <label for="sekretaris">Sekretaris</label>
+                        <input autocomplete="off" type="text" name="sekretaris" id="sekretaris"
+                            class="form-control" value="{{ $sekretaris }}">
+                        <small class="text-danger" id="msg_sekretaris"></small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group input-group-static my-3">
+                        <label for="bendahara">Bendahara</label>
+                        <input autocomplete="off" type="text" name="bendahara" id="bendahara"
+                            class="form-control" value="{{ $bendahara }}">
+                        <small class="text-danger" id="msg_bendahara"></small>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </form>
