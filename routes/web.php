@@ -157,6 +157,9 @@ Route::get('/pengaturan/{inv}/invoice', [SopController::class, 'detailInvoice'])
 
 Route::post('/pengaturan/sop/simpanttdpelaporan', [SopController::class, 'simpanTtdPelaporan'])->middleware('auth');
 
+Route::get('/pengaturan/proyeksi_pendapatan_jasa', [SopController::class, 'RencanaPendapatanJasa'])->middleware('auth');
+Route::post('/pengaturan/proyeksi_pendapatan_jasa', [SopController::class, 'PreviewPendapatanJasa'])->middleware('auth');
+
 Route::resource('/database/desa', DesaController::class)->middleware('auth');
 
 Route::get('/database/lembaga_lain/register_lembaga', [LembagaLainController::class, 'register'])->middleware('auth');
