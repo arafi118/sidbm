@@ -741,6 +741,7 @@ class PinjamanKelompokController extends Controller
                     if ($val == '') $val = 0;
                     PinjamanAnggota::where('id', $idpa)->update([
                         'tgl_dana' => Tanggal::tglNasional($data[$tgl]),
+                        'tgl_cair' => Tanggal::tglNasional($data[$tgl]),
                         $tgl => Tanggal::tglNasional($data[$tgl]),
                         $alokasi => $val,
                         'status' => $data['status']
@@ -754,6 +755,7 @@ class PinjamanKelompokController extends Controller
 
             $update = [
                 'tgl_dana' => Tanggal::tglNasional($data[$tgl]),
+                'tgl_cair' => Tanggal::tglNasional($data[$tgl]),
                 $tgl => Tanggal::tglNasional($data[$tgl]),
                 $alokasi => str_replace(',', '', str_replace('.00', '', $data[$alokasi])),
                 'jangka' => $data['jangka'],
