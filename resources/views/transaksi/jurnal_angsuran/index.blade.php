@@ -668,10 +668,10 @@
             $.ajax({
                 type: 'post',
                 url: '{{ $api }}/api/message/{{ $kec->token }}/send_message',
-                data: JSON.stringify({
+                data: {
                     number: number,
                     message: msg
-                }),
+                },
                 success: function(result) {
                     MultiToast('success', 'Pesan untuk kelompok ' + nama + ' berhasil dikirim')
                 },

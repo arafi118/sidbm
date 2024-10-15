@@ -249,13 +249,16 @@
         $('#ScanWA').hide()
         $(document).ready(function() {
             $.get(API + '/api/client/{{ $token }}', function(result) {
-                if (result.success) {
+                if (result.success && result.data) {
                     $('#HapusWa').show()
                     $('#ScanWA').hide()
                 } else {
                     $('#ScanWA').show()
                     $('#HapusWa').hide()
                 }
+
+                console.log(result);
+
             })
         })
 
