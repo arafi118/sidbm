@@ -245,6 +245,20 @@
             socketId = res.id
         });
 
+        $('#HapusWa').hide()
+        $('#ScanWA').hide()
+        $(document).ready(function() {
+            $.get(API + '/api/client/{{ $token }}', function(result) {
+                if (result.success) {
+                    $('#HapusWa').show()
+                    $('#ScanWA').hide()
+                } else {
+                    $('#ScanWA').show()
+                    $('#HapusWa').hide()
+                }
+            })
+        })
+
         $(document).on('click', '#ScanWA', function(e) {
             e.preventDefault()
 
@@ -270,6 +284,36 @@
                                 $('#ModalScanWA').modal('show')
                             } else {
                                 Swal.fire('Error', "Whatsapp sudah terdaftar.", 'error')
+                            }
+                        }
+                    })
+                }
+            })
+        })
+
+        $(document).on('click', '#HapusWa', function(e) {
+            e.preventDefault()
+
+            Swal.fire({
+                title: 'Hapus Whatsapp',
+                text: 'Hapus koneksi whatsapp SIDBM.',
+                showCancelButton: true,
+                confirmButtonText: 'Hapus',
+                cancelButtonText: 'Batal',
+                icon: 'error'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'DELETE',
+                        url: API + '/api/client/{{ $token }}',
+                        success: function(result) {
+                            if (result.success) {
+                                Swal.fire('Whatsapp Dihapus',
+                                    "Scan ulang untuk bisa menggunakan layanan pesan pemberitahuan otomatis.",
+                                    'success')
+
+                                $('#ScanWA').show()
+                                $('#HapusWa').hide()
                             }
                         }
                     })
