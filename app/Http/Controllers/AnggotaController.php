@@ -85,7 +85,7 @@ class AnggotaController extends Controller
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $desa = Desa::where('kd_kec', $kec->kd_kec)->with('sebutan_desa')->get();
         $jenis_usaha = Usaha::orderBy('nama_usaha', 'ASC')->get();
-        $hubungan = Keluarga::orderBy('kekeluargaan', 'ASC')->get();
+        $hubungan = Keluarga::orderBy('id', 'ASC')->get();
 
         $desa_dipilih = 0;
         $jenis_usaha_dipilih = 0;
@@ -219,7 +219,7 @@ class AnggotaController extends Controller
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $desa = Desa::where('kd_kec', $kec->kd_kec)->with('sebutan_desa')->get();
         $jenis_usaha = Usaha::orderBy('nama_usaha', 'ASC')->get();
-        $hubungan = Keluarga::orderBy('kekeluargaan', 'ASC')->get();
+        $hubungan = Keluarga::orderBy('id', 'ASC')->get();
 
         $penduduk = $penduduk->with([
             'pinjaman_anggota',
