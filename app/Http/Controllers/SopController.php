@@ -514,18 +514,54 @@ class SopController extends Controller
             $data['pendapatan_jasa'][$jpp->id] = [
                 'nama' => $jpp->nama_jpp,
                 'data' => [
-                    1 => 0,
-                    2 => 0,
-                    3 => 0,
-                    4 => 0,
-                    5 => 0,
-                    6 => 0,
-                    7 => 0,
-                    8 => 0,
-                    9 => 0,
-                    10 => 0,
-                    11 => 0,
-                    12 => 0
+                    1 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    2 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    3 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    4 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    5 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    6 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    7 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    8 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    9 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    10 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    11 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    12 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
                 ]
             ];
         }
@@ -533,7 +569,8 @@ class SopController extends Controller
         foreach ($data['rencana'] as $ra) {
             $bulan = intval(Tanggal::bulan($ra->jatuh_tempo));
 
-            $data['pendapatan_jasa'][$ra->jenis_pp]['data'][$bulan]  += $ra->target_jasa;
+            $data['pendapatan_jasa'][$ra->jenis_pp]['data'][$bulan]['pokok']  += $ra->target_pokok;
+            $data['pendapatan_jasa'][$ra->jenis_pp]['data'][$bulan]['jasa']  += $ra->target_jasa;
         }
 
         $view = view('sop.partials.preview.rencana_pendapatan_jasa', $data);

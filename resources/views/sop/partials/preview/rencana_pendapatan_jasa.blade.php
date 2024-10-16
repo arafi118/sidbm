@@ -132,6 +132,69 @@
             <tr>
                 <td colspan="3" align="center">
                     <div style="font-size: 18px;">
+                        <b>PROYEKSI PENDAPATAN PIUTANG</b>
+                    </div>
+                    <div style="font-size: 16px;">
+                        <b style="text-transform: uppercase;">
+                            TAHUN {{ $tahun }}
+                        </b>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" height="5"></td>
+            </tr>
+        </table>
+
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+            <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 12px;">
+                <th class="t l b" height="20" width="4%">Jenis</th>
+                @for ($i = 1; $i <= 12; $i++)
+                    @php
+                        $tgl = $tahun . '-' . str_pad($i, 2, '0', STR_PAD_LEFT) . '-01';
+                        $nama_bulan = Tanggal::namaBulan($tgl);
+                    @endphp
+
+                    <th class="t l b {{ $i == 12 ? 'r' : '' }}" width="8%">{{ $nama_bulan }}</th>
+                @endfor
+            </tr>
+
+            @php
+                $total = [];
+            @endphp
+            @foreach ($pendapatan_jasa as $pj)
+                <tr>
+                    <td class="t l b">
+                        <b>{{ $pj['nama'] }}</b>
+                    </td>
+                    @foreach ($pj['data'] as $target => $val)
+                        @php
+                            if (isset($total[$target])) {
+                                $total[$target]['pokok'] += $val['pokok'];
+                            } else {
+                                $total[$target]['pokok'] = $val['pokok'];
+                            }
+                        @endphp
+                        <td class="t l b {{ $target == 12 ? 'r' : '' }}" align="right">
+                            {{ number_format($val['pokok'], 2) }}
+                        </td>
+                    @endforeach
+                </tr>
+            @endforeach
+            <tr style="background: rgb(150, 150, 150); font-weight: bold;">
+                <th class="t l b" height="14">Total</th>
+                @for ($i = 1; $i <= 12; $i++)
+                    <th class="t l b {{ $i == 12 ? 'r' : '' }}" align="right">
+                        {{ number_format($total[$i]['pokok'], 2) }}
+                    </th>
+                @endfor
+            </tr>
+        </table>
+
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px; margin-top: 32px;">
+            <tr>
+                <td colspan="3" align="center">
+                    <div style="font-size: 18px;">
                         <b>PROYEKSI PENDAPATAN JASA</b>
                     </div>
                     <div style="font-size: 16px;">
@@ -170,13 +233,13 @@
                     @foreach ($pj['data'] as $target => $val)
                         @php
                             if (isset($total[$target])) {
-                                $total[$target] += $val;
+                                $total[$target]['jasa'] += $val['jasa'];
                             } else {
-                                $total[$target] = $val;
+                                $total[$target]['jasa'] = $val['jasa'];
                             }
                         @endphp
                         <td class="t l b {{ $target == 12 ? 'r' : '' }}" align="right">
-                            {{ number_format($val, 2) }}
+                            {{ number_format($val['jasa'], 2) }}
                         </td>
                     @endforeach
                 </tr>
@@ -184,7 +247,9 @@
             <tr style="background: rgb(150, 150, 150); font-weight: bold;">
                 <th class="t l b" height="14">Total</th>
                 @for ($i = 1; $i <= 12; $i++)
-                    <th class="t l b {{ $i == 12 ? 'r' : '' }}" align="right">{{ number_format($total[$i], 2) }}</th>
+                    <th class="t l b {{ $i == 12 ? 'r' : '' }}" align="right">
+                        {{ number_format($total[$i]['jasa'], 2) }}
+                    </th>
                 @endfor
             </tr>
         </table>
