@@ -217,12 +217,12 @@
                         $saldo = 0;
                         if ($rek->kom_saldo) {
                             foreach ($rek->kom_saldo as $kom_saldo) {
-                                $saldo = $kom_saldo->kredit - $kom_saldo->debit;
+                                $saldo = floatval($kom_saldo->kredit) - floatval($kom_saldo->debit);
                                 if (
                                     Keuangan::startWith($rek->kode_akun, '1.') ||
                                     Keuangan::startWith($rek->kode_akun, '5.')
                                 ) {
-                                    $saldo = $kom_saldo->debit - $kom_saldo->kredit;
+                                    $saldo = floatval($kom_saldo->debit) - floatval($kom_saldo->kredit);
                                 }
                             }
                         }
