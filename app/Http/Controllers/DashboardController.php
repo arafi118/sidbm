@@ -804,7 +804,6 @@ class DashboardController extends Controller
         $kode_akun = request()->get('kode_akun') ?: '0';
 
         $kec = Kecamatan::where('id', Session::get('lokasi'))->with('desa')->first();
-
         $data_id = [];
         $saldo = [];
         if ($bulan == '00') {

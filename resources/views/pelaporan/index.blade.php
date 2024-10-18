@@ -250,7 +250,7 @@
                 }
             })
 
-            childWindow = window.open('/simpan_saldo?bulan=00&tahun=' + tahun + '&bulan=' + bulan, '_blank');
+            childWindow = window.open('/simpan_saldo?tahun=' + tahun + '&bulan=' + bulan, '_blank');
         })
 
         window.addEventListener('message', function(event) {
