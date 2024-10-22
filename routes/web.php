@@ -189,8 +189,11 @@ Route::get('/perguliran/lunas', [PinjamanKelompokController::class, 'lunas'])->m
 Route::get('/perguliran/generate/{id_pinj}', [PinjamanKelompokController::class, 'generate'])->middleware('auth');
 Route::get('/lunas/{perguliran}', [PinjamanKelompokController::class, 'pelunasan'])->middleware('auth');
 Route::get('/cetak_keterangan_lunas/{perguliran}', [PinjamanKelompokController::class, 'keterangan'])->middleware('auth');
+Route::get('/perguliran/catatan/{perguliran}', [PinjamanKelompokController::class, 'catatan'])->middleware('auth');
+Route::delete('/perguliran/catatan/{perguliran}', [PinjamanKelompokController::class, 'deleteCatatan'])->middleware('auth');
 
 Route::get('/perguliran/cari_kelompok', [PinjamanKelompokController::class, 'cariKelompok'])->middleware('auth');
+Route::post('/perguliran/catatan_bimbingan/{perguliran}', [PinjamanKelompokController::class, 'catatanBimbingan'])->middleware('auth');
 Route::post('/perguliran/simpan_data/{id}', [PinjamanKelompokController::class, 'simpan'])->middleware('auth');
 Route::post('/perguliran/rescedule', [PinjamanKelompokController::class, 'rescedule'])->middleware('auth');
 Route::post('/perguliran/hapus', [PinjamanKelompokController::class, 'hapus'])->middleware('auth');

@@ -543,6 +543,78 @@
         </div>
     </div>
 
+    {{-- Modal Catatan Bimbingan --}}
+    <div class="modal fade" id="CatatanBimbingan" tabindex="-1" aria-labelledby="CatatanBimbinganLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="CatatanBimbinganLabel">
+                        Catatan Bimbingan <span class="badge badge-info">Kelompok.
+                            {{ $perguliran->kelompok->nama_kelompok }}</span>
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="LayoutCatatanBimbingan">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#TambahCatatan"
+                        class="btn btn-github btn-sm">
+                        Tambah Catatan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Catatan Bimbingan --}}
+    <div class="modal fade" id="TambahCatatan" tabindex="-1" aria-labelledby="TambahCatatanLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="TambahCatatanLabel">
+                        Tambah Catatan Bimbingan
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/perguliran/catatan_bimbingan/{{ $perguliran->id }}" method="post"
+                        id="FormCatatanBimbingan">
+                        @csrf
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="input-group input-group-static my-3">
+                                    <label for="tanggal_catatan">Tanggal</label>
+                                    <input autocomplete="off" type="text" name="tanggal_catatan" id="tanggal_catatan"
+                                        class="form-control date" value="{{ Tanggal::tglIndo(date('Y-m-d')) }}">
+                                    <small class="text-danger" id="msg_tanggal_catatan"></small>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="my-3">
+                                    <label for="catatan_bimbingan">Catatan</label>
+                                    <div id="editor"></div>
+                                </div>
+
+                                <textarea name="catatan_bimbingan" id="catatan_bimbingan" class="d-none"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" id="TutupFormTambahCatatan">Tutup</button>
+                    <button type="button" id="SimpanCatatanBimbingan" class="btn btn-github btn-sm">
+                        Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Modal Rescedule Pinjaman --}}
     <div class="modal fade" id="Rescedule" tabindex="-1" aria-labelledby="ResceduleLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -743,6 +815,13 @@
         @method('DELETE')
     </form>
 
+    <form action="/perguliran/catatan/{{ $perguliran->id }}" method="post" id="FormDeleteCatatan">
+        @csrf
+        @method('DELETE')
+
+        <input type="hidden" id="index" name="index">
+    </form>
+
     <div id="placeholder" class="d-none">
         <div class="row">
             <div class="col-lg-4 mb-3">
@@ -787,6 +866,11 @@
                 distance: 1000
             }
         })
+
+        var quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+
 
         $(".date").flatpickr({
             dateFormat: "d/m/Y"
@@ -896,6 +980,15 @@
             }
         });
 
+        $(document).on('click', '#btnCatatanBimbingan', function() {
+            catatan()
+        })
+
+        $(document).on('click', '#TutupFormTambahCatatan', function() {
+            $('#CatatanBimbingan').modal('show')
+            $('#TambahCatatan').modal('hide')
+        })
+
         $(document).on('click', '#BtnTambahPemanfaat', function(e) {
             e.preventDefault()
             $('small').html('')
@@ -904,6 +997,57 @@
             $('#alokasi_pengajuan').val('')
 
             $('#LayoutTambahPemanfaat').html($('#placeholder').html())
+        })
+
+        $(document).on('click', '#SimpanCatatanBimbingan', function(e) {
+            e.preventDefault()
+
+            $('#catatan_bimbingan').val(quill.container.firstChild.innerHTML)
+            var form = $('#FormCatatanBimbingan')
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function(result) {
+                    Swal.fire('Berhasil', result.msg, 'success').then(() => {
+                        catatan()
+                    })
+                },
+                error: function(error) {
+                    Swal.fire('Error', 'Cek kembali input yang anda masukkan', 'error')
+                }
+            })
+        })
+
+        $(document).on('click', '.delete-catatan', function(e) {
+            e.preventDefault();
+
+            var index = $(this).attr('data-id')
+            $('input#index').val(index)
+
+            Swal.fire({
+                title: 'Hapus Catatan',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#FormDeleteCatatan')
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        success: function(result) {
+                            if (result.success) {
+                                Swal.fire('Berhasil', result.msg, 'success').then(() => {
+                                    $('#CatatanBimbingan').modal('hide')
+                                })
+                            }
+                        }
+                    })
+                }
+            })
         })
 
         $(document).on('click', '#SimpanEditProposal', function(e) {
@@ -1239,6 +1383,20 @@
 
             open_window(action)
         })
+
+        function catatan() {
+            $.ajax({
+                type: 'GET',
+                url: '/perguliran/catatan/{{ $perguliran->id }}',
+                success: function(result) {
+                    if (result.success) {
+                        $('#LayoutCatatanBimbingan').html(result.view)
+                        $('#CatatanBimbingan').modal('show')
+                        $('#TambahCatatan').modal('hide')
+                    }
+                }
+            })
+        }
 
         $(".money").maskMoney();
     </script>

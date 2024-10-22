@@ -102,6 +102,13 @@
         .flatpickr-wrapper {
             width: 100%;
         }
+
+        .list-group-numbered .list-group-item *:not(.badge) {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+        }
     </style>
 </head>
 
