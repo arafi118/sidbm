@@ -136,7 +136,7 @@
                                         $rencana = $saldo->eb->jumlah;
                                     }
 
-                                    if ($saldo->bulan < $akhir) {
+                                    if ($saldo->bulan <= $akhir) {
                                         $t_rencana += $rencana;
                                         $kom_rencana_lalu += $rencana;
                                     }
