@@ -108,6 +108,40 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card mb-3">
+                <div class="card-body p-2">
+                    <div class="text-center fw-bold">
+                        Struktur Kelompok
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group input-group-static my-3">
+                                <label for="ketua">Ketua</label>
+                                <input autocomplete="off" type="text" name="ketua" id="ketua"
+                                    class="form-control" value="{{ $kelompok->ketua }}">
+                                <small class="text-danger" id="msg_ketua"></small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group input-group-static my-3">
+                                <label for="sekretaris">Sekretaris</label>
+                                <input autocomplete="off" type="text" name="sekretaris" id="sekretaris"
+                                    class="form-control" value="{{ $kelompok->sekretaris }}">
+                                <small class="text-danger" id="msg_sekretaris"></small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group input-group-static my-3">
+                                <label for="bendahara">Bendahara</label>
+                                <input autocomplete="off" type="text" name="bendahara" id="bendahara"
+                                    class="form-control" value="{{ $kelompok->bendahara }}">
+                                <small class="text-danger" id="msg_bendahara"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
 
         <button type="submit" id="SimpanProposal" class="btn btn-github btn-sm float-end">Simpan Proposal</button>

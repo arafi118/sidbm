@@ -3,6 +3,16 @@
     $batas_pemanfaat = ceil($pinkel->pinjaman_anggota_count / 2);
 
     $minus = 0;
+
+    $ketua = $pinkel->kelompok->ketua;
+    $sekretaris = $pinkel->kelompok->sekretaris;
+    $bendahara = $pinkel->kelompok->bendahara;
+    if ($pinkel->struktur_kelompok) {
+        $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
+        $ketua = $struktur_kelompok['ketua'];
+        $sekretaris = $struktur_kelompok['sekretaris'];
+        $bendahara = $struktur_kelompok['bendahara'];
+    }
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
@@ -72,7 +82,7 @@
         </tr>
         <tr>
             <td height="15" class="l b" align="center">1</td>
-            <td class="l b">{{ $pinkel->kelompok->ketua }}</td>
+            <td class="l b">{{ $ketua }}</td>
             <td class="l b">Ketua</td>
             <td class="l b r">
                 {{ $pinkel->kelompok->alamat_kelompok }}
@@ -80,7 +90,7 @@
         </tr>
         <tr>
             <td height="15" class="l b" align="center">2</td>
-            <td class="l b">{{ $pinkel->kelompok->sekretaris }}</td>
+            <td class="l b">{{ $sekretaris }}</td>
             <td class="l b">Sekretaris</td>
             <td class="l b r">
                 {{ $pinkel->kelompok->alamat_kelompok }}
@@ -88,7 +98,7 @@
         </tr>
         <tr>
             <td height="15" class="l b" align="center">3</td>
-            <td class="l b">{{ $pinkel->kelompok->bendahara }}</td>
+            <td class="l b">{{ $bendahara }}</td>
             <td class="l b">Bendahara</td>
             <td class="l b r">
                 {{ $pinkel->kelompok->alamat_kelompok }}
@@ -174,13 +184,13 @@
                     </tr>
                     <tr>
                         <td align="center" width="33%">
-                            {{ $pinkel->kelompok->ketua }}
+                            {{ $ketua }}
                         </td>
                         <td align="center" width="33%">
-                            {{ $pinkel->kelompok->sekretaris }}
+                            {{ $sekretaris }}
                         </td>
                         <td align="center" width="33%">
-                            {{ $pinkel->kelompok->bendahara }}
+                            {{ $bendahara }}
                         </td>
                     </tr>
                     <tr>

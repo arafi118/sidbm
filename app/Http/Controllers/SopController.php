@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\AdminInvoice;
 use App\Models\AkunLevel1;
+use App\Models\JenisProdukPinjaman;
 use App\Models\Kecamatan;
+use App\Models\PinjamanKelompok;
 use App\Models\Rekening;
+use App\Models\RencanaAngsuran;
 use App\Models\TandaTanganLaporan;
 use App\Models\User;
+use App\Utils\Keuangan;
 use App\Utils\Pinjaman;
 use App\Utils\Tanggal;
 use Cookie;
 use DOMDocument;
+use Dompdf\Dompdf;
 use Illuminate\Http\Request;
+use PDF;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -23,10 +29,10 @@ class SopController extends Controller
 {
     public function index()
     {
-        $api = env('APP_API', 'https://api-whatsapp.sidbm.net');
+        $api = env('APP_API', 'http://localhost:8080');
 
         $kec = Kecamatan::where('id', Session::get('lokasi'))->with('ttd')->first();
-        $token = "DBM-" . str_pad($kec->id, 4, '0', STR_PAD_LEFT);
+        $token = $kec->token;
 
         $title = "Personalisasi SOP";
         return view('sop.index')->with(compact('title', 'kec', 'api', 'token'));
@@ -458,6 +464,123 @@ class SopController extends Controller
         $keyword = Pinjaman::keyword();
 
         return view('sop.partials.ttd_spk')->with(compact('title', 'kec', 'keyword'));
+    }
+
+    public function RencanaPendapatanJasa()
+    {
+        $title = "Pengaturan Rencana Pendapatan Jasa";
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('ttd')->first();
+
+        return view('sop.partials.rencana_pendapatan_jasa')->with(compact('title', 'kec'));
+    }
+
+    public function PreviewPendapatanJasa(Request $request)
+    {
+        $data = $request->only([
+            'tahun',
+            'jenis'
+        ]);
+
+        $tb_ra = 'rencana_angsuran_' . Session::get('lokasi');
+        $tb_pinj = 'pinjaman_kelompok_' . Session::get('lokasi');
+
+        $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
+        $data['jenis_pp'] = JenisProdukPinjaman::all();
+        $data['rencana'] = RencanaAngsuran::select($tb_ra . '.*', $tb_pinj . '.jenis_pp')->join($tb_pinj, $tb_pinj . '.id', '=', $tb_ra . '.loan_id')
+            ->where($tb_ra . '.jatuh_tempo', 'LIKE', $data['tahun'] . '-%')
+            ->whereNotIn($tb_pinj . '.status', ['P', 'V', 'W'])
+            ->orderBy($tb_ra . '.jatuh_tempo')->get();
+
+        $data['logo'] = $data['kec']->logo;
+        $data['nama_lembaga'] = $data['kec']->nama_lembaga_sort;
+        $data['nama_kecamatan'] = $data['kec']->sebutan_kec . ' ' . $data['kec']->nama_kec;
+
+        if (Keuangan::startWith($data['kec']->kabupaten->nama_kab, 'KOTA') || Keuangan::startWith($data['kec']->kabupaten->nama_kab, 'KAB')) {
+            $data['nama_kecamatan'] .= ' ' . ucwords(strtolower($data['kec']->kabupaten->nama_kab));
+            $data['nama_kabupaten'] = ucwords(strtolower($data['kec']->kabupaten->nama_kab));
+        } else {
+            $data['nama_kecamatan'] .= ' Kabupaten ' . ucwords(strtolower($data['kec']->kabupaten->nama_kab));
+            $data['nama_kabupaten'] = ' Kabupaten ' . ucwords(strtolower($data['kec']->kabupaten->nama_kab));
+        }
+
+        $data['nomor_usaha'] = 'SK Kemenkumham RI No.' . $data['kec']->nomor_bh;
+        $data['info'] = $data['kec']->alamat_kec . ', Telp.' . $data['kec']->telpon_kec;
+        $data['email'] = $data['kec']->email_kec;
+        $data['kab'] = $data['kec']->kabupaten;
+
+        $data['pendapatan_jasa'] = [];
+
+        foreach ($data['jenis_pp'] as $jpp) {
+            $data['pendapatan_jasa'][$jpp->id] = [
+                'nama' => $jpp->nama_jpp,
+                'data' => [
+                    1 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    2 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    3 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    4 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    5 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    6 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    7 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    8 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    9 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    10 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    11 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                    12 => [
+                        'pokok' => 0,
+                        'jasa' => 0
+                    ],
+                ]
+            ];
+        }
+
+        foreach ($data['rencana'] as $ra) {
+            $bulan = intval(Tanggal::bulan($ra->jatuh_tempo));
+
+            $data['pendapatan_jasa'][$ra->jenis_pp]['data'][$bulan]['pokok']  += $ra->target_pokok;
+            $data['pendapatan_jasa'][$ra->jenis_pp]['data'][$bulan]['jasa']  += $ra->target_jasa;
+        }
+
+        $view = view('sop.partials.preview.rencana_pendapatan_jasa', $data);
+
+        if ($data['jenis'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     public function simpanTtdPelaporan(Request $request)

@@ -28,6 +28,7 @@ use Yajra\DataTables\DataTables;
 use DNS1D;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Collection;
 use Session;
 
 class PinjamanKelompokController extends Controller
@@ -309,7 +310,10 @@ class PinjamanKelompokController extends Controller
             'jenis_jasa',
             'sistem_angsuran_pokok',
             'sistem_angsuran_jasa',
-            'jenis_produk_pinjaman'
+            'jenis_produk_pinjaman',
+            'ketua',
+            'sekretaris',
+            'bendahara'
         ]);
 
         $validate = Validator::make($data, [
@@ -320,7 +324,10 @@ class PinjamanKelompokController extends Controller
             'jenis_jasa' => 'required',
             'sistem_angsuran_pokok' => 'required',
             'sistem_angsuran_jasa' => 'required',
-            'jenis_produk_pinjaman' => 'required'
+            'jenis_produk_pinjaman' => 'required',
+            'ketua' => 'required',
+            'sekretaris' => 'required',
+            'bendahara' => 'required',
         ]);
 
         if ($validate->fails()) {
@@ -348,6 +355,11 @@ class PinjamanKelompokController extends Controller
             'sa_jasa' => $request->sistem_angsuran_jasa,
             'status' => 'P',
             'catatan_verifikasi' => '0',
+            'struktur_kelompok' => json_encode([
+                'ketua' => $request->ketua,
+                'sekretaris' => $request->sekretaris,
+                'bendahara' => $request->bendahara,
+            ]),
             'wt_cair' => '0',
             'lu' => date('Y-m-d H:i:s'),
             'user_id' => auth()->user()->id
@@ -553,7 +565,10 @@ class PinjamanKelompokController extends Controller
                 'pros_jasa_proposal',
                 'jenis_jasa_proposal',
                 'sistem_angsuran_pokok_proposal',
-                'sistem_angsuran_jasa_proposal'
+                'sistem_angsuran_jasa_proposal',
+                'ketua',
+                'sekretaris',
+                'bendahara'
             ]);
 
             $validate = Validator::make($data, [
@@ -563,7 +578,10 @@ class PinjamanKelompokController extends Controller
                 'pros_jasa_proposal' => 'required',
                 'jenis_jasa_proposal' => 'required',
                 'sistem_angsuran_pokok_proposal' => 'required',
-                'sistem_angsuran_jasa_proposal' => 'required'
+                'sistem_angsuran_jasa_proposal' => 'required',
+                'ketua' => 'required',
+                'sekretaris' => 'required',
+                'bendahara' => 'required',
             ]);
 
             $data['jangka'] = $data['jangka_proposal'];
@@ -724,6 +742,7 @@ class PinjamanKelompokController extends Controller
                     if ($val == '') $val = 0;
                     PinjamanAnggota::where('id', $idpa)->update([
                         'tgl_dana' => Tanggal::tglNasional($data[$tgl]),
+                        'tgl_cair' => Tanggal::tglNasional($data[$tgl]),
                         $tgl => Tanggal::tglNasional($data[$tgl]),
                         $alokasi => $val,
                         'status' => $data['status']
@@ -737,6 +756,7 @@ class PinjamanKelompokController extends Controller
 
             $update = [
                 'tgl_dana' => Tanggal::tglNasional($data[$tgl]),
+                'tgl_cair' => Tanggal::tglNasional($data[$tgl]),
                 $tgl => Tanggal::tglNasional($data[$tgl]),
                 $alokasi => str_replace(',', '', str_replace('.00', '', $data[$alokasi])),
                 'jangka' => $data['jangka'],
@@ -779,6 +799,11 @@ class PinjamanKelompokController extends Controller
 
             if ($request->status == 'P') {
                 $update['jenis_pp'] = $request->jenis_produk_pinjaman;
+                $update['struktur_kelompok'] = json_encode([
+                    'ketua' => $request->ketua,
+                    'sekretaris' => $request->sekretaris,
+                    'bendahara' => $request->bendahara,
+                ]);
             }
 
             if ($request->status == 'V') {
@@ -810,6 +835,86 @@ class PinjamanKelompokController extends Controller
             'msg' => $msg,
             'id' => $perguliran->id
         ], Response::HTTP_ACCEPTED);
+    }
+
+    public function catatan(PinjamanKelompok $perguliran)
+    {
+        $catatan = collect(json_decode($perguliran->catatan_bimbingan, true));
+        $data_catatan = $catatan->sortByDesc('tanggal')->values();
+
+        $data_user = [];
+        $user = $catatan->pluck('user')->unique();
+        $users = User::whereIn('id', $user)->get();
+        foreach ($users as $user) {
+            $data_user[$user->id] = $user->namadepan . ' ' . $user->namabelakang;
+        }
+
+        return response()->json([
+            'success' => true,
+            'view' => view('perguliran.partials.catatan_bimbingan')->with(compact('data_catatan', 'data_user'))->render()
+        ]);
+    }
+
+    public function deleteCatatan(Request $request, PinjamanKelompok $perguliran)
+    {
+        $catatan = collect(json_decode($perguliran->catatan_bimbingan, true));
+        $data_catatan = $catatan->sortByDesc('tanggal')->values();
+
+        $index = 1;
+        $catatan_bimbingan = [];
+        foreach ($data_catatan as $catatan) {
+            if ($index != $request->index) {
+                array_push($catatan_bimbingan, $catatan);
+            }
+
+            $index++;
+        }
+
+        $update = PinjamanKelompok::where('id', $perguliran->id)->update([
+            'catatan_bimbingan' => json_encode($catatan_bimbingan)
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Catatan berhasil dihapus.'
+        ]);
+    }
+
+    public function catatanBimbingan(Request $request, PinjamanKelompok $perguliran)
+    {
+        $data = $request->only([
+            'tanggal_catatan',
+            'catatan_bimbingan'
+        ]);
+
+        $validate = Validator::make($data, [
+            'catatan_bimbingan' => 'required'
+        ]);
+
+        $data['catatan_bimbingan'] = str_replace("<br>", '', $data['catatan_bimbingan']);
+        if ($validate->fails() || strlen($data['catatan_bimbingan']) < 8) {
+            return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
+        }
+
+        $catatan = json_decode($perguliran->catatan_bimbingan, true);
+        if (!$catatan) {
+            $catatan = [];
+        }
+
+        array_push($catatan, [
+            'tanggal' => Tanggal::tglNasional($data['tanggal_catatan']),
+            'catatan' => $data['catatan_bimbingan'],
+            'user' => auth()->user()->id
+        ]);
+
+        $update = PinjamanKelompok::where('id', $perguliran->id)->update([
+            'catatan_bimbingan' => json_encode($catatan)
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Catatan berhasil ditambahkan.'
+        ]);
     }
 
     public function simpan(Request $request, $id)

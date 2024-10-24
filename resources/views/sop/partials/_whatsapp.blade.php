@@ -24,13 +24,16 @@
 
 <div class="d-flex justify-content-end">
     @if (auth()->user()->level == '1' && auth()->user()->jabatan == '1')
-        <button type="button" id="ScanWA" class="btn btn-sm btn-info mb-0">
+        <button type="button" id="HapusWa" class="btn btn-sm btn-danger mb-0 me-2">
+            Hapus Whatsapp
+        </button>
+        <button type="button" id="ScanWA" class="btn btn-sm btn-info mb-0 me-2">
             Scan Whatsapp
         </button>
     @endif
 
     <button type="button" id="SimpanWhatsapp" data-target="#FormScanWhatsapp"
-        class="btn btn-sm btn-github ms-2 mb-0 btn-simpan">
+        class="btn btn-sm btn-github mb-0 btn-simpan">
         Simpan Perubahan
     </button>
 </div>

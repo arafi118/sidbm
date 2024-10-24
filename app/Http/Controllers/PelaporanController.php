@@ -2387,8 +2387,10 @@ class PelaporanController extends Controller
         $awal = $bulan[0];
         $akhir = end($bulan);
 
+        $data['akhir'] = $akhir;
         $data['bulan_akhir'] = $awal - 1;
         $data['bulan_tampil'] = $bulan;
+
         $data['triwulan'] = array_search($data['sub'], array_keys($title)) + 1;
         $data['akun1'] = AkunLevel1::where('lev1', '>=', '4')->with([
             'akun2',

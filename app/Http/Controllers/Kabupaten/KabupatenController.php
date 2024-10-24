@@ -113,7 +113,11 @@ class KabupatenController extends Controller
     public function kecamatan($kd_kec)
     {
         $kec = Kecamatan::where('kd_kec', $kd_kec)->with('kabupaten')->first();
-        $laporan = JenisLaporan::where('file', '!=', '0')->orderBy('urut', 'ASC')->get();
+        $laporan = JenisLaporan::where('file', '!=', '0');
+        if ($kec->id != '277') {
+            $laporan = $laporan->where('id', '!=', '32');
+        }
+        $laporan = $laporan->orderBy('urut', 'ASC')->get();
 
         if (!$kec) {
             $kec = Wilayah::where('kode', $kd_kec)->first();

@@ -387,11 +387,17 @@
         @if (
             $perguliran->status == 'A' &&
                 (in_array('tahapan_perguliran.aktif.resceduling_pinjaman', Session::get('tombol')) ||
-                    in_array('tahapan_perguliran.aktif.penghapusan_pinjaman_kelompok', Session::get('tombol'))))
+                    in_array('tahapan_perguliran.aktif.penghapusan_pinjaman_kelompok', Session::get('tombol')) ||
+                    in_array('tahapan_perguliran.aktif.catatan_bimbingan', Session::get('tombol'))))
             <div class="d-flex justify-content-end mt-3">
+                @if (in_array('tahapan_perguliran.aktif.catatan_bimbingan', Session::get('tombol')))
+                <button type="button" id="btnCatatanBimbingan" class="btn btn-success btn-sm">
+                    Catatan Bimbingan
+                </button>
+                @endif
                 @if (in_array('tahapan_perguliran.aktif.resceduling_pinjaman', Session::get('tombol')))
                     <button type="button" data-bs-toggle="modal" data-bs-target="#Rescedule"
-                        class="btn btn-warning btn-sm">Resceduling Pinjaman</button>
+                        class="btn btn-warning btn-sm ms-1">Resceduling Pinjaman</button>
                 @endif
                 @if (in_array('tahapan_perguliran.aktif.penghapusan_pinjaman_kelompok', Session::get('tombol')))
                     <button type="button" data-bs-toggle="modal" data-bs-target="#Penghapusan"

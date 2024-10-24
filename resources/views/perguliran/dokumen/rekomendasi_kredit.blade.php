@@ -1,6 +1,16 @@
 @php
     use App\Utils\Tanggal;
     $logo = $kab->id . '.jpg';
+
+    $ketua = $pinkel->kelompok->ketua;
+    $sekretaris = $pinkel->kelompok->sekretaris;
+    $bendahara = $pinkel->kelompok->bendahara;
+    if ($pinkel->struktur_kelompok) {
+        $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
+        $ketua = $struktur_kelompok['ketua'];
+        $sekretaris = $struktur_kelompok['sekretaris'];
+        $bendahara = $struktur_kelompok['bendahara'];
+    }
 @endphp
 
 <head>
@@ -131,15 +141,15 @@
             <tr>
                 <td width="120" rowspan="3" style="vertical-align: top;">Nama Lengkap / Jabatan</td>
                 <td width="5" align="center">:</td>
-                <td>{{ $pinkel->kelompok->ketua }} / Ketua Kelompok</td>
+                <td>{{ $ketua }} / Ketua Kelompok</td>
             </tr>
             <tr>
                 <td align="center">:</td>
-                <td>{{ $pinkel->kelompok->sekretaris }} / Sekretaris Kelompok</td>
+                <td>{{ $sekretaris }} / Sekretaris Kelompok</td>
             </tr>
             <tr>
                 <td align="center">:</td>
-                <td>{{ $pinkel->kelompok->bendahara }} / Bendahara Kelompok</td>
+                <td>{{ $bendahara }} / Bendahara Kelompok</td>
             </tr>
             <tr>
                 <td></td>

@@ -209,7 +209,8 @@
                 var file = $('select#laporan').val()
                 var sub = $('select#sub_laporan').val()
                 if (file != '') {
-                    form.submit()
+                    var submit = form.submit()
+                    console.log(submit)
                 }
             } else {
                 setSession(count + 1)

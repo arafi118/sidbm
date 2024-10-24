@@ -198,10 +198,11 @@
                                         </div>
                                         <div class="col-lg-5 mx-auto">
                                             <h3 class="mt-lg-0 mt-4">Scan kode QR</h3>
-                                            <label class="mt-2">Riwayat Koneksi</label>
-                                            <ol id="Pesan">
-                                                <li>Membuat Kode QR</li>
-                                            </ol>
+                                            <ul class="list-group list-group-flush rounded" id="ListConnection">
+                                                <li class="list-group-item">
+                                                    Membuat Kode QR
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -223,101 +224,123 @@
 @endsection
 
 @section('script')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
 
     <script>
+        let ListContainer = $('#ListConnection')
+        const API = '{{ $api }}'
         const form = $('#FormWhatsapp')
-        const socket = io("{{ $api }}")
-        const token = "{{ $token }}"
+        const socket = io(API, {
+            transports: ['polling']
+        })
+
         const pesan = $('#Pesan')
+
         var scan = 0
         var connect = 0
+
+        var socketId = 0;
+        socket.on('connected', (res) => {
+            console.log('Connected to the server. Socket ID:', res.id);
+            socketId = res.id
+        });
+
+        $('#HapusWa').hide()
+        $('#ScanWA').hide()
+        $(document).ready(function() {
+            $.get(API + '/api/client/{{ $token }}', function(result) {
+                if (result.success && result.data) {
+                    $('#HapusWa').show()
+                    $('#ScanWA').hide()
+                } else {
+                    $('#ScanWA').show()
+                    $('#HapusWa').hide()
+                }
+
+                console.log(result);
+
+            })
+        })
 
         $(document).on('click', '#ScanWA', function(e) {
             e.preventDefault()
 
             Swal.fire({
-                title: 'Peringatan',
-                text: 'Kami selaku tim pengembang aplikasi SIDBM tidak bertanggung jawab jika terjadi sesuatu pada nomor anda ke depannya.',
+                title: 'Aktivasi Whatsapp',
+                text: 'Scan Whatsapp aplikasi SIDBM.',
                 showCancelButton: true,
                 confirmButtonText: 'Lanjutkan',
                 cancelButtonText: 'Batal',
                 icon: 'error'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#ModalScanWA').modal('show')
-                    if (connect < 1) {
-                        socket.emit('register', {
-                            token
-                        })
-                    } else {
-                        waActive()
-                    }
-                }
-            })
-        })
-
-        socket.on('qrCode', (res) => {
-            if (res.token == token) {
-                $('#QrCode').attr('src', res.url)
-
-                if (scan < 1) {
-                    pesan.append('<li>' + res.msg + '</li>')
-                }
-                scan += 1
-            }
-        })
-
-        socket.on('aktif', (res) => {
-            if (res.token == token) {
-                if (connect < 1) {
                     $.ajax({
-                        type: form.attr('method'),
-                        url: form.attr('action'),
-                        data: form.serialize(),
+                        type: 'POST',
+                        url: API + '/api/client',
+                        data: {
+                            nama: $('#nama_bumdesma').val(),
+                            token: '{{ $token }}',
+                            socketId
+                        },
                         success: function(result) {
-                            pesan.append('<li>' + res.msg + '</li>')
-                            waActive()
+                            if (result.success) {
+                                $('#ModalScanWA').modal('show')
+                            } else {
+                                Swal.fire('Error', "Whatsapp sudah terdaftar.", 'error')
+                            }
                         }
                     })
                 }
-                connect += 1
-            }
+            })
         })
 
-        $(document).on('click', '#WaLogout', function(e) {
+        $(document).on('click', '#HapusWa', function(e) {
             e.preventDefault()
 
-            $.ajax({
-                type: 'post',
-                url: '{{ $api }}/logout',
-                data: {
-                    token: token
-                },
-                success: function(result) {
-                    if (result.status) {
-                        Swal.fire({
-                            title: 'Selamat',
-                            text: 'Anda telah logout dari SI DBM Whatsapp Gateway.',
-                            showCancelButton: false,
-                            icon: 'success'
-                        }).then(() => {
-                            scan = 0
-                            connect = 0
-                        })
-                    }
+            Swal.fire({
+                title: 'Hapus Whatsapp',
+                text: 'Hapus koneksi whatsapp SIDBM.',
+                showCancelButton: true,
+                confirmButtonText: 'Hapus',
+                cancelButtonText: 'Batal',
+                icon: 'error'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'DELETE',
+                        url: API + '/api/client/{{ $token }}',
+                        success: function(result) {
+                            if (result.success) {
+                                Swal.fire('Whatsapp Dihapus',
+                                    "Scan ulang untuk bisa menggunakan layanan pesan pemberitahuan otomatis.",
+                                    'success')
+
+                                $('#ScanWA').show()
+                                $('#HapusWa').hide()
+                            }
+                        }
+                    })
                 }
             })
         })
 
-        function waActive() {
-            Swal.fire({
-                title: 'Selamat',
-                text: 'SI DBM Whatsapp Gateway berhasil diaktifkan.',
-                showCancelButton: false,
-                icon: 'success'
-            })
-        }
+        var scanQr = 0;
+        socket.on('QR', (result) => {
+            $('#QrCode').attr('src', result.url)
+
+            if (scanQr <= 0) {
+                var List = $('<li class="list-group-item fw-bold">Scan QR</li>')
+                ListContainer.append(List)
+            }
+
+            scanQr += 1;
+        })
+
+        socket.on('ClientConnect', (result) => {
+            $('#QrCode').attr('src', result.url)
+            var List = $('<li class="list-group-item list-group-item-success fw-bold">Whatsapp Aktif</li>')
+            ListContainer.append(List)
+        })
     </script>
 
     <script>

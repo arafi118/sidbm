@@ -91,11 +91,12 @@ class DashboardController extends Controller
             $data['jasa_pl'] = $trx->jasa_pl;
         }
 
+        $data['kec'] = $kec;
         $data['user'] = auth()->user();
         $data['saldo'] = $this->_saldo($tgl);
         $data['jumlah_saldo'] = Saldo::where('kode_akun', 'NOT LIKE', $kec->kd_kec . '%')->count();
 
-        $data['api'] = env('APP_API', 'https://api-whatsapp.sidbm.net');
+        $data['api'] = env('APP_API', 'http://localhost:8080');
         $data['title'] = "Dashboard";
         return view('dashboard.index')->with($data);
     }
@@ -803,7 +804,6 @@ class DashboardController extends Controller
         $kode_akun = request()->get('kode_akun') ?: '0';
 
         $kec = Kecamatan::where('id', Session::get('lokasi'))->with('desa')->first();
-
         $data_id = [];
         $saldo = [];
         if ($bulan == '00') {

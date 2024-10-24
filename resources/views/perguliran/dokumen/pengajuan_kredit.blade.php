@@ -3,6 +3,14 @@
     use App\Utils\Keuangan;
 
     $keuangan = new Keuangan();
+
+    $ketua = $pinkel->kelompok->ketua;
+    $sekretaris = $pinkel->kelompok->sekretaris;
+    if ($pinkel->struktur_kelompok) {
+        $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
+        $ketua = $struktur_kelompok['ketua'];
+        $sekretaris = $struktur_kelompok['sekretaris'];
+    }
 @endphp
 
 <style>
@@ -143,7 +151,7 @@
         <td width="30">&nbsp;</td>
         <td width="80">Nama Lengkap</td>
         <td width="5" align="right">:</td>
-        <td style="font-weight: bold;">{{ $pinkel->kelompok->ketua }}</td>
+        <td style="font-weight: bold;">{{ $ketua }}</td>
     </tr>
     <tr>
         <td width="30">&nbsp;</td>
@@ -161,7 +169,7 @@
         <td width="30">&nbsp;</td>
         <td>Nama Lengkap</td>
         <td width="5" align="right">:</td>
-        <td style="font-weight: bold;">{{ $pinkel->kelompok->sekretaris }}</td>
+        <td style="font-weight: bold;">{{ $sekretaris }}</td>
     </tr>
     <tr>
         <td width="30">&nbsp;</td>

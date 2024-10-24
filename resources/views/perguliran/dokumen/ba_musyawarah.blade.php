@@ -1,5 +1,15 @@
 @php
     use App\Utils\Tanggal;
+
+    $ketua = $pinkel->kelompok->ketua;
+    $sekretaris = $pinkel->kelompok->sekretaris;
+    $bendahara = $pinkel->kelompok->bendahara;
+    if ($pinkel->struktur_kelompok) {
+        $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
+        $ketua = $struktur_kelompok['ketua'];
+        $sekretaris = $struktur_kelompok['sekretaris'];
+        $bendahara = $struktur_kelompok['bendahara'];
+    }
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
@@ -45,12 +55,12 @@
         <tr>
             <td width="130">Acara Musnyawarah dipimpin oleh</td>
             <td width="5" align="center">:</td>
-            <td>{{ $pinkel->kelompok->ketua }}</td>
+            <td>{{ $ketua }}</td>
         </tr>
         <tr>
             <td>Notulen</td>
             <td>:</td>
-            <td>{{ $pinkel->kelompok->sekretaris }}</td>
+            <td>{{ $sekretaris }}</td>
         </tr>
         <tr>
             <td>Narasumber</td>

@@ -65,7 +65,7 @@ class TransaksiController extends Controller
             $pinkel = '0';
         }
 
-        $api = env('APP_API', 'https://api-whatsapp.sidbm.net');
+        $api = env('APP_API', 'http://localhost:8080');
         return view('transaksi.jurnal_angsuran.index')->with(compact('title', 'rekening', 'pinkel', 'kec', 'api'));
     }
 
