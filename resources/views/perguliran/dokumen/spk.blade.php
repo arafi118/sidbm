@@ -214,7 +214,7 @@
                                         jadwal yang disepakati, merupakan kewajiban hukum sekaligus menunjukkan budi pekerti
                                         luhur untuk
                                         mengembangkan semangat tolong menolong dengan saudaranya sesama warga desa lain.
-                                        Pengembalian kredit secara lancar akan memperluas kesempatan untuk memeproleh kredit
+                                        Pengembalian kredit secara lancar akan memperluas kesempatan untuk memperoleh kredit
                                         berikutnya
                                         serta membuka peluang bagi orang lain mendapatkan giliran pelayanan.
                                     </li>
