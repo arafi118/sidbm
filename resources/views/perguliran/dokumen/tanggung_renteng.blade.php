@@ -55,17 +55,9 @@
                     sebagai pribadi anggota kelompok, secara sadar dan penuh tanggung jawab menyatakan :
 
                     <ol style="margin-bottom: 0; padding-bottom: 0;">
-                        <li>
-                            Memberikan kuasa kepada ketua kelompok untuk menarik tabungan anggota yang dikelola
-                            kelompok guna melunasi tunggakan angsuran, apabila terjadi tunggakan angsuran dari satu,
-                            beberapa atau seluruh anggota kelompok;
-                        </li>
-                        <li>
-                            Memberikan kuasa kepada ketua kelompok untuk mengambil dan atau menjual jaminan anggota
-                            yang tidak memenuhi kewajibannya tersebut dan akan memperhitungkan hasilnya untuk melunasi sisa
-                            pokok dan jasa kredit. Kelebihan dari jumlah tersebut akan dikembalikan kepada masing-masing
-                            yang bersangkutan;
-                        </li>
+                        @if (str_contains($kec->tanggung_renteng, 'li'))
+                            {!! json_decode($kec->tanggung_renteng, true) !!}
+                        @endif
                         <li>
                             Sanggup menanggung pelunasan sisa angsuran dengan sistem tanggung renteng yang
                             pelaksanaannya dikoordinir oleh ketua kelompok demi kelancaran penyetoran angsuran dengan batas
