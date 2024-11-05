@@ -118,9 +118,9 @@
                     $trx->rekening_kredit == '4.1.01.01' or
                     $trx->rekening_kredit == '4.1.01.02' or
                     $trx->rekening_kredit == '4.1.01.03' or
-                    $trx->rekening_kredit == '1.01.03.04' or
-                    $trx->rekening_kredit == '1.01.03.05' or
-                    $trx->rekening_kredit == '1.01.03.06'
+                    $trx->rekening_kredit == '1.1.03.04' or
+                    $trx->rekening_kredit == '1.1.03.05' or
+                    $trx->rekening_kredit == '1.1.03.06'
                 ) {
                     $jasa = intval($trx->jumlah);
                 } elseif (
