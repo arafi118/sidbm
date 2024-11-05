@@ -269,7 +269,6 @@ class Inventaris
         $jenis_mutasi = 'kredit';
 
         $saldo = $awal_tahun + $saldo;
-        dd($saldo);
 
         return $saldo;
     }
