@@ -108,11 +108,26 @@
                 $denda = 0;
                 $pencairan = 0;
 
-                if ($kredit == '1.1.03') {
+                if (
+                    $trx->rekening_kredit == '1.01.03.01' or
+                    $trx->rekening_kredit == '1.01.03.02' or
+                    $trx->rekening_kredit == '1.01.03.03'
+                ) {
                     $pokok = intval($trx->jumlah);
-                } elseif ($trx->rekening_kredit == '4.1.01.01' or $trx->rekening_kredit == '4.1.01.02' or $trx->rekening_kredit == '4.1.01.03') {
+                } elseif (
+                    $trx->rekening_kredit == '4.1.01.01' or
+                    $trx->rekening_kredit == '4.1.01.02' or
+                    $trx->rekening_kredit == '4.1.01.03' or
+                    $trx->rekening_kredit == '1.01.03.04' or
+                    $trx->rekening_kredit == '1.01.03.05' or
+                    $trx->rekening_kredit == '1.01.03.06'
+                ) {
                     $jasa = intval($trx->jumlah);
-                } elseif ($trx->rekening_kredit == '4.1.01.04' or $trx->rekening_kredit == '4.1.01.05' or $trx->rekening_kredit == '4.1.01.06') {
+                } elseif (
+                    $trx->rekening_kredit == '4.1.01.04' or
+                    $trx->rekening_kredit == '4.1.01.05' or
+                    $trx->rekening_kredit == '4.1.01.06'
+                ) {
                     $denda = intval($trx->jumlah);
                 } elseif ($kredit == '1.1.01') {
                     $pencairan = intval($trx->jumlah);
