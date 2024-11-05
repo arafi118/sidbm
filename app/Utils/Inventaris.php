@@ -248,27 +248,28 @@ class Inventaris
         $awal_tahun = $y . '-01-01';
         $akhir_hari = $y . '-' . $m . '-' . date('t', strtotime("$y-$m-01"));
 
-        $rekening = Rekening::select(
-            DB::raw("SUM(tb$th_lalu) as debit"),
-            DB::raw("SUM(tbk$th_lalu) as kredit"),
-            DB::raw('(SELECT sum(jumlah) as dbt FROM 
-            transaksi_' . Session::get('lokasi') . ' as td WHERE 
-            td.rekening_debit=rekening_' . Session::get('lokasi') . '.kode_akun AND 
-            td.tgl_transaksi BETWEEN "' . $awal_tahun . '" AND "' . $akhir_hari . '"
-            ) as saldo_debit'),
-            DB::raw('(SELECT sum(jumlah) as dbt FROM 
-            transaksi_' . Session::get('lokasi') . ' as td WHERE 
-            td.rekening_kredit=rekening_' . Session::get('lokasi') . '.kode_akun AND 
-            td.tgl_transaksi BETWEEN "' . $awal_tahun . '" AND "' . $akhir_hari . '"
-            ) as saldo_kredit'),
-            'kode_akun'
-        )
-            ->groupBy(DB::raw("kode_akun", "jenis_mutasi"))->where('kode_akun', $kode_akun)->first();
+        $rekening = Rekening::where('kode_akun', $kode_akun)->with([
+            'kom_saldo' => function ($query) use ($y, $m) {
+                $query->where('tahun', $y)->where(function ($query) use ($m) {
+                    $query->where('bulan', $m)->orWhere('bulan', '0');
+                });
+            }
+        ])->first();
 
+        $saldo = 0;
+        $awal_tahun = 0;
+        foreach ($rekening->kom_saldo as $kom_saldo) {
+            if ($kom_saldo->bulan == '0') {
+                $awal_tahun += $kom_saldo->kredit;
+            } else {
+                $saldo += $kom_saldo->kredit;
+            }
+        }
         $lev1 = explode('.', $kode_akun)[0];
         $jenis_mutasi = 'kredit';
 
-        $saldo = $rekening->kredit + $rekening->saldo_kredit;
+        $saldo = $awal_tahun + $saldo;
+        dd($saldo);
 
         return $saldo;
     }
