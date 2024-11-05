@@ -109,9 +109,9 @@
                 $pencairan = 0;
 
                 if (
-                    $trx->rekening_kredit == '1.01.03.01' or
-                    $trx->rekening_kredit == '1.01.03.02' or
-                    $trx->rekening_kredit == '1.01.03.03'
+                    $trx->rekening_kredit == '1.1.03.01' or
+                    $trx->rekening_kredit == '1.1.03.02' or
+                    $trx->rekening_kredit == '1.1.03.03'
                 ) {
                     $pokok = intval($trx->jumlah);
                 } elseif (
