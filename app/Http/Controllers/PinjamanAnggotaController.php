@@ -78,6 +78,9 @@ class PinjamanAnggotaController extends Controller
                 if ($pinkel->id == $pinjaman_anggota_a->id_pinkel) $enable_alokasi = false;
             }
 
+            if ($anggota->status == '0') {
+                $enable_alokasi = false;
+            }
 
             $view = view('pinjaman.anggota.register')->with(compact('anggota', 'pinjaman_anggota', 'jumlah_pinjaman_anggota', 'pinjaman_anggota_a', 'jumlah_pinjaman_anggota_a', 'data_pemanfaat', 'jumlah_data_pemanfaat', 'data_pemanfaat_a', 'jumlah_data_pemanfaat_a'))->render();
             return [
