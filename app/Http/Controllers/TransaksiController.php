@@ -182,20 +182,12 @@ class TransaksiController extends Controller
         ])->first();
         $desa = $kec->desa;
 
-        $rekening = Rekening::whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi)->with([
-            'kom_saldo' => function ($query) use ($tahun, $bulan) {
-                $query->where('tahun', $tahun)->where(function ($query) use ($bulan) {
-                    $query->where('bulan', '0')->orwhere('bulan', $bulan);
-                });
-            }
-        ])->get();
-
         $trx = [];
         $data_id = [];
         $saldo_tutup_buku = [];
         foreach ($desa as $d) {
             $id = str_replace('.', '', $d->kode_desa) . $tahun_tb . 0;
-            $saldo_tutup_buku[] = [
+            $saldo_tutup_buku[$id] = [
                 'id' => $id,
                 'kode_akun' => $d->kode_desa,
                 'tahun' => $tahun_tb,
@@ -210,9 +202,9 @@ class TransaksiController extends Controller
         foreach ($kec->saldo as $saldo) {
             $urut = substr($saldo->id, -1);
 
-            $id = str_replace('.', '', $kec->kd_kec) . $tahun_tb . $urut;
+            $id = str_replace('.', '', $kec->kd_kec) . $tahun_tb . str_pad($urut, '2', '0', STR_PAD_LEFT);
             if ($urut <= 3) {
-                $saldo_tutup_buku[] = [
+                $saldo_tutup_buku[$id] = [
                     'id' => $id,
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun_tb,
@@ -221,7 +213,7 @@ class TransaksiController extends Controller
                     'kredit' => 0
                 ];
             } else {
-                $saldo_tutup_buku[] = [
+                $saldo_tutup_buku[$id] = [
                     'id' => $id,
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun_tb,
