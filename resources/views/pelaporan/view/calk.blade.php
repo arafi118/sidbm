@@ -420,6 +420,7 @@
                                                     $laba_th_ini = floatval($desa->saldo->kredit);
                                                 }
                                             @endphp
+
                                             <tr>
                                                 <td>{{ $loop->iteration }}.</td>
                                                 <td>{{ $desa->sebutan_desa->sebutan_desa }} {{ $desa->nama_desa }}</td>
