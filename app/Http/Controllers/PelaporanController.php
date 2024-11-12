@@ -2609,6 +2609,18 @@ class PelaporanController extends Controller
         $data['debit'] = 0;
         $data['kredit'] = 0;
 
+        if (!isset($data['tgl_mad'])) {
+            $trx = Transaksi::where([
+                ['keterangan_transaksi', 'LIKE', '%tahun ' . $data['tahun'] - 1],
+                ['rekening_debit', '3.2.01.01']
+            ])->first();
+
+            $data['tgl_mad'] = $data['tgl_kondisi'];
+            if ($trx) {
+                $data['tgl_mad'] = $trx->tgl_transaksi;
+            }
+        }
+
         $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with([
             'akun2',
             'akun2.akun3',

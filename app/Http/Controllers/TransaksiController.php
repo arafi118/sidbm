@@ -169,6 +169,74 @@ class TransaksiController extends Controller
         $tgl_kondisi = $tahun . '-' . $bulan . '-' . date('t', strtotime($tahun . '-' . $bulan . '-01'));
         $surplus = $keuangan->laba_rugi($tgl_kondisi);
 
+        $tahun_tb = $tahun + 1;
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with([
+            'desa',
+            'desa.sebutan_desa',
+            'desa.saldo' => function ($query) use ($tahun, $bulan) {
+                $query->where('tahun', $tahun);
+            },
+            'saldo' => function ($query) use ($tahun, $bulan) {
+                $query->where('tahun', $tahun);
+            }
+        ])->first();
+        $desa = $kec->desa;
+
+        $rekening = Rekening::whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi)->with([
+            'kom_saldo' => function ($query) use ($tahun, $bulan) {
+                $query->where('tahun', $tahun)->where(function ($query) use ($bulan) {
+                    $query->where('bulan', '0')->orwhere('bulan', $bulan);
+                });
+            }
+        ])->get();
+
+        $trx = [];
+        $data_id = [];
+        $saldo_tutup_buku = [];
+        foreach ($desa as $d) {
+            $id = str_replace('.', '', $d->kode_desa) . $tahun_tb . 0;
+            $saldo_tutup_buku[] = [
+                'id' => $id,
+                'kode_akun' => $d->kode_desa,
+                'tahun' => $tahun_tb,
+                'bulan' => '0',
+                'debit' => (string) $d->saldo->kredit,
+                'kredit' => 0
+            ];
+
+            $data_id[] = $id;
+        }
+
+        foreach ($kec->saldo as $saldo) {
+            $urut = substr($saldo->id, -1);
+
+            $id = str_replace('.', '', $kec->kd_kec) . $tahun_tb . $urut;
+            if ($urut <= 3) {
+                $saldo_tutup_buku[] = [
+                    'id' => $id,
+                    'kode_akun' => $kec->kd_kec,
+                    'tahun' => $tahun_tb,
+                    'bulan' => '0',
+                    'debit' => (string) $saldo->kredit,
+                    'kredit' => 0
+                ];
+            } else {
+                $saldo_tutup_buku[] = [
+                    'id' => $id,
+                    'kode_akun' => $kec->kd_kec,
+                    'tahun' => $tahun_tb,
+                    'bulan' => '0',
+                    'debit' => (string) $saldo->kredit,
+                    'kredit' => 0
+                ];
+            }
+
+            $data_id[] = $id;
+        }
+
+        Saldo::whereIn('id', $data_id)->delete();
+        Saldo::insert($saldo_tutup_buku);
+
         $success = false;
         $migrasi_saldo = false;
         if ($request->pembagian_laba == 'false') {
