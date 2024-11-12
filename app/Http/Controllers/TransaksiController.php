@@ -192,7 +192,7 @@ class TransaksiController extends Controller
                 'kode_akun' => $d->kode_desa,
                 'tahun' => $tahun_tb,
                 'bulan' => '0',
-                'debit' => (string) $d->saldo->kredit,
+                'debit' => (string) $d->saldo->kredit + $d->saldo->debit,
                 'kredit' => 0
             ];
 
@@ -209,7 +209,7 @@ class TransaksiController extends Controller
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
-                    'debit' => (string) $saldo->kredit,
+                    'debit' => (string) $saldo->kredit + $saldo->debit,
                     'kredit' => 0
                 ];
             } else {
@@ -218,7 +218,7 @@ class TransaksiController extends Controller
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
-                    'debit' => (string) $saldo->kredit,
+                    'debit' => (string) $saldo->kredit + $saldo->debit,
                     'kredit' => 0
                 ];
             }
