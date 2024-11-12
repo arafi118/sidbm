@@ -197,65 +197,67 @@
                 </div>
             </div>
 
-            <hr class="horizontal dark">
+            @if (!($perguliran->jenis_pp == '3' && $perguliran->kelompok->fungsi_kelompok == '2'))
+                <hr class="horizontal dark">
 
-            <div class="table-responsive">
-                <table class="table table-striped align-items-center mb-0" width="100%">
-                    <thead class="bg-dark text-white">
-                        <tr>
-                            <th>#</th>
-                            <th>Nama</th>
-                            <th>Pengajuan</th>
-                            <th>Verifikasi</th>
-                            <th>Alokasi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $proposal = 0;
-                            $verifikasi = 0;
-                            $alokasi = 0;
-                        @endphp
-                        @foreach ($perguliran->pinjaman_anggota as $pinjaman_anggota)
-                            @php
-                                $proposal += $pinjaman_anggota->proposal;
-                                $verifikasi += $pinjaman_anggota->verifikasi;
-                                $alokasi += $pinjaman_anggota->alokasi;
-                            @endphp
+                <div class="table-responsive">
+                    <table class="table table-striped align-items-center mb-0" width="100%">
+                        <thead class="bg-dark text-white">
                             <tr>
-                                <td align="center">{{ $loop->iteration }}</td>
-                                <td>
-                                    {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
-                                    ({{ $pinjaman_anggota->nia }})
-                                </td>
-                                <td>
-                                    {{ number_format($pinjaman_anggota->proposal, 2) }}
-                                </td>
-                                <td>
-                                    {{ number_format($pinjaman_anggota->verifikasi, 2) }}
-                                </td>
-                                <td>
-                                    {{ number_format($pinjaman_anggota->alokasi, 2) }}
-                                </td>
+                                <th>#</th>
+                                <th>Nama</th>
+                                <th>Pengajuan</th>
+                                <th>Verifikasi</th>
+                                <th>Alokasi</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="2">Jumlah</th>
-                            <th>
-                                {{ number_format($proposal, 2) }}
-                            </th>
-                            <th id="jumlah">
-                                {{ number_format($verifikasi, 2) }}
-                            </th>
-                            <th>
-                                {{ number_format($alokasi, 2) }}
-                            </th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            @php
+                                $proposal = 0;
+                                $verifikasi = 0;
+                                $alokasi = 0;
+                            @endphp
+                            @foreach ($perguliran->pinjaman_anggota as $pinjaman_anggota)
+                                @php
+                                    $proposal += $pinjaman_anggota->proposal;
+                                    $verifikasi += $pinjaman_anggota->verifikasi;
+                                    $alokasi += $pinjaman_anggota->alokasi;
+                                @endphp
+                                <tr>
+                                    <td align="center">{{ $loop->iteration }}</td>
+                                    <td>
+                                        {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
+                                        ({{ $pinjaman_anggota->nia }})
+                                    </td>
+                                    <td>
+                                        {{ number_format($pinjaman_anggota->proposal, 2) }}
+                                    </td>
+                                    <td>
+                                        {{ number_format($pinjaman_anggota->verifikasi, 2) }}
+                                    </td>
+                                    <td>
+                                        {{ number_format($pinjaman_anggota->alokasi, 2) }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="2">Jumlah</th>
+                                <th>
+                                    {{ number_format($proposal, 2) }}
+                                </th>
+                                <th id="jumlah">
+                                    {{ number_format($verifikasi, 2) }}
+                                </th>
+                                <th>
+                                    {{ number_format($alokasi, 2) }}
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            @endif
         </div>
     </div>
 

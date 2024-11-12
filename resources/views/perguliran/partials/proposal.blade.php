@@ -61,108 +61,110 @@
                 </div>
             </div>
 
-            @if (
-                !($perguliran->jenis_pp == '3' && $perguliran->kelompok->fungsi_kelompok == '2') &&
-                    in_array('tahapan_perguliran.proposal.tambah_pemanfaat', Session::get('tombol')))
-                <div class="d-grid">
-                    <button type="button" id="BtnTambahPemanfaat" data-bs-toggle="modal"
-                        data-bs-target="#TambahPemanfaat" class="btn btn-success btn-sm mb-1">
-                        Tambah Pemanfaat
-                    </button>
-                </div>
-                <hr class="horizontal dark">
+            @if (!($perguliran->jenis_pp == '3' && $perguliran->kelompok->fungsi_kelompok == '2'))
+                @if (in_array('tahapan_perguliran.proposal.tambah_pemanfaat', Session::get('tombol')))
+                    <div class="d-grid">
+                        <button type="button" id="BtnTambahPemanfaat" data-bs-toggle="modal"
+                            data-bs-target="#TambahPemanfaat" class="btn btn-success btn-sm mb-1">
+                            Tambah Pemanfaat
+                        </button>
+                    </div>
+                    <hr class="horizontal dark">
+                @endif
             @endif
 
-            <div class="table-responsive">
-                <table class="table table-striped align-items-center mb-0" width="100%">
-                    <thead class="bg-dark text-white">
-                        <tr>
-                            <th>#</th>
-                            <th>Nama</th>
-                            <th>Pengajuan</th>
-                            <th>Verifikasi</th>
-                            <th>Catatan</th>
-                            <th>&nbsp;</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $proposal = 0;
-                        @endphp
-                        @foreach ($perguliran->pinjaman_anggota as $pinjaman_anggota)
-                            @php
-                                $proposal += $pinjaman_anggota->proposal;
-
-                                $class1 = '';
-                                $class2 = '';
-                                if (in_array('tahapan_perguliran.proposal.edit_proposal', Session::get('tombol'))) {
-                                    $class1 = 'idpa_proposal';
-                                }
-
-                                if (
-                                    in_array(
-                                        'tahapan_perguliran.proposal.simpan_rekom_verifikator',
-                                        Session::get('tombol'),
-                                    )
-                                ) {
-                                    $class2 = 'idpa';
-                                }
-                            @endphp
+            @if (!($perguliran->jenis_pp == '3' && $perguliran->kelompok->fungsi_kelompok == '2'))
+                <div class="table-responsive">
+                    <table class="table table-striped align-items-center mb-0" width="100%">
+                        <thead class="bg-dark text-white">
                             <tr>
-                                <td align="center">{{ $loop->iteration }}</td>
-                                <td>
-                                    {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
-                                    ({{ $pinjaman_anggota->nia }})
-                                </td>
-                                <td>
-                                    <div class="input-group input-group-static">
-                                        <input type="text" id="{{ $pinjaman_anggota->id }}"
-                                            name="idpa_proposal[{{ $pinjaman_anggota->id }}]"
-                                            class="form-control money {{ $class1 }}"
-                                            value="{{ number_format($pinjaman_anggota->proposal, 2) }}">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="input-group input-group-static">
-                                        <input type="text" name="idpa[{{ $pinjaman_anggota->id }}]"
-                                            class="form-control money {{ $class2 }} idpa-{{ $pinjaman_anggota->id }}"
-                                            value="{{ number_format($pinjaman_anggota->proposal, 2) }}">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="input-group input-group-static">
-                                        <input type="text" class="form-control"
-                                            name="catatan[{{ $pinjaman_anggota->id }}]" value="">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button type="button" id="{{ $pinjaman_anggota->id }}"
-                                            class="btn btn-icon btn-sm btn-danger HapusPinjamanAnggota">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
+                                <th>#</th>
+                                <th>Nama</th>
+                                <th>Pengajuan</th>
+                                <th>Verifikasi</th>
+                                <th>Catatan</th>
+                                <th>&nbsp;</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="2">Jumlah</th>
-                            <th id="jumlah">
-                                {{ number_format($proposal, 2) }}
-                            </th>
-                            <th>
-                                <span id="_verifikasi">{{ number_format($proposal, 2) }}</span>
-                                <input type="hidden" name="__verifikasi" id="__verifikasi"
-                                    value="{{ $proposal }}">
-                            </th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            @php
+                                $proposal = 0;
+                            @endphp
+                            @foreach ($perguliran->pinjaman_anggota as $pinjaman_anggota)
+                                @php
+                                    $proposal += $pinjaman_anggota->proposal;
+
+                                    $class1 = '';
+                                    $class2 = '';
+                                    if (in_array('tahapan_perguliran.proposal.edit_proposal', Session::get('tombol'))) {
+                                        $class1 = 'idpa_proposal';
+                                    }
+
+                                    if (
+                                        in_array(
+                                            'tahapan_perguliran.proposal.simpan_rekom_verifikator',
+                                            Session::get('tombol'),
+                                        )
+                                    ) {
+                                        $class2 = 'idpa';
+                                    }
+                                @endphp
+                                <tr>
+                                    <td align="center">{{ $loop->iteration }}</td>
+                                    <td>
+                                        {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
+                                        ({{ $pinjaman_anggota->nia }})
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-static">
+                                            <input type="text" id="{{ $pinjaman_anggota->id }}"
+                                                name="idpa_proposal[{{ $pinjaman_anggota->id }}]"
+                                                class="form-control money {{ $class1 }}"
+                                                value="{{ number_format($pinjaman_anggota->proposal, 2) }}">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-static">
+                                            <input type="text" name="idpa[{{ $pinjaman_anggota->id }}]"
+                                                class="form-control money {{ $class2 }} idpa-{{ $pinjaman_anggota->id }}"
+                                                value="{{ number_format($pinjaman_anggota->proposal, 2) }}">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-static">
+                                            <input type="text" class="form-control"
+                                                name="catatan[{{ $pinjaman_anggota->id }}]" value="">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" id="{{ $pinjaman_anggota->id }}"
+                                                class="btn btn-icon btn-sm btn-danger HapusPinjamanAnggota">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="2">Jumlah</th>
+                                <th id="jumlah">
+                                    {{ number_format($proposal, 2) }}
+                                </th>
+                                <th>
+                                    <span id="_verifikasi">{{ number_format($proposal, 2) }}</span>
+                                    <input type="hidden" name="__verifikasi" id="__verifikasi"
+                                        value="{{ $proposal }}">
+                                </th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            @endif
         </div>
     </div>
 
@@ -386,21 +388,23 @@
         var __verifikasi = parseInt($('#__verifikasi').val())
 
         var lanjut = true;
-        if (verifikasi != __verifikasi) {
-            lanjut = await Swal.fire({
-                title: 'Peringatan',
-                text: 'Jumlah verifikasi Anggota dan Kelompok Berbeda. Tetap lanjutkan?',
-                showCancelButton: true,
-                confirmButtonText: 'Lanjutkan',
-                cancelButtonText: 'Batal',
-                icon: 'warning'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    return true;
-                }
+        if ('{{ $perguliran->jenis_pp }}' != '3') {
+            if (verifikasi != __verifikasi) {
+                lanjut = await Swal.fire({
+                    title: 'Peringatan',
+                    text: 'Jumlah verifikasi Anggota dan Kelompok Berbeda. Tetap lanjutkan?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Lanjutkan',
+                    cancelButtonText: 'Batal',
+                    icon: 'warning'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        return true;
+                    }
 
-                return false
-            })
+                    return false
+                })
+            }
         }
 
         if (lanjut) {

@@ -97,100 +97,102 @@
                 </div>
             </div>
 
-            <hr class="horizontal dark">
+            @if (!($perguliran->jenis_pp == '3' && $perguliran->kelompok->fungsi_kelompok == '2'))
+                <hr class="horizontal dark">
 
-            <div class="table-responsive">
-                <table class="table table-striped align-items-center mb-0" width="100%">
-                    <thead class="bg-dark text-white">
-                        <tr>
-                            <th>#</th>
-                            <th>Nama</th>
-                            <th>Pengajuan</th>
-                            <th>Verifikasi</th>
-                            <th>Alokasi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $proposal = 0;
-                            $verifikasi = 0;
-                        @endphp
-                        @foreach ($perguliran->pinjaman_anggota as $pinjaman_anggota)
-                            @php
-                                $proposal += $pinjaman_anggota->proposal;
-                                $verifikasi += $pinjaman_anggota->verifikasi;
-
-                                $class1 = '';
-                                $class2 = '';
-
-                                if (
-                                    in_array(
-                                        'ttahapan_perguliran.verifikasi.edit_verifikasi_anggota',
-                                        Session::get('tombol'),
-                                    )
-                                ) {
-                                    $class1 = 'idpa_proposal';
-                                }
-
-                                if (
-                                    in_array(
-                                        'tahapan_perguliran.verifikasi.simpan_keputusan_pendanaan',
-                                        Session::get('tombol'),
-                                    )
-                                ) {
-                                    $class2 = 'idpa';
-                                }
-                            @endphp
+                <div class="table-responsive">
+                    <table class="table table-striped align-items-center mb-0" width="100%">
+                        <thead class="bg-dark text-white">
                             <tr>
-                                <td align="center">{{ $loop->iteration }}</td>
-                                <td>
-                                    {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
-                                    ({{ $pinjaman_anggota->nia }})
-                                </td>
-                                <td>
-                                    <div class="input-group input-group-static">
-                                        <input type="text" disabled readonly
-                                            class="form-control money {{ $class1 }}"
-                                            value="{{ number_format($pinjaman_anggota->proposal, 2) }}">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="input-group input-group-static">
-                                        <input type="text" id="{{ $pinjaman_anggota->id }}"
-                                            name="idpa_proposal[{{ $pinjaman_anggota->id }}]"
-                                            class="form-control money {{ $class1 }}"
-                                            value="{{ number_format($pinjaman_anggota->verifikasi, 2) }}">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="input-group input-group-static">
-                                        <input type="text" name="idpa[{{ $pinjaman_anggota->id }}]"
-                                            class="form-control money {{ $class2 }} idpa-{{ $pinjaman_anggota->id }}"
-                                            value="{{ number_format($pinjaman_anggota->verifikasi, 2) }}">
-                                    </div>
-                                    <input type="hidden" name="catatan[{{ $pinjaman_anggota->id }}]"
-                                        value="{{ $perguliran->catatan_verifikasi }}">
-                                </td>
+                                <th>#</th>
+                                <th>Nama</th>
+                                <th>Pengajuan</th>
+                                <th>Verifikasi</th>
+                                <th>Alokasi</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="2">Jumlah</th>
-                            <th>
-                                {{ number_format($proposal, 2) }}
-                            </th>
-                            <th id="jumlah">
-                                {{ number_format($verifikasi, 2) }}
-                            </th>
-                            <th>
-                                <span id="_alokasi">{{ number_format($verifikasi, 2) }}</span>
-                                <input type="hidden" name="__alokasi" id="__alokasi" value="{{ $verifikasi }}">
-                            </th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            @php
+                                $proposal = 0;
+                                $verifikasi = 0;
+                            @endphp
+                            @foreach ($perguliran->pinjaman_anggota as $pinjaman_anggota)
+                                @php
+                                    $proposal += $pinjaman_anggota->proposal;
+                                    $verifikasi += $pinjaman_anggota->verifikasi;
+
+                                    $class1 = '';
+                                    $class2 = '';
+
+                                    if (
+                                        in_array(
+                                            'ttahapan_perguliran.verifikasi.edit_verifikasi_anggota',
+                                            Session::get('tombol'),
+                                        )
+                                    ) {
+                                        $class1 = 'idpa_proposal';
+                                    }
+
+                                    if (
+                                        in_array(
+                                            'tahapan_perguliran.verifikasi.simpan_keputusan_pendanaan',
+                                            Session::get('tombol'),
+                                        )
+                                    ) {
+                                        $class2 = 'idpa';
+                                    }
+                                @endphp
+                                <tr>
+                                    <td align="center">{{ $loop->iteration }}</td>
+                                    <td>
+                                        {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
+                                        ({{ $pinjaman_anggota->nia }})
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-static">
+                                            <input type="text" disabled readonly
+                                                class="form-control money {{ $class1 }}"
+                                                value="{{ number_format($pinjaman_anggota->proposal, 2) }}">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-static">
+                                            <input type="text" id="{{ $pinjaman_anggota->id }}"
+                                                name="idpa_proposal[{{ $pinjaman_anggota->id }}]"
+                                                class="form-control money {{ $class1 }}"
+                                                value="{{ number_format($pinjaman_anggota->verifikasi, 2) }}">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-static">
+                                            <input type="text" name="idpa[{{ $pinjaman_anggota->id }}]"
+                                                class="form-control money {{ $class2 }} idpa-{{ $pinjaman_anggota->id }}"
+                                                value="{{ number_format($pinjaman_anggota->verifikasi, 2) }}">
+                                        </div>
+                                        <input type="hidden" name="catatan[{{ $pinjaman_anggota->id }}]"
+                                            value="{{ $perguliran->catatan_verifikasi }}">
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="2">Jumlah</th>
+                                <th>
+                                    {{ number_format($proposal, 2) }}
+                                </th>
+                                <th id="jumlah">
+                                    {{ number_format($verifikasi, 2) }}
+                                </th>
+                                <th>
+                                    <span id="_alokasi">{{ number_format($verifikasi, 2) }}</span>
+                                    <input type="hidden" name="__alokasi" id="__alokasi" value="{{ $verifikasi }}">
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            @endif
         </div>
     </div>
 

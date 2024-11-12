@@ -138,94 +138,101 @@
             </div>
         </div>
 
-        @if (
-            ($perguliran->status == 'A' || $perguliran->status == 'R') &&
-                in_array('tahapan_perguliran.aktif.tambah_pemanfaat', Session::get('tombol')))
-            <div class="d-grid">
-                <button type="button" id="BtnTambahPemanfaat" data-bs-toggle="modal" data-bs-target="#TambahPemanfaat"
-                    class="btn btn-success btn-sm mb-1">
-                    Tambah Pemanfaat
-                </button>
-            </div>
+        @if (!($perguliran->jenis_pp == '3' && $perguliran->kelompok->fungsi_kelompok == '2'))
+            @if ($perguliran->status == 'A' || $perguliran->status == 'R')
+                @if (in_array('tahapan_perguliran.aktif.tambah_pemanfaat', Session::get('tombol')))
+                    <div class="d-grid">
+                        <button type="button" id="BtnTambahPemanfaat" data-bs-toggle="modal"
+                            data-bs-target="#TambahPemanfaat" class="btn btn-success btn-sm mb-1">
+                            Tambah Pemanfaat
+                        </button>
+                    </div>
+                @endif
+            @endif
         @endif
 
-        <hr class="horizontal dark">
+        @if (!($perguliran->jenis_pp == '3' && $perguliran->kelompok->fungsi_kelompok == '2'))
+            <hr class="horizontal dark">
 
-        <div class="table-responsive">
-            <table class="table table-striped table-hover align-items-center mb-0" width="100%">
-                <thead class="bg-dark text-white">
-                    <tr>
-                        <th>#</th>
-                        <th>Nama</th>
-                        <th>Pengajuan</th>
-                        <th>Verifikasi</th>
-                        <th>Alokasi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                        $proposal = 0;
-                        $verifikasi = 0;
-                        $alokasi = 0;
-                    @endphp
-                    @foreach ($perguliran->pinjaman_anggota as $pinjaman_anggota)
-                        @php
-                            $proposal += $pinjaman_anggota->proposal;
-                            $verifikasi += $pinjaman_anggota->verifikasi;
-                            $alokasi += $pinjaman_anggota->alokasi;
-
-                            $warna = $perguliran->status == 'A' ? '' : 'class="text-danger fw-bold"';
-
-                            $Class = '';
-                            if (
-                                in_array(
-                                    'tahapan_perguliran.aktif.penghapusan_pinjaman_anggota',
-                                    Session::get('tombol'),
-                                )
-                            ) {
-                                $Class = 'pointer btn-click';
-                            }
-
-                            if (
-                                in_array('tahapan_perguliran.aktif.pelunasan_pinjaman_anggota', Session::get('tombol'))
-                            ) {
-                                $Class = 'pointer btn-click';
-                            }
-                        @endphp
-                        <tr class="{{ $Class }}" data-id="{{ $pinjaman_anggota->id }}">
-                            <td {!! $warna !!} align="center">{{ $loop->iteration }}</td>
-                            <td {!! $warna !!}>
-                                {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
-                                ({{ $pinjaman_anggota->nia }})
-                            </td>
-                            <td {!! $warna !!}>
-                                {{ number_format($pinjaman_anggota->proposal, 2) }}
-                            </td>
-                            <td {!! $warna !!}>
-                                {{ number_format($pinjaman_anggota->verifikasi, 2) }}
-                            </td>
-                            <td {!! $warna !!}>
-                                {{ number_format($pinjaman_anggota->alokasi, 2) }}
-                            </td>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-items-center mb-0" width="100%">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>#</th>
+                            <th>Nama</th>
+                            <th>Pengajuan</th>
+                            <th>Verifikasi</th>
+                            <th>Alokasi</th>
                         </tr>
-                    @endforeach
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th colspan="2">Jumlah</th>
-                        <th>
-                            {{ number_format($proposal, 2) }}
-                        </th>
-                        <th id="jumlah">
-                            {{ number_format($verifikasi, 2) }}
-                        </th>
-                        <th>
-                            {{ number_format($alokasi, 2) }}
-                        </th>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        @php
+                            $proposal = 0;
+                            $verifikasi = 0;
+                            $alokasi = 0;
+                        @endphp
+                        @foreach ($perguliran->pinjaman_anggota as $pinjaman_anggota)
+                            @php
+                                $proposal += $pinjaman_anggota->proposal;
+                                $verifikasi += $pinjaman_anggota->verifikasi;
+                                $alokasi += $pinjaman_anggota->alokasi;
+
+                                $warna = $perguliran->status == 'A' ? '' : 'class="text-danger fw-bold"';
+
+                                $Class = '';
+                                if (
+                                    in_array(
+                                        'tahapan_perguliran.aktif.penghapusan_pinjaman_anggota',
+                                        Session::get('tombol'),
+                                    )
+                                ) {
+                                    $Class = 'pointer btn-click';
+                                }
+
+                                if (
+                                    in_array(
+                                        'tahapan_perguliran.aktif.pelunasan_pinjaman_anggota',
+                                        Session::get('tombol'),
+                                    )
+                                ) {
+                                    $Class = 'pointer btn-click';
+                                }
+                            @endphp
+                            <tr class="{{ $Class }}" data-id="{{ $pinjaman_anggota->id }}">
+                                <td {!! $warna !!} align="center">{{ $loop->iteration }}</td>
+                                <td {!! $warna !!}>
+                                    {{ ucwords($pinjaman_anggota->anggota->namadepan) }}
+                                    ({{ $pinjaman_anggota->nia }})
+                                </td>
+                                <td {!! $warna !!}>
+                                    {{ number_format($pinjaman_anggota->proposal, 2) }}
+                                </td>
+                                <td {!! $warna !!}>
+                                    {{ number_format($pinjaman_anggota->verifikasi, 2) }}
+                                </td>
+                                <td {!! $warna !!}>
+                                    {{ number_format($pinjaman_anggota->alokasi, 2) }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="2">Jumlah</th>
+                            <th>
+                                {{ number_format($proposal, 2) }}
+                            </th>
+                            <th id="jumlah">
+                                {{ number_format($verifikasi, 2) }}
+                            </th>
+                            <th>
+                                {{ number_format($alokasi, 2) }}
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        @endif
     </div>
 </div>
 
@@ -391,9 +398,9 @@
                     in_array('tahapan_perguliran.aktif.catatan_bimbingan', Session::get('tombol'))))
             <div class="d-flex justify-content-end mt-3">
                 @if (in_array('tahapan_perguliran.aktif.catatan_bimbingan', Session::get('tombol')))
-                <button type="button" id="btnCatatanBimbingan" class="btn btn-success btn-sm">
-                    Catatan Bimbingan
-                </button>
+                    <button type="button" id="btnCatatanBimbingan" class="btn btn-success btn-sm">
+                        Catatan Bimbingan
+                    </button>
                 @endif
                 @if (in_array('tahapan_perguliran.aktif.resceduling_pinjaman', Session::get('tombol')))
                     <button type="button" data-bs-toggle="modal" data-bs-target="#Rescedule"
