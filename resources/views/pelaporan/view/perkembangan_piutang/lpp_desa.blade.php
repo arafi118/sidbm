@@ -44,7 +44,7 @@
                 <td colspan="3" align="center">
                     <div style="font-size: 18px;">
                         <b>
-                            DAFTAR PERKEMBANGAN {{ $jpp->id < '3' ? 'PIUTANG' : 'PINJAMAN PER KELOMPOK' }}
+                            DAFTAR PERKEMBANGAN {{ $jpp->id >= '3' ? 'PIUTANG' : 'PINJAMAN PER KELOMPOK' }}
                             {{ strtoupper($jpp->nama_jpp) }}
                             {{ $lpp == 'Minggu' ? 'MINGGUAN' : '' }}
                         </b>
