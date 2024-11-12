@@ -35,8 +35,8 @@
 
     $i = 0;
     foreach ($saldo_calk as $_saldo) {
+        $calk["$i"]['th_lalu'] = floatval($_saldo->debit);
         if ($tgl_kondisi >= $tgl_mad) {
-            $calk["$i"]['th_lalu'] = floatval($_saldo->debit);
             $calk["$i"]['th_ini'] = floatval($_saldo->kredit);
         }
 
