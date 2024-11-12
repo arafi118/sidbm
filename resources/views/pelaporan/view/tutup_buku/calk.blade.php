@@ -415,15 +415,17 @@
                                                     $laba_th_ini = floatval($desa->saldo->kredit);
                                                 }
                                             @endphp
+
                                             <tr>
                                                 <td>{{ $loop->iteration }}.</td>
                                                 <td>{{ $desa->sebutan_desa->sebutan_desa }} {{ $desa->nama_desa }}</td>
                                                 <td>:</td>
                                                 <td width="70" align="right">{{ number_format($laba_th_lalu, 2) }}
                                                 </td>
-                                                <td width="70" align="right">
-                                                    {{ number_format($laba_th_ini - $laba_th_lalu, 2) }}</td>
                                                 <td width="70" align="right">{{ number_format($laba_th_ini, 2) }}
+                                                </td>
+                                                <td width="70" align="right">
+                                                    {{ number_format($laba_th_ini + $laba_th_lalu, 2) }}
                                                 </td>
                                             </tr>
                                         @endforeach
