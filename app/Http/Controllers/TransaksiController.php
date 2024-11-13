@@ -187,12 +187,18 @@ class TransaksiController extends Controller
         $saldo_tutup_buku = [];
         foreach ($desa as $d) {
             $id = str_replace('.', '', $d->kode_desa) . $tahun_tb . 0;
+
+            $saldo_debit = 0;
+            if ($d->saldo) {
+                $saldo_debit = $d->saldo->kredit + $d->saldo->debit;
+            }
+
             $saldo_tutup_buku[$id] = [
                 'id' => $id,
                 'kode_akun' => $d->kode_desa,
                 'tahun' => $tahun_tb,
                 'bulan' => '0',
-                'debit' => (string) $d->saldo->kredit + $d->saldo->debit,
+                'debit' => (string) $saldo_debit,
                 'kredit' => 0
             ];
 
@@ -201,8 +207,8 @@ class TransaksiController extends Controller
 
         foreach ($kec->saldo as $saldo) {
             $urut = substr($saldo->id, -1);
-
             $id = str_replace('.', '', $kec->kd_kec) . $tahun_tb . str_pad($urut, '2', '0', STR_PAD_LEFT);
+
             if ($urut <= 3) {
                 $saldo_tutup_buku[$id] = [
                     'id' => $id,
