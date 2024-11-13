@@ -76,7 +76,7 @@
                         <small class="text-danger" id="msg_jenis_jasa"></small>
                     </div>
                 </div>
-                <div class="{{ $class2 }} {{ $kelompok->jenis_produk_pinjaman == '3' ? 'd-none' : '' }}">
+                <div class="{{ $class1 }} {{ $kelompok->jenis_produk_pinjaman == '3' ? 'd-none' : '' }}">
                     <div class="my-2">
                         <label class="form-label" for="jenis_produk_pinjaman">Jenis Produk Pinjaman</label>
                         <select class="form-control" name="jenis_produk_pinjaman" id="jenis_produk_pinjaman">
@@ -91,7 +91,7 @@
                     </div>
                 </div>
 
-                <div class="{{ $class3 }}">
+                <div class="{{ $class2 }}">
                     <div class="my-2">
                         <label class="form-label" for="sistem_angsuran_pokok">Sistem Angs. Pokok</label>
                         <select class="form-control" name="sistem_angsuran_pokok" id="sistem_angsuran_pokok">
@@ -104,7 +104,7 @@
                         <small class="text-danger" id="msg_sistem_angsuran_pokok"></small>
                     </div>
                 </div>
-                <div class="{{ $class }}">
+                <div class="{{ $class3 }}">
                     <div class="my-2">
                         <label class="form-label" for="sistem_angsuran_jasa">Sistem Angs. Jasa</label>
                         <select class="form-control" name="sistem_angsuran_jasa" id="sistem_angsuran_jasa">
