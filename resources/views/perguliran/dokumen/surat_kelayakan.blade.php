@@ -42,7 +42,7 @@
             <td>Perihal</td>
             <td align="center">:</td>
             <td colspan="2">
-                <b>Kelayakan Pinjaman</b>
+                <b>Kelayakan Piutang</b>
             </td>
         </tr>
         <tr>

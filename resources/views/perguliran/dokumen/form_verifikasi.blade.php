@@ -66,7 +66,7 @@
             <td>
                 <b>{{ $pinkel->kelompok->nama_kelompok }}</b>
             </td>
-            <td>Jenis Produk Pinjaman</td>
+            <td>Jenis Produk Piutang</td>
             <td>:</td>
             <td>
                 <b>{{ $pinkel->jpp->nama_jpp }}</b>
@@ -152,7 +152,7 @@
     </table>
 
     <div>
-        <b>DATA PINJAMAN KELOMPOK :</b>
+        <b>DATA PIUTANG KELOMPOK :</b>
     </div>
     <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="background: rgb(232,232,232)">
@@ -204,7 +204,7 @@
     </table>
 
     <div style="margin-top: 12px;">
-        <b>DATA PINJAMAN ANGGOTA :</b>
+        <b>DATA PIUTANG ANGGOTA :</b>
     </div>
     <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
@@ -310,7 +310,7 @@
                     sebenar-benarnya sesuai
                     dengan hasil survey lapangan bahwa kelompok dengan identitas tersebut di atas <b>ADA/TIDAK ADA</b>
                     keberadaannya dan dapat dipertanggungjawabkan sesuai dengan peraturan yang berlaku. Serta <b>LAYAK/TIDAK
-                        LAYAK</b> untuk diberikan pinjaman sesuai dengan hasil rekomendasi Verifikasi di atas. Form ini
+                        LAYAK</b> untuk diberikan piutang sesuai dengan hasil rekomendasi Verifikasi di atas. Form ini
                     digunakan sebagai dasar Verified pada SI DBM.
                 </div>
             </td>

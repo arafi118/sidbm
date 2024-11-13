@@ -61,7 +61,7 @@
     <header>
         <h1 style="margin: 0px;">{{ strtoupper($judul) }}</h1>
         <div style="margin: 0px; font-size: 24px;">
-            {{ strtoupper('Pinjaman Kelompok ' . $pinkel->jpp->nama_jpp) }}
+            {{ strtoupper('Piutang Kelompok ' . $pinkel->jpp->nama_jpp) }}
         </div>
         <div style="margin: 0px;">
             Nomor SPK : {{ $pinkel->spk_no }}

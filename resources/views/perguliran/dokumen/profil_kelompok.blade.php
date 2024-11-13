@@ -142,7 +142,7 @@
                 {{ $pinkel->jenis_pp != '3' ? 'Kelompok' : 'Lembaga' }} yang
                 {{ $pinkel->jenis_pp != '3' ? 'diketuai' : 'dipimpin' }} oleh {{ $pinkel->kelompok->ketua }} ini sudah
                 berdiri sejak tanggal {{ Tanggal::tglLatin($pinkel->kelompok->tgl_berdiri) }} yang berfokus pada
-                jenis pinjaman {{ $pinkel->jpp->nama_spp }} ({{ $pinkel->jpp->deskripsi_jpp }}) serta memiliki jenis usaha
+                jenis piutang {{ $pinkel->jpp->nama_spp }} ({{ $pinkel->jpp->deskripsi_jpp }}) serta memiliki jenis usaha
                 {{ $pinkel->kelompok->usaha->nama_usaha }} dalam kegiatan {{ $pinkel->kelompok->kegiatan->nama_jk }}.
             </td>
         </tr>

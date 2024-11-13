@@ -53,7 +53,7 @@
                 <td>Untuk Pembayaran</td>
                 <td align="center">:</td>
                 <td class="b">
-                    <b>Pencairan Pinjaman Kel. {{ $pinkel->kelompok->nama_kelompok }}</b>
+                    <b>Pencairan Piutang Kel. {{ $pinkel->kelompok->nama_kelompok }}</b>
                 </td>
             </tr>
             <tr>

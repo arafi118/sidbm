@@ -143,7 +143,7 @@
 
         <ol style="text-align: justify; font-size: 14px;">
             <li>
-                Pihak Pertama setuju memberikan kredit/pinjaman kepada Pihak Kedua sebesar Rp.
+                Pihak Pertama setuju memberikan kredit/piutang kepada Pihak Kedua sebesar Rp.
                 {{ number_format($pinkel->alokasi) }} ({{ $keuangan->terbilang($pinkel->alokasi) }} Rupiah) yaitu jumlah
                 yang telah diputuskan dalam rapat penetapan pendanaan, berdasarkan permohonan dari Pihak Kedua dan para
                 pemberi kuasa yang dilakukan secara kelompok sesuai Surat Permohonan Kredit tanggal
@@ -167,19 +167,19 @@
 
             <ol style="text-align: justify;">
                 <li>
-                    Dana Pinjaman dari {{ $kec->nama_lembaga_sort }} akan dipergunakan untuk kegiatan usaha
+                    Dana piutang dari {{ $kec->nama_lembaga_sort }} akan dipergunakan untuk kegiatan usaha
                     dan/atau pembiayaan hal-hal yang bermanfaat untuk meningkatkan pendapatan dan mutu kehidupan
                     keluarga guna memberikan manfaat sebesar-besarnya bagi pertumbuhan ekonomi dan kesejahteraan
                     keluarga pengurus dan anggota kelompok {{ $pinkel->kelompok->nama_kelompok }}.
                 </li>
                 <li>
-                    Menjunjung tinggi dan ikut menyepakati hasil Musyawarah antar Desa yang telah menetapkan pinjaman
+                    Menjunjung tinggi dan ikut menyepakati hasil Musyawarah antar Desa yang telah menetapkan piutang
                     kelompok sebagaimana kelompok {{ $pinkel->kelompok->nama_kelompok }} adalah termasuk dalam kategori
                     kelompok yang sepakat memberikan dukungan operasional dan pengembangan kepada
-                    {{ $kec->nama_lembaga_sort }} secara progresif proporsional berupa jasa pinjaman sebesar
+                    {{ $kec->nama_lembaga_sort }} secara progresif proporsional berupa jasa piutang sebesar
                     {{ number_format($pinkel->pros_jasa / $pinkel->jangka, 2) }}% {{ $pinkel->jasa->nama_jj }} per-bulan
                     dikalikan pokok
-                    pinjaman.
+                    piutang.
                 </li>
                 <li>
                     Kelompok menyepakati akan melakukan angsuran kredit dalam jangka waktu {{ $pinkel->jangka }}

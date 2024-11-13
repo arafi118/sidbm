@@ -35,7 +35,7 @@
                     <b>BERITA ACARA PENCAIRAN</b>
                 </div>
                 <div style="font-size: 16px;">
-                    <b>PINJAMAN KELOMPOK {{ $pinkel->jpp->nama_jpp }}</b>
+                    <b>PIUTANG KELOMPOK {{ $pinkel->jpp->nama_jpp }}</b>
                 </div>
             </td>
         </tr>
@@ -54,12 +54,12 @@
         {{ $tempat }},
         sebesar Rp.
         {{ number_format($pinkel->alokasi) }} ({{ $keuangan->terbilang($pinkel->alokasi) }} Rupiah), sesuai dengan
-        Register Pinjaman pada Data Base Pinjaman Nomor nomor : {{ $pinkel->kelompok->kd_kelompok }} dan Surat Perjanjian
+        Register Piutang pada Data Base Piutang Nomor nomor : {{ $pinkel->kelompok->kd_kelompok }} dan Surat Perjanjian
         Kredit (SPK) nomor: {{ $pinkel->spk_no }}.
     </div>
 
     <div style="text-align: justify;">
-        Adapun rincian pinjaman dan data kelompok (Profil Kelompok) adalah sebagai berikut :
+        Adapun rincian piutang dan data kelompok (Profil Kelompok) adalah sebagai berikut :
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
             <tr>
                 <td width="10" align="center">1.</td>
@@ -138,14 +138,14 @@
             </tr>
             <tr>
                 <td align="center">6.</td>
-                <td>Jenis Pinjaman</td>
+                <td>Jenis Piutang</td>
                 <td align="center">:</td>
                 <td>
                     <b>{{ $pinkel->jpp->nama_jpp }} Orang</b>
                 </td>
 
                 <td align="center">14.</td>
-                <td>Alokasi Pinjaman</td>
+                <td>Alokasi Piutang</td>
                 <td align="center">:</td>
                 <td>
                     <b>{{ number_format($pinkel->alokasi) }}</b>
@@ -184,7 +184,7 @@
         </table>
         Untuk bertindak mewakili Kelompok dalam perjanjian kredit dengan {{ $kec->nama_lembaga_sort }}
         {{ $kec->nama_kec }} sesuai
-        dengan registrasi pinjaman nomor {{ $pinkel->kelompok->kd_kelompok }} dan data pinjaman sebagai berikut :
+        dengan registrasi piutang nomor {{ $pinkel->kelompok->kd_kelompok }} dan data piutang sebagai berikut :
 
         <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; table-layout: fixed;">
             <tr style="background: rgb(232, 232, 232)">
@@ -224,7 +224,7 @@
                     </div>
 
                     <p style="margin-top: 24px;">
-                        Demikian, berita acara ini dibuat sekaligus sebagai bukti pencairan dana pinjaman di atas.
+                        Demikian, berita acara ini dibuat sekaligus sebagai bukti pencairan dana piutang di atas.
                     </p>
 
                     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">

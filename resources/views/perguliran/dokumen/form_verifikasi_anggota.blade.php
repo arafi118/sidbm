@@ -63,7 +63,7 @@
                 'Apakah anggota ini menunjukkan sikap tenang dan terbuka',
                 'Apakah anggota ini jujur, disiplin dan berusaha menepati janji',
                 'Apakah anggota ini bersedia membayar iuran-iuran di kelompok',
-                'Apakah anggota ini disiplin dalam membayar pinjamannya',
+                'Apakah anggota ini disiplin dalam membayar piutangnya',
                 'Apakah anggota ini rajin menabung di kelompok',
                 'Apakah bersedia menjaminkan harta/tabungan sebagai jaminan kredit yang diminta',
                 'Apakah bersedia menandatangani perjanjian kredit berdua (suami/istri/orang tua)',
@@ -84,7 +84,7 @@
                     'Pengeluaran untuk sekolah',
                     'Pengeluaran untuk sosial',
                     'Pengeluaran listrik, telpon, dll',
-                    'Angsuran pinjaman di bank/koperasi/perorangan',
+                    'Angsuran piutang di bank/koperasi/perorangan',
                     'Pengeluaran lain-lain',
                 ],
             ];
@@ -102,7 +102,7 @@
             <tr>
                 <td class="b" colspan="3" align="center">
                     <div style="font-size: 16px;">
-                        PENILAIAN PERMOHONAN PINJAMAN ANGGOTA KELOMPOK
+                        PENILAIAN PERMOHONAN PIUTANG ANGGOTA KELOMPOK
                     </div>
                 </td>
             </tr>
@@ -230,7 +230,7 @@
                     <td>&nbsp;</td>
                     <td colspan="2">
                         <div>
-                            Anggota/pemanfaat ini LAYAK / TIDAK LAYAK untuk diberikan pinjaman sebesar:
+                            Anggota/pemanfaat ini LAYAK / TIDAK LAYAK untuk diberikan piutang sebesar:
                         </div>
                         <div>
                             ........................................................................

@@ -95,7 +95,7 @@
                     </div>
                     <div style="font-size: 14px;">{{ $pinkel->kelompok->kd_kelompok }}</div>
                 </td>
-                <td width="150">Jenis Pinjaman</td>
+                <td width="150">Jenis Piutang</td>
                 <td width="5" align="center">:</td>
                 <td width="200">{{ $pinkel->jpp->nama_jpp }}</td>
                 <td width="150">Loan Id.</td>

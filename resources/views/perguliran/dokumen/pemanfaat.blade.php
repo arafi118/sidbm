@@ -12,7 +12,7 @@
                     <b>DAFTAR PENERIMA</b>
                 </div>
                 <div style="font-size: 16px;">
-                    <b>PINJAMAN/PEMANFAAT {{ $pinkel->jpp->nama_jpp }}</b>
+                    <b>PIUTANG/PEMANFAAT {{ $pinkel->jpp->nama_jpp }}</b>
                 </div>
             </td>
         </tr>
@@ -25,7 +25,7 @@
             <td width="70">Nama Kelompok</td>
             <td width="5" align="right">:</td>
             <td>{{ $pinkel->kelompok->nama_kelompok }} - {{ $pinkel->id }}</td>
-            <td width="70">Alokasi Pinjaman</td>
+            <td width="70">Alokasi Piutang</td>
             <td width="5" align="right">:</td>
             <td>Rp. {{ number_format($pinkel->proposal) }}</td>
         </tr>
@@ -49,7 +49,7 @@
             <td>Nomor SPK</td>
             <td align="right">:</td>
             <td>{{ $pinkel->spk_no }}</td>
-            <td>Pinjaman Ke-</td>
+            <td>Piutang Ke-</td>
             <td align="right">:</td>
             <td>0</td>
         </tr>

@@ -65,7 +65,7 @@
             </td>
         </tr>
         <tr>
-            <td>Alokasi Pinjaman</td>
+            <td>Alokasi Piutang</td>
             <td align="center">:</td>
             <td>
                 <b>Rp. {{ number_format($alokasi) }}</b>

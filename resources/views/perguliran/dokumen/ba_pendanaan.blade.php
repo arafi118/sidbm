@@ -21,7 +21,7 @@
     </table>
 
     <p style="text-align: justify;">
-        Dalam rangka menindak lanjuti proses tahapan perguliran atas kelompok kelompok permohonan pinjaman
+        Dalam rangka menindak lanjuti proses tahapan perguliran atas kelompok kelompok permohonan piutang
         {{ $kec->nama_lembaga_sort }} yang sudah diterbitkan rekomendasi pada tahapan verifikasi maka pada hari ini
         {{ Tanggal::namaHari($pinj->tgl_tunggu) }} tanggal {{ Tanggal::hari($pinj->tgl_tunggu) }} bulan
         {{ Tanggal::namaBulan($pinj->tgl_tunggu) }} tahun {{ Tanggal::tahun($pinj->tgl_tunggu) }} bertempat di kantor
@@ -85,7 +85,7 @@
     </table>
 
     <p style="text-align: justify;">
-        Demikian Berita Acara ini dibuat dan ditanda tangani untuk menjadi dasar pencairan pinjaman kepada kelompok kelompok
+        Demikian Berita Acara ini dibuat dan ditanda tangani untuk menjadi dasar pencairan piutang kepada kelompok kelompok
         tersebut diatas.
     </p>
 

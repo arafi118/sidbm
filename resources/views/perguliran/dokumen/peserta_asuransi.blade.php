@@ -61,7 +61,7 @@
             <td>
                 <b>{{ $pinkel->kelompok->alamat_kelompok }}</b>
             </td>
-            <td>Alokasi Pinjaman</td>
+            <td>Alokasi Piutang</td>
             <td align="center">:</td>
             <td>
                 <b>Rp. {{ number_format($pinkel->alokasi) }}</b>
@@ -75,7 +75,7 @@
             <td>
                 <b>{{ $pinkel->kelompok->d->nama_desa }}</b>
             </td>
-            <td>Alokasi Pinjaman</td>
+            <td>Alokasi Piutang</td>
             <td align="center">:</td>
             <td>
                 <b>{{ $pinkel->sis_pokok->nama_sistem }} ({{ $pinkel->jangka }} Bulan)</b>
@@ -100,7 +100,7 @@
             <th rowspan="2">No</th>
             <th rowspan="2">Nama Anggota</th>
             <th rowspan="2">TTL</th>
-            <th colspan="2">Pinjaman</th>
+            <th colspan="2">Piutang</th>
             <th rowspan="2">Jumlah</th>
             <th rowspan="2">Premi ({{ $kec->besar_premi }}%)</th>
             <th rowspan="2">Keterangan</th>

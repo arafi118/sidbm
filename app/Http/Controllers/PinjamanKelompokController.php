@@ -385,9 +385,9 @@ class PinjamanKelompokController extends Controller
 
         $pinjaman_kelompok = PinjamanKelompok::create($insert);
 
-        $jenis_pp = 'Pinjaman Kelompok';
+        $jenis_pp = 'Piutang Kelompok';
         if ($insert['jenis_pp'] == '3') {
-            $jenis_pp = 'Pinjaman Lembaga Lain';
+            $jenis_pp = 'Piutang Lembaga Lain';
         }
         return response()->json([
             'msg' => 'Proposal ' . $jenis_pp . ' ' . $kel->nama_kelompok . ' berhasil dibuat',
@@ -485,7 +485,7 @@ class PinjamanKelompokController extends Controller
 
     public function detail(PinjamanKelompok $perguliran)
     {
-        $title = 'Detal Pinjaman Kelompok ' . $perguliran->kelompok->nama_kelompok;
+        $title = 'Detal Piutang Kelompok ' . $perguliran->kelompok->nama_kelompok;
         $real = RealAngsuran::where('loan_id', $perguliran->id)->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC')->first();
         $sistem_angsuran = SistemAngsuran::all();
         return view('perguliran.detail')->with(compact('title', 'perguliran', 'real', 'sistem_angsuran'));
@@ -493,7 +493,7 @@ class PinjamanKelompokController extends Controller
 
     public function pelunasan(PinjamanKelompok $perguliran)
     {
-        $title = 'Detal Pinjaman Kelompok ' . $perguliran->kelompok->nama_kelompok;
+        $title = 'Detal Piutang Kelompok ' . $perguliran->kelompok->nama_kelompok;
         $real = RealAngsuran::where('loan_id', $perguliran->id)->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC')->first();
         $ra = RencanaAngsuran::where('loan_id', $perguliran->id)->orderBy('jatuh_tempo', 'DESC')->first();
         return view('perguliran.partials.lunas')->with(compact('title', 'perguliran', 'real', 'ra'));
@@ -568,7 +568,7 @@ class PinjamanKelompokController extends Controller
             ]);
 
             return response()->json([
-                'msg' => 'Validasi Pelunasan Pinjaman Kelompok ' . $perguliran->kelompok->nama_kelompok . ' berhasil.',
+                'msg' => 'Validasi Pelunasan Piutang Kelompok ' . $perguliran->kelompok->nama_kelompok . ' berhasil.',
                 'id' => $perguliran->id
             ], Response::HTTP_ACCEPTED);
         }
@@ -717,7 +717,7 @@ class PinjamanKelompokController extends Controller
             if (intval($alokasi_pencairan) > round($saldo)) {
                 return response()->json([
                     'success' => false,
-                    'msg' => 'Saldo tidak mencukupi untuk melakukan pencairan pinjaman.',
+                    'msg' => 'Saldo tidak mencukupi untuk melakukan pencairan piutang.',
                 ], Response::HTTP_ACCEPTED);
             }
 
@@ -957,7 +957,7 @@ class PinjamanKelompokController extends Controller
 
         return response()->json([
             'success' => true,
-            'msg' => 'Pinjaman Kelompok ' . $pinkel->kelompok->nama_kelompok . ' Berhasil Diperbarui',
+            'msg' => 'Piutang Kelompok ' . $pinkel->kelompok->nama_kelompok . ' Berhasil Diperbarui',
             'tgl_cair' => $data['tgl_cair']
         ]);
     }
@@ -981,7 +981,7 @@ class PinjamanKelompokController extends Controller
 
         return response()->json([
             'success' => true,
-            'msg' => 'Pinjaman Kelompok ' . $id->kelompok->nama_kelompok . ' Loan ID. ' . $id->id . ' berhasil dikembalikan menjadi status P (Pengajuan/Proposal)',
+            'msg' => 'Piutang Kelompok ' . $id->kelompok->nama_kelompok . ' Loan ID. ' . $id->id . ' berhasil dikembalikan menjadi status P (Pengajuan/Proposal)',
             'id_pinkel' => $id->id
         ]);
     }
@@ -1261,7 +1261,7 @@ class PinjamanKelompokController extends Controller
             'idtp' => $last_idtp + 1,
             'id_pinj' => $pinkel->id,
             'id_pinj_i' => '0',
-            'keterangan_transaksi' => (string) 'Penghapusan Pinjaman Kelompok ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')',
+            'keterangan_transaksi' => (string) 'Penghapusan Piutang Kelompok ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')',
             'relasi' => (string) $pinkel->kelompok->nama_kelompok,
             'jumlah' => $data['saldo'],
             'urutan' => '0',
@@ -1270,7 +1270,7 @@ class PinjamanKelompokController extends Controller
 
         return response()->json([
             'success' => true,
-            'msg' => 'Penghapusan Pinjaman Kelompok ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ') berhasil',
+            'msg' => 'Penghapusan Piutang Kelompok ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ') berhasil',
             'id' => $pinkel->id
         ]);
     }
@@ -1291,13 +1291,13 @@ class PinjamanKelompokController extends Controller
 
             return response()->json([
                 'hapus' => true,
-                'msg' => 'Proposal pinjaman kelompok ' . $perguliran->kelompok->nama_kelompok . ' berhasil dihapus'
+                'msg' => 'Proposal piutang kelompok ' . $perguliran->kelompok->nama_kelompok . ' berhasil dihapus'
             ]);
         }
 
         return response()->json([
             'hapus' => false,
-            'msg' => 'Proposal pinjaman kelompok ' . $perguliran->kelompok->nama_kelompok . ' gagal dihapus'
+            'msg' => 'Proposal piutang kelompok ' . $perguliran->kelompok->nama_kelompok . ' gagal dihapus'
         ]);
     }
 

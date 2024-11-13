@@ -81,13 +81,13 @@
                 <div style="text-align: justify;">
                     Mendasar kepada Surat Perjanjian Kredit ({{ $pinkel->jpp->nama_jpp }}) antara
                     {{ $pinkel->kelompok->nama_kelompok }} {{ $pinkel->kelompok->d->nama_desa }} dengan
-                    {{ $kec->nama_lembaga_sort }} Tanggal {{ Tanggal::tglLatin($pinkel->tgl_cair) }} dengan rincian pinjaman
+                    {{ $kec->nama_lembaga_sort }} Tanggal {{ Tanggal::tglLatin($pinkel->tgl_cair) }} dengan rincian piutang
                     sebagai berikut ;
                 </div>
                 <table>
                     <tr>
                         <td width="10">1.</td>
-                        <td width="140">Alokasi Pinjaman</td>
+                        <td width="140">Alokasi Piutang</td>
                         <td width="5">:</td>
                         <td>
                             <b>Rp. {{ number_format($pinkel->alokasi) }}</b>
@@ -162,7 +162,7 @@
                 <p style="text-align: justify;">
                     Demikian surat ini kami sampaikan, apabila terjadi perbedaan hasil perhitungan angsuran/ tunggakan
                     mohon untuk melakukan klarifikasi dengan {{ $kec->nama_lembaga_sort }} dan terima kasih untuk
-                    segera melakukan pelunasan tunggakan pinjamannya
+                    segera melakukan pelunasan tunggakan piutangnya
 
                 </p>
             </td>

@@ -79,11 +79,11 @@
                         <li>
                             Saya selaku Anggota Kelompok {{ $pinkel->kelompok->nama_kelompok }} Kecamatan
                             {{ $kec->nama_kec }} melalui Desa/Kelurahan {{ $pa->anggota->d->nama_desa }}, Kecamatan
-                            {{ $kec->nama_kec }} {{ $nama_kabupaten }}, benar-benar mengajukan pinjaman uang sebesar Rp.
+                            {{ $kec->nama_kec }} {{ $nama_kabupaten }}, benar-benar mengajukan piutang uang sebesar Rp.
                             {{ number_format($pa->proposal) }} ({{ $keuangan->terbilang($pa->proposal) }}).
                         </li>
                         <li>
-                            Saya berjanji akan mengembalikan pinjaman saya tersebut sesuai dengan peraturan yang ada di
+                            Saya berjanji akan mengembalikan piutang saya tersebut sesuai dengan peraturan yang ada di
                             {{ $kec->nama_lembaga_sort }},
                         </li>
                         <li>

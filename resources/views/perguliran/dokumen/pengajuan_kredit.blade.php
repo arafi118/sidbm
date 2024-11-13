@@ -71,7 +71,7 @@
     <tr class="b">
         <td colspan="3" align="center">
             <div style="font-size: 16px;">
-                KELOMPOK PINJAMAN {{ $pinkel->jpp->nama_jpp }}
+                KELOMPOK PIUTANG {{ $pinkel->jpp->nama_jpp }}
             </div>
             <div style="font-size: 20px;">
                 <b>{{ $pinkel->kelompok->nama_kelompok }}</b>
@@ -194,7 +194,7 @@
                 {{ $pinkel->kelompok->nama_kelompok }} (daftar anggota terlampir), dengan ini bermaksud mengajukan
                 permohonan kredit sebesar Rp. {{ number_format($pinkel->proposal) }}
                 ({{ $keuangan->terbilang($pinkel->proposal) }}) untuk memenuhi kebutuhan tambahan modal usaha bagi
-                {{ $pinkel->pinjaman_anggota_count }} anggota. Kredit atau pinjaman tersebut di atas, akan kami
+                {{ $pinkel->pinjaman_anggota_count }} anggota. Kredit atau piutang tersebut di atas, akan kami
                 kembalikan dalam jangka waktu {{ $pinkel->jangka }} bulan, dengan sistem angsuran
                 {{ $pinkel->sis_pokok->nama_sistem }} ({{ $pinkel->sis_pokok->deskripsi_sistem }}).
             </div>

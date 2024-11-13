@@ -49,7 +49,7 @@
                     {{ $pinkel->kelompok->d->nama_desa }}
                 </div>
                 <div style="text-align: justify;">
-                    Dengan ini menyatakan, apabila terjadi tunggakan angsuran pinjaman {{ $pinkel->jpp->nama_jpp }}
+                    Dengan ini menyatakan, apabila terjadi tunggakan angsuran piutang {{ $pinkel->jpp->nama_jpp }}
                     {{ $kec->nama_lembaga_sort }} yang disebabkan adanya anggota pemanfaat yang belum mampu melunasi
                     kewajibannya sesuai jadwal angsuran yang ditetapkan, maka masing-masing pemanfaat dalam kedudukan
                     sebagai pribadi anggota kelompok, secara sadar dan penuh tanggung jawab menyatakan :

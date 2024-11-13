@@ -68,7 +68,7 @@
                 <td colspan="3" align="justify">
                     <p>
                         Adalah benar-benar ahli waris dari <b>{{ $pinj->anggota->namadepan }}</b> Dengan ini menyatakan
-                        bersedia menanggung beban pinjaman {{ $pinkel->jpp->nama_jpp }} sampai lunas. Apabila terjadi
+                        bersedia menanggung beban piutang {{ $pinkel->jpp->nama_jpp }} sampai lunas. Apabila terjadi
                         hal-hal yang tidak diinginkan yang menyebabkan peminjam tidak bisa melunasi kewajibannya seperti :
                         Meninggal Dunia, Melarikan Diri, Berpindah domisili di luar desa, gangguan kejiwaan, sakit parah,
                         dll.
@@ -89,7 +89,7 @@
                 <td align="center">Peminjam</td>
                 <td align="center">Nama Penjamin</td>
             </tr>
-            
+
             <tr>
                 <td align="center" colspan="2" height="30">&nbsp;</td>
             </tr>
