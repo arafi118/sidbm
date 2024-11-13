@@ -1,6 +1,20 @@
 @php
     use App\Utils\Tanggal;
-    $data = ['Cover/Sampul', 'Daftar isi', 'Surat Pengajuan Pinjaman', 'Surat Rekomendasi Kredit', 'Profil Kelompok', 'Susunan Pengurus', 'Daftar Anggota Kelompok', 'Daftar Pemanfaat', 'Surat Pernyataan Tanggung Renteng', 'FC KTP Pemanfaat dan Penjamin', 'Surat Pernyataan Peminjam', 'Rencana Angsuran Kredit Ke Kelompok', 'BA Musyawarah Kelompok'];
+    $data = [
+        1 => 'Cover/Sampul',
+        2 => 'Daftar isi',
+        3 => 'Surat Pengajuan Piutang',
+        4 => 'Surat Rekomendasi Kredit',
+        5 => 'Profil Kelompok',
+        6 => 'Susunan Pengurus',
+        7 => 'Daftar Anggota Kelompok',
+        8 => 'Daftar Pemanfaat',
+        9 => 'Surat Pernyataan Tanggung Renteng',
+        10 => 'FC KTP Pemanfaat dan Penjamin',
+        11 => 'Surat Pernyataan Peminjam',
+        12 => 'Rencana Angsuran Kredit',
+        13 => 'BA Musyawarah',
+    ];
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
@@ -25,7 +39,7 @@
 
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
-            <td width="100">Kode Kelompok</td>
+            <td width="100">Kode {{ $pinkel->jenis_pp != '3' ? 'Kelompok' : 'Lembaga' }}</td>
             <td width="5">:</td>
             <td style="font-weight: bold;">{{ $pinkel->kelompok->kd_kelompok }}</td>
 
@@ -37,13 +51,13 @@
         </tr>
 
         <tr>
-            <td>Nama Kelompok</td>
+            <td>Nama {{ $pinkel->jenis_pp != '3' ? 'Kelompok' : 'Lembaga' }}</td>
             <td width="5">:</td>
             <td style="font-weight: bold;">{{ $pinkel->kelompok->nama_kelompok }}</td>
 
             <td>&nbsp;</td>
 
-            <td>Ketua</td>
+            <td>{{ $pinkel->jenis_pp != '3' ? 'Ketua' : 'Pimpinan' }}</td>
             <td width="5">:</td>
             <td style="font-weight: bold;">{{ $pinkel->kelompok->ketua }}</td>
         </tr>
@@ -74,9 +88,22 @@
             <th width="30">TA</th>
         </tr>
 
+        @php
+            $nomor = 0;
+        @endphp
         @foreach ($data as $dt => $v)
+            @php
+                if ($pinkel->jenis_pp == '3') {
+                    $v = str_replace('Kelompok', 'Lembaga', $v);
+                    if (in_array($dt, ['7', '8', '10'])) {
+                        continue;
+                    }
+                }
+
+                $nomor++;
+            @endphp
             <tr>
-                <td align="center">{{ $loop->iteration }}</td>
+                <td align="center">{{ $nomor }}</td>
                 <td>{{ $v }}</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>

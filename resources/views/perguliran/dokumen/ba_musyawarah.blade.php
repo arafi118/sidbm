@@ -22,7 +22,9 @@
                     <b>BERITA ACARA PERTEMUAN</b>
                 </div>
                 <div style="font-size: 16px;">
-                    <b>KELOMPOK SIMPAN PINJAM KHUSUS PEREMPUAN ({{ $pinkel->jpp->nama_jpp }})</b>
+                    <b>
+                        {{ $pinkel->jenis_pp != '3' ? 'KELOMPOK' : '' }} {{ strtoupper($pinkel->jpp->deskripsi_jpp) }}
+                    </b>
                 </div>
             </td>
         </tr>

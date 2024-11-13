@@ -41,11 +41,12 @@
         <tr class="b">
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
-                    <b>RENCANA ANGSURAN PINJAMAN {{ $pinkel->jpp->nama_jpp }}</b>
+                    <b>RENCANA ANGSURAN PIUTANG {{ strtoupper($pinkel->jpp->nama_jpp) }}</b>
                 </div>
                 <div style="font-size: 16px;">
                     <b>
-                        KELOMPOK {{ strtoupper($pinkel->kelompok->nama_kelompok) }}
+                        {{ $pinkel->jenis_pp != '3' ? 'KELOMPOK' : '' }}
+                        {{ strtoupper($pinkel->kelompok->nama_kelompok) }}
                         {{ strtoupper($pinkel->kelompok->d->sebutan_desa->sebutan_desa) }}
                         {{ strtoupper($pinkel->kelompok->d->nama_desa) }}
                     </b>
@@ -188,7 +189,8 @@
                             {{ $kec->sebutan_level_1 }}
                         </td>
                         <td align="center" colspan="3">
-                            Ketua Kelompok {{ $pinkel->kelompok->nama_kelompok }}
+                            {{ $pinkel->jenis_pp != '3' ? 'Ketua Kelompok' : 'Pimpinan' }}
+                            {{ $pinkel->kelompok->nama_kelompok }}
                         </td>
                     </tr>
                     <tr>

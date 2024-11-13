@@ -416,17 +416,19 @@ class GenerateController extends Controller
 
                 foreach ($trx->tr_idtp as $idtp) {
                     if (in_array($idtp->rekening_kredit, $poko_kredit)) {
-                        $realisasi_pokok = floatval($idtp->jumlah);
-                        $sum_pokok += $realisasi_pokok;
-                        $alokasi_pokok -= $realisasi_pokok;
+                        $realisasi_pokok += floatval($idtp->jumlah);
                     }
 
                     if (in_array($idtp->rekening_kredit, $jasa_kredit)) {
-                        $realisasi_jasa = floatval($idtp->jumlah);
-                        $sum_jasa += $realisasi_jasa;
-                        $alokasi_jasa -= $realisasi_jasa;
+                        $realisasi_jasa += floatval($idtp->jumlah);
                     }
                 }
+
+                $sum_pokok += $realisasi_pokok;
+                $sum_jasa += $realisasi_jasa;
+
+                $alokasi_pokok -= $realisasi_pokok;
+                $alokasi_jasa -= $realisasi_jasa;
 
                 $ra = [];
                 $time_transaksi = strtotime($tgl_transaksi);
@@ -455,21 +457,23 @@ class GenerateController extends Controller
                     $tunggakan_jasa = 0;
                 }
 
-                $real[$trx->idtp] = [
-                    'id' => $trx->idtp,
-                    'loan_id' => $pinkel->id,
-                    'tgl_transaksi' => $tgl_transaksi,
-                    'realisasi_pokok' => $realisasi_pokok,
-                    'realisasi_jasa' => $realisasi_jasa,
-                    'sum_pokok' => $sum_pokok,
-                    'sum_jasa' => $sum_jasa,
-                    'saldo_pokok' => $alokasi_pokok,
-                    'saldo_jasa' => $alokasi_jasa,
-                    'tunggakan_pokok' => $tunggakan_pokok,
-                    'tunggakan_jasa' => $tunggakan_jasa,
-                    'lu' => date('Y-m-d H:i:s'),
-                    'id_user' => 1,
-                ];
+                if ($realisasi_pokok + $realisasi_jasa != '0') {
+                    $real[$trx->idtp] = [
+                        'id' => $trx->idtp,
+                        'loan_id' => $pinkel->id,
+                        'tgl_transaksi' => $tgl_transaksi,
+                        'realisasi_pokok' => $realisasi_pokok,
+                        'realisasi_jasa' => $realisasi_jasa,
+                        'sum_pokok' => $sum_pokok,
+                        'sum_jasa' => $sum_jasa,
+                        'saldo_pokok' => $alokasi_pokok,
+                        'saldo_jasa' => $alokasi_jasa,
+                        'tunggakan_pokok' => $tunggakan_pokok,
+                        'tunggakan_jasa' => $tunggakan_jasa,
+                        'lu' => date('Y-m-d H:i:s'),
+                        'id_user' => 1,
+                    ];
+                }
 
                 $data_id_real[] = $trx->idtp;
                 $data_idtp[] = $trx->idtp;

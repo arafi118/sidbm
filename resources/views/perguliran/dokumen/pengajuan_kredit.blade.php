@@ -163,7 +163,7 @@
         <td width="30">&nbsp;</td>
         <td>Jabatan</td>
         <td width="5" align="right">:</td>
-        <td style="font-weight: bold;">Ketua Kelompok</td>
+        <td style="font-weight: bold;">{{ $pinkel->jenis_pp != '3' ? 'Ketua Kelompok' : 'Pimpinan' }}</td>
     </tr>
     <tr>
         <td width="30">&nbsp;</td>
@@ -181,7 +181,9 @@
         <td width="30">&nbsp;</td>
         <td>Jabatan</td>
         <td width="5" align="right">:</td>
-        <td style="font-weight: bold;">Sekretaris Kelompok</td>
+        <td style="font-weight: bold;">
+            {{ $pinkel->jenis_pp != '3' ? 'Sekretaris Kelompok' : 'Penanggung Jawab' }}
+        </td>
     </tr>
     <tr>
         <td width="30">&nbsp;</td>

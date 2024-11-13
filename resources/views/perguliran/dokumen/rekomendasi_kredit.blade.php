@@ -9,7 +9,6 @@
         $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
         $ketua = $struktur_kelompok['ketua'];
         $sekretaris = $struktur_kelompok['sekretaris'];
-        $bendahara = $struktur_kelompok['bendahara'];
     }
 @endphp
 
@@ -116,7 +115,7 @@
             <tr>
                 <td align="center">
                     <div style="font-size: 18px;">
-                        <b>SURAT REKOMENDASI KREDIT {{ $pinkel->jpp->nama_jpp }}</b>
+                        <b>SURAT REKOMENDASI KREDIT {{ strtoupper($pinkel->jpp->nama_jpp) }}</b>
                     </div>
                     <div style="font-size: 12px;">
                         Nomor: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -141,21 +140,25 @@
             <tr>
                 <td width="120" rowspan="3" style="vertical-align: top;">Nama Lengkap / Jabatan</td>
                 <td width="5" align="center">:</td>
-                <td>{{ $ketua }} / Ketua Kelompok</td>
+                <td>{{ $ketua }} / {{ $pinkel->jenis_pp != '3' ? 'Ketua Kelompok' : 'Pimpinan' }}</td>
             </tr>
             <tr>
                 <td align="center">:</td>
-                <td>{{ $sekretaris }} / Sekretaris Kelompok</td>
+                <td>
+                    {{ $sekretaris }} / {{ $pinkel->jenis_pp != '3' ? 'Sekretaris Kelompok' : 'Penanggung Jawab' }}
+                </td>
             </tr>
-            <tr>
-                <td align="center">:</td>
-                <td>{{ $bendahara }} / Bendahara Kelompok</td>
-            </tr>
+            @if ($pinkel->jenis_pp != '3')
+                <tr>
+                    <td align="center">:</td>
+                    <td>{{ $bendahara }} / Bendahara Kelompok</td>
+                </tr>
+            @endif
             <tr>
                 <td></td>
             </tr>
             <tr>
-                <td>Nama Kelompok</td>
+                <td>Nama {{ $pinkel->jenis_pp != '3' ? 'Kelompok' : 'Lembaga' }}</td>
                 <td align="center">:</td>
                 <td>{{ $pinkel->kelompok->nama_kelompok }}</td>
             </tr>
@@ -168,12 +171,14 @@
                     {{ $nama_kabupaten }}
                 </td>
             </tr>
-            <tr>
-                <td>Jumlah anggota</td>
-                <td align="center">:</td>
-                <td>{{ $pinkel->pinjaman_anggota_count }}
-                    ({{ $keuangan->terbilang($pinkel->pinjaman_anggota_count) }}) Orang</td>
-            </tr>
+            @if ($pinkel->jenis_pp != '3')
+                <tr>
+                    <td>Jumlah anggota</td>
+                    <td align="center">:</td>
+                    <td>{{ $pinkel->pinjaman_anggota_count }}
+                        ({{ $keuangan->terbilang($pinkel->pinjaman_anggota_count) }}) Orang</td>
+                </tr>
+            @endif
             <tr>
                 <td>Jumlah Pengajuan</td>
                 <td align="center">:</td>

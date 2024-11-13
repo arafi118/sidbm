@@ -22,7 +22,7 @@
                     <b>Susunan Pengurus</b>
                 </div>
                 <div style="font-size: 16px;">
-                    <b>Kelompok {{ $pinkel->kelompok->nama_kelompok }}</b>
+                    <b>{{ $pinkel->jenis_pp != '3' ? 'Kelompok' : '' }} {{ $pinkel->kelompok->nama_kelompok }}</b>
                 </div>
             </td>
         </tr>
@@ -32,7 +32,7 @@
     </table>
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
-            <td width="40">Kode Kelompok</td>
+            <td width="40">Kode {{ $pinkel->jenis_pp != '3' ? 'Kelompok' : 'Lembaga' }}</td>
             <td width="5" align="right">:</td>
             <td width="150">
                 <b>{{ $pinkel->kelompok->kd_kelompok }}</b>
@@ -44,12 +44,12 @@
             </td>
         </tr>
         <tr>
-            <td>Nama Kelompok</td>
+            <td>Nama {{ $pinkel->jenis_pp != '3' ? 'Kelompok' : 'Lembaga' }}</td>
             <td align="right">:</td>
             <td>
                 <b>{{ $pinkel->kelompok->nama_kelompok }}</b>
             </td>
-            <td>Ketua</td>
+            <td>{{ $pinkel->jenis_pp != '3' ? 'Ketua' : 'Pimpinan' }}</td>
             <td align="right">:</td>
             <td>
                 <b>{{ $ketua }}</b>
@@ -76,19 +76,25 @@
         </tr>
         <tr>
             <td class="l t b" height="14" align="center">1.</td>
-            <td class="l t b">Ketua Kelompok</td>
+            <td class="l t b">
+                {{ $pinkel->jenis_pp != '3' ? 'Ketua Kelompok' : 'Pimpinan' }}
+            </td>
             <td class="l t b r">{{ $ketua }}</td>
         </tr>
         <tr>
             <td class="l t b" height="14" align="center">2.</td>
-            <td class="l t b">Sekertaris keompok</td>
+            <td class="l t b">
+                {{ $pinkel->jenis_pp != '3' ? 'Sekretaris Kelompok' : 'Penanggung Jawab' }}
+            </td>
             <td class="l t b r">{{ $sekretaris }}</td>
         </tr>
-        <tr>
-            <td class="l t b" height="14" align="center">3.</td>
-            <td class="l t b">Bendahara Kelompok</td>
-            <td class="l t b r">{{ $bendahara }}</td>
-        </tr>
+        @if ($pinkel->jenis_pp != '3')
+            <tr>
+                <td class="l t b" height="14" align="center">3.</td>
+                <td class="l t b">Bendahara Kelompok</td>
+                <td class="l t b r">{{ $bendahara }}</td>
+            </tr>
+        @endif
         <tr>
             <td colspan="3">&nbsp;</td>
         </tr>

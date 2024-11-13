@@ -302,7 +302,8 @@ class PinjamanKelompokController extends Controller
     public function store(Request $request)
     {
         $kel = Kelompok::where('id', $request->id_kel)->first();
-        $data = $request->only([
+
+        $data_request = [
             'tgl_proposal',
             'pengajuan',
             'jangka',
@@ -310,13 +311,10 @@ class PinjamanKelompokController extends Controller
             'jenis_jasa',
             'sistem_angsuran_pokok',
             'sistem_angsuran_jasa',
-            'jenis_produk_pinjaman',
-            'ketua',
-            'sekretaris',
-            'bendahara'
-        ]);
+            'jenis_produk_pinjaman'
+        ];
 
-        $validate = Validator::make($data, [
+        $validasi = [
             'tgl_proposal' => 'required',
             'pengajuan' => 'required',
             'jangka' => 'required',
@@ -325,10 +323,34 @@ class PinjamanKelompokController extends Controller
             'sistem_angsuran_pokok' => 'required',
             'sistem_angsuran_jasa' => 'required',
             'jenis_produk_pinjaman' => 'required',
-            'ketua' => 'required',
-            'sekretaris' => 'required',
-            'bendahara' => 'required',
-        ]);
+        ];
+
+        if ($request->jenis_produk_pinjaman == '3') {
+            array_push($data_request, 'pimpinan', 'penanggung_jawab');
+
+            $validasi['pimpinan'] = 'required';
+            $validasi['penanggung_jawab'] = 'required';
+
+            $struktur_kelompok = [
+                'ketua' => $request->pimpinan,
+                'sekretaris' => $request->penanggung_jawab,
+            ];
+        } else {
+            array_push($data_request, 'ketua', 'sekretaris', 'bendahara');
+
+            $validasi['ketua'] = 'required';
+            $validasi['sekretaris'] = 'required';
+            $validasi['bendahara'] = 'required';
+
+            $struktur_kelompok = [
+                'ketua' => $request->ketua,
+                'sekretaris' => $request->sekretaris,
+                'bendahara' => $request->bendahara,
+            ];
+        }
+
+        $data = $request->only($data_request);
+        $validate = Validator::make($data, $validasi);
 
         if ($validate->fails()) {
             return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
@@ -355,11 +377,7 @@ class PinjamanKelompokController extends Controller
             'sa_jasa' => $request->sistem_angsuran_jasa,
             'status' => 'P',
             'catatan_verifikasi' => '0',
-            'struktur_kelompok' => json_encode([
-                'ketua' => $request->ketua,
-                'sekretaris' => $request->sekretaris,
-                'bendahara' => $request->bendahara,
-            ]),
+            'struktur_kelompok' => json_encode($struktur_kelompok),
             'wt_cair' => '0',
             'lu' => date('Y-m-d H:i:s'),
             'user_id' => auth()->user()->id

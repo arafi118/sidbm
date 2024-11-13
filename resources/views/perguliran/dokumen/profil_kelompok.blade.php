@@ -18,7 +18,7 @@
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
-                    <b>PROFIL KELOMPOK {{ $pinkel->jpp->nama_jpp }}</b>
+                    <b>PROFIL {{ $pinkel->jenis_pp != '3' ? 'KELOMPOK' : '' }} {{ $pinkel->jpp->nama_jpp }}</b>
                 </div>
                 <div style="font-size: 16px;">
                     <b>{{ $pinkel->kelompok->nama_kelompok }}</b>
@@ -33,7 +33,7 @@
         <tr>
             <td width="30">&nbsp;</td>
             <td width="10" align="center">A.</td>
-            <td width="70">Nama kelompok</td>
+            <td width="100">Nama {{ $pinkel->jenis_pp != '3' ? 'kelompok' : 'Lembaga' }}</td>
             <td width="5" align="right">:</td>
             <td style="font-weight: bold;">{{ $pinkel->kelompok->nama_kelompok }}</td>
         </tr>
@@ -92,24 +92,26 @@
         <tr>
             <td width="30">&nbsp;</td>
             <td align="center">&nbsp;</td>
-            <td>1.&nbsp;Ketua</td>
+            <td>1.&nbsp;{{ $pinkel->jenis_pp != '3' ? 'Ketua' : 'Pimpinan' }}</td>
             <td align="right">:</td>
             <td style="font-weight: bold;">{{ $ketua }}</td>
         </tr>
         <tr>
             <td width="30">&nbsp;</td>
             <td align="center">&nbsp;</td>
-            <td>2.&nbsp;Sekertaris</td>
+            <td>2.&nbsp;{{ $pinkel->jenis_pp != '3' ? 'Sekertaris' : 'Penanggung Jawab' }}</td>
             <td align="right">:</td>
             <td style="font-weight: bold;">{{ $sekretaris }}</td>
         </tr>
-        <tr>
-            <td width="30">&nbsp;</td>
-            <td align="center">&nbsp;</td>
-            <td>3.&nbsp;Bendahara</td>
-            <td align="right">:</td>
-            <td style="font-weight: bold;">{{ $bendahara }}</td>
-        </tr>
+        @if ($pinkel->jenis_pp != '3')
+            <tr>
+                <td width="30">&nbsp;</td>
+                <td align="center">&nbsp;</td>
+                <td>3.&nbsp;Bendahara</td>
+                <td align="right">:</td>
+                <td style="font-weight: bold;">{{ $bendahara }}</td>
+            </tr>
+        @endif
         <tr>
             <td width="30">&nbsp;</td>
             <td align="center">E.</td>
@@ -127,17 +129,19 @@
         <tr>
             <td width="30">&nbsp;</td>
             <td align="center">G.</td>
-            <td colspan="3">Deskripsi Kelompok</td>
+            <td colspan="3">Deskripsi {{ $pinkel->jenis_pp != '3' ? 'Kelompok' : '' }}</td>
         </tr>
         <tr>
             <td width="30">&nbsp;</td>
             <td align="center">&nbsp;</td>
-            <td colspan="3" align="justify">Kelompok {{ $pinkel->kelompok->nama_kelompok }} adalah salah satu kelompok
-                yang berada di
+            <td colspan="3" align="justify">{{ $pinkel->jenis_pp != '3' ? 'Kelompok' : '' }}
+                {{ $pinkel->kelompok->nama_kelompok }} adalah salah satu
+                {{ $pinkel->jenis_pp != '3' ? 'kelompok' : 'Lembaga Usaha' }} yang berada di
                 {{ $pinkel->kelompok->d->sebutan_desa->sebutan_desa }} {{ $pinkel->kelompok->d->nama_desa }} Kec.
                 {{ $kec->nama_kec }} {{ $kabupaten }} Prov. {{ ucwords(strtolower($kab->wilayah->nama)) }}.
-                Kelompok yang diketuai oleh {{ $pinkel->kelompok->ketua }} ini sudah berdiri sejak tanggal
-                {{ Tanggal::tglLatin($pinkel->kelompok->tgl_berdiri) }} yang berfokus pada
+                {{ $pinkel->jenis_pp != '3' ? 'Kelompok' : 'Lembaga' }} yang
+                {{ $pinkel->jenis_pp != '3' ? 'diketuai' : 'dipimpin' }} oleh {{ $pinkel->kelompok->ketua }} ini sudah
+                berdiri sejak tanggal {{ Tanggal::tglLatin($pinkel->kelompok->tgl_berdiri) }} yang berfokus pada
                 jenis pinjaman {{ $pinkel->jpp->nama_spp }} ({{ $pinkel->jpp->deskripsi_jpp }}) serta memiliki jenis usaha
                 {{ $pinkel->kelompok->usaha->nama_usaha }} dalam kegiatan {{ $pinkel->kelompok->kegiatan->nama_jk }}.
             </td>
