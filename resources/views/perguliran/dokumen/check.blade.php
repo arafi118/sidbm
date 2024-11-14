@@ -3,7 +3,7 @@
     $data = [
         1 => 'Cover/Sampul',
         2 => 'Daftar isi',
-        3 => 'Surat Pengajuan Piutang',
+        3 => 'Surat Permohonan Pinjaman',
         4 => 'Surat Rekomendasi Kredit',
         5 => 'Profil Kelompok',
         6 => 'Susunan Pengurus',
@@ -14,6 +14,10 @@
         11 => 'Surat Pernyataan Peminjam',
         12 => 'Rencana Angsuran Kredit',
         13 => 'BA Musyawarah',
+        14 => 'Form Verifikasi',
+        15 => 'Daftar Hadir Verifikasi',
+        16 => 'Rencana Angsuran',
+        17 => 'Form Verifikasi Anggota',
     ];
 @endphp
 
