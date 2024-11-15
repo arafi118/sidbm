@@ -43,7 +43,8 @@
 
     <div class="card">
         <div class="card-body text-sm">
-            Dengan mempertimbangkan Standar Operasional Prosedur (SOP) yang berlaku, dengan ini Saya selaku manajer,
+            Dengan mempertimbangkan Standar Operasional Prosedur (SOP) yang berlaku, dengan ini Saya selaku
+            {{ $kec->sebutan_level_1 }},
             menyatakan dengan sebenar-benarnya bahwa :
             <table class="table p-0 mb-3">
                 <tr>
