@@ -119,7 +119,7 @@
             </tr>
             <tr>
                 <td align="center">Saksi 1</td>
-                <td align="center">Saksi 2</td>
+                <td align="center">Saksi/Ahli Waris</td>
                 <td align="center">Yang Menyatakan</td>
             </tr>
             <tr>
