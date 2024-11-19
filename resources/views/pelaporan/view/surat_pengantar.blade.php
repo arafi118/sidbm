@@ -66,7 +66,7 @@
                     @if ($dir_utama)
                         {{ $dir_utama->j->nama_jabatan }},
                     @else
-                        {{ $dir->j->nama_jabatan }},
+                        {{ $kec->sebutan_level_1 }},
                     @endif
                 </div>
                 <br>
