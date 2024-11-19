@@ -742,10 +742,19 @@ class DashboardController extends Controller
                 foreach ($lev2->akun3 as $lev3) {
                     foreach ($lev3->rek as $rek) {
                         foreach ($rek->kom_saldo as $saldo) {
+                            $debit = 0;
+                            if ($saldo->debit) {
+                                $debit = $saldo->debit;
+                            }
+                            $kredit = 0;
+                            if ($saldo->kredit) {
+                                $kredit = $saldo->kredit;
+                            }
+
                             if ($lev1->lev1 == '5') {
-                                $_saldo = $saldo->debit - $saldo->kredit;
+                                $_saldo = $debit - $kredit;
                             } else {
-                                $_saldo = $saldo->kredit - $saldo->debit;
+                                $_saldo = $kredit - $debit;
                             }
 
                             $kom_saldo[$lev1->lev1][$saldo->bulan] += $_saldo;
