@@ -633,7 +633,7 @@
                         <b>Rp. {{ number_format($saldo_pokok) }}</b> ;
                     </div>
 
-                    <form action="/perguliran/rescedule?save=true" method="post" id="formRescedule">
+                    <form action="/perguliran/rescedule" method="post" id="formRescedule">
                         @csrf
 
                         <input type="hidden" name="id" id="id" value="{{ $perguliran->id }}">
