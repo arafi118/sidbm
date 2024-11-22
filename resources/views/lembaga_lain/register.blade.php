@@ -15,7 +15,7 @@
                                     <option {{ $desa_dipilih == $ds->kd_desa ? 'selected' : '' }}
                                         value="{{ $ds->kd_desa }}">
                                         {{ $ds->sebutan_desa->sebutan_desa }}
-                                        {{ $ds->nama_desa }}{{ $ds->kec ? ', ' . $ds->kec->nama_kec : $ds->nama_kec }}
+                                        {{ $ds->nama_desa }}{{ $ds->kec ? ', ' . $ds->kec->nama_kec : ', ' . $ds->nama_kec }}
                                     </option>
                                 @endforeach
                             </select>
