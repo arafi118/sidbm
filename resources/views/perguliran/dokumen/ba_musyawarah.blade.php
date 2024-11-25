@@ -130,7 +130,7 @@
                     </li>
                 </ul>
 
-                Saksi :
+                Sanksi :
                 <ul style="list-style: decimal;">
                     <li>
                         Apabila peminjam tidak melunasi piutangnya, maka yang bersangkutan akan diberi peringatan dan atau
