@@ -67,6 +67,7 @@
                     Tanggal {{ Tanggal::tglLatin($pinkel->tgl_dana) }} dengan ini memberitahukan bahwa akan dilakukan
                     pencairan kredit kepada ;
                 </div>
+
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
                     <tr>
                         <td width="10">1.</td>
@@ -103,41 +104,42 @@
                         </td>
                     </tr>
                 </table>
-
-                <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;"
-                    class="padding">
-                    <tr style="background: rgb(233,233,233)">
-                        <th class="t l b" width="10" height="20">No</th>
-                        <th class="t l b" width="100">Nama Pemanfaat</th>
-                        <th class="t l b">Alamat</th>
-                        <th class="t l b r" width="80">Alokasi (Rp)</th>
-                    </tr>
-
-                    @foreach ($pinkel->pinjaman_anggota as $pa)
-                        <tr>
-                            <td class="t l b" align="center">{{ $loop->iteration }}</td>
-                            <td class="t l b">{{ $pa->anggota->namadepan }}</td>
-                            <td class="t l b">{{ $pa->anggota->alamat }}</td>
-                            <td class="t l b r" align="right">{{ number_format($pa->alokasi) }}</td>
-                        </tr>
-                    @endforeach
-                </table>
             </td>
         </tr>
+    </table>
+
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
         <tr>
+            <th width="50">&nbsp;</th>
+            <th style="background: rgb(233,233,233)" class="t l b" width="10" height="20">No</th>
+            <th style="background: rgb(233,233,233)" class="t l b" width="100">Nama Pemanfaat</th>
+            <th style="background: rgb(233,233,233)" class="t l b">Alamat</th>
+            <th style="background: rgb(233,233,233)" class="t l b r" width="80">Alokasi (Rp)</th>
+        </tr>
+
+        @foreach ($pinkel->pinjaman_anggota as $pa)
+            <tr>
+                <td width="50">&nbsp;</td>
+                <td class="t l b" align="center">{{ $loop->iteration }}</td>
+                <td class="t l b">{{ $pa->anggota->namadepan }}</td>
+                <td class="t l b">{{ $pa->anggota->alamat }}</td>
+                <td class="t l b r" align="right">{{ number_format($pa->alokasi) }}</td>
+            </tr>
+        @endforeach
+    </table>
+
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
+        <tr>
+            <td width="50">&nbsp;</td>
             <td colspan="4">
+                <p>
+                    Demikian surat pemberitahuan ini kami sampaikan, atas perhatian dan kerjasamanya kami
+                    ucapkan
+                    terimakasih.
+                </p>
+
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;"
                     class="padding">
-                    <tr>
-                        <td width="50">&nbsp;</td>
-                        <td style="padding: 0px;" align="justify">
-                            <p>
-                                Demikian surat pemberitahuan ini kami sampaikan, atas perhatian dan kerjasamanya kami
-                                ucapkan
-                                terimakasih.
-                            </p>
-                        </td>
-                    </tr>
                     <tr>
                         <td colspan="2">
                             <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
