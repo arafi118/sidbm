@@ -201,16 +201,15 @@
 
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
             <tr>
-                <td width="33%" height="30">&nbsp;</td>
-                <td width="33%">&nbsp;</td>
-                <td width="33%">&nbsp;</td>
+                <td width="50%" height="30">&nbsp;</td>
+                <td width="50%">&nbsp;</td>
             </tr>
             <tr>
-                <td colspan="2">&nbsp;</td>
+                <td>&nbsp;</td>
                 <td align="center">{{ $nama_kab }}, {{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
             </tr>
             <tr>
-                <td colspan="2">&nbsp;</td>
+                <td>&nbsp;</td>
                 <td align="center">
                     {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }} {{ $pinkel->kelompok->d->nama_desa }}
                 </td>
@@ -219,7 +218,7 @@
                 <td colspan="3" height="40">&nbsp;</td>
             </tr>
             <tr>
-                <td colspan="2">&nbsp;</td>
+                <td>&nbsp;</td>
                 <td align="center">
                     <u>
                         <b>{{ $pinkel->kelompok->d->kades }}</b>
