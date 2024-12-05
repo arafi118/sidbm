@@ -215,7 +215,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="3" height="40">&nbsp;</td>
+                <td colspan="2" height="40">&nbsp;</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
