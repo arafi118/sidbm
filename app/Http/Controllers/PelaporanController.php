@@ -2738,6 +2738,7 @@ class PelaporanController extends Controller
         $hari = 1;
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['tanggal_kondisi'] = Tanggal::tglLatin(date('Y-m-d', strtotime($tgl)));
         $data['sub_judul'] = 'Awal Tahun ' . Tanggal::tahun($tgl);
         $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
 
