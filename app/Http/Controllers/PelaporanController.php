@@ -123,6 +123,10 @@ class PelaporanController extends Controller
                 4 => [
                     'title' => 'CALK',
                     'file' => 'CALK_tutup_buku'
+                ],
+                4 => [
+                    'title' => 'Perubahan Ekuitas',
+                    'file' => 'LPM_tutup_buku'
                 ]
             ];
 
@@ -464,6 +468,10 @@ class PelaporanController extends Controller
         $thn = $data['tahun'];
         $bln = $data['bulan'];
         $hari = $data['hari'];
+
+        if ($bln == '1' && $hari == '1') {
+            return $this->LPM_tutup_buku($data);
+        }
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
         $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
@@ -2711,6 +2719,40 @@ class PelaporanController extends Controller
         $data['bebanNOP'] = $laba_rugi['beban_non_ops'];
 
         $view = view('pelaporan.view.laba_rugi', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
+    private function LPM_tutup_buku(array $data)
+    {
+        $data['laporan'] = 'Laporan Perubahan Ekuitas';
+        $keuangan = new Keuangan;
+
+        $thn = $data['tahun'];
+        $bln = 1;
+        $hari = 1;
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['sub_judul'] = 'Awal Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+
+        $data['keuangan'] = $keuangan;
+        $data['rekening'] = Rekening::where('lev1', '3')->where(function ($query) use ($data) {
+            $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $data['tgl_kondisi']);
+        })->with([
+            'kom_saldo' => function ($query) use ($data) {
+                $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
+                    $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
+                });
+            }
+        ])->get();
+
+        $view = view('pelaporan.view.tutup_buku.perubahan_modal', $data)->render();
 
         if ($data['type'] == 'pdf') {
             $pdf = PDF::loadHTML($view);
