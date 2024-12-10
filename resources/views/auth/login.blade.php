@@ -16,7 +16,9 @@
     <meta name="keywords"
         content="dbm, sidbm, sidbm.net, demo.sidbm.net, app.sidbm.net, asta brata teknologi, abt, dbm, kepmendesa 136, kepmendesa nomor 136 tahun 2022">
     <meta name="author" content="Enfii">
+    <meta name="theme-color" content="#4CAF50">
 
+    <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" sizes="76x76" href="{{ $logo }}">
     <link rel="icon" type="image/png" href="{{ $logo }}">
     <title>
@@ -40,6 +42,18 @@
             height: unset !important;
         }
     </style>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/assets/js/serviceworker.js')
+                .then(function(registration) {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }).catch(function(error) {
+                    console.log('Service Worker registration failed:', error);
+                });
+        } else {
+            console.warn('Service Worker is not supported in this browser.');
+        }
+    </script>
 </head>
 
 <body>
