@@ -1153,44 +1153,6 @@ class PinjamanKelompokController extends Controller
 
         RealAngsuran::insert($real_angsuran);
 
-        $pinjaman_anggota = PinjamanAnggota::where([
-            ['id_pinkel', $pinkel->id],
-            ['status', 'R']
-        ])->get();
-        foreach ($pinjaman_anggota as $pa) {
-            $pinjaman_anggota = [
-                'jenis_pinjaman' => $pa->jenis_pinjaman,
-                'id_kel' => $pa->id_kel,
-                'id_pinkel' => $pinjaman->id,
-                'jenis_pp' => $pa->jenis_pp,
-                'nia' => $pa->nia,
-                'tgl_proposal' => Tanggal::tglNasional($tgl_resceduling),
-                'tgl_verifikasi' => Tanggal::tglNasional($tgl_resceduling),
-                'tgl_dana' => Tanggal::tglNasional($tgl_resceduling),
-                'tgl_tunggu' => Tanggal::tglNasional($tgl_resceduling),
-                'tgl_cair' => Tanggal::tglNasional($tgl_resceduling),
-                'tgl_lunas' => Tanggal::tglNasional($tgl_resceduling),
-                'proposal' => $pengajuan / $pinkel->pinjaman_anggota_count,
-                'verifikasi' => $pengajuan / $pinkel->pinjaman_anggota_count,
-                'alokasi' => $pengajuan / $pinkel->pinjaman_anggota_count,
-                'kom_pokok' => $pa->kom_pokok,
-                'kom_jasa' => $pa->kom_jasa,
-                'spk_no' => $pinjaman->spk_no,
-                'sumber' => $pa->sumber,
-                'pros_jasa' => $pros_jasa,
-                'jenis_jasa' => $pa->jenis_jasa,
-                'jangka' => $jangka,
-                'sistem_angsuran' => $sis_pokok,
-                'sa_jasa' => $sis_jasa,
-                'status' => 'A',
-                'catatan_verifikasi' => $pinjaman->catatan_verifikasi,
-                'lu' => $pinjaman->lu,
-                'user_id' => $pinjaman->user_id,
-            ];
-
-            $pinj_a = PinjamanAnggota::create($pinjaman_anggota);
-        }
-
         return response()->json([
             'success' => true,
             'status' => 'A',
