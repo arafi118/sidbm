@@ -7,8 +7,14 @@
     "theme_color": "#4CAF50",
     "description": "Aplikasi Laravel dengan fitur PWA.",
     "icons": [{
-        "src": "/assets/img/icon/favicon.png",
-        "type": "image/png",
-        "sizes": "192x192"
-    }]
+            "src": "/assets/img/icon/favicon-192x192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "/assets/img/icon/favicon-512x512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ]
 }
