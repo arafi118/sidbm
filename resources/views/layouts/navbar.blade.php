@@ -61,7 +61,7 @@
                 </div>
             @endif
         </div>
-        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 justify-content-between" id="navbar">
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 justify-content-end" id="navbar">
             <ul class="navbar-nav justify-content-end align-items-center">
                 @if ($angsuran && !$show)
                     <li class="nav-item">
