@@ -112,6 +112,19 @@
             margin-bottom: 0 !important;
         }
     </style>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/assets/js/serviceworker.js')
+                .then(function(registration) {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }).catch(function(error) {
+                    console.log('Service Worker registration failed:', error);
+                });
+        } else {
+            console.warn('Service Worker is not supported in this browser.');
+        }
+    </script>
 </head>
 
 <body class="g-sidenav-show  bg-gray-200 {{ $config['darkMode'] }} {{ $config['sidebarMini'] }}">
@@ -546,19 +559,6 @@
             Toastr('success', "{{ session('pesan') }}")
         </script>
     @endif
-
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/assets/js/serviceworker.js')
-                .then(function(registration) {
-                    console.log('Service Worker registered with scope:', registration.scope);
-                }).catch(function(error) {
-                    console.log('Service Worker registration failed:', error);
-                });
-        } else {
-            console.warn('Service Worker is not supported in this browser.');
-        }
-    </script>
 </body>
 
 </html>
