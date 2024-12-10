@@ -21,6 +21,7 @@ use App\Http\Controllers\LembagaLainController;
 use App\Http\Controllers\PelaporanController;
 use App\Http\Controllers\PinjamanAnggotaController;
 use App\Http\Controllers\PinjamanKelompokController;
+use App\Http\Controllers\ServiceWorkerController;
 use App\Http\Controllers\SopController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
@@ -317,5 +318,8 @@ Route::post('/generate/save/{offset?}', [GenerateController::class, 'generate'])
 Route::get('/unpaid', [DashboardController::class, 'unpaid'])->middleware('auth');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
 Route::get('/excel/{filename}/{lokasi}', [PinjamanKelompokController::class, 'excel']);
+
+Route::get('/manifest.json', [ServiceWorkerController::class, 'manifest']);
+Route::get('/cache-files', [ServiceWorkerController::class, 'assets']);
 
 Route::get('/{invoice}', [PelaporanController::class, 'invoice']);

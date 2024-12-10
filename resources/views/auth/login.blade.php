@@ -18,7 +18,7 @@
     <meta name="author" content="Enfii">
     <meta name="theme-color" content="#4CAF50">
 
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="{{ url('/manifest.json') }}">
     <link rel="apple-touch-icon" sizes="76x76" href="{{ $logo }}">
     <link rel="icon" type="image/png" href="{{ $logo }}">
     <title>
