@@ -555,6 +555,8 @@
                 }).catch(function(error) {
                     console.log('Service Worker registration failed:', error);
                 });
+        } else {
+            console.warn('Service Worker is not supported in this browser.');
         }
     </script>
 </body>
