@@ -1,0 +1,14 @@
+{
+    "name": "My Laravel App",
+    "short_name": "LaravelApp",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#4CAF50",
+    "description": "Aplikasi Laravel dengan fitur PWA.",
+    "icons": [{
+        "src": "/assets/img/icon/favicon.png",
+        "type": "image/png",
+        "sizes": "192x192"
+    }]
+}

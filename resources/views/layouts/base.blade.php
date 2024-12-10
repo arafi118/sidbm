@@ -23,7 +23,9 @@
     <meta name="keywords"
         content="dbm, sidbm, sidbm.net, demo.sidbm.net, app.sidbm.net, asta brata teknologi, abt, dbm, kepmendesa 136, kepmendesa nomor 136 tahun 2022">
     <meta name="author" content="Enfii">
+    <meta name="theme-color" content="#4CAF50">
 
+    <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" sizes="76x76" href="{{ Session::get('icon') }}">
     <link rel="icon" type="image/png" href="{{ Session::get('icon') }}">
     <title>
@@ -544,6 +546,17 @@
             Toastr('success', "{{ session('pesan') }}")
         </script>
     @endif
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/assets/js/serviceworker.js')
+                .then(function(registration) {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }).catch(function(error) {
+                    console.log('Service Worker registration failed:', error);
+                });
+        }
+    </script>
 </body>
 
 </html>
