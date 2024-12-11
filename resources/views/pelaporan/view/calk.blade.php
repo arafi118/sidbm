@@ -492,67 +492,72 @@
                                 </li>
                             </ol>
                         </li>
-                    </ol>
-                </li>
-                <li>
-                    <div>Laba Ditahan Dari Laba Tahun {{ $tahun - 1 }}</div>
-                    <ol style="list-style: lower-latin;">
                         <li>
-                            Laba Ditahan untuk Penambahan Modal Kegiatan DBM Rp. {{ number_format($calk[3]['th_ini'], 2) }}
-                        </li>
                         <li>
-                            Laba Ditahan untuk Penambahan Investasi Usaha Rp. {{ number_format($calk[4]['th_ini'], 2) }}
+                            <div>Laba Ditahan Dari Laba Tahun {{ $tahun - 1 }}</div>
+                            <ol>
+                                <li>
+                                    Laba Ditahan untuk Penambahan Modal Kegiatan DBM Rp.
+                                    {{ number_format($calk[3]['th_ini'], 2) }}
+                                </li>
+                                <li>
+                                    Laba Ditahan untuk Penambahan Investasi Usaha Rp.
+                                    {{ number_format($calk[4]['th_ini'], 2) }}
+                                </li>
+                                <li>
+                                    Laba Ditahan untuk Pendirian Unit Usaha Rp. {{ number_format($calk[5]['th_ini'], 2) }}
+                                </li>
+                            </ol>
                         </li>
-                        <li>
-                            Laba Ditahan untuk Pendirian Unit Usaha Rp. {{ number_format($calk[5]['th_ini'], 2) }}
-                        </li>
-                    </ol>
                 </li>
             </ol>
         </li>
 
-        @if ($keterangan)
-            <li style="margin-top: 12px;">
-                <div style="text-transform: uppercase;">
-                    Lain Lain
-                </div>
-                <div style="text-align: justify">
-                    {!! $keterangan->catatan !!}.
-                </div>
-            </li>
-        @endif
+    </ol>
+    </li>
 
+    @if ($keterangan)
         <li style="margin-top: 12px;">
-            <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
-                <tr>
-                    <td align="justify">
-                        <div style="text-transform: uppercase;">
-                            Penutup
-                        </div>
-                        <div style="text-align: justify">
-                            Laporan Keuangan {{ $kec->nama_lembaga_sort }} ini disajikan dengan berpedoman pada Keputusan
-                            Kementerian Desa Nomor 136/2022 Tentang Panduan Penyusunan Pelaporan Bumdes. Dimana yang
-                            dimaksud Bumdes yang dimaksud dalam Keputusan Kementerian Desa adalah meliputi Bumdes, Bumdesma
-                            dan Bumdesma Lkd. Catatan atas Laporan Keuangan (CaLK) ini merupakan bagian tidak terpisahkan
-                            dari Laporan Keuangan Badan Usaha Milik Desa Bersama {{ $kec->nama_lembaga_sort }} untuk
-                            Laporan Operasi {{ $nama_tgl }}. Selanjutnya Catatan atas Laporan Keuangan ini diharapkan
-                            untuk dapat berguna bagi pihak-pihak yang berkepentingan (stakeholders) serta memenuhi
-                            prinsip-prinsip transparansi, akuntabilitas, pertanggungjawaban, independensi, dan fairness
-                            dalam pengelolaan keuangan {{ $kec->nama_lembaga_sort }}.
-                        </div>
-
-                        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;"
-                            class="p">
-                            <tr>
-                                <td>
-                                    <div style="margin-top: 16px;"></div>
-                                    {!! json_decode(str_replace('{tanggal}', $tanggal_kondisi, $kec->ttd->tanda_tangan_pelaporan), true) !!}
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
+            <div style="text-transform: uppercase;">
+                Lain Lain
+            </div>
+            <div style="text-align: justify">
+                {!! $keterangan->catatan !!}.
+            </div>
         </li>
+    @endif
+
+    <li style="margin-top: 12px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+            <tr>
+                <td align="justify">
+                    <div style="text-transform: uppercase;">
+                        Penutup
+                    </div>
+                    <div style="text-align: justify">
+                        Laporan Keuangan {{ $kec->nama_lembaga_sort }} ini disajikan dengan berpedoman pada Keputusan
+                        Kementerian Desa Nomor 136/2022 Tentang Panduan Penyusunan Pelaporan Bumdes. Dimana yang
+                        dimaksud Bumdes yang dimaksud dalam Keputusan Kementerian Desa adalah meliputi Bumdes, Bumdesma
+                        dan Bumdesma Lkd. Catatan atas Laporan Keuangan (CaLK) ini merupakan bagian tidak terpisahkan
+                        dari Laporan Keuangan Badan Usaha Milik Desa Bersama {{ $kec->nama_lembaga_sort }} untuk
+                        Laporan Operasi {{ $nama_tgl }}. Selanjutnya Catatan atas Laporan Keuangan ini diharapkan
+                        untuk dapat berguna bagi pihak-pihak yang berkepentingan (stakeholders) serta memenuhi
+                        prinsip-prinsip transparansi, akuntabilitas, pertanggungjawaban, independensi, dan fairness
+                        dalam pengelolaan keuangan {{ $kec->nama_lembaga_sort }}.
+                    </div>
+
+                    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;"
+                        class="p">
+                        <tr>
+                            <td>
+                                <div style="margin-top: 16px;"></div>
+                                {!! json_decode(str_replace('{tanggal}', $tanggal_kondisi, $kec->ttd->tanda_tangan_pelaporan), true) !!}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </li>
     </ol>
 @endsection
