@@ -391,7 +391,8 @@
                     Pembagian atas laba usaha dibagi menjadi Laba dibagikan dan Laba ditahan.
                 </li>
                 <li>
-                    Mendasar kepada Permendesa PDTT Nomor 15 Tahun 2021 maka pembagian laba Bumdesma Lkd adalah sebagai
+                    Mendasar kepada Permendesa PDTT Nomor 15 Tahun 2021 maka ketentuan pembagian laba Bumdesma Lkd adalah
+                    sebagai
                     berikut:
                     <ol style="list-style: lower-latin;">
                         <li>
