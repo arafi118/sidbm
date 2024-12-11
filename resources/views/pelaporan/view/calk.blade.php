@@ -401,6 +401,11 @@
                             Besaran masing-masing bagian dihitung berdasarkan persentase penyertaan modal dan dituangkan
                             dalamanggaran dasar.
                         </li>
+                    </ol>
+                </li>
+                <li>
+                    Pembagian labanya adalah sebagai berukut:
+                    <ol style="list-style: lower-latin;">
                         <li>
                             <div>Alokasi laba Bagian Desa;</div>
                             <ul>
