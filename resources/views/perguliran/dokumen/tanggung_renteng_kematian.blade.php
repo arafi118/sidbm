@@ -153,7 +153,7 @@
                 <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
             </td>
             <td align="center">
-                <b>{{ $pinkel->kelompok->ketua }}</b>
+                <b>{{ $ketua }}</b>
             </td>
         </tr>
     </table>
