@@ -207,11 +207,16 @@
                 </li>
                 <li>
                     Aset Tetap (berwujud dan tidak berwujud)
-                    <div>
-                        Aset tetap dicatat sebesar biaya perolehannya jika aset
-                        tersebut dimiliki secara hukum oleh Bumdesma Lkd Aset
-                        tetap disusutkan menggunakan metode garis lurus tanpa nilai residu.
-                    </div>
+                    <ol style="list-style: lower-alpha;">
+                        <li>
+                            Aset tetap dicatat sebesar biaya perolehannya pada saat aset
+                            tersebut dimiliki secara hukum oleh Bumdesma Lkd.
+                        </li>
+                        <li>
+                            Aset tetap (berwujud dan tidak berwujud) disusutkan/amortisasi menggunakan metode garis lurus
+                            tanpa nilai residu.
+                        </li>
+                    </ol>
                 </li>
                 <li>
                     Pengakuan Pendapatan dan Beban
