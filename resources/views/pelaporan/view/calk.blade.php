@@ -201,8 +201,9 @@
                 <li>
                     Piutang Usaha Bersih
                     <div>
-                        Piutang usaha Bersih disajikan sebesar jumlah saldo pinjaman dikurangi
-                        dengan cadangan kerugian pinjaman
+                        Penyajian piutang dalam laporan keuangan dilakukan dengan cara menyajikan nilai bersih yang dapat
+                        direalisasikan (net realizable value). Nilai bersih yang dapat direalisasikan adalah selisih antara
+                        nilai nominal piutang dengan penyisihan piutang.
                     </div>
                 </li>
                 <li>
@@ -388,7 +389,7 @@
             <ol>
                 <li>
                     Pembagian atas laba usaha dibagi menjadi Laba dibagikan dan laba ditahan sesuai dengan ketentuan pada
-                    Permendesa PDTT nomor 15 tahun 2021 yaitu:
+                    Permendesa PDTT nomor 15 tahun 2021 sebagai berikut:
                     <ol style="list-style: lower-latin;">
                         <li>
                             Hasil usaha yang dibagikan paling sedikit terdiri atas: bagian milik bersama masyarakat Desa;
