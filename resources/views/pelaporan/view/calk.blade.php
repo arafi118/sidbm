@@ -391,7 +391,7 @@
                     Pembagian atas laba usaha dibagi menjadi Laba dibagikan dan Laba ditahan.
                 </li>
                 <li>
-                    Adapun ketentuan Permendesa PDTT nomor 15 tahun 2021 sebagai berikut:
+                    Sesuai Permendesa PDTT nomor 15 tahun 2021 ketentuannya adalah sebagai berikut:
                     <ol style="list-style: lower-latin;">
                         <li>
                             Hasil usaha yang dibagikan paling sedikit terdiri atas: bagian milik bersama masyarakat Desa;
