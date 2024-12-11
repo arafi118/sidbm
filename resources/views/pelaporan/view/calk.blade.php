@@ -199,23 +199,19 @@
                     </ol>
                 </li>
                 <li>
-                    Piutang Usaha
-                    <ol style="list-style: lower-alpha;">
-                        <li>
-                            Piutang usaha disajikan sebesar jumlah saldo pinjaman dikurangi
-                            dengan cadangan kerugian pinjaman
-                        </li>
-                    </ol>
+                    Piutang Usaha Bersih
+                    <div>
+                        Piutang usaha Bersih disajikan sebesar jumlah saldo pinjaman dikurangi
+                        dengan cadangan kerugian pinjaman
+                    </div>
                 </li>
                 <li>
                     Aset Tetap (berwujud dan tidak berwujud)
-                    <ol style="list-style: lower-alpha">
-                        <li>
-                            Aset tetap dicatat sebesar biaya perolehannya jika aset
-                            tersebut dimiliki secara hukum oleh Bumdesma Lkd Aset
-                            tetap disusutkan menggunakan metode garis lurus tanpa nilai residu.
-                        </li>
-                    </ol>
+                    <div>
+                        Aset tetap dicatat sebesar biaya perolehannya jika aset
+                        tersebut dimiliki secara hukum oleh Bumdesma Lkd Aset
+                        tetap disusutkan menggunakan metode garis lurus tanpa nilai residu.
+                    </div>
                 </li>
                 <li>
                     Pengakuan Pendapatan dan Beban
@@ -236,11 +232,9 @@
                 </li>
                 <li>
                     Pajak Penghasilan
-                    <ol style="list-style: lower-alpha;">
-                        <li>
-                            Pajak Penghasilan mengikuti ketentuan perpajakan yang berlaku di Indonesia
-                        </li>
-                    </ol>
+                    <div>
+                        Pajak Penghasilan mengikuti ketentuan perpajakan yang berlaku di Indonesia
+                    </div>
                 </li>
             </ol>
         </li>
