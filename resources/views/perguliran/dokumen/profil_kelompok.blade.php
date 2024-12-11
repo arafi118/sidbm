@@ -140,7 +140,7 @@
                 {{ $pinkel->kelompok->d->sebutan_desa->sebutan_desa }} {{ $pinkel->kelompok->d->nama_desa }} Kec.
                 {{ $kec->nama_kec }} {{ $kabupaten }} Prov. {{ ucwords(strtolower($kab->wilayah->nama)) }}.
                 {{ $pinkel->jenis_pp != '3' ? 'Kelompok' : 'Lembaga' }} yang
-                {{ $pinkel->jenis_pp != '3' ? 'diketuai' : 'dipimpin' }} oleh {{ $ketua > ketua }} ini sudah
+                {{ $pinkel->jenis_pp != '3' ? 'diketuai' : 'dipimpin' }} oleh {{ $ketua }} ini sudah
                 berdiri sejak tanggal {{ Tanggal::tglLatin($pinkel->kelompok->tgl_berdiri) }} yang berfokus pada
                 jenis piutang {{ $pinkel->jpp->nama_spp }} ({{ $pinkel->jpp->deskripsi_jpp }}) serta memiliki jenis usaha
                 {{ $pinkel->kelompok->usaha->nama_usaha }} dalam kegiatan {{ $pinkel->kelompok->kegiatan->nama_jk }}.
