@@ -569,8 +569,8 @@ class SopController extends Controller
         foreach ($data['rencana'] as $ra) {
             $bulan = intval(Tanggal::bulan($ra->jatuh_tempo));
 
-            $data['pendapatan_jasa'][$ra->jenis_pp]['data'][$bulan]['pokok']  += $ra->target_pokok;
-            $data['pendapatan_jasa'][$ra->jenis_pp]['data'][$bulan]['jasa']  += $ra->target_jasa;
+            $data['pendapatan_jasa'][$ra->jenis_pp]['data'][$bulan]['pokok']  += $ra->wajib_pokok;
+            $data['pendapatan_jasa'][$ra->jenis_pp]['data'][$bulan]['jasa']  += $ra->wajib_jasa;
         }
 
         $view = view('sop.partials.preview.rencana_pendapatan_jasa', $data);
