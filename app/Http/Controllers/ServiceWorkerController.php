@@ -50,6 +50,9 @@ class ServiceWorkerController extends Controller
 
     private function resize($logo, $witdh, $height)
     {
+        if (!$logo) {
+            $logo = '1.png';
+        }
         $imagePath = 'logo/' . $logo;
 
         if (!Storage::exists($imagePath)) {
