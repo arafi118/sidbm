@@ -53,7 +53,7 @@
         <select class="form-control" name="sub_laporan" id="sub_laporan">
             @foreach ($data as $dt)
                 <option value="EB_{{ $dt['id'] }}">
-                    {{ $dt['title'] }}
+                    {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}. {{ $dt['title'] }}
                 </option>
             @endforeach
         </select>

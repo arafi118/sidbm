@@ -82,20 +82,24 @@ class PelaporanController extends Controller
         if ($file == 14) {
             $data = [
                 0 => [
-                    'title' => '01. Januari - Maret',
+                    'title' => 'Januari - Maret',
                     'id' => '1,2,3'
                 ],
                 1 => [
-                    'title' => '02. April - Juni',
+                    'title' => 'April - Juni',
                     'id' => '4,5,6'
                 ],
                 2 => [
-                    'title' => '03. Juli - September',
+                    'title' => 'Juli - September',
                     'id' => '7,8,9'
                 ],
                 3 => [
-                    'title' => '04. Oktober - Desember',
+                    'title' => 'Oktober - Desember',
                     'id' => '10,11,12'
+                ],
+                4 => [
+                    'title' => 'Rekap Januari - Desember',
+                    'id' => '12'
                 ]
             ];
 
@@ -2380,7 +2384,8 @@ class PelaporanController extends Controller
             '1,2,3' => 'Januari - Maret',
             '4,5,6' => 'April - Juni',
             '7,8,9' => 'Juli - September',
-            '10,11,12' => 'Oktober - Desember'
+            '10,11,12' => 'Oktober - Desember',
+            '12' => 'Rekap Januari - Desember',
         ];
 
         $tgl = $thn . '-' . $bln . '-' . $hari;

@@ -20,6 +20,10 @@
     $komulatif_beban = 0;
     $kom_rencana_pendapatan = 0;
     $kom_rencana_beban = 0;
+
+    if ($bulan_tampil[0] == '12') {
+        $bulan_tampil = [];
+    }
 @endphp
 
 @extends('pelaporan.layout.base')
@@ -39,9 +43,15 @@
                     <b>LAPORAN PENGGUNAAN DANA (E-BUDGETING)</b>
                 </div>
                 <div style="font-size: 16px;">
-                    <b style="text-transform: uppercase;">Triwulan
-                        {{ $keuangan->romawi(str_pad($triwulan, '2', '0', STR_PAD_LEFT)) }} Tahun
-                        Anggaran {{ $tahun }}</b>
+                    <b style="text-transform: uppercase;">
+                        @if (count($bulan_tampil) != 0)
+                            Triwulan
+                            {{ $keuangan->romawi(str_pad($triwulan, '2', '0', STR_PAD_LEFT)) }}
+                        @else
+                            Januari - Desember
+                        @endif
+                        Tahun Anggaran {{ $tahun }}
+                    </b>
                 </div>
             </td>
         </tr>
@@ -50,10 +60,14 @@
         </tr>
     </table>
 
+    @php
+        $is_triwulan = $triwulan == 1 || count($bulan_tampil) == 0;
+    @endphp
+
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 12px;">
             <th rowspan="2" class="t l b" width="26%">Rekening</th>
-            @if ($triwulan > 1)
+            @if (!$is_triwulan)
                 <th rowspan="2" class="t l b" width="10%">Komulatif Bulan Lalu</th>
             @endif
             @foreach ($bulan_tampil as $bt)
@@ -61,15 +75,15 @@
                     {{ Tanggal::namaBulan(date('Y') . '-' . $bt . '-01') }}
                 </th>
             @endforeach
-            <th colspan="2" class="t l b r" width="16%">Total</th>
+            <th colspan="2" class="t l b r" width="16%">
+                {{ count($bulan_tampil) == '0' ? 'Akumulasi Januari - Desember' : 'Total' }}
+            </th>
         </tr>
         <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 12px;">
-            <th class="t l b" width="8%" height="16">Rencana</th>
-            <th class="t l b" width="8%">Realisasi</th>
-            <th class="t l b" width="8%">Rencana</th>
-            <th class="t l b" width="8%">Realisasi</th>
-            <th class="t l b" width="8%">Rencana</th>
-            <th class="t l b" width="8%">Realisasi</th>
+            @foreach ($bulan_tampil as $bt)
+                <th class="t l b" width="8%">Rencana</th>
+                <th class="t l b" width="8%">Realisasi</th>
+            @endforeach
             <th class="t l b" width="8%">Rencana</th>
             <th class="t l b r" width="8%">Realisasi</th>
         </tr>
@@ -86,15 +100,17 @@
                 $rencana1 = 0;
                 $rencana2 = 0;
                 $rencana3 = 0;
+
+                $sub_header = count($bulan_tampil) * 2 + 1 + 2;
             @endphp
             <tr style="background: rgb(200, 200, 200); font-weight: bold;">
-                <td colspan="{{ $triwulan == '1' ? '9' : '10' }}" class="t l b r">
+                <td colspan="{{ $is_triwulan ? $sub_header : $sub_header + 1 }}" class="t l b r">
                     <b>{{ $lev1->kode_akun }}. {{ $lev1->nama_akun }}</b>
                 </td>
             </tr>
             @foreach ($lev1->akun2 as $lev2)
                 <tr style="background: rgb(150, 150, 150); font-weight: bold;">
-                    <td colspan="{{ $triwulan == '1' ? '9' : '10' }}" class="t l b r">
+                    <td colspan="{{ $is_triwulan ? $sub_header : $sub_header + 1 }}" class="t l b r">
                         <b>{{ $lev2->kode_akun }}. {{ $lev2->nama_akun }}</b>
                     </td>
                 </tr>
@@ -143,7 +159,7 @@
                                     $saldo_lalu = $_saldo;
                                 @endphp
 
-                                @if ($triwulan > 1 && $saldo->bulan == $bulan_akhir)
+                                @if ($saldo->bulan == $bulan_akhir)
                                     @php
                                         $saldo_kom = floatval($saldo->kredit) - floatval($saldo->debit);
                                         if ($rek->lev1 == 5) {
@@ -152,9 +168,11 @@
 
                                         $kom_saldo_lalu += $saldo_kom;
                                     @endphp
-                                    <td class="t l b" align="right">
-                                        {{ number_format($saldo_kom, 2) }}
-                                    </td>
+                                    @if (!$is_triwulan)
+                                        <td class="t l b" align="right">
+                                            {{ number_format($saldo_kom, 2) }}
+                                        </td>
+                                    @endif
                                 @endif
 
                                 @if (in_array($saldo->bulan, $bulan_tampil) && $urutan <= 3)
@@ -217,15 +235,22 @@
 
             <tr style="background: rgb(150, 150, 150); font-weight: bold;">
                 <td align="center" class="t l b" height="14">Total Realisasi {{ $lev1->nama_akun }}</td>
-                @if ($triwulan > 1)
+                @if (!$is_triwulan)
                     <td align="right" class="t l b">{{ number_format($kom_saldo_lalu, 2) }}</td>
                 @endif
-                <td align="right" class="t l b">{{ number_format($rencana1, 2) }}</td>
-                <td align="right" class="t l b">{{ number_format($bulan1, 2) }}</td>
-                <td align="right" class="t l b">{{ number_format($rencana2, 2) }}</td>
-                <td align="right" class="t l b">{{ number_format($bulan2, 2) }}</td>
-                <td align="right" class="t l b">{{ number_format($rencana3, 2) }}</td>
-                <td align="right" class="t l b">{{ number_format($bulan3, 2) }}</td>
+
+                @foreach ($bulan_tampil as $bulan)
+                    @php
+                        $nomor = $loop->iteration;
+                        $rencana_var = 'rencana' . $nomor;
+                        $bulan_var = 'bulan' . $nomor;
+
+                        $rencana_per_bulan = $$rencana_var ?? 0;
+                        $bulan_per_bulan = $$bulan_var ?? 0;
+                    @endphp
+                    <td align="right" class="t l b">{{ number_format($rencana_per_bulan, 2) }}</td>
+                    <td align="right" class="t l b">{{ number_format($bulan_per_bulan, 2) }}</td>
+                @endforeach
                 <td align="right" class="t l b">
                     {{ number_format($kom_rencana_lalu, 2) }}
                 </td>
@@ -244,30 +269,37 @@
         @endphp
 
         <tr>
-            <td colspan="{{ $triwulan == '1' ? '9' : '10' }}" style="padding: 0px !important;">
+            <td colspan="{{ $is_triwulan ? $sub_header : $sub_header + 1 }}" style="padding: 0px !important;">
                 <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 9px;">
                     <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 10px;">
                         <th width="26%" class="t l b" height="28">Surplus</th>
-                        @if ($triwulan > 1)
+                        @if (!$is_triwulan)
                             <th width="10%" class="t l b" align="right">
                                 {{ number_format($komulatif_pendapatan - $komulatif_beban, 2) }}
                             </th>
                         @endif
-                        <th width="8%" class="t l b" align="right">
-                            {{ number_format($r_pendapatan1 - $r_beban1, 2) }}
-                        </th>
-                        <th width="8%" class="t l b" align="right">{{ number_format($pendapatan1 - $beban1, 2) }}
-                        </th>
-                        <th width="8%" class="t l b" align="right">
-                            {{ number_format($r_pendapatan2 - $r_beban2, 2) }}
-                        </th>
-                        <th width="8%" class="t l b" align="right">{{ number_format($pendapatan2 - $beban2, 2) }}
-                        </th>
-                        <th width="8%" class="t l b" align="right">
-                            {{ number_format($r_pendapatan3 - $r_beban3, 2) }}
-                        </th>
-                        <th width="8%" class="t l b" align="right">{{ number_format($pendapatan3 - $beban3, 2) }}
-                        </th>
+
+                        @for ($nomor = 1; $nomor <= count($bulan_tampil); $nomor++)
+                            @php
+                                $pendapatan_var = 'pendapatan' . $nomor;
+                                $beban_var = 'beban' . $nomor;
+
+                                $r_pendapatan_var = 'r_pendapatan' . $nomor;
+                                $r_beban_var = 'r_beban' . $nomor;
+
+                                $rencana_pendapatan = $$pendapatan_var ?? 0;
+                                $bulan_realisasi = $$beban_var ?? 0;
+
+                                $r_rencana_pendapatan = $$r_pendapatan_var ?? 0;
+                                $r_bulan_realisasi = $$bulan_realisasi ?? 0;
+                            @endphp
+                            <th width="8%" class="t l b" align="right">
+                                {{ number_format($r_rencana_pendapatan - $r_bulan_realisasi, 2) }}
+                            </th>
+                            <th width="8%" class="t l b" align="right">
+                                {{ number_format($rencana_pendapatan - $bulan_realisasi, 2) }}
+                            </th>
+                        @endfor
                         <th width="8%" class="t l b" align="right">
                             {{ number_format($kom_rencana_pendapatan - $kom_rencana_beban, 2) }}
                         </th>
