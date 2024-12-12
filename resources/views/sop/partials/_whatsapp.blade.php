@@ -23,7 +23,7 @@
 </form>
 
 <div class="d-flex justify-content-end">
-    @if (auth()->user()->level == '1' && auth()->user()->jabatan == '1')
+    @if (in_array('personalisasi_sop.scan_whatsapp', Session::get('tombol')))
         <button type="button" id="HapusWa" class="btn btn-sm btn-danger mb-0 me-2">
             Hapus Whatsapp
         </button>
