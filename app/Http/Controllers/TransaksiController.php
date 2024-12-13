@@ -1763,7 +1763,7 @@ class TransaksiController extends Controller
                     $penyusutan = UtilsInventaris::penyusutan($tanggal, $kategori);
                     $saldo = UtilsInventaris::saldoSusut($tanggal, $sumber_dana);
 
-                    $susut = $penyusutan - $saldo;
+                    $susut = floatval($penyusutan) - floatval($saldo);
                     if ($susut < 0) $susut *= -1;
                     $keterangan_transaksi .= ' (' . Tanggal::namaBulan($tgl_transaksi) . ')';
                 }

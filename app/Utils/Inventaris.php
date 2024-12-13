@@ -246,7 +246,7 @@ class Inventaris
 
     public static function saldoSusut($tanggal, $kode_akun)
     {
-        $tanggal = date('Y-m-d', strtotime('-1 month', strtotime($tanggal)));
+        // $tanggal = date('Y-m-d', strtotime('-1 month', strtotime($tanggal)));
         $ymd = explode('-', $tanggal);
         $y = $ymd[0];
         $m = $ymd[1];
@@ -275,7 +275,7 @@ class Inventaris
         $lev1 = explode('.', $kode_akun)[0];
         $jenis_mutasi = 'kredit';
 
-        $saldo = $awal_tahun + $saldo;
+        $saldo = floatval($awal_tahun) + floatval($saldo);
 
         return $saldo;
     }
