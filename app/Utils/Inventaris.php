@@ -135,10 +135,11 @@ class Inventaris
 
         $inventaris = ModelsInventaris::where([
             ['jenis', '1'],
-            ['kategori', $kategori],
             ['status', '!=', '0'],
-            ['lokasi', Session::get('lokasi')],
-            ['tgl_beli', '<=', $tgl_kondisi]
+            ['tgl_beli', '<=', $tgl_kondisi],
+            ['tgl_beli', 'NOT LIKE', ''],
+            ['harsat', '>', '0'],
+            ['kategori', $kategori]
         ])->orderBy('tgl_beli', 'ASC')->get();
 
         foreach ($inventaris as $inv) {
@@ -158,7 +159,8 @@ class Inventaris
                     $j_nilai_buku += $inv->harsat * $inv->unit;
                 }
             } else {
-                $satuan_susut = $inv->harsat <= 0 ? 0 : round(($inv->harsat / $inv->umur_ekonomis) * $inv->unit, 2);
+                $satuan_susut =
+                    $inv->harsat <= 0 ? 0 : round(($inv->harsat * $inv->unit) / $inv->umur_ekonomis, 2);
                 $pakai_lalu = Inventaris::bulan($inv->tgl_beli, $tahun - 1 . '-12-31');
                 $nilai_buku = Inventaris::nilaiBuku($tgl_kondisi, $inv);
 
@@ -193,7 +195,11 @@ class Inventaris
                 $umur_pakai = $akum_umur - $pakai_lalu;
                 $penyusutan = $satuan_susut * $umur_pakai;
 
-                if (($inv->status == 'Hilang' and $tgl_kondisi >= $inv->tgl_validasi) || ($inv->status == 'Dijual' && $tgl_kondisi >= $inv->tgl_validasi) || ($inv->status == 'Hapus' && $tgl_kondisi >= $inv->tgl_validasi)) {
+                if (
+                    ($inv->status == 'Hilang' and $tgl_kondisi >= $inv->tgl_validasi) ||
+                    ($inv->status == 'Dijual' && $tgl_kondisi >= $inv->tgl_validasi) ||
+                    ($inv->status == 'Hapus' && $tgl_kondisi >= $inv->tgl_validasi)
+                ) {
                     $akum_susut = $inv->harsat * $inv->unit;
                     $nilai_buku = 0;
                     $penyusutan = 0;
@@ -224,7 +230,8 @@ class Inventaris
                 $t_akum_susut += $akum_susut;
                 $t_nilai_buku += $nilai_buku;
 
-                if ($inv->status == 'Dijual' || $inv->status == 'Hilang' || $inv->status == 'Dihapus') {
+                $tahun_validasi = substr($inv->tgl_validasi, 0, 4);
+                if ($nilai_buku == 0 && $tahun_validasi < $tahun) {
                     $j_unit += $inv->unit;
                     $j_harga += $inv->harsat * $inv->unit;
                     $j_penyusutan += $penyusutan;
