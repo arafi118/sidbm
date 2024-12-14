@@ -1760,8 +1760,20 @@ class TransaksiController extends Controller
                         $kategori = '4';
                     }
 
+                    $tgl = explode('-', $tanggal);
+                    $tahun_lalu = $tgl[0];
+                    $bulan_lalu = $tgl[1] - 1;
+                    if ($bulan_lalu < 1) {
+                        $tahun_lalu -= 1;
+                        $bulan_lalu = 1;
+                    }
+
+                    $tanggal_lalu = $tahun_lalu . '-' . $bulan_lalu . '-01';
+                    $tanggal_lalu = date('Y-m-t', strtotime($tanggal_lalu));
+
                     $penyusutan = UtilsInventaris::penyusutan($tanggal, $kategori);
-                    $saldo = UtilsInventaris::saldoSusut($tanggal, $sumber_dana);
+                    $saldo = UtilsInventaris::penyusutan($tanggal_lalu, $kategori);
+                    // $saldo = UtilsInventaris::saldoSusut($tanggal, $sumber_dana);
 
                     $susut = floatval($penyusutan) - floatval($saldo);
                     if ($susut < 0) $susut *= -1;
