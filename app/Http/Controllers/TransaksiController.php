@@ -1750,7 +1750,7 @@ class TransaksiController extends Controller
                 }
 
                 $susut = 0;
-                if (Keuangan::startWith($disimpan_ke, '5.1.07.10')) {
+                if (in_array($disimpan_ke, ['5.1.07.08', '5.1.07.00', '5.1.07.10'])) {
                     $tanggal = date('Y-m-t', strtotime($tgl_transaksi));
                     if ($sumber_dana == '1.2.02.01') {
                         $kategori = '2';
