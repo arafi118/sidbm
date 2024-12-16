@@ -354,6 +354,27 @@
                 @endphp
 
                 <tr style="font-weight: bold;">
+                    <td class="t l b" align="left"height="15">
+                        Aktif s.d. {{ $tgl }}
+                    </td>
+                    <td class="t l b" align="center">{{ $t_kel }}</td>
+                    <td class="t l b" align="right">{{ number_format($t_alokasi) }}</td>
+                    <td class="t l b" align="right">{{ number_format($t_target_pokok) }}</td>
+                    <td class="t l b" align="right">{{ number_format($t_target_jasa) }}</td>
+                    <td class="t l b" align="right">{{ number_format($t_real_bl_pokok) }}</td>
+                    <td class="t l b" align="right">{{ number_format($t_real_bl_jasa) }}</td>
+                    <td class="t l b" align="right">{{ number_format($t_real_pokok) }}</td>
+                    <td class="t l b" align="right">{{ number_format($t_real_jasa) }}</td>
+                    <td class="t l b" align="right">{{ number_format($t_real_bi_pokok) }}</td>
+                    <td class="t l b" align="right">{{ number_format($t_real_bi_jasa) }}</td>
+                    <td class="t l b" align="right">{{ number_format($t_saldo_pokok) }}</td>
+                    <td class="t l b" align="right">{{ number_format($t_saldo_jasa) }}</td>
+                    <td class="t l b" align="center">{{ number_format(floor($t_pross * 100)) }}</td>
+                    <td class="t l b" align="right">{{ number_format($t_tunggakan_pokok) }}</td>
+                    <td class="t l b r" align="right">{{ number_format($t_tunggakan_jasa) }}</td>
+                </tr>
+
+                <tr style="font-weight: bold;">
                     <td class="t l b" align="left" colspan="2" height="15">
                         Lunas s.d. Tahun Lalu
                     </td>
@@ -373,38 +394,70 @@
                     <td class="t l b r" align="right">0</td>
                 </tr>
 
+                @php
+                    $total_alokasi = $t_alokasi + $tl_alokasi;
+                    $total_target_pokok = $t_target_pokok + $tl_target_pokok;
+                    $total_target_jasa = $t_target_jasa + $tl_target_jasa;
+                    $total_real_bl_pokok = $t_real_bl_pokok + $tl_real_bl_pokok;
+                    $total_real_bl_jasa = $t_real_bl_jasa + $tl_real_bl_jasa;
+                    $total_real_pokok = $t_real_pokok;
+                    $total_real_jasa = $t_real_jasa;
+                    $total_real_bi_pokok = $t_real_bi_pokok + $tl_real_bi_pokok;
+                    $total_real_bi_jasa = $t_real_bi_jasa + $tl_real_bi_jasa;
+                    $total_saldo_pokok = $t_saldo_pokok + $tl_saldo_pokok;
+                    $total_saldo_jasa = $t_saldo_jasa + $tl_saldo_jasa;
+                    $total_pross = $t_pross + $tl_pross;
+                    $total_tunggakan_pokok = $t_tunggakan_pokok + $tl_tunggakan_pokok;
+                    $total_tunggakan_jasa = $t_tunggakan_jasa + $tl_tunggakan_jasa;
+                @endphp
+
                 <tr>
                     <td colspan="16" style="padding: 0px !important;">
                         <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                             style="font-size: 8px; table-layout: fixed;">
                             <tr style="background: rgb(230, 230, 230); font-weight: bold;">
-                                <td class="t l b" width="17%" align="center" height="15">
+                                <td class="t l b" width="17%" colspan="2" align="center" height="15">
                                     J U M L A H
                                 </td>
-                                <td class="t l b" width="2%" align="center">{{ $t_kel }}</td>
-                                <td class="t l b" width="7%" align="right">{{ number_format($t_alokasi) }}</td>
-                                <td class="t l b" width="6%" align="right">{{ number_format($t_target_pokok) }}
+                                <td class="t l b" width="7%" align="right">{{ number_format($total_alokasi) }}
                                 </td>
-                                <td class="t l b" width="6%" align="right">{{ number_format($t_target_jasa) }}
+                                <td class="t l b" width="6%" align="right">
+                                    {{ number_format($total_target_pokok) }}
                                 </td>
-                                <td class="t l b" width="6%" align="right">{{ number_format($t_real_bl_pokok) }}
+                                <td class="t l b" width="6%" align="right">{{ number_format($total_target_jasa) }}
                                 </td>
-                                <td class="t l b" width="6%" align="right">{{ number_format($t_real_bl_jasa) }}
+                                <td class="t l b" width="6%" align="right">
+                                    {{ number_format($total_real_bl_pokok) }}
                                 </td>
-                                <td class="t l b" width="6%" align="right">{{ number_format($t_real_pokok) }}</td>
-                                <td class="t l b" width="6%" align="right">{{ number_format($t_real_jasa) }}</td>
-                                <td class="t l b" width="6%" align="right">{{ number_format($t_real_bi_pokok) }}
+                                <td class="t l b" width="6%" align="right">
+                                    {{ number_format($total_real_bl_jasa) }}
                                 </td>
-                                <td class="t l b" width="6%" align="right">{{ number_format($t_real_bi_jasa) }}
+                                <td class="t l b" width="6%" align="right">
+                                    {{ number_format($total_real_pokok) }}
                                 </td>
-                                <td class="t l b" width="6%" align="right">{{ number_format($t_saldo_pokok) }}
+                                <td class="t l b" width="6%" align="right">
+                                    {{ number_format($total_real_jasa) }}
                                 </td>
-                                <td class="t l b" width="6%" align="right">{{ number_format($t_saldo_jasa) }}</td>
+                                <td class="t l b" width="6%" align="right">
+                                    {{ number_format($total_real_bi_pokok) }}
+                                </td>
+                                <td class="t l b" width="6%" align="right">
+                                    {{ number_format($total_real_bi_jasa) }}
+                                </td>
+                                <td class="t l b" width="6%" align="right">
+                                    {{ number_format($total_saldo_pokok) }}
+                                </td>
+                                <td class="t l b" width="6%" align="right">
+                                    {{ number_format($total_saldo_jasa) }}
+                                </td>
                                 <td class="t l b" width="2%" align="center">
-                                    {{ number_format(floor($t_pross * 100)) }}</td>
-                                <td class="t l b" width="6%" align="right">{{ number_format($t_tunggakan_pokok) }}
+                                    {{ number_format(floor($total_pross * 100)) }}
                                 </td>
-                                <td class="t l b r" width="6%" align="right">{{ number_format($t_tunggakan_jasa) }}
+                                <td class="t l b" width="6%" align="right">
+                                    {{ number_format($total_tunggakan_pokok) }}
+                                </td>
+                                <td class="t l b r" width="6%" align="right">
+                                    {{ number_format($total_tunggakan_jasa) }}
                                 </td>
                             </tr>
 

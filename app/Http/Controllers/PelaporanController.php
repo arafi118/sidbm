@@ -341,7 +341,9 @@ class PelaporanController extends Controller
         $data['sub_judul'] = 'Per ' . date('t', strtotime($tgl)) . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
         $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
 
+        $data['saldo_debit'] = 0;
         $data['debit'] = 0;
+        $data['saldo_kredit'] = 0;
         $data['kredit'] = 0;
 
         $data['akun1'] = AkunLevel1::where('lev1', '<=', '3')->with([
