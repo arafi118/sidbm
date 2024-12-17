@@ -102,8 +102,8 @@ class PelaporanController extends Controller
 
                 $nomor++;
                 $data[] = [
-                    'title' => $jl->file,
-                    'value' => str_pad($nomor, 2, '0', STR_PAD_LEFT) . '. ' .  $jl->nama_laporan
+                    'title' => str_pad($nomor, 2, '0', STR_PAD_LEFT) . '. ' .  $jl->nama_laporan,
+                    'value' => $jl->file,
                 ];
             }
         }
@@ -111,19 +111,19 @@ class PelaporanController extends Controller
         if ($file == 14) {
             $data = [
                 [
-                    'title' => 'Januari - Maret',
+                    'title' => '01. Januari - Maret',
                     'value' => 'EB_1,2,3'
                 ], [
-                    'title' => 'April - Juni',
+                    'title' => '02. April - Juni',
                     'value' => 'EB_4,5,6'
                 ], [
-                    'title' => 'Juli - September',
+                    'title' => '03. Juli - September',
                     'value' => 'EB_7,8,9'
                 ], [
-                    'title' => 'Oktober - Desember',
+                    'title' => '04. Oktober - Desember',
                     'value' => 'EB_10,11,12'
                 ], [
-                    'title' => 'Rekap Januari - Desember',
+                    'title' => '05. Rekap Januari - Desember',
                     'value' => 'EB_12'
                 ]
             ];
@@ -248,12 +248,7 @@ class PelaporanController extends Controller
 
         $file = $request->laporan;
         if ($request->sub_laporan) {
-            $jenis = '';
-            if ($file == 6) {
-                $jenis = '_mingguan';
-            }
-
-            if (str_contains($request->sub_laporan, '_')) {
+            if (str_contains($request->sub_laporan, '_') && !in_array($file, ['5', '6'])) {
                 $laporan = explode('_', $request->sub_laporan);
 
                 if ($file == 3) {
@@ -273,6 +268,11 @@ class PelaporanController extends Controller
                 $file = $laporan[0];
             } else {
                 $file = $request->sub_laporan;
+            }
+
+            $jenis = '';
+            if ($file == 6) {
+                $jenis = '_mingguan';
             }
 
             $file .= $jenis;
@@ -378,6 +378,10 @@ class PelaporanController extends Controller
                 });
             },
         ])->orderBy('kode_akun', 'ASC')->get();
+
+        if (!isset($data['file_type'])) {
+            $data['file_type'] = '1';
+        }
 
         $view = view('pelaporan.view.neraca.neraca' . $data['file_type'], $data)->render();
 
