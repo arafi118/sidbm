@@ -2074,7 +2074,7 @@ class PelaporanController extends Controller
                             });
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')
-                    ->orderBy($tb_pinkel . '.id', 'ASC');
+                    ->orderBy($tb_pinkel . '.tgl_cair', 'ASC');
             },
             'pinjaman_kelompok.sis_pokok'
         ])->get();
