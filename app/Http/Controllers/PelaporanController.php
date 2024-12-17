@@ -50,10 +50,16 @@ class PelaporanController extends Controller
         $tahun = request()->get('tahun');
         $bulan = request()->get('bulan');
 
+        $data = [];
         $tgl_kondisi = date('Y-m-t', strtotime($tahun . '-' . $bulan . '-01'));
         if ($file == 3) {
             $rekening = Rekening::whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi)->orderBy('kode_akun', 'ASC')->get();
-            return view('pelaporan.partials.sub_laporan')->with(compact('file', 'rekening'));
+            foreach ($rekening as $rek) {
+                $data[] = [
+                    'title' => $rek->kode_akun . '. ' . $rek->nama_akun,
+                    'value' => 'BB_' . $rek->kode_akun
+                ];
+            }
         }
 
         if ($file == 'calk') {
@@ -73,71 +79,82 @@ class PelaporanController extends Controller
             return view('pelaporan.partials.sub_laporan')->with(compact('file', 'keterangan'));
         }
 
+        if ($file == 'neraca') {
+            $data = [
+                [
+                    'title' => 'Neraca 1',
+                    'value' => 'neraca_1'
+                ], [
+                    'title' => 'Neraca 2',
+                    'value' => 'neraca_2'
+                ],
+            ];
+        }
+
         if ($file == 5 || $file == 6) {
             $jenis_laporan = JenisLaporanPinjaman::where('file', '!=', '0')->orderBy('urut', 'ASC')->get();
+            $mingguan = [5, 6, 8, 9, 10];
+            $nomor = 0;
+            foreach ($jenis_laporan as $jl) {
+                if ($file == 6 && !in_array($jl->id, $mingguan)) {
+                    continue;
+                }
 
-            return view('pelaporan.partials.sub_laporan')->with(compact('file', 'jenis_laporan'));
+                $nomor++;
+                $data[] = [
+                    'title' => $jl->file,
+                    'value' => str_pad($nomor, 2, '0', STR_PAD_LEFT) . '. ' .  $jl->nama_laporan
+                ];
+            }
         }
 
         if ($file == 14) {
             $data = [
-                0 => [
+                [
                     'title' => 'Januari - Maret',
-                    'id' => '1,2,3'
-                ],
-                1 => [
+                    'value' => 'EB_1,2,3'
+                ], [
                     'title' => 'April - Juni',
-                    'id' => '4,5,6'
-                ],
-                2 => [
+                    'value' => 'EB_4,5,6'
+                ], [
                     'title' => 'Juli - September',
-                    'id' => '7,8,9'
-                ],
-                3 => [
+                    'value' => 'EB_7,8,9'
+                ], [
                     'title' => 'Oktober - Desember',
-                    'id' => '10,11,12'
-                ],
-                4 => [
+                    'value' => 'EB_10,11,12'
+                ], [
                     'title' => 'Rekap Januari - Desember',
-                    'id' => '12'
+                    'value' => 'EB_12'
                 ]
             ];
-
-            return view('pelaporan.partials.sub_laporan')->with(compact('file', 'data'));
         }
 
         if ($file == 'tutup_buku') {
             $data = [
-                0 => [
+                [
                     'title' => 'Pengalokasian Laba',
-                    'file' => 'alokasi_laba'
-                ],
-                1 => [
+                    'value' => 'alokasi_laba'
+                ], [
                     'title' => 'Jurnal Tutup Buku',
-                    'file' => 'jurnal_tutup_buku'
-                ],
-                2 => [
+                    'value' => 'jurnal_tutup_buku'
+                ], [
                     'title' => 'Neraca',
-                    'file' => 'neraca_tutup_buku'
-                ],
-                3 => [
+                    'value' => 'neraca_tutup_buku'
+                ], [
                     'title' => 'Laba Rugi',
-                    'file' => 'laba_rugi_tutup_buku'
-                ],
-                4 => [
+                    'value' => 'laba_rugi_tutup_buku'
+                ], [
                     'title' => 'CALK',
-                    'file' => 'CALK_tutup_buku'
-                ],
-                4 => [
+                    'value' => 'CALK_tutup_buku'
+                ], [
                     'title' => 'Perubahan Ekuitas',
-                    'file' => 'LPM_tutup_buku'
+                    'value' => 'LPM_tutup_buku'
                 ]
             ];
-
-            return view('pelaporan.partials.sub_laporan')->with(compact('file', 'data'));
         }
 
-        return view('pelaporan.partials.sub_laporan')->with(compact('file'));
+        $laporan = JenisLaporan::where('file', $file)->first();
+        return view('pelaporan.partials.sub_laporan')->with(compact('file', 'data', 'laporan'));
     }
 
     public function preview(Request $request, $lokasi = null)
@@ -230,36 +247,41 @@ class PelaporanController extends Controller
         $data['tanggal_kondisi'] = $kec->nama_kec . ', ' . Tanggal::tglLatin($data['tgl_kondisi']);
 
         $file = $request->laporan;
-        if ($file == 3) {
-            $laporan = explode('_', $request->sub_laporan);
-            $file = $laporan[0];
-
-            $data['kode_akun'] = $laporan[1];
-            $data['laporan'] = 'buku_besar ' . $laporan[1];
-            return $this->$file($data);
-        } elseif ($file == 5 || $file == 6) {
+        if ($request->sub_laporan) {
             $jenis = '';
             if ($file == 6) {
                 $jenis = '_mingguan';
             }
 
-            $file = $request->sub_laporan . $jenis;
-            $data['laporan'] = $file;
+            if (str_contains($request->sub_laporan, '_')) {
+                $laporan = explode('_', $request->sub_laporan);
 
-            return $this->$file($data);
-        } elseif ($file == 14) {
-            $laporan = explode('_', $request->sub_laporan);
-            $file = $laporan[0];
+                if ($file == 3) {
+                    $data['kode_akun'] = $laporan[1];
+                    $data['laporan'] = 'buku_besar ' . $laporan[1];
+                }
 
-            $data['sub'] = $laporan[1];
-            $data['laporan'] = 'E - Budgeting ';
-            return $this->$file($data);
-        } elseif ($file == 'tutup_buku') {
-            $file = $request->sub_laporan;;
-            return $this->$file($data);
-        } else {
-            return $this->$file($data);
+                if ($file == 14) {
+                    $data['sub'] = $laporan[1];
+                    $data['laporan'] = 'E - Budgeting ';
+                }
+
+                if ($file == 'neraca') {
+                    $data['file_type'] = $laporan[1];
+                }
+
+                $file = $laporan[0];
+            } else {
+                $file = $request->sub_laporan;
+            }
+
+            $file .= $jenis;
+            if ($file == 5 || $file == 6) {
+                $data['laporan'] = $file;
+            }
         }
+
+        return $this->$file($data);
     }
 
     private function cover(array $data)
@@ -357,7 +379,7 @@ class PelaporanController extends Controller
             },
         ])->orderBy('kode_akun', 'ASC')->get();
 
-        $view = view('pelaporan.view.neraca', $data)->render();
+        $view = view('pelaporan.view.neraca.neraca' . $data['file_type'], $data)->render();
 
         if ($data['type'] == 'pdf') {
             $pdf = PDF::loadHTML($view);

@@ -171,20 +171,21 @@
             var tahun = $('select#tahun').val()
             var bulan = $('select#bulan').val()
 
-            if (file == 'calk') {
-                $('#namaLaporan').removeClass('col-md-6')
-                $('#namaLaporan').addClass('col-md-12')
-                $('#subLaporan').removeClass('col-md-6')
-                $('#subLaporan').addClass('col-md-12')
-            } else {
-                $('#namaLaporan').removeClass('col-md-12')
-                $('#namaLaporan').addClass('col-md-6')
-                $('#subLaporan').removeClass('col-md-12')
-                $('#subLaporan').addClass('col-md-6')
-            }
 
             $.get('/pelaporan/sub_laporan/' + file + '?tahun=' + tahun + '&bulan=' + bulan, function(result) {
                 $('#subLaporan').html(result)
+
+                if (file == 'calk') {
+                    $('#namaLaporan').removeClass('col-md-6')
+                    $('#namaLaporan').addClass('col-md-12')
+                    $('#subLaporan').removeClass('col-md-6')
+                    $('#subLaporan').addClass('col-md-12')
+                } else {
+                    $('#namaLaporan').removeClass('col-md-12')
+                    $('#namaLaporan').addClass('col-md-6')
+                    $('#subLaporan').removeClass('col-md-12')
+                    $('#subLaporan').addClass('col-md-6')
+                }
             })
         }
 
