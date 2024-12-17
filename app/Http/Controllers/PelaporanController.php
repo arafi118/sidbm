@@ -247,7 +247,7 @@ class PelaporanController extends Controller
         $data['tanggal_kondisi'] = $kec->nama_kec . ', ' . Tanggal::tglLatin($data['tgl_kondisi']);
 
         $file = $request->laporan;
-        if ($request->sub_laporan) {
+        if ($request->sub_laporan && $file != 'calk') {
             if (str_contains($request->sub_laporan, '_') && !in_array($file, ['5', '6'])) {
                 $laporan = explode('_', $request->sub_laporan);
 
