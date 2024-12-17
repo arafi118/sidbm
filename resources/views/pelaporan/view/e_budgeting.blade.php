@@ -291,7 +291,10 @@
                                 $bulan_realisasi = $$beban_var ?? 0;
 
                                 $r_rencana_pendapatan = $$r_pendapatan_var ?? 0;
-                                $r_bulan_realisasi = $$bulan_realisasi ?? 0;
+                                $r_bulan_realisasi = $$r_beban_var ?? 0;
+
+                                // dd($r_rencana_pendapatan, $r_bulan_realisasi);
+
                             @endphp
                             <th width="8%" class="t l b" align="right">
                                 {{ number_format($r_rencana_pendapatan - $r_bulan_realisasi, 2) }}
