@@ -26,11 +26,12 @@
             <th height="4%" width="3%">No</th>
             <th width="10%">Kode Kelompok</th>
             <th width="16%">Nama Kelompok</th>
+            <th width="9%">Fungsi Kelompok</th>
             <th width="23%">Alamat</th>
             <th width="9%">Telpon</th>
-            <th width="13%">Ketua</th>
-            <th width="13%">Sekretaris</th>
-            <th width="13%">Bendahara</th>
+            <th width="10%">Ketua</th>
+            <th width="10%">Sekretaris</th>
+            <th width="10%">Bendahara</th>
         </tr>
         @foreach ($desa as $ds)
             <tr style="font-weight: bold;">
@@ -47,6 +48,7 @@
                     <td align="center">{{ ++$no }}</td>
                     <td align="center" style="mso-number-format:\@;">{{ $kel->kd_kelompok }}</td>
                     <td>{{ $kel->nama_kelompok }}</td>
+                    <td align="left">{{ $kel->tk->nama_tk }}</td>
                     <td>{{ $kel->alamat_kelompok }}</td>
                     <td align="center">{{ $kel->telpon }}</td>
                     <td align="left">{{ $kel->ketua }}</td>

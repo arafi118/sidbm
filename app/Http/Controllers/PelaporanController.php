@@ -827,6 +827,7 @@ class PelaporanController extends Controller
             'kelompok' => function ($query) {
                 $query->where('jenis_produk_pinjaman', '!=', '3');
             },
+            'kelompok.tk',
             'sebutan_desa'
         ])->get();
 
