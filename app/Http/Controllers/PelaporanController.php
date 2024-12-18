@@ -248,7 +248,7 @@ class PelaporanController extends Controller
 
         $file = $request->laporan;
         if ($request->sub_laporan && $file != 'calk') {
-            if (str_contains($request->sub_laporan, '_') && !in_array($file, ['5', '6'])) {
+            if (str_contains($request->sub_laporan, '_') && !in_array($file, ['5', '6', 'tutup_buku'])) {
                 $laporan = explode('_', $request->sub_laporan);
 
                 if ($file == 3) {
