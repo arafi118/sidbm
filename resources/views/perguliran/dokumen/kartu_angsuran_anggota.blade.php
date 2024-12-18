@@ -186,10 +186,10 @@
 
             <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
                 <tr>
-                    <td width="40">&nbsp;</td>
+                    <td width="5%">&nbsp;</td>
                     <td colspan="9" style="font-weight: bold;" height="30">TABEL KEWAJIBAN PEMBAYARAN ANGSURAN
                     </td>
-                    <td width="40">&nbsp;</td>
+                    <td width="5%">&nbsp;</td>
                 </tr>
 
                 <tr style="font-weight: bold;">
@@ -273,25 +273,26 @@
 
             <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
                 <tr>
-                    <td width="40" rowspan="{{ $rowspan }}">&nbsp;</td>
-                    <td colspan="9" style="font-weight: bold;" height="30">REALISASI PEMBAYARAN ANGSURAN</td>
-                    <td width="40" rowspan="{{ $rowspan }}">&nbsp;</td>
+                    <td width="5%" rowspan="{{ $rowspan }}">&nbsp;</td>
+                    <td width="90%" colspan="9" style="font-weight: bold;" height="30">REALISASI PEMBAYARAN
+                        ANGSURAN</td>
+                    <td width="5%" rowspan="{{ $rowspan }}">&nbsp;</td>
                 </tr>
                 <tr>
-                    <th class="l t b" rowspan="2">No</th>
-                    <th class="l t b" rowspan="2">Tanggal</th>
-                    <th class="l t" colspan="2">Pokok</th>
-                    <th class="l t" colspan="2">Jasa</th>
-                    <th class="l t" colspan="2">Saldo Piutang</th>
-                    <th class="l t r b" rowspan="2">Sign</th>
+                    <th width="3%" class="l t b" rowspan="2">No</th>
+                    <th width="10%" class="l t b" rowspan="2">Tanggal</th>
+                    <th width="24%" class="l t" colspan="2">Pokok</th>
+                    <th width="24%" class="l t" colspan="2">Jasa</th>
+                    <th width="24%"class="l t" colspan="2">Saldo Piutang</th>
+                    <th width="5%" class="l t r b" rowspan="2">Sign</th>
                 </tr>
                 <tr>
-                    <th class="l b t">Dibayar</th>
-                    <th class="l b t">Tunggakan</th>
-                    <th class="l b t">Dibayar</th>
-                    <th class="l b t">Tunggakan</th>
-                    <th class="l b t">Pokok</th>
-                    <th class="l b t">Jasa</th>
+                    <th width="14%" class="l b t">Dibayar</th>
+                    <th width="10%" class="l b t">Tunggakan</th>
+                    <th width="14%" class="l b t">Dibayar</th>
+                    <th width="10%" class="l b t">Tunggakan</th>
+                    <th width="12%" class="l b t">Pokok</th>
+                    <th width="12%" class="l b t">Jasa</th>
                 </tr>
 
                 @php
@@ -418,9 +419,9 @@
 
             <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
                 <tr>
-                    <td width="40" rowspan="5">&nbsp;</td>
+                    <td width="5%" rowspan="5">&nbsp;</td>
                     <td colspan="3" style="font-weight: bold;" height="30">&nbsp;</td>
-                    <td width="40" rowspan="5">&nbsp;</td>
+                    <td width="5%" rowspan="5">&nbsp;</td>
                 </tr>
                 <tr>
                     <td width="350" rowspan="3">
