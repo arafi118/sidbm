@@ -560,6 +560,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-success btn-sm" id="CetakCatatanBimbingan">
+                        Cetak
+                    </button>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#TambahCatatan"
                         class="btn btn-github btn-sm">
                         Tambah Catatan
@@ -569,7 +572,15 @@
         </div>
     </div>
 
-    {{-- Modal Catatan Bimbingan --}}
+    <form action="/perguliran/dokumen?status={{ $perguliran->status }}" target="_blank" method="post"
+        id="FormCetakCatatanBimbingan">
+        @csrf
+
+        <input type="hidden" name="id" value="{{ $perguliran->id }}">
+        <input type="hidden" name="report" value="CetakCatatanBimbingan#pdf">
+    </form>
+
+    {{-- Modal Tambah Catatan Bimbingan --}}
     <div class="modal fade" id="TambahCatatan" tabindex="-1" aria-labelledby="TambahCatatanLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
@@ -997,6 +1008,10 @@
             $('#alokasi_pengajuan').val('')
 
             $('#LayoutTambahPemanfaat').html($('#placeholder').html())
+        })
+
+        $(document).on('click', '#CetakCatatanBimbingan', function() {
+            $('#FormCetakCatatanBimbingan').submit()
         })
 
         $(document).on('click', '#SimpanCatatanBimbingan', function(e) {

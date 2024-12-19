@@ -14,7 +14,7 @@
                 </div>
                 {!! $catatan['catatan'] !!}
             </div>
-            <span class="badge text-bg-danger pointer delete-catatan" data-id="{{ $loop->iteration }}">
+            <span class="badge text-bg-danger text-white pointer delete-catatan" data-id="{{ $loop->iteration }}">
                 <i class="fas fa-trash"></i>
             </span>
         </li>

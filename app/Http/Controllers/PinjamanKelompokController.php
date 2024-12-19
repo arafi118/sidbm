@@ -2407,6 +2407,44 @@ class PinjamanKelompokController extends Controller
         return view('perguliran.dokumen.cetak_kartu_angsuran', $data);
     }
 
+    public function CetakCatatanBimbingan($id, $data)
+    {
+        $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->first();
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'kelompok'
+        ])->withCount([
+            'pinjaman_anggota' => function ($query) {
+                $query->where('status', 'A');
+            }
+        ])->first();
+        $data['pinjaman_ke'] = PinjamanKelompok::where([
+            ['id_kel', $data['pinkel']->id_kel],
+            ['id', '!=', $data['pinkel']->id],
+            ['tgl_proposal', '<=', $data['pinkel']->tgl_proposal]
+        ])->count();
+
+        $catatan = collect(json_decode($data['pinkel']->catatan_bimbingan, true));
+        $data['catatan'] = $catatan->sortByDesc('tanggal')->values();
+
+        $data_user = [];
+        $user = $catatan->pluck('user')->unique();
+        $users = User::whereIn('id', $user)->get();
+        foreach ($users as $user) {
+            $data_user[$user->id] = $user->namadepan . ' ' . $user->namabelakang;
+        }
+        $data['users'] = $data_user;
+
+        $data['judul'] = 'Catatan Bimbingan ' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id;
+        $view = view('perguliran.dokumen.catatan_bimbingan', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
     public function generate($id_pinj, $pinkel = null, $alokasi = null, $tgl = null)
     {
         $rencana = [];
