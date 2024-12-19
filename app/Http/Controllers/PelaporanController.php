@@ -2429,9 +2429,18 @@ class PelaporanController extends Controller
         $awal = $bulan[0];
         $akhir = end($bulan);
 
+        $data['bulan_hitung'] = $data['sub'];
+        if ($data['sub'] == '12') {
+            $data['bulan_hitung'] = '1,2,3,4,5,6,7,8,9,10,11,12';
+        }
+        $data['bulan_hitung'] = explode(',', $data['bulan_hitung']);
+
         $data['akhir'] = $akhir;
-        $data['bulan_akhir'] = $awal - 1;
+        $data['bulan_lalu'] = $awal - 1;
         $data['bulan_tampil'] = $bulan;
+        if ($data['bulan_tampil'][0] == '12') {
+            $data['bulan_tampil'] = [];
+        }
 
         $data['triwulan'] = array_search($data['sub'], array_keys($title)) + 1;
         $data['akun1'] = AkunLevel1::where('lev1', '>=', '4')->with([
