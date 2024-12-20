@@ -267,17 +267,17 @@ class PelaporanController extends Controller
 
                 $file = $laporan[0];
             } else {
+                $jenis = '';
+                if ($file == 6) {
+                    $jenis = '_mingguan';
+                }
+
+                $file .= $jenis;
+                if ($file == 5 || $file == 6) {
+                    $data['laporan'] = $request->sub_laporan;
+                }
+
                 $file = $request->sub_laporan;
-            }
-
-            $jenis = '';
-            if ($file == 6) {
-                $jenis = '_mingguan';
-            }
-
-            $file .= $jenis;
-            if ($file == 5 || $file == 6) {
-                $data['laporan'] = $file;
             }
         }
 
