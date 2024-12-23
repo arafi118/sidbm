@@ -22,40 +22,45 @@
     </table>
 
     <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
-        <tr>
-            <th height="4%" width="3%">No</th>
-            <th width="10%">Kode Kelompok</th>
-            <th width="16%">Nama Kelompok</th>
-            <th width="9%">Fungsi Kelompok</th>
-            <th width="23%">Alamat</th>
-            <th width="9%">Telpon</th>
-            <th width="10%">Ketua</th>
-            <th width="10%">Sekretaris</th>
-            <th width="10%">Bendahara</th>
-        </tr>
-        @foreach ($desa as $ds)
-            <tr style="font-weight: bold;">
-                <td colspan="8" align="left">
-                    {{ $ds->kode_desa }}. {{ $ds->sebutan_desa->sebutan_desa }} {{ $ds->nama_desa }}
-                </td>
+        <thead>
+            <tr>
+                <th height="4%" width="3%">No</th>
+                <th width="10%">Kode Kelompok</th>
+                <th width="16%">Nama Kelompok</th>
+                <th width="9%">Fungsi Kelompok</th>
+                <th width="23%">Alamat</th>
+                <th width="9%">Telpon</th>
+                <th width="10%">Ketua</th>
+                <th width="10%">Sekretaris</th>
+                <th width="10%">Bendahara</th>
             </tr>
+        </thead>
 
-            @php
-                $no = 0;
-            @endphp
-            @foreach ($ds->kelompok as $kel)
-                <tr>
-                    <td align="center">{{ ++$no }}</td>
-                    <td align="center" style="mso-number-format:\@;">{{ $kel->kd_kelompok }}</td>
-                    <td>{{ $kel->nama_kelompok }}</td>
-                    <td align="left">{{ $kel->tk->nama_tk }}</td>
-                    <td>{{ $kel->alamat_kelompok }}</td>
-                    <td align="center">{{ $kel->telpon }}</td>
-                    <td align="left">{{ $kel->ketua }}</td>
-                    <td align="left">{{ $kel->sekretaris }}</td>
-                    <td align="left">{{ $kel->bendahara }}</td>
+        <tbody>
+            @foreach ($desa as $ds)
+                <tr style="font-weight: bold;">
+                    <td colspan="8" align="left">
+                        {{ $ds->kode_desa }}. {{ $ds->sebutan_desa->sebutan_desa }} {{ $ds->nama_desa }}
+                    </td>
                 </tr>
+
+                @php
+                    $no = 0;
+                @endphp
+                @foreach ($ds->kelompok as $kel)
+                    <tr>
+                        <td align="center">{{ ++$no }}</td>
+                        <td align="center" style="mso-number-format:\@;">{{ $kel->kd_kelompok }}</td>
+                        <td>{{ $kel->nama_kelompok }}</td>
+                        <td align="left">{{ $kel->tk->nama_tk }}</td>
+                        <td>{{ $kel->alamat_kelompok }}</td>
+                        <td align="center">{{ $kel->telpon }}</td>
+                        <td align="left">{{ $kel->ketua }}</td>
+                        <td align="left">{{ $kel->sekretaris }}</td>
+                        <td align="left">{{ $kel->bendahara }}</td>
+                    </tr>
+                @endforeach
             @endforeach
-        @endforeach
+        </tbody>
     </table>
 @endsection
