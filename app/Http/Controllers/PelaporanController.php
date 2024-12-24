@@ -92,7 +92,10 @@ class PelaporanController extends Controller
         }
 
         if ($file == 5 || $file == 6) {
-            $jenis_laporan = JenisLaporanPinjaman::where('file', '!=', '0')->orderBy('urut', 'ASC')->get();
+            $jenis_laporan = JenisLaporanPinjaman::where([
+                ['file', '!=', '0'],
+                ['status', '1']
+            ])->orderBy('urut', 'ASC')->get();
             $mingguan = [5, 6, 8, 9, 10];
             $nomor = 0;
             foreach ($jenis_laporan as $jl) {
