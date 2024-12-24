@@ -480,19 +480,21 @@ class TransaksiController extends Controller
                 ];
 
                 $keterangan = $title_form[$urut] . ' tahun ' . $tahun;
-                $trx['insert'][] = [
-                    'tgl_transaksi' => $data['tgl_mad'],
-                    'rekening_debit' => '3.2.01.01',
-                    'rekening_kredit' => '2.1.04.01',
-                    'idtp' => '0',
-                    'id_pinj' => '0',
-                    'id_pinj_i' => '0',
-                    'keterangan_transaksi' => $keterangan,
-                    'relasi' => '-',
-                    'jumlah' => str_replace(',', '', str_replace('.00', '', $pembagian_laba_masyarakat[$urut])),
-                    'urutan' => '0',
-                    'id_user' => auth()->user()->id
-                ];
+                if (str_replace(',', '', str_replace('.00', '', $pembagian_laba_masyarakat[$urut])) != '0') {
+                    $trx['insert'][] = [
+                        'tgl_transaksi' => $data['tgl_mad'],
+                        'rekening_debit' => '3.2.01.01',
+                        'rekening_kredit' => '2.1.04.01',
+                        'idtp' => '0',
+                        'id_pinj' => '0',
+                        'id_pinj_i' => '0',
+                        'keterangan_transaksi' => $keterangan,
+                        'relasi' => '-',
+                        'jumlah' => str_replace(',', '', str_replace('.00', '', $pembagian_laba_masyarakat[$urut])),
+                        'urutan' => '0',
+                        'id_user' => auth()->user()->id
+                    ];
+                }
 
                 $trx['delete'][] = $keterangan;
             } else {
@@ -539,19 +541,21 @@ class TransaksiController extends Controller
 
                 if ($rek->kode_akun == '2.1.04.03') {
                     $keterangan = 'Laba Bagian Penyerta Modal tahun ' . $tahun;
-                    $trx['insert'][] = [
-                        'tgl_transaksi' => $data['tgl_mad'],
-                        'rekening_debit' => '3.2.01.01',
-                        'rekening_kredit' => '2.1.04.03',
-                        'idtp' => '0',
-                        'id_pinj' => '0',
-                        'id_pinj_i' => '0',
-                        'keterangan_transaksi' => $keterangan,
-                        'relasi' => '-',
-                        'jumlah' => floatval($alokasi_laba['2.1.04.03']),
-                        'urutan' => '0',
-                        'id_user' => auth()->user()->id
-                    ];
+                    if (floatval($alokasi_laba['2.1.04.03']) != '0') {
+                        $trx['insert'][] = [
+                            'tgl_transaksi' => $data['tgl_mad'],
+                            'rekening_debit' => '3.2.01.01',
+                            'rekening_kredit' => '2.1.04.03',
+                            'idtp' => '0',
+                            'id_pinj' => '0',
+                            'id_pinj_i' => '0',
+                            'keterangan_transaksi' => $keterangan,
+                            'relasi' => '-',
+                            'jumlah' => floatval($alokasi_laba['2.1.04.03']),
+                            'urutan' => '0',
+                            'id_user' => auth()->user()->id
+                        ];
+                    }
 
                     $trx['delete'][] = $keterangan;
                 }
