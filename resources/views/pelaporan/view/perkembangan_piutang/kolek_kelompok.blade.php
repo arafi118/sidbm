@@ -139,6 +139,7 @@
                             $saldo_jasa = 0;
                         }
 
+                        $tgl_angsur = $tgl_kondisi;
                         $target_pokok = 0;
                         $target_jasa = 0;
                         $wajib_pokok = 0;
@@ -150,6 +151,7 @@
                             $wajib_pokok = $pinkel->target->wajib_pokok;
                             $wajib_jasa = $pinkel->target->wajib_jasa;
                             $angsuran_ke = $pinkel->target->angsuran_ke;
+                            $tgl_angsur = $pinkel->target->jatuh_tempo;
                         }
 
                         $tunggakan_pokok = $target_pokok - $sum_pokok;
@@ -181,6 +183,9 @@
                         }
 
                         $tgl_akhir = new DateTime($tgl_kondisi);
+                        if ($saldo_pokok == 0) {
+                            $tgl_akhir = new DateTime($tgl_angsur);
+                        }
                         $tgl_awal = new DateTime($pinkel->tgl_cair);
                         $selisih = $tgl_akhir->diff($tgl_awal);
 
@@ -196,6 +201,9 @@
                             $_kolek = $tunggakan_pokok / $wajib_pokok;
                         }
                         $kolek = round($_kolek + ($selisih - $angsuran_ke));
+                        if ($saldo_pokok == '0') {
+                            $kolek = 0;
+                        }
                         if ($kolek <= 3) {
                             $kolek1 = $saldo_pokok;
                             $kolek2 = 0;

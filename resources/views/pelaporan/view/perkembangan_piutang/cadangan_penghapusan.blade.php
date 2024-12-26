@@ -146,6 +146,9 @@
                     $_kolek = $tunggakan_pokok / $wajib_pokok;
                 }
                 $kolek = round($_kolek + ($selisih - $angsuran_ke));
+                if ($saldo_pokok == '0') {
+                    $kolek = 0;
+                }
                 if ($kolek <= 3) {
                     $kolek1 = $saldo_pokok;
                     $kolek2 = 0;
