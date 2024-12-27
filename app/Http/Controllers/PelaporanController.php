@@ -31,15 +31,17 @@ class PelaporanController extends Controller
 {
     public function index()
     {
-        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
-        if (Session::get('lokasi') != '277') {
-            $laporan = JenisLaporan::where([
-                ['file', '!=', '0'],
-                ['id', '!=', '32']
-            ])->orderBy('urut', 'ASC')->get();
-        } else {
-            $laporan = JenisLaporan::where([['file', '!=', '0']])->orderBy('urut', 'ASC')->get();
+        $id = '32';
+        if (Session::get('lokasi') == '277') {
+            $id = '0';
         }
+
+        $laporan = JenisLaporan::where([
+            ['file', '!=', '0'],
+            ['status', '!=', '0'],
+            ['id', '!=', $id]
+        ])->orderBy('urut', 'ASC')->get();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
 
         $title = 'Pelaporan';
         return view('pelaporan.index')->with(compact('title', 'kec', 'laporan'));
