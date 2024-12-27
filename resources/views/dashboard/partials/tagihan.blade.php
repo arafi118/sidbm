@@ -32,6 +32,13 @@
                             $value = str_replace('{Nama Desa}', $desa, $value);
                             $value = str_replace('{Angsuran Pokok}', number_format($pinj->target->wajib_pokok), $value);
                             $value = str_replace('{Angsuran Jasa}', number_format($pinj->target->wajib_jasa), $value);
+
+                            $tagihan_pokok = $pinj->target->wajib_pokok;
+                            $tagihan_jasa = $pinj->target->wajib_jasa;
+                            if ($pinj->saldo) {
+                                $tagihan_pokok = $pinj->saldo->tunggakan_pokok;
+                                $tagihan_jasa = $pinj->saldo->tunggakan_jasa;
+                            }
                         @endphp
                         <tr>
                             <td>
@@ -44,8 +51,8 @@
                             <td>{{ $pinj->kelompok->nama_kelompok }} - {{ $pinj->id }}</td>
                             <td align="center">{{ Tanggal::tglIndo($pinj->tgl_cair) }}</td>
                             <td align="right">{{ number_format($pinj->alokasi, 2) }}</td>
-                            <td align="right">{{ number_format($pinj->target->wajib_pokok, 2) }}</td>
-                            <td align="right">{{ number_format($pinj->target->wajib_jasa, 2) }}</td>
+                            <td align="right">{{ number_format($tagihan_pokok, 2) }}</td>
+                            <td align="right">{{ number_format($tagihan_jasa, 2) }}</td>
                         </tr>
                     @endif
                 @endforeach
