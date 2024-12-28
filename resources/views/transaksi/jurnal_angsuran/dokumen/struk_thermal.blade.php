@@ -26,6 +26,7 @@
         $angsuran_ke = $ra_bulan_ini->angsuran_ke;
     }
 
+    $Penyetor = '';
     $nama_user = '';
     $no_kuitansi = '';
 @endphp
@@ -48,6 +49,7 @@
         $no_kuitansi .= $trx->idt . '/';
 
         $nama_user = $trx->user->namadepan . ' ' . $trx->user->namabelakang;
+        $penyetor = $trx->relasi;
     @endphp
 @endforeach
 
@@ -244,7 +246,7 @@
 
         <tr>
             <td colspan="3" align="center">
-                <b> ............................ </b>
+                <b> {{ $penyetor }} </b>
             </td>
             <td colspan="2" align="center">
                 <b>( {{ $nama_user }} )</b>

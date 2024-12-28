@@ -159,13 +159,13 @@
                     <tr>
                         <td width="30%">Terima Dari</td>
                         <td width="2%">:</td>
-                        <td colspan="3" class="keterangan">Kelompok {{ ucwords($trx->relasi) }}</td>
+                        <td colspan="3" class="keterangan">{{ ucwords($trx->relasi) }}</td>
                     </tr>
                     <tr>
                         <td width="30%">Keterangan</td>
                         <td width="2%">:</td>
                         <td colspan="3" class="keterangan">
-                            {{ ucwords('Angsuran Pokok dan Jasa') }}
+                            {{ ucwords('Angsuran Kelompok ' . $trx->pinkel->kelompok->nama_kelompok) }}
                         </td>
                     </tr>
                     <tr>

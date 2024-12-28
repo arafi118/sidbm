@@ -410,6 +410,7 @@
             $('#alokasi_jasa').html("Rp. " + formatter.format(result.alokasi_jasa))
 
             $('#pokok,#jasa,#denda').trigger('change')
+            $('#penyetor').val(result.penyetor)
         }
 
         function open_window(link) {

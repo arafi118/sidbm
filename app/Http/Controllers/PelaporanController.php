@@ -36,9 +36,14 @@ class PelaporanController extends Controller
             $id = '0';
         }
 
+        $status = '0';
+        if (Session::get('lokasi') == '1') {
+            $status = '2';
+        }
+
         $laporan = JenisLaporan::where([
             ['file', '!=', '0'],
-            ['status', '!=', '0'],
+            ['status', '!=', $status],
             ['id', '!=', $id]
         ])->orderBy('urut', 'ASC')->get();
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
@@ -54,6 +59,30 @@ class PelaporanController extends Controller
 
         $data = [];
         $tgl_kondisi = date('Y-m-t', strtotime($tahun . '-' . $bulan . '-01'));
+        if ($file == 1) {
+            $data = [
+                [
+                    'title' => 'Neraca Bumdesma Lkd',
+                    'value' => ', '
+                ], [
+                    'title' => 'Laba / Rugi Bumdesma Lkd',
+                    'value' => ', '
+                ], [
+                    'title' => 'Arus Kas',
+                    'value' => ', '
+                ], [
+                    'title' => 'Perubahan Ekuitas',
+                    'value' => ', '
+                ], [
+                    'title' => 'Catatan Atas Laporan Keuangan',
+                    'value' => ', '
+                ], [
+                    'title' => 'Neraca Saldo Bumdesma Lkd',
+                    'value' => ', '
+                ],
+            ];
+        }
+
         if ($file == 3) {
             $rekening = Rekening::whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi)->orderBy('kode_akun', 'ASC')->get();
             foreach ($rekening as $rek) {

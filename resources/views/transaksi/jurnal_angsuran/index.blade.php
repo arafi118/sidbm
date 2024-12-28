@@ -49,7 +49,7 @@
                                     <small class="text-danger" id="msg_denda"></small>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-3">
                                 <div class="input-group input-group-static my-3">
                                     <label for="total">Total Bayar</label>
                                     <input autocomplete="off" readonly disabled type="text" name="total" id="total"
@@ -57,13 +57,21 @@
                                     <small class="text-danger" id="msg_total"></small>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-5">
+                                <div class="input-group input-group-static my-3">
+                                    <label for="penyetor">Penyetor</label>
+                                    <input autocomplete="off" type="text" name="penyetor" id="penyetor"
+                                        class="form-control">
+                                    <small class="text-danger" id="msg_penyetor"></small>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
                                 <div class="my-2 fw-bold">
                                     <label class="form-label fw-bold" for="tujuan">Tujuan</label>
                                     <select class="form-control" name="tujuan" id="tujuan">
                                         @foreach ($rekening as $rek)
                                             <option value="{{ $rek->kode_akun }}">
-                                                {{ $rek->kode_akun }}. {{ $rek->nama_akun }}
+                                                {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}. {{ $rek->nama_akun }}
                                             </option>
                                         @endforeach
                                     </select>

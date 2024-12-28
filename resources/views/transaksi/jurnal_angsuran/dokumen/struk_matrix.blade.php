@@ -60,8 +60,8 @@
         $jasa_bulan_depan = 0;
     }
 
+    $penyetor = '';
     $nama_user = '';
-
     $no_kuitansi = '';
 @endphp
 @foreach ($real->trx as $trx)
@@ -83,6 +83,7 @@
         $no_kuitansi .= $trx->idt . '/';
 
         $nama_user = $trx->user->namadepan . ' ' . $trx->user->namabelakang;
+        $penyetor = $trx->relasi;
     @endphp
 @endforeach
 
@@ -297,7 +298,9 @@
                 </div>
             </th>
             <th valign="top">
-                <div align="center" class="bottom">&nbsp;</div>
+                <div align="center" class="bottom">
+                    {{ $penyetor }}
+                </div>
             </th>
         </tr>
         <tr>

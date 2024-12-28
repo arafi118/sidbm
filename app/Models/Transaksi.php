@@ -50,4 +50,9 @@ class Transaksi extends Model
     {
         return $this->hasMany(Transaksi::class, 'idtp', 'idtp');
     }
+
+    public function pinkel()
+    {
+        return $this->belongsTo(PinjamanKelompok::class, 'id_pinj');
+    }
 }

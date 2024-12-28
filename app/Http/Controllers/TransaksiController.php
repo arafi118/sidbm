@@ -1113,7 +1113,8 @@ class TransaksiController extends Controller
             'pokok',
             'jasa',
             'denda',
-            'tujuan'
+            'tujuan',
+            'penyetor'
         ]);
 
         $validate = Validator::make($data, [
@@ -1122,6 +1123,7 @@ class TransaksiController extends Controller
             'jasa' => 'required',
             'denda' => 'required',
             'tujuan' => 'required',
+            'penyetor' => 'required'
         ]);
 
         if ($validate->fails()) {
@@ -1243,7 +1245,7 @@ class TransaksiController extends Controller
                             'id_pinj' => $pinkel->id,
                             'id_pinj_i' => '0',
                             'keterangan_transaksi' => (string) 'Angs. (P) ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')' . ' [' . $pinkel->kelompok->d->nama_desa . ']',
-                            'relasi' => (string) $pinkel->kelompok->nama_kelompok . ' ' . $pinkel->kelompok->d->sebutan_desa->sebutan_desa . ' ' . $pinkel->kelompok->d->nama_desa,
+                            'relasi' => $request->penyetor,
                             'jumlah' => str_replace(',', '', str_replace('.00', '', $request->pokok)),
                             'urutan' => '0',
                             'id_user' => auth()->user()->id
@@ -1268,7 +1270,7 @@ class TransaksiController extends Controller
                             'id_pinj' => $pinkel->id,
                             'id_pinj_i' => '0',
                             'keterangan_transaksi' => (string) 'Angs. (J) ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')' . ' [' . $pinkel->kelompok->d->nama_desa . ']',
-                            'relasi' => (string) $pinkel->kelompok->nama_kelompok . ' ' . $pinkel->kelompok->d->sebutan_desa->sebutan_desa . ' ' . $pinkel->kelompok->d->nama_desa,
+                            'relasi' => $request->penyetor,
                             'jumlah' => str_replace(',', '', str_replace('.00', '', $request->jasa)),
                             'urutan' => '0',
                             'id_user' => auth()->user()->id
@@ -1283,7 +1285,7 @@ class TransaksiController extends Controller
                         //         'id_pinj' => $pinkel->id,
                         //         'id_pinj_i' => '0',
                         //         'keterangan_transaksi' => (string) 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
-                        //         'relasi' => (string) $pinkel->kelompok->nama_kelompok . ' ' . $pinkel->kelompok->d->sebutan_desa->sebutan_desa . ' ' . $pinkel->kelompok->d->nama_desa,
+                        //         'relasi' => $request->penyetor,,
                         //         'jumlah' => str_replace(',', '', str_replace('.00', '', $angs_jasa)),
                         //         'urutan' => '0',
                         //         'id_user' => auth()->user()->id
@@ -1308,7 +1310,7 @@ class TransaksiController extends Controller
                         //             'id_pinj' => $pinkel->id,
                         //             'id_pinj_i' => '0',
                         //             'keterangan_transaksi' => (string) 'Angs. ' . $pinkel->kelompok->nama_kelompok . ' - [' . $pinkel->kelompok->d->nama_desa . '] (J)',
-                        //             'relasi' => (string) $pinkel->kelompok->nama_kelompok . ' ' . $pinkel->kelompok->d->sebutan_desa->sebutan_desa . ' ' . $pinkel->kelompok->d->nama_desa,
+                        //             'relasi' => $request->penyetor,,
                         //             'jumlah' => str_replace(',', '', str_replace('.00', '', $piutang_jasa)),
                         //             'urutan' => '0',
                         //             'id_user' => auth()->user()->id
@@ -1326,7 +1328,7 @@ class TransaksiController extends Controller
                             'id_pinj' => $pinkel->id,
                             'id_pinj_i' => '0',
                             'keterangan_transaksi' => (string) 'Denda. ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')' . ' [' . $pinkel->kelompok->d->nama_desa . ']',
-                            'relasi' => (string) $pinkel->kelompok->nama_kelompok . ' ' . $pinkel->kelompok->d->sebutan_desa->sebutan_desa . ' ' . $pinkel->kelompok->d->nama_desa,
+                            'relasi' => $request->penyetor,
                             'jumlah' => str_replace(',', '', str_replace('.00', '', $request->denda)),
                             'urutan' => '0',
                             'id_user' => auth()->user()->id
@@ -1826,6 +1828,12 @@ class TransaksiController extends Controller
         $sum_pokok = $real->sum_pokok;
         $sum_jasa = $real->sum_jasa;
 
+        $bendahara = $pinkel->kelompok->bendahara;
+        if ($pinkel->struktur_kelompok) {
+            $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
+            $bendahara = $struktur_kelompok['bendahara'];
+        }
+
         return response()->json([
             'saldo_pokok' => $saldo_pokok,
             'saldo_jasa' => $saldo_jasa,
@@ -1835,7 +1843,8 @@ class TransaksiController extends Controller
             'sum_jasa' => $sum_jasa,
             'alokasi_pokok' => $pinkel->alokasi,
             'alokasi_jasa' => $alokasi_jasa,
-            'pinkel' => $pinkel
+            'pinkel' => $pinkel,
+            'penyetor' => $bendahara
         ]);
     }
 
@@ -2512,7 +2521,7 @@ class TransaksiController extends Controller
         $keuangan = new Keuangan;
 
         $kec = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
-        $trx = Transaksi::where('idt', $id)->with('rek_debit', 'tr_idtp', 'tr_idtp.rek_kredit')->withSum('tr_idtp', 'jumlah')->first();
+        $trx = Transaksi::where('idt', $id)->with('pinkel', 'pinkel.kelompok', 'rek_debit', 'tr_idtp', 'tr_idtp.rek_kredit')->withSum('tr_idtp', 'jumlah')->first();
         $user = User::where('id', $trx->id_user)->first();
 
         $dir = User::where([
