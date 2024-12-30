@@ -242,6 +242,11 @@
             @foreach ($pinkel->real as $real)
                 @php
                     $jumlah++;
+
+                    $sign = 'TF';
+                    if ($real->transaksi->rekening_debit == '1.1.01.01') {
+                        $sign = 'TN';
+                    }
                 @endphp
                 <tr {!! $real->id != $idtp ? 'style="opacity: 0;"' : '' !!}>
                     <td align="center">{{ $loop->iteration }}</td>

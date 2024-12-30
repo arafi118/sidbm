@@ -377,6 +377,11 @@
                         if ($saldo_jasa < 0) {
                             $saldo_jasa = 0;
                         }
+
+                        $sign = 'TF';
+                        if ($real->transaksi->rekening_debit == '1.1.01.01') {
+                            $sign = 'TN';
+                        }
                     @endphp
                     <tr>
                         <td class="l {{ $b }}" align="center">{{ $nomor }}</td>
@@ -396,7 +401,9 @@
                         <td class="l {{ $b }}" align="right">{{ number_format($saldo_pokok) }}
                         </td>
                         <td class="l {{ $b }}" align="right">{{ number_format($saldo_jasa) }}</td>
-                        <td class="l {{ $b }} r" align="center">{{ $real->id }}</td>
+                        <td class="l {{ $b }} r" align="center">
+                            {{ $sign }}-{{ $real->id }}
+                        </td>
                     </tr>
                 @endforeach
 

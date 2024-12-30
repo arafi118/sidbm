@@ -2047,6 +2047,7 @@ class PinjamanKelompokController extends Controller
             'jpp',
             'sis_pokok',
             'real',
+            'real.transaksi',
             'rencana' => function ($query) {
                 $query->where('angsuran_ke', '!=', '0');
             },
@@ -2080,6 +2081,7 @@ class PinjamanKelompokController extends Controller
             'jpp',
             'sis_pokok',
             'real',
+            'real.transaksi',
             'pinjaman_anggota',
             'pinjaman_anggota.anggota',
         ])->withCount('real')->first();
@@ -2124,6 +2126,8 @@ class PinjamanKelompokController extends Controller
             'jpp',
             'sis_pokok',
             'real',
+            'real.transaksi',
+            'real.transaksi',
             'pinjaman_anggota',
             'pinjaman_anggota.anggota',
         ])->withCount('real')->first();
