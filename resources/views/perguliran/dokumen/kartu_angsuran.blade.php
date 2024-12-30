@@ -253,18 +253,18 @@
             <tr>
                 <th width="3%" class="l t b" rowspan="2">No</th>
                 <th width="10%" class="l t b" rowspan="2">Tanggal</th>
-                <th width="24%" class="l t" colspan="2">Pokok</th>
-                <th width="24%" class="l t" colspan="2">Jasa</th>
-                <th width="24%"class="l t" colspan="2">Saldo Piutang</th>
-                <th width="5%" class="l t r b" rowspan="2">Sign</th>
+                <th width="22%" class="l t" colspan="2">Pokok</th>
+                <th width="22%" class="l t" colspan="2">Jasa</th>
+                <th width="22%"class="l t" colspan="2">Saldo Piutang</th>
+                <th width="11%" class="l t r b" rowspan="2">Sign</th>
             </tr>
             <tr>
-                <th width="14%" class="l b t">Dibayar</th>
+                <th width="12%" class="l b t">Dibayar</th>
                 <th width="10%" class="l b t">Tunggakan</th>
-                <th width="14%" class="l b t">Dibayar</th>
+                <th width="12%" class="l b t">Dibayar</th>
                 <th width="10%" class="l b t">Tunggakan</th>
-                <th width="12%" class="l b t">Pokok</th>
-                <th width="12%" class="l b t">Jasa</th>
+                <th width="11%" class="l b t">Pokok</th>
+                <th width="11%" class="l b t">Jasa</th>
             </tr>
 
             @php

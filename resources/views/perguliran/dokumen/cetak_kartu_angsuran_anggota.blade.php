@@ -278,20 +278,20 @@
                     <td width="40" rowspan="{{ $rowspan }}">&nbsp;</td>
                 </tr>
                 <tr style="opacity: 0;">
-                    <th class="l t b" rowspan="2">No</th>
-                    <th class="l t b" rowspan="2">Tanggal</th>
-                    <th class="l t" colspan="2">Pokok</th>
-                    <th class="l t" colspan="2">Jasa</th>
-                    <th class="l t" colspan="2">Saldo Piutang</th>
-                    <th class="l t r b" rowspan="2">Sign</th>
+                    <th width="3%" class="l t b" rowspan="2">No</th>
+                    <th width="10%" class="l t b" rowspan="2">Tanggal</th>
+                    <th width="22%" class="l t" colspan="2">Pokok</th>
+                    <th width="22%" class="l t" colspan="2">Jasa</th>
+                    <th width="22%"class="l t" colspan="2">Saldo Piutang</th>
+                    <th width="11%" class="l t r b" rowspan="2">Sign</th>
                 </tr>
                 <tr style="opacity: 0;">
-                    <th class="l b t">Dibayar</th>
-                    <th class="l b t">Tunggakan</th>
-                    <th class="l b t">Dibayar</th>
-                    <th class="l b t">Tunggakan</th>
-                    <th class="l b t">Pokok</th>
-                    <th class="l b t">Jasa</th>
+                    <th width="12%" class="l b t">Dibayar</th>
+                    <th width="10%" class="l b t">Tunggakan</th>
+                    <th width="12%" class="l b t">Dibayar</th>
+                    <th width="10%" class="l b t">Tunggakan</th>
+                    <th width="11%" class="l b t">Pokok</th>
+                    <th width="11%" class="l b t">Jasa</th>
                 </tr>
 
                 @php
