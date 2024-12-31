@@ -22,7 +22,7 @@
         <div class="col-12">
             <div class="alert alert-info text-light">
                 Download panduan tutup buku SI DBM
-                <a href="/download/tutup-buku-si-dbm-2024.pdf" class="alert-link" target="_blank">disini</a>
+                <a href="/download/tutup-buku-si-dbm-2024.pdf" class="alert-link" target="_blank">disini</a>.
             </div>
         </div>
         <div class="col-sm-4">
