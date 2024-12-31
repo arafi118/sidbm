@@ -462,8 +462,8 @@
                         $total_saldo_pokok = $t_saldo_pokok + $tl_saldo_pokok;
                         $total_saldo_jasa = $t_saldo_jasa + $tl_saldo_jasa;
                         $total_pross = $t_pross + $tl_pross;
-                        $total_tunggakan_pokok = $t_tunggakan_pokok + $tl_tunggakan_pokok;
-                        $total_tunggakan_jasa = $t_tunggakan_jasa + $tl_tunggakan_jasa;
+                        $total_tunggakan_pokok = $t_tunggakan_pokok;
+                        $total_tunggakan_jasa = $t_tunggakan_jasa;
                     @endphp
 
                     <tr>
