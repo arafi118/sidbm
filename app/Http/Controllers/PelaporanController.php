@@ -222,7 +222,7 @@ class PelaporanController extends Controller
             ]);
         }
 
-        $data['hari'] = ($data['hari']) ?: 31;
+        // $data['hari'] = ($data['hari']) ?: 31;
         $kec = Kecamatan::where('id', Session::get('lokasi'))->with([
             'kabupaten',
             'desa',
