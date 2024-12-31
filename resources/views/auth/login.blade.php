@@ -73,7 +73,7 @@
                                 <div class="card-header text-center mb-0">
                                     <img src="{{ $logo }}" style="width: 150px;" alt="Avatar" />
                                     <h5 class="font-weight-bolder">
-                                        {{ $kec->nama_lembaga_sort }} {{ $kec->nama_kec }}
+                                        {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}
                                     </h5>
                                     <p class="mb-0">
                                         Masukkan <b>Username</b> dan <b>Password</b>
