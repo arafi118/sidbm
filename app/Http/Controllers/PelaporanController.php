@@ -227,6 +227,7 @@ class PelaporanController extends Controller
             'kabupaten',
             'desa',
             'desa.saldo' => function ($query) use ($data) {
+                $data['bulan'] = $data['bulan'] ?: 12;
                 $query->where('tahun', $data['tahun'])->where('bulan', '<=', $data['bulan'])->orderBy('bulan', 'ASC');
             },
             'ttd'
