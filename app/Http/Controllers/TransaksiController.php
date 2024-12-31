@@ -174,7 +174,7 @@ class TransaksiController extends Controller
             'desa',
             'desa.sebutan_desa',
             'desa.saldo' => function ($query) use ($tahun, $bulan) {
-                $query->where('tahun', $tahun);
+                $query->where('tahun', $tahun)->where('bulan', '<=', $bulan)->orderBy('bulan', 'ASC');
             },
             'saldo' => function ($query) use ($tahun, $bulan) {
                 $query->where('tahun', $tahun);
@@ -190,7 +190,8 @@ class TransaksiController extends Controller
 
             $saldo_debit = 0;
             if ($d->saldo) {
-                $saldo_debit = $d->saldo->kredit + $d->saldo->debit;
+                $laba = $keuangan->sumPembagianLabaDesa($d);
+                $saldo_debit = $laba['kredit'] + $laba['debit'];
             }
 
             $saldo_tutup_buku[$id] = [
@@ -362,6 +363,7 @@ class TransaksiController extends Controller
 
     public function simpanAlokasiLaba(Request $request)
     {
+        $keuangan = new Keuangan;
         $data = $request->only([
             "surplus",
             "masyarakat",
@@ -383,7 +385,7 @@ class TransaksiController extends Controller
             'desa',
             'desa.sebutan_desa',
             'desa.saldo' => function ($query) use ($tahun, $bulan) {
-                $query->where('tahun', $tahun);
+                $query->where('tahun', $tahun)->where('bulan', '<=', $bulan)->orderBy('bulan', 'ASC');
             },
             'saldo' => function ($query) use ($tahun, $bulan) {
                 $query->where('tahun', $tahun);
@@ -435,13 +437,19 @@ class TransaksiController extends Controller
             $id = str_replace('.', '', $d->kode_desa) . $tahun_tb . 0;
             $pembagian_desa = str_replace(',', '', str_replace('.00', '', $pembagian_laba_desa[$d->kd_desa]));
 
+            $saldo_kredit = 0;
+            if ($d->saldo) {
+                $laba = $keuangan->sumPembagianLabaDesa($d);
+                $saldo_kredit = $laba['kredit'];
+            }
+
             if (intval($pembagian_desa) > 0) {
                 $saldo_tutup_buku[] = [
                     'id' => $id,
                     'kode_akun' => $d->kode_desa,
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
-                    'debit' => (string) $d->saldo->kredit,
+                    'debit' => (string) $saldo_kredit,
                     'kredit' => $pembagian_desa
                 ];
 

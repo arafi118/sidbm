@@ -412,10 +412,11 @@
                                                 $laba_th_lalu = 0;
                                                 $laba_th_ini = 0;
                                                 if ($desa->saldo) {
-                                                    $laba_th_lalu = floatval($desa->saldo->debit);
+                                                    $laba = $keuangan->sumPembagianLabaDesa($desa);
 
+                                                    $laba_th_lalu = floatval($laba['debit']);
                                                     if ($tgl_kondisi >= $tgl_mad) {
-                                                        $laba_th_ini = floatval($desa->saldo->kredit);
+                                                        $laba_th_ini = floatval($laba['kredit']);
                                                     }
                                                 }
                                             @endphp

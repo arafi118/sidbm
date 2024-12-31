@@ -999,4 +999,19 @@ class Keuangan
             'beban_non_ops' => $beban_non_ops
         ];
     }
+
+    public function sumPembagianLabaDesa($desa)
+    {
+        $saldo_debit = 0;
+        $saldo_kredit = 0;
+        foreach ($desa->saldo as $saldo) {
+            $saldo_debit += floatval($saldo->debit);
+            $saldo_kredit += floatval($saldo->kredit);
+        }
+
+        return [
+            'debit' => $saldo_debit,
+            'kredit' => $saldo_kredit
+        ];
+    }
 }

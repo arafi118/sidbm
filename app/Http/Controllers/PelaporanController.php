@@ -59,26 +59,26 @@ class PelaporanController extends Controller
 
         $data = [];
         $tgl_kondisi = date('Y-m-t', strtotime($tahun . '-' . $bulan . '-01'));
-        if ($file == 1) {
+        if ($file == 1 || $file == 2) {
             $data = [
                 [
                     'title' => 'Neraca Bumdesma Lkd',
-                    'value' => ', '
+                    'value' => 'neraca_1'
                 ], [
                     'title' => 'Laba / Rugi Bumdesma Lkd',
-                    'value' => ', '
+                    'value' => 'laba_rugi'
                 ], [
                     'title' => 'Arus Kas',
-                    'value' => ', '
+                    'value' => 'arus_kas'
                 ], [
                     'title' => 'Perubahan Ekuitas',
-                    'value' => ', '
+                    'value' => 'LPM'
                 ], [
                     'title' => 'Catatan Atas Laporan Keuangan',
-                    'value' => ', '
+                    'value' => 'calk'
                 ], [
                     'title' => 'Neraca Saldo Bumdesma Lkd',
-                    'value' => ', '
+                    'value' => 'neraca_saldo'
                 ],
             ];
         }
@@ -207,6 +207,8 @@ class PelaporanController extends Controller
             'type'
         ]);
 
+        // dd($data);
+
         if ($data['laporan'] == 'calk' && strlen($data['sub_laporan']) > 22) {
             Calk::where([
                 ['lokasi', Session::get('lokasi')],
@@ -220,14 +222,12 @@ class PelaporanController extends Controller
             ]);
         }
 
-        $request->hari = ($request->hari) ?: 31;
+        $data['hari'] = ($data['hari']) ?: 31;
         $kec = Kecamatan::where('id', Session::get('lokasi'))->with([
             'kabupaten',
             'desa',
             'desa.saldo' => function ($query) use ($data) {
-                $query->where([
-                    ['tahun', $data['tahun']]
-                ]);
+                $query->where('tahun', $data['tahun'])->where('bulan', '<=', $data['bulan'])->orderBy('bulan', 'ASC');
             },
             'ttd'
         ])->first();
@@ -240,7 +240,7 @@ class PelaporanController extends Controller
             ['lokasi', Session::get('lokasi')],
             ['jabatan', $jabatan],
             ['level', $level],
-            ['sejak', '<=', date('Y-m-t', strtotime($request->tahun . '-' . $request->bulan . '-01'))]
+            ['sejak', '<=', date('Y-m-t', strtotime($request['tahun'] . '-' . $request['bulan'] . '-01'))]
         ])->first();
 
         $data['logo'] = $kec->logo;
@@ -276,6 +276,10 @@ class PelaporanController extends Controller
         if ($data['hari'] == null) {
             $data['harian'] = false;
             $data['hari'] = date('t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'));
+        }
+
+        if ($data['laporan'] == '1' || $data['laporan'] == '2') {
+            $data['bulan'] = str_pad(6 * $data['laporan'], 2, '0', STR_PAD_LEFT);
         }
 
         $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];

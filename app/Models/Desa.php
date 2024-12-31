@@ -39,7 +39,7 @@ class Desa extends Model
 
     public function saldo()
     {
-        return $this->hasOne(Saldo::class, 'kode_akun', 'kode_desa');
+        return $this->hasMany(Saldo::class, 'kode_akun', 'kode_desa');
     }
 
     public function kec()
