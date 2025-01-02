@@ -170,6 +170,9 @@
                     <td colspan="2">{{ $akun->nama_akun }}</td>
                 </tr>
 
+                @php
+                    $jumlah = 0;
+                @endphp
                 @foreach ($akun->rek as $rek)
                     <tr>
                         <td width="50%">
@@ -179,7 +182,19 @@
                             Rp. {{ number_format($rekening[$rek->kode_akun], 2) }}
                         </td>
                     </tr>
+
+                    @php
+                        $jumlah += $rekening[$rek->kode_akun];
+                    @endphp
                 @endforeach
+                <tr>
+                    <td>
+                        <b>Jumlah</b>
+                    </td>
+                    <td align="right">
+                        <b>Rp. {{ number_format($jumlah, 2) }}</b>
+                    </td>
+                </tr>
 
                 <tr>
                     <td colspan="2">&nbsp;</td>
