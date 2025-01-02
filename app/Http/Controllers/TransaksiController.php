@@ -672,9 +672,7 @@ class TransaksiController extends Controller
         $keuangan = new Keuangan;
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $akun2 = AkunLevel2::where('lev1', '4')->with([
-            'rek' => function ($query) {
-                $query->where('kode_akun', 'NOT LIKE', '4.1.02.%');
-            },
+            'rek',
             'rek.kom_saldo' => function ($query) {
                 $query->where('tahun', date('Y'))->where(function ($query) {
                     $query->where('bulan', (date('m') - 1))->orwhere('bulan', date('m'));
