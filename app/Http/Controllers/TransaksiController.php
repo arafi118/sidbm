@@ -216,7 +216,7 @@ class TransaksiController extends Controller
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
-                    'debit' => (string) $saldo->kredit + $saldo->debit,
+                    'debit' => (string) floatval($saldo->kredit) + floatval($saldo->debit),
                     'kredit' => 0
                 ];
             } else {
@@ -225,7 +225,7 @@ class TransaksiController extends Controller
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
-                    'debit' => (string) $saldo->kredit + $saldo->debit,
+                    'debit' => (string) floatval($saldo->kredit) + floatval($saldo->debit),
                     'kredit' => 0
                 ];
             }
