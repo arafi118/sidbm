@@ -174,7 +174,15 @@
                     $jumlah = 0;
                 @endphp
                 @foreach ($akun->rek as $rek)
-                    <tr>
+                    @php
+                        $jumlah += $rekening[$rek->kode_akun];
+
+                        $bg = 'rgb(230, 230, 230)';
+                        if ($loop->iteration % 2 == 0) {
+                            $bg = 'rgba(255, 255, 255)';
+                        }
+                    @endphp
+                    <tr style="background: {{ $bg }};">
                         <td width="50%">
                             {{ $rek->kode_akun }}. {{ $rek->nama_akun }}
                         </td>
@@ -182,12 +190,8 @@
                             Rp. {{ number_format($rekening[$rek->kode_akun], 2) }}
                         </td>
                     </tr>
-
-                    @php
-                        $jumlah += $rekening[$rek->kode_akun];
-                    @endphp
                 @endforeach
-                <tr>
+                <tr style="background: rgb(167, 167, 167); font-weight: bold;">
                     <td>
                         <b>Jumlah</b>
                     </td>
