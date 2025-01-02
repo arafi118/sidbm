@@ -474,7 +474,7 @@ class TransaksiController extends Controller
         }
 
         foreach ($kec->saldo as $saldo) {
-            $urut = substr($saldo->id, -1);
+            $urut = str_pad(substr($saldo->id, -1), '3', '0', STR_PAD_LEFT);
 
             $id = str_replace('.', '', $kec->kd_kec) . $tahun_tb . $urut;
             if ($urut <= 3) {
