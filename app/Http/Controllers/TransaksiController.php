@@ -750,8 +750,7 @@ class TransaksiController extends Controller
 
         $tgl_kondisi = date('Y-m-t', strtotime($tahun . '-' . $bulan . '-01'));
         $rekening = Rekening::where([
-            ['lev1', '4'],
-            ['kode_akun', 'NOT LIKE', '4.1.02.%']
+            ['lev1', '4']
         ])->where(function ($query) use ($tgl_kondisi) {
             $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
         })->with([
