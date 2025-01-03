@@ -408,7 +408,7 @@
                         $total_real_bi_pokok = $t_real_bi_pokok + $tl_real_bi_pokok;
                         $total_real_bi_jasa = $t_real_bi_jasa + $tl_real_bi_jasa;
                         $total_saldo_pokok = $t_saldo_pokok + $tl_saldo_pokok;
-                        $total_saldo_jasa = $t_saldo_jasa + $tl_saldo_jasa;
+                        $total_saldo_jasa = $t_saldo_jasa;
                         $total_pross = $t_pross + $tl_pross;
                         $total_tunggakan_pokok = $t_tunggakan_pokok;
                         $total_tunggakan_jasa = $t_tunggakan_jasa;
