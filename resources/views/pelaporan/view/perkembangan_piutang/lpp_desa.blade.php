@@ -347,6 +347,7 @@
                             $tl_pross = $tl_real_bi_pokok / $tl_target_pokok;
                         }
 
+                        $tl_saldo_pokok = 0;
                         if ($tl_saldo_pokok < 0) {
                             $tl_saldo_pokok = 0;
                         }
