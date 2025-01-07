@@ -1,18 +1,6 @@
 @php
     use App\Utils\Tanggal;
 
-    $data_nia = [];
-    if ($pinkel->pinkel) {
-        foreach ($pinkel->pinkel->pinjaman_anggota as $pinj) {
-            if ($pinj->anggota) {
-                $data_nia[$pinj->nia] = [
-                    'nama' => $pinj->anggota->namadepan,
-                    'alokasi' => $pinj->alokasi,
-                ];
-            }
-        }
-    }
-
     $ketua = $pinkel->kelompok->ketua;
     $sekretaris = $pinkel->kelompok->sekretaris;
     $bendahara = $pinkel->kelompok->bendahara;
@@ -231,11 +219,9 @@
                 $alokasi += $pa->alokasi;
 
                 $pinjaman_lalu = 0;
-                if (isset($data_nia[$pa->nia])) {
-                    $proposal_lalu += $data_nia[$pa->nia]['alokasi'];
-                    $pinjaman_lalu = $data_nia[$pa->nia]['alokasi'];
-
-                    unset($data_nia[$pa->nia]);
+                if ($pa->pinj_ang) {
+                    $proposal_lalu += $pa->pinj_ang->alokasi;
+                    $pinjaman_lalu = $pa->pinj_ang->alokasi;
                 }
 
                 $no = $loop->iteration;
@@ -255,29 +241,6 @@
                     {!! !($statusDokumen == 'P' || $statusDokumen == 'L') || $pinkel->status == 'V'
                         ? $pa->catatan_verifikasi
                         : '&nbsp;' !!}
-                </td>
-            </tr>
-        @endforeach
-
-        @foreach ($data_nia as $nia => $val)
-            @php
-                $proposal_lalu += $val['alokasi'];
-                $pinjaman_lalu = $val['alokasi'];
-            @endphp
-
-            <tr>
-                <td align="center">{{ ++$no }}</td>
-                <td>{{ $val['nama'] }}</td>
-                <td align="right">{{ number_format($pinjaman_lalu) }}</td>
-                <td align="right">{{ number_format(0) }}</td>
-                <td align="right">
-                    {!! $statusDokumen != 'P' || $pinkel->status == 'V' ? number_format(0) : '&nbsp;' !!}
-                </td>
-                <td align="right">
-                    {!! $statusDokumen == 'W' || $statusDokumen == 'A' ? number_format(0) : '&nbsp;' !!}
-                </td>
-                <td>
-                    &nbsp;
                 </td>
             </tr>
         @endforeach
