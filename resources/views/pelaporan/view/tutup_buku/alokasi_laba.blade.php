@@ -80,9 +80,13 @@
                     @php
                         $saldo_desa = 0;
                         if ($d->saldo) {
-                            $jumlah_laba_ditahan -= floatval($d->saldo->kredit);
-                            $jumlah += floatval($d->saldo->kredit);
-                            $saldo_desa = floatval($d->saldo->kredit);
+                            $saldo_kredit_desa = 0;
+                            foreach ($d->saldo as $desa_saldo) {
+                                $saldo_kredit_desa += floatval($desa_saldo->kredit);
+                            }
+                            $jumlah_laba_ditahan -= floatval($saldo_kredit_desa);
+                            $jumlah += floatval($saldo_kredit_desa);
+                            $saldo_desa = floatval($saldo_kredit_desa);
                         }
                         $bg = 'rgb(230, 230, 230)';
                         if ($loop->iteration % 2 == 0) {

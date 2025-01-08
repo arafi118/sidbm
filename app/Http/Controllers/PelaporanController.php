@@ -3113,7 +3113,10 @@ class PelaporanController extends Controller
         ])->get();
         $data['desa'] = Desa::where('kd_kec', $data['kec']->kd_kec)->with([
             'saldo' => function ($query) use ($data) {
-                $query->where('tahun', $data['tahun_tb']);
+                $query->where([
+                    ['tahun', $data['tahun_tb']],
+                    ['bulan', '0']
+                ]);
             },
             'sebutan_desa'
         ])->get();
