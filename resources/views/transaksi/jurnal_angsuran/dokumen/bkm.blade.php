@@ -218,7 +218,13 @@
                         <td align="center">Disiapkan Oleh :</td>
                     </tr>
                     <tr>
-                        <td align="center"><?php echo $kec->sebutan_level_1; ?></td>
+                        <td align="center">
+                            @if ($dir_utama)
+                                {{ $dir_utama->j->nama_jabatan }}
+                            @else
+                                {{ $kec->sebutan_level_1 }}
+                            @endif
+                        </td>
                         <td align="center"><?php echo $kec->sebutan_level_3; ?></td>
                         <td align="center">&nbsp;</td>
                     </tr>
@@ -233,7 +239,13 @@
                         <td align="center">&nbsp;</td>
                     </tr>
                     <tr>
-                        <td align="center">{{ $dir->namadepan . ' ' . $dir->namabelakang }}</td>
+                        <td align="center">
+                            @if ($dir_utama)
+                                {{ $dir_utama->namadepan }} {{ $dir_utama->namabelakang }}
+                            @else
+                                {{ $dir->namadepan }} {{ $dir->namabelakang }}
+                            @endif
+                        </td>
                         <td align="center">{{ $sekr->namadepan . ' ' . $sekr->namabelakang }}</td>
                         <td align="center"><?php echo $kec->disiapkan; ?></td>
                     </tr>

@@ -2463,10 +2463,16 @@ class TransaksiController extends Controller
             ['lokasi', Session::get('lokasi')]
         ])->first();
 
+        $dir_utama = User::where([
+            ['level', '2'],
+            ['jabatan', '65'],
+            ['lokasi', Session::get('lokasi')],
+        ])->first();
+
         $logo = $kec->logo;
         $gambar = '/storage/logo/' . $logo;
 
-        return view('transaksi.dokumen.bkk')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
+        return view('transaksi.dokumen.bkk')->with(compact('trx', 'kec', 'dir', 'sekr', 'dir_utama', 'gambar', 'keuangan'));
     }
 
     public function bkm($id)
@@ -2489,10 +2495,16 @@ class TransaksiController extends Controller
             ['lokasi', Session::get('lokasi')]
         ])->first();
 
+        $dir_utama = User::where([
+            ['level', '2'],
+            ['jabatan', '65'],
+            ['lokasi', Session::get('lokasi')],
+        ])->first();
+
         $logo = $kec->logo;
         $gambar = '/storage/logo/' . $logo;
 
-        return view('transaksi.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
+        return view('transaksi.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'dir_utama', 'gambar', 'keuangan'));
     }
 
     public function bm($id)
@@ -2515,10 +2527,16 @@ class TransaksiController extends Controller
             ['lokasi', Session::get('lokasi')]
         ])->first();
 
+        $dir_utama = User::where([
+            ['level', '2'],
+            ['jabatan', '65'],
+            ['lokasi', Session::get('lokasi')],
+        ])->first();
+
         $logo = $kec->logo;
         $gambar = '/storage/logo/' . $logo;
 
-        return view('transaksi.dokumen.bm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
+        return view('transaksi.dokumen.bm')->with(compact('trx', 'kec', 'dir', 'sekr', 'dir_utama', 'gambar', 'keuangan'));
     }
 
     public function bkmAngsuran($id)
@@ -2541,10 +2559,16 @@ class TransaksiController extends Controller
             ['lokasi', Session::get('lokasi')]
         ])->first();
 
+        $dir_utama = User::where([
+            ['level', '2'],
+            ['jabatan', '65'],
+            ['lokasi', Session::get('lokasi')],
+        ])->first();
+
         $logo = $kec->logo;
         $gambar = '/storage/logo/' . $logo;
 
-        return view('transaksi.jurnal_angsuran.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'gambar', 'keuangan'));
+        return view('transaksi.jurnal_angsuran.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'dir_utama', 'gambar', 'keuangan'));
     }
 
     public function cetak(Request $request)
