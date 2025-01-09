@@ -154,14 +154,16 @@ class GenerateController extends Controller
 
         $pinjaman = $pinjaman->limit($limit)->offset($offset)->orderBy('id', 'ASC')->get();
 
+        $data_pinj_H = [];
         $data_id_pinj = [];
         $data_id_real = [];
         foreach ($pinjaman as $pinkel) {
-            $data_id_pinj[] = $pinkel->id;
             if ($pinkel->pinjaman) {
+                $data_pinj_H[] = $pinkel->id;
                 continue;
             }
 
+            $data_id_pinj[] = $pinkel->id;
 
             if ($pinkel->status == 'P') {
                 $alokasi = $pinkel->proposal;
@@ -487,6 +489,7 @@ class GenerateController extends Controller
         RencanaAngsuran::insert($rencana);
         RealAngsuran::insert($real);
 
+        array_push($data_id_pinj, $data_pinj_H);
         $data = $request->all();
         $offset = $offset + $limit;
         return view('generate.generate')->with(compact('data_id_pinj', 'data', 'offset', 'limit'));
