@@ -55,17 +55,25 @@ class ServiceWorkerController extends Controller
         }
         $imagePath = 'logo/' . $logo;
 
+        $imagePath = 'logo/' . $logo;
         $filePath = storage_path('app/public/' . $imagePath);
-        $handle = fopen($filePath, 'rb');
-        $imageContent = stream_get_contents($handle);
-        fclose($handle);
+
+        if (!file_exists($filePath)) {
+            throw new Exception('File not found: ' . $filePath);
+        }
+
+        $imageContent = file_get_contents($filePath);
+
+        if (!$imageContent) {
+            throw new Exception('Failed to read image file: ' . $filePath);
+        }
+
+        $image = @imagecreatefromstring($imageContent);
+
+        list($width, $height) = getimagesizefromstring($imageContent);
 
         $newWidth = $witdh;
         $newHeight = $height;
-
-        $image = imagecreatefromstring($imageContent);
-
-        list($width, $height) = getimagesizefromstring($imageContent);
 
         $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
         imagecopyresampled($resizedImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
