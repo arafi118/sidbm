@@ -55,11 +55,10 @@ class ServiceWorkerController extends Controller
         }
         $imagePath = 'logo/' . $logo;
 
-        if (!Storage::exists($imagePath)) {
-            return response()->json(['error' => 'Image not found'], 404);
-        }
-
-        $imageContent = Storage::get($imagePath);
+        $filePath = storage_path('app/public/' . $imagePath);
+        $handle = fopen($filePath, 'rb');
+        $imageContent = stream_get_contents($handle);
+        fclose($handle);
 
         $newWidth = $witdh;
         $newHeight = $height;
