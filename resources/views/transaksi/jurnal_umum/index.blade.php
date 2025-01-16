@@ -360,6 +360,7 @@
             setSaldo(sumber_dana, tgl_transaksi)
         })
 
+        var value_disimpan_ke = ''
         $(document).on('change', '#sumber_dana,#disimpan_ke', function(e) {
             e.preventDefault()
 
@@ -367,6 +368,17 @@
             var jenis_transaksi = $('#jenis_transaksi').val()
             var sumber_dana = $('#sumber_dana').val()
             var disimpan_ke = $('#disimpan_ke').val()
+
+            if (sumber_dana == disimpan_ke) {
+                $('#SimpanTransaksi').attr('disabled', true)
+                simpan.setChoiceByValue(value_disimpan_ke)
+
+                Toastr('warning', 'Kode Akun tidak boleh sama')
+                return false
+            } else {
+                $('#SimpanTransaksi').attr('disabled', false)
+                value_disimpan_ke = disimpan_ke
+            }
 
             $.get('/transaksi/form_nominal/', {
                 jenis_transaksi,
