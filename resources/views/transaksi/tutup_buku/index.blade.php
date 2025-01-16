@@ -15,8 +15,8 @@
                                 $tgl_pakai = $kec->tgl_pakai;
                                 $th_pakai = explode('-', $tgl_pakai)[0];
                             @endphp
-                            @for ($i = $th_pakai; $i <= date('Y'); $i++)
-                                <option value="{{ $i }}" {{ date('Y') == $i ? 'selected' : '' }}>
+                            @for ($i = date('Y'); $i >= $th_pakai; $i--)
+                                <option {{ $i == date('Y') ? 'selected' : '' }} value="{{ $i }}">
                                     {{ $i }}
                                 </option>
                             @endfor

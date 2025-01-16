@@ -16,7 +16,7 @@
                             <label class="form-label" for="tahun">Tahunan</label>
                             <select class="form-control" name="tahun" id="tahun">
                                 <option value="">---</option>
-                                @for ($i = $thn_awal; $i <= date('Y'); $i++)
+                                @for ($i = date('Y'); $i >= $thn_awal; $i--)
                                     <option {{ $i == date('Y') ? 'selected' : '' }} value="{{ $i }}">
                                         {{ $i }}
                                     </option>
