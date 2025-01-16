@@ -370,13 +370,11 @@
             var disimpan_ke = $('#disimpan_ke').val()
 
             if (sumber_dana == disimpan_ke) {
-                $('#SimpanTransaksi').attr('disabled', true)
                 simpan.setChoiceByValue(value_disimpan_ke)
 
                 Toastr('warning', 'Kode Akun tidak boleh sama')
                 return false
             } else {
-                $('#SimpanTransaksi').attr('disabled', false)
                 value_disimpan_ke = disimpan_ke
             }
 
