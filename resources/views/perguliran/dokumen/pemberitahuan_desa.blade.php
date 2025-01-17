@@ -144,17 +144,16 @@
                         <td colspan="2">
                             <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
                                 <tr>
-                                    <td width="33%" height="10">&nbsp;</td>
-                                    <td width="33%">&nbsp;</td>
-                                    <td width="33%">&nbsp;</td>
+                                    <td width="50%" height="10">&nbsp;</td>
+                                    <td width="50%">&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">&nbsp;</td>
+                                    <td>&nbsp;</td>
                                     <td align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">&nbsp;</td>
+                                    <td>&nbsp;</td>
                                     <td align="center">
                                         {{ $kec->sebutan_level_1 }}
                                     </td>
@@ -163,7 +162,7 @@
                                     <td colspan="3" height="40">&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">&nbsp;</td>
+                                    <td>&nbsp;</td>
                                     <td align="center">
                                         <u>
                                             <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
