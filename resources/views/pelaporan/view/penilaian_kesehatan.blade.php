@@ -40,20 +40,20 @@
         $ckp = $aset['cadangan_piutang'];
 
         $_risiko_kolek = $tk['sum_kolek'] == 0 ? $ckp : $tk['sum_kolek'];
-        $saldo_piutang_berisiko = round(($tk['nunggak_pokok'] / $tk['saldo_pokok']) * 100, 2);
-        $cadangan_kerugian = round(($ckp / $_risiko_kolek) * 100, 2);
-        $laba_bersih = round((($surplus - ($tk['sum_kolek'] - $ckp)) / $aset_produktif) * 100, 2);
+        $saldo_piutang_berisiko = floatval(($tk['nunggak_pokok'] / $tk['saldo_pokok']) * 100, 2);
+        $cadangan_kerugian = floatval(($ckp / $_risiko_kolek) * 100, 2);
+        $laba_bersih = floatval((($surplus - ($tk['sum_kolek'] - $ckp)) / $aset_produktif) * 100, 2);
         if ($biaya == '0' || $pendapatan == '0') {
             $beban_operasional = 0;
         } else {
-            $beban_operasional = round(($biaya / $pendapatan) * 100);
+            $beban_operasional = floatval(($biaya / $pendapatan) * 100);
         }
 
-        $saldo_piuang = round(($tk['saldo_pokok'] / $aset_ekonomi) * 100);
+        $saldo_piuang = floatval(($tk['saldo_pokok'] / $aset_ekonomi) * 100);
         if ($modal_awal == 0) {
-            $kekayaan_bersih = round(($aset_ekonomi - $tk['sum_kolek']) * 100);
+            $kekayaan_bersih = floatval(($aset_ekonomi - $tk['sum_kolek']) * 100);
         } else {
-            $kekayaan_bersih = round((($aset_ekonomi - $tk['sum_kolek']) / $modal_awal) * 100);
+            $kekayaan_bersih = floatval((($aset_ekonomi - $tk['sum_kolek']) / $modal_awal) * 100);
         }
 
         // Skor Baris 1
@@ -248,11 +248,11 @@
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
                     <tr>
                         <td>a. Tunggakan</td>
-                        <td align="right">{{ number_format($tk['nunggak_pokok']) }}</td>
+                        <td align="right">{{ number_format($tk['nunggak_pokok'], 2) }}</td>
                     </tr>
                     <tr>
                         <td>b. Saldo piutang</td>
-                        <td align="right">{{ number_format($tk['saldo_pokok']) }}</td>
+                        <td align="right">{{ number_format($tk['saldo_pokok'], 2) }}</td>
                     </tr>
                 </table>
             </td>
@@ -293,11 +293,11 @@
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
                     <tr>
                         <td>a. CKP yang dimiliki</td>
-                        <td align="right">{{ number_format($ckp) }}</td>
+                        <td align="right">{{ number_format($ckp, 2) }}</td>
                     </tr>
                     <tr>
                         <td>b. Risiko kolektibilitas</td>
-                        <td align="right">{{ number_format($tk['sum_kolek']) }}</td>
+                        <td align="right">{{ number_format($tk['sum_kolek'], 2) }}</td>
                     </tr>
                 </table>
             </td>
@@ -337,19 +337,19 @@
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
                     <tr>
                         <td>a. Laba berjalan</td>
-                        <td align="right">{{ number_format($surplus) }}</td>
+                        <td align="right">{{ number_format($surplus, 2) }}</td>
                     </tr>
                     <tr>
                         <td>b. Risiko kolektibilitas</td>
-                        <td align="right">{{ number_format($tk['sum_kolek']) }}</td>
+                        <td align="right">{{ number_format($tk['sum_kolek'], 2) }}</td>
                     </tr>
                     <tr>
                         <td>c. CKP yang dimiliki</td>
-                        <td align="right">{{ number_format($ckp) }}</td>
+                        <td align="right">{{ number_format($ckp, 2) }}</td>
                     </tr>
                     <tr>
                         <td>d. Aset produktif</td>
-                        <td align="right">{{ number_format($aset_produktif) }}</td>
+                        <td align="right">{{ number_format($aset_produktif, 2) }}</td>
                     </tr>
                 </table>
             </td>
@@ -390,11 +390,11 @@
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
                     <tr>
                         <td>a. Akumulasi beban</td>
-                        <td align="right">{{ number_format($biaya) }}</td>
+                        <td align="right">{{ number_format($biaya, 2) }}</td>
                     </tr>
                     <tr>
                         <td>b. Akumulasi pendapatan</td>
-                        <td align="right">{{ number_format($pendapatan) }}</td>
+                        <td align="right">{{ number_format($pendapatan, 2) }}</td>
                     </tr>
                 </table>
             </td>
@@ -436,11 +436,11 @@
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
                     <tr>
                         <td>a. Saldo piutang usaha</td>
-                        <td align="right">{{ number_format($tk['saldo_pokok']) }}</td>
+                        <td align="right">{{ number_format($tk['saldo_pokok'], 2) }}</td>
                     </tr>
                     <tr>
                         <td>b. Aset produktif non investasi</td>
-                        <td align="right">{{ number_format($aset_ekonomi) }}</td>
+                        <td align="right">{{ number_format($aset_ekonomi, 2) }}</td>
                     </tr>
                 </table>
             </td>
@@ -480,15 +480,15 @@
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 10px;">
                     <tr>
                         <td>a. Aset produktif non investasi </td>
-                        <td align="right">{{ number_format($aset_ekonomi) }}</td>
+                        <td align="right">{{ number_format($aset_ekonomi, 2) }}</td>
                     </tr>
                     <tr>
                         <td>b. Risiko kolektibilitas </td>
-                        <td align="right">{{ number_format($tk['sum_kolek']) }}</td>
+                        <td align="right">{{ number_format($tk['sum_kolek'], 2) }}</td>
                     </tr>
                     <tr>
                         <td>c. Modal disetor bumdesma </td>
-                        <td align="right">{{ number_format($modal_awal) }}</td>
+                        <td align="right">{{ number_format($modal_awal, 2) }}</td>
                     </tr>
                 </table>
             </td>
