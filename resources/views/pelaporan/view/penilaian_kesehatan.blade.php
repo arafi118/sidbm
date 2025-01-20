@@ -40,9 +40,9 @@
         $ckp = $aset['cadangan_piutang'];
 
         $_risiko_kolek = $tk['sum_kolek'] == 0 ? $ckp : $tk['sum_kolek'];
-        $saldo_piutang_berisiko = floatval(($tk['nunggak_pokok'] / $tk['saldo_pokok']) * 100, 2);
-        $cadangan_kerugian = floatval(($ckp / $_risiko_kolek) * 100, 2);
-        $laba_bersih = floatval((($surplus - ($tk['sum_kolek'] - $ckp)) / $aset_produktif) * 100, 2);
+        $saldo_piutang_berisiko = floatval(($tk['nunggak_pokok'] / $tk['saldo_pokok']) * 100);
+        $cadangan_kerugian = floatval(($ckp / $_risiko_kolek) * 100);
+        $laba_bersih = floatval((($surplus - ($tk['sum_kolek'] - $ckp)) / $aset_produktif) * 100);
         if ($biaya == '0' || $pendapatan == '0') {
             $beban_operasional = 0;
         } else {
