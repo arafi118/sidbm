@@ -188,7 +188,9 @@
                         </tr>
                         @if (strtolower($kuitansi) != 'bm')
                             <tr>
-                                <td width="30%">Dibayar Kepada</td>
+                                <td width="30%">
+                                    {{ strtolower($Kuitansi) == 'bkk' ? 'Dibayar Kepada' : 'Terima Dari' }}
+                                </td>
                                 <td width="2%">:</td>
                                 @if (
                                     $trx->id_pinj > 0 &&

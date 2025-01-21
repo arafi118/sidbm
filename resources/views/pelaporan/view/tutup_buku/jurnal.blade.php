@@ -16,7 +16,7 @@
         <tr>
             <td colspan="7" align="center">
                 <div style="font-size: 18px;">
-                    <b>JURNAL TUTUP BUKU</b>
+                    <b>JURNAL PENUTUP</b>
                 </div>
                 <div style="font-size: 16px;">
                     <b>{{ strtoupper($sub_judul) }}</b>

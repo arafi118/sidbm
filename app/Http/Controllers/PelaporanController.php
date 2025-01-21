@@ -3154,7 +3154,7 @@ class PelaporanController extends Controller
         $data['rek'] = Rekening::where('kode_akun', '3.2.01.01')->first();
 
         $data['tgl_transaksi'] = $thn . '-12-31';
-        $data['laporan'] = 'Jurnal Awal Tahun';
+        $data['laporan'] = 'Jurnal Penutup';
         $view = view('pelaporan.view.tutup_buku.jurnal', $data)->render();
 
         if ($data['type'] == 'pdf') {
