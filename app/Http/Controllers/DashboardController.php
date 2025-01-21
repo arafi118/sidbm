@@ -93,7 +93,7 @@ class DashboardController extends Controller
 
         $data['kec'] = $kec;
         $data['user'] = auth()->user();
-        $data['saldo'] = $this->_saldo($tgl);
+        $data['charts'] = json_encode($this->_saldo($tgl));
         $data['jumlah_saldo'] = Saldo::where('kode_akun', 'NOT LIKE', $kec->kd_kec . '%')->count();
 
         $data['api'] = env('APP_API', 'http://localhost:8080');
@@ -691,100 +691,81 @@ class DashboardController extends Controller
 
     private function _saldo($tgl)
     {
-        $data = [
-            '4' => [
-                '1' => 0,
-                '2' => 0,
-                '3' => 0,
-                '4' => 0,
-                '5' => 0,
-                '6' => 0,
-                '7' => 0,
-                '8' => 0,
-                '9' => 0,
-                '10' => 0,
-                '11' => 0,
-                '12' => 0,
-            ],
-            '5' => [
-                '1' => 0,
-                '2' => 0,
-                '3' => 0,
-                '4' => 0,
-                '5' => 0,
-                '6' => 0,
-                '7' => 0,
-                '8' => 0,
-                '9' => 0,
-                '10' => 0,
-                '11' => 0,
-                '12' => 0,
-            ],
-        ];
+        $bulan = [];
+        for ($i = 0; $i <= date('m'); $i++) {
+            $bulan[$i] = [
+                'pendapatan' => 0,
+                'beban' => 0
+            ];
+        }
 
-        $akun1 = AkunLevel1::where('lev1', '>=', '4')->with([
-            'akun2',
-            'akun2.akun3',
-            'akun2.akun3.rek',
-            'akun2.akun3.rek.kom_saldo' => function ($query) use ($tgl) {
+        $rekening = Rekening::where('lev1', '>=', '4')->with([
+            'kom_saldo' => function ($query) use ($tgl) {
                 $tahun = date('Y', strtotime($tgl));
                 $query->where([
                     ['tahun', $tahun],
-                    ['bulan', '!=', '0'],
-                    ['bulan', '!=', '13']
+                    ['bulan', '<=', date('m')],
                 ])->orderBy('kode_akun', 'ASC')->orderBy('bulan', 'ASC');
             },
         ])->get();
 
-        foreach ($akun1 as $lev1) {
-            $kom_saldo[$lev1->lev1] = $data[$lev1->lev1];
-            foreach ($lev1->akun2 as $lev2) {
-                foreach ($lev2->akun3 as $lev3) {
-                    foreach ($lev3->rek as $rek) {
-                        foreach ($rek->kom_saldo as $saldo) {
-                            $debit = 0;
-                            if ($saldo->debit) {
-                                $debit = $saldo->debit;
-                            }
-                            $kredit = 0;
-                            if ($saldo->kredit) {
-                                $kredit = $saldo->kredit;
-                            }
+        foreach ($rekening as $rek) {
+            foreach ($rek->kom_saldo as $kom_saldo) {
+                $debit = 0;
+                if ($kom_saldo->debit) {
+                    $debit = $kom_saldo->debit;
+                }
+                $kredit = 0;
+                if ($kom_saldo->kredit) {
+                    $kredit = $kom_saldo->kredit;
+                }
 
-                            if ($lev1->lev1 == '5') {
-                                $_saldo = $debit - $kredit;
-                            } else {
-                                $_saldo = $kredit - $debit;
-                            }
+                $saldo = $kredit - $debit;
+                if ($rek->lev1 > '4') {
+                    $saldo = $debit - $kredit;
+                }
 
-                            $kom_saldo[$lev1->lev1][$saldo->bulan] += $_saldo;
-                            if ($saldo->bulan > 1) {
-                                if ($saldo->bulan > date('m')) {
-                                    $kom_saldo[$lev1->lev1][$saldo->bulan] = 0;
-                                }
-                            }
-                        }
+                if ($rek->lev1 == '4') {
+                    if ($kom_saldo->bulan > 0) {
+                        $saldo -= $bulan[intval($kom_saldo->bulan) - 1]['pendapatan'];
                     }
+
+                    $bulan[intval($kom_saldo->bulan)]['pendapatan'] += $saldo;
+                } else {
+                    if ($kom_saldo->bulan > 0) {
+                        $saldo -= $bulan[intval($kom_saldo->bulan) - 1]['beban'];
+                    }
+
+                    $bulan[intval($kom_saldo->bulan)]['beban'] += $saldo;
                 }
             }
         }
 
-        $kom_saldo['surplus'] = [
-            '1' => $kom_saldo['4']['1'] - $kom_saldo['5']['1'],
-            '2' => $kom_saldo['4']['2'] - $kom_saldo['5']['2'],
-            '3' => $kom_saldo['4']['3'] - $kom_saldo['5']['3'],
-            '4' => $kom_saldo['4']['4'] - $kom_saldo['5']['4'],
-            '5' => $kom_saldo['4']['5'] - $kom_saldo['5']['5'],
-            '6' => $kom_saldo['4']['6'] - $kom_saldo['5']['6'],
-            '7' => $kom_saldo['4']['7'] - $kom_saldo['5']['7'],
-            '8' => $kom_saldo['4']['8'] - $kom_saldo['5']['8'],
-            '9' => $kom_saldo['4']['9'] - $kom_saldo['5']['9'],
-            '10' => $kom_saldo['4']['10'] - $kom_saldo['5']['10'],
-            '11' => $kom_saldo['4']['11'] - $kom_saldo['5']['11'],
-            '12' => $kom_saldo['4']['12'] - $kom_saldo['5']['12'],
+        $nama_bulan = [];
+        $pendapatan = [];
+        $beban = [];
+        $surplus = [];
+        foreach ($bulan as $key => $value) {
+            $pendapatan[$key] = $value['pendapatan'];
+            $beban[$key] = $value['beban'];
+            $surplus[$key] = $value['pendapatan'] - $value['beban'];
+
+            if ($key == 0) {
+                $nama_bulan[$key] = 'Awal Tahun';
+            } else {
+                $tanggal = date('Y-m-d', strtotime(date('Y') . '-' . $key . '-01'));
+                $nama_bulan[$key] = Tanggal::namaBulan($tanggal);
+            }
+        }
+
+        $saldo = [
+            'nama_bulan' => $nama_bulan,
+            'pendapatan' => $pendapatan,
+            'beban' => $beban,
+            'surplus' => $surplus
         ];
 
-        return $kom_saldo;
+        return $saldo;
     }
 
     public function unpaid()

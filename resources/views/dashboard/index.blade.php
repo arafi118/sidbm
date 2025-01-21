@@ -606,19 +606,6 @@
         <input type="hidden" name="sub_laporan" id="sub_laporan" value="">
     </form>
 
-    @php
-        $p = $saldo[4];
-        $b = $saldo[5];
-        $surplus = $saldo['surplus'];
-
-        $bulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-        for ($i = 0; $i < date('m'); $i++) {
-            if ($i == 0) {
-                $label = $bulan[$i];
-            } else {
-                $label .= ',' . $bulan[$i];
-            }
-    } @endphp
     <textarea name="msgInvoice" id="msgInvoice" class="d-none">{{ Session::get('msg') }}</textarea>
 @endsection
 
@@ -865,15 +852,15 @@
             maximumFractionDigits: 2,
         })
 
+        var DataLineChart = JSON.parse(@json($charts));
         var ctx1 = document.getElementById("chart-line").getContext("2d");
         var ctx2 = document.getElementById("chart-pie").getContext("2d");
 
         // Line chart
-        var label = "{{ $label }}"
         new Chart(ctx1, {
             type: "line",
             data: {
-                labels: label.split(','),
+                labels: DataLineChart.nama_bulan,
                 datasets: [{
                         label: "Pendapatan",
                         tension: 0,
@@ -884,20 +871,7 @@
                         borderWidth: 2,
                         backgroundColor: "transparent",
                         fill: true,
-                        data: [
-                            "{{ $p['1'] }}",
-                            "{{ $p['2'] }}",
-                            "{{ $p['3'] }}",
-                            "{{ $p['4'] }}",
-                            "{{ $p['5'] }}",
-                            "{{ $p['6'] }}",
-                            "{{ $p['7'] }}",
-                            "{{ $p['8'] }}",
-                            "{{ $p['9'] }}",
-                            "{{ $p['10'] }}",
-                            "{{ $p['11'] }}",
-                            "{{ $p['12'] }}"
-                        ],
+                        data: DataLineChart.pendapatan,
                         maxBarThickness: 6
                     },
                     {
@@ -911,20 +885,7 @@
                         borderWidth: 2,
                         backgroundColor: "transparent",
                         fill: true,
-                        data: [
-                            "{{ $b['1'] }}",
-                            "{{ $b['2'] }}",
-                            "{{ $b['3'] }}",
-                            "{{ $b['4'] }}",
-                            "{{ $b['5'] }}",
-                            "{{ $b['6'] }}",
-                            "{{ $b['7'] }}",
-                            "{{ $b['8'] }}",
-                            "{{ $b['9'] }}",
-                            "{{ $b['10'] }}",
-                            "{{ $b['11'] }}",
-                            "{{ $b['12'] }}"
-                        ],
+                        data: DataLineChart.beban,
                         maxBarThickness: 6
                     },
                     {
@@ -938,20 +899,7 @@
                         borderWidth: 2,
                         backgroundColor: "transparent",
                         fill: true,
-                        data: [
-                            "{{ $surplus['1'] }}",
-                            "{{ $surplus['2'] }}",
-                            "{{ $surplus['3'] }}",
-                            "{{ $surplus['4'] }}",
-                            "{{ $surplus['5'] }}",
-                            "{{ $surplus['6'] }}",
-                            "{{ $surplus['7'] }}",
-                            "{{ $surplus['8'] }}",
-                            "{{ $surplus['9'] }}",
-                            "{{ $surplus['10'] }}",
-                            "{{ $surplus['11'] }}",
-                            "{{ $surplus['12'] }}"
-                        ],
+                        data: DataLineChart.surplus,
                         maxBarThickness: 6
                     }
                 ],
