@@ -3090,7 +3090,7 @@ class PelaporanController extends Controller
         $tgl = $thn . '-' . $bln . '-' . $hari;
         $trx_pembagian_laba = Transaksi::where([
             ['rekening_debit', '3.2.01.01'],
-            ['keterangan_transaksi', 'LIKE', '%tahun ' . ($data['tahun'] - 1) . '%']
+            ['keterangan_transaksi', 'LIKE', '%tahun ' . ($thn - 1) . '%']
         ])->first();
 
         $tgl_kondisi = $tgl;
