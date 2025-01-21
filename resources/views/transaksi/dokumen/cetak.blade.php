@@ -192,15 +192,7 @@
                                     {{ strtolower($kuitansi) == 'bkk' ? 'Dibayar Kepada' : 'Terima Dari' }}
                                 </td>
                                 <td width="2%">:</td>
-                                @if (
-                                    $trx->id_pinj > 0 &&
-                                        ($trx->rekening_kredit == '1.1.03.01' ||
-                                            $trx->rekening_kredit == '1.1.03.02' ||
-                                            $trx->rekening_kredit == '1.1.03.03'))
-                                    <td colspan="3" class="keterangan">{{ ucwords('Kelompok ' . $trx->relasi) }}</td>
-                                @else
-                                    <td colspan="3" class="keterangan">{{ ucwords($trx->relasi) }}</td>
-                                @endif
+                                <td colspan="3" class="keterangan">{{ ucwords($trx->relasi) }}</td>
                             </tr>
                         @endif
                         <tr>
@@ -212,7 +204,7 @@
                                         ($trx->rekening_kredit == '1.1.03.01' ||
                                             $trx->rekening_kredit == '1.1.03.02' ||
                                             $trx->rekening_kredit == '1.1.03.03'))
-                                    {{ ucwords('Angsuran Pokok dan Jasa') }}
+                                    {{ ucwords('Angsuran Kelompok ' . $trx->pinkel->kelompok->nama_kelompok) }}
                                 @else
                                     {{ ucwords($trx->keterangan_transaksi) }}
                                 @endif
