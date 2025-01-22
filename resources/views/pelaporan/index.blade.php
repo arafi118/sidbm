@@ -71,7 +71,7 @@
                             <select class="form-control" name="laporan" id="laporan">
                                 <option value="">---</option>
                                 @foreach ($laporan as $lap)
-                                    <option value="{{ $lap->file }}">
+                                    <option value="{{ $lap->id }}|{{ $lap->file }}">
                                         {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}.
                                         {{ $lap->nama_laporan }}
                                     </option>
@@ -131,7 +131,7 @@
                 distance: 1000
             }
         })
-        new Choices($('select#hari')[0], {
+        var tanggal_laporan = new Choices($('select#hari')[0], {
             shouldSort: false,
             fuseOptions: {
                 threshold: 0.1,
@@ -163,7 +163,16 @@
         $(document).on('change', '#laporan', function(e) {
             e.preventDefault()
 
-            var file = $(this).val()
+            var laporan = $(this).val().split('|')
+            var id = laporan[0]
+            var file = laporan[1]
+
+            if (id >= 7 && id <= 30) {
+                Toastr('warning', 'Laporan hanya tersedia versi bulanan')
+
+                tanggal_laporan.setChoiceByValue('')
+            }
+
             subLaporan(file)
         })
 
