@@ -153,7 +153,7 @@ class GenerateController extends Controller
             'kelompok.d'
         ]);
 
-        $pinjaman = $pinjaman->limit($limit)->offset($offset)->orderBy('id', 'ASC')->toSql();
+        $pinjaman = $pinjaman->limit($limit)->offset($offset)->orderBy('id', 'ASC')->get();
 
         $data_pinj_H = [];
         $data_id_pinj = [];
