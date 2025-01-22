@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{{ $logo }}">
     <link rel="icon" type="image/png" href="{{ $logo }}">
     <title>
-        GENERATE &mdash; SI UPK Online
+        GENERATE &mdash; Aplikasi Dana Bergulir Masyarakat
     </title>
 
     <link rel="stylesheet" type="text/css"

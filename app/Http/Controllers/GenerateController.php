@@ -126,7 +126,20 @@ class GenerateController extends Controller
         }
 
         $limit = 30;
-        $pinjaman = PinjamanKelompok::where($where)->with([
+        $pinjaman = PinjamanKelompok::whereNotIn('status', ['H', 'R'])->where(function ($query) use ($where, $whereIn, $whereNotIn) {
+            $query->where($where);
+            if (count($whereIn) > 0) {
+                foreach ($whereIn as $key => $value) {
+                    $query->whereIn($key, $value);
+                }
+            }
+
+            if (count($whereNotIn) > 0) {
+                foreach ($whereNotIn as $key => $value) {
+                    $query->whereNotIn($key, $value);
+                }
+            }
+        })->with([
             'pinjaman' => function ($query) {
                 $query->where('status', 'H');
             },
@@ -140,19 +153,7 @@ class GenerateController extends Controller
             'kelompok.d'
         ]);
 
-        if (count($whereIn) > 0) {
-            foreach ($whereIn as $key => $value) {
-                $pinjaman = $pinjaman->whereIn($key, $value);
-            }
-        }
-
-        if (count($whereNotIn) > 0) {
-            foreach ($whereNotIn as $key => $value) {
-                $pinjaman = $pinjaman->whereNotIn($key, $value);
-            }
-        }
-
-        $pinjaman = $pinjaman->limit($limit)->offset($offset)->orderBy('id', 'ASC')->get();
+        $pinjaman = $pinjaman->limit($limit)->offset($offset)->orderBy('id', 'ASC')->toSql();
 
         $data_pinj_H = [];
         $data_id_pinj = [];
