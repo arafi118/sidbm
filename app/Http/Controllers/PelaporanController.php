@@ -321,6 +321,7 @@ class PelaporanController extends Controller
             }
         }
 
+        $data['laporan'] = explode('|', $request->laporan)[1];
         return $this->$file($data);
     }
 
