@@ -227,10 +227,10 @@
     </tr>
     <tr>
         <td align="center" width="50%" style="font-weight: bold; text-decoration: underline;">
-            {{ $pinkel->kelompok->ketua }}
+            {{ $ketua }}
         </td>
         <td align="center" width="50%" style="font-weight: bold; text-decoration: underline;">
-            {{ $pinkel->kelompok->sekretaris }}
+            {{ $sekretaris }}
         </td>
     </tr>
 </table>
