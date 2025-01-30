@@ -3073,7 +3073,7 @@ class PelaporanController extends Controller
                 [$tb_pinkel . '.sistem_angsuran', '!=', '12'],
                 [$tb_pinkel . '.status', 'A']
             ])
-            ->whereRaw('(TIMESTAMPDIFF(MONTH, DATE_ADD(' . $tb_pinkel . '.tgl_cair, INTERVAL ' . $tb_pinkel . '.jangka MONTH), CURRENT_DATE) * -1 ) BETWEEN -3 AND 0')
+            ->whereRaw('(TIMESTAMPDIFF(MONTH, DATE_ADD(' . $tb_pinkel . '.tgl_cair, INTERVAL ' . $tb_pinkel . '.jangka MONTH), CURRENT_DATE) * -1 ) BETWEEN 0 AND 3')
             ->with([
                 'target',
                 'saldo'
