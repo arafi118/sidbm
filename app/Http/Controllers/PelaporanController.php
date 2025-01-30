@@ -3059,7 +3059,7 @@ class PelaporanController extends Controller
             'desa.kd_desa',
             'desa.kode_desa',
             'sebutan_desa.sebutan_desa',
-            DB::raw('(TIMESTAMPDIFF(MONTH, DATE_ADD(' . $tb_pinkel . '.tgl_cair, INTERVAL ' . $tb_pinkel . '.jangka MONTH), CURRENT_DATE)) as sisa')
+            DB::raw('(TIMESTAMPDIFF(MONTH, DATE_ADD(' . $tb_pinkel . '.tgl_cair, INTERVAL ' . $tb_pinkel . '.jangka MONTH), CURRENT_DATE) * -1 ) as sisa')
         ])->join($tb_kel, $tb_kel . '.id', '=', $tb_pinkel . '.id_kel')
             ->join('desa', $tb_kel . '.desa', '=', 'desa.kd_desa')
             ->join('sebutan_desa', 'sebutan_desa.id', '=', 'desa.sebutan')
@@ -3073,7 +3073,7 @@ class PelaporanController extends Controller
                 [$tb_pinkel . '.sistem_angsuran', '!=', '12'],
                 [$tb_pinkel . '.status', 'A']
             ])
-            ->whereRaw('(TIMESTAMPDIFF(MONTH, DATE_ADD(' . $tb_pinkel . '.tgl_cair, INTERVAL ' . $tb_pinkel . '.jangka MONTH), CURRENT_DATE)) BETWEEN -3 AND 0')
+            ->whereRaw('(TIMESTAMPDIFF(MONTH, DATE_ADD(' . $tb_pinkel . '.tgl_cair, INTERVAL ' . $tb_pinkel . '.jangka MONTH), CURRENT_DATE) * -1 ) BETWEEN -3 AND 0')
             ->with([
                 'target',
                 'saldo'
