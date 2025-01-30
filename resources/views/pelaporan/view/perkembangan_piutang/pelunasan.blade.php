@@ -133,7 +133,7 @@
                         {{ Tanggal::tglIndo($jatuh_tempo) }}
                     </td>
                     <td class="t l b" align="center">
-                        {{ $pinkel->sisa * -1 }}
+                        {{ $pinkel->sisa * -1 < 1 ? 1 : $pinkel->sisa * -1 }}
                     </td>
                     <td class="t l b" align="right">{{ number_format($sisa_pokok) }}</td>
                     <td class="t l b" align="right">{{ number_format($sisa_jasa) }}</td>
