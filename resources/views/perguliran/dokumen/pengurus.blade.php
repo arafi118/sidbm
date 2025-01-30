@@ -120,7 +120,7 @@
             <td align="center">
                 <b>
                     @if ($kec->ttd_pengurus_kelompok == '1')
-                        <u>{{ $pinkel->kelompok->ketua }}</u>
+                        <u>{{ $ketua }}</u>
                     @else
                         <u>{{ $pinkel->kelompok->d->kades }}</u>
                     @endif
