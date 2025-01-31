@@ -7,6 +7,8 @@
         $jumlah = 15000000;
     }
     $nominal = $kec->biaya_tahunan;
+
+    $saksi_mou = explode('#', $kec->saksi_mou);
 @endphp
 
 <!DOCTYPE html>
@@ -544,10 +546,18 @@
             </tr>
             <tr>
                 <td align="center">
-                    <b>{{ strtoupper('Maulida Nur Masruroh') }}</b>
+                    @if (isset($saksi_mou[0]))
+                        <b>{{ strtoupper($saksi_mou[0]) }}</b>
+                    @else
+                        ..................................................
+                    @endif
                 </td>
                 <td align="center">
-                    ..................................................
+                    @if (isset($saksi_mou[1]))
+                        <b>{{ strtoupper($saksi_mou[1]) }}</b>
+                    @else
+                        ..................................................
+                    @endif
                 </td>
             </tr>
         </table>
