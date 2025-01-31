@@ -322,13 +322,6 @@ class AuthController extends Controller
 
     public function app()
     {
-        $menu_key = [];
-        $Menu = Menu::all();
-        foreach ($Menu as $menu) {
-            $ParentMenu = str_replace(' ', '_', strtolower($menu->title));
-            $menu_key[] = $ParentMenu;
-        }
-
-        dd($menu_key);
+        return phpinfo();
     }
 }
