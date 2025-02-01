@@ -726,29 +726,30 @@ class DashboardController extends Controller
                 }
 
                 if ($rek->lev1 == '4') {
-                    if ($kom_saldo->bulan > 0) {
-                        $saldo -= $bulan[intval($kom_saldo->bulan) - 1]['pendapatan'];
-                    }
-
                     $bulan[intval($kom_saldo->bulan)]['pendapatan'] += $saldo;
                 } else {
-                    if ($kom_saldo->bulan > 0) {
-                        $saldo -= $bulan[intval($kom_saldo->bulan) - 1]['beban'];
-                    }
-
                     $bulan[intval($kom_saldo->bulan)]['beban'] += $saldo;
                 }
             }
         }
+
 
         $nama_bulan = [];
         $pendapatan = [];
         $beban = [];
         $surplus = [];
         foreach ($bulan as $key => $value) {
-            $pendapatan[$key] = $value['pendapatan'];
-            $beban[$key] = $value['beban'];
-            $surplus[$key] = $value['pendapatan'] - $value['beban'];
+
+            $saldo_pendapatan = 0;
+            $saldo_beban = 0;
+            if ($key > 0) {
+                $saldo_pendapatan = $value['pendapatan'] - $bulan[$key - 1]['pendapatan'];
+                $saldo_beban = $value['beban'] - $bulan[$key - 1]['beban'];
+            }
+
+            $pendapatan[$key] = $saldo_pendapatan;
+            $beban[$key] = $saldo_beban;
+            $surplus[$key] = $saldo_pendapatan - $saldo_beban;
 
             if ($key == 0) {
                 $nama_bulan[$key] = 'Awal Tahun';
