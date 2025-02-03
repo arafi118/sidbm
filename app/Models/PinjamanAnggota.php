@@ -53,4 +53,9 @@ class PinjamanAnggota extends Model
     {
         return $this->hasOne(PinjamanAnggota::class, 'nia', 'nia')->orderBy('tgl_cair', 'DESC');
     }
+
+    public function pinjaman_lain()
+    {
+        return $this->hasMany(PinjamanAnggota::class, 'nia', 'nia')->orderBy('tgl_cair', 'DESC');
+    }
 }
