@@ -2321,7 +2321,7 @@ class PinjamanKelompokController extends Controller
         $view = view('perguliran.dokumen.kuitansi_anggota', $data)->render();
 
         if ($data['type'] == 'pdf') {
-            $pdf = PDF::loadHTML($view);
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'potrait');
             return $pdf->stream();
         } else {
             return $view;
