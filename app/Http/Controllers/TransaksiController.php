@@ -2798,7 +2798,7 @@ class TransaksiController extends Controller
         $sum_pokok = 0;
         $sum_jasa = 0;
 
-        // dd($transaksi);
+        $insert = [];
         RealAngsuran::where('loan_id', $pinkel->id)->delete();
         foreach ($transaksi as $trx) {
             $tgl_transaksi = $trx->tgl_transaksi;
@@ -2860,7 +2860,10 @@ class TransaksiController extends Controller
                 }
             }
         }
-        RealAngsuran::insert($insert);
+
+        if (count($insert) > 0) {
+            RealAngsuran::insert($insert);
+        }
 
         return response()->json([
             'success' => true
