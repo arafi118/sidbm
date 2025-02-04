@@ -76,15 +76,25 @@ class Pinjaman
             $kel = $pinkel->kelompok;
             $desa = $pinkel->kelompok->d;
 
+            $ketua = $kel->ketua;
+            $sekretaris = $kel->sekretaris;
+            $bendahara = $kel->bendahara;
+            if ($pinkel->struktur_kelompok) {
+                $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
+                $ketua = $struktur_kelompok['ketua'];
+                $sekretaris = $struktur_kelompok['sekretaris'];
+                $bendahara = $struktur_kelompok['bendahara'];
+            }
+
             $ttd = strtr(json_decode($text, true), [
                 '{kepala_lembaga}' => $kec->sebutan_level_1,
                 '{kabag_administrasi}' => $kec->sebutan_level_2,
                 '{kabag_keuangan}' => $kec->sebutan_level_3,
                 '{verifikator}' => $kec->nama_tv_long,
                 '{pengawas}' => $kec->nama_bp_long,
-                '{ketua}' => $kel->ketua,
-                '{sekretaris}' => $kel->sekretaris,
-                '{bendahara}' => $kel->bendahara,
+                '{ketua}' => $ketua,
+                '{sekretaris}' => $sekretaris,
+                '{bendahara}' => $bendahara,
                 '{kades}' => $desa->kades,
                 '{nip}' => $desa->nip,
                 '{sekdes}' => $desa->sekdes,
