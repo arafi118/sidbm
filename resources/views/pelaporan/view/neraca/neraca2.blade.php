@@ -64,7 +64,7 @@
                                 $saldo = $keuangan->laba_rugi($tgl_kondisi);
                             }
 
-                            $sum_saldo += $saldo - $saldo_awal;
+                            $sum_saldo += $saldo;
                             $sum_saldo_awal += $saldo_awal;
                         @endphp
                     @endforeach
