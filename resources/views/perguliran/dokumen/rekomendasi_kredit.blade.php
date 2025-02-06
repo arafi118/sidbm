@@ -93,7 +93,7 @@
                 </td>
                 <td align="center">
                     <div style="font-size: 18px;">
-                        PEMERINTAH DAERAH {{ strtoupper($nama_kabupaten) }}
+                        PEMERINTAH {{ strtoupper($nama_kabupaten) }}
                     </div>
                     <div style="font-size: 18px;">
                         {{ strtoupper($kec->sebutan_kec) }} {{ strtoupper($kec->nama_kec) }}
