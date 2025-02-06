@@ -2001,11 +2001,19 @@ class TransaksiController extends Controller
     public function data($idt)
     {
         $trx = Transaksi::where('idt', $idt)->first();
+        $jumlah = $trx->jumlah;
+
+        $id_pinj = $trx->id_pinj;
+        $idtp = $trx->idtp;
+        if ($idtp != '0') {
+            $trx = Transaksi::where('idtp', $idtp)->orderBy('urutan', 'ASC')->sum('jumlah');
+            $jumlah = $trx;
+        }
         return response()->json([
-            'idt' => $trx->idt,
-            'idtp' => $trx->idtp,
-            'id_pinj' => $trx->id_pinj,
-            'jumlah' => number_format($trx->jumlah)
+            'idt' => $idt,
+            'idtp' => $idtp,
+            'id_pinj' => $id_pinj,
+            'jumlah' => number_format($jumlah)
         ]);
     }
 

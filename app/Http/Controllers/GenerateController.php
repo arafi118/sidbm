@@ -460,7 +460,9 @@ class GenerateController extends Controller
                     $tunggakan_jasa = 0;
                 }
 
-                if ($realisasi_pokok + $realisasi_jasa != '0') {
+                $real_pokok = ($realisasi_pokok < 0) ? 0 : $realisasi_pokok;
+                $real_jasa = ($realisasi_jasa < 0) ? 0 : $realisasi_jasa;
+                if ($real_pokok + $real_jasa != '0') {
                     $real[$trx->idtp] = [
                         'id' => $trx->idtp,
                         'loan_id' => $pinkel->id,
