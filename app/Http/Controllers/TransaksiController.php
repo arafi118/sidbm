@@ -2656,8 +2656,6 @@ class TransaksiController extends Controller
             }
         ])->first();
 
-        $tb_ra = 'rencana_angsuran_' . $data['kec']->id;
-        $tb_real = 'real_angsuran_' . $data['kec']->id;
         $data['rencana'] = RencanaAngsuran::where([
             ['loan_id', $id],
             ['angsuran_ke', '!=', '0']
