@@ -28,117 +28,115 @@
 @extends('perguliran.dokumen.layout.base')
 
 @section('content')
-    @for ($i = 1; $i <= 2; $i++)
-        <div style="{{ $i == 1 ? '' : 'margin-top: 20px;' }} padding: 12px; border: 1px solid #000;">
-            <table border="0" width="100%" class="p">
-                <tr>
-                    <td colspan="3" align="center" style="text-transform: uppercase; font-size: 14px;">
-                        <b>K u i t a n s i</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="90">Telah Diterima Dari</td>
-                    <td width="10" align="center">:</td>
-                    <td class="b">
-                        <b>{{ $kec->sebutan_level_3 }}</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Uang Sebanyak</td>
-                    <td align="center">:</td>
-                    <td class="b">
-                        <b>{{ $keuangan->terbilang($pinkel->alokasi) }} Rupiah</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Untuk Pembayaran</td>
-                    <td align="center">:</td>
-                    <td class="b">
-                        <b>Pencairan Piutang Kel. {{ $pinkel->kelompok->nama_kelompok }}</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">&nbsp;</td>
-                    <td class="b">
-                        <b>
-                            Beralamat Di {{ $pinkel->kelompok->alamat_kelompok }}
-                            {{ $pinkel->kelompok->d->sebutan_desa->sebutan_desa }}
-                            {{ $pinkel->kelompok->d->nama_desa }}
-                        </b>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">&nbsp;</td>
-                    <td class="b">
-                        <b>Loan ID. {{ $pinkel->id }} &mdash; SPK No. {{ $pinkel->spk_no }}</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3"></td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="t b" align="center">
-                        Rp. {{ number_format($pinkel->alokasi) }}
-                    </td>
-                    <td>&nbsp;</td>
-                </tr>
-            </table>
+    <div style="padding: 12px; border: 1px solid #000;">
+        <table border="0" width="100%" class="p">
+            <tr>
+                <td colspan="3" align="center" style="text-transform: uppercase; font-size: 14px;">
+                    <b>K u i t a n s i</b>
+                </td>
+            </tr>
+            <tr>
+                <td width="90">Telah Diterima Dari</td>
+                <td width="10" align="center">:</td>
+                <td class="b">
+                    <b>{{ $kec->sebutan_level_3 }}</b>
+                </td>
+            </tr>
+            <tr>
+                <td>Uang Sebanyak</td>
+                <td align="center">:</td>
+                <td class="b">
+                    <b>{{ $keuangan->terbilang($pinkel->alokasi) }} Rupiah</b>
+                </td>
+            </tr>
+            <tr>
+                <td>Untuk Pembayaran</td>
+                <td align="center">:</td>
+                <td class="b">
+                    <b>Pencairan Piutang Kel. {{ $pinkel->kelompok->nama_kelompok }}</b>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+                <td class="b">
+                    <b>
+                        Beralamat Di {{ $pinkel->kelompok->alamat_kelompok }}
+                        {{ $pinkel->kelompok->d->sebutan_desa->sebutan_desa }}
+                        {{ $pinkel->kelompok->d->nama_desa }}
+                    </b>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+                <td class="b">
+                    <b>Loan ID. {{ $pinkel->id }} &mdash; SPK No. {{ $pinkel->spk_no }}</b>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="t b" align="center">
+                    Rp. {{ number_format($pinkel->alokasi) }}
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
 
-            <table border="0" width="100%" style="font-size: 11px;">
-                <tr>
-                    <td width="10%">&nbsp;</td>
-                    <td width="10%">&nbsp;</td>
-                    <td width="10%">&nbsp;</td>
-                    <td width="10%">&nbsp;</td>
-                    <td width="10%">&nbsp;</td>
-                    <td width="10%">&nbsp;</td>
-                    <td width="10%">&nbsp;</td>
-                    <td width="10%">&nbsp;</td>
-                    <td width="10%">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td colspan="6">&nbsp;</td>
-                    <td colspan="3" align="center">
-                        {{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td align="center" colspan="3">
-                        Setuju Dibayarkan
-                    </td>
-                    <td align="center" colspan="3">
-                        Dikeluarkan Oleh
-                    </td>
-                    <td align="center" colspan="3">
-                        Diterima Oleh
-                    </td>
-                </tr>
-                <tr>
-                    <td align="center" colspan="3">
-                        {{ $kec->sebutan_level_1 }}
-                    </td>
-                    <td align="center" colspan="3">
-                        {{ $kec->sebutan_level_3 }}
-                    </td>
-                    <td align="center" colspan="3">
-                        Ketua Kelompok
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="9" height="30">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td align="center" colspan="3">
-                        <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
-                    </td>
-                    <td align="center" colspan="3">
-                        <b>{{ $bend->namadepan }} {{ $bend->namabelakang }}</b>
-                    </td>
-                    <td align="center" colspan="3">
-                        <b>{{ $ketua }}</b>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    @endfor
+        <table border="0" width="100%" style="font-size: 11px;">
+            <tr>
+                <td width="10%">&nbsp;</td>
+                <td width="10%">&nbsp;</td>
+                <td width="10%">&nbsp;</td>
+                <td width="10%">&nbsp;</td>
+                <td width="10%">&nbsp;</td>
+                <td width="10%">&nbsp;</td>
+                <td width="10%">&nbsp;</td>
+                <td width="10%">&nbsp;</td>
+                <td width="10%">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="6">&nbsp;</td>
+                <td colspan="3" align="center">
+                    {{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}
+                </td>
+            </tr>
+            <tr>
+                <td align="center" colspan="3">
+                    Setuju Dibayarkan
+                </td>
+                <td align="center" colspan="3">
+                    Dikeluarkan Oleh
+                </td>
+                <td align="center" colspan="3">
+                    Diterima Oleh
+                </td>
+            </tr>
+            <tr>
+                <td align="center" colspan="3">
+                    {{ $kec->sebutan_level_1 }}
+                </td>
+                <td align="center" colspan="3">
+                    {{ $kec->sebutan_level_3 }}
+                </td>
+                <td align="center" colspan="3">
+                    Ketua Kelompok
+                </td>
+            </tr>
+            <tr>
+                <td colspan="9" height="30">&nbsp;</td>
+            </tr>
+            <tr>
+                <td align="center" colspan="3">
+                    <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
+                </td>
+                <td align="center" colspan="3">
+                    <b>{{ $bend->namadepan }} {{ $bend->namabelakang }}</b>
+                </td>
+                <td align="center" colspan="3">
+                    <b>{{ $ketua }}</b>
+                </td>
+            </tr>
+        </table>
+    </div>
 @endsection
