@@ -27,9 +27,9 @@ class AuthController extends Controller
             return redirect('/master');
         }
 
-        $kec = Kecamatan::where('web_kec', explode('//', request()->url(''))[1])->orwhere('web_alternatif', explode('//', request()->url(''))[1])->first();
+        $kec = Kecamatan::where('web_kec', request()->getHost())->orwhere('web_alternatif', request()->getHost())->first();
         if (!$kec) {
-            $kab = Kabupaten::where('web_kab', explode('//', request()->url(''))[1])->orwhere('web_kab_alternatif', explode('//', request()->url(''))[1])->first();
+            $kab = Kabupaten::where('web_kab', request()->getHost())->orwhere('web_kab_alternatif', request()->getHost())->first();
             if (!$kab) {
                 abort(404);
             }
