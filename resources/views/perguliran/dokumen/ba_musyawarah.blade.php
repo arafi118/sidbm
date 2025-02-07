@@ -193,10 +193,10 @@
             </tr>
             <tr>
                 <td align="center">
-                    <b>{{ $pinkel->kelompok->ketua }}</b>
+                    <b>{{ $ketua }}</b>
                 </td>
                 <td align="center" colspan="2">
-                    <b>{{ $pinkel->kelompok->sekretaris }}</b>
+                    <b>{{ $sekretaris }}</b>
                 </td>
             </tr>
         </table>
