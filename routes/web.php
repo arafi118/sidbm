@@ -108,7 +108,7 @@ Route::group(['prefix' => 'kab', 'as' => 'kab.', 'middleware' => 'kab'], functio
 });
 
 Route::get('/', [AuthController::class, 'index'])->middleware('guest')->name('/');
-Route::get('/login', [AuthController::class, 'index'])->middleware('guest')->name('/');
+Route::get('/login', [AuthController::class, 'index'])->middleware('guest');
 Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 Route::get('/app', [AuthController::class, 'app']);
 
