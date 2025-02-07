@@ -2662,7 +2662,8 @@ class TransaksiController extends Controller
         ])->with([
             'real' => function ($query) {
                 $query->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
-            }
+            },
+            'ra'
         ])->get();
 
         $data['laporan'] = 'LPP Kelompok ' . $data['pinkel']->kelompok->nama_kelompok;

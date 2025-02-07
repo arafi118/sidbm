@@ -13,6 +13,8 @@
     $t_saldo = 0;
     $t_tunggakan_pokok = 0;
     $t_tunggakan_jasa = 0;
+
+    $bulan_angsuran = [];
 @endphp
 
 @extends('transaksi.layout.base')
@@ -136,6 +138,22 @@
         </tr>
         @foreach ($rencana as $ra)
             @php
+                $bulan_jatuh_tempo = date('Y-m', strtotime($ra->jatuh_tempo));
+                if (in_array($bulan_jatuh_tempo, $bulan_angsuran)) {
+                    continue;
+                } else {
+                    $bulan_angsuran[] = $bulan_jatuh_tempo;
+                }
+
+                $sum_target_pokok = 0;
+                $sum_target_jasa = 0;
+                foreach ($ra->ra as $sub_ra) {
+                    if ($bulan_jatuh_tempo == date('Y-m', strtotime($sub_ra->jatuh_tempo))) {
+                        $sum_target_pokok = $sub_ra->target_pokok;
+                        $sum_target_jasa = $sub_ra->target_jasa;
+                    }
+                }
+
                 $warna = '';
                 $real_pokok = 0;
                 $real_jasa = 0;
@@ -192,8 +210,8 @@
             <tr style="color: {{ $bulan_ini == $bulan ? 'green; font-weight: bold;' : '' }}">
                 <td class="l" align="center">{{ $ra->angsuran_ke }}.</td>
                 <td class="l" align="left">{{ Tanggal::tglLatin($ra->jatuh_tempo) }}</td>
-                <td class="l" align="right">{{ number_format($ra->target_pokok) }}</td>
-                <td class="l" align="right">{{ number_format($ra->target_jasa) }}</td>
+                <td class="l" align="right">{{ number_format($sum_target_pokok) }}</td>
+                <td class="l" align="right">{{ number_format($sum_target_jasa) }}</td>
                 <td class="l" align="right">
                     {{ number_format($real_pokok) }}
                 </td>

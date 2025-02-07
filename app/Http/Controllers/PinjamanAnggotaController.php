@@ -617,11 +617,6 @@ class PinjamanAnggotaController extends Controller
             $pokok = $angsuran_pokok;
             $jasa = $angsuran_jasa;
 
-            // if ($i == 1) {
-            //     $target_pokok = $pokok;
-            //     $target_jasa = $jasa;
-            // } else {
-            // }
             $target_pokok += $pokok;
             $target_jasa += $jasa;
 

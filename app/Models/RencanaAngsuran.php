@@ -24,4 +24,9 @@ class RencanaAngsuran extends Model
     {
         return $this->hasMany(RealAngsuran::class, 'loan_id', 'loan_id');
     }
+
+    public function ra()
+    {
+        return $this->hasMany(RencanaAngsuran::class, 'loan_id', 'loan_id');
+    }
 }

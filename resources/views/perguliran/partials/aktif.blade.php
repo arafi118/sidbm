@@ -177,16 +177,16 @@
                                 $verifikasi += $pinjaman_anggota->verifikasi;
                                 $alokasi += $pinjaman_anggota->alokasi;
 
-                                $warna = $perguliran->status == 'A' ? '' : 'class="text-danger fw-bold"';
+                                $Class = 'pointer';
+                                $warna = '';
 
-                                $Class = '';
                                 if (
                                     in_array(
                                         'tahapan_perguliran.aktif.penghapusan_pinjaman_anggota',
                                         Session::get('tombol'),
                                     )
                                 ) {
-                                    $Class = 'pointer btn-click';
+                                    $Class .= ' btn-click';
                                 }
 
                                 if (
@@ -195,7 +195,12 @@
                                         Session::get('tombol'),
                                     )
                                 ) {
-                                    $Class = 'pointer btn-click';
+                                    $Class .= ' btn-click';
+                                }
+
+                                if ($pinjaman_anggota->status == 'H') {
+                                    $warna = 'class="text-danger fw-bold"';
+                                    $Class = '';
                                 }
                             @endphp
                             <tr class="{{ $Class }}" data-id="{{ $pinjaman_anggota->id }}">
