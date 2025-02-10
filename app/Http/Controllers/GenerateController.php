@@ -33,27 +33,6 @@ class GenerateController extends Controller
         return view('generate.index')->with(compact('logo'));
     }
 
-    public function individu()
-    {
-        $database = env('DB_DATABASE', 'siupk_dbm');
-        $table = 'pinjaman_anggota_' . Session::get('lokasi');
-
-        $strukturTabel = \DB::select("
-            SELECT COLUMN_NAME
-            FROM INFORMATION_SCHEMA.COLUMNS
-            WHERE TABLE_NAME = '$table' AND TABLE_SCHEMA='$database'
-            ORDER BY ORDINAL_POSITION;
-        ");
-
-        $struktur = array_map(function ($kolom) {
-            return $kolom->COLUMN_NAME;
-        }, $strukturTabel);
-
-        return response()->json([
-            'view' => view('generate.partials.individu')->with(compact('struktur'))->render()
-        ]);
-    }
-
     public function kelompok()
     {
         $database = env('DB_DATABASE', 'siupk_dbm');

@@ -8,8 +8,9 @@
     $sekretaris = $pinkel->kelompok->sekretaris;
     if ($pinkel->struktur_kelompok) {
         $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
-        $ketua = $struktur_kelompok['ketua'];
-        $sekretaris = $struktur_kelompok['sekretaris'];
+        $ketua = isset($struktur_kelompok['ketua']) ? $struktur_kelompok['ketua'] : '';
+        $sekretaris = isset($struktur_kelompok['sekretaris']) ? $struktur_kelompok['sekretaris'] : '';
+        $bendahara = isset($struktur_kelompok['bendahara']) ? $struktur_kelompok['bendahara'] : '';
     }
 @endphp
 

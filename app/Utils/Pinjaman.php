@@ -81,9 +81,9 @@ class Pinjaman
             $bendahara = $kel->bendahara;
             if ($pinkel->struktur_kelompok) {
                 $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
-                $ketua = $struktur_kelompok['ketua'];
-                $sekretaris = $struktur_kelompok['sekretaris'];
-                $bendahara = $struktur_kelompok['bendahara'];
+                $ketua = isset($struktur_kelompok['ketua']) ? $struktur_kelompok['ketua'] : '';
+                $sekretaris = isset($struktur_kelompok['sekretaris']) ? $struktur_kelompok['sekretaris'] : '';
+                $bendahara = isset($struktur_kelompok['bendahara']) ? $struktur_kelompok['bendahara'] : '';
             }
 
             $ttd = strtr(json_decode($text, true), [

@@ -170,7 +170,7 @@ class KelompokController extends Controller
             'lokasi' => Session::get('lokasi'),
             'desa' => $request->desa,
             'kd_kelompok' => $request->kode_kelompok,
-            'nama_kelompok' => $request->nama_kelompok,
+            'nama_kelompok' => trim(str_replace('  ', ' ', $request->nama_kelompok)),
             'alamat_kelompok' => $request->alamat_kelompok,
             'telpon' => $request->telpon,
             'tgl_berdiri' => Tanggal::tglNasional($request->tgl_berdiri),
