@@ -69,12 +69,12 @@
                 @php
                     if ($trx->rekening_debit == $rek->kode_akun) {
                         $ref = $trx->rekening_kredit;
-                        $debit = $trx->jumlah;
+                        $debit = floatval($trx->jumlah);
                         $kredit = 0;
                     } else {
                         $ref = $trx->rekening_debit;
                         $debit = 0;
-                        $kredit = $trx->jumlah;
+                        $kredit = floatval($trx->jumlah);
                     }
 
                     if ($rek->jenis_mutasi == 'debet') {
@@ -89,43 +89,85 @@
 
                     $kuitansi = false;
                     $files = 'bm';
-                    if ($keuangan->startWith($trx->rekening_debit, '1.1.01') && !$keuangan->startWith($trx->rekening_kredit, '1.1.01')) {
+                    if (
+                        $keuangan->startWith($trx->rekening_debit, '1.1.01') &&
+                        !$keuangan->startWith($trx->rekening_kredit, '1.1.01')
+                    ) {
                         $files = 'bkm';
                         $kuitansi = true;
                     }
-                    if (!$keuangan->startWith($trx->rekening_debit, '1.1.01') && $keuangan->startWith($trx->rekening_kredit, '1.1.01')) {
+                    if (
+                        !$keuangan->startWith($trx->rekening_debit, '1.1.01') &&
+                        $keuangan->startWith($trx->rekening_kredit, '1.1.01')
+                    ) {
                         $files = 'bkk';
                         $kuitansi = true;
                     }
-                    if ($keuangan->startWith($trx->rekening_debit, '1.1.01') && $keuangan->startWith($trx->rekening_kredit, '1.1.01')) {
+                    if (
+                        $keuangan->startWith($trx->rekening_debit, '1.1.01') &&
+                        $keuangan->startWith($trx->rekening_kredit, '1.1.01')
+                    ) {
                         $files = 'bm';
                         $kuitansi = false;
                     }
-                    if ($keuangan->startWith($trx->rekening_debit, '1.1.02') && !($keuangan->startWith($trx->rekening_kredit, '1.1.01') || $keuangan->startWith($trx->rekening_kredit, '1.1.02'))) {
+                    if (
+                        $keuangan->startWith($trx->rekening_debit, '1.1.02') &&
+                        !(
+                            $keuangan->startWith($trx->rekening_kredit, '1.1.01') ||
+                            $keuangan->startWith($trx->rekening_kredit, '1.1.02')
+                        )
+                    ) {
                         $files = 'bkm';
                         $kuitansi = true;
                     }
-                    if ($keuangan->startWith($trx->rekening_debit, '1.1.02') && $keuangan->startWith($trx->rekening_kredit, '1.1.02')) {
+                    if (
+                        $keuangan->startWith($trx->rekening_debit, '1.1.02') &&
+                        $keuangan->startWith($trx->rekening_kredit, '1.1.02')
+                    ) {
                         $files = 'bm';
                         $kuitansi = false;
                     }
-                    if ($keuangan->startWith($trx->rekening_debit, '1.1.02') && $keuangan->startWith($trx->rekening_kredit, '1.1.01')) {
+                    if (
+                        $keuangan->startWith($trx->rekening_debit, '1.1.02') &&
+                        $keuangan->startWith($trx->rekening_kredit, '1.1.01')
+                    ) {
                         $files = 'bm';
                         $kuitansi = false;
                     }
-                    if ($keuangan->startWith($trx->rekening_debit, '1.1.01') && $keuangan->startWith($trx->rekening_kredit, '1.1.02')) {
+                    if (
+                        $keuangan->startWith($trx->rekening_debit, '1.1.01') &&
+                        $keuangan->startWith($trx->rekening_kredit, '1.1.02')
+                    ) {
                         $files = 'bm';
                         $kuitansi = false;
                     }
-                    if ($keuangan->startWith($trx->rekening_debit, '5.') && !($keuangan->startWith($trx->rekening_kredit, '1.1.01') || $keuangan->startWith($trx->rekening_kredit, '1.1.02'))) {
+                    if (
+                        $keuangan->startWith($trx->rekening_debit, '5.') &&
+                        !(
+                            $keuangan->startWith($trx->rekening_kredit, '1.1.01') ||
+                            $keuangan->startWith($trx->rekening_kredit, '1.1.02')
+                        )
+                    ) {
                         $files = 'bm';
                         $kuitansi = false;
                     }
-                    if (!($keuangan->startWith($trx->rekening_debit, '1.1.01') || $keuangan->startWith($trx->rekening_debit, '1.1.02')) && $keuangan->startWith($trx->rekening_kredit, '1.1.02')) {
+                    if (
+                        !(
+                            $keuangan->startWith($trx->rekening_debit, '1.1.01') ||
+                            $keuangan->startWith($trx->rekening_debit, '1.1.02')
+                        ) &&
+                        $keuangan->startWith($trx->rekening_kredit, '1.1.02')
+                    ) {
                         $files = 'bm';
                         $kuitansi = false;
                     }
-                    if (!($keuangan->startWith($trx->rekening_debit, '1.1.01') || $keuangan->startWith($trx->rekening_debit, '1.1.02')) && $keuangan->startWith($trx->rekening_kredit, '4.')) {
+                    if (
+                        !(
+                            $keuangan->startWith($trx->rekening_debit, '1.1.01') ||
+                            $keuangan->startWith($trx->rekening_debit, '1.1.02')
+                        ) &&
+                        $keuangan->startWith($trx->rekening_kredit, '4.')
+                    ) {
                         $files = 'bm';
                         $kuitansi = false;
                     }
