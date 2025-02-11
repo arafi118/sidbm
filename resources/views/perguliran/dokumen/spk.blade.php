@@ -173,7 +173,7 @@
                     keluarga pengurus dan anggota kelompok {{ $pinkel->kelompok->nama_kelompok }}.
                 </li>
                 <li>
-                    Menjunjung tinggi dan ikut menyepakati hasil Musyawarah antar Desa yang telah menetapkan piutang
+                    Menjunjung tinggi dan ikut menyepakati hasil Musyawarah pendanaan yang telah menetapkan piutang
                     kelompok sebagaimana kelompok {{ $pinkel->kelompok->nama_kelompok }} adalah termasuk dalam kategori
                     kelompok yang sepakat memberikan dukungan operasional dan pengembangan kepada
                     {{ $kec->nama_lembaga_sort }} secara progresif proporsional berupa jasa piutang sebesar
