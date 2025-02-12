@@ -19,19 +19,19 @@
     $bendahara = $pinkel->kelompok->bendahara;
     if ($pinkel->struktur_kelompok) {
         $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
-        $ketua = isset($struktur_kelompok['ketua']) ? $struktur_kelompok['ketua'] : '';
-        $sekretaris = isset($struktur_kelompok['sekretaris']) ? $struktur_kelompok['sekretaris'] : '';
-        $bendahara = isset($struktur_kelompok['bendahara']) ? $struktur_kelompok['bendahara'] : '';
+        $ketua = $struktur_kelompok['ketua'];
+        $sekretaris = $struktur_kelompok['sekretaris'];
+        $bendahara = $struktur_kelompok['bendahara'];
     }
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
 
 @section('content')
-    <div style="padding: 12px; border: 1px solid #000;">
+    <div style="padding: 60px; padding-top: 0px; border: 1px solid #000; height: 82%;">
         <table border="0" width="100%" class="p">
             <tr>
-                <td colspan="3" align="center" style="text-transform: uppercase; font-size: 14px;">
+                <td colspan="3" height="40" align="center" style="text-transform: uppercase; font-size: 16px;">
                     <b>K u i t a n s i</b>
                 </td>
             </tr>
@@ -124,7 +124,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="9" height="50">&nbsp;</td>
+                <td colspan="9" height="55">&nbsp;</td>
             </tr>
             <tr>
                 <td align="center" colspan="3">
