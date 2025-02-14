@@ -25,6 +25,8 @@
     ) {
         $KolomAksi = false;
     }
+
+    $isDirektur = auth()->user()->level == '1' && auth()->user()->jabatan == '1' ? true : false;
 @endphp
 
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="table table-striped midle">
@@ -284,7 +286,7 @@
                                 </button>
                             @endif
 
-                            @if (in_array('jurnal_umum.penghapusan_transaksi', Session::get('tombol')))
+                            @if (in_array('jurnal_umum.penghapusan_transaksi', Session::get('tombol')) || $isDirektur)
                                 <button type="button" data-idt="{{ $trx->idt }}"
                                     class="btn btn-github btn-icon-only btn-tooltip btn-delete"
                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus"

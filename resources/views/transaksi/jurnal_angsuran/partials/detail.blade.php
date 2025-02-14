@@ -3,6 +3,8 @@
     $t_pokok = 0;
     $t_jasa = 0;
     $t_denda = 0;
+
+    $isDirektur = auth()->user()->level == '1' && auth()->user()->jabatan == '1' ? true : false;
 @endphp
 
 <table border="1" class="table table-striped midle">
@@ -122,7 +124,7 @@
                             </button>
                         @endif
 
-                        @if (in_array('jurnal_angsuran.penghapusan_transaksi_angsuran', Session::get('tombol')))
+                        @if (in_array('jurnal_angsuran.penghapusan_transaksi_angsuran', Session::get('tombol')) || || $isDirektur)
                             <button type="button" data-idt="{{ $idt }}"
                                 class="btn btn-github btn-icon-only btn-tooltip btn-delete" data-bs-toggle="tooltip"
                                 data-bs-placement="top" title="Hapus" data-container="body" data-animation="true">
