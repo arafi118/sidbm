@@ -124,7 +124,7 @@
                             </button>
                         @endif
 
-                        @if (in_array('jurnal_angsuran.penghapusan_transaksi_angsuran', Session::get('tombol')) || || $isDirektur)
+                        @if (in_array('jurnal_angsuran.penghapusan_transaksi_angsuran', Session::get('tombol')) || $isDirektur)
                             <button type="button" data-idt="{{ $idt }}"
                                 class="btn btn-github btn-icon-only btn-tooltip btn-delete" data-bs-toggle="tooltip"
                                 data-bs-placement="top" title="Hapus" data-container="body" data-animation="true">
