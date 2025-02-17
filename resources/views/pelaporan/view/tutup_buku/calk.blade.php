@@ -290,7 +290,7 @@
                                     @php
                                         $saldo = $keuangan->komSaldo($rek);
                                         if ($rek->kode_akun == '3.2.02.01' && ($bulan != '1' && $hari != '1')) {
-                                            $saldo = $keuangan->laba_rugi($tgl_kondisi);
+                                            $saldo = 0;
                                         }
 
                                         $sum_saldo += $saldo;
