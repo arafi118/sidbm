@@ -25,6 +25,8 @@
                     $waktu = $wt_cair[0];
                     $tempat = $wt_cair[1];
                 }
+
+                $tgl_cair = $pinj->pinkel->tgl_cair;
             @endphp
 
             <tr>
@@ -80,7 +82,7 @@
                             <tr>
                                 <td width="70%">&nbsp;</td>
                                 <td width="30%" align="center">
-                                    {{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinj->tgl_cair) }}
+                                    {{ $kec->nama_kec }}, {{ Tanggal::tglLatin($tgl_cair) }}
                                 </td>
                             </tr>
                             <tr>
