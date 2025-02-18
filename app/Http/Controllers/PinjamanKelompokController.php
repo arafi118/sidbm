@@ -954,6 +954,10 @@ class PinjamanKelompokController extends Controller
             'wt_cair' => $wt_cair
         ]);
 
+        PinjamanAnggota::where('id_pinkel', $id)->update([
+            'tgl_cair' => Tanggal::tglNasional($data['tgl_cair'])
+        ]);
+
         $this->generate($id);
 
         return response()->json([
