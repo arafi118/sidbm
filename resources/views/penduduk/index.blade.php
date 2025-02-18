@@ -21,6 +21,7 @@
                         <tr>
                             <th>ID</th>
                             <th>NIK</th>
+                            <th>NO. KK</th>
                             <th>Nama Lengkap</th>
                             <th>Alamat</th>
                             <th>Telpon</th>
@@ -77,6 +78,10 @@
                 }, {
                     data: 'nik',
                     name: 'nik'
+                },
+                {
+                    data: 'kk',
+                    name: 'kk'
                 },
                 {
                     data: 'namadepan',
