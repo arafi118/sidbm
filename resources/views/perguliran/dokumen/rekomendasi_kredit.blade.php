@@ -224,7 +224,7 @@
                     <u>
                         <b>{{ $pinkel->kelompok->d->kades }}</b>
                     </u>
-                    @if ($pinkel->kelompok->d->nip)
+                    @if ($pinkel->kelompok->d->nip && $pinkel->kelompok->d->sebutan_desa == '2')
                         <div><small>NIP. {{ $pinkel->kelompok->d->nip }}</small></div>
                     @endif
                 </td>
