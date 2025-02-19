@@ -147,14 +147,14 @@
                             $j = $i - 1;
                         @endphp
                         <tr>
-                            <td width="25%">
+                            <td width="25%" height="20">
                                 @if (isset($pinkel->pinjaman_anggota[$j]))
                                     {{ $i }}. {{ $pinkel->pinjaman_anggota[$j]->anggota->namadepan }}
                                 @endif
                             </td>
-                            <td width="25%">
+                            <td class="vb" width="25%">
                                 @if (isset($pinkel->pinjaman_anggota[$j]))
-                                    ................................
+                                    ..............................................
                                 @endif
                             </td>
                             <td width="25%">
@@ -163,9 +163,9 @@
                                     {{ $pinkel->pinjaman_anggota[$j + $batas_pemanfaat]->anggota->namadepan }}
                                 @endif
                             </td>
-                            <td width="25%">
+                            <td class="vb" width="25%">
                                 @if (isset($pinkel->pinjaman_anggota[$j + $batas_pemanfaat]))
-                                    ................................
+                                    ..............................................
                                 @endif
                             </td>
                         </tr>

@@ -115,7 +115,7 @@
             <td align="center">Ketua Kelompok {{ $pinkel->kelompok->nama_kelompok }}</td>
         </tr>
         <tr>
-            <td colspan="2" height="40">&nbsp;</td>
+            <td colspan="2" height="50">&nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>

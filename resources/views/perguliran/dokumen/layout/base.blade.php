@@ -64,12 +64,14 @@
         }
 
         table tr.vt td,
-        table tr.vb td.vt {
+        table tr.vb td.vt,
+        table tr td.vt {
             vertical-align: top;
         }
 
         table tr.vb td,
-        table tr.vt td.vb {
+        table tr.vt td.vb,
+        table tr td.vb {
             vertical-align: bottom;
         }
 

@@ -143,7 +143,7 @@
                         <td align="center">Ketua Kelompok</td>
                     </tr>
                     <tr>
-                        <td align="center" colspan="2" height="30">&nbsp;</td>
+                        <td align="center" colspan="2" height="50">&nbsp;</td>
                     </tr>
                     <tr style="font-weight: bold;">
                         <td align="center">{{ $dir->namadepan }} {{ $dir->namabelakang }}</td>
