@@ -169,7 +169,7 @@ class AnggotaController extends Controller
             'alamat' => 'required',
             'no_kk' => 'required',
             'jenis_usaha' => 'required',
-            'nik_penjamin' => 'required|max:16',
+            'nik_penjamin' => 'required|max:17',
             'penjamin' => 'required',
             'hubungan' => 'required'
         ];

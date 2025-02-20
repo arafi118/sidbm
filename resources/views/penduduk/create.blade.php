@@ -102,7 +102,7 @@
             <div class="input-group input-group-static my-3">
                 <label for="nik_penjamin">NIK Penjamin</label>
                 <input autocomplete="off" type="text" name="nik_penjamin" id="nik_penjamin" class="form-control"
-                    value="{{ substr($nik, 0, 6) }}" maxlength="16" minlength="16">
+                    value="{{ substr($nik, 0, 6) }}" maxlength="17" minlength="16">
                 <small class="text-danger" id="msg_nik_penjamin"></small>
             </div>
         </div>
