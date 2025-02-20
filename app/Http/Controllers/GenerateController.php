@@ -119,7 +119,7 @@ class GenerateController extends Controller
             $angsuran_pokok = $this->sistem($sistem_angsuran_pokok, $jangka, $sistem_pokok);
             $angsuran_jasa = $this->sistem($sistem_angsuran_jasa, $jangka, $sistem_jasa);
 
-            if ($pinkel->pinjaman_anggota) {
+            if (count($pinkel->pinjaman_anggota) > 0) {
                 $alokasi = 0;
                 $rencana_pokok = [];
                 $rencana_jasa = [];
