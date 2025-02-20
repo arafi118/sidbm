@@ -219,43 +219,48 @@ class GenerateController extends Controller
                 $ke_pokok = $i / $angsuran_pokok['sistem'];
                 $ke_jasa = $i / $angsuran_jasa['sistem'];
 
-                foreach ($data_penghapusan as $key => $value) {
-                    if (strtotime($jatuh_tempo) < strtotime($value['tgl_transaksi'])) {
-                        $pokok = $rencana_pokok[$i] ?: 0;
-                        $jasa = $rencana_jasa[$i] ?: 0;
-                    } else {
-                        if ($value['alokasi_pokok_pinjaman'] == 0 && $value['alokasi_jasa_pinjaman'] == 0) {
-                            $alokasi_jasa -= $alokasi_jasa_anggota[$value['id_pinjaman_anggota']];
-                            $data_rencana[strtotime($value['tgl_transaksi'])] = [
-                                'loan_id' => $pinkel->id,
-                                'angsuran_ke' => $angsuran_ke,
-                                'jatuh_tempo' => $value['tgl_transaksi'],
-                                'wajib_pokok' => $value['penghapusan_pokok'],
-                                'wajib_jasa' => $value['penghapusan_jasa'],
-                                'target_pokok' => $target_pokok + $value['penghapusan_pokok'],
-                                'target_jasa' => $target_jasa + $value['penghapusan_jasa'],
-                                'lu' => date('Y-m-d H:i:s'),
-                                'id_user' => 1
-                            ];
-                            $rencana[] = $data_rencana[strtotime($value['tgl_transaksi'])];
+                if (count($data_penghapusan) > 0) {
+                    foreach ($data_penghapusan as $key => $value) {
+                        if (strtotime($jatuh_tempo) < strtotime($value['tgl_transaksi'])) {
+                            $pokok = $rencana_pokok[$i] ?: 0;
+                            $jasa = $rencana_jasa[$i] ?: 0;
+                        } else {
+                            if ($value['alokasi_pokok_pinjaman'] == 0 && $value['alokasi_jasa_pinjaman'] == 0) {
+                                $alokasi_jasa -= $alokasi_jasa_anggota[$value['id_pinjaman_anggota']];
+                                $data_rencana[strtotime($value['tgl_transaksi'])] = [
+                                    'loan_id' => $pinkel->id,
+                                    'angsuran_ke' => $angsuran_ke,
+                                    'jatuh_tempo' => $value['tgl_transaksi'],
+                                    'wajib_pokok' => $value['penghapusan_pokok'],
+                                    'wajib_jasa' => $value['penghapusan_jasa'],
+                                    'target_pokok' => $target_pokok + $value['penghapusan_pokok'],
+                                    'target_jasa' => $target_jasa + $value['penghapusan_jasa'],
+                                    'lu' => date('Y-m-d H:i:s'),
+                                    'id_user' => 1
+                                ];
+                                $rencana[] = $data_rencana[strtotime($value['tgl_transaksi'])];
 
-                            $alokasi_pokok_pinjaman = $alokasi - ($target_pokok + $value['penghapusan_pokok']);
-                            $alokasi_jasa_pinjaman = $alokasi_jasa - ($target_jasa + $value['penghapusan_jasa']);
+                                $alokasi_pokok_pinjaman = $alokasi - ($target_pokok + $value['penghapusan_pokok']);
+                                $alokasi_jasa_pinjaman = $alokasi_jasa - ($target_jasa + $value['penghapusan_jasa']);
 
-                            $_tempo_pokok = floor(($jangka - ($i - $key)) / $sistem_pokok);
-                            $_tempo_jasa = floor(($jangka - ($i - $key)) / $sistem_jasa);
+                                $_tempo_pokok = floor(($jangka - ($i - $key)) / $sistem_pokok);
+                                $_tempo_jasa = floor(($jangka - ($i - $key)) / $sistem_jasa);
 
-                            $target_pokok += $value['penghapusan_pokok'];
-                            $target_jasa += $value['penghapusan_jasa'];
+                                $target_pokok += $value['penghapusan_pokok'];
+                                $target_jasa += $value['penghapusan_jasa'];
 
-                            $data_penghapusan[$key]['alokasi_pokok_pinjaman'] = $alokasi_pokok_pinjaman;
-                            $data_penghapusan[$key]['alokasi_jasa_pinjaman'] = $alokasi_jasa_pinjaman;
+                                $data_penghapusan[$key]['alokasi_pokok_pinjaman'] = $alokasi_pokok_pinjaman;
+                                $data_penghapusan[$key]['alokasi_jasa_pinjaman'] = $alokasi_jasa_pinjaman;
+                            }
+
+                            $pokok = Keuangan::bulatkan($alokasi_pokok_pinjaman / $_tempo_pokok);
+                            $jasa = Keuangan::bulatkan($alokasi_jasa_pinjaman / $_tempo_jasa);
+                            $angsuran_ke = $i + $key;
                         }
-
-                        $pokok = Keuangan::bulatkan($alokasi_pokok_pinjaman / $_tempo_pokok);
-                        $jasa = Keuangan::bulatkan($alokasi_jasa_pinjaman / $_tempo_jasa);
-                        $angsuran_ke = $i + $key;
                     }
+                } else {
+                    $pokok = $rencana_pokok[$i] ?: 0;
+                    $jasa = $rencana_jasa[$i] ?: 0;
                 }
 
                 if ($sisa_pokok == 0 and $ke_pokok != $angsuran_pokok['tempo']) {
