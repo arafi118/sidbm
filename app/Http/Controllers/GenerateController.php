@@ -157,7 +157,7 @@ class GenerateController extends Controller
                 $alokasi = $detail_pinjaman['alokasi'];
                 $tgl_cair = $detail_pinjaman['tgl_cair'];
 
-                $rencana_angsuran = $this->rencana_angsuran($pinkel, $angsuran_pokok, $alokasi, $kec->pembulatan, 'pokok');
+                $rencana_angsuran = $this->rencana_angsuran($pinkel, $angsuran_pokok, $angsuran_jasa, $alokasi, $kec->pembulatan, 'pokok');
                 $rencana_pokok = $rencana_angsuran['pokok'];
                 $rencana_jasa = $rencana_angsuran['jasa'];
             }
