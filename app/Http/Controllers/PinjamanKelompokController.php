@@ -20,6 +20,7 @@ use App\Models\User;
 use App\Utils\Keuangan;
 use App\Utils\Pinjaman;
 use App\Utils\Tanggal;
+use DB;
 use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -755,22 +756,44 @@ class PinjamanKelompokController extends Controller
             ]);
         } elseif ($request->status == 'W') {
             if ($request->idpa != null) {
-                foreach ($request->idpa as $idpa => $val) {
 
-                    $val = str_replace(',', '', str_replace('.00', '', $val));
-                    if ($val == '') $val = 0;
-                    PinjamanAnggota::where('id', $idpa)->update([
+                $UpdatePinjamanAnggota = [];
+                $UpdateDataPemanfaat = [];
+
+                foreach ($request->idpa as $idpa => $val) {
+                    $val = (int) str_replace([',', '.00'], '', $val);
+                    $UpdatePinjamanAnggota[] = [
+                        'id' => $idpa,
                         'tgl_dana' => Tanggal::tglNasional($data[$tgl]),
                         'tgl_cair' => Tanggal::tglNasional($data[$tgl]),
                         $tgl => Tanggal::tglNasional($data[$tgl]),
                         $alokasi => $val,
                         'status' => $data['status']
-                    ]);
+                    ];
 
-                    DataPemanfaat::where([['idpa', $idpa], ['lokasi', Session::get('lokasi')]])->update([
+                    $UpdateDataPemanfaat[] = [
+                        'idpa' => $idpa,
+                        'lokasi' => Session::get('lokasi'),
                         'status' => $data['status']
-                    ]);
+                    ];
                 }
+
+                $query = "UPDATE data_pemanfaat SET status = CASE ";
+                $cases = [];
+                $params = [];
+
+                foreach ($UpdateDataPemanfaat as $update) {
+                    $cases[] = "WHEN idpa = ? AND lokasi = ? THEN ?";
+                    $params[] = $update['idpa'];
+                    $params[] = $update['lokasi'];
+                    $params[] = $update['status'];
+                }
+
+                $query .= implode(' ', $cases);
+                $query .= " ELSE status END";
+
+                PinjamanAnggota::upsert($UpdatePinjamanAnggota, ['id'], ['tgl_dana', 'tgl_cair', $tgl, $alokasi, 'status']);
+                DB::update($query, $params);
             }
 
             $update = [
@@ -789,20 +812,42 @@ class PinjamanKelompokController extends Controller
             ];
         } else {
             if ($request->idpa != null) {
+                $UpdatePinjamanAnggota = [];
+                $UpdateDataPemanfaat = [];
+
                 foreach ($request->idpa as $idpa => $val) {
-                    $val = str_replace(',', '', str_replace('.00', '', $val));
-                    if ($val == '') $val = 0;
-                    PinjamanAnggota::where('id', $idpa)->update([
+                    $val = (int) str_replace([',', '.00'], '', $val);
+                    $UpdatePinjamanAnggota[] = [
+                        'id' => $idpa,
                         $tgl => Tanggal::tglNasional($data[$tgl]),
                         $alokasi => $val,
                         'status' => $data['status'],
                         'catatan_verifikasi' => $request->catatan[$idpa]
-                    ]);
+                    ];
 
-                    DataPemanfaat::where([['idpa', $idpa], ['lokasi', Session::get('lokasi')]])->update([
+                    $UpdateDataPemanfaat[] = [
+                        'idpa' => $idpa,
+                        'lokasi' => Session::get('lokasi'),
                         'status' => $data['status']
-                    ]);
+                    ];
                 }
+
+                $query = "UPDATE data_pemanfaat SET status = CASE ";
+                $cases = [];
+                $params = [];
+
+                foreach ($UpdateDataPemanfaat as $update) {
+                    $cases[] = "WHEN idpa = ? AND lokasi = ? THEN ?";
+                    $params[] = $update['idpa'];
+                    $params[] = $update['lokasi'];
+                    $params[] = $update['status'];
+                }
+
+                $query .= implode(' ', $cases);
+                $query .= " ELSE status END";
+
+                PinjamanAnggota::upsert($UpdatePinjamanAnggota, ['id'], ['tgl_dana', 'tgl_cair', $tgl, $alokasi, 'status']);
+                DB::update($query, $params);
             }
 
             $update = [
