@@ -357,7 +357,13 @@ class PinjamanKelompokController extends Controller
             return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
         }
 
+        $pinjaman_ke = PinjamanKelompok::where([
+            ['id_kel', $request->id_kel],
+            ['tgl_proposal', '<=', Tanggal::tglNasional($request->tgl_proposal)]
+        ])->count();
+
         $insert = [
+            'pinjaman_ke' => $pinjaman_ke + 1,
             'id_kel' => $request->id_kel,
             'jenis_pp' => $request->jenis_produk_pinjaman,
             'tgl_proposal' => Tanggal::tglNasional($request->tgl_proposal),
@@ -874,6 +880,13 @@ class PinjamanKelompokController extends Controller
                 $update['catatan_verifikasi'] = $data['catatan_verifikasi'];
             }
         }
+
+        $pinjaman_ke = PinjamanKelompok::where([
+            ['id_kel', $perguliran->id_kel],
+            ['id', '!=', $perguliran->id],
+            ['tgl_proposal', '<=', Tanggal::tglNasional($perguliran->tgl_proposal)]
+        ])->count();
+        $update['pinjaman_ke'] = $pinjaman_ke + 1;
 
         $pinkel = PinjamanKelompok::where('id', $perguliran->id)->update($update);
 
@@ -2474,11 +2487,6 @@ class PinjamanKelompokController extends Controller
                 $query->where('status', 'A');
             }
         ])->first();
-        $data['pinjaman_ke'] = PinjamanKelompok::where([
-            ['id_kel', $data['pinkel']->id_kel],
-            ['id', '!=', $data['pinkel']->id],
-            ['tgl_proposal', '<=', $data['pinkel']->tgl_proposal]
-        ])->count();
 
         $catatan = collect(json_decode($data['pinkel']->catatan_bimbingan, true));
         $data['catatan'] = $catatan->sortByDesc('tanggal')->values();
