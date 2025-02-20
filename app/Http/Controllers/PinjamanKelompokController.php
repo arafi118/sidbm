@@ -884,7 +884,7 @@ class PinjamanKelompokController extends Controller
         $pinjaman_ke = PinjamanKelompok::where([
             ['id_kel', $perguliran->id_kel],
             ['id', '!=', $perguliran->id],
-            ['tgl_proposal', '<=', Tanggal::tglNasional($perguliran->tgl_proposal)]
+            ['tgl_proposal', '<=', $perguliran->tgl_proposal]
         ])->count();
         $update['pinjaman_ke'] = $pinjaman_ke + 1;
 
