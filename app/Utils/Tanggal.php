@@ -32,8 +32,12 @@ class Tanggal
 
     public static function tglNasional($tanggal)
     {
-        $tgl = Carbon::createFromFormat('d/m/Y', $tanggal)->format('Y-m-d');
-        return $tgl;
+        $tgl = explode('/', $tanggal);
+        $hari = $tgl[0];
+        $bulan = $tgl[1];
+        $tahun = $tgl[2];
+
+        return $tahun . '-' . $bulan . '-' . $hari;
     }
 
     public static function tglRomawi($tanggal)
