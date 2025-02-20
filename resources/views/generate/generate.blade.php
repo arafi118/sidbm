@@ -36,7 +36,7 @@
     </form>
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    @if (count($data_id_pinj) >= $limit)
+    @if (count($data_pinjaman) >= $limit)
         <script>
             $('#generate').trigger('click')
         </script>

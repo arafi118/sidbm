@@ -109,6 +109,11 @@ class PinjamanKelompok extends Model
         return $this->hasMany(Transaksi::class, 'id_pinj', 'id')->orderBy('tgl_transaksi', 'ASC')->orderBy('idtp', 'ASC');
     }
 
+    public function trx_penghapusan()
+    {
+        return $this->hasMany(Transaksi::class, 'id_pinj', 'id')->where('rekening_debit', 'LIKE', '1.1.04%')->orderBy('tgl_transaksi', 'DESC')->orderBy('idtp', 'DESC');
+    }
+
     public function saldo_pinjaman()
     {
         return $this->hasOne(Penghapusan::class, 'id_pinj', 'id');

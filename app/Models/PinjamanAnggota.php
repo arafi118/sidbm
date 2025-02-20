@@ -58,4 +58,9 @@ class PinjamanAnggota extends Model
     {
         return $this->hasMany(PinjamanAnggota::class, 'nia', 'nia')->orderBy('tgl_cair', 'DESC');
     }
+
+    public function trx()
+    {
+        return $this->hasMany(Transaksi::class, 'id_pinj_i', 'id')->orderBy('tgl_transaksi', 'ASC')->orderBy('idtp', 'ASC');
+    }
 }
