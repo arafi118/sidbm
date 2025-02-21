@@ -58,6 +58,7 @@ class GenerateController extends Controller
     {
         $real = [];
         $rencana = [];
+        $data_id_real = [];
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
 
         $kode_pokok = ['1.1.03.01', '1.1.03.02', '1.1.03.03'];
