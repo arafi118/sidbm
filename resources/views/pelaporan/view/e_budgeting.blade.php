@@ -58,29 +58,29 @@
         </tr>
     </table>
 
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 8px;">
         <thead>
-            <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 12px;">
-                <th rowspan="2" class="t l b" width="26%">Rekening</th>
+            <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 10px;">
+                <th rowspan="2" class="t l b" width="20%">Rekening</th>
                 @if (!$is_triwulan)
-                    <th rowspan="2" class="t l b" width="10%">Komulatif Bulan Lalu</th>
+                    <th rowspan="2" class="t l b" width="8%">Komulatif Bulan Lalu</th>
                 @endif
                 @foreach ($bulan_tampil as $bt)
-                    <th colspan="2" class="t l b" width="16%" height="16">
+                    <th colspan="2" class="t l b" width="18%" height="16">
                         {{ Tanggal::namaBulan(date('Y') . '-' . $bt . '-01') }}
                     </th>
                 @endforeach
-                <th colspan="2" class="t l b r" width="16%">
+                <th colspan="2" class="t l b r" width="18%">
                     {{ count($bulan_tampil) == '0' ? 'Akumulasi Januari - Desember' : 'Total' }}
                 </th>
             </tr>
-            <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 12px;">
+            <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 10px;">
                 @foreach ($bulan_tampil as $bt)
-                    <th class="t l b" width="8%">Rencana</th>
-                    <th class="t l b" width="8%">Realisasi</th>
+                    <th class="t l b" width="9%">Rencana</th>
+                    <th class="t l b" width="9%">Realisasi</th>
                 @endforeach
-                <th class="t l b" width="8%">Rencana</th>
-                <th class="t l b r" width="8%">Realisasi</th>
+                <th class="t l b" width="9%">Rencana</th>
+                <th class="t l b r" width="9%">Realisasi</th>
             </tr>
         </thead>
 
@@ -251,10 +251,10 @@
                 <td colspan="{{ $is_triwulan ? $colspan : $colspan + 1 }}" style="padding: 0px !important;">
                     <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                         style="font-size: 9px;">
-                        <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 10px;">
-                            <th width="26%" class="t l b" height="28">Surplus</th>
+                        <tr style="background: rgb(232, 232, 232); font-weight: bold; font-size: 8px;">
+                            <th width="20%" class="t l b" height="18">Surplus</th>
                             @if (!$is_triwulan)
-                                <th width="10%" class="t l b" align="right">
+                                <th width="8%" class="t l b" align="right">
                                     {{ number_format($kom_realisasi_pendapatan - $kom_realisasi_beban, 2) }}
                                 </th>
                             @endif
@@ -276,19 +276,19 @@
                                 @endphp
 
                                 @if (in_array($val, $bulan_tampil))
-                                    <th width="8%" class="t l b" align="right">
+                                    <th width="9%" class="t l b" align="right">
                                         {{ number_format($saldo_rencana_pendapatan - $saldo_rencana_beban, 2) }}
                                     </th>
-                                    <th width="8%" class="t l b" align="right">
+                                    <th width="9%" class="t l b" align="right">
                                         {{ number_format($saldo_realisasi_pendapatan - $saldo_realisasi_beban, 2) }}
                                     </th>
                                 @endif
                             @endforeach
 
-                            <th width="8%" class="t l b" align="right">
+                            <th width="9%" class="t l b" align="right">
                                 {{ number_format($kom_rencana_pendapatan - $kom_rencana_beban, 2) }}
                             </th>
-                            <th width="8%" class="t l b r" align="right">
+                            <th width="9%" class="t l b r" align="right">
                                 {{ number_format($kom_realisasi_pendapatan - $kom_realisasi_beban + ($surplus_realisasi_pendapatan - $surplus_realisasi_beban), 2) }}
                             </th>
                         </tr>

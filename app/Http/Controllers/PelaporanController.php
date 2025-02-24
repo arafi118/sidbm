@@ -2704,6 +2704,11 @@ class PelaporanController extends Controller
         }
     }
 
+    private function pinjaman_hapus(array $data)
+    {
+        //
+    }
+
     private function rencana_realisasi(array $data)
     {
         $keuangan = new Keuangan;
