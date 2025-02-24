@@ -145,7 +145,7 @@
                 distance: 1000
             }
         })
-        new Choices($('select#sub_laporan')[0], {
+        var select_sub_laporan = new Choices($('select#sub_laporan')[0], {
             shouldSort: false,
             fuseOptions: {
                 threshold: 0.1,
@@ -156,7 +156,10 @@
         $(document).on('change', '#tahun, #bulan', function(e) {
             e.preventDefault()
 
-            var file = $('select#laporan').val()
+            var laporan = $('select#laporan').val().split('|')
+            var id = laporan[0]
+            var file = laporan[1]
+
             subLaporan(file)
         })
 
@@ -179,7 +182,7 @@
         function subLaporan(file) {
             var tahun = $('select#tahun').val()
             var bulan = $('select#bulan').val()
-
+            var sub_laporan = $('select#sub_laporan').val()
 
             $.get('/pelaporan/sub_laporan/' + file + '?tahun=' + tahun + '&bulan=' + bulan, function(result) {
                 $('#subLaporan').html(result)
@@ -195,6 +198,8 @@
                     $('#subLaporan').removeClass('col-md-12')
                     $('#subLaporan').addClass('col-md-6')
                 }
+
+                select_sub_laporan.setChoiceByValue(sub_laporan)
             })
         }
 
