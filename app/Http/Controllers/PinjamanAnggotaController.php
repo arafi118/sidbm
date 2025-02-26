@@ -403,7 +403,8 @@ class PinjamanAnggotaController extends Controller
         PinjamanAnggota::where('id', $pinjaman->id)->update([
             'status' => 'H',
             'kom_pokok' => json_encode($kom_pokok),
-            'kom_jasa' => json_encode($kom_jasa)
+            'kom_jasa' => json_encode($kom_jasa),
+            'tgl_lunas' => $tgl_penghapusan
         ]);
 
         return response()->json([
