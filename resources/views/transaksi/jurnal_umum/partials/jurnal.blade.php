@@ -254,27 +254,23 @@
                             @endif
 
                             @if (in_array('jurnal_umum.cetak_dokumen_transaksi', Session::get('tombol')))
-                                @if ($trx->idtp > 0 && $trx->id_pinj != 0)
-                                    <button type="button"
-                                        data-action="/transaksi/dokumen/{{ $files }}_angsuran/{{ $trx->idt }}"
-                                        class="btn btn-tumblr btn-icon-only btn-tooltip btn-link"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $files }}"
-                                        data-container="body" data-animation="true">
-                                        <span class="btn-inner--icon">
-                                            <i class="fas fa-file-circle-exclamation"></i>
-                                        </span>
-                                    </button>
-                                @else
-                                    <button type="button"
-                                        data-action="/transaksi/dokumen/{{ $files }}/{{ $trx->idt }}"
-                                        class="btn btn-tumblr btn-icon-only btn-tooltip btn-link"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $files }}"
-                                        data-container="body" data-animation="true">
-                                        <span class="btn-inner--icon">
-                                            <i class="fas fa-file-circle-exclamation"></i>
-                                        </span>
-                                    </button>
-                                @endif
+                                @php
+                                    if ($trx->idtp > 0 && $trx->id_pinj != 0) {
+                                        $files = $files . '_angsuran';
+                                        if ($files == 'bm_angsuran') {
+                                            $files = 'bm';
+                                        }
+                                    }
+                                @endphp
+                                <button type="button"
+                                    data-action="/transaksi/dokumen/{{ $files }}/{{ $trx->idt }}"
+                                    class="btn btn-tumblr btn-icon-only btn-tooltip btn-link" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="{{ $files }}" data-container="body"
+                                    data-animation="true">
+                                    <span class="btn-inner--icon">
+                                        <i class="fas fa-file-circle-exclamation"></i>
+                                    </span>
+                                </button>
                             @endif
 
                             @if (in_array('jurnal_umum.transaksi_reversal', Session::get('tombol')))
