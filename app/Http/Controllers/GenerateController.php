@@ -30,11 +30,6 @@ class GenerateController extends Controller
             $logo = '/storage/logo/' . $kec->logo;
         }
 
-        return view('generate.index')->with(compact('logo'));
-    }
-
-    public function kelompok()
-    {
         $database = env('DB_DATABASE', 'siupk_dbm');
         $table = 'pinjaman_kelompok_' . Session::get('lokasi');
 
@@ -49,9 +44,7 @@ class GenerateController extends Controller
             return $kolom->COLUMN_NAME;
         }, $strukturTabel);
 
-        return response()->json([
-            'view' => view('generate.partials.kelompok')->with(compact('struktur'))->render()
-        ]);
+        return view('generate.index')->with(compact('logo', 'struktur'));
     }
 
     public function generate(Request $request, $offset = 0)

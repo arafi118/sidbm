@@ -313,7 +313,6 @@ Route::get('/download/{file}', function ($file) {
 })->name('download');
 
 Route::get('/generate', [GenerateController::class, 'index']);
-Route::get('/generate/kelompok', [GenerateController::class, 'kelompok']);
 Route::post('/generate_v1/save/{offset?}', [GenerateController::class, '_generate']);
 Route::post('/generate_v2/save/{offset?}', [GenerateController::class, 'generate']);
 
