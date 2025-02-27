@@ -59,13 +59,17 @@
             $('#StructurKelompok').html(result.view)
         })
 
-        $(document).on('click', '#GenerateV1', function() {
+        $(document).on('click', '#GenerateV1', function(e) {
+            e.preventDefault()
+
             $('#GenerateForm').attr('action', '/generate_v1/save')
             $('#generate_version').val('v1')
             $('#GenerateForm').submit()
         })
 
-        $(document).on('click', '#GenerateV2', function() {
+        $(document).on('click', '#GenerateV2', function(e) {
+            e.preventDefault()
+
             $('#GenerateForm').attr('action', '/generate_v2/save')
             $('#generate_version').val('v2')
             $('#GenerateForm').submit()
