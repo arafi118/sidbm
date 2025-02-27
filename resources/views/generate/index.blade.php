@@ -58,6 +58,18 @@
         $.get('/generate/kelompok', function(result) {
             $('#StructurKelompok').html(result.view)
         })
+
+        $(document).on('click', '#GenerateV1', function() {
+            $('#GenerateForm').attr('action', '/generate_v1/save')
+            $('#generate_version').val('v1')
+            $('#GenerateForm').submit()
+        })
+
+        $(document).on('click', '#GenerateV2', function() {
+            $('#GenerateForm').attr('action', '/generate_v2/save')
+            $('#generate_version').val('v2')
+            $('#GenerateForm').submit()
+        })
     </script>
 
     <script>

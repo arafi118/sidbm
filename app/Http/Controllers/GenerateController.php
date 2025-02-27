@@ -65,7 +65,7 @@ class GenerateController extends Controller
         $kode_jasa = ['1.1.03.04', '1.1.03.05', '1.1.03.06', '4.1.01.01', '4.1.01.02', '4.1.01.03'];
         $kode_denda = ['4.1.01.04', '4.1.01.05', '4.1.01.06'];
 
-        $kondisi = $request->except('_token', 'pinjaman');
+        $kondisi = $request->except('_token', 'pinjaman', 'generate_version');
         $where = $this->where($kondisi);
 
         $limit = 30;
@@ -638,7 +638,7 @@ class GenerateController extends Controller
         $whereIn = [];
         $whereNotIn = [];
         foreach ($request->all() as $key => $val) {
-            if ($key == '_token' || $key == 'pinjaman') {
+            if ($key == '_token' || $key == 'pinjaman' || $key == 'generate_version') {
                 continue;
             }
 
@@ -1039,6 +1039,8 @@ class GenerateController extends Controller
         array_push($data_id_pinj, $data_pinj_H);
         $data = $request->all();
         $offset = $offset + $limit;
-        return view('generate.generate')->with(compact('data_id_pinj', 'data', 'offset', 'limit'));
+
+        $data_pinjaman = $data_id_pinj;
+        return view('generate.generate')->with(compact('data_pinjaman', 'data', 'offset', 'limit'));
     }
 }

@@ -19,10 +19,11 @@
     $continue = ['sumber', 'catatan_verifikasi', 'wt_cair', 'lu'];
 @endphp
 
-<form action="/generate/save" method="post" target="_blank">
+<form action="/generate/save" method="post" target="_blank" id="GenerateForm">
     @csrf
 
     <input type="hidden" name="pinjaman" id="pinjaman" value="kelompok">
+    <input type="hidden" name="generate_version" id="generate_version" value="v1">
     <div class="table-responsive">
         <table class="table table-striped">
             <thead class="bg-dark text-white">
@@ -73,6 +74,7 @@
     </div>
 
     <div class="d-flex justify-content-end">
-        <button type="submit" class="btn btn-info btn-sm">Generate</button>
+        <button type="button" id="GenerateV1" class="btn btn-info btn-sm ms-2">Generate V1</button>
+        <button type="button" id="GenerateV2" class="btn btn-info btn-sm ms-2">Generate V2</button>
     </div>
 </form>

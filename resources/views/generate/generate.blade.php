@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/assets/css/style.css">
 
 <body class="w-100 min-vh-100 d-flex align-items-center justify-content-center flex-column">
-    <form action="/generate/save/{{ $offset }}" method="post">
+    <form action="/generate_{{ $data['generate_version'] }}/save/{{ $offset }}" method="post">
         @csrf
 
         @foreach ($data as $key => $val)

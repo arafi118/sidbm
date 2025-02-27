@@ -314,7 +314,8 @@ Route::get('/download/{file}', function ($file) {
 
 Route::get('/generate', [GenerateController::class, 'index']);
 Route::get('/generate/kelompok', [GenerateController::class, 'kelompok']);
-Route::post('/generate/save/{offset?}', [GenerateController::class, 'generate']);
+Route::post('/generate_v1/save/{offset?}', [GenerateController::class, '_generate']);
+Route::post('/generate_v2/save/{offset?}', [GenerateController::class, 'generate']);
 
 Route::get('/unpaid', [DashboardController::class, 'unpaid'])->middleware('auth');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
