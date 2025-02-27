@@ -75,6 +75,6 @@
 
     <div class="d-flex justify-content-end">
         <button type="button" id="GenerateV1" class="btn btn-info btn-sm ms-2">Generate V1</button>
-        <button type="button" id="GenerateV2" class="btn btn-info btn-sm ms-2">Generate V2</button>
+        <button type="submit" id="GenerateV2" class="btn btn-info btn-sm ms-2">Generate V2</button>
     </div>
 </form>
