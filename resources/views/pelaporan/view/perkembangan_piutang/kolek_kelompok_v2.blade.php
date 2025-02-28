@@ -9,7 +9,7 @@
     @foreach ($jenis_pp as $jpp)
         @php
             if ($jpp->pinjaman_kelompok->isEmpty()) {
-                break;
+                continue;
             }
         @endphp
         @php
