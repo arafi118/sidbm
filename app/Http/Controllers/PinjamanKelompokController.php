@@ -487,15 +487,6 @@ class PinjamanKelompokController extends Controller
             }
         }
 
-        return view('perguliran.partials/' . $view)->with(compact('perguliran', 'jenis_jasa', 'sistem_angsuran', 'sumber_bayar', 'debet', 'pinj_a'));
-    }
-
-    public function detail(PinjamanKelompok $perguliran)
-    {
-        $title = 'Detal Piutang Kelompok ' . $perguliran->kelompok->nama_kelompok;
-        $real = RealAngsuran::where('loan_id', $perguliran->id)->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC')->first();
-        $sistem_angsuran = SistemAngsuran::all();
-
         if (Session::get('lokasi') == '522') {
             $pinjaman_anggota = PinjamanAnggota::where('id_pinkel', $perguliran->id)->count();
 
@@ -506,6 +497,15 @@ class PinjamanKelompokController extends Controller
                 ]);
             }
         }
+
+        return view('perguliran.partials/' . $view)->with(compact('perguliran', 'jenis_jasa', 'sistem_angsuran', 'sumber_bayar', 'debet', 'pinj_a'));
+    }
+
+    public function detail(PinjamanKelompok $perguliran)
+    {
+        $title = 'Detal Piutang Kelompok ' . $perguliran->kelompok->nama_kelompok;
+        $real = RealAngsuran::where('loan_id', $perguliran->id)->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC')->first();
+        $sistem_angsuran = SistemAngsuran::all();
 
         return view('perguliran.detail')->with(compact('title', 'perguliran', 'real', 'sistem_angsuran'));
     }
