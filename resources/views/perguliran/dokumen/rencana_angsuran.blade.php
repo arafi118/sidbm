@@ -128,11 +128,11 @@
                 $wajib_angsur = $ra->wajib_pokok + $ra->wajib_jasa;
                 $jumlah_angsuran += $wajib_angsur;
                 $saldo_pokok -= $ra->wajib_pokok;
-                // $saldo_jasa -= $ra->wajib_jasa;
+                $saldo_jasa -= $ra->wajib_jasa;
 
-                // if ($pinkel->jenis_jasa == '2') {
-                //     $saldo_jasa = ($saldo_pokok * $pinkel->pros_jasa) / 100;
-                // }
+                if ($pinkel->jenis_jasa == '2') {
+                    $saldo_jasa = ($saldo_pokok * $pinkel->pros_jasa) / 100;
+                }
 
                 $sum_pokok += $ra->wajib_pokok;
                 $sum_jasa += $ra->wajib_jasa;
