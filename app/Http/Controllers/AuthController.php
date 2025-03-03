@@ -8,11 +8,14 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Menu;
 use App\Models\MenuTombol;
+use App\Models\PinjamanAnggota;
+use App\Models\PinjamanKelompok;
 use App\Models\User;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
 use Auth;
 use Cookie;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Session;
@@ -322,6 +325,31 @@ class AuthController extends Controller
 
     public function app()
     {
-        return phpinfo();
+        $UpdateDataPemanfaat = [];
+        $pinjaman_kelompok = PinjamanKelompok::whereIn('status', ['P', 'V', 'W', 'A'])->withCount('pinjaman_anggota')->get();
+        foreach ($pinjaman_kelompok as $perguliran) {
+            if ($perguliran->pinjaman_anggota_count >= '3') {
+                $pros_jasa_kelompok = ($perguliran->pros_jasa / $perguliran->jangka) + 0.2;
+                $UpdateDataPemanfaat[] = [
+                    'id_pinkel' => $perguliran->id,
+                    'pros_jasa' => $pros_jasa_kelompok * $perguliran->jangka,
+                ];
+            }
+        }
+
+        $lokasi = Session::get('lokasi');
+        $query = "UPDATE pinjaman_anggota_$lokasi SET pros_jasa = CASE ";
+        $cases = [];
+        $params = [];
+
+        foreach ($UpdateDataPemanfaat as $update) {
+            $cases[] = "WHEN id_pinkel = ? THEN ?";
+            $params[] = $update['id_pinkel'];
+            $params[] = $update['pros_jasa'];
+        }
+
+        $query .= implode(' ', $cases);
+        $query .= " ELSE pros_jasa END";
+        DB::update($query, $params);
     }
 }
