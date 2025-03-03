@@ -495,6 +495,18 @@ class PinjamanKelompokController extends Controller
         $title = 'Detal Piutang Kelompok ' . $perguliran->kelompok->nama_kelompok;
         $real = RealAngsuran::where('loan_id', $perguliran->id)->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC')->first();
         $sistem_angsuran = SistemAngsuran::all();
+
+        if (Session::get('lokasi') == '522') {
+            $pinjaman_anggota = PinjamanAnggota::where('id_pinkel', $perguliran->id)->count();
+
+            $pros_jasa_kelompok = ($perguliran->pros_jasa / $perguliran->jangka) + 0.2;
+            if ($pinjaman_anggota >= '3') {
+                $updatePinjamanAnggota = PinjamanAnggota::where('id_pinkel', $perguliran->id)->update([
+                    'pros_jasa' => $pros_jasa_kelompok * $perguliran->jangka,
+                ]);
+            }
+        }
+
         return view('perguliran.detail')->with(compact('title', 'perguliran', 'real', 'sistem_angsuran'));
     }
 
