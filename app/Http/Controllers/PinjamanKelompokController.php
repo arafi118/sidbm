@@ -2634,9 +2634,6 @@ class PinjamanKelompokController extends Controller
                 $wajib_jasa = $alokasi_jasa / $tempo_jasa;
                 $wajib_jasa = Keuangan::pembulatan($wajib_jasa, (string) $kec->pembulatan);
                 $sum_jasa = $wajib_jasa * ($tempo_jasa - 1);
-                if ($jangka == '1') {
-                    $sum_jasa = $wajib_jasa;
-                }
 
                 if ($sisa == 0 and $ke != $tempo_jasa && $ke > $mulai_angsuran_jasa) {
                     $angsuran_jasa = $wajib_jasa;
@@ -2711,9 +2708,6 @@ class PinjamanKelompokController extends Controller
                 $wajib_jasa = $alokasi_jasa / $tempo_jasa;
                 $wajib_jasa = Keuangan::pembulatan($wajib_jasa, (string) $kec->pembulatan);
                 $sum_jasa = $wajib_jasa * ($tempo_jasa - 1);
-                if ($jangka == '1') {
-                    $sum_jasa = $wajib_jasa;
-                }
 
                 if ($sisa == 0 and $ke != $tempo_jasa && $ke > $mulai_angsuran_jasa) {
                     $angsuran_jasa = $wajib_jasa;
