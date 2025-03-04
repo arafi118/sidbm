@@ -2166,7 +2166,7 @@ class PinjamanKelompokController extends Controller
 
         $rencana = [];
         foreach ($data['pinkel']->pinjaman_anggota as $pinj) {
-            $rencana[$pinj->id] = $this->generate($id, $data['pinkel'], $pinj->alokasi, $pinj->tgl_cair)->getData()->rencana;
+            $rencana[$pinj->id] = $this->generate($id, $data['pinkel'], $pinj->alokasi, $pinj->tgl_cair, $pinj->pros_jasa)->getData()->rencana;
         }
 
         $data['rencana'] = $rencana;
@@ -2522,7 +2522,7 @@ class PinjamanKelompokController extends Controller
         }
     }
 
-    public function generate($id_pinj, $pinkel = null, $alokasi = null, $tgl = null)
+    public function generate($id_pinj, $pinkel = null, $alokasi = null, $tgl = null, $pros_jasa = null)
     {
         $rencana = [];
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
@@ -2572,7 +2572,9 @@ class PinjamanKelompokController extends Controller
         $jangka = $pinkel->jangka;
         $sa_pokok = $pinkel->sistem_angsuran;
         $sa_jasa = $pinkel->sa_jasa;
-        $pros_jasa = $pinkel->pros_jasa;
+        if ($pros_jasa == null) {
+            $pros_jasa = $pinkel->pros_jasa;
+        }
 
         $tgl_angsur = $tgl;
         $tanggal_cair = date('d', strtotime($tgl));
