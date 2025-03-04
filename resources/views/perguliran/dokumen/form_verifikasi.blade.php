@@ -269,8 +269,8 @@
             <td width="50%" align="justify" style="vertical-align: text-top;">
                 <div>Verified Sign:</div>
                 <div>
-                    Tim Verifikasi {{ $kec->nama_lembaga_sort }} Kecamatan {{ $kec->nama_kec }} menyatakan dengan
-                    sebenar-benarnya sesuai
+                    {{ $kec->nama_tv_sort }} {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}
+                    menyatakan dengan sebenar-benarnya sesuai
                     dengan hasil survey lapangan bahwa kelompok dengan identitas tersebut di atas <b>ADA/TIDAK ADA</b>
                     keberadaannya dan dapat dipertanggungjawabkan sesuai dengan peraturan yang berlaku. Serta <b>LAYAK/TIDAK
                         LAYAK</b> untuk diberikan piutang sesuai dengan hasil rekomendasi Verifikasi di atas. Form ini
@@ -278,7 +278,8 @@
                 </div>
             </td>
             <td width="50%" align="justify" style="vertical-align: top;">
-                <div>Diverifikasi oleh, Tim Verifikasi {{ $kec->nama_lembaga_sort }} Kecamatan {{ $kec->nama_kec }}</div>
+                <div>Diverifikasi oleh, {{ $kec->nama_tv_sort }} {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }}
+                    {{ $kec->nama_kec }}</div>
                 <div style="margin-top: 12px;">
                     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
                         @foreach ($user as $u)
