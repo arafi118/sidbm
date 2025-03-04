@@ -1816,8 +1816,9 @@ class PinjamanKelompokController extends Controller
                 ['angsuran_ke', '!=', '0']
             ])->orderBy('jatuh_tempo', 'ASC')->get();
         } else {
-            $data['rencana'] = $this->generate($id)->getData()->rencana;
+            $data['rencana'] = $this->generate($id)->getData()->rencana_angsuran;
         }
+
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'jpp',
             'kelompok',
@@ -2164,12 +2165,7 @@ class PinjamanKelompokController extends Controller
             'pinjaman_anggota.anggota',
         ])->withCount('real')->first();
 
-        $rencana = [];
-        foreach ($data['pinkel']->pinjaman_anggota as $pinj) {
-            $rencana[$pinj->id] = $this->generate($id, $data['pinkel'], $pinj->alokasi, $pinj->tgl_cair, $pinj->pros_jasa)->getData()->rencana;
-        }
-
-        $data['rencana'] = $rencana;
+        $data['generate'] = $this->generate($id)->getData();
         $data['barcode'] = DNS1D::getBarcodePNG($id, 'C128');
 
         $data['dir'] = User::where([
@@ -2210,11 +2206,7 @@ class PinjamanKelompokController extends Controller
             'pinjaman_anggota.anggota',
         ])->withCount('real')->first();
 
-        $rencana = [];
-        foreach ($data['pinkel']->pinjaman_anggota as $pinj) {
-            $rencana[$pinj->id] = $this->generate($id, $data['pinkel'], $pinj->alokasi, $pinj->tgl_cair)->getData()->rencana;
-        }
-        $data['rencana'] = $rencana;
+        $data['generate'] = $this->generate($id)->getData();
         $data['barcode'] = DNS1D::getBarcodePNG($id, 'C128');
 
         $data['dir'] = User::where([
@@ -2522,7 +2514,167 @@ class PinjamanKelompokController extends Controller
         }
     }
 
-    public function generate($id_pinj, $pinkel = null, $alokasi = null, $tgl = null, $pros_jasa = null)
+    public function generate($id_pinj, $pinkel = null)
+    {
+        $rencana = [];
+        $data_rencana = [];
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
+
+        if ($pinkel == null) {
+            $pinkel = PinjamanKelompok::where('id', $id_pinj)->with([
+                'kelompok',
+                'kelompok.d',
+                'saldo_pinjaman' => function ($query) {
+                    $query->where('lokasi', Session::get('lokasi'))->orderBy('tanggal', 'DESC');
+                },
+                'pinjaman_anggota',
+                'sis_pokok',
+                'sis_jasa',
+            ])->firstOrFail();
+        }
+
+        $data_pinjaman[] = $pinkel->id;
+        $desa = $pinkel->kelompok->d;
+
+        $jangka = $pinkel->jangka;
+        $sistem_angsuran_pokok = $pinkel->sistem_angsuran;
+        $sistem_angsuran_jasa = $pinkel->sa_jasa;
+        $sistem_pokok = ($pinkel->sis_pokok) ? $pinkel->sis_pokok->sistem : '1';
+        $sistem_jasa = ($pinkel->sis_jasa) ? $pinkel->sis_jasa->sistem : '1';
+
+        $angsuran_pokok = $this->sistem($sistem_angsuran_pokok, $jangka, $sistem_pokok);
+        $angsuran_jasa = $this->sistem($sistem_angsuran_jasa, $jangka, $sistem_jasa);
+
+        $rencana_angsuran_anggota = [];
+        if (count($pinkel->pinjaman_anggota) > 0) {
+            $alokasi = 0;
+            $rencana_pokok = [];
+            $rencana_jasa = [];
+            $alokasi_jasa_anggota = [];
+            foreach ($pinkel->pinjaman_anggota as $pinjaman_anggota) {
+                $detail_pinjaman = $this->detail_pinjaman($pinjaman_anggota, $desa, $kec->batas_angsuran);
+                $alokasi_anggota = $detail_pinjaman['alokasi'];
+                $alokasi_jasa_anggota[$pinjaman_anggota->id] = $alokasi_anggota * ($pinjaman_anggota->pros_jasa / 100);
+                $tgl_cair = $detail_pinjaman['tgl_cair'];
+
+                $rencana_angsuran = $this->rencana_angsuran($pinjaman_anggota, $angsuran_pokok, $angsuran_jasa, $alokasi_anggota, $kec->pembulatan);
+                $pokok = $rencana_angsuran['pokok'];
+                $jasa = $rencana_angsuran['jasa'];
+
+                if (count($rencana_pokok) <= 0) {
+                    $rencana_pokok = $pokok;
+                } else {
+                    foreach ($pokok as $key => $value) {
+                        $rencana_pokok[$key] = ($rencana_pokok[$key] ?? 0) + $value;
+                    }
+                }
+
+                if (count($rencana_jasa) <= 0) {
+                    $rencana_jasa = $jasa;
+                } else {
+                    foreach ($jasa as $key => $value) {
+                        $rencana_jasa[$key] = ($rencana_jasa[$key] ?? 0) + $value;
+                    }
+                }
+
+                $rencana_angsuran_anggota['id' . $pinjaman_anggota->id] = [
+                    'pokok' => $pokok,
+                    'jasa' => $jasa,
+                    'alokasi' => $alokasi_anggota,
+                    'alokasi_jasa' => $alokasi_jasa_anggota[$pinjaman_anggota->id],
+                    'jumlah_angsuran' => $rencana_angsuran['jumlah_angsuran']
+                ];
+
+                $alokasi += $alokasi_anggota;
+            }
+        } else {
+            $detail_pinjaman = $this->detail_pinjaman($pinkel, $desa, $kec->batas_angsuran);
+            $alokasi = $detail_pinjaman['alokasi'];
+            $tgl_cair = $detail_pinjaman['tgl_cair'];
+
+            $rencana_angsuran = $this->rencana_angsuran($pinkel, $angsuran_pokok, $angsuran_jasa, $alokasi, $kec->pembulatan, 'pokok');
+            $rencana_pokok = $rencana_angsuran['pokok'];
+            $rencana_jasa = $rencana_angsuran['jasa'];
+        }
+
+        $target_pokok = 0;
+        $target_jasa = 0;
+
+        $data_rencana[strtotime($tgl_cair)] = [
+            'loan_id' => $pinkel->id,
+            'angsuran_ke' => 0,
+            'jatuh_tempo' => $tgl_cair,
+            'wajib_pokok' => 0,
+            'wajib_jasa' => 0,
+            'target_pokok' => $target_pokok,
+            'target_jasa' => $target_jasa,
+            'lu' => date('Y-m-d H:i:s'),
+            'id_user' => auth()->user()->id
+        ];
+
+        $alokasi_jasa = ($alokasi * ($pinkel->pros_jasa / 100));
+        for ($i = 1; $i <= $jangka; $i++) {
+            $angsuran_ke = $i;
+            $jatuh_tempo = $this->jatuh_tempo($i, $sistem_angsuran_pokok, $tgl_cair);
+
+            $sisa_pokok = $i % $angsuran_pokok['sistem'];
+            $sisa_jasa = $i % $angsuran_jasa['sistem'];
+            $ke_pokok = $i / $angsuran_pokok['sistem'];
+            $ke_jasa = $i / $angsuran_jasa['sistem'];
+
+            $pokok = $rencana_pokok[$i] ?: 0;
+            $jasa = $rencana_jasa[$i] ?: 0;
+
+            if ($sisa_pokok == 0 and $ke_pokok != $angsuran_pokok['tempo']) {
+                $pokok = $pokok;
+            } elseif ($sisa_pokok == 0 and $ke_pokok == $angsuran_pokok['tempo']) {
+                $pokok = $alokasi - $target_pokok;
+            } else {
+                $pokok = 0;
+            }
+
+            if ($sisa_jasa == 0 and $ke_jasa != $angsuran_jasa['tempo']) {
+                $jasa = $jasa;
+            } elseif ($sisa_jasa == 0 and $ke_jasa == $angsuran_jasa['tempo']) {
+                $jasa = $alokasi_jasa - $target_jasa;
+            } else {
+                $jasa = 0;
+            }
+
+            $target_jasa += $jasa;
+            $target_pokok += $pokok;
+            if ($i == 1) {
+                $target_pokok = $pokok;
+                $target_jasa = $jasa;
+            }
+
+            $data_rencana[strtotime($jatuh_tempo)] = [
+                'loan_id' => $pinkel->id,
+                'angsuran_ke' => $angsuran_ke,
+                'jatuh_tempo' => $jatuh_tempo,
+                'wajib_pokok' => $pokok,
+                'wajib_jasa' => $jasa,
+                'target_pokok' => $target_pokok,
+                'target_jasa' => $target_jasa,
+                'lu' => date('Y-m-d H:i:s'),
+                'id_user' => auth()->user()->id
+            ];
+            $rencana[] = $data_rencana[strtotime($jatuh_tempo)];
+        }
+
+        if (request()->get('save')) {
+            RencanaAngsuran::where('loan_id', $id_pinj)->delete();
+            RencanaAngsuran::insert($data_rencana);
+        }
+
+        return response()->json([
+            'success' => true,
+            'rencana_angsuran' => $rencana,
+            'rencana_angsuran_anggota' => $rencana_angsuran_anggota
+        ], Response::HTTP_OK);
+    }
+
+    public function _generate($id_pinj, $pinkel = null, $alokasi = null, $tgl = null, $pros_jasa = null)
     {
         $rencana = [];
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
@@ -2566,7 +2718,6 @@ class PinjamanKelompokController extends Controller
                 }
             }
         }
-
 
         $jenis_jasa = $pinkel->jenis_jasa;
         $jangka = $pinkel->jangka;
@@ -2856,6 +3007,181 @@ class PinjamanKelompokController extends Controller
             'ra' => $ra,
             'rencana' => $rencana
         ], Response::HTTP_OK);
+    }
+
+    private function sistem($sistem_angsuran, $jangka_pinjaman, $sistem)
+    {
+        if ($sistem_angsuran == 11) {
+            $tempo = ($jangka_pinjaman) - 24 / $sistem;
+            $mulai_angsuran = $jangka_pinjaman - $tempo;
+        } else if ($sistem_angsuran == 14) {
+            $tempo = ($jangka_pinjaman) - 3 / $sistem;
+            $mulai_angsuran = $jangka_pinjaman - $tempo;
+        } else if ($sistem_angsuran == 15) {
+            $tempo = ($jangka_pinjaman) - 2 / $sistem;
+            $mulai_angsuran = $jangka_pinjaman - $tempo;
+        } else if ($sistem_angsuran == 25) {
+            $tempo = ($jangka_pinjaman) - 1 / $sistem;
+            $mulai_angsuran = $jangka_pinjaman - $tempo;
+        } else if ($sistem_angsuran == 20) {
+            $tempo = ($jangka_pinjaman) - 12 / $sistem;
+            $mulai_angsuran = $jangka_pinjaman - $tempo;
+        } else {
+            $tempo = floor($jangka_pinjaman / $sistem);
+            $mulai_angsuran = 0;
+        }
+
+        return [
+            'tempo' => $tempo,
+            'sistem' => $sistem,
+            'mulai_angsuran' => $mulai_angsuran,
+        ];
+    }
+
+    private function detail_pinjaman($pinjaman, $desa, $batas_angsuran)
+    {
+        if ($pinjaman->status == 'P') {
+            $alokasi = $pinjaman->proposal;
+            $tgl_cair = $pinjaman->tgl_proposal;
+        } elseif ($pinjaman->status == 'V') {
+            $alokasi = $pinjaman->verifikasi;
+            $tgl_cair = $pinjaman->tgl_verifikasi;
+        } elseif ($pinjaman->status == 'W') {
+            $alokasi = $pinjaman->alokasi;
+            $tgl_cair = $pinjaman->tgl_cair;
+
+            if ($tgl_cair == "0000-00-00") {
+                $tgl_cair = $pinjaman->tgl_tunggu;
+            }
+        } else {
+            $alokasi = $pinjaman->alokasi;
+            $tgl_cair = $pinjaman->tgl_cair;
+
+            if ($tgl_cair == "0000-00-00") {
+                $tgl_cair = $pinjaman->tgl_tunggu;
+            }
+        }
+
+        $tanggal_cair = date('d', strtotime($tgl_cair));
+        if ($desa->jadwal_angsuran_desa > 0) {
+            $angsuran_desa = $desa->jadwal_angsuran_desa;
+            if ($angsuran_desa > 0) {
+                $tgl_pinjaman = date('Y-m', strtotime($tgl_cair));
+                $tgl_cair = $tgl_pinjaman . '-' . $angsuran_desa;
+            }
+        }
+
+        if ($batas_angsuran > 0) {
+            $batas_tgl_angsuran = $batas_angsuran;
+            if ($tanggal_cair >= $batas_tgl_angsuran) {
+                $tgl_cair = date('Y-m-d', strtotime('+1 month', strtotime($tgl_cair)));
+            }
+        }
+
+        return [
+            'alokasi' => $alokasi,
+            'tgl_cair' => $tgl_cair
+        ];
+    }
+
+    private function rencana_angsuran($pinkel, $angsuran_pokok, $angsuran_jasa, $alokasi, $pembulatan = '500')
+    {
+        $rencana_angsuran['pokok'] = [];
+        $rencana_angsuran['jasa'] = [];
+        $rencana_angsuran['jumlah_angsuran'] = 0;
+        for ($j = 1; $j <= $pinkel->jangka; $j++) {
+            $sisa_pokok = $j % $angsuran_pokok['sistem'];
+            $sisa_jasa = $j % $angsuran_jasa['sistem'];
+            $ke_pokok = $j / $angsuran_pokok['sistem'];
+            $ke_jasa = $j / $angsuran_jasa['sistem'];
+
+            $alokasi_pokok = $alokasi;
+            $alokasi_jasa = $alokasi * ($pinkel->pros_jasa / 100);
+
+            $wajib_angsuran_jasa = $alokasi_jasa / $angsuran_jasa['tempo'];
+            $wajib_angsuran_jasa = Keuangan::pembulatan(intval($wajib_angsuran_jasa), (string) $pembulatan);
+            $sum_angsuran_jasa = $wajib_angsuran_jasa * ($angsuran_jasa['tempo'] - 1);
+
+            if ($sisa_jasa == 0 and $ke_jasa != $angsuran_jasa['tempo'] && $ke_jasa > $angsuran_jasa['mulai_angsuran']) {
+                $jasa = $wajib_angsuran_jasa;
+            } elseif ($sisa_jasa == 0 and $ke_jasa == $angsuran_jasa['tempo']) {
+                $jasa = $alokasi_jasa - $sum_angsuran_jasa;
+            } else {
+                $jasa = 0;
+            }
+
+            $wajib_angsuran_pokok = $alokasi_pokok / $angsuran_pokok['tempo'];
+            $wajib_angsuran_pokok = Keuangan::pembulatan(intval($wajib_angsuran_pokok), (string) $pembulatan);
+
+            if ($pinkel->jenis_jasa == '1' && $pembulatan == '5000') {
+                $wajib_angsuran_pokok = ($alokasi_pokok / 10) - $jasa;
+                if ($pinkel->jangka == 24) {
+                    $wajib_angsuran_pokok = Keuangan::pembulatan((($alokasi_pokok / 10) - $jasa / 2), -500);
+
+                    if ($alokasi_pokok > 1000000) {
+                        $wajib_angsuran_pokok = Keuangan::pembulatan((($alokasi_pokok / 10) - $jasa / 2), 5000);
+                    }
+
+                    if ($alokasi_pokok != 20000000) {
+                        if ($alokasi_pokok >= 8000000) {
+                            $wajib_angsuran_pokok -= 5000;
+                        }
+
+                        if ($alokasi_pokok == 12000000 || $alokasi_pokok >= 14000000) {
+                            $wajib_angsuran_pokok -= 5000;
+                        }
+
+                        if ($alokasi_pokok == 18000000 || $alokasi_pokok == 6000000) {
+                            $wajib_angsuran_pokok -= 5000;
+                        }
+                    }
+                }
+            }
+
+            $sum_angsuran_pokok = $wajib_angsuran_pokok * ($angsuran_pokok['tempo'] - 1);
+
+            if ($sisa_pokok == 0 and $ke_pokok != $angsuran_pokok['tempo'] && $ke_pokok > $angsuran_pokok['mulai_angsuran']) {
+                $pokok = $wajib_angsuran_pokok;
+            } elseif ($sisa_pokok == 0 and $ke_pokok == $angsuran_pokok['tempo']) {
+                $pokok = $alokasi_pokok - $sum_angsuran_pokok;
+            } else {
+                $pokok = 0;
+            }
+            $rencana_angsuran['pokok'][$j] = $pokok;
+
+            if ($pinkel->jenis_jasa == '2') {
+                $jasa = $wajib_angsuran_jasa;
+                $alokasi -= $rencana_angsuran['pokok'][$j];
+            }
+
+            $rencana_angsuran['jasa'][$j] = $jasa;
+            if ($rencana_angsuran['jumlah_angsuran'] == 0) {
+                $rencana_angsuran['jumlah_angsuran'] = $pokok + $jasa;
+            }
+        }
+
+        return $rencana_angsuran;
+    }
+
+    private function jatuh_tempo($index, $sistem_angsuran_pokok, $tanggal)
+    {
+        if ($sistem_angsuran_pokok == 12) {
+            $tambah = $index * 7;
+            $penambahan = "+$tambah days";
+        } else {
+            $penambahan = "+$index month";
+        }
+
+        $tanggal_cair = date('Y-m', strtotime($tanggal));
+        $jatuh_tempo = date('Y-m', strtotime($penambahan, strtotime($tanggal_cair)));
+
+        if (date('d', strtotime($tanggal)) > date('t', strtotime($jatuh_tempo))) {
+            $jatuh_tempo = date('Y-m-t', strtotime($jatuh_tempo));
+        } else {
+            $jatuh_tempo = date('Y-m', strtotime($jatuh_tempo)) . '-' . date('d', strtotime($tanggal));
+        }
+
+        return $jatuh_tempo;
     }
 
     public function generateRA($id_pinj)

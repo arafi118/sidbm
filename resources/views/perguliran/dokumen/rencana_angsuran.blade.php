@@ -125,6 +125,9 @@
         </tr>
         @foreach ($rencana as $ra)
             @php
+                if ($ra->angsuran_ke == 0) {
+                    continue;
+                }
                 $wajib_angsur = $ra->wajib_pokok + $ra->wajib_jasa;
                 $jumlah_angsuran += $wajib_angsur;
                 $saldo_pokok -= $ra->wajib_pokok;

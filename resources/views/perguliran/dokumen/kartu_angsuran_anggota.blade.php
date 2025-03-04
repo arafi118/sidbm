@@ -85,6 +85,13 @@
                 }
             }
 
+            $keyId = 'id' . $pinj->id;
+            $rencana_angsuran = $generate->rencana_angsuran;
+            $rencana_angsuran_anggota = $generate->rencana_angsuran_anggota->$keyId;
+
+            $rencana_pokok = $rencana_angsuran_anggota->pokok;
+            $rencana_jasa = $rencana_angsuran_anggota->jasa;
+
             $jatuh_tempo = [];
             $no++;
         @endphp
@@ -150,25 +157,16 @@
                     <td>{{ number_format($pinj->alokasi) }}</td>
                     <td>Jasa</td>
                     <td align="center">:</td>
-                    <td>{{ number_format($pinkel->pros_jasa / $pinkel->jangka, 2) . '%' }}</td>
+                    <td>{{ number_format($pinj->pros_jasa / $pinj->jangka, 2) . '%' }}</td>
                 </tr>
                 <tr>
                     <td>Angsuran</td>
                     <td align="center">:</td>
 
-                    @php
-                        $jumlah_angsuran = 0;
-                        foreach ($rencana[$pinj->id] as $key => $renc) {
-                            if ($jumlah_angsuran == 0) {
-                                if ($renc->wajib_pokok + $renc->wajib_jasa > $jumlah_angsuran) {
-                                    $jumlah_angsuran = $renc->wajib_pokok + $renc->wajib_jasa;
-                                }
-                            }
-                        }
-                    @endphp
-
-                    <td style="display: inline-block;">{{ number_format($jumlah_angsuran) }} /
-                        {{ $pinkel->sis_pokok->nama_sistem }}</td>
+                    <td style="display: inline-block;">
+                        {{ number_format($rencana_angsuran_anggota->jumlah_angsuran) }} /
+                        {{ $pinkel->sis_pokok->nama_sistem }}
+                    </td>
                     <td colspan="3">
                         Angsuran pada tanggal {{ explode('-', $pinkel->target->jatuh_tempo)[2] }}
                     </td>
@@ -181,7 +179,7 @@
             </table>
 
             @php
-                $baris_angsuran = ceil(count($rencana[$pinj->id]) / 2);
+                $baris_angsuran = ceil(count($rencana_angsuran) / 2);
             @endphp
 
             <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
@@ -207,50 +205,71 @@
                     <th class="l t b r" align="center">Jasa</th>
                     <th rowspan="{{ $baris_angsuran + 1 }}">&nbsp;</th>
                 </tr>
+
+                @php
+                    $target_pokok1 = 0;
+                    $target_pokok2 = 0;
+                    $target_jasa1 = 0;
+                    $target_jasa2 = 0;
+                @endphp
                 @for ($j = 1; $j <= $baris_angsuran; $j++)
                     @php
                         $i = $j - 1;
-                        $jatuh_tempo[strtotime($rencana[$pinj->id][$i]->jatuh_tempo)] = [
-                            'pokok' => $rencana[$pinj->id][$i]->target_pokok,
-                            'jasa' => $rencana[$pinj->id][$i]->target_jasa,
-                            'jatuh_tempo' => $rencana[$pinj->id][$i]->jatuh_tempo,
+                        $ra = $rencana_angsuran[$i];
+                        $angsuran_ke = $ra->angsuran_ke;
+                        $wajib_pokok = $rencana_pokok->$angsuran_ke;
+                        $wajib_jasa = $rencana_jasa->$angsuran_ke;
+
+                        $target_pokok1 += $wajib_pokok;
+                        $target_jasa1 += $wajib_jasa;
+                        $jatuh_tempo[strtotime($ra->jatuh_tempo)] = [
+                            'pokok' => $target_pokok1,
+                            'jasa' => $target_jasa1,
+                            'jatuh_tempo' => $ra->jatuh_tempo,
                         ];
                     @endphp
                     <tr>
                         <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="center">
-                            {{ $rencana[$pinj->id][$i]->angsuran_ke }}
+                            {{ $ra->angsuran_ke }}
                         </td>
                         <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="center">
-                            {{ Tanggal::tglIndo($rencana[$pinj->id][$i]->jatuh_tempo) }}
+                            {{ Tanggal::tglIndo($ra->jatuh_tempo) }}
                         </td>
                         <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="right">
-                            {{ number_format($rencana[$pinj->id][$i]->wajib_pokok) }}
+                            {{ number_format($wajib_pokok) }}
                         </td>
                         <td class="l {{ $j == $baris_angsuran ? 'b' : '' }} r" align="right">
-                            {{ number_format($rencana[$pinj->id][$i]->wajib_jasa) }}
+                            {{ number_format($wajib_jasa) }}
                         </td>
 
                         <td>&nbsp;</td>
 
-                        @if (isset($rencana[$pinj->id][$i + $baris_angsuran]))
+                        @if (isset($rencana_angsuran[$i + $baris_angsuran]))
                             @php
-                                $jatuh_tempo[strtotime($rencana[$pinj->id][$i + $baris_angsuran]->jatuh_tempo)] = [
-                                    'pokok' => $rencana[$pinj->id][$i + $baris_angsuran]->target_pokok,
-                                    'jasa' => $rencana[$pinj->id][$i + $baris_angsuran]->target_jasa,
-                                    'jatuh_tempo' => $rencana[$pinj->id][$i + $baris_angsuran]->jatuh_tempo,
+                                $ra = $rencana_angsuran[$i + $baris_angsuran];
+                                $angsuran_ke = $ra->angsuran_ke;
+                                $wajib_pokok = $rencana_pokok->$angsuran_ke;
+                                $wajib_jasa = $rencana_jasa->$angsuran_ke;
+
+                                $target_pokok2 += $wajib_pokok;
+                                $target_jasa2 += $wajib_jasa;
+                                $jatuh_tempo[strtotime($ra->jatuh_tempo)] = [
+                                    'pokok' => $target_pokok2,
+                                    'jasa' => $target_jasa2,
+                                    'jatuh_tempo' => $ra->jatuh_tempo,
                                 ];
                             @endphp
                             <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="center">
-                                {{ $rencana[$pinj->id][$i + $baris_angsuran]->angsuran_ke }}
+                                {{ $ra->angsuran_ke }}
                             </td>
                             <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="center">
-                                {{ Tanggal::tglIndo($rencana[$pinj->id][$i + $baris_angsuran]->jatuh_tempo) }}
+                                {{ Tanggal::tglIndo($ra->jatuh_tempo) }}
                             </td>
                             <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="right">
-                                {{ number_format($rencana[$pinj->id][$i + $baris_angsuran]->wajib_pokok) }}
+                                {{ number_format($wajib_pokok) }}
                             </td>
                             <td class="l {{ $j == $baris_angsuran ? 'b' : '' }} r" align="right">
-                                {{ number_format($rencana[$pinj->id][$i + $baris_angsuran]->wajib_jasa) }}
+                                {{ number_format($wajib_jasa) }}
                             </td>
                         @else
                             <td class="l {{ $j == $baris_angsuran ? 'b' : '' }}" align="center">

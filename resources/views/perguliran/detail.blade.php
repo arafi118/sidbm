@@ -1241,8 +1241,8 @@
                             var id = result.id
                             $.get('/perguliran/generate/' + result.id + '?status=' + result.status +
                                 '&save=true',
-                                function(result) {
-                                    if (result.success) {
+                                function(res) {
+                                    if (res.success) {
                                         Swal.fire('Berhasil', result.msg, 'success').then(
                                             () => {
                                                 window.location.href = '/detail/' + id
