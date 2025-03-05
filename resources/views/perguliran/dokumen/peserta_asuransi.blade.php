@@ -97,18 +97,18 @@
 
     <table border="1" width="100%" align="center"cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
-            <th rowspan="2">No</th>
-            <th rowspan="2">Nama Anggota</th>
-            <th rowspan="2">TTL</th>
-            <th colspan="2">Piutang</th>
-            <th rowspan="2">Jumlah</th>
-            <th rowspan="2">Premi ({{ $kec->besar_premi }}%)</th>
-            <th rowspan="2">Keterangan</th>
-            <th rowspan="2">TTD</th>
+            <th rowspan="2" width="4%">No</th>
+            <th rowspan="2" width="16%">Nama Anggota</th>
+            <th rowspan="2" width="20%">TTL</th>
+            <th colspan="2" width="20%">Piutang</th>
+            <th rowspan="2" width="10%">Jumlah</th>
+            <th rowspan="2" width="10%">Premi ({{ $kec->besar_premi }}%)</th>
+            <th rowspan="2" width="10%">Ket.</th>
+            <th rowspan="2" width="10%">TTD</th>
         </tr>
         <tr>
-            <td>Pokok</td>
-            <td>Jasa</td>
+            <td width="10%">Pokok</td>
+            <td width="10%">Jasa</td>
         </tr>
 
         @php
