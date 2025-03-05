@@ -122,6 +122,18 @@ class PinjamanAnggotaController extends Controller
             $pros_jasa = 1.8 * $pinkel->jangka;
         }
 
+        if (Session::get('lokasi') == '522') {
+            $pinjaman_anggota = PinjamanAnggota::where('id_pinkel', $pinkel->id)->count();
+
+            $pros_jasa_kelompok = ($pinkel->pros_jasa / $pinkel->jangka) + 0.2;
+            $pros_jasa = $pros_jasa_kelompok * $pinkel->jangka;
+            if (($pinjaman_anggota + 1) >= '3') {
+                $updatePinjamanAnggota = PinjamanAnggota::where('id_pinkel', $pinkel->id)->update([
+                    'pros_jasa' => $pros_jasa,
+                ]);
+            }
+        }
+
         $insert = [
             'jenis_pinjaman' => 'K',
             'id_kel' => $pinkel->id_kel,
