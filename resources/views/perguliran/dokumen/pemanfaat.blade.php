@@ -5,7 +5,7 @@
 @extends('perguliran.dokumen.layout.base')
 
 @section('content')
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
@@ -20,12 +20,12 @@
             <td colspan="3" height="5"></td>
         </tr>
     </table>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr>
-            <td width="70">Nama Kelompok</td>
+            <td width="70">Kelompok</td>
             <td width="5" align="right">:</td>
             <td>{{ $pinkel->kelompok->nama_kelompok }} - {{ $pinkel->id }}</td>
-            <td width="70">Alokasi Piutang</td>
+            <td width="70">Alokasi</td>
             <td width="5" align="right">:</td>
             <td>Rp. {{ number_format($pinkel->proposal) }}</td>
         </tr>
@@ -33,15 +33,15 @@
             <td>Alamat</td>
             <td align="right">:</td>
             <td>{{ $pinkel->kelompok->alamat_kelompok }}</td>
-            <td>Sistem Angsuran</td>
+            <td>Sistem Angs.</td>
             <td align="right">:</td>
             <td>{{ $pinkel->sis_pokok->nama_sistem }}</td>
         </tr>
         <tr>
-            <td>Tanggal Proposal</td>
+            <td>Tgl. Proposal</td>
             <td align="right">:</td>
             <td>{{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
-            <td>Prosentase Jasa</td>
+            <td>Pros. Jasa</td>
             <td align="right">:</td>
             <td>{{ $pinkel->pros_jasa }}% / {{ $pinkel->jangka }} bulan</td>
         </tr>
@@ -54,7 +54,7 @@
             <td>0</td>
         </tr>
     </table>
-    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr style="background: rgb(232, 232, 232)">
             <th height="20" width="10">No</th>
             <th width="60">Nik</th>
@@ -91,7 +91,7 @@
             <td>&nbsp;</td>
         </tr>
     </table>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr>
             <td colspan="4">&nbsp;</td>
         </tr>
@@ -108,7 +108,7 @@
             <td>{{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
         </tr>
     </table>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr>
             <td colspan="2" height="20">&nbsp;</td>
         </tr>

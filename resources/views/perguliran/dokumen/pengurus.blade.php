@@ -15,7 +15,7 @@
 @extends('perguliran.dokumen.layout.base')
 
 @section('content')
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr class="b">
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
@@ -30,7 +30,7 @@
             <td colspan="3" height="5"></td>
         </tr>
     </table>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr>
             <td width="40">Kode {{ $pinkel->jenis_pp != '3' ? 'Kelompok' : 'Lembaga' }}</td>
             <td width="5" align="right">:</td>
@@ -68,7 +68,7 @@
             </td>
         </tr>
     </table>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; margin-top: 12px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px; margin-top: 12px;">
         <tr style="background: rgb(232, 232, 232)">
             <th class="l t b" height="16" width="10" align="center">No</th>
             <th class="l t b" width="150" align="center">Jabatan</th>

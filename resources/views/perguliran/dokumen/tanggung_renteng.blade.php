@@ -15,7 +15,7 @@
 @extends('perguliran.dokumen.layout.base')
 
 @section('content')
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr class="b">
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
@@ -30,7 +30,7 @@
 
 
     <div>Yang bertanda tangan di bawah ini,</div>
-    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr style="background: rgb(232,232,232)">
             <th width="10">No</th>
             <th width="60">Nik</th>
@@ -50,7 +50,7 @@
             </tr>
         @endforeach
     </table>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr>
             <td colspan="2">
                 <div style="text-align: justify;">
@@ -86,7 +86,7 @@
         <tr>
             <td colspan="2" style="padding: 0px !important;">
                 <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
-                    style="font-size: 11px;">
+                    style="font-size: 14px;">
                     <tr>
                         <td colspan="2" style="padding-top: 0px;">
                             <div style="text-align: justify;">

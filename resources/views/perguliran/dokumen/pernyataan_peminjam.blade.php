@@ -9,7 +9,7 @@
         @if ($loop->iteration > 1)
             <div class="break"></div>
         @endif
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
             <tr class="b">
                 <td colspan="3" align="center">
                     <div style="font-size: 18px;">
@@ -21,7 +21,7 @@
                 <td colspan="3" height="5"></td>
             </tr>
         </table>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px; text-align: justify;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px; text-align: justify;">
             <tr>
                 <td colspan="3">Yang bertanda tangan di bawah ini,</td>
             </tr>
@@ -108,7 +108,7 @@
                 </td>
             </tr>
         </table>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
             <tr>
                 <td colspan="3" height="20">&nbsp;</td>
             </tr>

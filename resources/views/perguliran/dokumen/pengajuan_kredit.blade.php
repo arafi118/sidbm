@@ -68,7 +68,7 @@
 </style>
 
 <title>{{ $judul }}</title>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
     <tr class="b">
         <td colspan="3" align="center">
             <div style="font-size: 16px;">
@@ -77,7 +77,7 @@
             <div style="font-size: 20px;">
                 <b>{{ $pinkel->kelompok->nama_kelompok }}</b>
             </div>
-            <div style="font-size: 11px;">
+            <div style="font-size: 14px;">
                 Alamat : {{ $pinkel->kelompok->alamat_kelompok }}
                 {{ $pinkel->kelompok->d->sebutan_desa->sebutan_desa }} {{ $pinkel->kelompok->d->nama_desa }}
                 {{ $kec->nama_kec }} {{ $nama_kabupaten }} Telp: {{ $pinkel->kelompok->telpon }}
@@ -88,7 +88,7 @@
         <td colspan="3" height="5"></td>
     </tr>
 </table>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
     <tr>
         <td width="30">&nbsp;</td>
         <td width="30">Nomor</td>
@@ -116,7 +116,7 @@
         </td>
     </tr>
 </table>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
     <tr>
         <td width="175">&nbsp;</td>
         <td width="100">
@@ -131,7 +131,7 @@
     </tr>
 
 </table>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
     <tr>
         <td colspan="3" align="center">
             <div style="font-size: 20px;">
@@ -143,7 +143,7 @@
         <td colspan="3" height="5"></td>
     </tr>
 </table>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
     <tr>
         <td width="30">&nbsp;</td>
         <td colspan="3">Yang bertanda tangan di bawah ini :</td>
@@ -214,7 +214,7 @@
         </td>
     </tr>
 </table>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; margin-top: 40px;">
+<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px; margin-top: 40px;">
     <tr>
         <td>&nbsp;</td>
         <td align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>

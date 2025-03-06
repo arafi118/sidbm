@@ -112,13 +112,13 @@
             </tr>
         </table>
 
-        <table border="0" width="85%" align="center"cellspacing="0" cellpadding="0" style="font-size: 12px;">
+        <table border="0" width="85%" align="center"cellspacing="0" cellpadding="0" style="font-size: 14px;">
             <tr>
                 <td align="center">
                     <div style="font-size: 18px;">
                         <b>SURAT REKOMENDASI KREDIT {{ strtoupper($pinkel->jpp->nama_jpp) }}</b>
                     </div>
-                    <div style="font-size: 12px;">
+                    <div style="font-size: 14px;">
                         Nomor: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -129,7 +129,7 @@
                 <td height="5"></td>
             </tr>
         </table>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
             <tr>
                 <td colspan="3" align="justify">
                     Yang bertanda tangan di bawah ini {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }}
@@ -200,7 +200,7 @@
             </tr>
         </table>
 
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
             <tr>
                 <td width="50%" height="30">&nbsp;</td>
                 <td width="50%">&nbsp;</td>
