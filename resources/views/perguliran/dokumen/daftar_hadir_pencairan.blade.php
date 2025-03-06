@@ -20,9 +20,9 @@
 
 @section('content')
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
-        <tr class="b">
+        <tr>
             <td align="center">
-                <div style="font-size: 18px;">
+                <div style="font-size: 18px; text-decoration: underline;">
                     <b>DAFTAR HADIR PENCAIRAN {{ $pinkel->jpp->nama_jpp }}</b>
                 </div>
             </td>

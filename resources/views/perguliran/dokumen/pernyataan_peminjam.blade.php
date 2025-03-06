@@ -10,9 +10,9 @@
             <div class="break"></div>
         @endif
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
-            <tr class="b">
+            <tr>
                 <td colspan="3" align="center">
-                    <div style="font-size: 18px;">
+                    <div style="font-size: 18px; text-decoration: underline;">
                         <b>SURAT PERNYATAAN PEMINJAM</b>
                     </div>
                 </td>

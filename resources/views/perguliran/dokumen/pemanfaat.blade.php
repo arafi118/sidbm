@@ -11,7 +11,7 @@
                 <div style="font-size: 18px;">
                     <b>DAFTAR PENERIMA</b>
                 </div>
-                <div style="font-size: 16px;">
+                <div style="font-size: 16px; text-decoration: underline;">
                     <b>PIUTANG/PEMANFAAT {{ $pinkel->jpp->nama_jpp }}</b>
                 </div>
             </td>

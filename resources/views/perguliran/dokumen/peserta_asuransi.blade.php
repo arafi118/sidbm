@@ -30,9 +30,9 @@
 
 @section('content')
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
-        <tr class="b">
+        <tr>
             <td colspan="3" align="center">
-                <div style="font-size: 18px;">
+                <div style="font-size: 18px; text-decoration: underline;">
                     <b>DAFTAR PENERIMAAN PREMI {{ strtoupper($kec->nama_asuransi_p) }}</b>
                 </div>
             </td>

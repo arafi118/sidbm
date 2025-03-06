@@ -19,9 +19,9 @@
             <tr>
                 <td colspan="3">&nbsp;</td>
             </tr>
-            <tr class="b">
+            <tr>
                 <td colspan="3" align="center">
-                    <div style="font-size: 16px;">
+                    <div style="font-size: 16px; text-decoration: underline;">
                         SURAT PERNYATAAN AHLI WARIS
                     </div>
                 </td>

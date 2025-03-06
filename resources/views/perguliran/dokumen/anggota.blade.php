@@ -7,12 +7,12 @@
 
 @section('content')
     <table border="0" width="100%" cellspacing="0" cellpadding="0" styzle="font-size: 14px;">
-        <tr class="b">
+        <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
                     <b>DAFTAR ANGGOTA</b>
                 </div>
-                <div style="font-size: 16px;">
+                <div style="font-size: 16px; text-decoration: underline;">
                     <b>KELOMPOK {{ strtoupper($pinkel->kelompok->nama_kelompok) }}</b>
                 </div>
             </td>
