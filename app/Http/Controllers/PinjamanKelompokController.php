@@ -2625,22 +2625,6 @@ class PinjamanKelompokController extends Controller
             $pokok = $rencana_pokok[$i] ?: 0;
             $jasa = $rencana_jasa[$i] ?: 0;
 
-            if ($sisa_pokok == 0 and $ke_pokok != $angsuran_pokok['tempo']) {
-                $pokok = $pokok;
-            } elseif ($sisa_pokok == 0 and $ke_pokok == $angsuran_pokok['tempo']) {
-                $pokok = $alokasi - $target_pokok;
-            } else {
-                $pokok = 0;
-            }
-
-            if ($sisa_jasa == 0 and $ke_jasa != $angsuran_jasa['tempo']) {
-                $jasa = $jasa;
-            } elseif ($sisa_jasa == 0 and $ke_jasa == $angsuran_jasa['tempo']) {
-                $jasa = $alokasi_jasa - $target_jasa;
-            } else {
-                $jasa = 0;
-            }
-
             $target_jasa += $jasa;
             $target_pokok += $pokok;
             if ($i == 1) {
@@ -3097,7 +3081,6 @@ class PinjamanKelompokController extends Controller
             $ke_jasa = $j / $angsuran_jasa['sistem'];
 
             $alokasi_jasa = $alokasi * ($pinkel->pros_jasa / 100);
-
             $wajib_angsuran_jasa = $alokasi_jasa / $angsuran_jasa['tempo'];
             $wajib_angsuran_jasa = Keuangan::pembulatan(intval($wajib_angsuran_jasa), (string) $pembulatan);
             $sum_angsuran_jasa = $wajib_angsuran_jasa * ($angsuran_jasa['tempo'] - 1);

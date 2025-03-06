@@ -252,25 +252,25 @@ class GenerateController extends Controller
                             $angsuran_ke = $i + $key;
                         }
                     }
+
+                    if ($sisa_pokok == 0 and $ke_pokok != $angsuran_pokok['tempo']) {
+                        $pokok = $pokok;
+                    } elseif ($sisa_pokok == 0 and $ke_pokok == $angsuran_pokok['tempo']) {
+                        $pokok = $alokasi - $target_pokok;
+                    } else {
+                        $pokok = 0;
+                    }
+
+                    if ($sisa_jasa == 0 and $ke_jasa != $angsuran_jasa['tempo']) {
+                        $jasa = $jasa;
+                    } elseif ($sisa_jasa == 0 and $ke_jasa == $angsuran_jasa['tempo']) {
+                        $jasa = $alokasi_jasa - $target_jasa;
+                    } else {
+                        $jasa = 0;
+                    }
                 } else {
                     $pokok = $rencana_pokok[$i] ?: 0;
                     $jasa = $rencana_jasa[$i] ?: 0;
-                }
-
-                if ($sisa_pokok == 0 and $ke_pokok != $angsuran_pokok['tempo']) {
-                    $pokok = $pokok;
-                } elseif ($sisa_pokok == 0 and $ke_pokok == $angsuran_pokok['tempo']) {
-                    $pokok = $alokasi - $target_pokok;
-                } else {
-                    $pokok = 0;
-                }
-
-                if ($sisa_jasa == 0 and $ke_jasa != $angsuran_jasa['tempo']) {
-                    $jasa = $jasa;
-                } elseif ($sisa_jasa == 0 and $ke_jasa == $angsuran_jasa['tempo']) {
-                    $jasa = $alokasi_jasa - $target_jasa;
-                } else {
-                    $jasa = 0;
                 }
 
                 $target_jasa += $jasa;
