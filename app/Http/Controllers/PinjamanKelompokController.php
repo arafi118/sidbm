@@ -1064,7 +1064,7 @@ class PinjamanKelompokController extends Controller
     public function rescedule(Request $request)
     {
         $id = $request->id;
-        $tgl_resceduling = $request->tgl_resceduling;
+        $tgl_resceduling = Tanggal::tglNasional($request->tgl_resceduling);
         $pengajuan = $request->_pengajuan;
         $sis_pokok = $request->sistem_angsuran_pokok;
         $sis_jasa = $request->sistem_angsuran_jasa;
@@ -1077,15 +1077,15 @@ class PinjamanKelompokController extends Controller
             'sis_pokok',
             'sis_jasa',
             'pinjaman_anggota',
-            'saldo' => function ($query) use ($request, $tgl_resceduling) {
+            'saldo' => function ($query) use ($id, $tgl_resceduling) {
                 $query->where([
-                    ['loan_id', $request->id],
+                    ['loan_id', $id],
                     ['tgl_transaksi', '<=', $tgl_resceduling]
                 ]);
             },
-            'target' => function ($query) use ($request, $tgl_resceduling) {
+            'target' => function ($query) use ($id, $tgl_resceduling) {
                 $query->where([
-                    ['loan_id', $request->id],
+                    ['loan_id', $id],
                     ['jatuh_tempo', '<=', $tgl_resceduling]
                 ]);
             }
@@ -1126,7 +1126,7 @@ class PinjamanKelompokController extends Controller
         }
 
         $trx_resc = Transaksi::create([
-            'tgl_transaksi' => (string) Tanggal::tglNasional($tgl_resceduling),
+            'tgl_transaksi' => (string) $tgl_resceduling,
             'rekening_debit' => (string) $rekening_1,
             'rekening_kredit' => (string) $rekening_2,
             'idtp' => $last_idtp + 1,
@@ -1140,7 +1140,7 @@ class PinjamanKelompokController extends Controller
         ]);
 
         $update_pinkel = PinjamanKelompok::where('id', $id)->update([
-            'tgl_lunas' => Tanggal::tglNasional($tgl_resceduling),
+            'tgl_lunas' => $tgl_resceduling,
             'status' => 'R',
             'lu' => date('Y-m-d H:i:s'),
             'user_id' => auth()->user()->id
@@ -1150,7 +1150,7 @@ class PinjamanKelompokController extends Controller
             ['id_pinkel', $id],
             ['status', 'A']
         ])->update([
-            'tgl_lunas' => Tanggal::tglNasional($tgl_resceduling),
+            'tgl_lunas' => $tgl_resceduling,
             'status' => 'R',
             'lu' => date('Y-m-d H:i:s'),
             'user_id' => auth()->user()->id
@@ -1159,12 +1159,12 @@ class PinjamanKelompokController extends Controller
         $pinjaman = PinjamanKelompok::create([
             'id_kel' => $pinkel->id_kel,
             'jenis_pp' => $pinkel->jenis_pp,
-            'tgl_proposal' => Tanggal::tglNasional($tgl_resceduling),
-            'tgl_verifikasi' => Tanggal::tglNasional($tgl_resceduling),
-            'tgl_dana' => Tanggal::tglNasional($tgl_resceduling),
-            'tgl_tunggu' => Tanggal::tglNasional($tgl_resceduling),
-            'tgl_cair' => Tanggal::tglNasional($tgl_resceduling),
-            'tgl_lunas' => Tanggal::tglNasional($tgl_resceduling),
+            'tgl_proposal' => $tgl_resceduling,
+            'tgl_verifikasi' => $tgl_resceduling,
+            'tgl_dana' => $tgl_resceduling,
+            'tgl_tunggu' => $tgl_resceduling,
+            'tgl_cair' => $tgl_resceduling,
+            'tgl_lunas' => $tgl_resceduling,
             'proposal' => $pengajuan,
             'verifikasi' => $pengajuan,
             'alokasi' => $pengajuan,
@@ -1183,7 +1183,7 @@ class PinjamanKelompokController extends Controller
         ]);
 
         $trx_cair = Transaksi::create([
-            'tgl_transaksi' => (string) Tanggal::tglNasional($tgl_resceduling),
+            'tgl_transaksi' => (string) $tgl_resceduling,
             'rekening_debit' => (string) $rekening_2,
             'rekening_kredit' => (string) $rekening_1,
             'idtp' => '0',
@@ -1199,20 +1199,20 @@ class PinjamanKelompokController extends Controller
         $realisasi_pokok = $trx_resc['jumlah'];
         $realisasi_jasa = 0;
 
-        $sum_pokok += $trx_resc['jumlah'];
+        $sum_pokok += $realisasi_pokok;
         $alokasi_pokok -= $sum_pokok;
-        $tunggakan_pokok -= $trx_resc['jumlah'];
+        $tunggakan_pokok -= $realisasi_pokok;
         if ($tunggakan_pokok <= 0) $tunggakan_pokok = 0;
 
-        $sum_jasa += $trx_resc['jumlah'];
+        $sum_jasa += $realisasi_jasa;
         $alokasi_jasa -= $sum_jasa;
-        $tunggakan_jasa -= $trx_resc['jumlah'];
+        $tunggakan_jasa -= $realisasi_jasa;
         if ($tunggakan_jasa <= 0) $tunggakan_jasa = 0;
 
         $real_angsuran = [
             'id' => $trx_resc['idtp'],
             'loan_id' => $pinkel->id,
-            'tgl_transaksi' => Tanggal::tglNasional($tgl_resceduling),
+            'tgl_transaksi' => $tgl_resceduling,
             'realisasi_pokok' => $realisasi_pokok,
             'realisasi_jasa' => $realisasi_jasa,
             'sum_pokok' => $sum_pokok,
