@@ -3089,13 +3089,13 @@ class PinjamanKelompokController extends Controller
         $rencana_angsuran['pokok'] = [];
         $rencana_angsuran['jasa'] = [];
         $rencana_angsuran['jumlah_angsuran'] = 0;
+        $alokasi_pokok = $alokasi;
         for ($j = 1; $j <= $pinkel->jangka; $j++) {
             $sisa_pokok = $j % $angsuran_pokok['sistem'];
             $sisa_jasa = $j % $angsuran_jasa['sistem'];
             $ke_pokok = $j / $angsuran_pokok['sistem'];
             $ke_jasa = $j / $angsuran_jasa['sistem'];
 
-            $alokasi_pokok = $alokasi;
             $alokasi_jasa = $alokasi * ($pinkel->pros_jasa / 100);
 
             $wajib_angsuran_jasa = $alokasi_jasa / $angsuran_jasa['tempo'];
