@@ -40,9 +40,12 @@
                 <th width="70">Tanda Tangan</th>
             </tr>
 
+            @php
+                $nomor = 1;
+            @endphp
             @foreach ($pinkel->pinjaman_anggota as $pa)
                 <tr>
-                    <td align="center">{{ $loop->iteration }}.</td>
+                    <td align="center">{{ $nomor }}.</td>
                     <td align="center">{{ $pa->anggota->nik }}</td>
                     <td>{{ $pa->anggota->namadepan }}</td>
                     <td align="center">{{ $pa->anggota->jk }}</td>
@@ -50,8 +53,12 @@
                         {{ $pa->anggota->alamat }} {{ $pa->anggota->d->sebutan_desa->sebutan_desa }}
                         {{ $pa->anggota->d->nama_desa }}
                     </td>
-                    <td>&nbsp;</td>
+                    <td>{{ $nomor }}.</td>
                 </tr>
+
+                @php
+                    $nomor++;
+                @endphp
             @endforeach
         </table>
     </div>
