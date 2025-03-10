@@ -159,7 +159,7 @@ class PinjamanAnggotaController extends Controller
             'sistem_angsuran' => $pinkel->sistem_angsuran,
             'sa_jasa' => $pinkel->sa_jasa,
             'status' => $pinkel->status,
-            'catatan_verifikasi' => $request->catatan_pinjaman,
+            'catatan_verifikasi' => '',
             'lu' => date('Y-m-d H:i:s'),
             'user_id' => auth()->user()->id,
         ];
