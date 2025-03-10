@@ -839,7 +839,7 @@ class PinjamanKelompokController extends Controller
                         'id' => $idpa,
                         $tgl => Tanggal::tglNasional($data[$tgl]),
                         $alokasi => $val,
-                        'status' => $data['status'],
+                        'status' => 'P',
                         'catatan_verifikasi' => $request->catatan[$idpa]
                     ];
 
@@ -864,7 +864,7 @@ class PinjamanKelompokController extends Controller
                 $query .= implode(' ', $cases);
                 $query .= " ELSE status END";
 
-                PinjamanAnggota::upsert($UpdatePinjamanAnggota, ['id'], ['tgl_dana', 'tgl_cair', $tgl, $alokasi, 'status']);
+                PinjamanAnggota::upsert($UpdatePinjamanAnggota, ['id'], ['tgl_dana', 'tgl_cair', $tgl, $alokasi, 'status', 'catatan_verifikasi']);
                 DB::update($query, $params);
             }
 
