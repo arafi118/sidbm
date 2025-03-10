@@ -88,7 +88,7 @@ class PelaporanController extends Controller
             foreach ($rekening as $rek) {
                 $data[] = [
                     'title' => $rek->kode_akun . '. ' . $rek->nama_akun,
-                    'value' => 'BB_' . $rek->kode_akun
+                    'value' => 'BB_' . $rek->kode_akun . '_' . $rek->nama_akun
                 ];
             }
         }
@@ -298,7 +298,7 @@ class PelaporanController extends Controller
 
                 if ($file == 3) {
                     $data['kode_akun'] = $laporan[1];
-                    $file_laporan = 'buku_besar ' . $laporan[1];
+                    $file_laporan = 'Buku Besar ' . $laporan[2] . ' (' . $laporan[1] . ')';
                 }
 
                 if ($file == 14) {
