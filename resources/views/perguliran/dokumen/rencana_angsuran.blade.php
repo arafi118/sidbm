@@ -26,6 +26,12 @@
         $tgl = $pinkel->tgl_cair;
     }
 
+    $pros_jasa = $pinkel->pros_jasa;
+    if (count($pinkel->pinjaman_anggota) >= 3) {
+        $pros_jasa_kelompok = $perguliran->pros_jasa / $perguliran->jangka + 0.2;
+        $pros_jasa = $pros_jasa_kelompok * $perguliran->jangka;
+    }
+
     $saldo_pokok = $alokasi;
     $alokasi_pinjaman = $alokasi;
     $saldo_jasa = $saldo_pokok * ($pinkel->pros_jasa / 100);

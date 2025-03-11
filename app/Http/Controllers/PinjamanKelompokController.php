@@ -1826,7 +1826,8 @@ class PinjamanKelompokController extends Controller
             'kelompok.d.sebutan_desa',
             'sis_pokok',
             'jasa',
-            'saldo_pinjaman'
+            'saldo_pinjaman',
+            'pinjaman_anggota'
         ])->first();
 
         $data['dir'] = User::where([
