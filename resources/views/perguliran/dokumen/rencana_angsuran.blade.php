@@ -28,8 +28,8 @@
 
     $pros_jasa = $pinkel->pros_jasa;
     if (count($pinkel->pinjaman_anggota) >= 3) {
-        $pros_jasa_kelompok = $perguliran->pros_jasa / $perguliran->jangka + 0.2;
-        $pros_jasa = $pros_jasa_kelompok * $perguliran->jangka;
+        $pros_jasa_kelompok = $pinkel->pros_jasa / $pinkel->jangka + 0.2;
+        $pros_jasa = $pros_jasa_kelompok * $pinkel->jangka;
     }
 
     $saldo_pokok = $alokasi;
