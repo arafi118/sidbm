@@ -27,7 +27,7 @@
     }
 
     $pros_jasa = $pinkel->pros_jasa;
-    if (count($pinkel->pinjaman_anggota) >= 3) {
+    if (count($pinkel->pinjaman_anggota) >= 3 && Session::get('lokasi') == '522') {
         $pros_jasa_kelompok = $pinkel->pros_jasa / $pinkel->jangka + 0.2;
         $pros_jasa = $pros_jasa_kelompok * $pinkel->jangka;
     }
