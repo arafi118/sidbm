@@ -202,8 +202,8 @@
 
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
             <tr>
-                <td width="50%" height="30">&nbsp;</td>
-                <td width="50%">&nbsp;</td>
+                <td width="40%" height="30">&nbsp;</td>
+                <td width="60%">&nbsp;</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
