@@ -756,7 +756,10 @@ class PinjamanKelompokController extends Controller
                 'status' => 'A'
             ]);
 
-            $keterangan = 'Pencairan Kel. ' . $perguliran->kelompok->nama_kelompok;
+            $desa = $perguliran->kelompok->d;
+            $nama_desa = $desa->sebutan_desa->sebutan_desa . ' ' . $desa->nama_desa;
+
+            $keterangan = 'Pencairan Kel. ' . $perguliran->kelompok->nama_kelompok . ' ' . $nama_desa;
             $keterangan .= ' (' . $perguliran->jpp->nama_jpp . ')';
 
             Transaksi::create([
