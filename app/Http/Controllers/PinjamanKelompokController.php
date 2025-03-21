@@ -487,16 +487,16 @@ class PinjamanKelompokController extends Controller
             }
         }
 
-        if (Session::get('lokasi') == '522') {
-            $pinjaman_anggota = PinjamanAnggota::where('id_pinkel', $perguliran->id)->count();
+        // if (Session::get('lokasi') == '522') {
+        //     $pinjaman_anggota = PinjamanAnggota::where('id_pinkel', $perguliran->id)->count();
 
-            $pros_jasa_kelompok = ($perguliran->pros_jasa / $perguliran->jangka) + 0.2;
-            if ($pinjaman_anggota >= '3') {
-                $updatePinjamanAnggota = PinjamanAnggota::where('id_pinkel', $perguliran->id)->update([
-                    'pros_jasa' => $pros_jasa_kelompok * $perguliran->jangka,
-                ]);
-            }
-        }
+        //     $pros_jasa_kelompok = ($perguliran->pros_jasa / $perguliran->jangka) + 0.2;
+        //     if ($pinjaman_anggota >= '3') {
+        //         $updatePinjamanAnggota = PinjamanAnggota::where('id_pinkel', $perguliran->id)->update([
+        //             'pros_jasa' => $pros_jasa_kelompok * $perguliran->jangka,
+        //         ]);
+        //     }
+        // }
 
         return view('perguliran.partials/' . $view)->with(compact('perguliran', 'jenis_jasa', 'sistem_angsuran', 'sumber_bayar', 'debet', 'pinj_a'));
     }
@@ -2524,6 +2524,7 @@ class PinjamanKelompokController extends Controller
         $data_rencana = [];
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
 
+        $is_generate_kelompok = false;
         if ($pinkel == null) {
             $pinkel = PinjamanKelompok::where('id', $id_pinj)->with([
                 'kelompok',
@@ -2535,6 +2536,8 @@ class PinjamanKelompokController extends Controller
                 'sis_pokok',
                 'sis_jasa',
             ])->firstOrFail();
+
+            $is_generate_kelompok = true;
         }
 
         $data_pinjaman[] = $pinkel->id;
@@ -2550,7 +2553,7 @@ class PinjamanKelompokController extends Controller
         $angsuran_jasa = $this->sistem($sistem_angsuran_jasa, $jangka, $sistem_jasa);
 
         $rencana_angsuran_anggota = [];
-        if (count($pinkel->pinjaman_anggota) > 0) {
+        if (count($pinkel->pinjaman_anggota) > 0 && $is_generate_kelompok == false) {
             $alokasi = 0;
             $rencana_pokok = [];
             $rencana_jasa = [];
