@@ -487,17 +487,6 @@ class PinjamanKelompokController extends Controller
             }
         }
 
-        // if (Session::get('lokasi') == '522') {
-        //     $pinjaman_anggota = PinjamanAnggota::where('id_pinkel', $perguliran->id)->count();
-
-        //     $pros_jasa_kelompok = ($perguliran->pros_jasa / $perguliran->jangka) + 0.2;
-        //     if ($pinjaman_anggota >= '3') {
-        //         $updatePinjamanAnggota = PinjamanAnggota::where('id_pinkel', $perguliran->id)->update([
-        //             'pros_jasa' => $pros_jasa_kelompok * $perguliran->jangka,
-        //         ]);
-        //     }
-        // }
-
         return view('perguliran.partials/' . $view)->with(compact('perguliran', 'jenis_jasa', 'sistem_angsuran', 'sumber_bayar', 'debet', 'pinj_a'));
     }
 
@@ -2559,12 +2548,20 @@ class PinjamanKelompokController extends Controller
             $rencana_jasa = [];
             $alokasi_jasa_anggota = [];
             foreach ($pinkel->pinjaman_anggota as $pinjaman_anggota) {
+                $pros_jasa_anggota = $pinjaman_anggota->pros_jasa;
+                if (Session::get('lokasi') == '522') {
+                    $pros_jasa_kelompok = ($pinkel->pros_jasa / $pinkel->jangka) + 0.2;
+                    if ($pinkel->pinjaman_anggota >= '3') {
+                        $pros_jasa_anggota = $pros_jasa_kelompok * $pinkel->jangka;
+                    }
+                }
+
                 $detail_pinjaman = $this->detail_pinjaman($pinjaman_anggota, $desa, $kec->batas_angsuran);
                 $alokasi_anggota = $detail_pinjaman['alokasi'];
-                $alokasi_jasa_anggota[$pinjaman_anggota->id] = $alokasi_anggota * ($pinjaman_anggota->pros_jasa / 100);
+                $alokasi_jasa_anggota[$pinjaman_anggota->id] = $alokasi_anggota * ($pros_jasa_anggota / 100);
                 $tgl_cair = $detail_pinjaman['tgl_cair'];
 
-                $rencana_angsuran = $this->rencana_angsuran($pinjaman_anggota, $angsuran_pokok, $angsuran_jasa, $alokasi_anggota, $kec->pembulatan);
+                $rencana_angsuran = $this->rencana_angsuran($pinjaman_anggota, $angsuran_pokok, $angsuran_jasa, $alokasi_anggota, $kec->pembulatan, $pros_jasa_anggota);
                 $pokok = $rencana_angsuran['pokok'];
                 $jasa = $rencana_angsuran['jasa'];
 
@@ -2599,7 +2596,7 @@ class PinjamanKelompokController extends Controller
             $alokasi = $detail_pinjaman['alokasi'];
             $tgl_cair = $detail_pinjaman['tgl_cair'];
 
-            $rencana_angsuran = $this->rencana_angsuran($pinkel, $angsuran_pokok, $angsuran_jasa, $alokasi, $kec->pembulatan, 'pokok');
+            $rencana_angsuran = $this->rencana_angsuran($pinkel, $angsuran_pokok, $angsuran_jasa, $alokasi, $kec->pembulatan);
             $rencana_pokok = $rencana_angsuran['pokok'];
             $rencana_jasa = $rencana_angsuran['jasa'];
         }
@@ -3075,8 +3072,10 @@ class PinjamanKelompokController extends Controller
         ];
     }
 
-    private function rencana_angsuran($pinkel, $angsuran_pokok, $angsuran_jasa, $alokasi, $pembulatan = '500')
+    private function rencana_angsuran($pinkel, $angsuran_pokok, $angsuran_jasa, $alokasi, $pembulatan = '500', $pros_jasa = null)
     {
+        $pros_jasa = $pros_jasa ?: $pinkel->pros_jasa;
+
         $rencana_angsuran['pokok'] = [];
         $rencana_angsuran['jasa'] = [];
         $rencana_angsuran['jumlah_angsuran'] = 0;
@@ -3087,7 +3086,7 @@ class PinjamanKelompokController extends Controller
             $ke_pokok = $j / $angsuran_pokok['sistem'];
             $ke_jasa = $j / $angsuran_jasa['sistem'];
 
-            $alokasi_jasa = $alokasi * ($pinkel->pros_jasa / 100);
+            $alokasi_jasa = $alokasi * ($pros_jasa / 100);
             $wajib_angsuran_jasa = $alokasi_jasa / $angsuran_jasa['tempo'];
             $wajib_angsuran_jasa = Keuangan::pembulatan(intval($wajib_angsuran_jasa), (string) $pembulatan);
             $sum_angsuran_jasa = $wajib_angsuran_jasa * ($angsuran_jasa['tempo'] - 1);

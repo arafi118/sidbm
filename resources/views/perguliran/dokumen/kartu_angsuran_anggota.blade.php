@@ -92,6 +92,14 @@
             $rencana_pokok = $rencana_angsuran_anggota->pokok;
             $rencana_jasa = $rencana_angsuran_anggota->jasa;
 
+            $pros_jasa_anggota = $pinj->pros_jasa;
+            if (Session::get('lokasi') == '522') {
+                $pros_jasa_kelompok = $pinkel->pros_jasa / $pinkel->jangka + 0.2;
+                if ($pinkel->pinj >= '3') {
+                    $pros_jasa_anggota = $pros_jasa_kelompok * $pinkel->jangka;
+                }
+            }
+
             $jatuh_tempo = [];
             $no++;
         @endphp
@@ -157,7 +165,7 @@
                     <td>{{ number_format($pinj->alokasi) }}</td>
                     <td>Jasa</td>
                     <td align="center">:</td>
-                    <td>{{ number_format($pinj->pros_jasa / $pinj->jangka, 2) . '%' }}</td>
+                    <td>{{ number_format($pros_jasa_anggota / $pinj->jangka, 2) . '%' }}</td>
                 </tr>
                 <tr>
                     <td>Angsuran</td>
