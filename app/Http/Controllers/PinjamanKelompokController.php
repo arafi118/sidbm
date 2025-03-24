@@ -2199,7 +2199,7 @@ class PinjamanKelompokController extends Controller
             'pinjaman_anggota.anggota',
         ])->withCount('real')->first();
 
-        $data['generate'] = $this->generate($id)->getData();
+        $data['generate'] = $this->generate($id, $data['pinkel'])->getData();
         $data['barcode'] = DNS1D::getBarcodePNG($id, 'C128');
 
         $data['dir'] = User::where([
