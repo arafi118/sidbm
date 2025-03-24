@@ -2541,6 +2541,7 @@ class PinjamanKelompokController extends Controller
         $angsuran_pokok = $this->sistem($sistem_angsuran_pokok, $jangka, $sistem_pokok);
         $angsuran_jasa = $this->sistem($sistem_angsuran_jasa, $jangka, $sistem_jasa);
 
+        dd($pinkel->pinjaman_anggota, $is_generate_kelompok);
         $rencana_angsuran_anggota = [];
         if (count($pinkel->pinjaman_anggota) > 0 && $is_generate_kelompok == false) {
             $alokasi = 0;
