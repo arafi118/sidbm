@@ -1836,7 +1836,7 @@ class TransaksiController extends Controller
         $bendahara = $pinkel->kelompok->bendahara;
         if ($pinkel->struktur_kelompok) {
             $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
-            $bendahara = $struktur_kelompok['bendahara'];
+            $bendahara = isset($struktur_kelompok['bendahara']) ? $struktur_kelompok['bendahara'] : '';
         }
 
         return response()->json([
