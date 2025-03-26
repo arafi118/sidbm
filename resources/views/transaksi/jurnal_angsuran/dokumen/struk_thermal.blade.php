@@ -20,8 +20,8 @@
         $angsuran_ke = $ra_bulan_ini->angsuran_ke;
     }
 
-    if ($ra) {
-        $angsuran_ke = intval($ra->angsuran_ke);
+    if ($angsuran) {
+        $angsuran_ke = intval($angsuran->angsuran_ke);
     }
 
     $angsuran_ke = 1;

@@ -20,8 +20,8 @@
         $angsuran_ke = intval($ra_bulan_ini->angsuran_ke);
     }
 
-    if ($ra) {
-        $angsuran_ke = intval($ra->angsuran_ke);
+    if ($angsuran) {
+        $angsuran_ke = intval($angsuran->angsuran_ke);
     }
 
     $jum_angsuran = $pinkel->jangka / $pinkel->sis_pokok->sistem;
