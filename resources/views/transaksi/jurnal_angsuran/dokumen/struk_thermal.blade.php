@@ -20,6 +20,10 @@
         $angsuran_ke = $ra_bulan_ini->angsuran_ke;
     }
 
+    if ($ra) {
+        $angsuran_ke = intval($ra->angsuran_ke);
+    }
+
     $angsuran_ke = 1;
     $jum_angsuran = $pinkel->jangka / $pinkel->sis_pokok->sistem;
     if ($ra_bulan_ini->angsuran_ke > 0) {
