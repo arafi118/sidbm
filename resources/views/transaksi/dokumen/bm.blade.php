@@ -167,7 +167,7 @@
                         <td width="30%">Jumlah</td>
                         <td width="2%">:</td>
                         <td colspan="3" class="keterangan">
-                            Rp. {{ number_format($trx->jumlah, 2) }}
+                            Rp. {{ number_format(floatval($trx->jumlah), 2) }}
                         </td>
                     </tr>
                     <tr>
