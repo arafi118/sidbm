@@ -3129,9 +3129,9 @@ class PinjamanKelompokController extends Controller
 
             $sum_angsuran_pokok = $wajib_angsuran_pokok * ($angsuran_pokok['tempo'] - 1);
 
-            if ($sisa_pokok == 0 and $ke_pokok != $angsuran_pokok['tempo'] && $ke_pokok > $angsuran_pokok['mulai_angsuran']) {
+            if ($sisa_pokok == 0 && $ke_pokok != $pinkel->jangka && $ke_pokok > $angsuran_pokok['mulai_angsuran']) {
                 $pokok = $wajib_angsuran_pokok;
-            } elseif ($sisa_pokok == 0 and $ke_pokok == $angsuran_pokok['tempo']) {
+            } elseif ($sisa_pokok == 0 && $ke_pokok == $pinkel->jangka) {
                 $pokok = $alokasi_pokok - $sum_angsuran_pokok;
             } else {
                 $pokok = 0;

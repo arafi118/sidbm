@@ -163,7 +163,7 @@
 
                 $b = '';
                 if ($ra->angsuran_ke == $jangka) {
-                    $b = '';
+                    $b = 'b';
                 }
             @endphp
             <tr>
