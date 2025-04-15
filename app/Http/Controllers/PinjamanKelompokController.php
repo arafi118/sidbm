@@ -3091,9 +3091,9 @@ class PinjamanKelompokController extends Controller
             $wajib_angsuran_jasa = Keuangan::pembulatan(intval($wajib_angsuran_jasa), (string) $pembulatan);
             $sum_angsuran_jasa = $wajib_angsuran_jasa * ($angsuran_jasa['tempo'] - 1);
 
-            if ($sisa_jasa == 0 and $ke_jasa != $angsuran_jasa['tempo'] && $ke_jasa > $angsuran_jasa['mulai_angsuran']) {
+            if ($sisa_jasa == 0 and $ke_jasa != $pinkel->jangka && $ke_jasa > $angsuran_jasa['mulai_angsuran']) {
                 $jasa = $wajib_angsuran_jasa;
-            } elseif ($sisa_jasa == 0 and $ke_jasa == $angsuran_jasa['tempo']) {
+            } elseif ($sisa_jasa == 0 and $ke_jasa == $pinkel->jangka) {
                 $jasa = $alokasi_jasa - $sum_angsuran_jasa;
             } else {
                 $jasa = 0;
