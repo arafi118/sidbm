@@ -47,7 +47,7 @@
             <td align="center">&nbsp;</td>
             <td>1.&nbsp; Alamat</td>
             <td align="right">:</td>
-            <td style="font-weight: bold;">{{ $pinkel->kelompok->alamat }}</td>
+            <td style="font-weight: bold;">{{ $pinkel->kelompok->alamat_kelompok }}</td>
         </tr>
         <tr>
             <td width="30">&nbsp;</td>
