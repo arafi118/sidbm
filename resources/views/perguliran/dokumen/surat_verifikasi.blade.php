@@ -34,7 +34,7 @@
             <td>Perihal</td>
             <td align="center">:</td>
             <td colspan="2">
-                <b>Kelayakan Piutang</b>
+                <b>Pemberitahuan dan Undangan Verifikasi</b>
             </td>
         </tr>
         <tr>
