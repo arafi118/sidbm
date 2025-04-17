@@ -99,6 +99,11 @@
             'file' => 'formVerifikasiAnggota',
             'withExcel' => false,
         ],
+        [
+            'title' => 'Surat Verifikasi',
+            'file' => 'suratVerifikasi',
+            'withExcel' => false,
+        ],
     ];
 
     $dokumen_pencairan = [

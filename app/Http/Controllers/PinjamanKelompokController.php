@@ -2507,6 +2507,32 @@ class PinjamanKelompokController extends Controller
         }
     }
 
+    public function suratVerifikasi($id, $data)
+    {
+        $keuangan = new Keuangan;
+
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
+            'jpp',
+            'jasa',
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa'
+        ])->first();
+
+        $data['keuangan'] = $keuangan;
+        $data['statusDokumen'] = request()->get('status');
+
+        $data['judul'] = 'Surat Verifikasi (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
+        $view = view('perguliran.dokumen.surat_verifikasi', $data)->render();
+
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view);
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
+    }
+
     public function generate($id_pinj, $pinkel = null)
     {
         $rencana = [];
