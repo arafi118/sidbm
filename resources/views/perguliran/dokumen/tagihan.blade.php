@@ -106,7 +106,10 @@
                         <td>Prosentase Jasa</td>
                         <td>:</td>
                         <td>
-                            <b>{{ number_format($pinkel->pros_jasa / $pinkel->jangka, 2) }}% per Bulan</b>
+                            <b>
+                                {{ number_format($pinkel->pros_jasa > 0 ? $pinkel->pros_jasa / $pinkel->jangka : 0, 2) }}%
+                                per Bulan
+                            </b>
                         </td>
                     </tr>
                     <tr>

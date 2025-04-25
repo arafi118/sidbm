@@ -24,6 +24,16 @@
         $tanggal = 'Tanggal Cair';
         $tgl = $pinkel->tgl_cair;
     }
+
+    $ketua = $pinkel->kelompok->ketua;
+    $sekretaris = $pinkel->kelompok->sekretaris;
+    $bendahara = $pinkel->kelompok->bendahara;
+    if ($pinkel->struktur_kelompok) {
+        $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
+        $ketua = isset($struktur_kelompok['ketua']) ? $struktur_kelompok['ketua'] : '';
+        $sekretaris = isset($struktur_kelompok['sekretaris']) ? $struktur_kelompok['sekretaris'] : '';
+        $bendahara = isset($struktur_kelompok['bendahara']) ? $struktur_kelompok['bendahara'] : '';
+    }
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
@@ -85,7 +95,7 @@
             <td>Ketua</td>
             <td align="center">:</td>
             <td>
-                <b>{{ $pinkel->kelompok->ketua }}</b>
+                <b>{{ $ketua }}</b>
             </td>
             <td>Sistem Bagi Hasil</td>
             <td align="center">:</td>
@@ -190,7 +200,7 @@
                 <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
             </td>
             <td align="center" colspan="3">
-                <b>{{ $pinkel->kelompok->ketua }}</b>
+                <b>{{ $ketua }}</b>
             </td>
         </tr>
     </table>

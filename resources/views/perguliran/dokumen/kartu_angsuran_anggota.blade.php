@@ -7,6 +7,15 @@
     }
 
     $no = 0;
+    $ketua = $pinkel->kelompok->ketua;
+    $sekretaris = $pinkel->kelompok->sekretaris;
+    $bendahara = $pinkel->kelompok->bendahara;
+    if ($pinkel->struktur_kelompok) {
+        $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
+        $ketua = isset($struktur_kelompok['ketua']) ? $struktur_kelompok['ketua'] : '';
+        $sekretaris = isset($struktur_kelompok['sekretaris']) ? $struktur_kelompok['sekretaris'] : '';
+        $bendahara = isset($struktur_kelompok['bendahara']) ? $struktur_kelompok['bendahara'] : '';
+    }
 @endphp
 
 <!DOCTYPE html>
@@ -472,7 +481,7 @@
                 </tr>
                 <tr style="font-weight: bold; font-size: 12px; text-transform: uppercase;">
                     <td width="350" align="center">
-                        {{ $pinkel->kelompok->ketua }}
+                        {{ $ketua }}
                     </td>
                     <td width="350" align="center">
                         <div>{{ $pinj->anggota->namadepan }}</div>
