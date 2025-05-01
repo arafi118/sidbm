@@ -75,6 +75,15 @@
                     </li>
                 @endif
                 <li class="nav-item ps-3">
+                    <a href="/download/panduan-transaksi-sidbm.xlsx" class="nav-link text-body p-0 position-relative"
+                        target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Panduan Transaksi"
+                        data-container="body" data-animation="true">
+                        <i class="material-icons me-sm-1">
+                            tips_and_updates
+                        </i>
+                    </a>
+                </li>
+                <li class="nav-item ps-3">
                     <a href="/download/profil-sidbm-baru.ppt" class="nav-link text-body p-0 position-relative"
                         target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="Profil Sidbm"
                         data-container="body" data-animation="true">
