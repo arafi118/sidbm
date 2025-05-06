@@ -100,6 +100,7 @@ class Pinjaman
                 '{sekdes}' => $desa->sekdes,
                 '{ked}' => $desa->ked,
                 '{desa}' => $desa->nama_desa,
+                '{pangkat}' => $desa->pangkat,
                 '{sebutan_kades}' => $desa->sebutan_desa->sebutan_kades,
                 '1' => '1',
                 '0' => '0'
