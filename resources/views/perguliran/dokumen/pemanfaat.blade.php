@@ -69,10 +69,10 @@
             <th class="t l b" width="19%">Nik</th>
             <th class="t l b" width="15%">Nama Anggota</th>
             <th class="t l b" width="3%">JK</th>
-            <th class="t l b" width="23%">Alamat</th>
+            <th class="t l b" width="20%">Alamat</th>
             <th class="t l b" width="15%">Penjamin</th>
             <th class="t l b" width="15%">Pengajuan</th>
-            <th class="t l b r" width="5%">Ttd</th>
+            <th class="t l b r" width="8%">Ttd</th>
         </tr>
 
         @php
