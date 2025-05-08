@@ -1571,6 +1571,8 @@ class PinjamanKelompokController extends Controller
             ['lokasi', Session::get('lokasi')]
         ])->first();
 
+        $data['pinjaman_ke'] = PinjamanKelompok::where('id_kel', $data['pinkel']->kelompok->id)->where('tgl_proposal', '<', $data['pinkel']->tgl_proposal)->count();
+
         $data['judul'] = 'Daftar Pemanfaat (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.pemanfaat', $data)->render();
 
