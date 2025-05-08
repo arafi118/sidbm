@@ -99,9 +99,9 @@
                 <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                     style="table-layout: fixed;">
                     <tr style="font-weight: bold;">
-                        <td class="t l b" height="15" align="center" width="80%">JUMLAH</td>
+                        <td class="t l b" height="15" align="center" width="77%">JUMLAH</td>
                         <td class="t l b" align="right" width="15%">{{ number_format($proposal) }}</td>
-                        <td class="t l b r" width="5%">&nbsp;</td>
+                        <td class="t l b r" width="8%">&nbsp;</td>
                     </tr>
                 </table>
 
