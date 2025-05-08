@@ -58,7 +58,7 @@
         <tr>
             <td>Piutang Ke-</td>
             <td align="right">:</td>
-            <td>0</td>
+            <td>{{ $pinjaman_ke + 1 }}</td>
             <td colspan="3"></td>
         </tr>
     </table>
