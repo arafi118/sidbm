@@ -1,18 +1,28 @@
 @php
     use App\Utils\Tanggal;
+
+    $ketua = $pinkel->kelompok->ketua;
+    $sekretaris = $pinkel->kelompok->sekretaris;
+    $bendahara = $pinkel->kelompok->bendahara;
+    if ($pinkel->struktur_kelompok) {
+        $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
+        $ketua = isset($struktur_kelompok['ketua']) ? $struktur_kelompok['ketua'] : '';
+        $sekretaris = isset($struktur_kelompok['sekretaris']) ? $struktur_kelompok['sekretaris'] : '';
+        $bendahara = isset($struktur_kelompok['bendahara']) ? $struktur_kelompok['bendahara'] : '';
+    }
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
 
 @section('content')
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
-                    <b>DAFTAR PENERIMA</b>
+                    <b>DAFTAR CALON PEMANFAAT</b>
                 </div>
                 <div style="font-size: 16px; text-decoration: underline;">
-                    <b>PIUTANG/PEMANFAAT {{ $pinkel->jpp->nama_jpp }}</b>
+                    <b>PIUTANG {{ $pinkel->jpp->nama_jpp }}</b>
                 </div>
             </td>
         </tr>
@@ -20,12 +30,12 @@
             <td colspan="3" height="5"></td>
         </tr>
     </table>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px;">
         <tr>
             <td width="70">Kelompok</td>
             <td width="5" align="right">:</td>
             <td>{{ $pinkel->kelompok->nama_kelompok }} - {{ $pinkel->id }}</td>
-            <td width="70">Alokasi</td>
+            <td width="70">Pengajuan</td>
             <td width="5" align="right">:</td>
             <td>Rp. {{ number_format($pinkel->proposal) }}</td>
         </tr>
@@ -46,12 +56,10 @@
             <td>{{ $pinkel->pros_jasa }}% / {{ $pinkel->jangka }} bulan</td>
         </tr>
         <tr>
-            <td>Nomor SPK</td>
-            <td align="right">:</td>
-            <td>{{ $pinkel->spk_no }}</td>
             <td>Piutang Ke-</td>
             <td align="right">:</td>
             <td>0</td>
+            <td colspan="3"></td>
         </tr>
     </table>
 
@@ -98,43 +106,22 @@
                 </table>
 
                 <table class="p0" border="0" width="100%" cellspacing="0" cellpadding="0"
-                    style="font-size: 14px;">
+                    style="font-size: 12px;">
                     <tr>
-                        <td colspan="4" height="10"></td>
+                        <td colspan="3" height="10">&nbsp;</td>
                     </tr>
                     <tr>
-                        <td width="50%">&nbsp;</td>
-                        <td width="16%">Diterima Di</td>
-                        <td width="2%">:</td>
-                        <td width="32%">{{ substr($pinkel->wt_cair, 6) }}</td>
+                        <td align="center" width="33%">Ketua</td>
+                        <td align="center" width="33%">Sekretaris</td>
+                        <td align="center" width="33%">Bendahara</td>
                     </tr>
                     <tr>
-                        <td>&nbsp;</td>
-                        <td>Pada Tanggal</td>
-                        <td>:</td>
-                        <td>{{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
-                    </tr>
-                </table>
-
-                <table class="p0" border="0" width="100%" cellspacing="0" cellpadding="0"
-                    style="font-size: 14px;">
-                    <tr>
-                        <td colspan="2" height="10">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td align="center" width="50%">Mengetahui,</td>
-                        <td align="center" width="50%">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td align="center">{{ $kec->sebutan_level_1 }}</td>
-                        <td align="center">Ketua Kelompok</td>
-                    </tr>
-                    <tr>
-                        <td align="center" colspan="2" height="30">&nbsp;</td>
+                        <td align="center" colspan="3" height="30">&nbsp;</td>
                     </tr>
                     <tr style="font-weight: bold;">
-                        <td align="center">{{ $dir->namadepan }} {{ $dir->namabelakang }}</td>
-                        <td align="center">{{ $pinkel->kelompok->ketua }}</td>
+                        <td align="center">{{ $ketua }}</td>
+                        <td align="center">{{ $sekretaris }}</td>
+                        <td align="center">{{ $bendahara }}</td>
                     </tr>
                 </table>
             </td>
