@@ -354,94 +354,98 @@
                     $target_pokok = 0;
                     $target_jasa = 0;
                 @endphp
-                @foreach ($pinkel->real as $real)
-                    @php
-                        $jumlah++;
-                        $nomor = $loop->iteration;
 
-                        $b = $nomor + 3 == $rowspan ? 'b' : '';
+                @if ($angsuran)
+                    @foreach ($pinkel->real as $real)
+                        @php
+                            $jumlah++;
+                            $nomor = $loop->iteration;
 
-                        $tgl_transaksi = $real->tgl_transaksi;
-                        $waktu_transaksi = strtotime($real->tgl_transaksi);
-                        ksort($jatuh_tempo);
-                        foreach ($jatuh_tempo as $key => $jt) {
-                            if ($key <= $waktu_transaksi) {
-                                $target_pokok = $jt['pokok'];
-                                $target_jasa = $jt['jasa'];
+                            $b = $nomor + 3 == $rowspan ? 'b' : '';
+
+                            $tgl_transaksi = $real->tgl_transaksi;
+                            $waktu_transaksi = strtotime($real->tgl_transaksi);
+                            ksort($jatuh_tempo);
+                            foreach ($jatuh_tempo as $key => $jt) {
+                                if ($key <= $waktu_transaksi) {
+                                    $target_pokok = $jt['pokok'];
+                                    $target_jasa = $jt['jasa'];
+                                }
                             }
-                        }
 
-                        $pokok = 0;
-                        $jasa = 0;
-                        $tunggakan_pokok = 0;
-                        $tunggakan_jasa = 0;
-
-                        if (!array_key_exists($real->id, $kom_pokok)) {
-                            $pros_pokok_anggota = ($pinj->alokasi / $pinkel->alokasi) * 100;
-                            $pokok = ($pros_pokok_anggota / 100) * $real->realisasi_pokok;
-                        } else {
-                            $pokok = $kom_pokok[$real->id];
-                        }
-
-                        if (!array_key_exists($real->id, $kom_jasa)) {
-                            $jasa_pinjaman = ($pinkel->pros_jasa / 100) * $pinkel->alokasi;
-
-                            $pros_jasa_anggota = ((($pinj->pros_jasa / 100) * $pinj->alokasi) / $jasa_pinjaman) * 100;
-                            $jasa = ($pros_jasa_anggota / 100) * $real->realisasi_jasa;
-                        } else {
-                            $jasa = $kom_jasa[$real->id];
-                        }
-
-                        $sum_pokok += $pokok;
-                        $sum_jasa += $jasa;
-
-                        $tunggakan_pokok = $target_pokok - $sum_pokok;
-                        if ($tunggakan_pokok < 0) {
+                            $pokok = 0;
+                            $jasa = 0;
                             $tunggakan_pokok = 0;
-                        }
-
-                        $tunggakan_jasa = $target_jasa - $sum_jasa;
-                        if ($tunggakan_jasa < 0) {
                             $tunggakan_jasa = 0;
-                        }
 
-                        $saldo_pokok = $alokasi_pokok - $sum_pokok;
-                        if ($saldo_pokok < 0) {
-                            $saldo_pokok = 0;
-                        }
-                        $saldo_jasa = $alokasi_jasa - $sum_jasa;
-                        if ($saldo_jasa < 0) {
-                            $saldo_jasa = 0;
-                        }
+                            if (!array_key_exists($real->id, $kom_pokok)) {
+                                $pros_pokok_anggota = ($pinj->alokasi / $pinkel->alokasi) * 100;
+                                $pokok = ($pros_pokok_anggota / 100) * $real->realisasi_pokok;
+                            } else {
+                                $pokok = $kom_pokok[$real->id];
+                            }
 
-                        $sign = 'TF';
-                        if ($real->transaksi->rekening_debit == '1.1.01.01') {
-                            $sign = 'TN';
-                        }
-                    @endphp
-                    <tr>
-                        <td class="l {{ $b }}" align="center">{{ $nomor }}</td>
-                        <td class="l {{ $b }}" align="center">
-                            {{ Tanggal::tglIndo($real->tgl_transaksi) }}
-                        </td>
-                        <td class="l {{ $b }}" align="right">{{ number_format($pokok) }}
-                        </td>
-                        <td class="l {{ $b }}" align="right">
-                            {{ number_format($tunggakan_pokok) }}
-                        </td>
-                        <td class="l {{ $b }}" align="right">{{ number_format($jasa) }}
-                        </td>
-                        <td class="l {{ $b }}" align="right">
-                            {{ number_format($tunggakan_jasa) }}
-                        </td>
-                        <td class="l {{ $b }}" align="right">{{ number_format($saldo_pokok) }}
-                        </td>
-                        <td class="l {{ $b }}" align="right">{{ number_format($saldo_jasa) }}</td>
-                        <td class="l {{ $b }} r" align="center">
-                            {{ $sign }}-{{ $real->id }}
-                        </td>
-                    </tr>
-                @endforeach
+                            if (!array_key_exists($real->id, $kom_jasa)) {
+                                $jasa_pinjaman = ($pinkel->pros_jasa / 100) * $pinkel->alokasi;
+
+                                $pros_jasa_anggota =
+                                    ((($pinj->pros_jasa / 100) * $pinj->alokasi) / $jasa_pinjaman) * 100;
+                                $jasa = ($pros_jasa_anggota / 100) * $real->realisasi_jasa;
+                            } else {
+                                $jasa = $kom_jasa[$real->id];
+                            }
+
+                            $sum_pokok += $pokok;
+                            $sum_jasa += $jasa;
+
+                            $tunggakan_pokok = $target_pokok - $sum_pokok;
+                            if ($tunggakan_pokok < 0) {
+                                $tunggakan_pokok = 0;
+                            }
+
+                            $tunggakan_jasa = $target_jasa - $sum_jasa;
+                            if ($tunggakan_jasa < 0) {
+                                $tunggakan_jasa = 0;
+                            }
+
+                            $saldo_pokok = $alokasi_pokok - $sum_pokok;
+                            if ($saldo_pokok < 0) {
+                                $saldo_pokok = 0;
+                            }
+                            $saldo_jasa = $alokasi_jasa - $sum_jasa;
+                            if ($saldo_jasa < 0) {
+                                $saldo_jasa = 0;
+                            }
+
+                            $sign = 'TF';
+                            if ($real->transaksi->rekening_debit == '1.1.01.01') {
+                                $sign = 'TN';
+                            }
+                        @endphp
+                        <tr>
+                            <td class="l {{ $b }}" align="center">{{ $nomor }}</td>
+                            <td class="l {{ $b }}" align="center">
+                                {{ Tanggal::tglIndo($real->tgl_transaksi) }}
+                            </td>
+                            <td class="l {{ $b }}" align="right">{{ number_format($pokok) }}
+                            </td>
+                            <td class="l {{ $b }}" align="right">
+                                {{ number_format($tunggakan_pokok) }}
+                            </td>
+                            <td class="l {{ $b }}" align="right">{{ number_format($jasa) }}
+                            </td>
+                            <td class="l {{ $b }}" align="right">
+                                {{ number_format($tunggakan_jasa) }}
+                            </td>
+                            <td class="l {{ $b }}" align="right">{{ number_format($saldo_pokok) }}
+                            </td>
+                            <td class="l {{ $b }}" align="right">{{ number_format($saldo_jasa) }}</td>
+                            <td class="l {{ $b }} r" align="center">
+                                {{ $sign }}-{{ $real->id }}
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
 
                 @if ($jumlah < 16)
                     @for ($i = 1; $i <= 16 - $jumlah; $i++)

@@ -2141,8 +2141,10 @@ class PinjamanKelompokController extends Controller
             ['jabatan', '1']
         ])->first();
 
+
         $data['laporan'] = 'Kartu Angsuran ' . $data['pinkel']->kelompok->nama_kelompok;
         $data['laporan'] .= ' Loan ID. ' . $id;
+        $data['angsuran'] = (str_contains(url()->previous(), 'detail')) ? false : true;
         return view('perguliran.dokumen.kartu_angsuran', $data);
     }
 
@@ -2182,6 +2184,7 @@ class PinjamanKelompokController extends Controller
         }
 
         $data['laporan'] .= ' Loan ID. ' . $id;
+        $data['angsuran'] = (str_contains(url()->previous(), 'detail')) ? false : true;
         return view('perguliran.dokumen.kartu_angsuran_anggota', $data);
     }
 

@@ -280,38 +280,43 @@
             @php
                 $jumlah = 0;
             @endphp
-            @foreach ($pinkel->real as $real)
-                @php
-                    $jumlah++;
-                    $nomor = $loop->iteration;
+            @if ($angsuran)
+                @foreach ($pinkel->real as $real)
+                    @php
+                        $jumlah++;
+                        $nomor = $loop->iteration;
 
-                    $b = $nomor + 3 == $rowspan ? 'b' : '';
+                        $b = $nomor + 3 == $rowspan ? 'b' : '';
 
-                    $sign = 'TF';
-                    if ($real->transaksi->rekening_debit == '1.1.01.01') {
-                        $sign = 'TN';
-                    }
-                @endphp
-                <tr>
-                    <td class="l {{ $b }}" align="center">{{ $nomor }}</td>
-                    <td class="l {{ $b }}" align="center">{{ Tanggal::tglIndo($real->tgl_transaksi) }}
-                    </td>
-                    <td class="l {{ $b }}" align="right">{{ number_format($real->realisasi_pokok) }}
-                    </td>
-                    <td class="l {{ $b }}" align="right">
-                        {{ number_format($real->tunggakan_pokok < 0 ? 0 : $real->tunggakan_pokok) }}
-                    </td>
-                    <td class="l {{ $b }}" align="right">{{ number_format($real->realisasi_jasa) }}</td>
-                    <td class="l {{ $b }}" align="right">
-                        {{ number_format($real->tunggakan_jasa < 0 ? 0 : $real->tunggakan_jasa) }}
-                    </td>
-                    <td class="l {{ $b }}" align="right">{{ number_format($real->saldo_pokok) }}</td>
-                    <td class="l {{ $b }}" align="right">{{ number_format($real->saldo_jasa) }}</td>
-                    <td class="l {{ $b }} r" align="center">
-                        {{ $sign }}-{{ $real->id }}
-                    </td>
-                </tr>
-            @endforeach
+                        $sign = 'TF';
+                        if ($real->transaksi->rekening_debit == '1.1.01.01') {
+                            $sign = 'TN';
+                        }
+                    @endphp
+                    <tr>
+                        <td class="l {{ $b }}" align="center">{{ $nomor }}</td>
+                        <td class="l {{ $b }}" align="center">
+                            {{ Tanggal::tglIndo($real->tgl_transaksi) }}
+                        </td>
+                        <td class="l {{ $b }}" align="right">{{ number_format($real->realisasi_pokok) }}
+                        </td>
+                        <td class="l {{ $b }}" align="right">
+                            {{ number_format($real->tunggakan_pokok < 0 ? 0 : $real->tunggakan_pokok) }}
+                        </td>
+                        <td class="l {{ $b }}" align="right">{{ number_format($real->realisasi_jasa) }}
+                        </td>
+                        <td class="l {{ $b }}" align="right">
+                            {{ number_format($real->tunggakan_jasa < 0 ? 0 : $real->tunggakan_jasa) }}
+                        </td>
+                        <td class="l {{ $b }}" align="right">{{ number_format($real->saldo_pokok) }}
+                        </td>
+                        <td class="l {{ $b }}" align="right">{{ number_format($real->saldo_jasa) }}</td>
+                        <td class="l {{ $b }} r" align="center">
+                            {{ $sign }}-{{ $real->id }}
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
 
             @if ($jumlah < 16)
                 @for ($i = 1; $i <= 16 - $jumlah; $i++)
