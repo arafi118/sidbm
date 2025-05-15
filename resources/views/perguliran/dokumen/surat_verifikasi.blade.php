@@ -20,7 +20,7 @@
             <td width="50">Nomor</td>
             <td width="10" align="center">:</td>
             <td colspan="2">
-                ______/DBM/{{ Tanggal::tglRomawi($pinkel->tgl_dana) }}
+                ______/{{ Tanggal::tglRomawi($pinkel->tgl_dana) }}
             </td>
         </tr>
         <tr>
@@ -62,7 +62,7 @@
                 <div>Dengan hormat,</div>
                 <div style="text-align: justify;">
                     Menindaklanjuti tahapan perguliran, dengan ini diberitahukan tentang <b><u>JADWAL VERIFIKASI</u></b> di
-                    desa setempat dan diharap kehadiranya untuk kegiatan tersebut yang akan dilaksanakan dengan ketentuan
+                    desa setempat dan diharap kehadirannya untuk kegiatan tersebut yang akan dilaksanakan dengan ketentuan
                     sebagai berikut;
                 </div>
                 <table>
@@ -83,9 +83,9 @@
                     </tr>
                     <tr>
                         <td>3.</td>
-                        <td>Tanggal Proposal</td>
+                        <td>Tanggal Verifikasi</td>
                         <td>:</td>
-                        <td>{{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
+                        <td>{{ Tanggal::tglLatin($pinkel->tgl_verifikasi) }}</td>
                     </tr>
                     <tr>
                         <td>4.</td>
@@ -148,7 +148,7 @@
         <tr>
             <td width="50%">&nbsp;</td>
             <td width="50%" align="center">
-                {{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_dana) }}
+                {{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_verifikasi) }}
             </td>
         </tr>
         <tr>
