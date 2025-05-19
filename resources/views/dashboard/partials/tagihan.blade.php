@@ -39,6 +39,14 @@
                                 $tagihan_pokok -= $pinj->saldo->sum_pokok;
                                 $tagihan_jasa -= $pinj->saldo->sum_jasa;
                             }
+
+                            if ($tagihan_pokok < 0) {
+                                $tagihan_pokok = 0;
+                            }
+
+                            if ($tagihan_jasa < 0) {
+                                $tagihan_jasa = 0;
+                            }
                         @endphp
                         <tr>
                             <td>
