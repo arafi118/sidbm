@@ -519,7 +519,7 @@ class DashboardController extends Controller
         $pinjaman = PinjamanKelompok::where('status', 'A')->whereDay('tgl_cair', date('d', strtotime($tanggal)))->with([
             'target' => function ($query) use ($tanggal) {
                 $query->where([
-                    ['jatuh_tempo', $tanggal],
+                    ['jatuh_tempo', '<=', $tanggal],
                     ['angsuran_ke', '!=', '0']
                 ]);
             },

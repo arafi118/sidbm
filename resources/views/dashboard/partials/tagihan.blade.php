@@ -33,11 +33,11 @@
                             $value = str_replace('{Angsuran Pokok}', number_format($pinj->target->wajib_pokok), $value);
                             $value = str_replace('{Angsuran Jasa}', number_format($pinj->target->wajib_jasa), $value);
 
-                            $tagihan_pokok = $pinj->target->wajib_pokok;
-                            $tagihan_jasa = $pinj->target->wajib_jasa;
+                            $tagihan_pokok = $pinj->target->target_pokok;
+                            $tagihan_jasa = $pinj->target->target_jasa;
                             if ($pinj->saldo) {
-                                $tagihan_pokok = $pinj->saldo->tunggakan_pokok;
-                                $tagihan_jasa = $pinj->saldo->tunggakan_jasa;
+                                $tagihan_pokok -= $pinj->saldo->sum_pokok;
+                                $tagihan_jasa -= $pinj->saldo->sum_jasa;
                             }
                         @endphp
                         <tr>
