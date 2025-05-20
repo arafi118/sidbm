@@ -70,11 +70,13 @@
                         </div>
                         <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
                             <div class="card card-plain">
-                                <div class="card-header text-center mb-0">
+                                <div style="text-wrap: nowrap;"
+                                    class="card-header mb-0 d-flex flex-column align-items-center">
                                     <img src="{{ $logo }}" style="width: 150px;" alt="Avatar" />
-                                    <h5 class="font-weight-bolder">
-                                        {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}
+                                    <h5 class="font-weight-bolder mb-0">
+                                        {{ $kec->nama_lembaga_sort }}
                                     </h5>
+                                    <h5 class="font-weight-bolder">{{ $kec->sebutan_kec }} {{ $kec->nama_kec }}</h5>
                                     <p class="mb-0">
                                         Masukkan <b>Username</b> dan <b>Password</b>
                                     </p>
