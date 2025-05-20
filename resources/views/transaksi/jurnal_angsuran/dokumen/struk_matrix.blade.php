@@ -93,15 +93,13 @@
 
 <style type="text/css">
     .style1 {
-        letter-spacing: 5px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 10px;
+        font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+        font-size: 12px;
     }
 
     .style2 {
-        letter-spacing: 3px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 7px;
+        font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+        font-size: 9px;
     }
 
     .top {
@@ -125,15 +123,13 @@
     }
 
     .style26 {
-        font-family: Verdana, Arial, Helvetica, sans-serif;
-        letter-spacing: 5px;
+        font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
     }
 
     .style27 {
-        font-family: Verdana, Arial, Helvetica, sans-serif;
-        font-size: 7px;
+        font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+        font-size: 9px;
         font-weight: bold;
-        letter-spacing: 5px;
     }
 </style>
 
