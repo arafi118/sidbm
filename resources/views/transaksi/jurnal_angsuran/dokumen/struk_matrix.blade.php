@@ -93,13 +93,15 @@
 
 <style type="text/css">
     .style1 {
-        font-family: "Courier", monospace;
-        font-size: 12pt;
+        letter-spacing: 5px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 10px;
     }
 
     .style2 {
-        font-family: "Courier", monospace;
-        font-size: 10pt;
+        letter-spacing: 3px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 7px;
     }
 
     .top {
@@ -123,22 +125,15 @@
     }
 
     .style26 {
-        font-family: "Courier", monospace;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        letter-spacing: 5px;
     }
 
     .style27 {
-        font-family: "Courier", monospace;
-        font-size: 10pt;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 7px;
         font-weight: bold;
-    }
-
-    table {
-        border-collapse: collapse;
-    }
-
-    td,
-    th {
-        padding: 1px 3px;
+        letter-spacing: 5px;
     }
 </style>
 
