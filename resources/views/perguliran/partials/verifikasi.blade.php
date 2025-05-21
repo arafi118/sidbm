@@ -218,7 +218,7 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="input-group input-group-static my-3">
-                            <label for="tgl_tunggu">Tgl Tunggu</label>
+                            <label for="tgl_tunggu">Tgl Penetapan</label>
                             <input autocomplete="off" type="text" name="tgl_tunggu" id="tgl_tunggu"
                                 class="form-control date" value="{{ Tanggal::tglIndo($perguliran->tgl_verifikasi) }}">
                             <small class="text-danger" id="msg_tgl_tunggu"></small>

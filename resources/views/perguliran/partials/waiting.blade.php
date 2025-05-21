@@ -157,7 +157,7 @@
                         </h6>
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center text-sm">
-                                Tgl Tunggu
+                                Tgl Penetapan
                                 <span class="badge badge-warning badge-pill">
                                     {{ Tanggal::tglIndo($perguliran->tgl_tunggu) }}
                                 </span>
