@@ -102,12 +102,12 @@
             <td align="center">:</td>
             <td>Ketua Kelompok</td>
         </tr>
-        <tr>
-            <td>Nama Lengkap</td>
-            <td align="center">:</td>
-            <td>{{ $sekretaris }}</td>
-        </tr>
         @if (Session::get('lokasi') != '523')
+            <tr>
+                <td>Nama Lengkap</td>
+                <td align="center">:</td>
+                <td>{{ $sekretaris }}</td>
+            </tr>
             <tr>
                 <td>Jabatan</td>
                 <td align="center">:</td>
