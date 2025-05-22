@@ -3,29 +3,36 @@
     @method('PUT')
 
     @if ($pinj_a['jumlah_pinjaman'] > 0)
-        <div class="alert alert-danger text-white" role="alert">
+        <div class="alert border border-danger text-danger" role="alert">
             <span class="text-sm">
                 <b>Anggota Kelompok</b>
                 terdeteksi memiliki kewajiban angsuran pinjaman
             </span>
         </div>
-        <table class="table table-striped table-danger">
+        <table class="table table-striped">
             <thead>
-                <tr class="bg-danger">
-                    <th align="center" width="10">No</th>
-                    <th align="center">Nama</th>
-                    <th>Loan ID.</th>
+                <tr>
+                    <th align="center" width="10"><span class="text-danger">No</span></th>
+                    <th align="center"><span class="text-danger">Nama</span></th>
+                    <th><span class="text-danger">Loan ID.</span></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($pinj_a['pinjaman'] as $pa)
                     <tr>
-                        <td align="center">{{ $loop->iteration }}</td>
-                        <td align="left">{{ ucwords(strtolower($pa->anggota->namadepan)) }} ({{ $pa->nia }})</td>
+                        <td align="center">
+                            <span class="text-danger">
+                                {{ $loop->iteration }}
+                            </span>
+                        </td>
+                        <td align="left">
+                            <span class="text-danger">
+                                {{ ucwords(strtolower($pa->anggota->namadepan)) }} ({{ $pa->nia }})
+                            </span>
+                        </td>
                         <td>
                             <a href="/detail/{{ $pa->id_pinkel }}" target="_blank"
                                 class="text-danger text-gradient font-weight-bold">
-
                                 {{ $pa->kelompok->nama_kelompok }} Loan ID. {{ $pa->id_pinkel }}
                             </a>.
                         </td>
@@ -36,7 +43,7 @@
     @endif
 
     @if ($pinj_a['jumlah_pemanfaat'] > 0)
-        <div class="alert alert-danger text-white" role="alert">
+        <div class="alert border border-danger text-danger" role="alert">
             <span class="text-sm">
                 Salah satu anggota pemanfaat masih terdaftar pada pinjaman di kecamatan lain
             </span>
@@ -45,12 +52,12 @@
 
     @if ($pinj_a['jumlah_kelompok'] > 0)
         @foreach ($pinj_a['kelompok'] as $kel)
-            <div class="alert alert-danger text-white" role="alert">
+            <div class="alert border border-danger text-danger" role="alert">
                 <span class="text-sm">
                     <b>Kelompok {{ ucwords(strtolower($kel->kelompok->nama_kelompok)) }}</b> masih memiliki kewajiban
                     angsuran pinjaman dengan
-                    <a href="/detail/{{ $kel->id }}" target="_blank" class="alert-link text-white">
-                        Loan ID. {{ $kel->id }}
+                    <a href="/detail/{{ $kel->id }}" target="_blank" class="font-weight-bold">
+                        <span class="text-danger">Loan ID. {{ $kel->id }}</span>
                     </a>.
                 </span>
             </div>

@@ -18,201 +18,21 @@
         $jenis_pinjaman = 'Kelompok';
     }
 
-    $dokumen_proposal = [
-        [
-            'title' => 'Cover',
-            'file' => 'coverProposal',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Check List',
-            'file' => 'check',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Surat Permohonan Pinjaman',
-            'file' => 'suratPengajuanPinjaman',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Surat Rekomendasi Kredit',
-            'file' => 'suratRekomendasi',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Profil ' . $jenis_pinjaman,
-            'file' => 'profilKelompok',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Susunan Pengurus',
-            'file' => 'susunanPengurus',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Daftar Anggota ' . $jenis_pinjaman,
-            'file' => 'anggotaKelompok',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Daftar Pemanfaat',
-            'file' => 'daftarPemanfaat',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Pernyataan Tanggung Renteng',
-            'file' => 'tanggungRenteng',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'FC KTP Pemanfaat & Penjamin',
-            'file' => 'fotoCopyKTP',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Surat Pernyataan Peminjam',
-            'file' => 'pernyataanPeminjam',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'BA Musyawarah ' . $jenis_pinjaman,
-            'file' => 'baMusyawarahDesa',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Form Verifikasi',
-            'file' => 'formVerifikasi',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Daftar Hadir Verifikasi',
-            'file' => 'daftarHadirVerifikasi',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Rencana Angsuran',
-            'file' => 'rencanaAngsuran',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Form Verifikasi Anggota',
-            'file' => 'formVerifikasiAnggota',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Surat Verifikasi',
-            'file' => 'suratVerifikasi',
-            'withExcel' => false,
-        ],
-    ];
+    $dokumen_proposal = [];
+    $dokumen_pencairan = [];
+    foreach ($dokumenPinjaman as $dokumen) {
+        $daftarDokumen = [
+            'title' => $dokumen->title,
+            'file' => $dokumen->file,
+            'withExcel' => $dokumen->excel,
+        ];
 
-    $dokumen_pencairan = [
-        [
-            'title' => 'Cover',
-            'file' => 'coverPencairan',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Surat Perjanjian Kredit',
-            'file' => 'spk',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Surat Kelayakan',
-            'file' => 'suratKelayakan',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Surat Kuasa',
-            'file' => 'suratKuasa',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Berita Acara Pencairan',
-            'file' => 'BaPencairan',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Daftar Hadir Pencairan',
-            'file' => 'daftarHadirPencairan',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Tanda Terima',
-            'file' => 'tandaTerima',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Kartu Angsuran',
-            'file' => 'kartuAngsuran',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Kartu Angsuran Anggota',
-            'file' => 'kartuAngsuranAnggota',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Rencana Angsuran',
-            'file' => 'rencanaAngsuran',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Pemberitahuan Ke Desa',
-            'file' => 'pemberitahuanDesa',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Penerima IPTW',
-            'file' => 'iptw',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Peserta Asuransi',
-            'file' => 'pesertaAsuransi',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Tanggung Renteng Kematian',
-            'file' => 'tanggungRentengKematian',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Pernyataan Tanggung Renteng',
-            'file' => 'pernyataanTanggungRenteng',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Kuitansi',
-            'file' => 'kuitansi',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Kuitansi Anggota',
-            'file' => 'kuitansiAnggota',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Surat Tagihan',
-            'file' => 'suratTagihan',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Surat Ahli Waris',
-            'file' => 'suratAhliWaris',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Form Verifikasi',
-            'file' => 'formVerifikasi',
-            'withExcel' => false,
-        ],
-        [
-            'title' => 'Berita Acara Pendanaan',
-            'file' => 'BaPendanaan',
-            'withExcel' => false,
-        ],
-    ];
+        if ($dokumen->jenis_dokumen == 'dokumen_proposal') {
+            $dokumen_proposal[] = $daftarDokumen;
+        } else {
+            $dokumen_pencairan[] = $daftarDokumen;
+        }
+    }
 
     $TombolEdit = false;
     if (in_array('tahapan_perguliran.proposal.edit_proposal', Session::get('tombol'))) {
@@ -452,6 +272,49 @@
                             </div>
                         </div>
                     </form>
+
+                    @if ($perguliran->status == 'W')
+                        @if ($pinj_a['jumlah_pinjaman'] > 0)
+                            <div class="alert border border-danger text-danger" role="alert">
+                                <span class="text-sm">
+                                    <b>Anggota Kelompok</b>
+                                    terdeteksi memiliki kewajiban angsuran pinjaman
+                                </span>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th align="center" width="10"><span class="text-danger">No</span></th>
+                                            <th align="center"><span class="text-danger">Nama</span></th>
+                                            <th><span class="text-danger">Loan ID.</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($pinj_a['pinjaman'] as $pa)
+                                            <tr>
+                                                <td align="center">
+                                                    <span class="text-danger">
+                                                        {{ $loop->iteration }}
+                                                    </span>
+                                                </td>
+                                                <td align="left">
+                                                    <span class="text-danger">
+                                                        {{ ucwords(strtolower($pa->anggota->namadepan)) }}
+                                                        ({{ $pa->nia }})
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <a href="/detail/{{ $pa->id_pinkel }}" target="_blank"
+                                                        class="text-danger text-gradient font-weight-bold">
+                                                        {{ $pa->kelompok->nama_kelompok }} Loan ID. {{ $pa->id_pinkel }}
+                                                    </a>.
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                    @endif
 
                     <form action="/perguliran/dokumen?status={{ $perguliran->status }}" target="_blank" method="post">
                         @csrf

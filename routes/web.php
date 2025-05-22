@@ -23,6 +23,7 @@ use App\Http\Controllers\PinjamanAnggotaController;
 use App\Http\Controllers\PinjamanKelompokController;
 use App\Http\Controllers\ServiceWorkerController;
 use App\Http\Controllers\SopController;
+use App\Http\Controllers\TandaTanganController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use App\Models\Kecamatan;
@@ -161,6 +162,9 @@ Route::post('/pengaturan/sop/simpanttdpelaporan', [SopController::class, 'simpan
 
 Route::get('/pengaturan/proyeksi_pendapatan_jasa', [SopController::class, 'RencanaPendapatanJasa'])->middleware('auth');
 Route::post('/pengaturan/proyeksi_pendapatan_jasa', [SopController::class, 'PreviewPendapatanJasa'])->middleware('auth');
+
+Route::get('/pengaturan/tanda_tangan', [TandaTanganController::class, 'index'])->middleware('auth');
+Route::post('/pengaturan/simpan_tanda_tangan', [TandaTanganController::class, 'store'])->middleware('auth');
 
 Route::resource('/database/desa', DesaController::class)->middleware('auth');
 

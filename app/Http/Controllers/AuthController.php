@@ -119,7 +119,13 @@ class AuthController extends Controller
             if ($password === $user->pass) {
                 if (Auth::loginUsingId($user->id)) {
                     $hak_akses = explode(',', $user->akses_menu);
-                    $menu = Menu::where('parent_id', '0')->whereNotIn('id', $hak_akses)->where('aktif', 'Y')->with([
+                    $menu = Menu::where('parent_id', '0')->whereNotIn('id', $hak_akses);
+
+                    if ($url != 'sidbm_baru.test') {
+                        $menu->where('aktif', 'Y');
+                    }
+
+                    $menu->with([
                         'child' => function ($query) use ($hak_akses) {
                             $query->whereNotIn('id', $hak_akses);
                         },
@@ -216,7 +222,13 @@ class AuthController extends Controller
             if ($password === $user->pass) {
                 if (Auth::loginUsingId($user->id)) {
                     $hak_akses = explode(',', $user->hak_akses);
-                    $menu = Menu::where('parent_id', '0')->whereNotIn('id', $hak_akses)->where('aktif', 'Y')->with([
+                    $menu = Menu::where('parent_id', '0')->whereNotIn('id', $hak_akses);
+
+                    if ($url != 'sidbm_baru.test') {
+                        $menu->where('aktif', 'Y');
+                    }
+
+                    $menu->with([
                         'child' => function ($query) use ($hak_akses) {
                             $query->whereNotIn('id', $hak_akses);
                         },

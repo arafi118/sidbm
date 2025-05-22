@@ -110,7 +110,7 @@ class KelompokController extends Controller
         $jenis_produk_pinjaman = JenisProdukPinjaman::where([
             ['lokasi', '0'],
             ['id', '!=', '3']
-        ])->orderBy('id', 'ASC')->get();
+        ])->orWhere('lokasi', Session::get('lokasi'))->orderBy('id', 'ASC')->get();
         $jenis_usaha = JenisUsaha::all();
         $jenis_kegiatan = JenisKegiatan::all();
         $tingkat_kelompok = TingkatKelompok::all();

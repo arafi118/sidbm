@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Anggota;
 use App\Models\DataPemanfaat;
+use App\Models\DokumenPinjaman;
 use App\Models\JenisJasa;
 use App\Models\JenisProdukPinjaman;
 use App\Models\Kecamatan;
@@ -283,7 +284,7 @@ class PinjamanKelompokController extends Controller
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         $jenis_jasa = JenisJasa::all();
         $sistem_angsuran = SistemAngsuran::all();
-        $jenis_pp = JenisProdukPinjaman::where('lokasi', '0')->get();
+        $jenis_pp = JenisProdukPinjaman::where('lokasi', '0')->orWhere('lokasi', Session::get('lokasi'))->get();
 
         $jenis_pp_dipilih = $kelompok->jenis_produk_pinjaman;
 
@@ -496,7 +497,39 @@ class PinjamanKelompokController extends Controller
         $real = RealAngsuran::where('loan_id', $perguliran->id)->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC')->first();
         $sistem_angsuran = SistemAngsuran::all();
 
-        return view('perguliran.detail')->with(compact('title', 'perguliran', 'real', 'sistem_angsuran'));
+        $dokumenPinjaman = DokumenPinjaman::all();
+
+        $pinkel_aktif = PinjamanKelompok::where([['id_kel', $perguliran->id_kel], ['status', 'A']]);
+
+        $pinjaman_anggota = $perguliran->pinjaman_anggota;
+        $pinj_a['jumlah_pinjaman'] = 0;
+        $pinj_a['jumlah_pemanfaat'] = 0;
+        $pinj_a['jumlah_kelompok'] = 0;
+
+        foreach ($pinjaman_anggota as $pa) {
+            $pinj_aktif = $pa->pinjaman;
+
+            if ($pinj_aktif) {
+                $pinj_a['jumlah_pinjaman'] += 1;
+                $pinj_a['pinjaman'][] = $pinj_aktif;
+            }
+
+            if ($pa->anggota) {
+                $pemanfaat_aktif = $pa->anggota->pemanfaat;
+                if ($pemanfaat_aktif) {
+                    $pinj_a['jumlah_pemanfaat'] += 1;
+                    $pinj_a['pemanfaat'][$pa->anggota->nik] = $pemanfaat_aktif;
+                }
+            }
+        }
+
+        $pinjaman_kelompok = PinjamanKelompok::where('id_kel', $perguliran->id_kel)->where('status', 'A')->with('kelompok')->get();
+        foreach ($pinjaman_kelompok as $pinkel) {
+            $pinj_a['jumlah_kelompok'] += 1;
+            $pinj_a['kelompok'][] = $pinkel;
+        }
+
+        return view('perguliran.detail')->with(compact('title', 'dokumenPinjaman', 'perguliran', 'real', 'sistem_angsuran', 'pinj_a'));
     }
 
     public function pelunasan(PinjamanKelompok $perguliran)
