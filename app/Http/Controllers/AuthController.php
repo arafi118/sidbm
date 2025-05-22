@@ -122,10 +122,10 @@ class AuthController extends Controller
                     $menu = Menu::where('parent_id', '0')->whereNotIn('id', $hak_akses);
 
                     if ($url != 'sidbm_baru.test') {
-                        $menu->where('aktif', 'Y');
+                        $menu = $menu->where('aktif', 'Y');
                     }
 
-                    $menu->with([
+                    $menu = $menu->with([
                         'child' => function ($query) use ($hak_akses) {
                             $query->whereNotIn('id', $hak_akses);
                         },
