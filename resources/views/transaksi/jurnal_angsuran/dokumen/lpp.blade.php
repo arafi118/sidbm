@@ -154,6 +154,9 @@
                     }
                 }
 
+                $nunggak_pokok = 0;
+                $nunggak_jasa = 0;
+
                 $warna = '';
                 $real_pokok = 0;
                 $real_jasa = 0;
