@@ -3203,7 +3203,6 @@ class PinjamanKelompokController extends Controller
             $rencana_angsuran['pokok'][$j] = $pokok;
 
             if ($pinkel->jenis_jasa == '2') {
-                $jasa = $wajib_angsuran_jasa;
                 $alokasi -= $rencana_angsuran['pokok'][$j];
             }
 
