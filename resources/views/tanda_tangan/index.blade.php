@@ -132,7 +132,7 @@
 
         function setFormTandaTangan(id) {
             if (tandaTanganDokumen[id]) {
-                tinymce.activeEditor.setContent(tandaTanganDokumen[id]);
+                tinymce.activeEditor.setContent(JSON.parse(tandaTanganDokumen[id]));
             } else {
                 tinymce.activeEditor.setContent('');
             }

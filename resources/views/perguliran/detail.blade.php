@@ -173,7 +173,7 @@
                         </div>
                     </div>
 
-                    <form action="/perguliran/dokumen?status=P" target="_blank" method="post">
+                    <form action="/perguliran/dokumen?status=P&jenis=dokumen_proposal" target="_blank" method="post">
                         @csrf
 
                         <input type="hidden" name="id" value="{{ $perguliran->id }}">
@@ -316,7 +316,8 @@
                         @endif
                     @endif
 
-                    <form action="/perguliran/dokumen?status={{ $perguliran->status }}" target="_blank" method="post">
+                    <form action="/perguliran/dokumen?status={{ $perguliran->status }}&jenis=dokumen_pencairan"
+                        target="_blank" method="post">
                         @csrf
 
                         <input type="hidden" name="id" value="{{ $perguliran->id }}">

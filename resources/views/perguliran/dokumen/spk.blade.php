@@ -190,7 +190,7 @@
                     {{ $pinkel->sis_jasa->nama_sistem }} ({{ $pinkel->sis_jasa->deskripsi_sistem }}) sebagaimana jadwal
                     angsuran terlampir yang tidak terpisahkan dari Surat Perjanjian Kredit (SPK).
                 </li>
-                @if ($redaksi_spk)
+                @if (strlen(json_decode($redaksi_spk, true)) > 15)
                     {!! json_decode($redaksi_spk, true) !!}
                 @endif
             </ol>
@@ -243,14 +243,36 @@
                         </tr>
                     </table>
 
-                    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;"
-                        class="p">
-                        <tr>
-                            <td>
-                                {!! $ttd !!}
-                            </td>
-                        </tr>
-                    </table>
+                    @if ($tanda_tangan)
+                        {!! $tanda_tangan !!}
+                    @else
+                        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;"
+                            class="p">
+                            <tr>
+                                <td width="50%" align="center">Pihak Pertama</td>
+                                <td width="25%" colspan="2" align="center">Pihak Kedua</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" height="50"></td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
+                                </td>
+                                <td align="center">
+                                    <b>{{ $ketua }}</b>
+                                </td>
+                                <td align="center">
+                                    <b>{{ $sekretaris }}</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">{{ $kec->sebutan_level_1 }}</td>
+                                <td align="center">Ketua</td>
+                                <td align="center">Sekretaris</td>
+                            </tr>
+                        </table>
+                    @endif
                 </td>
             </tr>
         </table>

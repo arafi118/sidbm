@@ -195,35 +195,39 @@
                     </tr>
                 </table>
 
-                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
-                    style="font-size: 11px;">
-                    <tr>
-                        <td align="center" colspan="5">&nbsp;</td>
-                        <td align="center" colspan="3">
-                            {{ $kec->nama_kec }}, {{ Tanggal::tglLatin($tgl) }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center" colspan="5">
-                            {{ $kec->sebutan_level_1 }}
-                        </td>
-                        <td align="center" colspan="3">
-                            {{ $pinkel->jenis_pp != '3' ? 'Ketua Kelompok' : 'Pimpinan' }}
-                            {{ $pinkel->kelompok->nama_kelompok }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center" colspan="8" height="40">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td align="center" colspan="5">
-                            <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
-                        </td>
-                        <td align="center" colspan="3">
-                            <b>{{ $ketua }}</b>
-                        </td>
-                    </tr>
-                </table>
+                @if ($tanda_tangan)
+                    {!! $tanda_tangan !!}
+                @else
+                    <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                        style="font-size: 11px;">
+                        <tr>
+                            <td align="center" colspan="5">&nbsp;</td>
+                            <td align="center" colspan="3">
+                                {{ $kec->nama_kec }}, {{ Tanggal::tglLatin($tgl) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="5">
+                                {{ $kec->sebutan_level_1 }}
+                            </td>
+                            <td align="center" colspan="3">
+                                {{ $pinkel->jenis_pp != '3' ? 'Ketua Kelompok' : 'Pimpinan' }}
+                                {{ $pinkel->kelompok->nama_kelompok }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="8" height="40">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="5">
+                                <b>{{ $dir->namadepan }} {{ $dir->namabelakang }}</b>
+                            </td>
+                            <td align="center" colspan="3">
+                                <b>{{ $ketua }}</b>
+                            </td>
+                        </tr>
+                    </table>
+                @endif
             </td>
         </tr>
     </table>

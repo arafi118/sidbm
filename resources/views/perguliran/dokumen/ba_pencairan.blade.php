@@ -227,35 +227,39 @@
                         Demikian, berita acara ini dibuat sekaligus sebagai bukti pencairan dana piutang di atas.
                     </p>
 
-                    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
-                        <tr>
-                            <td width="50%">&nbsp;</td>
-                            <td width="25%">&nbsp;</td>
-                            <td width="25%">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td align="center" colspan="2">
-                                {{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" height="40">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td align="center" style="font-weight: bold;">
-                                {{ $dir->namadepan }} {{ $dir->namabelakang }}
-                            </td>
-                            <td colspan="2" align="center" style="font-weight: bold;">{{ $ketua }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center">
-                                {{ $kec->sebutan_level_1 }}
-                            </td>
-                            <td colspan="2" align="center">Ketua Kelompok</td>
-                        </tr>
-                    </table>
+                    @if ($tanda_tangan)
+                        {!! $tanda_tangan !!}
+                    @else
+                        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+                            <tr>
+                                <td width="50%">&nbsp;</td>
+                                <td width="25%">&nbsp;</td>
+                                <td width="25%">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td align="center" colspan="2">
+                                    {{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" height="40">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td align="center" style="font-weight: bold;">
+                                    {{ $dir->namadepan }} {{ $dir->namabelakang }}
+                                </td>
+                                <td colspan="2" align="center" style="font-weight: bold;">{{ $ketua }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    {{ $kec->sebutan_level_1 }}
+                                </td>
+                                <td colspan="2" align="center">Ketua Kelompok</td>
+                            </tr>
+                        </table>
+                    @endif
                 </td>
             </tr>
         </table>

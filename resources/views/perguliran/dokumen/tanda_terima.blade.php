@@ -129,27 +129,32 @@
                         <td>{{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
                     </tr>
                 </table>
-                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
-                    style="font-size: 11px;">
-                    <tr>
-                        <td colspan="2" height="10">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td align="center" width="50%">Mengetahui,</td>
-                        <td align="center" width="50%">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td align="center">{{ $kec->sebutan_level_1 }}</td>
-                        <td align="center">Ketua Kelompok</td>
-                    </tr>
-                    <tr>
-                        <td align="center" colspan="2" height="50">&nbsp;</td>
-                    </tr>
-                    <tr style="font-weight: bold;">
-                        <td align="center">{{ $dir->namadepan }} {{ $dir->namabelakang }}</td>
-                        <td align="center">{{ $ketua }}</td>
-                    </tr>
-                </table>
+
+                @if ($tanda_tangan)
+                    {!! $tanda_tangan !!}
+                @else
+                    <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                        style="font-size: 11px;">
+                        <tr>
+                            <td colspan="2" height="10">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align="center" width="50%">Mengetahui,</td>
+                            <td align="center" width="50%">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align="center">{{ $kec->sebutan_level_1 }}</td>
+                            <td align="center">Ketua Kelompok</td>
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="2" height="50">&nbsp;</td>
+                        </tr>
+                        <tr style="font-weight: bold;">
+                            <td align="center">{{ $dir->namadepan }} {{ $dir->namabelakang }}</td>
+                            <td align="center">{{ $ketua }}</td>
+                        </tr>
+                    </table>
+                @endif
             </td>
         </tr>
     </table>

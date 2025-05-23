@@ -42,6 +42,11 @@
         padding: 2px 4px;
     }
 
+    table.p0 tr th,
+    table.p0 tr td {
+        padding: 0px !important;
+    }
+
     .break {
         page-break-after: always;
     }
@@ -214,24 +219,30 @@
         </td>
     </tr>
 </table>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px; margin-top: 40px;">
-    <tr>
-        <td>&nbsp;</td>
-        <td align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
-    </tr>
-    <tr>
-        <td align="center" width="50%">Ketua Kelompok,</td>
-        <td align="center" width="50%">Sekretaris Kelompok,</td>
-    </tr>
-    <tr>
-        <td colspan="2" height="30"></td>
-    </tr>
-    <tr>
-        <td align="center" width="50%" style="font-weight: bold; text-decoration: underline;">
-            {{ $ketua }}
-        </td>
-        <td align="center" width="50%" style="font-weight: bold; text-decoration: underline;">
-            {{ $sekretaris }}
-        </td>
-    </tr>
-</table>
+@if ($tanda_tangan)
+    <div style="margin-top: 32px;">
+        {!! $tanda_tangan !!}
+    </div>
+@else
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px; margin-top: 40px;">
+        <tr>
+            <td>&nbsp;</td>
+            <td align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
+        </tr>
+        <tr>
+            <td align="center" width="50%">Ketua Kelompok,</td>
+            <td align="center" width="50%">Sekretaris Kelompok,</td>
+        </tr>
+        <tr>
+            <td colspan="2" height="30"></td>
+        </tr>
+        <tr>
+            <td align="center" width="50%" style="font-weight: bold; text-decoration: underline;">
+                {{ $ketua }}
+            </td>
+            <td align="center" width="50%" style="font-weight: bold; text-decoration: underline;">
+                {{ $sekretaris }}
+            </td>
+        </tr>
+    </table>
+@endif

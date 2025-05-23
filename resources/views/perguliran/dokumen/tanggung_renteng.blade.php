@@ -96,48 +96,56 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td width="50%">&nbsp;</td>
-                        <td width="50%" align="center">{{ $kec->nama_kec }},
-                            {{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
-                    </tr>
-                    <tr>
-                        <td align="center" width="50%">
-                            {!! Session::get('lokasi') == '188' ? '&nbsp;' : 'Mengetahui,' !!}
-                        </td>
-                        <td align="center" width="50%">Kelompok</td>
-                    </tr>
-                    <tr>
-                        <td align="center">
-                            @if (Session::get('lokasi') != '188')
-                                {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }}
-                                {{ $pinkel->kelompok->d->nama_desa }}
-                            @else
-                                &nbsp;
-                            @endif
-                        </td>
-                        <td align="center">{{ $pinkel->kelompok->nama_kelompok }}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" height="30"></td>
-                    </tr>
-                    <tr>
-                        <td align="center">
-                            @if (Session::get('lokasi') != '188')
-                                <b>{{ $pinkel->kelompok->d->kades }}</b>
-                                @if ($pinkel->kelompok->d->nip)
-                                    <div><small>NIP. {{ $pinkel->kelompok->d->nip }}</small></div>
-                                @endif
-                            @else
-                                &nbsp;
-                            @endif
-                        </td>
-                        <td align="center">
-                            <b>{{ $ketua }}</b>
-                            <div>Ketua</div>
-                        </td>
-                    </tr>
                 </table>
+
+                @if ($tanda_tangan)
+                    {!! $tanda_tangan !!}
+                @else
+                    <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                        style="font-size: 14px;">
+                        <tr>
+                            <td width="50%">&nbsp;</td>
+                            <td width="50%" align="center">{{ $kec->nama_kec }},
+                                {{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
+                        </tr>
+                        <tr>
+                            <td align="center" width="50%">
+                                {!! Session::get('lokasi') == '188' ? '&nbsp;' : 'Mengetahui,' !!}
+                            </td>
+                            <td align="center" width="50%">Kelompok</td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                @if (Session::get('lokasi') != '188')
+                                    {{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }}
+                                    {{ $pinkel->kelompok->d->nama_desa }}
+                                @else
+                                    &nbsp;
+                                @endif
+                            </td>
+                            <td align="center">{{ $pinkel->kelompok->nama_kelompok }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" height="30"></td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                @if (Session::get('lokasi') != '188')
+                                    <b>{{ $pinkel->kelompok->d->kades }}</b>
+                                    @if ($pinkel->kelompok->d->nip)
+                                        <div><small>NIP. {{ $pinkel->kelompok->d->nip }}</small></div>
+                                    @endif
+                                @else
+                                    &nbsp;
+                                @endif
+                            </td>
+                            <td align="center">
+                                <b>{{ $ketua }}</b>
+                                <div>Ketua</div>
+                            </td>
+                        </tr>
+                    </table>
+                @endif
             </td>
         </tr>
     </table>

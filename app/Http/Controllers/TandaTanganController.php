@@ -36,7 +36,7 @@ class TandaTanganController extends Controller
             'lokasi' => Session::get('lokasi'),
             'dokumen_pinjaman_id' => $data['dokumen'],
             'jenis_laporan' => $data['jenis_laporan'],
-            'tanda_tangan' => $data['tanda_tangan']
+            'tanda_tangan' => json_encode($data['tanda_tangan'])
         ]);
 
         return response()->json([

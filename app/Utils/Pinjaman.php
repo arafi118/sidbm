@@ -9,6 +9,10 @@ class Pinjaman
         if ($text === false) {
             return [
                 [
+                    'key' => '{nama_kec}',
+                    'des' => 'Menampilkan Nama Kecamatan',
+                ],
+                [
                     'key' => '{kepala_lembaga}',
                     'des' => 'Menampilkan Sebutan Kepala Lembaga',
                 ],
@@ -19,6 +23,10 @@ class Pinjaman
                 [
                     'key' => '{kabag_keuangan}',
                     'des' => 'Menampilkan Sebutan Kabag Keuangan',
+                ],
+                [
+                    'key' => '{nama_kelompok}',
+                    'des' => 'Menampilkan Nama Kelompok',
                 ],
                 [
                     'key' => '{verifikator}',
@@ -68,6 +76,10 @@ class Pinjaman
                     'key' => '{sebutan_kades}',
                     'des' => 'Menampilkan Sebutan Kepala Desa/Lurah',
                 ],
+                [
+                    'key' => '{tanggal_proposal}',
+                    'des' => 'Menampilkan Tanggal Proposal',
+                ],
             ];
         } else {
             $kec = $data['kec'];
@@ -92,6 +104,7 @@ class Pinjaman
                 '{kabag_keuangan}' => $kec->sebutan_level_3,
                 '{verifikator}' => $kec->nama_tv_long,
                 '{pengawas}' => $kec->nama_bp_long,
+                '{nama_kelompok}' => $kel->nama_kelompok,
                 '{ketua}' => $ketua,
                 '{sekretaris}' => $sekretaris,
                 '{bendahara}' => $bendahara,
@@ -102,6 +115,9 @@ class Pinjaman
                 '{desa}' => $desa->nama_desa,
                 '{pangkat}' => $desa->pangkat,
                 '{sebutan_kades}' => $desa->sebutan_desa->sebutan_kades,
+                '{tanggal_proposal}' => Tanggal::tglLatin($pinkel->tgl_proposal),
+                '{tanggal_cair}' => Tanggal::tglLatin($pinkel->tgl_cair),
+                '{nama_kec}' => $kec->nama_kec,
                 '1' => '1',
                 '0' => '0'
             ]);
