@@ -13,7 +13,12 @@
     <style>
         body {
             font-size: 12px;
-            font-family: Verdana, Arial, Helvetica, sans-serif;
+            color: rgba(0, 0, 0, 0.8);
+            /* width: 20cm; */
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: medium;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
 
         .font-roboto {
