@@ -321,6 +321,7 @@ class GenerateController extends Controller
 
                 $alokasi_pokok -= $realisasi_pokok;
                 $alokasi_jasa = $alokasi_pokok * ($pinkel->pros_jasa / 100);
+                $alokasi_jasa -= $realisasi_jasa;
 
                 $target_pokok = 0;
                 $target_jasa = 0;
