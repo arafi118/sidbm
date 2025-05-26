@@ -294,9 +294,6 @@ class GenerateController extends Controller
                 $rencana[] = $data_rencana[strtotime($jatuh_tempo)];
             }
 
-            $alokasi_pokok = $alokasi;
-            // $alokasi_jasa = $target_jasa;
-            $alokasi_jasa = ($alokasi * ($pinkel->pros_jasa / 100));
             $sum_pokok = 0;
             $sum_jasa = 0;
 
@@ -317,11 +314,8 @@ class GenerateController extends Controller
                     }
                 }
 
-                $sum_pokok += $realisasi_pokok;
-                $sum_jasa += $realisasi_jasa;
-
-                $alokasi_pokok -= $realisasi_pokok;
-                $alokasi_jasa -= $realisasi_jasa;
+                $alokasi_pokok = $alokasi;
+                $alokasi_jasa = $alokasi * ($pinkel->pros_jasa / 100);
 
                 $target_pokok = 0;
                 $target_jasa = 0;
@@ -331,7 +325,15 @@ class GenerateController extends Controller
                         $target_pokok = $value['target_pokok'];
                         $target_jasa = $value['target_jasa'];
                     }
+
+                    $alokasi_jasa = $value['target_jasa'];
                 }
+
+                $sum_pokok += $realisasi_pokok;
+                $sum_jasa += $realisasi_jasa;
+
+                $saldo_pokok = $alokasi_pokok - $sum_pokok;
+                $saldo_jasa = $alokasi_jasa - $sum_jasa;
 
                 $tunggakan_pokok = $target_pokok - $sum_pokok;
                 $tunggakan_jasa = $target_jasa - $sum_jasa;
@@ -353,8 +355,8 @@ class GenerateController extends Controller
                         'realisasi_jasa' => $realisasi_jasa,
                         'sum_pokok' => $sum_pokok,
                         'sum_jasa' => $sum_jasa,
-                        'saldo_pokok' => $alokasi_pokok,
-                        'saldo_jasa' => $alokasi_jasa,
+                        'saldo_pokok' => $saldo_pokok,
+                        'saldo_jasa' => $saldo_jasa,
                         'tunggakan_pokok' => $tunggakan_pokok,
                         'tunggakan_jasa' => $tunggakan_jasa,
                         'lu' => date('Y-m-d H:i:s'),
