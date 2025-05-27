@@ -673,8 +673,7 @@ class PinjamanKelompokController extends Controller
                 'jenis_jasa' => 'required',
                 'sistem_angsuran_pokok' => 'required',
                 'sistem_angsuran_jasa' => 'required',
-                'tgl_cair' => 'required',
-                'nomor_spk' => 'required'
+                'tgl_cair' => 'required'
             ];
 
             if ($request->nomor_spk != $perguliran->spk_no) {
@@ -837,6 +836,15 @@ class PinjamanKelompokController extends Controller
 
                 PinjamanAnggota::upsert($UpdatePinjamanAnggota, ['id'], ['tgl_dana', 'tgl_cair', $tgl, $alokasi, 'status']);
                 DB::update($query, $params);
+            }
+
+            if (!$request->nomor_spk) {
+                $tgl_cair = Tanggal::tglNasional($data[$tgl]);
+                $nomor_spk = substr($perguliran->kelompok->d->kode_desa, -2);
+                $nomor_spk .= '.' . $perguliran->id;
+                $nomor_spk .= '.' . str_replace('/', '.', Tanggal::tglRomawi($tgl_cair));
+
+                $data['nomor_spk'] = $nomor_spk;
             }
 
             $update = [
