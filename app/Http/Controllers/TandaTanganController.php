@@ -42,7 +42,8 @@ class TandaTanganController extends Controller
         return response()->json([
             'success' => true,
             'msg' => 'Tanda tangan berhasil disimpan.',
-            'data' => $tandaTanganDokumen
+            'data' => $tandaTanganDokumen,
+            'tanda_tangan' => json_encode($data['tanda_tangan'])
         ]);
     }
 }
