@@ -216,7 +216,7 @@
                 <input type="hidden" name="_id" id="_id" value="{{ $perguliran->id }}">
                 <input type="hidden" name="status" id="status" value="W">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         <div class="input-group input-group-static my-3">
                             <label for="tgl_tunggu">Tgl Penetapan</label>
                             <input autocomplete="off" type="text" name="tgl_tunggu" id="tgl_tunggu"
@@ -224,7 +224,16 @@
                             <small class="text-danger" id="msg_tgl_tunggu"></small>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
+                        <div class="input-group input-group-static my-3">
+                            <label for="tgl_cair">Tanggal Cair</label>
+                            <input autocomplete="off" type="text" name="tgl_cair" id="tgl_cair"
+                                class="form-control date"
+                                value="{{ Tanggal::tglIndo($perguliran->tgl_verifikasi) }}">
+                            <small class="text-danger" id="msg_tgl_cair"></small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                         <div class="input-group input-group-static my-3">
                             <label for="alokasi">Alokasi Rp.</label>
                             <input autocomplete="off" type="text" name="alokasi" id="alokasi"
@@ -232,7 +241,7 @@
                             <small class="text-danger" id="msg_alokasi"></small>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="input-group input-group-static my-3">
                             <label for="jangka">Jangka</label>
                             <input autocomplete="off" type="number" name="jangka" id="jangka"
@@ -240,7 +249,7 @@
                             <small class="text-danger" id="msg_jangka"></small>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="input-group input-group-static my-3">
                             <label for="pros_jasa">Prosentase Jasa (%)</label>
                             <input autocomplete="off" type="number" name="pros_jasa" id="pros_jasa"
@@ -295,16 +304,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="input-group input-group-static my-3">
-                            <label for="tgl_cair">Tanggal Cair</label>
-                            <input autocomplete="off" type="text" name="tgl_cair" id="tgl_cair"
-                                class="form-control date"
-                                value="{{ Tanggal::tglIndo($perguliran->tgl_verifikasi) }}">
-                            <small class="text-danger" id="msg_tgl_cair"></small>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 d-none">
                         <div class="input-group input-group-static my-3">
                             <label for="nomor_spk">Nomor SPK</label>
                             <input autocomplete="off" type="text" name="nomor_spk" id="nomor_spk"
