@@ -151,7 +151,7 @@ class Pinjaman
                 $replacer['{sekdes}'] = $desa->sekdes;
                 $replacer['{ked}'] = $desa->ked;
                 $replacer['{desa}'] = $desa->nama_desa;
-                $replacer['{sebutan_kades}'] = $desa->sebutan_desa;
+                $replacer['{sebutan_kades}'] = $desa->sebutan_desa->sebutan_desa;
                 $replacer['{tanggal_proposal}'] = Tanggal::tglLatin($pinkel->tgl_proposal);
                 $replacer['{tanggal_waiting}'] = Tanggal::tglLatin($pinkel->tgl_tunggu);
                 $replacer['{tanggal_cair}'] = Tanggal::tglLatin($pinkel->tgl_cair);
