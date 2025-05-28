@@ -836,8 +836,8 @@ class PinjamanKelompokController extends Controller
 
             if (!$request->nomor_spk) {
                 $tgl_cair = Tanggal::tglNasional($data[$tgl]);
-                $nomor_spk = substr($perguliran->kelompok->d->kode_desa, -2);
-                $nomor_spk .= '.' . $perguliran->id;
+                $nomor_spk = $perguliran->id;
+                $nomor_spk .= 'DS-' . substr($perguliran->kelompok->d->kode_desa, -2);
                 $nomor_spk .= '.' . str_replace('/', '.', Tanggal::tglRomawi($tgl_cair));
 
                 $data['nomor_spk'] = $nomor_spk;
