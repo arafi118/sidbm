@@ -1,3 +1,15 @@
+@php
+    $keyword_all = [];
+    $keyword_pinjaman = [];
+    foreach ($keyword as $key => $value) {
+        if ($value['pinjaman'] == '1') {
+            $keyword_pinjaman[] = $value;
+        } else {
+            $keyword_all[] = $value;
+        }
+    }
+@endphp
+
 @extends('layouts.base')
 
 @section('content')
@@ -35,13 +47,83 @@
                 <textarea class="tiny-mce-editor" name="tanda_tangan" id="tanda_tangan" rows="20"></textarea>
 
                 <div class="d-flex justify-content-end mt-2">
-                    <button type="button" id="simpanTandaTangan" class="btn btn-github btn-sm mb-0">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#kataKunci"
+                        class="btn btn-info btn-sm mb-0">
+                        Kata Kunci
+                    </button>
+                    <button type="button" id="simpanTandaTangan" class="btn btn-github btn-sm mb-0 ms-2">
                         Simpan Perubahan
                     </button>
                 </div>
             </div>
         </div>
     </form>
+
+    <div class="modal fade" id="kataKunci" tabindex="-1" aria-labelledby="kataKunciLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="kataKunciLabel">Kata Kunci</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="alert alert-info text-center">
+                                <strong>Daftar Kata Kunci</strong>
+                                <div>Gunakan kata kunci ini untuk mengisi tanda tangan dokumen.</div>
+                            </div>
+                            <table class="table table-striped midle">
+                                <thead class="bg-dark text-white">
+                                    <tr>
+                                        <th width="10">No</th>
+                                        <th width="100">Kata Kunci</th>
+                                        <th>Keterangan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($keyword_all as $k)
+                                        <tr>
+                                            <td align="center">{{ $loop->iteration }}</td>
+                                            <td>{{ $k['key'] }}</td>
+                                            <td>{{ $k['des'] }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert alert-info text-center">
+                                <strong>Daftar Kata Kunci Pinjaman</strong>
+                                <div>Hanay dapat digunakan pada dokumen pinjaman.</div>
+                            </div>
+                            <table class="table table-striped midle">
+                                <thead class="bg-dark text-white">
+                                    <tr>
+                                        <th width="10">No</th>
+                                        <th width="100">Kata Kunci</th>
+                                        <th>Keterangan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($keyword_pinjaman as $k)
+                                        <tr>
+                                            <td align="center">{{ $loop->iteration }}</td>
+                                            <td>{{ $k['key'] }}</td>
+                                            <td>{{ $k['des'] }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')

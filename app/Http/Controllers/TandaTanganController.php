@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DokumenPinjaman;
 use App\Models\TandaTanganDokumen;
+use App\Utils\Pinjaman;
 use Illuminate\Http\Request;
 use Session;
 
@@ -13,6 +14,7 @@ class TandaTanganController extends Controller
     {
         $data['dokumenPinjaman'] = DokumenPinjaman::where('custom_ttd', '1')->get();
         $data['tandaTangan'] = TandaTanganDokumen::where('lokasi', Session::get('lokasi'))->pluck('tanda_tangan', 'dokumen_pinjaman_id')->toArray();
+        $data['keyword'] = Pinjaman::keyword();
 
         $data['title'] = "Pengaturan Tanda Tangan";
         return view('tanda_tangan.index')->with($data);
