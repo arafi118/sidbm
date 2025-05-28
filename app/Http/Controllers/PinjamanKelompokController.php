@@ -676,10 +676,6 @@ class PinjamanKelompokController extends Controller
                 'tgl_cair' => 'required'
             ];
 
-            if ($request->nomor_spk != $perguliran->spk_no) {
-                $validate['nomor_spk'] = 'required|unique:' . $table . ',spk_no';
-            }
-
             $validate = Validator::make($data, $validate);
         } elseif ($request->status == 'A') {
             $data = $request->only([
