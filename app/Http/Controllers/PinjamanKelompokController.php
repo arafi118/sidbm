@@ -1439,6 +1439,7 @@ class PinjamanKelompokController extends Controller
 
         $data['report'] = $file;
         $data['type'] = $report[1];
+        $data['jenis_laporan'] = 'dokumen_pinjaman';
 
         if ($file == 'kartuAngsuranAnggota') {
             return $this->$file($request->id);
