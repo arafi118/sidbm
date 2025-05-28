@@ -92,7 +92,7 @@
                     @endif
 
                     <tr>
-                        <td class="t l b">{{ $nomor++ }}</td>
+                        <td class="t l b" align="center">{{ $nomor++ }}</td>
                         <td class="t l b">{{ $pinkel->nama_kelompok }} - {{ $pinkel->loan_id }}</td>
                         <td class="t l b" align="center">{{ Tanggal::tglIndo($pinkel->tgl_cair) }}</td>
                         <td class="t l b" align="center">{{ Tanggal::tglIndo($pinkel->tgl_hapus) }}</td>
@@ -140,7 +140,7 @@
                                 <tr>
                                     <td colspan="4">
                                         <div style="margin-top: 16px;"></div>
-                                        {!! json_decode(str_replace('{tanggal}', $tanggal_kondisi, $kec->ttd->tanda_tangan_pelaporan), true) !!}
+                                        {!! $tanda_tangan !!}
                                     </td>
                                 </tr>
                             </table>

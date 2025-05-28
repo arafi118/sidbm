@@ -20,6 +20,7 @@ use App\Models\Saldo;
 use App\Models\Transaksi;
 use App\Models\User;
 use App\Utils\Keuangan;
+use App\Utils\Pinjaman;
 use App\Utils\Tanggal;
 use DB;
 use Dompdf\Dompdf;
@@ -230,7 +231,7 @@ class PelaporanController extends Controller
                 $data['bulan'] = $data['bulan'] ?: 12;
                 $query->where('tahun', $data['tahun'])->where('bulan', '<=', $data['bulan'])->orderBy('bulan', 'ASC');
             },
-            'ttd'
+            'tanda_tangan'
         ])->first();
         $kab = $kec->kabupaten;
 
@@ -325,6 +326,9 @@ class PelaporanController extends Controller
                 $file = $request->sub_laporan;
             }
         }
+
+        $data['jenis_laporan'] = 'dokumen_pelaporan';
+        $data['tanda_tangan'] = Pinjaman::keyword($kec->tanda_tangan->tanda_tangan, $data);
 
         $data['laporan'] = $file_laporan;
         return $this->$file($data);
@@ -2758,8 +2762,7 @@ class PelaporanController extends Controller
                         ->where('t.tgl_hapus', '<=', $data['tgl_kondisi'])
                         ->orderBy("{$tb_kel}.desa")
                         ->orderBy("{$tb_pinkel}.tgl_proposal");
-                },
-                'pinjaman_kelompok.saldo'
+                }
             ])
             ->get();
 
@@ -2775,7 +2778,73 @@ class PelaporanController extends Controller
 
     private function pinjaman_anggota_hapus(array $data)
     {
-        //
+        $thn = $data['tahun'];
+        $bln = $data['bulan'];
+        $hari = $data['hari'];
+
+        $tgl = $thn . '-' . $bln . '-' . $hari;
+        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['tgl'] = Tanggal::tahun($tgl);
+        if ($data['bulanan']) {
+            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        }
+
+        $kecId = $data['kec']->id;
+        $tb_transaksi = "transaksi_{$kecId}";
+        $tb_pinj = "pinjaman_anggota_{$kecId}";
+        $tb_angg = "anggota_{$kecId}";
+        $tb_kel = "kelompok_{$kecId}";
+
+        $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
+            'pinjaman_anggota' => function ($query) use ($data, $tb_transaksi, $tb_pinj, $tb_angg, $tb_kel) {
+                $query->select(
+                    "{$tb_pinj}.*",
+                    "{$tb_angg}.namadepan",
+                    "{$tb_angg}.alamat",
+                    "{$tb_angg}.nik",
+                    "{$tb_angg}.kk",
+                    "{$tb_kel}.nama_kelompok",
+                    "desa.nama_desa",
+                    "desa.kd_desa",
+                    "desa.kode_desa",
+                    "sebutan_desa.sebutan_desa",
+                    "t.tgl_hapus",
+                    "t.jumlah"
+                )
+                    ->join($tb_angg, "{$tb_angg}.id", '=', "{$tb_pinj}.nia")
+                    ->join($tb_kel, "{$tb_kel}.id", '=', "{$tb_pinj}.id_kel")
+                    ->join('desa', "{$tb_angg}.desa", '=', 'desa.kd_desa')
+                    ->join('sebutan_desa', 'sebutan_desa.id', '=', 'desa.sebutan')
+                    ->leftJoinSub(
+                        DB::table("{$tb_transaksi} as sub")
+                            ->selectRaw('id_pinj_i, jumlah, tgl_transaksi as tgl_hapus')
+                            ->where('tgl_transaksi', '<=', $data['tgl_kondisi'])
+                            ->where('rekening_debit', 'LIKE', '1.1.04%')
+                            ->where('rekening_kredit', 'LIKE', '1.1.03%')
+                            ->whereRaw('tgl_transaksi = (SELECT MAX(tgl_transaksi) FROM ' . $tb_transaksi . ' WHERE id_pinj_i = sub.id_pinj_i)')
+                            ->groupBy('id_pinj_i', 'jumlah', 'tgl_transaksi'),
+                        't',
+                        "{$tb_pinj}.id",
+                        '=',
+                        't.id_pinj_i'
+                    )
+                    ->where("{$tb_pinj}.sistem_angsuran", '!=', '12')
+                    ->where("{$tb_pinj}.status", 'H')
+                    ->orderBy("{$tb_angg}.desa")
+                    ->orderBy("{$tb_pinj}.id_pinkel")
+                    ->orderBy("{$tb_pinj}.id")
+                    ->orderBy("{$tb_pinj}.tgl_cair");
+            }
+        ])->get();
+
+        $view = view('pelaporan.view.perkembangan_piutang.pinjaman_anggota_hapus', $data)->render();
+        if ($data['type'] == 'pdf') {
+            $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+            return $pdf->stream();
+        } else {
+            return $view;
+        }
     }
 
     private function rencana_realisasi(array $data)

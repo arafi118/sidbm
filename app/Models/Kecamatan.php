@@ -27,6 +27,11 @@ class Kecamatan extends Model
         return $this->belongsTo(TandaTanganLaporan::class, 'id', 'lokasi');
     }
 
+    public function tanda_tangan()
+    {
+        return $this->hasOne(TandaTanganDokumen::class, 'lokasi')->where('dokumen_pinjaman_id', '0');
+    }
+
     public function saldo()
     {
         return $this->hasMany(Saldo::class, 'kode_akun', 'kd_kec');

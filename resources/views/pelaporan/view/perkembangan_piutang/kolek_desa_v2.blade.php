@@ -286,7 +286,7 @@
                                 <tr>
                                     <td colspan="9">
                                         <div style="margin-top: 16px;"></div>
-                                        {!! json_decode(str_replace('{tanggal}', $tanggal_kondisi, $kec->ttd->tanda_tangan_pelaporan), true) !!}
+                                        {!! $tanda_tangan !!}
                                     </td>
                                 </tr>
                             </table>
