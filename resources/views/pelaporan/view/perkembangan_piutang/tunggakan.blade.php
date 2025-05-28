@@ -45,6 +45,7 @@
                 <tr style="background: rgb(230, 230, 230); font-weight: bold;">
                     <th class="t l b" height="20" width="3%">No</th>
                     <th class="t l b">Kelompok - Loan ID.</th>
+                    <th class="t l b" width="10%">Telpon</th>
                     <th class="t l b" width="5%">Angg.</th>
                     <th class="t l b" width="8%">Tgl Cair</th>
                     <th class="t l b" width="8%">Tempo</th>
@@ -71,7 +72,7 @@
                                 $t_tunggakan_jasa += $j_tunggakan_jasa;
                             @endphp
                             <tr style="font-weight: bold;">
-                                <td class="t l b" colspan="5">Jumlah {{ $nama_desa }}</td>
+                                <td class="t l b" colspan="6">Jumlah {{ $nama_desa }}</td>
                                 <td class="t l b" align="right">{{ number_format($j_alokasi) }}</td>
                                 <td class="t l b" align="right">{{ number_format($j_saldo) }}</td>
                                 <td class="t l b" align="right">{{ number_format($j_tunggakan_pokok) }}
@@ -80,7 +81,7 @@
                         @endif
 
                         <tr style="font-weight: bold;">
-                            <td class="t l b r" colspan="9" align="left">{{ $pinkel->kode_desa }}.
+                            <td class="t l b r" colspan="10" align="left">{{ $pinkel->kode_desa }}.
                                 {{ $pinkel->nama_desa }}
                             </td>
                         </tr>
@@ -133,6 +134,7 @@
                             <td class="t l b" align="left">
                                 {{ $pinkel->nama_kelompok }} [{{ $pinkel->ketua }}] - {{ $pinkel->id }}
                             </td>
+                            <td class="t l b" align="center">{{ $pinkel->kelompok->telpon }}</td>
                             <td class="t l b" align="center">{{ $pinkel->pinjaman_anggota_count }}</td>
                             <td class="t l b" align="center">{{ Tanggal::tglIndo($pinkel->tgl_cair) }}</td>
                             <td class="t l b" align="center">{{ $pinkel->jangka }}/{{ $pinkel->sis_pokok->sistem }}</td>
@@ -162,7 +164,7 @@
                     @endphp
 
                     <tr style="font-weight: bold;">
-                        <td class="t l b" colspan="5">Jumlah {{ $nama_desa }}</td>
+                        <td class="t l b" colspan="6">Jumlah {{ $nama_desa }}</td>
                         <td class="t l b" align="right">{{ number_format($j_alokasi) }}</td>
                         <td class="t l b" align="right">{{ number_format($j_saldo) }}</td>
                         <td class="t l b" align="right">{{ number_format($j_tunggakan_pokok) }}
@@ -170,7 +172,7 @@
                     </tr>
 
                     <tr>
-                        <td colspan="9" style="padding: 0px !important;">
+                        <td colspan="10" style="padding: 0px !important;">
                             <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                                 style="font-size: 11px;">
                                 <tr style="background: rgb(74, 74, 74); font-weight: bold; color: #fff;" class="t l b r">
