@@ -356,11 +356,11 @@
                             Kembalikan Ke Proposal
                         </button>
                     @endif
-                    <button type="button"
-                        {{ $pinj_a['jumlah_pinjaman'] > '0' || $pinj_a['jumlah_pemanfaat'] > '0' || $pinj_a['jumlah_kelompok'] > '0' ? 'disabled' : '' }}
-                        id="Simpan" class="btn btn-github ms-1 btn-sm">
-                        Cairkan Sekarang
-                    </button>
+                    @if (!($pinj_a['jumlah_pinjaman'] > '0' || $pinj_a['jumlah_pemanfaat'] > '0' || $pinj_a['jumlah_kelompok'] > '0'))
+                        <button type="button" id="Simpan" class="btn btn-github ms-1 btn-sm">
+                            Posting Pencairan
+                        </button>
+                    @endif
 
                 </div>
             </div>
