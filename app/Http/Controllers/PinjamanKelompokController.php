@@ -493,6 +493,28 @@ class PinjamanKelompokController extends Controller
 
     public function detail(PinjamanKelompok $perguliran)
     {
+        $perguliran = $perguliran->with([
+            'sis_pokok',
+            'sis_jasa',
+            'jpp',
+            'jasa',
+            'pinjaman_anggota',
+            'pinjaman_anggota.anggota',
+            'pinjaman_anggota.anggota.pemanfaat' => function ($query) {
+                $query->where([
+                    ['status', 'A'],
+                    ['lokasi', '!=', Session::get('lokasi')]
+                ]);
+            },
+            'pinjaman_anggota.anggota.pemanfaat.kec',
+            'pinjaman_anggota.pinjaman' => function ($query) {
+                $query->where('status', 'A');
+            },
+            'pinjaman_anggota.pinjaman.pinkel',
+            'pinjaman_anggota.pinjaman.kelompok',
+            'pinjaman_anggota.pinjaman.anggota',
+        ])->where('id', $perguliran->id)->first();
+
         $title = 'Detal Piutang Kelompok ' . $perguliran->kelompok->nama_kelompok;
         $real = RealAngsuran::where('loan_id', $perguliran->id)->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC')->first();
         $sistem_angsuran = SistemAngsuran::all();
