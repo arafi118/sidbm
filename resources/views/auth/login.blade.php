@@ -1,5 +1,5 @@
 @php
-    $username = '';
+    $username = $kec->id == '1' ? 'value="demo"' : '';
     if (old('username') != '') {
         $username = 'value="' . old('username') . '"';
     }
@@ -87,11 +87,12 @@
                                         <div class="input-group input-group-outline mb-3">
                                             <label class="form-label">Username</label>
                                             <input type="text" name="username" id="username" class="form-control"
-                                                {!! $username !!}>
+                                                {!! $username !!}">
                                         </div>
                                         <div class="input-group input-group-outline mb-3">
                                             <label class="form-label">Password</label>
-                                            <input type="password" name="password" id="password" class="form-control">
+                                            <input type="password" name="password" id="password" class="form-control"
+                                                value="{{ $kec->id == '1' ? '12345' : '' }}">
                                         </div>
                                         <div class="text-center">
                                             <button type="submit"
