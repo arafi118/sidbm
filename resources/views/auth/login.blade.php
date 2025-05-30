@@ -92,7 +92,7 @@
                                         <div class="input-group input-group-outline mb-3">
                                             <label class="form-label">Password</label>
                                             <input type="password" name="password" id="password" class="form-control"
-                                                value="{{ $kec->id == '1' ? '12345' : '' }}">
+                                                {!! $kec->id == '1' ? 'value="12345"' : '' !!}>
                                         </div>
                                         <div class="text-center">
                                             <button type="submit"
