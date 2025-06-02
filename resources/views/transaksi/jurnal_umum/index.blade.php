@@ -355,6 +355,22 @@
                 simpan.setChoiceByValue('5.1.07.10')
             }
 
+            if (sumber_dana == '1.2.04.01') {
+                simpan.setChoiceByValue('5.1.07.11')
+            }
+
+            if (sumber_dana == '1.2.04.02') {
+                simpan.setChoiceByValue('5.1.07.12')
+            }
+
+            if (sumber_dana == '1.2.04.03') {
+                simpan.setChoiceByValue('5.1.07.13')
+            }
+
+            if (sumber_dana == '1.2.04.04') {
+                simpan.setChoiceByValue('5.1.07.14')
+            }
+
             var tgl_transaksi = $('#tgl_transaksi').val().split('/')
 
             setSaldo(sumber_dana, tgl_transaksi)
