@@ -369,7 +369,7 @@
                 $saldo_aset = $saldo_aset;
                 $kredit = $kredit;
 
-                $saldo_calk = $saldo_aset - $kredit;
+                $saldo_calk = round($saldo_aset - $kredit, 2);
                 if ($saldo_calk < 0) {
                     $saldo_calk *= -1;
                 }
