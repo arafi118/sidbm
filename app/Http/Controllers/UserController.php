@@ -138,8 +138,8 @@ class UserController extends Controller
 
             $rules = [
                 'username' => 'required',
-                'password_baru' => 'required|same:konfirmasi_password',
-                'konfirmasi_password' => 'required|same:password_baru'
+                'password_baru' => 'same:konfirmasi_password',
+                'konfirmasi_password' => 'same:password_baru'
             ];
 
             if ($request->username != $profil->uname) {
@@ -159,11 +159,12 @@ class UserController extends Controller
                 ]);
             }
 
-            $user = User::where('id', $profil->id)->update([
-                'uname' => $request->username,
-                'pass' => $request->password_baru
-            ]);
+            $update['uname'] = $request->username;
+            if ($request->password_baru != '') {
+                $update['pass'] = $request->password_baru;
+            }
 
+            $user = User::where('id', $profil->id)->update($update);
             return response()->json([
                 'success' => true,
                 'msg' => 'Username dan Password berhasil diperbarui. Silahkan login dengan Username dan Password yang baru.'

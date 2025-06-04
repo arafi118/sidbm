@@ -1809,9 +1809,9 @@ class PinjamanKelompokController extends Controller
 
     public function BaPendanaan($id, $data)
     {
-        $data['pinj'] = PinjamanKelompok::where('id', $id)->first();
+        $data['pinkel'] = PinjamanKelompok::where('id', $id)->first();
         $data['pinjaman'] = PinjamanKelompok::where([
-            ['tgl_tunggu', $data['pinj']->tgl_tunggu],
+            ['tgl_tunggu', $data['pinkel']->tgl_tunggu],
             ['status', 'W']
         ])->with([
             'jpp',
@@ -1831,7 +1831,17 @@ class PinjamanKelompokController extends Controller
             ['jabatan', '1']
         ])->first();
 
-        $data['judul'] = 'BA Pendanaan ' . Tanggal::tglLatin($data['pinj']->tgl_tunggu);
+        $jenis_dokumen = request()->get('jenis') ?: 'dokumen_proposal';
+        $dokumenPinjaman = DokumenPinjaman::where([
+            ['file', $data['report']],
+            ['jenis_dokumen', $jenis_dokumen]
+        ])->with('tanda_tangan')->first();
+        $data['tanda_tangan'] = '';
+        if ($dokumenPinjaman->tanda_tangan) {
+            $data['tanda_tangan'] = Pinjaman::keyword($dokumenPinjaman->tanda_tangan->tanda_tangan, $data);
+        }
+
+        $data['judul'] = 'BA Pendanaan ' . Tanggal::tglLatin($data['pinkel']->tgl_tunggu);
         $view = view('perguliran.dokumen.ba_pendanaan', $data)->render();
 
         if ($data['type'] == 'pdf') {

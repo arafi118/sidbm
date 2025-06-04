@@ -23,8 +23,8 @@
     <p style="text-align: justify;">
         Dalam rangka menindak lanjuti proses tahapan perguliran atas kelompok kelompok permohonan piutang
         {{ $kec->nama_lembaga_sort }} yang sudah diterbitkan rekomendasi pada tahapan verifikasi maka pada hari ini
-        {{ Tanggal::namaHari($pinj->tgl_tunggu) }} tanggal {{ Tanggal::hari($pinj->tgl_tunggu) }} bulan
-        {{ Tanggal::namaBulan($pinj->tgl_tunggu) }} tahun {{ Tanggal::tahun($pinj->tgl_tunggu) }} bertempat di kantor
+        {{ Tanggal::namaHari($pinkel->tgl_tunggu) }} tanggal {{ Tanggal::hari($pinkel->tgl_tunggu) }} bulan
+        {{ Tanggal::namaBulan($pinkel->tgl_tunggu) }} tahun {{ Tanggal::tahun($pinkel->tgl_tunggu) }} bertempat di kantor
         {{ $kec->nama_lembaga_sort }} telah dilakukan pembahasan dan ditetapkan alokasi pendanaan dan rencana tanggal
         pencairan kepada kelompok sebagai berikut:
     </p>
@@ -84,63 +84,79 @@
         </tbody>
     </table>
 
-    <p style="text-align: justify;">
-        Demikian Berita Acara ini dibuat dan ditanda tangani untuk menjadi dasar pencairan piutang kepada kelompok kelompok
-        tersebut diatas.
-    </p>
-
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; table-layout: fixed;">
         <tr>
-            <td width="15%">&nbsp;</td>
-            <td width="33%">&nbsp;</td>
-            <td width="25%">Ditanda tangani di</td>
-            <td width="25%">: {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}</td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>Pada tanggal</td>
-            <td>: {{ Tanggal::tglLatin($pinj->tgl_cair) }}</td>
-        </tr>
+            <td style="padding: 0px !important;">
+                <p style="text-align: justify;">
+                    Demikian Berita Acara ini dibuat dan ditanda tangani untuk menjadi dasar pencairan piutang kepada
+                    kelompok kelompok
+                    tersebut diatas.
+                </p>
 
-        <tr>
-            <td colspan="4">&nbsp;</td>
-        </tr>
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 11px; table-layout: fixed;" class="p0">
+                    <tr>
+                        <td width="17%">&nbsp;</td>
+                        <td width="33%">&nbsp;</td>
+                        <td width="25%">Ditanda tangani di</td>
+                        <td width="25%">: {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>Pada tanggal</td>
+                        <td>: {{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
+                    </tr>
 
-        @foreach ($pendanaan as $pend)
-            <tr class="vt">
-                <td height="20">
-                    <div>{{ $pend->namadepan }} {{ $pend->namabelakang }}</div>
-                    <div>
-                        <b>{{ $pend->j->nama_jabatan }}</b>
-                    </div>
-                </td>
-                <td align="right">
-                    <div>&nbsp;</div>
-                    <div>________________________________</div>
-                </td>
-                @if ($loop->iteration == '1')
-                    <td colspan="2" rowspan="{{ count($pendanaan) }}">
-                        <table width="100%" border="0" width="100%" cellspacing="0" cellpadding="0"
-                            style="font-size: 11px; table-layout: fixed;" class="p0">
-                            <tr>
-                                <td align="center">Mengetahui</td>
-                            </tr>
-                            <tr>
-                                <td align="center">{{ $kec->sebutan_level_1 }}</td>
-                            </tr>
-                            <tr>
-                                <td height="35">&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td align="center">
-                                    {{ $dir->namadepan }} {{ $dir->namabelakang }}
+                    <tr>
+                        <td colspan="4">&nbsp;</td>
+                    </tr>
+                </table>
+
+                @if ($tanda_tangan)
+                    {!! $tanda_tangan !!}
+                @else
+                    <table border="0" width="100%" cellspacing="0" cellpadding="0"
+                        style="font-size: 11px; table-layout: fixed;" class="p0">
+                        @foreach ($pendanaan as $pend)
+                            <tr class="vt">
+                                <td height="20">
+                                    <div>{{ $pend->namadepan }} {{ $pend->namabelakang }}</div>
+                                    <div>
+                                        <b>{{ $pend->j->nama_jabatan }}</b>
+                                    </div>
                                 </td>
+                                <td align="right">
+                                    <div>&nbsp;</div>
+                                    <div>________________________________</div>
+                                </td>
+                                @if ($loop->iteration == '1')
+                                    <td colspan="2" rowspan="{{ count($pendanaan) }}">
+                                        <table width="100%" border="0" width="100%" cellspacing="0" cellpadding="0"
+                                            style="font-size: 11px; table-layout: fixed;" class="p0">
+                                            <tr>
+                                                <td align="center">Mengetahui</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center">{{ $kec->sebutan_level_1 }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td height="35">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center">
+                                                    {{ $dir->namadepan }} {{ $dir->namabelakang }}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                @endif
                             </tr>
-                        </table>
-                    </td>
+                        @endforeach
+                    </table>
                 @endif
-            </tr>
-        @endforeach
+
+            </td>
+        </tr>
     </table>
 @endsection
