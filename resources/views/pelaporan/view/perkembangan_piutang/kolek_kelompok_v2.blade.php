@@ -30,7 +30,7 @@
                 <td colspan="3" align="center">
                     <div style="font-size: 18px;">
                         <b>
-                            DAFTAR KOLEKTIBILITAS REKAP KELOMPOK {{ strtoupper($jpp->nama_jpp) }}
+                            DAFTAR KOLEKTIBILITAS REKAP KELOMPOK {{ strtoupper($jpp->nama_jpp) }} V2
                             {{ $lpp == 'Minggu' ? 'MINGGUAN' : '' }}
                         </b>
                     </div>
@@ -63,9 +63,9 @@
                 <tr>
                     <th class="t l b" width="8%">Pokok</th>
                     <th class="t l b" width="8%">Jasa</th>
-                    <th class="t l b">(Menunggak 1-3)</th>
-                    <th class="t l b">(Menunggak 4-5)</th>
-                    <th class="t l b r">(Menunggak 6+)</th>
+                    <th class="t l b">(Menunggak 1-6)</th>
+                    <th class="t l b">(Menunggak 7-12)</th>
+                    <th class="t l b r">(Menunggak 12+)</th>
                 </tr>
             </thead>
 
