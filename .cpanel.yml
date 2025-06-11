@@ -1,0 +1,3 @@
+deployment:
+  tasks:
+    - /bin/cp -r * /home/dbm/public_html/apps
