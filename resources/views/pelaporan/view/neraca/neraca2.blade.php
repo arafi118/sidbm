@@ -88,13 +88,13 @@
                     <tr style="background: {{ $bg }};">
                         <td>{{ $lev3->kode_akun }}.</td>
                         <td>{{ $lev3->nama_akun }}</td>
-                        @if ($sum_saldo_awal < 0)
+                        @if (round($sum_saldo_awal) < 0)
                             <td align="right">({{ number_format($sum_saldo_awal * -1, 2) }})</td>
                         @else
                             <td align="right">{{ number_format($sum_saldo_awal, 2) }}</td>
                         @endif
 
-                        @if ($sum_saldo < 0)
+                        @if (round($sum_saldo) < 0)
                             <td align="right">({{ number_format($sum_saldo * -1, 2) }})</td>
                         @else
                             <td align="right">{{ number_format($sum_saldo, 2) }}</td>
