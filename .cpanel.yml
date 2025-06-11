@@ -1,3 +1,3 @@
 deployment:
   tasks:
-    - /bin/cp -r * /home/dbm/public_html/apps
+    - /bin/rsync -av --exclude='.git' --exclude='.cpanel.yml' ./ /home/dbm/public_html/apps/
