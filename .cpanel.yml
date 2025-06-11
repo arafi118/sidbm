@@ -1,3 +1,5 @@
 deployment:
   tasks:
-    - /bin/rsync -av --exclude='.git' --exclude='.cpanel.yml' ./ /home/dbm/public_html/apps/
+    - export DEST="/home/dbm/public_html/apps"
+    - rm -rf "$DEST"/*
+    - cp -r * "$DEST"
