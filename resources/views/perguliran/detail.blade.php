@@ -154,24 +154,28 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="input-group input-group-outline my-3">
-                                <label class="form-label" for="tglProposal">Tanggal Proposal</label>
-                                <input autocomplete="off" type="text" name="tglProposal" id="tglProposal"
-                                    class="form-control" readonly
-                                    value="{{ Tanggal::tglIndo($perguliran->tgl_proposal) }}">
+                    <form action="/perguliran/simpan_data/{{ $perguliran->id }}?jenis=dokumen_proposal&save=true"
+                        method="post" id="simpanDataProposal">
+                        @csrf
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="input-group input-group-outline my-3">
+                                    <label class="form-label" for="tglProposal">Tanggal Proposal</label>
+                                    <input autocomplete="off" type="text" name="tglProposal" id="tglProposal"
+                                        class="form-control date simpan-proposal"
+                                        value="{{ Tanggal::tglIndo($perguliran->tgl_proposal) }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="input-group input-group-outline my-3">
+                                    <label class="form-label" for="tglVerifikasi">Tanggal Verifikasi</label>
+                                    <input autocomplete="off" type="text" name="tglVerifikasi" id="tglVerifikasi"
+                                        class="form-control date simpan-proposal"
+                                        value="{{ Tanggal::tglIndo($perguliran->tgl_verifikasi) }}">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="input-group input-group-outline my-3">
-                                <label class="form-label" for="tglVerifikasi">Tanggal Verifikasi</label>
-                                <input autocomplete="off" type="text" name="tglVerifikasi" id="tglVerifikasi"
-                                    class="form-control" readonly
-                                    value="{{ Tanggal::tglIndo($perguliran->tgl_verifikasi) }}">
-                            </div>
-                        </div>
-                    </div>
+                    </form>
 
                     <form action="/perguliran/dokumen?status=P&jenis=dokumen_proposal" target="_blank" method="post">
                         @csrf
@@ -236,8 +240,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/perguliran/simpan_data/{{ $perguliran->id }}?save=true" method="post"
-                        id="simpanData">
+                    <form action="/perguliran/simpan_data/{{ $perguliran->id }}?jenis=dokumen_pencairan&save=true"
+                        method="post" id="simpanDataPencairan">
                         @csrf
 
                         <div class="row">
@@ -245,21 +249,23 @@
                                 <div class="input-group input-group-outline my-3">
                                     <label class="form-label" for="spk_no">Nomor SPK</label>
                                     <input autocomplete="off" type="text" name="spk_no" id="spk_no"
-                                        class="form-control save" {{ $readonly }} value="{{ $perguliran->spk_no }}">
+                                        class="form-control simpan-pencairan" {{ $readonly }}
+                                        value="{{ $perguliran->spk_no }}">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="input-group input-group-outline my-3">
                                     <label class="form-label" for="tempat">Tempat</label>
                                     <input autocomplete="off" type="text" name="tempat" id="tempat"
-                                        class="form-control save" {{ $readonly }} value="{{ $tempat }}">
+                                        class="form-control simpan-pencairan" {{ $readonly }}
+                                        value="{{ $tempat }}">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="input-group input-group-outline my-3">
                                     <label class="form-label" for="tgl_cair">Tanggal Cair</label>
                                     <input autocomplete="off" type="text" name="tgl_cair" id="tgl_cair"
-                                        class="form-control date save" {{ $readonly }}
+                                        class="form-control date simpan-pencairan" {{ $readonly }}
                                         value="{{ Tanggal::tglIndo($perguliran->tgl_cair) }}">
                                 </div>
                             </div>
@@ -267,7 +273,8 @@
                                 <div class="input-group input-group-outline my-3">
                                     <label class="form-label" for="waktu">Waktu</label>
                                     <input autocomplete="off" type="text" name="waktu" id="waktu"
-                                        class="form-control save" {{ $readonly }} value="{{ $waktu }}">
+                                        class="form-control simpan-pencairan" {{ $readonly }}
+                                        value="{{ $waktu }}">
                                 </div>
                             </div>
                         </div>
@@ -1033,8 +1040,8 @@
             })
         })
 
-        $(document).on('change', '.save', function() {
-            var form = $('#simpanData')
+        $(document).on('change', '.simpan-pencairan', function() {
+            var form = $('#simpanDataPencairan')
             $.ajax({
                 type: form.attr('method'),
                 url: form.attr('action'),
@@ -1042,6 +1049,20 @@
                 success: function(result) {
                     if (result.success) {
                         $('[name=tgl_cair]').val(result.tgl_cair)
+                        Swal.fire('Berhasil', result.msg, 'success')
+                    }
+                }
+            })
+        })
+
+        $(document).on('change', '.simpan-proposal', function() {
+            var form = $('#simpanDataProposal')
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function(result) {
+                    if (result.success) {
                         Swal.fire('Berhasil', result.msg, 'success')
                     }
                 }

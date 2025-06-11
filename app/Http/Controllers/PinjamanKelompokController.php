@@ -1059,33 +1059,54 @@ class PinjamanKelompokController extends Controller
 
     public function simpan(Request $request, $id)
     {
+        $pinkel = PinjamanKelompok::where('id', $id)->with('kelompok')->first();
+
         $data = $request->only([
+            'tglProposal',
+            'tglVerifikasi',
             'spk_no',
             'tgl_cair',
             'waktu',
             'tempat'
         ]);
 
-        $pinkel = PinjamanKelompok::where('id', $id)->with('kelompok')->first();
+        $jenis = $request->get('jenis');
+        if ($jenis == 'dokumen_pencairan') {
+            $wt_cair = $data['waktu'] . '_' . $data['tempat'];
+            $updatePinjamanKelompok = [
+                'spk_no' => $data['spk_no'],
+                'tgl_cair' => Tanggal::tglNasional($data['tgl_cair']),
+                'wt_cair' => $wt_cair
+            ];
 
-        $wt_cair = $data['waktu'] . '_' . $data['tempat'];
-        $pinjaman = PinjamanKelompok::where('id', $id)->update([
-            'spk_no' => $data['spk_no'],
-            'tgl_cair' => Tanggal::tglNasional($data['tgl_cair']),
-            'wt_cair' => $wt_cair
-        ]);
+            $updatePinjamanAnggota = [
+                'tgl_cair' => Tanggal::tglNasional($data['tgl_cair'])
+            ];
+        } else {
+            $data['tgl_proposal'] = $data['tglProposal'];
+            $data['tgl_verifikasi'] = $data['tglVerifikasi'];
+            unset($data['tglProposal']);
+            unset($data['tglVerifikasi']);
 
-        PinjamanAnggota::where('id_pinkel', $id)->update([
-            'tgl_cair' => Tanggal::tglNasional($data['tgl_cair'])
-        ]);
+            $updatePinjamanKelompok = [
+                'tgl_proposal' => Tanggal::tglNasional($data['tgl_proposal']),
+                'tgl_verifikasi' => Tanggal::tglNasional($data['tgl_verifikasi']),
+            ];
+
+            $updatePinjamanAnggota = [
+                'tgl_proposal' => Tanggal::tglNasional($data['tgl_proposal']),
+                'tgl_verifikasi' => Tanggal::tglNasional($data['tgl_verifikasi']),
+            ];
+        }
+
+        PinjamanKelompok::where('id', $id)->update($updatePinjamanKelompok);
+        PinjamanAnggota::where('id_pinkel', $id)->update($updatePinjamanAnggota);
 
         $this->generate($id);
 
-        return response()->json([
-            'success' => true,
-            'msg' => 'Piutang Kelompok ' . $pinkel->kelompok->nama_kelompok . ' Berhasil Diperbarui',
-            'tgl_cair' => $data['tgl_cair']
-        ]);
+        $data['success'] = true;
+        $data['msg'] = 'Piutang Kelompok ' . $pinkel->kelompok->nama_kelompok . ' Berhasil Diperbarui';
+        return response()->json($data);
     }
 
     public function kembaliProposal(Request $request, PinjamanKelompok $id)
