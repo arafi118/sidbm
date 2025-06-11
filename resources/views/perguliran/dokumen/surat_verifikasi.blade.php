@@ -65,7 +65,7 @@
                     desa setempat dan diharap kehadirannya untuk kegiatan tersebut yang akan dilaksanakan dengan ketentuan
                     sebagai berikut;
                 </div>
-                <table>
+                <table class="p0">
                     <tr>
                         <td width="10">1.</td>
                         <td width="120">Nama Kelompok</td>
@@ -89,12 +89,18 @@
                     </tr>
                     <tr>
                         <td>4.</td>
+                        <td>Waktu</td>
+                        <td>:</td>
+                        <td>Jam : {{ substr($pinkel->waktu_verifikasi, 0, 5) }}</td>
+                    </tr>
+                    <tr>
+                        <td>5.</td>
                         <td>Tempat</td>
                         <td>:</td>
                         <td>Rumah Ketua kelompok / {{ $ketua }}</td>
                     </tr>
                     <tr>
-                        <td>5.</td>
+                        <td>6.</td>
                         <td>Kegiatan</td>
                         <td>:</td>
                         <td>

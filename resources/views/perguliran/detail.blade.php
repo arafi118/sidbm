@@ -158,7 +158,7 @@
                         method="post" id="simpanDataProposal">
                         @csrf
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <div class="input-group input-group-outline my-3">
                                     <label class="form-label" for="tglProposal">Tanggal Proposal</label>
                                     <input autocomplete="off" type="text" name="tglProposal" id="tglProposal"
@@ -166,12 +166,20 @@
                                         value="{{ Tanggal::tglIndo($perguliran->tgl_proposal) }}">
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <div class="input-group input-group-outline my-3">
                                     <label class="form-label" for="tglVerifikasi">Tanggal Verifikasi</label>
                                     <input autocomplete="off" type="text" name="tglVerifikasi" id="tglVerifikasi"
                                         class="form-control date simpan-proposal"
                                         value="{{ Tanggal::tglIndo($perguliran->tgl_verifikasi) }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group input-group-outline my-3">
+                                    <label class="form-label" for="waktuVerifikasi">Waktu Verifikasi</label>
+                                    <input autocomplete="off" type="text" name="waktuVerifikasi" id="waktuVerifikasi"
+                                        class="form-control time simpan-proposal"
+                                        value="{{ $perguliran->waktu_verifikasi ?: date('H:') . '00' }}">
                                 </div>
                             </div>
                         </div>
@@ -763,6 +771,13 @@
             dateFormat: "d/m/Y"
         })
 
+        $(".time").flatpickr({
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true
+        })
+
         var formatter = new Intl.NumberFormat('en-US', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
@@ -1056,17 +1071,19 @@
         })
 
         $(document).on('change', '.simpan-proposal', function() {
-            var form = $('#simpanDataProposal')
-            $.ajax({
-                type: form.attr('method'),
-                url: form.attr('action'),
-                data: form.serialize(),
-                success: function(result) {
-                    if (result.success) {
-                        Swal.fire('Berhasil', result.msg, 'success')
+            setTimeout(() => {
+                var form = $('#simpanDataProposal')
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(result) {
+                        if (result.success) {
+                            Swal.fire('Berhasil', result.msg, 'success')
+                        }
                     }
-                }
-            })
+                })
+            }, 1000);
         })
 
         $(document).on('click', '#kembaliProposal', function() {

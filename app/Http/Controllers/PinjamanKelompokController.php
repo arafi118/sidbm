@@ -1064,6 +1064,7 @@ class PinjamanKelompokController extends Controller
         $data = $request->only([
             'tglProposal',
             'tglVerifikasi',
+            'waktuVerifikasi',
             'spk_no',
             'tgl_cair',
             'waktu',
@@ -1091,6 +1092,7 @@ class PinjamanKelompokController extends Controller
             $updatePinjamanKelompok = [
                 'tgl_proposal' => Tanggal::tglNasional($data['tgl_proposal']),
                 'tgl_verifikasi' => Tanggal::tglNasional($data['tgl_verifikasi']),
+                'waktu_verifikasi' => $data['waktuVerifikasi']
             ];
 
             $updatePinjamanAnggota = [
