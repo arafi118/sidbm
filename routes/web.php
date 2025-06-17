@@ -327,4 +327,5 @@ Route::get('/excel/{filename}/{lokasi}', [PinjamanKelompokController::class, 'ex
 Route::get('/manifest.json', [ServiceWorkerController::class, 'manifest']);
 Route::get('/cache-files', [ServiceWorkerController::class, 'assets']);
 
+
 Route::get('/{invoice}', [PelaporanController::class, 'invoice']);
