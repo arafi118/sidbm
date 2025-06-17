@@ -294,6 +294,15 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <form action="/perguliran/dokumen?status=A&jenis=dokumen_pencairan"
+                                            target="_blank" method="post" id="formCetakTagihan">
+                                            @csrf
+
+                                            <input type="hidden" name="id" id="id_tagihan">
+                                            <input type="hidden" name="report" value="suratTagihan#pdf">
+                                        </form>
+
                                         <div class="table-responsive">
                                             <table class="table table-striped midle" width="100%">
                                                 <thead>
@@ -304,6 +313,7 @@
                                                         <td align="center">Alokasi</td>
                                                         <td align="center">Tunggakan Pokok</td>
                                                         <td align="center">Tunggakan Jasa</td>
+                                                        <td align="center">Tagihan</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="TbMenunggak"></tbody>
@@ -684,7 +694,7 @@
             if (data.length == 0) {
                 $('#TbMenunggak').append(`
                     <tr>
-                        <td colspan="6" align="center">Tidak ada tunggakan</td>
+                        <td colspan="7" align="center">Tidak ada tunggakan</td>
                     </tr>
                 `)
             } else {
@@ -697,11 +707,19 @@
                             <td align="right">${item.alokasi}</td>
                             <td align="right">${item.tunggakan_pokok}</td>
                             <td align="right">${item.tunggakan_jasa}</td>
+                            <td align="center"><button type="button" class="btn btn-linkedin btn-sm mb-0 btn-cetak-tagihan" data-id="${item.id}"><i class="fas fa-file"></i></button></td>
                         </tr>
                     `)
                 })
             }
         }
+
+        $(document).on('click', '.btn-cetak-tagihan', function() {
+            var id = $(this).attr('data-id')
+
+            $('#id_tagihan').val(id)
+            $('#formCetakTagihan').submit()
+        })
 
         function tagihan() {
             var tgl_tagihan = $('#tgl_tagihan').val()
