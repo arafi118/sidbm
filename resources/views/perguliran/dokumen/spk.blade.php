@@ -80,7 +80,7 @@
         <tr>
             <td>Alamat</td>
             <td align="center">:</td>
-            <td>{{ $kec->alamat_kec }}</td>
+            <td>{{ $dir->alamat }}</td>
         </tr>
     </table>
 
