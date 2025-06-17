@@ -464,27 +464,29 @@ class PinjamanKelompokController extends Controller
             $pinj_a['jumlah_pemanfaat'] = 0;
             $pinj_a['jumlah_kelompok'] = 0;
 
-            foreach ($pinjaman_anggota as $pa) {
-                $pinj_aktif = $pa->pinjaman;
+            if ($perguliran->jenis_pp != '3') {
+                foreach ($pinjaman_anggota as $pa) {
+                    $pinj_aktif = $pa->pinjaman;
 
-                if ($pinj_aktif) {
-                    $pinj_a['jumlah_pinjaman'] += 1;
-                    $pinj_a['pinjaman'][] = $pinj_aktif;
-                }
+                    if ($pinj_aktif) {
+                        $pinj_a['jumlah_pinjaman'] += 1;
+                        $pinj_a['pinjaman'][] = $pinj_aktif;
+                    }
 
-                if ($pa->anggota) {
-                    $pemanfaat_aktif = $pa->anggota->pemanfaat;
-                    if ($pemanfaat_aktif) {
-                        $pinj_a['jumlah_pemanfaat'] += 1;
-                        $pinj_a['pemanfaat'][$pa->anggota->nik] = $pemanfaat_aktif;
+                    if ($pa->anggota) {
+                        $pemanfaat_aktif = $pa->anggota->pemanfaat;
+                        if ($pemanfaat_aktif) {
+                            $pinj_a['jumlah_pemanfaat'] += 1;
+                            $pinj_a['pemanfaat'][$pa->anggota->nik] = $pemanfaat_aktif;
+                        }
                     }
                 }
-            }
 
-            $pinjaman_kelompok = PinjamanKelompok::where('id_kel', $perguliran->id_kel)->where('status', 'A')->with('kelompok')->get();
-            foreach ($pinjaman_kelompok as $pinkel) {
-                $pinj_a['jumlah_kelompok'] += 1;
-                $pinj_a['kelompok'][] = $pinkel;
+                $pinjaman_kelompok = PinjamanKelompok::where('id_kel', $perguliran->id_kel)->where('status', 'A')->with('kelompok')->get();
+                foreach ($pinjaman_kelompok as $pinkel) {
+                    $pinj_a['jumlah_kelompok'] += 1;
+                    $pinj_a['kelompok'][] = $pinkel;
+                }
             }
         }
 
@@ -3619,7 +3621,8 @@ class PinjamanKelompokController extends Controller
 
         Session::put('lokasi', $lokasi);
         $pinjaman = PinjamanKelompok::whereIn('id', $id_pinj)->with([
-            'rencana', 'real'
+            'rencana',
+            'real'
         ])->get();
 
         foreach ($pinjaman as $pinj) {
