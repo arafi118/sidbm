@@ -27,7 +27,6 @@ use App\Http\Controllers\TandaTanganController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use App\Models\Kecamatan;
-use App\Models\PinjamanKelompok;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 

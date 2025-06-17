@@ -279,6 +279,21 @@
                             <div class="tab-pane fade" id="menunggak" role="tabpanel" aria-labelledby="menunggak">
                                 <div class="card">
                                     <div class="card-body">
+
+                                        <div class="d-flex justify-content-end">
+                                            <div class="col-2">
+                                                <div class="input-group input-group-outline">
+                                                    <label class="form-label">
+                                                        <span>
+                                                            <i class="fas fa-search"></i>
+                                                            <span class="ms-1">Cari Nama Kelompok</span>
+                                                        </span>
+                                                    </label>
+                                                    <input type="text" name="cari_menunggak" id="cari_menunggak"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="table-responsive">
                                             <table class="table table-striped midle" width="100%">
                                                 <thead>
@@ -615,6 +630,8 @@
             dateFormat: "d/m/Y"
         })
 
+        let dataTunggakan = [];
+
         $.ajax({
             type: 'post',
             url: '/dashboard/jatuh_tempo',
@@ -638,12 +655,53 @@
                 if (result.success) {
                     $('#nunggak').html(result.nunggak)
 
-                    if (result.nunggak != '00') {
-                        $('#TbMenunggak').html(result.table)
+                    if (result.nunggak > 0) {
+                        dataTunggakan = result.data
+
+                        setTabelTunggakan(dataTunggakan)
                     }
                 }
             }
         })
+
+        $(document).on('keyup', '#cari_menunggak', function() {
+            let cari = $(this).val()
+
+            if (cari.length > 0) {
+                var data = dataTunggakan.filter((item) => {
+                    return item.nama_kelompok.toLowerCase().includes(cari.toLowerCase())
+                })
+
+                setTabelTunggakan(data)
+            } else {
+                setTabelTunggakan(dataTunggakan)
+            }
+        })
+
+        function setTabelTunggakan(data) {
+            $('#TbMenunggak').html('')
+
+            if (data.length == 0) {
+                $('#TbMenunggak').append(`
+                    <tr>
+                        <td colspan="6" align="center">Tidak ada tunggakan</td>
+                    </tr>
+                `)
+            } else {
+                data.forEach((item, index) => {
+                    $('#TbMenunggak').append(`
+                        <tr>
+                            <td align="center">${index + 1}</td>
+                            <td>${item.nama_kelompok} [${item.desa}] (${item.id})</td>
+                            <td align="center">${item.tgl_cair}</td>
+                            <td align="right">${item.alokasi}</td>
+                            <td align="right">${item.tunggakan_pokok}</td>
+                            <td align="right">${item.tunggakan_jasa}</td>
+                        </tr>
+                    `)
+                })
+            }
+        }
 
         function tagihan() {
             var tgl_tagihan = $('#tgl_tagihan').val()
