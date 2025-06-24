@@ -310,7 +310,7 @@
     </div>
 @endif
 
-<div class="card mb-3">
+<div class="card mb-3 {{ $perguliran->status == 'T' ? 'd-none' : '' }}">
     <div class="card-body pb-2">
         <h5 class="mb-1">
             Riwayat Angsuran

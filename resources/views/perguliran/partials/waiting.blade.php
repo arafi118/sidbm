@@ -351,11 +351,18 @@
                 </div>
 
                 <div class="d-flex justify-content-end mt-3">
+                    @if (in_array('tahapan_perguliran.waiting.tidak_layak_dicairkan', Session::get('tombol')))
+                        <button type="button" id="tidakLayakDicairkan" class="btn btn-danger btn-sm">
+                            Tidak Layak
+                        </button>
+                    @endif
+
                     @if (in_array('tahapan_perguliran.waiting.kembalikan_ke_proposal', Session::get('tombol')))
-                        <button type="button" id="kembaliProposal" class="btn btn-warning btn-sm">
+                        <button type="button" id="kembaliProposal" class="btn btn-warning btn-sm ms-1">
                             Kembalikan Ke Proposal
                         </button>
                     @endif
+
                     @if (!($pinj_a['jumlah_pinjaman'] > '0' || $pinj_a['jumlah_pemanfaat'] > '0' || $pinj_a['jumlah_kelompok'] > '0'))
                         <button type="button" id="Simpan" class="btn btn-github ms-1 btn-sm">
                             Posting Pencairan
@@ -369,6 +376,11 @@
 </form>
 
 <form action="/perguliran/kembali_proposal/{{ $perguliran->id }}" method="post" id="formKembaliProposal">
+    @csrf
+</form>
+
+<form action="/perguliran/tidak_layak_cair/{{ $perguliran->id }}?save=true" method="post"
+    id="formTidakLayakDicairkan">
     @csrf
 </form>
 

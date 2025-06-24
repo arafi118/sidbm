@@ -443,7 +443,7 @@ class PinjamanKelompokController extends Controller
         ])->orderBy('kode_akun', 'asc')->get();
         $debet = '1.1.03.' . str_pad($perguliran->jenis_pp, 2, '0', STR_PAD_LEFT);
 
-        if ($perguliran->status == 'A' || $perguliran->status == 'L' || $perguliran->status == 'R' || $perguliran->status == 'H') {
+        if ($perguliran->status == 'A' || $perguliran->status == 'L' || $perguliran->status == 'R' || $perguliran->status == 'H' || $perguliran->status == 'T') {
             $view = 'aktif';
         } elseif ($perguliran->status == 'W') {
             $view = 'waiting';
@@ -1111,6 +1111,33 @@ class PinjamanKelompokController extends Controller
         $data['success'] = true;
         $data['msg'] = 'Piutang Kelompok ' . $pinkel->kelompok->nama_kelompok . ' Berhasil Diperbarui';
         return response()->json($data);
+    }
+
+    public function tidakLayak(Request $request, PinjamanKelompok $id)
+    {
+        $today = date('Y-m-d');
+        $update = [
+            'tgl_dana' => $today,
+            'tgl_tunggu' => $today,
+            'tgl_cair' => $today,
+            'tgl_lunas' => $today,
+            'status' => 'T',
+            'lu' => date('Y-m-d H:i:s'),
+            'user_id' => auth()->user()->id
+        ];
+        if ($id->status == 'V') {
+            $update['tgl_verifikasi'] = $today;
+        }
+
+        PinjamanKelompok::where('id', $id->id)->update($update);
+        PinjamanAnggota::where('id_pinkel', $id->id)->update($update);
+
+        $this->generate($id->id);
+        return response()->json([
+            'success' => true,
+            'msg' => 'Piutang Kelompok ' . $id->kelompok->nama_kelompok . ' Loan ID. ' . $id->id . ' berhasil diubah menjadi status T (Tidak Layak)',
+            'id_pinkel' => $id->id
+        ]);
     }
 
     public function kembaliProposal(Request $request, PinjamanKelompok $id)
