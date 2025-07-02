@@ -279,6 +279,30 @@
                             <div class="tab-pane fade" id="menunggak" role="tabpanel" aria-labelledby="menunggak">
                                 <div class="card">
                                     <div class="card-body">
+
+                                        <div class="d-flex justify-content-end">
+                                            <div class="col-2">
+                                                <div class="input-group input-group-outline">
+                                                    <label class="form-label">
+                                                        <span>
+                                                            <i class="fas fa-search"></i>
+                                                            <span class="ms-1">Cari Nama Kelompok</span>
+                                                        </span>
+                                                    </label>
+                                                    <input type="text" name="cari_menunggak" id="cari_menunggak"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <form action="/perguliran/dokumen?status=A&jenis=dokumen_pencairan"
+                                            target="_blank" method="post" id="formCetakTagihan">
+                                            @csrf
+
+                                            <input type="hidden" name="id" id="id_tagihan">
+                                            <input type="hidden" name="report" value="suratTagihan#pdf">
+                                        </form>
+
                                         <div class="table-responsive">
                                             <table class="table table-striped midle" width="100%">
                                                 <thead>
@@ -289,6 +313,7 @@
                                                         <td align="center">Alokasi</td>
                                                         <td align="center">Tunggakan Pokok</td>
                                                         <td align="center">Tunggakan Jasa</td>
+                                                        <td align="center">Tagihan</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="TbMenunggak"></tbody>
@@ -615,6 +640,8 @@
             dateFormat: "d/m/Y"
         })
 
+        let dataTunggakan = [];
+
         $.ajax({
             type: 'post',
             url: '/dashboard/jatuh_tempo',
@@ -638,11 +665,60 @@
                 if (result.success) {
                     $('#nunggak').html(result.nunggak)
 
-                    if (result.nunggak != '00') {
-                        $('#TbMenunggak').html(result.table)
+                    if (result.nunggak > 0) {
+                        dataTunggakan = result.data
+
+                        setTabelTunggakan(dataTunggakan)
                     }
                 }
             }
+        })
+
+        $(document).on('keyup', '#cari_menunggak', function() {
+            let cari = $(this).val()
+
+            if (cari.length > 0) {
+                var data = dataTunggakan.filter((item) => {
+                    return item.nama_kelompok.toLowerCase().includes(cari.toLowerCase())
+                })
+
+                setTabelTunggakan(data)
+            } else {
+                setTabelTunggakan(dataTunggakan)
+            }
+        })
+
+        function setTabelTunggakan(data) {
+            $('#TbMenunggak').html('')
+
+            if (data.length == 0) {
+                $('#TbMenunggak').append(`
+                    <tr>
+                        <td colspan="7" align="center">Tidak ada tunggakan</td>
+                    </tr>
+                `)
+            } else {
+                data.forEach((item, index) => {
+                    $('#TbMenunggak').append(`
+                        <tr>
+                            <td align="center">${index + 1}</td>
+                            <td>${item.nama_kelompok} [${item.desa}] (${item.id})</td>
+                            <td align="center">${item.tgl_cair}</td>
+                            <td align="right">${item.alokasi}</td>
+                            <td align="right">${item.tunggakan_pokok}</td>
+                            <td align="right">${item.tunggakan_jasa}</td>
+                            <td align="center"><button type="button" class="btn btn-linkedin btn-sm mb-0 btn-cetak-tagihan" data-id="${item.id}"><i class="fas fa-file"></i></button></td>
+                        </tr>
+                    `)
+                })
+            }
+        }
+
+        $(document).on('click', '.btn-cetak-tagihan', function() {
+            var id = $(this).attr('data-id')
+
+            $('#id_tagihan').val(id)
+            $('#formCetakTagihan').submit()
         })
 
         function tagihan() {

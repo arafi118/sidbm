@@ -443,23 +443,13 @@ class DashboardController extends Controller
             'kelompok.d'
         ])->orderBy('tgl_cair', 'ASC')->orderBy('id', 'ASC')->get();
 
-        $nunggak = "00";
-        $table = '';
-        $no = 1;
+        $dataTunggakan = [];
         foreach ($pinjaman as $pinkel) {
-            $real_pokok = 0;
-            $real_jasa = 0;
             $sum_pokok = 0;
             $sum_jasa = 0;
-            $saldo_pokok = $pinkel->alokasi;
-            $saldo_jasa = $pinkel->pros_jasa == 0 ? 0 : $pinkel->alokasi * ($pinkel->pros_jasa / 100);
             if ($pinkel->saldo) {
-                $real_pokok = $pinkel->saldo->realisasi_pokok;
-                $real_jasa = $pinkel->saldo->realisasi_jasa;
                 $sum_pokok = $pinkel->saldo->sum_pokok;
                 $sum_jasa = $pinkel->saldo->sum_jasa;
-                $saldo_pokok = $pinkel->saldo->saldo_pokok;
-                $saldo_jasa = $pinkel->saldo->saldo_jasa;
             }
 
             $target_pokok = 0;
@@ -479,24 +469,23 @@ class DashboardController extends Controller
             }
 
             if ($tunggakan_pokok != 0 || $tunggakan_jasa != 0) {
-                $nunggak++;
-                $table .= '<tr>';
-
-                $table .= '<td align="center">' . $no++ . '</td>';
-                $table .= '<td>' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->ketua . '][' . $pinkel->kelompok->d->nama_desa . '] - ' . $pinkel->id . '</td>';
-                $table .= '<td>' . Tanggal::tglIndo($pinkel->tgl_cair) . '</td>';
-                $table .= '<td align="right">' . number_format($pinkel->alokasi) . '</td>';
-                $table .= '<td align="right">' . number_format($tunggakan_pokok) . '</td>';
-                $table .= '<td align="right">' . number_format($tunggakan_jasa) . '</td>';
-
-                $table .= '</tr>';
+                $dataTunggakan[] = [
+                    'id' => $pinkel->id,
+                    'nama_kelompok' => $pinkel->kelompok->nama_kelompok,
+                    'ketua' => $pinkel->kelompok->ketua,
+                    'desa' => $pinkel->kelompok->d->nama_desa,
+                    'tgl_cair' => Tanggal::tglIndo($pinkel->tgl_cair),
+                    'alokasi' => number_format($pinkel->alokasi),
+                    'tunggakan_pokok' => number_format($tunggakan_pokok),
+                    'tunggakan_jasa' => number_format($tunggakan_jasa)
+                ];
             }
         }
 
         return response()->json([
             'success' => true,
-            'nunggak' => $nunggak,
-            'table' => $table
+            'nunggak' => str_pad(count($dataTunggakan), '2', '0', STR_PAD_LEFT),
+            'data' => $dataTunggakan
         ]);
     }
 

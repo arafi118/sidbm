@@ -104,16 +104,28 @@
                 @if (
                     !in_array('tahapan_perguliran.verifikasi.simpan_keputusan_pendanaan', Session::get('tombol')) &&
                         $perguliran->status == 'V')
+                    @if (in_array('tahapan_perguliran.verifikasi.tidak_layak_dicairkan', Session::get('tombol')))
+                        <button type="button" id="tidakLayakDicairkan" class="btn btn-danger btn-sm">
+                            Tidak Layak Dicairkan
+                        </button>
+                    @endif
+
                     @if (in_array('tahapan_perguliran.verifikasi.kembalikan_ke_proposal', Session::get('tombol')))
-                        <button type="button" id="kembaliProposal" class="btn float-end btn-warning btn-sm me-2 mb-2">
+                        <button type="button" id="kembaliProposal" class="btn float-end btn-warning btn-sm me-2 mb-2 ms-1">
                             Kembalikan Ke Proposal
                         </button>
                     @endif
                 @endif
 
                 @if (!in_array('tahapan_perguliran.waiting.pencairan', Session::get('tombol')) && $perguliran->status == 'W')
+                    @if (in_array('tahapan_perguliran.waiting.tidak_layak_dicairkan', Session::get('tombol')))
+                        <button type="button" id="tidakLayakDicairkan" class="btn btn-danger btn-sm">
+                            Tidak Layak Dicairkan
+                        </button>
+                    @endif
+
                     @if (in_array('tahapan_perguliran.waiting.kembalikan_ke_proposal', Session::get('tombol')))
-                        <button type="button" id="kembaliProposal" class="btn float-end btn-warning btn-sm me-2 mb-2">
+                        <button type="button" id="kembaliProposal" class="btn float-end btn-warning btn-sm me-2 mb-2 ms-1">
                             Kembalikan Ke Proposal
                         </button>
                     @endif
@@ -1084,6 +1096,33 @@
                     }
                 })
             }, 1000);
+        })
+
+        $(document).on('click', '#tidakLayakDicairkan', function() {
+            Swal.fire({
+                title: 'Tidak Layak',
+                text: 'Setelah klik lanjutkan, pinjaman ini akan berstatus T (Tidak Layak) dan tidak dapat dicairkan. Lanjutkan?',
+                showCancelButton: true,
+                confirmButtonText: 'Lanjutkan',
+                cancelButtonText: 'Batal',
+                icon: 'error'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $('#formTidakLayakDicairkan')
+                    $.ajax({
+                        type: form.attr('method'),
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        success: function(result) {
+                            if (result.success) {
+                                Swal.fire('Berhasil', result.msg, 'success').then(() => {
+                                    window.location.href = '/detail/' + result.id_pinkel
+                                })
+                            }
+                        }
+                    })
+                }
+            })
         })
 
         $(document).on('click', '#kembaliProposal', function() {

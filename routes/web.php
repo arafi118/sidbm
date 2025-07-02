@@ -27,7 +27,6 @@ use App\Http\Controllers\TandaTanganController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use App\Models\Kecamatan;
-use App\Models\PinjamanKelompok;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -215,6 +214,7 @@ Route::get('/perguliran/dokumen/cetak_kartu_angsuran_anggota/{id}/{idtp}/{nia?}'
 Route::post('/perguliran/dokumen', [PinjamanKelompokController::class, 'dokumen'])->middleware('auth');
 
 Route::post('/perguliran/kembali_proposal/{id}', [PinjamanKelompokController::class, 'kembaliProposal'])->middleware('auth');
+Route::post('/perguliran/tidak_layak_cair/{id}', [PinjamanKelompokController::class, 'tidakLayak'])->middleware('auth');
 
 Route::get('/pinjaman_anggota/register/{id_pinkel}', [PinjamanAnggotaController::class, 'create'])->middleware('auth');
 Route::get('/pinjaman_anggota/cari_pemanfaat', [PinjamanAnggotaController::class, 'cariPemanfaat'])->middleware('auth');
@@ -326,5 +326,6 @@ Route::get('/excel/{filename}/{lokasi}', [PinjamanKelompokController::class, 'ex
 
 Route::get('/manifest.json', [ServiceWorkerController::class, 'manifest']);
 Route::get('/cache-files', [ServiceWorkerController::class, 'assets']);
+
 
 Route::get('/{invoice}', [PelaporanController::class, 'invoice']);

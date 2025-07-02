@@ -225,7 +225,7 @@
             @endforeach
 
             <tr style="background: rgb(200, 200, 200); font-weight: bold;">
-                <td align="left">B. Laba Rugi OPERASIONAL (Kode Akun 4.2 - 5.3) </td>
+                <td align="left">B. Laba Rugi NON OPERASIONAL (Kode Akun 4.2 - 5.3) </td>
                 <td align="right">{{ number_format($saldo_bln_lalu2, 2) }}</td>
                 <td align="right">{{ number_format($saldo2 - $saldo_bln_lalu2, 2) }}</td>
                 <td align="right">{{ number_format($saldo2, 2) }}</td>
