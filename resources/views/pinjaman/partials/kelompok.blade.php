@@ -64,6 +64,6 @@
             threshold: 0.1,
             distance: 1000
         },
-        maxItemCount: 20
+        searchFields: ['label', 'value']
     })
 </script>
