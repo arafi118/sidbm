@@ -23,8 +23,8 @@
     <p style="text-align: justify;">
         Dalam rangka menindak lanjuti proses tahapan perguliran atas kelompok kelompok permohonan piutang
         {{ $kec->nama_lembaga_sort }} yang sudah diterbitkan rekomendasi pada tahapan verifikasi maka pada hari ini
-        {{ Tanggal::namaHari($pinkel->tgl_cair) }} tanggal {{ Tanggal::hari($pinkel->tgl_cair) }} bulan
-        {{ Tanggal::namaBulan($pinkel->tgl_cair) }} tahun {{ Tanggal::tahun($pinkel->tgl_cair) }} bertempat di kantor
+        {{ Tanggal::namaHari($pinkel->tgl_tunggu) }} tanggal {{ Tanggal::hari($pinkel->tgl_tunggu) }} bulan
+        {{ Tanggal::namaBulan($pinkel->tgl_tunggu) }} tahun {{ Tanggal::tahun($pinkel->tgl_tunggu) }} bertempat di kantor
         {{ $kec->nama_lembaga_sort }} telah dilakukan pembahasan dan ditetapkan alokasi pendanaan dan rencana tanggal
         pencairan kepada kelompok sebagai berikut:
     </p>

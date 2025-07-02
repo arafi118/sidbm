@@ -64,6 +64,6 @@
             threshold: 0.1,
             distance: 1000
         },
-        searchResultLimit: 20
+        searchResultLimit: 50
     })
 </script>
