@@ -65,19 +65,24 @@ class PelaporanController extends Controller
                 [
                     'title' => 'Neraca Bumdesma Lkd',
                     'value' => 'neraca_1'
-                ], [
+                ],
+                [
                     'title' => 'Laba / Rugi Bumdesma Lkd',
                     'value' => 'laba_rugi'
-                ], [
+                ],
+                [
                     'title' => 'Arus Kas',
                     'value' => 'arus_kas'
-                ], [
+                ],
+                [
                     'title' => 'Perubahan Ekuitas',
                     'value' => 'LPM'
-                ], [
+                ],
+                [
                     'title' => 'Catatan Atas Laporan Keuangan',
                     'value' => 'calk'
-                ], [
+                ],
+                [
                     'title' => 'Neraca Saldo Bumdesma Lkd',
                     'value' => 'neraca_saldo'
                 ],
@@ -116,7 +121,8 @@ class PelaporanController extends Controller
                 [
                     'title' => 'Neraca 1',
                     'value' => 'neraca_1'
-                ], [
+                ],
+                [
                     'title' => 'Neraca 2',
                     'value' => 'neraca_2'
                 ],
@@ -149,16 +155,20 @@ class PelaporanController extends Controller
                 [
                     'title' => '01. Januari - Maret',
                     'value' => 'EB_1,2,3'
-                ], [
+                ],
+                [
                     'title' => '02. April - Juni',
                     'value' => 'EB_4,5,6'
-                ], [
+                ],
+                [
                     'title' => '03. Juli - September',
                     'value' => 'EB_7,8,9'
-                ], [
+                ],
+                [
                     'title' => '04. Oktober - Desember',
                     'value' => 'EB_10,11,12'
-                ], [
+                ],
+                [
                     'title' => '05. Rekap Januari - Desember',
                     'value' => 'EB_12'
                 ]
@@ -170,19 +180,24 @@ class PelaporanController extends Controller
                 [
                     'title' => 'Pengalokasian Laba',
                     'value' => 'alokasi_laba'
-                ], [
+                ],
+                [
                     'title' => 'Jurnal Tutup Buku',
                     'value' => 'jurnal_tutup_buku'
-                ], [
+                ],
+                [
                     'title' => 'Neraca',
                     'value' => 'neraca_tutup_buku'
-                ], [
+                ],
+                [
                     'title' => 'Laba Rugi',
                     'value' => 'laba_rugi_tutup_buku'
-                ], [
+                ],
+                [
                     'title' => 'CALK',
                     'value' => 'CALK_tutup_buku'
-                ], [
+                ],
+                [
                     'title' => 'Perubahan Ekuitas',
                     'value' => 'LPM_tutup_buku'
                 ]
@@ -2862,6 +2877,12 @@ class PelaporanController extends Controller
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl_cair'] = $thn . '-' . $bln . '-';
+        }
+
+        if ($data['harian']) {
+            $data['sub_judul'] = 'Tanggal ' . $hari . ' Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl'] = $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['tgl_cair'] = $thn . '-' . $bln . '-' . $hari;
         }
 
         $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
