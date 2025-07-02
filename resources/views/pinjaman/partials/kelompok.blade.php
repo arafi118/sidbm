@@ -64,6 +64,6 @@
             threshold: 0.1,
             distance: 1000
         },
-        searchFields: ['label', 'value']
+        searchResultLimit: 20
     })
 </script>
