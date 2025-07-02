@@ -1863,7 +1863,7 @@ class PinjamanKelompokController extends Controller
     {
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->first();
         $data['pinjaman'] = PinjamanKelompok::where([
-            ['tgl_tunggu', $data['pinkel']->tgl_cair],
+            ['tgl_cair', $data['pinkel']->tgl_cair],
             ['status', 'W']
         ])->with([
             'jpp',
