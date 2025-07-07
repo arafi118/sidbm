@@ -247,10 +247,6 @@ class GenerateController extends Controller
                                 $data_penghapusan[$key]['alokasi_jasa_pinjaman'] = $alokasi_jasa_pinjaman;
                             }
 
-                            if ($_tempo_pokok == 0) {
-                                dd($pinkel);
-                            }
-
                             $pokok = Keuangan::bulatkan($alokasi_pokok_pinjaman / $_tempo_pokok);
                             $jasa = Keuangan::bulatkan($alokasi_jasa_pinjaman / $_tempo_jasa);
                             $angsuran_ke = $i + $key;
