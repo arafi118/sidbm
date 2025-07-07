@@ -269,8 +269,8 @@ class GenerateController extends Controller
                         $jasa = 0;
                     }
                 } else {
-                    $pokok = $rencana_pokok[$i] ?: 0;
-                    $jasa = $rencana_jasa[$i] ?: 0;
+                    $pokok = (isset($rencana_pokok[$i])) ? $rencana_pokok[$i] : 0;
+                    $jasa = (isset($rencana_jasa[$i])) ? $rencana_jasa[$i] : 0;
                 }
 
                 $target_jasa += $jasa;
@@ -319,9 +319,11 @@ class GenerateController extends Controller
                 $sum_pokok += $realisasi_pokok;
                 $sum_jasa += $realisasi_jasa;
 
-                $alokasi_pokok -= $realisasi_pokok;
-                $alokasi_jasa = $alokasi_pokok * ($pinkel->pros_jasa / 100);
-                $alokasi_jasa -= $realisasi_jasa;
+                $saldo_pokok = $alokasi_pokok - $sum_pokok;
+                if ($pinkel->jenis_jasa == '2') {
+                    $alokasi_jasa = $saldo_pokok * ($pinkel->pros_jasa / 100);
+                }
+                $saldo_jasa = $alokasi_jasa - $realisasi_jasa;
 
                 $target_pokok = 0;
                 $target_jasa = 0;
@@ -353,8 +355,8 @@ class GenerateController extends Controller
                         'realisasi_jasa' => $realisasi_jasa,
                         'sum_pokok' => $sum_pokok,
                         'sum_jasa' => $sum_jasa,
-                        'saldo_pokok' => $alokasi_pokok,
-                        'saldo_jasa' => $alokasi_jasa,
+                        'saldo_pokok' => $saldo_pokok,
+                        'saldo_jasa' => $saldo_jasa,
                         'tunggakan_pokok' => $tunggakan_pokok,
                         'tunggakan_jasa' => $tunggakan_jasa,
                         'lu' => date('Y-m-d H:i:s'),
