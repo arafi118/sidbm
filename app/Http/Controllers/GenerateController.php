@@ -275,8 +275,8 @@ class GenerateController extends Controller
                         $jasa = 0;
                     }
                 } else {
-                    $pokok = (isset($rencana_pokok[$i])) ? $rencana_pokok[$i] : 0;
-                    $jasa = (isset($rencana_jasa[$i])) ? $rencana_jasa[$i] : 0;
+                    $pokok = $rencana_pokok[$i] ?: 0;
+                    $jasa = $rencana_jasa[$i] ?: 0;
                 }
 
                 $target_jasa += $jasa;
