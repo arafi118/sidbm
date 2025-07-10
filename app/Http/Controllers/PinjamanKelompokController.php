@@ -2570,7 +2570,7 @@ class PinjamanKelompokController extends Controller
             'anggota',
             'anggota.d',
             'anggota.d.sebutan_desa',
-        ])->get();
+        ])->orderBy('namadepan', 'ASC')->get();
 
         $data['dir'] = User::where([
             ['level', '1'],
