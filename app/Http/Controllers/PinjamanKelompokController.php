@@ -2571,7 +2571,7 @@ class PinjamanKelompokController extends Controller
         $data['pinjaman'] = PinjamanAnggota::leftJoin($tb_anggota, $tb_anggota . '.id', '=', $tb_pinjaman . '.nia')->with([
             'kelompok',
             'pinkel',
-        ])->where($tb_pinjaman . '.id_pinkel', $id)->orderBy($tb_anggota . '.namadepan', 'ASC')->get();
+        ])->where($tb_pinjaman . '.id_pinkel', $id)->orderBy($tb_pinjaman . '.id', 'ASC')->get();
 
         $data['dir'] = User::where([
             ['level', '1'],
