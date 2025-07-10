@@ -2564,13 +2564,14 @@ class PinjamanKelompokController extends Controller
     public function kuitansiAnggota($id, $data)
     {
         $keuangan = new Keuangan;
-        $data['pinjaman'] = PinjamanAnggota::where('id_pinkel', $id)->with([
+
+        $tb_pinjaman = 'pinjaman_anggota_' . Session::get('lokasi');
+        $tb_anggota = 'anggota_' . Session::get('lokasi');
+
+        $data['pinjaman'] = PinjamanAnggota::leftJoin($tb_anggota, $tb_anggota . '.id', '=', $tb_pinjaman . '.nia')->with([
             'kelompok',
             'pinkel',
-            'anggota',
-            'anggota.d',
-            'anggota.d.sebutan_desa',
-        ])->orderBy('nia', 'ASC')->get();
+        ])->where($tb_pinjaman . '.id_pinkel', $id)->orderBy($tb_anggota . '.namadepan', 'ASC')->get();
 
         $data['dir'] = User::where([
             ['level', '1'],

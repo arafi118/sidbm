@@ -63,7 +63,7 @@
                                 <td colspan="2">&nbsp;</td>
                                 <td class="b">
                                     <b>
-                                        a.n. {{ $pinj->anggota->namadepan }} NIK. {{ $pinj->anggota->nik }}
+                                        a.n. {{ $pinj->namadepan }} NIK. {{ $pinj->nik }}
                                     </b>
                                 </td>
                             </tr>
@@ -109,7 +109,7 @@
                                     <b>&nbsp;</b>
                                 </td>
                                 <td align="center">
-                                    <b>{{ $pinj->anggota->namadepan }}</b>
+                                    <b>{{ $pinj->namadepan }}</b>
                                 </td>
                             </tr>
                         </table>
