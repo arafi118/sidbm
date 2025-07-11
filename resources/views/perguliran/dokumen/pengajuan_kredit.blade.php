@@ -208,7 +208,7 @@
                 Sebagai bahan pertimbangan, bersama ini kami lampirkan:
             </div>
             <ol>
-                <li>Fotokopi KTP dan KK dari {{ $pinkel->pinjaman_anggota_count }} orang anggota kelompok kami yang
+                <li>Fotokopi KTP dari {{ $pinkel->pinjaman_anggota_count }} orang anggota kelompok kami yang
                     mengajukan kredit;</li>
                 <li>Surat Rekomendasi dari Kepala Desa/Lurah;</li>
                 <li>Pernyataan kesediaan tanggung renteng dari seluruh anggota;</li>
