@@ -23,7 +23,7 @@
             <tr>
                 <td colspan="3" align="center">
                     <div style="font-size: 18px; text-decoration: underline;">
-                        <b>SURAT PERNYATAAN PEMINJAM</b>
+                        <b>SURAT PENGAKUAN UTANG DAN PERTANGGUNGAN AHLI WARIS</b>
                     </div>
                 </td>
             </tr>
@@ -98,8 +98,7 @@
                         </li>
                         <li>
                             Apabila di kemudian hari saya melanggar isi dari surat pernyataan ini, maka saya bersedia
-                            dilaporkan
-                            kepada pihak yang berwajib dan/atau diproses secara hukum.
+                            dilaporkan kepada pihak yang berwajib dan/atau diproses secara hukum.
                         </li>
                         <li>
                             Jika dikemudian hari terjadi force majeure seperti banjir, gempa bumi, tanah longsor, petir,

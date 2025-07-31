@@ -212,7 +212,7 @@
                     mengajukan kredit;</li>
                 <li>Surat Rekomendasi dari Kepala Desa/Lurah;</li>
                 <li>Pernyataan kesediaan tanggung renteng dari seluruh anggota;</li>
-                <li>Fotokopi bukti tabungan kelompok di bank;</li>
+                <li>Surat pengakuan utang dan pertanggungan ahli waris</li>
                 <li>Rencana pengembalian kredit.</li>
             </ol>
             <div>Demikian permohonan kami, atas perhatiannya kami ucapkan terima kasih.</div>
