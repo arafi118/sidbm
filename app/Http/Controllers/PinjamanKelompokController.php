@@ -1272,7 +1272,7 @@ class PinjamanKelompokController extends Controller
             'verifikasi' => $pengajuan,
             'alokasi' => $pengajuan,
             'spk_no' => $request->get('spk'),
-            'sumber' => $pinkel->sumber,
+            'sumber' => '2',
             'jenis_jasa' => $pinkel->jenis_jasa,
             'jangka' => $jangka,
             'pros_jasa' => $pros_jasa,

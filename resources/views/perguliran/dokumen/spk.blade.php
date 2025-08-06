@@ -34,11 +34,18 @@
 @extends('perguliran.dokumen.layout.base')
 
 @section('content')
+    @php
+        $resc = '';
+        if ($pinkel->sumber == '2') {
+            $resc = ' RESCEDULE ';
+        }
+    @endphp
+
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
-                    <b>SURAT PERJANJIAN KREDIT (SPK)</b>
+                    <b>SURAT PERJANJIAN KREDIT (SPK{{ $resc }})</b>
                 </div>
                 <div style="font-size: 14px;">
                     Nomor: {{ $pinkel->spk_no }}

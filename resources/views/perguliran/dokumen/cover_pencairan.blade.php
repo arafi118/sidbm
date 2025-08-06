@@ -1,7 +1,10 @@
 @php
     use App\Utils\Keuangan;
     use App\Utils\Tanggal;
-    if (Keuangan::startWith($kec->kabupaten->nama_kab, 'KOTA') || Keuangan::startWith($kec->kabupaten->nama_kab, 'KAB')) {
+    if (
+        Keuangan::startWith($kec->kabupaten->nama_kab, 'KOTA') ||
+        Keuangan::startWith($kec->kabupaten->nama_kab, 'KAB')
+    ) {
         $nama_kab = ucwords(strtolower($kec->kabupaten->nama_kab));
     } else {
         $nama_kab = ' Kabupaten ' . ucwords(strtolower($kec->kabupaten->nama_kab));
@@ -57,11 +60,18 @@
     }
 </style>
 
+@php
+    $resc = '';
+    if ($pinkel->sumber == '2') {
+        $resc = 'Reschedule ';
+    }
+@endphp
+
 <body>
     <header>
         <h1 style="margin: 0px;">{{ strtoupper($judul) }}</h1>
         <div style="margin: 0px; font-size: 24px;">
-            {{ strtoupper('Piutang Kelompok ' . $pinkel->jpp->nama_jpp) }}
+            {{ strtoupper($resc . 'Piutang Kelompok ' . $pinkel->jpp->nama_jpp) }}
         </div>
         <div style="margin: 0px;">
             Nomor SPK : {{ $pinkel->spk_no }}
