@@ -1,7 +1,5 @@
 @php
     use App\Utils\Tanggal;
-    $batas_pemanfaat = ceil($pinkel->pinjaman_anggota_count / 2);
-
     $minus = 0;
 
     $ketua = $pinkel->kelompok->ketua;
@@ -49,6 +47,9 @@
             <th class="b l t r">Alamat</th>
         </tr>
 
+        @php
+            $data_pemanfaat = [];
+        @endphp
         @foreach ($pinkel->pinjaman_anggota as $pa)
             @php
                 if ($pa->alokasi == 0) {
@@ -57,6 +58,7 @@
                 }
 
                 $no = $loop->iteration - $minus;
+                $data_pemanfaat[] = $pa;
             @endphp
 
             <tr>
@@ -137,6 +139,10 @@
         </tr>
     </table>
 
+    @php
+        $batas_pemanfaat = ceil($data_pemanfaat / 2);
+    @endphp
+
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
             <td style="padding: 0px !important;">
@@ -148,23 +154,23 @@
                         @endphp
                         <tr>
                             <td width="25%" height="20">
-                                @if (isset($pinkel->pinjaman_anggota[$j]))
-                                    {{ $i }}. {{ $pinkel->pinjaman_anggota[$j]->anggota->namadepan }}
+                                @if (isset($data_pemanfaat[$j]))
+                                    {{ $i }}. {{ $data_pemanfaat[$j]->anggota->namadepan }}
                                 @endif
                             </td>
                             <td class="vb" width="25%">
-                                @if (isset($pinkel->pinjaman_anggota[$j]))
+                                @if (isset($data_pemanfaat[$j]))
                                     ..............................................
                                 @endif
                             </td>
                             <td width="25%">
-                                @if (isset($pinkel->pinjaman_anggota[$j + $batas_pemanfaat]))
+                                @if (isset($data_pemanfaat[$j + $batas_pemanfaat]))
                                     {{ $i + $batas_pemanfaat }}.
-                                    {{ $pinkel->pinjaman_anggota[$j + $batas_pemanfaat]->anggota->namadepan }}
+                                    {{ $data_pemanfaat[$j + $batas_pemanfaat]->anggota->namadepan }}
                                 @endif
                             </td>
                             <td class="vb" width="25%">
-                                @if (isset($pinkel->pinjaman_anggota[$j + $batas_pemanfaat]))
+                                @if (isset($data_pemanfaat[$j + $batas_pemanfaat]))
                                     ..............................................
                                 @endif
                             </td>
