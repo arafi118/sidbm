@@ -140,7 +140,7 @@
     </table>
 
     @php
-        $batas_pemanfaat = ceil($data_pemanfaat / 2);
+        $batas_pemanfaat = ceil(count($data_pemanfaat) / 2);
     @endphp
 
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
