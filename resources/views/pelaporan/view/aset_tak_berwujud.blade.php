@@ -80,11 +80,11 @@
                         }
 
                         $_satuan_susut = $satuan_susut;
-                        if ($umur >= $inv->umur_ekonomis) {
-                            $harga = $inv->harsat * $inv->unit;
-                            $_susut = $satuan_susut * ($inv->umur_ekonomis - 1);
-                            $satuan_susut = $harga - $_susut - 1;
-                        }
+                        // if ($umur >= $inv->umur_ekonomis) {
+                        //     $harga = $inv->harsat * $inv->unit;
+                        //     $_susut = $satuan_susut * ($inv->umur_ekonomis - 1);
+                        //     $satuan_susut = $harga - $_susut - 1;
+                        // }
 
                         $susut = $satuan_susut * $umur;
                         if ($umur >= $inv->umur_ekonomis && $inv->harsat * $inv->unit > 0) {
