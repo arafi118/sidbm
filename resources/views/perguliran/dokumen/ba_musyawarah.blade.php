@@ -55,7 +55,7 @@
 
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
-            <td width="130">Acara Musnyawarah dipimpin oleh</td>
+            <td width="130">Acara musyawarah dipimpin oleh</td>
             <td width="5" align="center">:</td>
             <td>{{ $ketua }}</td>
         </tr>
