@@ -69,7 +69,7 @@
             <th class="t l b" width="19%">Nik</th>
             <th class="t l b" width="15%">Nama Anggota</th>
             <th class="t l b" width="3%">JK</th>
-            <th class="t l b" width="20%">Alamat</th>
+            <th class="t l b" width="20%">Usia</th>
             <th class="t l b" width="15%">Penjamin</th>
             <th class="t l b" width="15%">Pengajuan</th>
             <th class="t l b r" width="8%">Ttd</th>
@@ -79,12 +79,19 @@
             $proposal = 0;
         @endphp
         @foreach ($pinkel->pinjaman_anggota as $pa)
+            @php
+                $tgl_lahir = new DateTime($pa->anggota->tgl_lahir);
+                $today = new DateTime();
+
+                $jarak = $today->diff($tgl_lahir);
+                $usia = $jarak->y;
+            @endphp
             <tr>
                 <td class="t l b" height="15" align="center">{{ $loop->iteration }}</td>
                 <td class="t l b">{{ $pa->anggota->nik }}</td>
                 <td class="t l b">{{ $pa->anggota->namadepan }}</td>
                 <td class="t l b" align="center">{{ $pa->anggota->jk }}</td>
-                <td class="t l b">{{ $pa->anggota->alamat }}</td>
+                <td class="t l b">{{ $usia }}</td>
                 <td class="t l b">{{ $pa->anggota->penjamin }}</td>
                 <td class="t l b" align="right">{{ number_format($pa->proposal) }}</td>
                 <td class="t l b r">&nbsp;</td>
