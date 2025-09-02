@@ -90,7 +90,9 @@ class PelaporanController extends Controller
         }
 
         if ($file == 3) {
-            $rekening = Rekening::whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi)->orderBy('kode_akun', 'ASC')->get();
+            $rekening = Rekening::where('kode_akun', '!=', '3.2.02.01')->where(function ($query) use ($tgl_kondisi) {
+                $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
+            })->orderBy('kode_akun', 'ASC')->get();
             foreach ($rekening as $rek) {
                 $data[] = [
                     'title' => $rek->kode_akun . '. ' . $rek->nama_akun,
