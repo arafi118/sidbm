@@ -1,6 +1,7 @@
 @php
     use App\Utils\Tanggal;
     $section = 0;
+    $empty = false;
 @endphp
 
 @extends('pelaporan.layout.base')
@@ -9,7 +10,8 @@
     @foreach ($jenis_pp as $jpp)
         @php
             if ($jpp->pinjaman_kelompok->isEmpty()) {
-                break;
+                $empty = true;
+                continue;
             }
 
             $kd_desa = [];
@@ -19,8 +21,11 @@
             $t_verifikasi_lalu = 0;
         @endphp
 
-        @if ($jpp->nama_jpp != 'SPP')
+        @if ($jpp->nama_jpp != 'SPP' && !$empty)
             <div class="break"></div>
+            @php
+                $empty = false;
+            @endphp
         @endif
 
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
