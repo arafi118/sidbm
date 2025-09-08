@@ -222,6 +222,7 @@ class PelaporanController extends Controller
             'hari',
             'laporan',
             'sub_laporan',
+            'tahun_pinjaman_cair',
             'type'
         ]);
 
@@ -3084,19 +3085,23 @@ class PelaporanController extends Controller
                         $query->where('tgl_transaksi', 'LIKE', '%' . $data['tahun'] . '-' . $data['bulan'] . '-%');
                     }], 'realisasi_jasa')
                     ->where($tb_pinkel . '.sistem_angsuran', '!=', '12')->where(function ($query) use ($data) {
-                        $query->where([
-                            [$data['tb_pinkel'] . '.status', 'A'],
-                            [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']]
-                        ])->orwhere([
-                            [$data['tb_pinkel'] . '.status', 'L'],
-                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', $data['tgl_kondisi']]
-                        ])->orwhere([
-                            [$data['tb_pinkel'] . '.status', 'R'],
-                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', $data['tgl_kondisi']]
-                        ])->orwhere([
-                            [$data['tb_pinkel'] . '.status', 'H'],
-                            [$data['tb_pinkel'] . '.tgl_lunas', '>=', $data['tgl_kondisi']]
-                        ]);
+                        if ($data['tahun_pinjaman_cair'] == '-') {
+                            $query->where([
+                                [$data['tb_pinkel'] . '.status', 'A'],
+                                [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']]
+                            ])->orwhere([
+                                [$data['tb_pinkel'] . '.status', 'L'],
+                                [$data['tb_pinkel'] . '.tgl_lunas', '>=', $data['tgl_kondisi']]
+                            ])->orwhere([
+                                [$data['tb_pinkel'] . '.status', 'R'],
+                                [$data['tb_pinkel'] . '.tgl_lunas', '>=', $data['tgl_kondisi']]
+                            ])->orwhere([
+                                [$data['tb_pinkel'] . '.status', 'H'],
+                                [$data['tb_pinkel'] . '.tgl_lunas', '>=', $data['tgl_kondisi']]
+                            ]);
+                        } else {
+                            $query->whereYear('tgl_cair', $data['tahun_pinjaman_cair'])->where('status', 'A');
+                        }
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')
                     ->orderBy($tb_pinkel . '.id_kel', 'ASC')

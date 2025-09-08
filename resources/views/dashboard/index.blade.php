@@ -642,6 +642,7 @@
         @csrf
 
         <input type="hidden" name="type" id="type" value="pdf">
+        <input type="hidden" name="tahun_pinjaman_cair" id="tahun_pinjaman_cair" value="">
         <input type="hidden" name="tahun" id="tahun" value="{{ date('Y') }}">
         <input type="hidden" name="bulan" id="bulan" value="{{ date('m') }}">
         <input type="hidden" name="hari" id="hari" value="{{ date('d') }}">
@@ -721,6 +722,8 @@
         })
 
         $(document).on('change', '#tahun_cair', function() {
+            $('#tahun_pinjaman_cair').val($(this).val())
+
             getTunggakan($(this).val())
         })
 
