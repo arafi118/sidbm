@@ -3065,6 +3065,10 @@ class PelaporanController extends Controller
 
         $tgl = $thn . '-' . $bln . '-' . $hari;
         $data['sub_judul'] = $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+        if (!($data['tahun_pinjaman_cair'] == '-' || $data['tahun_pinjaman_cair'] == '')) {
+            $data['sub_judul'] = "Pencairan Tahun " . $data['tahun_pinjaman_cair'];
+        }
+
         $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
 
         $data['jenis_pp'] = JenisProdukPinjaman::where('lokasi', '0')->with([
@@ -3085,7 +3089,7 @@ class PelaporanController extends Controller
                         $query->where('tgl_transaksi', 'LIKE', '%' . $data['tahun'] . '-' . $data['bulan'] . '-%');
                     }], 'realisasi_jasa')
                     ->where($tb_pinkel . '.sistem_angsuran', '!=', '12')->where(function ($query) use ($data) {
-                        if ($data['tahun_pinjaman_cair'] == '-') {
+                        if ($data['tahun_pinjaman_cair'] == '-' || $data['tahun_pinjaman_cair'] == '') {
                             $query->where([
                                 [$data['tb_pinkel'] . '.status', 'A'],
                                 [$data['tb_pinkel'] . '.tgl_cair', '<=', $data['tgl_kondisi']]
