@@ -280,17 +280,35 @@
                                 <div class="card">
                                     <div class="card-body">
 
-                                        <div class="d-flex justify-content-end">
-                                            <div class="col-2">
-                                                <div class="input-group input-group-outline">
-                                                    <label class="form-label">
-                                                        <span>
-                                                            <i class="fas fa-search"></i>
-                                                            <span class="ms-1">Cari Nama Kelompok</span>
-                                                        </span>
-                                                    </label>
-                                                    <input type="text" name="cari_menunggak" id="cari_menunggak"
-                                                        class="form-control">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="col-12 col-lg-4">
+                                                    <div class="my-0">
+                                                        <select class="form-control" name="tahun_cair" id="tahun_cair">
+                                                            <option value="-" selected>Semua</option>
+                                                            @for ($i = date('Y'); $i >= 2000; $i--)
+                                                                <option value="{{ $i }}">
+                                                                    {{ $i }}
+                                                                </option>
+                                                            @endfor
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="d-flex justify-content-end">
+                                                    <div class="col-12 col-lg-4">
+                                                        <div class="input-group input-group-outline">
+                                                            <label class="form-label" for="cari_menunggak">
+                                                                <span>
+                                                                    <i class="fas fa-search"></i>
+                                                                    <span class="ms-1">Cari Nama Kelompok</span>
+                                                                </span>
+                                                            </label>
+                                                            <input type="text" name="cari_menunggak"
+                                                                id="cari_menunggak" class="form-control">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -640,6 +658,14 @@
             dateFormat: "d/m/Y"
         })
 
+        new Choices($('select#tahun_cair')[0], {
+            shouldSort: false,
+            fuseOptions: {
+                threshold: 0.1,
+                distance: 1000
+            }
+        })
+
         let dataTunggakan = [];
 
         $.ajax({
@@ -657,22 +683,28 @@
             }
         })
 
-        $.ajax({
-            type: 'post',
-            url: '/dashboard/nunggak',
-            data: $('#defaultForm').serialize(),
-            success: function(result) {
-                if (result.success) {
-                    $('#nunggak').html(result.nunggak)
+        function getTunggakan(tahun = '-') {
+            $('#cari_menunggak').val('')
 
-                    if (result.nunggak > 0) {
-                        dataTunggakan = result.data
+            $.ajax({
+                type: 'post',
+                url: '/dashboard/nunggak?tahun=' + tahun,
+                data: $('#defaultForm').serialize(),
+                success: function(result) {
+                    if (result.success) {
+                        $('#nunggak').html(result.nunggak)
 
-                        setTabelTunggakan(dataTunggakan)
+                        if (result.nunggak > 0) {
+                            dataTunggakan = result.data
+
+                            setTabelTunggakan(dataTunggakan)
+                        }
                     }
                 }
-            }
-        })
+            })
+        }
+
+        getTunggakan()
 
         $(document).on('keyup', '#cari_menunggak', function() {
             let cari = $(this).val()
@@ -686,6 +718,10 @@
             } else {
                 setTabelTunggakan(dataTunggakan)
             }
+        })
+
+        $(document).on('change', '#tahun_cair', function() {
+            getTunggakan($(this).val())
         })
 
         function setTabelTunggakan(data) {

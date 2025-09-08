@@ -428,8 +428,17 @@ class DashboardController extends Controller
 
     public function nunggak(Request $request)
     {
+        $tahun = $request->get('tahun');
         $tgl = Tanggal::tglNasional($request->tgl);
-        $pinjaman = PinjamanKelompok::where('status', 'A')->whereDay('tgl_cair', '<=', $tgl)->with([
+        $pinjaman = PinjamanKelompok::where('status', 'A');
+
+        if ($tahun == '-') {
+            $pinjaman = $pinjaman->where('tgl_cair', '<=', $tgl);
+        } else {
+            $pinjaman = $pinjaman->whereYear('tgl_cair', $tahun);
+        }
+
+        $pinjaman = $pinjaman->with([
             'target' => function ($query) use ($tgl) {
                 $query->where([
                     ['jatuh_tempo', '<=', $tgl],
