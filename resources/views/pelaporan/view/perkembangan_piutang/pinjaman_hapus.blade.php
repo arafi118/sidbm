@@ -93,7 +93,7 @@
 
                     <tr>
                         <td class="t l b" align="center">{{ $nomor++ }}</td>
-                        <td class="t l b">{{ $pinkel->nama_kelompok }} - {{ $pinkel->loan_id }}</td>
+                        <td class="t l b">{{ $pinkel->nama_kelompok }} - {{ $pinkel->id }}</td>
                         <td class="t l b" align="center">{{ Tanggal::tglIndo($pinkel->tgl_cair) }}</td>
                         <td class="t l b" align="center">{{ Tanggal::tglIndo($pinkel->tgl_hapus) }}</td>
                         <td class="t l b" align="right">{{ number_format($pinkel->alokasi, 2) }}</td>
