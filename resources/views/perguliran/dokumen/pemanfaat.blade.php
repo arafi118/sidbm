@@ -66,13 +66,13 @@
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 12px; table-layout: fixed;">
         <tr style="background: rgb(232, 232, 232)">
             <th class="t l b" height="20" width="5%">No</th>
-            <th class="t l b" width="19%">Nik</th>
+            <th class="t l b" width="20%">Nik</th>
             <th class="t l b" width="15%">Nama Anggota</th>
-            <th class="t l b" width="3%">JK</th>
-            <th class="t l b" width="20%">Usia</th>
+            <th class="t l b" width="5%">JK</th>
+            <th class="t l b" width="15%">Usia</th>
             <th class="t l b" width="15%">Penjamin</th>
             <th class="t l b" width="15%">Pengajuan</th>
-            <th class="t l b r" width="8%">Ttd</th>
+            <th class="t l b r" width="10%">Ttd</th>
         </tr>
 
         @php
@@ -106,9 +106,9 @@
                 <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                     style="table-layout: fixed;">
                     <tr style="font-weight: bold;">
-                        <td class="t l b" height="15" align="center" width="77%">JUMLAH</td>
+                        <td class="t l b" height="15" align="center" width="75%">JUMLAH</td>
                         <td class="t l b" align="right" width="15%">{{ number_format($proposal) }}</td>
-                        <td class="t l b r" width="8%">&nbsp;</td>
+                        <td class="t l b r" width="10%">&nbsp;</td>
                     </tr>
                 </table>
 
