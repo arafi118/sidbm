@@ -89,7 +89,7 @@
                 ],
             ];
             $jaminan = [
-                'Tabungan di kelompok atas nama pribadi',
+                'Tabungan di kelompok tanggung renteng',
                 'Nilai harta lain berupa ....................................',
             ];
             $penilaian = [
