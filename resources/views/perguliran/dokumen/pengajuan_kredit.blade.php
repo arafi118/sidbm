@@ -106,14 +106,6 @@
     </tr>
     <tr>
         <td width="30">&nbsp;</td>
-        <td width="30">Tanggal</td>
-        <td width="5" align="right">:</td>
-        <td width="500">
-            <b>{{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</b>
-        </td>
-    </tr>
-    <tr>
-        <td width="30">&nbsp;</td>
         <td width="30">Perihal</td>
         <td width="5" align="right">:</td>
         <td width="500">
@@ -192,57 +184,65 @@
         </td>
     </tr>
     <tr>
-        <td width="30">&nbsp;</td>
-        <td colspan="3">
-            <div>
-                Dalam hal ini bertindak untuk dan atas nama seluruh anggota kelompok
-                {{ $pinkel->jpp->deskripsi_jpp }} ({{ $pinkel->jpp->nama_jpp }})
-                {{ $pinkel->kelompok->nama_kelompok }} (daftar anggota terlampir), dengan ini bermaksud mengajukan
-                permohonan kredit sebesar Rp. {{ number_format($pinkel->proposal) }}
-                ({{ $keuangan->terbilang($pinkel->proposal) }}) untuk memenuhi kebutuhan tambahan modal usaha bagi
-                {{ $pinkel->pinjaman_anggota_count }} anggota. Kredit atau piutang tersebut di atas, akan kami
-                kembalikan dalam jangka waktu {{ $pinkel->jangka }} bulan, dengan sistem angsuran
-                {{ $pinkel->sis_pokok->nama_sistem }} ({{ $pinkel->sis_pokok->deskripsi_sistem }}).
-            </div>
-            <div>
-                Sebagai bahan pertimbangan, bersama ini kami lampirkan:
-            </div>
-            <ol>
-                <li>Fotokopi KTP dari {{ $pinkel->pinjaman_anggota_count }} orang anggota kelompok kami yang
-                    mengajukan kredit;</li>
-                <li>Surat Rekomendasi dari Kepala Desa/Lurah;</li>
-                <li>Pernyataan kesediaan tanggung renteng dari seluruh anggota;</li>
-                <li>Surat pengakuan utang dan pertanggungan ahli waris</li>
-                <li>Rencana pengembalian kredit.</li>
-            </ol>
-            <div>Demikian permohonan kami, atas perhatiannya kami ucapkan terima kasih.</div>
+        <td colspan="4">
+            <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                <td width="30">&nbsp;</td>
+                <td colspan="3">
+                    <div>
+                        Dalam hal ini bertindak untuk dan atas nama seluruh anggota kelompok
+                        {{ $pinkel->jpp->deskripsi_jpp }} ({{ $pinkel->jpp->nama_jpp }})
+                        {{ $pinkel->kelompok->nama_kelompok }} (daftar anggota terlampir), dengan ini bermaksud
+                        mengajukan
+                        permohonan kredit sebesar Rp. {{ number_format($pinkel->proposal) }}
+                        ({{ $keuangan->terbilang($pinkel->proposal) }}) untuk memenuhi kebutuhan tambahan modal usaha
+                        bagi
+                        {{ $pinkel->pinjaman_anggota_count }} anggota. Kredit atau piutang tersebut di atas, akan kami
+                        kembalikan dalam jangka waktu {{ $pinkel->jangka }} bulan, dengan sistem angsuran
+                        {{ $pinkel->sis_pokok->nama_sistem }} ({{ $pinkel->sis_pokok->deskripsi_sistem }}).
+                    </div>
+                    <div>
+                        Sebagai bahan pertimbangan, bersama ini kami lampirkan:
+                        <ol>
+                            <li>Fotokopi KTP dari {{ $pinkel->pinjaman_anggota_count }} orang anggota kelompok kami
+                                yang
+                                mengajukan kredit;</li>
+                            <li>Surat Rekomendasi dari Kepala Desa/Lurah;</li>
+                            <li>Pernyataan kesediaan tanggung renteng dari seluruh anggota;</li>
+                            <li>Surat pengakuan utang dan pertanggungan ahli waris</li>
+                            <li>Rencana pengembalian kredit.</li>
+                        </ol>
+                    </div>
+                    <div>Demikian permohonan kami, atas perhatiannya kami ucapkan terima kasih.</div>
+                </td>
+            </table>
+            @if ($tanda_tangan)
+                <div style="margin-top: 24px;">
+                    {!! $tanda_tangan !!}
+                </div>
+            @else
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 14px; margin-top: 24px;">
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
+                    </tr>
+                    <tr>
+                        <td align="center" width="50%">Ketua Kelompok,</td>
+                        <td align="center" width="50%">Sekretaris Kelompok,</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" height="30"></td>
+                    </tr>
+                    <tr>
+                        <td align="center" width="50%" style="font-weight: bold; text-decoration: underline;">
+                            {{ $ketua }}
+                        </td>
+                        <td align="center" width="50%" style="font-weight: bold; text-decoration: underline;">
+                            {{ $sekretaris }}
+                        </td>
+                    </tr>
+                </table>
+            @endif
         </td>
     </tr>
 </table>
-@if ($tanda_tangan)
-    <div style="margin-top: 32px;">
-        {!! $tanda_tangan !!}
-    </div>
-@else
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px; margin-top: 40px;">
-        <tr>
-            <td>&nbsp;</td>
-            <td align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_proposal) }}</td>
-        </tr>
-        <tr>
-            <td align="center" width="50%">Ketua Kelompok,</td>
-            <td align="center" width="50%">Sekretaris Kelompok,</td>
-        </tr>
-        <tr>
-            <td colspan="2" height="30"></td>
-        </tr>
-        <tr>
-            <td align="center" width="50%" style="font-weight: bold; text-decoration: underline;">
-                {{ $ketua }}
-            </td>
-            <td align="center" width="50%" style="font-weight: bold; text-decoration: underline;">
-                {{ $sekretaris }}
-            </td>
-        </tr>
-    </table>
-@endif
