@@ -42,6 +42,11 @@
                 $nomor = 1;
             @endphp
             @foreach ($pinkel->pinjaman_anggota as $pa)
+                @php
+                    if ($pa->alokasi == 0) {
+                        continue;
+                    }
+                @endphp
                 <tr>
                     <td align="center">{{ $nomor }}.</td>
                     <td align="center">{{ $pa->anggota->nik }}</td>
