@@ -19,7 +19,7 @@
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
-                    <b>SURAT PERJANJIAN IURAN TANGGUNG RENTENG</b>
+                    <b>SURAT PERNYATAAN IURAN TANGGUNG RENTENG</b>
                 </div>
             </td>
         </tr>

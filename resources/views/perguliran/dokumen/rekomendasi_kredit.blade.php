@@ -187,7 +187,7 @@
             </tr>
             <tr>
                 <td align="justify" colspan="3">
-                    Benar keberadaannya dan Layak direkomendasikan untuk mendapatkan
+                    Benar keberadaannya dan berhak mengajukan
                     Kredit Modal {{ $pinkel->jpp->deskripsi_jpp }} ({{ $pinkel->jpp->nama_jpp }}) pada
                     {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}
                     {{ $nama_kabupaten }}.

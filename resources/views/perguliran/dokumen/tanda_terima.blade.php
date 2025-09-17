@@ -70,8 +70,7 @@
         <tr style="background: rgb(232, 232, 232)">
             <th class="t l b" width="3%" height="15">No</th>
             <th class="t l b" width="18%">Nik</th>
-            <th class="t l b" width="22%">Nama Anggota</th>
-            <th class="t l b" width="3%">JK</th>
+            <th class="t l b" width="25%">Nama Anggota</th>
             <th class="t l b" width="26%">Alamat</th>
             <th class="t l b" width="14%">Alokasi</th>
             <th class="t l b r" width="14%">Ttd</th>
@@ -93,7 +92,6 @@
                 <td class="t l b" height="15" align="center">{{ $no }}</td>
                 <td class="t l b">{{ $pa->anggota->nik }}</td>
                 <td class="t l b">{{ $pa->anggota->namadepan }}</td>
-                <td class="t l b" align="center">{{ $pa->anggota->jk }}</td>
                 <td class="t l b">{{ $pa->anggota->alamat }}</td>
                 <td class="t l b" align="right">{{ number_format($pa->alokasi) }}</td>
                 <td class="t l b r">{{ $no }}.</td>
@@ -104,7 +102,7 @@
         @endforeach
 
         <tr>
-            <td colspan="7" style="padding: 0px !important;">
+            <td colspan="6" style="padding: 0px !important;">
                 <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                     style="font-size: 11px; table-layout: fixed;">
                     <tr style="font-weight: bold;">

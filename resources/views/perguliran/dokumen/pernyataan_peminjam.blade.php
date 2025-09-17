@@ -106,7 +106,7 @@
                             topan, kebakaran, huru-hara, kerusuhan, pemberontakan, dan perang atau saya berhalangan tetap
                             seperti sakit atau meninggal dunia yang mengakibatkan tidak dapat terpenuhinya kewajiban saya
                             sesuai
-                            poin 4 (empat) diatas, maka sisa angsuran akan ditanggung oleh ahli waris.
+                            poin 4 (empat) diatas, maka sisa angsuran akan diselesaikan oleh ahli waris.
                         </li>
                     </ol>
 
