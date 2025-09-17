@@ -88,10 +88,7 @@
                     'Pengeluaran lain-lain',
                 ],
             ];
-            $jaminan = [
-                'Tabungan di kelompok tanggung renteng',
-                'Nilai harta lain berupa ....................................',
-            ];
+            $jaminan = ['Tabungan tanggung renteng', 'Nilai harta lain berupa ....................................'];
             $penilaian = [
                 'Ratio pendapatan keluarga (bersih) per bulan dibagi angsuran per bulan',
                 'Ratio tabungan di kelompok dibagi kredit yang diajukan',
