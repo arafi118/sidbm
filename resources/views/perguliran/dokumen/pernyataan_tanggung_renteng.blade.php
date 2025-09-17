@@ -35,8 +35,6 @@
                 <th width="10">No</th>
                 <th width="80">NIK</th>
                 <th width="100">Nama Anggota</th>
-                <th width="10">JK</th>
-                <th>Alamat</th>
                 <th width="70">Tanda Tangan</th>
             </tr>
 
@@ -48,11 +46,6 @@
                     <td align="center">{{ $nomor }}.</td>
                     <td align="center">{{ $pa->anggota->nik }}</td>
                     <td>{{ $pa->anggota->namadepan }}</td>
-                    <td align="center">{{ $pa->anggota->jk }}</td>
-                    <td>
-                        {{ $pa->anggota->alamat }} {{ $pa->anggota->d->sebutan_desa->sebutan_desa }}
-                        {{ $pa->anggota->d->nama_desa }}
-                    </td>
                     <td>{{ $nomor }}.</td>
                 </tr>
 
