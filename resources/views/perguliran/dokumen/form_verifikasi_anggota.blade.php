@@ -112,14 +112,39 @@
                     <td colspan="6">IDENTITAS PEMINJAM (ANGGOTA)</td>
                 </tr>
 
-                @foreach ($identitas_peminjam as $dt => $val)
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td align="center" width="3%">{{ $loop->iteration }}.</td>
-                        <td width="45%">{{ $val['label'] }}</td>
-                        <td colspan="4">: {{ $val['value'] }}</td>
-                    </tr>
-                @endforeach
+                @php
+                    $length = ceil(count($identitas_peminjam) / 2);
+
+                @endphp
+
+                <tr>
+                    <td>&nbsp;</td>
+                    <td colspan="6">
+                        <table border="0" width="100%" cellspacing="0" cellpadding="0"
+                            style="font-size: 11px; table-layout: fixed;">
+                            @for ($i = 0; $i < $length; $i++)
+                                @php
+                                    $label1 = $identitas_peminjam[$i]['label'];
+                                    $value1 = ': ' . $identitas_peminjam[$i]['value'];
+
+                                    $label2 = '';
+                                    $value2 = '';
+                                    if (isset($identitas_peminjam[$i + $length])) {
+                                        $label2 = $identitas_peminjam[$i + $length]['label'];
+                                        $value2 = ': ' . $identitas_peminjam[$i + $length]['value'];
+                                    }
+                                @endphp
+
+                                <tr>
+                                    <td width="21%">{{ $label1 }}</td>
+                                    <td width="25%">{{ $value1 }}</td>
+                                    <td width="29%">{{ $label2 }}</td>
+                                    <td width="25%">{{ $value2 }}</td>
+                                </tr>
+                            @endfor
+                        </table>
+                    </td>
+                </tr>
 
                 <tr style="font-weight: bold;">
                     <td class="t l b" align="center" height="15">B.</td>
