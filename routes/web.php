@@ -216,12 +216,14 @@ Route::post('/perguliran/dokumen', [PinjamanKelompokController::class, 'dokumen'
 Route::post('/perguliran/kembali_proposal/{id}', [PinjamanKelompokController::class, 'kembaliProposal'])->middleware('auth');
 Route::post('/perguliran/tidak_layak_cair/{id}', [PinjamanKelompokController::class, 'tidakLayak'])->middleware('auth');
 
+Route::get('/pinjaman_anggota/ambil_daftar_pemanfaat', [PinjamanAnggotaController::class, 'ambilDaftarPemanfaat'])->middleware('auth');
 Route::get('/pinjaman_anggota/register/{id_pinkel}', [PinjamanAnggotaController::class, 'create'])->middleware('auth');
 Route::get('/pinjaman_anggota/cari_pemanfaat', [PinjamanAnggotaController::class, 'cariPemanfaat'])->middleware('auth');
 Route::get('/hapus_pemanfaat/{id}', [PinjamanAnggotaController::class, 'hapus'])->middleware('auth');
 
 Route::get('/pinjaman_anggota/form_hapus/{pinj}', [PinjamanAnggotaController::class, 'form_penghapusan'])->middleware('auth');
 
+Route::post('/pinjaman_anggota/import', [PinjamanAnggotaController::class, 'import'])->middleware('auth');
 Route::resource('/pinjaman_anggota', PinjamanAnggotaController::class)->middleware('auth');
 
 Route::post('/lunaskan_pemanfaat/{pinjaman}', [PinjamanAnggotaController::class, 'lunaskan'])->middleware('auth');

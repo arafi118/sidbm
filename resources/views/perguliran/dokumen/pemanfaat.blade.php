@@ -68,9 +68,15 @@
             <th class="t l b" height="20" width="5%">No</th>
             <th class="t l b" width="20%">Nik</th>
             <th class="t l b" width="15%">Nama Anggota</th>
-            <th class="t l b" width="5%">JK</th>
+            @if ($version == 'v1')
+                <th class="t l b" width="5%">JK</th>
+            @endif
             <th class="t l b" width="15%">Usia</th>
-            <th class="t l b" width="15%">Penjamin</th>
+            @if ($version == 'v1')
+                <th class="t l b" width="15%">Penjamin</th>
+            @else
+                <th class="t l b" width="20%">Jenis Usaha</th>
+            @endif
             <th class="t l b" width="15%">Pengajuan</th>
             <th class="t l b r" width="10%">Ttd</th>
         </tr>
@@ -90,9 +96,15 @@
                 <td class="t l b" height="15" align="center">{{ $loop->iteration }}</td>
                 <td class="t l b">{{ $pa->anggota->nik }}</td>
                 <td class="t l b">{{ $pa->anggota->namadepan }}</td>
-                <td class="t l b" align="center">{{ $pa->anggota->jk }}</td>
+                @if ($version == 'v1')
+                    <td class="t l b" align="center">{{ $pa->anggota->jk }}</td>
+                @endif
                 <td class="t l b">{{ $usia }}</td>
-                <td class="t l b">{{ $pa->anggota->penjamin }}</td>
+                @if ($version == 'v1')
+                    <td class="t l b">{{ $pa->anggota->penjamin }}</td>
+                @else
+                    <td class="t l b">{{ $pa->anggota->usaha }}</td>
+                @endif
                 <td class="t l b" align="right">{{ number_format($pa->proposal) }}</td>
                 <td class="t l b r">&nbsp;</td>
             </tr>
@@ -102,7 +114,7 @@
         @endforeach
 
         <tr>
-            <td colspan="8" style="padding: 0px !important;">
+            <td colspan="{{ $version == 'v1' ? 8 : 7 }}" style="padding: 0px !important;">
                 <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                     style="table-layout: fixed;">
                     <tr style="font-weight: bold;">
@@ -113,7 +125,7 @@
                 </table>
 
                 @if ($tanda_tangan)
-                    <div style="margin-top: 32px;">
+                    <div>
                         {!! $tanda_tangan !!}
                     </div>
                 @else

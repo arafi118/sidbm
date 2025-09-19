@@ -13,6 +13,7 @@ use App\Models\StatusPinjaman;
 use App\Models\Transaksi;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
+use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -90,6 +91,30 @@ class PinjamanAnggotaController extends Controller
                 'catatan' => $catatan
             ];
         }
+    }
+
+    public function ambilDaftarPemanfaat()
+    {
+        $idKelompok = request()->get('id_kelompok');
+        $idPinkel = request()->get('id_pinkel');
+
+        $idAnggota = PinjamanAnggota::select('nia', DB::raw('MAX(id) as max_id'))
+            ->where('id_kel', $idKelompok)
+            ->where('id_pinkel', '!=', $idPinkel)
+            ->groupBy('nia')
+            ->orderByDesc('max_id')
+            ->pluck('nia')
+            ->toArray();
+
+        $anggota = Anggota::whereIn('id', $idAnggota)->with([
+            'pinjaman_anggota' => function ($query) use ($idPinkel) {
+                $query->where('id_pinkel', '!=', $idPinkel)->orderBy('tgl_cair', 'desc');
+            }
+        ])->get();
+        return response()->json([
+            'success' => true,
+            'view' => view('pinjaman.anggota.daftar_pemanfaat_lalu')->with(compact('anggota'))->render()
+        ]);
     }
 
     /**
@@ -175,6 +200,84 @@ class PinjamanAnggotaController extends Controller
 
         return response()->json([
             'msg' => 'Pemanfaat atas nama ' . $anggota->namadepan . ' berhasil ditambahkan'
+        ]);
+    }
+
+
+    public function import(Request $request)
+    {
+        $data = $request->only([
+            'id_pinkel',
+            'alokasi_pengajuan_anggota'
+        ]);
+
+        $id = $data['id_pinkel'];
+        $listNia = array_keys($data['alokasi_pengajuan_anggota']);
+
+        $pinkel = PinjamanKelompok::where('id', $id)->first();
+
+        $pros_jasa = $pinkel->pros_jasa;
+        if ($pinkel->pros_jasa / $pinkel->jangka == '1.5' && Session::get('lokasi') == '68') {
+            $pros_jasa = 1.8 * $pinkel->jangka;
+        }
+
+        $insert = [];
+        foreach ($data['alokasi_pengajuan_anggota'] as $key => $value) {
+            $nia = $key;
+            $alokasi = str_replace(',', '', str_replace('.00', '', $value));
+            if ($value == '0') {
+                continue;
+            }
+
+            $insert[] = [
+                'jenis_pinjaman' => 'K',
+                'id_kel' => $pinkel->id_kel,
+                'id_pinkel' => $pinkel->id,
+                'jenis_pp' => $pinkel->jenis_pp,
+                'nia' => $nia,
+                'tgl_proposal' => $pinkel->tgl_proposal,
+                'tgl_verifikasi' => $pinkel->tgl_proposal,
+                'tgl_dana' => $pinkel->tgl_proposal,
+                'tgl_tunggu' => $pinkel->tgl_proposal,
+                'tgl_cair' => $pinkel->tgl_proposal,
+                'tgl_lunas' => $pinkel->tgl_proposal,
+                'proposal' => $alokasi,
+                'verifikasi' => $alokasi,
+                'alokasi' => $alokasi,
+                'kom_pokok' => '0',
+                'kom_jasa' => '0',
+                'spk_no' => $pinkel->spk_no,
+                'sumber' => $pinkel->sumber,
+                'pros_jasa' => $pros_jasa,
+                'jenis_jasa' => $pinkel->jenis_jasa,
+                'jangka' => $pinkel->jangka,
+                'sistem_angsuran' => $pinkel->sistem_angsuran,
+                'sa_jasa' => $pinkel->sa_jasa,
+                'status' => $pinkel->status,
+                'catatan_verifikasi' => '',
+                'lu' => date('Y-m-d H:i:s'),
+                'user_id' => auth()->user()->id,
+            ];
+        }
+
+        PinjamanAnggota::where('id_pinkel', $pinkel->id)->whereIn('nia', $listNia)->delete();
+        PinjamanAnggota::insert($insert);
+
+        if (Session::get('lokasi') == '522') {
+            $pinjaman_anggota = PinjamanAnggota::where('id_pinkel', $pinkel->id)->count();
+
+            $pros_jasa_kelompok = ($pinkel->pros_jasa / $pinkel->jangka) + 0.2;
+            if (($pinjaman_anggota + 1) >= '3') {
+                $pros_jasa = $pros_jasa_kelompok * $pinkel->jangka;
+                $updatePinjamanAnggota = PinjamanAnggota::where('id_pinkel', $pinkel->id)->update([
+                    'pros_jasa' => $pros_jasa,
+                ]);
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Import data pemanfaat berhasil'
         ]);
     }
 

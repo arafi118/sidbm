@@ -521,7 +521,7 @@ class PinjamanKelompokController extends Controller
         $real = RealAngsuran::where('loan_id', $perguliran->id)->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC')->first();
         $sistem_angsuran = SistemAngsuran::all();
 
-        $dokumenPinjaman = DokumenPinjaman::all();
+        $dokumenPinjaman = DokumenPinjaman::orderBy('urutan', 'ASC')->orderBy('id', 'ASC')->get();
 
         $pinkel_aktif = PinjamanKelompok::where([['id_kel', $perguliran->id_kel], ['status', 'A']]);
 
@@ -1515,6 +1515,7 @@ class PinjamanKelompokController extends Controller
         $data['type'] = $report[1];
         $data['jenis_laporan'] = 'dokumen_pinjaman';
 
+        $data['version'] = 'v1';
         if ($file == 'kartuAngsuranAnggota') {
             return $this->$file($request->id);
         }
@@ -1684,7 +1685,7 @@ class PinjamanKelompokController extends Controller
             'pinjaman_anggota' => function ($query) {
                 $query->orderBy('id', 'ASC');
             },
-            'pinjaman_anggota.anggota'
+            'pinjaman_anggota.anggota.u'
         ])->first();
 
         $data['dir'] = User::where([
@@ -1697,7 +1698,7 @@ class PinjamanKelompokController extends Controller
 
         $jenis_dokumen = request()->get('jenis') ?: 'dokumen_proposal';
         $dokumenPinjaman = DokumenPinjaman::where([
-            ['file', $data['report']],
+            ['file', str_replace('V2', '', $data['report'])],
             ['jenis_dokumen', $jenis_dokumen]
         ])->with('tanda_tangan')->first();
         $data['tanda_tangan'] = '';
@@ -1714,6 +1715,12 @@ class PinjamanKelompokController extends Controller
         } else {
             return $view;
         }
+    }
+
+    public function daftarPemanfaatV2($id, $data)
+    {
+        $data['version'] = 'v2';
+        return $this->daftarPemanfaat($id, $data);
     }
 
     public function tanggungRenteng($id, $data)

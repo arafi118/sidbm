@@ -433,7 +433,39 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" id="ImportPemanfaat" class="btn btn-outline-info btn-sm">
+                        Import Pemanfaat
+                    </button>
                     <button type="button" id="SimpanPemanfaat" disabled class="btn btn-github btn-sm">Tambahkan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Import Pemanfaat --}}
+    <div class="modal fade" id="ImportPemanfaatModal" tabindex="-1" aria-labelledby="ImportPemanfaatModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ImportPemanfaatModalLabel">
+                        Import Pemanfaat
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/pinjaman_anggota/import" method="post" id="FormImportPemanfaat">
+                        @csrf
+
+                        <input type="hidden" name="id_pinkel" id="id_pinkel" value="{{ $perguliran->id }}">
+                        <div id="LayoutImportPemanfaatModal"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" id="SimpanImportPemanfaat" class="btn btn-github btn-sm">
+                        Import Pemanfaat
+                    </button>
                 </div>
             </div>
         </div>
@@ -997,6 +1029,44 @@
                                 'is-invalid')
                         $('#FormEditProposal #msg_' + key).html(res)
                     })
+                }
+            })
+        })
+
+        $(document).on('click', '#ImportPemanfaat', function(e) {
+            e.preventDefault()
+
+            $.get('/pinjaman_anggota/ambil_daftar_pemanfaat', {
+                'id_kelompok': '{{ $perguliran->id_kel }}',
+                'id_pinkel': '{{ $perguliran->id }}'
+            }, function(result) {
+                if (result.success) {
+                    $('#TambahPemanfaat').modal('hide')
+
+                    $('#LayoutImportPemanfaatModal').html(result.view)
+                    $('#ImportPemanfaatModal').modal('show')
+                }
+            })
+        })
+
+        $(document).on('click', '#SimpanImportPemanfaat', function(e) {
+            e.preventDefault()
+
+            var form = $('#FormImportPemanfaat')
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function(result) {
+                    if (result.success) {
+                        Swal.fire('Berhasil', result.msg, 'success').then(() => {
+                            $.get('/perguliran/{{ $perguliran->id }}', function(result) {
+                                $('#layout').html(result)
+                            })
+
+                            $('#ImportPemanfaatModal').modal('hide')
+                        })
+                    }
                 }
             })
         })
