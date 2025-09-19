@@ -36,18 +36,23 @@
             <th width="60">Nik</th>
             <th width="130">Nama Anggota</th>
             <th width="10">JK</th>
-            <th>Alamat</th>
-            <th width="50">Tanda Tangan</th>
+            <th width="70">Tanda Tangan</th>
         </tr>
+        @php
+            $nomor = 1;
+        @endphp
         @foreach ($pinkel->pinjaman_anggota as $pa)
             <tr>
                 <td align="center">{{ $loop->iteration }}</td>
                 <td align="center">{{ $pa->anggota->nik }}</td>
                 <td>{{ $pa->anggota->namadepan }}</td>
                 <td align="center">{{ $pa->anggota->jk }}</td>
-                <td>{{ $pa->anggota->alamat }}</td>
-                <td>&nbsp;</td>
+                <td>{{ $nomor }}.</td>
             </tr>
+
+            @php
+                $nomor++;
+            @endphp
         @endforeach
     </table>
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">

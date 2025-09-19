@@ -15,10 +15,10 @@
 @extends('perguliran.dokumen.layout.base')
 
 @section('content')
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
         <tr>
             <td colspan="3" align="center">
-                <div style="font-size: 18px;">
+                <div style="font-size: 18px; text-decoration: underline;">
                     <b>SURAT PERNYATAAN TANGGUNG RENTENG</b>
                 </div>
             </td>
@@ -30,11 +30,12 @@
 
     <div style="text-align: justify;">
         Yang bertanda tangan di bawah ini,
-        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+        <table border="1" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
             <tr style="background: rgb(233,233,233);">
                 <th width="10">No</th>
                 <th width="80">NIK</th>
                 <th width="100">Nama Anggota</th>
+                <th width="10">JK</th>
                 <th width="70">Tanda Tangan</th>
             </tr>
 
@@ -51,6 +52,7 @@
                     <td align="center">{{ $nomor }}.</td>
                     <td align="center">{{ $pa->anggota->nik }}</td>
                     <td>{{ $pa->anggota->namadepan }}</td>
+                    <td align="center">{{ $pa->anggota->jk }}</td>
                     <td>{{ $nomor }}.</td>
                 </tr>
 
@@ -60,18 +62,18 @@
             @endforeach
         </table>
     </div>
-    <div style="text-align: justify; font-size: 11px;">
+    <div style="text-align: justify; font-size: 14px;">
         Selaku anggota pemanfaat dari Nama Kelompok {{ $pinkel->kelompok->nama_kelompok }} yang beralamatkan di
         {{ $pinkel->kelompok->alamat_kelompok }} {{ $pinkel->kelompok->d->sebutan_desa->sebutan_desa }}
         {{ $pinkel->kelompok->d->nama_desa }}.
     </div>
-    <div style="text-align: justify; font-size: 11px;">
+    <div style="text-align: justify; font-size: 14px;">
         Dengan ini menyatakan, apabila terjadi tunggakan angsuran piutang {{ $pinkel->jpp->nama_jpp }}
         {{ $kec->nama_lembaga_sort }} yang disebabkan adanya anggota pemanfaat yang belum mampu melunasi kewajibannya
         sesuai jadwal angsuran yang ditetapkan, maka masing-masing pemanfaat dalam kedudukan sebagai pribadi anggota
         kelompok, secara sadar dan penuh tanggung jawab menyatakan :
 
-        <ol style="font-size: 11px;">
+        <ol style="font-size: 14px;">
             @if (str_contains($kec->tanggung_renteng, 'li'))
                 {!! json_decode($kec->tanggung_renteng, true) !!}
             @endif
@@ -91,7 +93,7 @@
         </ol>
     </div>
 
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; padding: 0px;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px; padding: 0px;">
         <tr>
             <td style="padding: 0px !important; text-align: justify;">
                 <div style="margin: 0px; padding: 0px;">
@@ -105,7 +107,7 @@
                     {!! $tanda_tangan !!}
                 @else
                     <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
-                        style="font-size: 11px;">
+                        style="font-size: 14px;">
                         <tr>
                             <td colspan="2">&nbsp;</td>
                         </tr>
