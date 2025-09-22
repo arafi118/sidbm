@@ -33,7 +33,7 @@
                         <td>
                             <a href="/detail/{{ $pa->id_pinkel }}" target="_blank"
                                 class="text-danger text-gradient font-weight-bold">
-                                {{ $pa->kelompok->nama_kelompok }} Loan ID. {{ $pa->id_pinkel }}
+                                {{ $pa->kelompok ? $pa->kelompok->nama_kelompok : '-' }} Loan ID. {{ $pa->id_pinkel }}
                             </a>.
                         </td>
                     </tr>
