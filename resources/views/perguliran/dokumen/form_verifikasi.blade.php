@@ -263,44 +263,81 @@
 
     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
         <tr>
-            <td colspan="2">&nbsp;</td>
-        </tr>
-        <tr>
-            <td width="50%" align="justify" style="vertical-align: text-top;">
-                <div>Verified Sign:</div>
-                <div>
-                    {{ $kec->nama_tv_sort }} {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }} {{ $kec->nama_kec }}
-                    menyatakan dengan sebenar-benarnya sesuai
-                    dengan hasil survey lapangan bahwa kelompok dengan identitas tersebut di atas <b>ADA/TIDAK ADA</b>
-                    keberadaannya dan dapat dipertanggungjawabkan sesuai dengan peraturan yang berlaku. Serta <b>LAYAK/TIDAK
-                        LAYAK</b> untuk diberikan piutang sesuai dengan hasil rekomendasi Verifikasi di atas. Form ini
-                    digunakan sebagai dasar Verified pada SI DBM.
-                </div>
-            </td>
-            <td width="50%" align="justify" style="vertical-align: top;">
-                <div>Diverifikasi oleh, {{ $kec->nama_tv_sort }} {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }}
-                    {{ $kec->nama_kec }}</div>
-                <div style="margin-top: 12px;">
-                    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
-                        @foreach ($user as $u)
-                            <tr>
-                                <td width="70" height="20">
-                                    <div>{{ $u->namadepan }} {{ $u->namabelakang }}</div>
-                                    <div>
-                                        @if ($u->jabatan == '1' && $u->level == '4')
-                                            Ketua
-                                        @else
-                                            <b>{{ $u->j->nama_jabatan }}</b>
-                                        @endif
-                                    </div>
-                                </td>
-                                <td align="right" style="vertical-align: bottom;">
-                                    _____________________________________
-                                </td>
-                            </tr>
-                        @endforeach
+            <td style="padding: 0px !important;">
+                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                    style="font-size: 11px;">
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td width="50%" align="justify" style="vertical-align: text-top;">
+                            <div>Verified Sign:</div>
+                            <div>
+                                {{ $kec->nama_tv_sort }} {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }}
+                                {{ $kec->nama_kec }}
+                                menyatakan dengan sebenar-benarnya sesuai
+                                dengan hasil survey lapangan bahwa kelompok dengan identitas tersebut di atas <b>ADA/TIDAK
+                                    ADA</b>
+                                keberadaannya dan dapat dipertanggungjawabkan sesuai dengan peraturan yang berlaku. Serta
+                                <b>LAYAK/TIDAK
+                                    LAYAK</b> untuk diberikan piutang sesuai dengan hasil rekomendasi Verifikasi di atas.
+                                Form ini
+                                digunakan sebagai dasar Verified pada SI DBM.
+                            </div>
+                        </td>
+                        <td width="50%" align="justify" style="vertical-align: top;">
+                            <div>Diverifikasi oleh, {{ $kec->nama_tv_sort }} {{ $kec->nama_lembaga_sort }}
+                                {{ $kec->sebutan_kec }}
+                                {{ $kec->nama_kec }}</div>
+                            <div style="margin-top: 12px;">
+                                <table border="0" width="100%" cellspacing="0" cellpadding="0"
+                                    style="font-size: 11px;">
+                                    @foreach ($user as $u)
+                                        <tr>
+                                            <td width="70" height="20">
+                                                <div>{{ $u->namadepan }} {{ $u->namabelakang }}</div>
+                                                <div>
+                                                    @if ($u->jabatan == '1' && $u->level == '4')
+                                                        Ketua
+                                                    @else
+                                                        <b>{{ $u->j->nama_jabatan }}</b>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                            <td align="right" style="vertical-align: bottom;">
+                                                _____________________________________
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                @if ($kec->kd_kab == '33.13')
+                    <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
+                        style="font-size: 11px;">
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <div>Mengetahui</div>
+                                <div>{{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }}
+                                    {{ $pinkel->kelompok->d->nama_desa }}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td height="30">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                {{ $pinkel->kelompok->d->kades }}
+                            </td>
+                        </tr>
                     </table>
-                </div>
+                @endif
             </td>
         </tr>
     </table>
