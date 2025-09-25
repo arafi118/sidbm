@@ -74,6 +74,10 @@ class DashboardController extends Controller
             DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_debit LIKE '1.1.01.%' AND rekening_kredit='4.1.01.01' AND tgl_transaksi='$tgl') as jasa_spp"),
             DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_debit LIKE '1.1.01.%' AND rekening_kredit='4.1.01.02' AND tgl_transaksi='$tgl') as jasa_uep"),
             DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_debit LIKE '1.1.01.%' AND rekening_kredit='4.1.01.03' AND tgl_transaksi='$tgl') as jasa_pl"),
+
+            DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_kredit LIKE '1.1.01.%' AND rekening_debit='4.1.01.03' AND tgl_transaksi='$tgl') as pencairan_spp"),
+            DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_kredit LIKE '1.1.01.%' AND rekening_debit='4.1.01.03' AND tgl_transaksi='$tgl') as pencairan_uep"),
+            DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_kredit LIKE '1.1.01.%' AND rekening_debit='4.1.01.03' AND tgl_transaksi='$tgl') as pencairan_pl"),
         ])->first();
 
         $data['pokok_spp'] = 0;
@@ -89,6 +93,10 @@ class DashboardController extends Controller
             $data['jasa_spp'] = $trx->jasa_spp;
             $data['jasa_uep'] = $trx->jasa_uep;
             $data['jasa_pl'] = $trx->jasa_pl;
+
+            $data['pencairan_spp'] = $trx->pencairan_spp;
+            $data['pencairan_uep'] = $trx->pencairan_uep;
+            $data['pencairan_pl'] = $trx->pencairan_pl;
         }
 
         $data['kec'] = $kec;

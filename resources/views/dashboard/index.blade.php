@@ -108,6 +108,11 @@
                 <div class="card-header pb-0 p-3">
                     <div class="d-flex justify-content-between">
                         <h6 class="mb-0">Angsuran Hari Ini</h6>
+                        <button type="button" id="btnDetailAngsuranHarian"
+                            class="btn btn-icon-only btn-rounded btn-outline-secondary mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center"
+                            data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Detail Angsuran">
+                            <i class="material-icons text-sm">priority_high</i>
+                        </button>
                     </div>
                 </div>
                 <div class="card-body pb-0 p-3 pt-0 mt-4">
@@ -167,11 +172,6 @@
                 <div class="card-header pb-0 p-3">
                     <div class="d-flex justify-content-between">
                         <h6 class="mb-0">Pendapatan dan Beban</h6>
-                        <button type="button" id="btnDetailPelaporan"
-                            class="btn btn-icon-only btn-rounded btn-outline-secondary mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center"
-                            data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Detail Pelaporan">
-                            <i class="material-icons text-sm">priority_high</i>
-                        </button>
                     </div>
                     <div class="d-flex align-items-center">
                         <span class="badge badge-md badge-dot me-4">
@@ -199,18 +199,70 @@
         </div>
     </div>
 
-    {{-- Modal Detail Pelaporan --}}
-    <div class="modal fade" id="DetailPelaporan" aria-labelledby="DetailPelaporanLabel" aria-hidden="true">
+    {{-- Modal Detail Angsuran Harian --}}
+    <div class="modal fade" id="DetailAngsuranHarian" aria-labelledby="DetailAngsuranHarianLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="DetailPelaporanLabel">--//--</h1>
+                    <h1 class="modal-title fs-5" id="DetailAngsuranHarianLabel">
+                        Detail Angsuran Hari Ini
+                    </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-4"></div>
-                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="bg-dark text-white">
+                                <th>Jenis</th>
+                                <th>SPP</th>
+                                <th>UEP</th>
+                                <th>PL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Angsuran</td>
+                                <td align="right">
+                                    Rp. {{ number_format($pokok_spp + $jasa_spp) }}
+                                </td>
+                                <td align="right">
+                                    Rp. {{ number_format($pokok_uep + $jasa_uep) }}
+                                </td>
+                                <td align="right">
+                                    Rp. {{ number_format($pokok_pl + $jasa_pl) }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Pencairan</td>
+                                <td align="right">
+                                    Rp. {{ number_format($pencairan_spp) }}
+                                </td>
+                                <td align="right">
+                                    Rp. {{ number_format($pencairan_uep) }}
+                                </td>
+                                <td align="right">
+                                    Rp. {{ number_format($pencairan_pl) }}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>Total</td>
+                                <td align="right">
+                                    Rp.
+                                    {{ number_format($pokok_spp + $jasa_spp - $pencairan_spp) }}
+                                </td>
+                                <td align="right">
+                                    Rp.
+                                    {{ number_format($pokok_uep + $jasa_uep - $pencairan_uep) }}
+                                </td>
+                                <td align="right">
+                                    Rp.
+                                    {{ number_format($pokok_pl + $jasa_pl - $pencairan_pl) }}
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
@@ -787,8 +839,8 @@
             $('#jatuhTempo').modal('show')
         })
 
-        $(document).on('click', '#btnDetailPelaporan', function() {
-            $('#DetailPelaporan').modal('show')
+        $(document).on('click', '#btnDetailAngsuranHarian', function() {
+            $('#DetailAngsuranHarian').modal('show')
         })
 
         $.get('/dashboard/pinjaman?status=P', function(result) {
