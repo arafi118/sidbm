@@ -2342,7 +2342,7 @@ class PinjamanKelompokController extends Controller
 
         $data['laporan'] = 'Kartu Angsuran ' . $data['pinkel']->kelompok->nama_kelompok;
         $data['laporan'] .= ' Loan ID. ' . $id;
-        $data['angsuran'] = (str_contains(url()->previous(), 'detail') && $data['pinkel']->status != 'L') ? false : true;
+        $data['angsuran'] = (str_contains(url()->previous(), 'detail') && !($data['pinkel']->status == 'L' || $data['pinkel']->status == 'R')) ? false : true;
         return view('perguliran.dokumen.kartu_angsuran', $data);
     }
 
