@@ -143,7 +143,7 @@ class DashboardController extends Controller
                 if ($pinkel->saldo) {
                     $table .= '<td align="right">' . number_format($pinkel->saldo->saldo_pokok) . '</td>';
                 } else {
-                    $table .= '<td align="right">' . number_format(0) . '</td>';
+                    $table .= '<td align="right">' . number_format($pinkel->$alokasi) . '</td>';
                 }
                 $table .= '<td align="center">' . $pinkel->pinjaman_anggota_count . '</td>';
             } else {
