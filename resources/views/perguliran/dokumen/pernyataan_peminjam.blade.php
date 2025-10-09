@@ -124,7 +124,7 @@
             <tr>
                 <td width="33%">&nbsp;</td>
                 <td width="33%">&nbsp;</td>
-                <td width="33%" align="center">{{ $kec->nama_kec }}, _________________</td>
+                <td width="33%" align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pa->tgl_proposal) }}</td>
             </tr>
             <tr>
                 <td align="center">Saksi 1</td>
