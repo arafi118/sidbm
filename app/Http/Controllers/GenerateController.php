@@ -91,6 +91,7 @@ class GenerateController extends Controller
             'kelompok.d'
         ]);
 
+
         $data_pinjaman = [];
         $data_pinjaman_H = [];
 
@@ -220,7 +221,6 @@ class GenerateController extends Controller
                             $jasa = $rencana_jasa[$i] ?: 0;
                         } else {
                             if ($value['alokasi_pokok_pinjaman'] == 0 && $value['alokasi_jasa_pinjaman'] == 0) {
-                                $alokasi_jasa -= $alokasi_jasa_anggota[$value['id_pinjaman_anggota']];
                                 $data_rencana[strtotime($value['tgl_transaksi'])] = [
                                     'loan_id' => $pinkel->id,
                                     'angsuran_ke' => $angsuran_ke,
