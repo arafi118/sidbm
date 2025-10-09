@@ -328,8 +328,10 @@ class GenerateController extends Controller
                 $saldo_pokok = $alokasi_pokok - $sum_pokok;
                 if ($pinkel->jenis_jasa == '2') {
                     $alokasi_jasa = $saldo_pokok * ($pinkel->pros_jasa / 100);
+                    $saldo_jasa = $alokasi_jasa - $realisasi_jasa;
+                } else {
+                    $saldo_jasa = $alokasi_jasa - $sum_jasa;
                 }
-                $saldo_jasa = $alokasi_jasa - $realisasi_jasa;
 
                 $target_pokok = 0;
                 $target_jasa = 0;
