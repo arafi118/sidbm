@@ -10,12 +10,18 @@
         'Daftar Pemanfaat',
         'Surat Pernyataan Tanggung Renteng',
         'FC KTP Pemanfaat dan Penjamin',
-        'Surat Pernyataan Peminjam',
-        'BA Musyawarah',
-        'Form Verifikasi',
-        'Daftar Hadir Verifikasi',
-        'Form Verifikasi Anggota',
     ];
+
+    if (Session::get('lokasi') == '476') {
+        $data[] = 'Fotokopi buku tabungan';
+        $data[] = 'Fotokopi prima nota';
+    }
+
+    $data[] = 'Surat Pernyataan Peminjam';
+    $data[] = 'BA Musyawarah';
+    $data[] = 'Form Verifikasi';
+    $data[] = 'Daftar Hadir Verifikasi';
+    $data[] = 'Form Verifikasi Anggota';
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
