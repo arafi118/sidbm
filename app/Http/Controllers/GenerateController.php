@@ -364,7 +364,7 @@ class GenerateController extends Controller
                         'sum_pokok' => $sum_pokok,
                         'sum_jasa' => $sum_jasa,
                         'saldo_pokok' => $saldo_pokok,
-                        'saldo_jasa' => $saldo_jasa,
+                        'saldo_jasa' => $saldo_jasa < 0 ? 0 : $saldo_jasa,
                         'tunggakan_pokok' => $tunggakan_pokok,
                         'tunggakan_jasa' => $tunggakan_jasa,
                         'lu' => date('Y-m-d H:i:s'),
