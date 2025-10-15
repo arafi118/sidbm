@@ -1248,7 +1248,7 @@ class PelaporanController extends Controller
                         ])->orwhere([
                             [$data['tb_pinkel'] . '.status', 'W'],
                             [$data['tb_pinkel'] . '.tgl_proposal', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinkel'] . '.tgl_waiting', '>=', "$data[tahun]-01-01"]
+                            [$data['tb_pinkel'] . '.tgl_tunggu', '>=', "$data[tahun]-01-01"]
                         ])->orwhere([
                             [$data['tb_pinkel'] . '.status', 'A'],
                             [$data['tb_pinkel'] . '.tgl_proposal', '<=', $data['tgl_kondisi']],
