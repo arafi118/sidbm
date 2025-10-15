@@ -1245,6 +1245,14 @@ class PelaporanController extends Controller
                             [$data['tb_pinkel'] . '.status', 'V'],
                             [$data['tb_pinkel'] . '.tgl_proposal', '<=', $data['tgl_kondisi']],
                             [$data['tb_pinkel'] . '.tgl_verifikasi', '>=', "$data[tahun]-01-01"]
+                        ])->orwhere([
+                            [$data['tb_pinkel'] . '.status', 'W'],
+                            [$data['tb_pinkel'] . '.tgl_proposal', '<=', $data['tgl_kondisi']],
+                            [$data['tb_pinkel'] . '.tgl_waiting', '>=', "$data[tahun]-01-01"]
+                        ])->orwhere([
+                            [$data['tb_pinkel'] . '.status', 'A'],
+                            [$data['tb_pinkel'] . '.tgl_proposal', '<=', $data['tgl_kondisi']],
+                            [$data['tb_pinkel'] . '.tgl_cair', '>=', "$data[tahun]-01-01"]
                         ]);
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')
