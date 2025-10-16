@@ -1104,7 +1104,12 @@ class PelaporanController extends Controller
                     ->join($tb_kel, $tb_kel . '.id', '=', $tb_pinkel . '.id_kel')
                     ->join('desa', $tb_kel . '.desa', '=', 'desa.kd_desa')
                     ->join('sebutan_desa', 'sebutan_desa.id', '=', 'desa.sebutan')
-                    ->withCount('pinjaman_anggota')
+                    ->with([
+                        'pinjaman_anggota',
+                        'pinjaman_anggota.anggota',
+                        'pinjaman_anggota.anggota.d',
+                        'pinjaman_anggota.anggota.d.sebutan_desa',
+                    ])
                     ->where('status', 'P')
                     ->orderBy($tb_kel . '.desa', 'ASC')
                     ->orderBy($tb_pinkel . '.tgl_proposal', 'ASC');
@@ -1241,18 +1246,6 @@ class PelaporanController extends Controller
                         $query->where([
                             [$data['tb_pinkel'] . '.status', 'P'],
                             [$data['tb_pinkel'] . '.tgl_proposal', '<=', $data['tgl_kondisi']]
-                        ])->orwhere([
-                            [$data['tb_pinkel'] . '.status', 'V'],
-                            [$data['tb_pinkel'] . '.tgl_proposal', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinkel'] . '.tgl_verifikasi', '>=', "$data[tahun]-01-01"]
-                        ])->orwhere([
-                            [$data['tb_pinkel'] . '.status', 'W'],
-                            [$data['tb_pinkel'] . '.tgl_proposal', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinkel'] . '.tgl_tunggu', '>=', "$data[tahun]-01-01"]
-                        ])->orwhere([
-                            [$data['tb_pinkel'] . '.status', 'A'],
-                            [$data['tb_pinkel'] . '.tgl_proposal', '<=', $data['tgl_kondisi']],
-                            [$data['tb_pinkel'] . '.tgl_cair', '>=', "$data[tahun]-01-01"]
                         ]);
                     })
                     ->orderBy($tb_kel . '.desa', 'ASC')

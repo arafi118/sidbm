@@ -46,8 +46,8 @@
             <thead>
                 <tr style="background: rgb(230, 230, 230); font-weight: bold;">
                     <th class="t l b" height="20" width="5%">No</th>
-                    <th class="t l b" width="45%">Kelompok - Loan ID.</th>
-                    <th class="t l b" width="10%">Anggota</th>
+                    <th class="t l b" width="30%">Kelompok - Loan ID.</th>
+                    <th class="t l b" width="25%">Alamat</th>
                     <th class="t l b" width="15%">Tgl Pengajuan</th>
                     <th class="t l b" width="10%">Tempo</th>
                     <th class="t l b r" width="15%">Pengajuan</th>
@@ -89,10 +89,32 @@
 
                     <tr>
                         <td class="t l b" align="center">{{ $nomor++ }}</td>
-                        <td class="t l b" align="left">
+                        <td class="t l b r" align="left" colspan="5">
                             {{ $pinkel->nama_kelompok }} [{{ $pinkel->ketua }}] - {{ $pinkel->id }}
                         </td>
-                        <td class="t l b" align="center">{{ $pinkel->pinjaman_anggota_count }}</td>
+                    </tr>
+
+                    @foreach ($pinkel->pinjaman_anggota as $pinjaman_anggota)
+                        <tr>
+                            <td class="t l b"></td>
+                            <td class="t l b">{{ $pinjaman_anggota->anggota->namadepan }}</td>
+                            <td class="t l b">
+                                {{ $pinjaman_anggota->anggota->d->sebutan_desa->sebutan_desa }}
+                                {{ $pinjaman_anggota->anggota->d->nama_desa }}
+                                {{ $pinjaman_anggota->anggota->alamat }}
+                            </td>
+                            <td class="t l b" colspan="2">&nbsp;</td>
+                            <td class="t l b r" align="right">
+                                {{ number_format($pinjaman_anggota->proposal) }}
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    <tr>
+                        <td class="t l b" height="15">&nbsp;</td>
+                        <td class="t l b" colspan="2">
+                            Jumlah {{ $pinkel->nama_kelompok }}
+                        </td>
                         <td class="t l b" align="center">{{ Tanggal::tglIndo($pinkel->tgl_proposal) }}</td>
                         <td class="t l b" align="center">{{ $pinkel->jangka }}/{{ $pinkel->sis_pokok->sistem }}</td>
                         <td class="t l b r" align="right">{{ number_format($pinkel->proposal) }}</td>
