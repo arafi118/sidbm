@@ -139,6 +139,8 @@ Route::get('/pengaturan/coa', [SopController::class, 'coa'])->middleware('auth')
 Route::put('/pengaturan/coa/{rekening}', [SopController::class, 'updateCoa'])->middleware('auth');
 Route::get('/pengaturan/ttd_pelaporan', [SopController::class, 'ttdPelaporan'])->middleware('auth');
 Route::get('/pengaturan/ttd_spk', [SopController::class, 'ttdSpk'])->middleware('auth');
+Route::get('/pengaturan/custom_calk', [SopController::class, 'customCalk'])->middleware('auth');
+Route::put('/pengaturan/custom_calk/{kec}', [SopController::class, 'setCustomCalk'])->middleware('auth');
 
 Route::put('/pengaturan/lembaga/{kec}', [SopController::class, 'lembaga'])->middleware('auth');
 Route::put('/pengaturan/pengelola/{kec}', [SopController::class, 'pengelola'])->middleware('auth');

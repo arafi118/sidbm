@@ -55,6 +55,10 @@
         ul {
             margin-left: unset;
         }
+
+        .pointA *:first-child {
+            margin-top: 0;
+        }
     </style>
     <table border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
@@ -78,52 +82,59 @@
     <ol style="list-style: upper-alpha;">
         <li>
             <div style="text-transform: uppercase;">Gambaran Umum</div>
-            <div style="text-align: justify">
-                {{ $kec->nama_lembaga_sort }} adalah Badan Usaha yang didirikan dari transformasi UPK PNPM-MPd
-                dengan
-                kegiatan usaha Dana Bergulir Masyarakat (DBM) melalui produk usahanya SPP dan UEP. Dalam
-                perkembangannya sebagian dari laba DBM UPK PNPM-MPd kemudian sebelum
-                ditetapkannya PP 11 tahun 2021 telah digunakan untuk membentuk unit usaha Perdagangan dan
-                Produksi*.
-            </div>
-            <p style="text-align: justify">
-                Bumdesma Lkd setelah didirikan sesuai ketentuan PP 11 tahun 2021 dilaksanakan transformasi
-                sesuai Permendesa
-                PDTT Nomor 15 tahun 2021 yang meliputi pengalihan aset, pengalihan kelembagaan, pengalihan
-                personil, dan
-                pengalihan kegiatan usaha. Modal awal Pendirian Bumdesma Lkd sesuai dengan ketentuan tersebut
-                adalah berasal
-                dari keseluruhan pengalihan keseluruhan aset DBM Eks PNPM MPd (Permendesa PDTT 15 tahun 2021
-                Pasal 5) yang
-                dicatat sebagai Ekuitas Bumdesma Lkd ditambah dengan Penyertaan Modal Desa. Yang kemudian
-                didalam laporan
-                posisi keuangan ekuitas yang berasal dari Aset DBM Eks PNPM Mpd disebut Modal Masyarakat Desa
-                (Permendesa
-                PDTT 15 tahun 2021 Pasal 6).
-            </p>
-            <p style="text-align: justify">
-                Sesuai dengan ketentuan UU Cipta Kerja No 11 Tahun 2020 bahwa Menetapkan status Badan hukum BUM
-                Desa pada
-                ketentuan Pasal 117 "bahwa Badan Usaha Milik Desa yang selanjutnya disebut BUM Desa adalah Badan
-                hukum yang
-                didirikan oleh desa dan atau bersama desa-desa guna mengelola usaha, memanfaatkan aset,
-                mengembangkan
-                investasi dan produktivitas, menyediakan jasa pelayanan, dan atau jenis usaha lainnya untuk
-                sebesar-besarnya
-                kesejahteraan masyarakat desa." Status inilah yang menjadi dasar hukum pelaksanaan usaha
-                didirikan dengan
-                kegiatan Usaha Utama DBM.
-            </p>
-            <p style="text-align: justify">
-                {{ $kec->nama_lembaga_sort }} didirikan di {{ $kec->nama_kec }} berdasarkan PERATURAN BERSAMA
-                KEPALA DESA
-                NOMOR {{ $peraturan_desa }} dan mendapatkan Sertifikat Badan Hukum dari Menteri Hukum dan Hak
-                Asasi Manusia
-                No. {{ $kec->nomor_bh }}. {{ $kec->nama_lembaga_sort }}
-                menjalankan usaha
-                pinjaman Dana Bergulir Masyarakat yang masuk dalam kategori usaha mikrofinance dan berdomisili
-                di {{ $kec->nama_kec }}
-                dengan perangkat organisasi sebagai berikut:
+            @if ($pointA)
+                <div style="text-align: justify" class="pointA">
+                    {!! $pointA !!}
+                </div>
+            @else
+                <div style="text-align: justify">
+                    {{ $kec->nama_lembaga_sort }} adalah Badan Usaha yang didirikan dari transformasi UPK PNPM-MPd
+                    dengan
+                    kegiatan usaha Dana Bergulir Masyarakat (DBM) melalui produk usahanya SPP dan UEP. Dalam
+                    perkembangannya sebagian dari laba DBM UPK PNPM-MPd kemudian sebelum
+                    ditetapkannya PP 11 tahun 2021 telah digunakan untuk membentuk unit usaha Perdagangan dan
+                    Produksi*.
+                </div>
+                <p style="text-align: justify">
+                    Bumdesma Lkd setelah didirikan sesuai ketentuan PP 11 tahun 2021 dilaksanakan transformasi
+                    sesuai Permendesa
+                    PDTT Nomor 15 tahun 2021 yang meliputi pengalihan aset, pengalihan kelembagaan, pengalihan
+                    personil, dan
+                    pengalihan kegiatan usaha. Modal awal Pendirian Bumdesma Lkd sesuai dengan ketentuan tersebut
+                    adalah berasal
+                    dari keseluruhan pengalihan keseluruhan aset DBM Eks PNPM MPd (Permendesa PDTT 15 tahun 2021
+                    Pasal 5) yang
+                    dicatat sebagai Ekuitas Bumdesma Lkd ditambah dengan Penyertaan Modal Desa. Yang kemudian
+                    didalam laporan
+                    posisi keuangan ekuitas yang berasal dari Aset DBM Eks PNPM Mpd disebut Modal Masyarakat Desa
+                    (Permendesa
+                    PDTT 15 tahun 2021 Pasal 6).
+                </p>
+                <p style="text-align: justify">
+                    Sesuai dengan ketentuan UU Cipta Kerja No 11 Tahun 2020 bahwa Menetapkan status Badan hukum BUM
+                    Desa pada
+                    ketentuan Pasal 117 "bahwa Badan Usaha Milik Desa yang selanjutnya disebut BUM Desa adalah Badan
+                    hukum yang
+                    didirikan oleh desa dan atau bersama desa-desa guna mengelola usaha, memanfaatkan aset,
+                    mengembangkan
+                    investasi dan produktivitas, menyediakan jasa pelayanan, dan atau jenis usaha lainnya untuk
+                    sebesar-besarnya
+                    kesejahteraan masyarakat desa." Status inilah yang menjadi dasar hukum pelaksanaan usaha
+                    didirikan dengan
+                    kegiatan Usaha Utama DBM.
+                </p>
+                <p style="text-align: justify">
+                    {{ $kec->nama_lembaga_sort }} didirikan di {{ $kec->nama_kec }} berdasarkan PERATURAN BERSAMA
+                    KEPALA DESA
+                    NOMOR {{ $peraturan_desa }} dan mendapatkan Sertifikat Badan Hukum dari Menteri Hukum dan Hak
+                    Asasi Manusia
+                    No. {{ $kec->nomor_bh }}. {{ $kec->nama_lembaga_sort }}
+                    menjalankan usaha
+                    pinjaman Dana Bergulir Masyarakat yang masuk dalam kategori usaha mikrofinance dan berdomisili
+                    di {{ $kec->nama_kec }}
+                    dengan perangkat organisasi sebagai berikut:
+                </p>
+            @endif
 
             <table style="margin-top: -10px; margin-left: 15px;">
                 <tr>
@@ -179,7 +190,6 @@
                     <td style="padding: 0px; 4px;">.................................</td>
                 </tr> --}}
             </table>
-            </p>
         </li>
         <li style="margin-top: 12px;">
             <div style="text-transform: uppercase;">

@@ -92,6 +92,35 @@ class SopController extends Controller
         return view('sop.coa')->with(compact('title'));
     }
 
+    public function customCalk()
+    {
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
+        $calk = json_decode($kec->calk, true);
+        $pointA = $calk['calk']['A'] ?? "";
+
+        $title = "Custom CALK";
+        return view('sop.custom_calk')->with(compact('title', 'kec', 'pointA'));
+    }
+
+    public function setCustomCalk(Kecamatan $kec, Request $request)
+    {
+        $data = $request->only([
+            'calk'
+        ]);
+
+        $calk = json_decode($kec->calk, true);
+        $calk['calk']['A'] = $data['calk'];
+
+        $update = Kecamatan::where('id', $kec->id)->update([
+            'calk' => json_encode($calk)
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Custom CALK Berhasil Diperbarui.',
+        ]);
+    }
+
     public function updateCoa(Request $request, Rekening $rekening)
     {
         $data = $request->only([

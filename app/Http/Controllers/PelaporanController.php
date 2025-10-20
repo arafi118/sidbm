@@ -683,6 +683,10 @@ class PelaporanController extends Controller
             ['kode_akun', $data['kec']->kd_kec],
             ['tahun', $thn]
         ])->get();
+
+        $calk = json_decode($data['kec']->calk, true);
+        $data['pointA'] = $calk['calk']['A'] ?? "";
+
         $view = view('pelaporan.view.calk', $data)->render();
 
         if ($data['type'] == 'pdf') {
@@ -3569,6 +3573,9 @@ class PelaporanController extends Controller
             ['kode_akun', $data['kec']->kd_kec],
             ['tahun', $thn]
         ])->get();
+
+        $calk = json_decode($data['kec']->calk, true);
+        $data['pointA'] = $calk['calk']['A'] ?? "";
 
         $data['laporan'] = 'CALK Awal Tahun';
         $view = view('pelaporan.view.tutup_buku.calk', $data)->render();
