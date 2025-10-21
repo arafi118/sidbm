@@ -1098,7 +1098,8 @@ class TransaksiController extends Controller
         }
 
         $trx = Transaksi::where('idt', $transaksi->idt)->with([
-            'rek_debit', 'rek_kredit'
+            'rek_debit',
+            'rek_kredit'
         ])->first();
         $view = view('transaksi.jurnal_umum.partials.notifikasi')->with(compact('trx', 'keuangan'))->render();
         return response()->json([
@@ -2398,7 +2399,7 @@ class TransaksiController extends Controller
 
         $jenis = 'BKM';
         $dari = ucwords($trx->relasi);
-        $oleh = ucwords(auth()->user()->namadepan . ' ' . auth()->user()->namabelakang);
+        $oleh = ucwords($user->namadepan . ' ' . $user->namabelakang);
         $dibayar = ucwords($trx->relasi);
         if ($trx->rekening_kredit == '1.1.01.01' or ($keuangan->startWith($trx->rekening_kredit, '1.1.02') || $keuangan->startWith($trx->rekening_kredit, '1.1.01'))) {
             $jenis = 'BKK';
@@ -2637,9 +2638,7 @@ class TransaksiController extends Controller
         return $pdf->stream();
     }
 
-    public function cetakKuitansi(Request $request)
-    {
-    }
+    public function cetakKuitansi(Request $request) {}
 
     public function lpp($id)
     {
