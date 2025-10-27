@@ -97,7 +97,7 @@
                     <td align="center">
                         <div><b>{{ strtoupper($nama_lembaga) }}</b></div>
                         <div>
-                            <b>{{ strtoupper($nama_kecamatan) }}</b>
+                            <b>{!! strtoupper($nama_kecamatan) !!}</b>
                         </div>
                         <div style="font-size: 10px; color: grey;">
                             <i>{{ $nomor_usaha }}</i>
