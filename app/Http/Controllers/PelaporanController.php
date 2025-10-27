@@ -277,7 +277,7 @@ class PelaporanController extends Controller
 
         // Cek panjang sebelum menambahkan kabupaten
         if (strlen($data['nama_kecamatan'] . $kabupaten_text) > 50) {
-            $data['nama_kecamatan'] .= '<br>' . $kabupaten_text;
+            $data['nama_kecamatan'] .= "\n" . $kabupaten_text;
         } else {
             $data['nama_kecamatan'] .= $kabupaten_text;
         }
@@ -3751,7 +3751,7 @@ class PelaporanController extends Controller
 
         // Cek panjang sebelum menambahkan kabupaten
         if (strlen($data['nama_kecamatan'] . $kabupaten_text) > 50) {
-            $data['nama_kecamatan'] .= '<br>' . $kabupaten_text;
+            $data['nama_kecamatan'] .= "\n" . $kabupaten_text;
         } else {
             $data['nama_kecamatan'] .= $kabupaten_text;
         }
