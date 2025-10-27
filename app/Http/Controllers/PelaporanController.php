@@ -267,12 +267,19 @@ class PelaporanController extends Controller
         $data['nama_lembaga'] = $kec->nama_lembaga_sort;
         $data['nama_kecamatan'] = $kec->sebutan_kec . ' ' . $kec->nama_kec;
 
-        if (Keuangan::startWith($kab->nama_kab, 'KOTA') || Keuangan::startWith($kab->nama_kab, 'KAB')) {
-            $data['nama_kecamatan'] .= ' ' . ucwords(strtolower($kab->nama_kab));
+        if (Keuangan::startWith($kab->nama_kab, 'KOTA') || Keuangan::startWith($kab->nama_kab, 'KOTA')) {
+            $kabupaten_text = ' ' . ucwords(strtolower($kab->nama_kab));
             $data['nama_kabupaten'] = ucwords(strtolower($kab->nama_kab));
         } else {
-            $data['nama_kecamatan'] .= ' Kabupaten ' . ucwords(strtolower($kab->nama_kab));
-            $data['nama_kabupaten'] = ' Kabupaten ' . ucwords(strtolower($kab->nama_kab));
+            $kabupaten_text = ' Kabupaten ' . ucwords(strtolower($kab->nama_kab));
+            $data['nama_kabupaten'] = 'Kabupaten ' . ucwords(strtolower($kab->nama_kab));
+        }
+
+        // Cek panjang sebelum menambahkan kabupaten
+        if (strlen($data['nama_kecamatan'] . $kabupaten_text) > 50) {
+            $data['nama_kecamatan'] .= '<br>' . $kabupaten_text;
+        } else {
+            $data['nama_kecamatan'] .= $kabupaten_text;
         }
 
         $data['nomor_usaha'] = 'SK Kemenkumham RI No.' . $kec->nomor_bh;
@@ -3734,12 +3741,19 @@ class PelaporanController extends Controller
         $data['nama_lembaga'] = $kec->nama_lembaga_sort;
         $data['nama_kecamatan'] = $kec->sebutan_kec . ' ' . $kec->nama_kec;
 
-        if (Keuangan::startWith($kab->nama_kab, 'KOTA') || Keuangan::startWith($kab->nama_kab, 'KAB')) {
-            $data['nama_kecamatan'] .= ' ' . ucwords(strtolower($kab->nama_kab));
+        if (Keuangan::startWith($kab->nama_kab, 'KOTA') || Keuangan::startWith($kab->nama_kab, 'KOTA')) {
+            $kabupaten_text = ' ' . ucwords(strtolower($kab->nama_kab));
             $data['nama_kabupaten'] = ucwords(strtolower($kab->nama_kab));
         } else {
-            $data['nama_kecamatan'] .= ' Kabupaten ' . ucwords(strtolower($kab->nama_kab));
-            $data['nama_kabupaten'] = ' Kabupaten ' . ucwords(strtolower($kab->nama_kab));
+            $kabupaten_text = ' Kabupaten ' . ucwords(strtolower($kab->nama_kab));
+            $data['nama_kabupaten'] = 'Kabupaten ' . ucwords(strtolower($kab->nama_kab));
+        }
+
+        // Cek panjang sebelum menambahkan kabupaten
+        if (strlen($data['nama_kecamatan'] . $kabupaten_text) > 50) {
+            $data['nama_kecamatan'] .= '<br>' . $kabupaten_text;
+        } else {
+            $data['nama_kecamatan'] .= $kabupaten_text;
         }
 
         $jabatan = '1';
