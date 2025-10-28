@@ -121,7 +121,7 @@
                     <td>
                         <div style="font-size: 12px;">{{ strtoupper($nama_lembaga) }}</div>
                         <div style="font-size: 12px;">
-                            <b>{{ strtoupper($nama_kecamatan) }}</b>
+                            <b>{!! strtoupper($nama_kecamatan) !!}</b>
                         </div>
                     </td>
                 </tr>
