@@ -142,10 +142,10 @@
             $skor_b4 = 8.75;
             $status_b4 = 'Sehat';
         } elseif ($beban_operasional < 70) {
-            $skor_b4 = 5.75;
+            $skor_b4 = 6.25;
             $status_b4 = 'Cukup Sehat';
         } elseif ($beban_operasional < 75) {
-            $skor_b4 = 6.25;
+            $skor_b4 = 5.25;
             $status_b4 = 'Cukup Sehat';
         } elseif ($beban_operasional < 80) {
             $skor_b4 = 5;
@@ -403,8 +403,8 @@
                 <div>{{ 'R < 65% skor 8.75' }}</div>
             </td>
             <td class="t l b" rowspan="2">
-                <div>{{ 'R < 70% skor 5.75' }}</div>
-                <div>{{ 'R < 75% skor 6.25' }}</div>
+                <div>{{ 'R < 70% skor 6.25' }}</div>
+                <div>{{ 'R < 75% skor 5.25' }}</div>
             </td>
             <td class="t l b" rowspan="2">
                 <div>{{ 'R < 80% skor 5' }}</div>
