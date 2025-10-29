@@ -80,23 +80,38 @@
             </tr>
         </table>
 
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
-            <tr>
-                <td align="center" width="50%">&nbsp;</td>
-                <td align="center" width="50%">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
-            </tr>
-            <tr>
-                <td align="center">Peminjam</td>
-                <td align="center">Nama Penjamin</td>
-            </tr>
+        @if ($tanda_tangan)
+            @php
+                $tanda_tangan_anggota = Pinjaman::keyword(json_encode($tanda_tangan), [
+                    'kec' => $kec,
+                    'jenis_laporan' => $jenis_laporan,
+                    'tgl_kondisi' => $tgl_kondisi,
+                    'pinkel' => $pinkel,
+                    'pinjaman_anggota' => $pa,
+                ]);
+            @endphp
+            <div style="font-size: 14px;">
+                {!! $tanda_tangan_anggota !!}
+            </div>
+        @else
+            <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px;">
+                <tr>
+                    <td align="center" width="50%">&nbsp;</td>
+                    <td align="center" width="50%">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pinkel->tgl_cair) }}</td>
+                </tr>
+                <tr>
+                    <td align="center">Peminjam</td>
+                    <td align="center">Nama Penjamin</td>
+                </tr>
 
-            <tr>
-                <td align="center" colspan="2" height="30">&nbsp;</td>
-            </tr>
-            <tr style="font-weight: bold;">
-                <td align="center">{{ $pinj->anggota->namadepan }}</td>
-                <td align="center">{{ $pinj->anggota->penjamin }}</td>
-            </tr>
-        </table>
+                <tr>
+                    <td align="center" colspan="2" height="30">&nbsp;</td>
+                </tr>
+                <tr style="font-weight: bold;">
+                    <td align="center">{{ $pinj->anggota->namadepan }}</td>
+                    <td align="center">{{ $pinj->anggota->penjamin }}</td>
+                </tr>
+            </table>
+        @endif
     @endforeach
 @endsection
