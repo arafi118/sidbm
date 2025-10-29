@@ -1790,6 +1790,16 @@ class PinjamanKelompokController extends Controller
 
         $data['keuangan'] = $keuangan;
 
+        $jenis_dokumen = request()->get('jenis') ?: 'dokumen_proposal';
+        $dokumenPinjaman = DokumenPinjaman::where([
+            ['file', $data['report']],
+            ['jenis_dokumen', $jenis_dokumen]
+        ])->with('tanda_tangan')->first();
+        $data['tanda_tangan'] = '';
+        if ($dokumenPinjaman->tanda_tangan) {
+            $data['tanda_tangan'] = Pinjaman::keyword($dokumenPinjaman->tanda_tangan->tanda_tangan, $data);
+        }
+
         $data['judul'] = 'Pernyataan Peminjam (' . $data['pinkel']->kelompok->nama_kelompok . ' - Loan ID. ' . $data['pinkel']->id . ')';
         $view = view('perguliran.dokumen.pernyataan_peminjam', $data)->render();
 

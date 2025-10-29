@@ -117,34 +117,42 @@
                 </td>
             </tr>
         </table>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
-            <tr>
-                <td colspan="3" height="20">&nbsp;</td>
-            </tr>
-            <tr>
-                <td width="40%">&nbsp;</td>
-                <td width="20%">&nbsp;</td>
-                <td width="40%" align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pa->tgl_proposal) }}</td>
-            </tr>
-            <tr>
-                <td align="center">Saksi 1</td>
-                <td align="center">Saksi/Ahli Waris</td>
-                <td align="center">Yang Menyatakan</td>
-            </tr>
-            <tr>
-                <td colspan="3" height="50">&nbsp;</td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <b>{{ $ketua }}</b>
-                </td>
-                <td align="center">
-                    <b>{{ $pa->anggota->penjamin }}</b>
-                </td>
-                <td align="center">
-                    <b>{{ $pa->anggota->namadepan }}</b>
-                </td>
-            </tr>
-        </table>
+
+        @if ($tanda_tangan)
+            <div style="font-size: 14px;">
+                {!! $tanda_tangan !!}
+            </div>
+        @else
+            <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
+                <tr>
+                    <td colspan="3" height="20">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="40%">&nbsp;</td>
+                    <td width="20%">&nbsp;</td>
+                    <td width="40%" align="center">{{ $kec->nama_kec }}, {{ Tanggal::tglLatin($pa->tgl_proposal) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">Saksi 1</td>
+                    <td align="center">Saksi/Ahli Waris</td>
+                    <td align="center">Yang Menyatakan</td>
+                </tr>
+                <tr>
+                    <td colspan="3" height="50">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <b>{{ $ketua }}</b>
+                    </td>
+                    <td align="center">
+                        <b>{{ $pa->anggota->penjamin }}</b>
+                    </td>
+                    <td align="center">
+                        <b>{{ $pa->anggota->namadepan }}</b>
+                    </td>
+                </tr>
+            </table>
+        @endif
     @endforeach
 @endsection
