@@ -87,7 +87,7 @@
                     'jenis_laporan' => $jenis_laporan,
                     'tgl_kondisi' => $tgl_kondisi,
                     'pinkel' => $pinkel,
-                    'pinjaman_anggota' => $pa,
+                    'pinjaman_anggota' => $pinj,
                 ]);
             @endphp
             <div style="font-size: 14px;">
