@@ -1,4 +1,5 @@
 @php
+    use App\Utils\Pinjaman;
     use App\Utils\Tanggal;
 
     $ketua = $pinkel->kelompok->ketua;
@@ -119,8 +120,17 @@
         </table>
 
         @if ($tanda_tangan)
+            @php
+                $tanda_tangan_anggota = Pinjaman::keyword(json_encode($tanda_tangan), [
+                    'kec' => $kec,
+                    'jenis_laporan' => $jenis_laporan,
+                    'tgl_kondisi' => $tgl_kondisi,
+                    'pinkel' => $pinkel,
+                    'pinjaman_anggota' => $pa,
+                ]);
+            @endphp
             <div style="font-size: 14px;">
-                {!! $tanda_tangan !!}
+                {!! $tanda_tangan_anggota !!}
             </div>
         @else
             <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
