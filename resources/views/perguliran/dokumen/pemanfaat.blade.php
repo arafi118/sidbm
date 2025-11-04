@@ -71,7 +71,7 @@
             @if ($version == 'v1')
                 <th class="t l b" width="5%">JK</th>
             @endif
-            <th class="t l b" width="15%">Usia</th>
+            <th class="t l b" width="5%">Usia</th>
             @if ($version == 'v1')
                 <th class="t l b" width="15%">Penjamin</th>
             @else
