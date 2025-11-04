@@ -109,6 +109,21 @@ class Pinjaman
                     'pinjaman' => '1'
                 ],
                 [
+                    'key' => '{nama_anggota}',
+                    'des' => 'Nama Anggota Pemanfaat',
+                    'pinjaman' => '1'
+                ],
+                [
+                    'key' => '{nik}',
+                    'des' => 'NIK Anggota Pemanfaat',
+                    'pinjaman' => '1'
+                ],
+                [
+                    'key' => '{penjamin}',
+                    'des' => 'Penjamin',
+                    'pinjaman' => '1'
+                ],
+                [
                     'key' => '{tanggal_kondisi}',
                     'des' => 'Tanggal Laporan Dibuka',
                     'pinjaman' => '0'
@@ -155,6 +170,14 @@ class Pinjaman
                 $replacer['{tanggal_proposal}'] = Tanggal::tglLatin($pinkel->tgl_proposal);
                 $replacer['{tanggal_waiting}'] = Tanggal::tglLatin($pinkel->tgl_tunggu);
                 $replacer['{tanggal_cair}'] = Tanggal::tglLatin($pinkel->tgl_cair);
+
+                if (isset($data['pinjaman_anggota'])) {
+                    $pinjaman_anggota = $data['pinjaman_anggota'];
+
+                    $replacer['{nama_anggota}'] = $pinjaman_anggota->anggota->namadepan;
+                    $replacer['{nik}'] = $pinjaman_anggota->anggota->nik;
+                    $replacer['{penjamin}'] = $pinjaman_anggota->anggota->penjamin;
+                }
             }
 
             $replacer['1'] = '1';
