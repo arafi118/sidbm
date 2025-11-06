@@ -1282,7 +1282,8 @@ class PinjamanKelompokController extends Controller
             'catatan_verifikasi' => $pinkel->catatan_verifikasi,
             'wt_cair' => $pinkel->wt_cair,
             'lu' => date('Y-m-d H:i:s'),
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
+            'struktur_kelompok' => null
         ]);
 
         $trx_cair = Transaksi::create([
