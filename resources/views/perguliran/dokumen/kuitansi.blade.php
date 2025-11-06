@@ -105,10 +105,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td align="center" colspan="3">
-                        Setuju Dibayarkan
-                    </td>
-                    <td align="center" colspan="3">
+                    <td align="center" colspan="6">
                         Dikeluarkan Oleh
                     </td>
                     <td align="center" colspan="3">
