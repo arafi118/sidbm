@@ -2824,7 +2824,7 @@ class PinjamanKelompokController extends Controller
             $alokasi_jasa_anggota = [];
             foreach ($pinkel->pinjaman_anggota as $pinjaman_anggota) {
                 $pros_jasa_anggota = $pinjaman_anggota->pros_jasa;
-                if (Session::get('lokasi') == '522') {
+                if (Session::get('lokasi') == '522' || Session::get('lokasi') == '518') {
                     $pros_jasa_kelompok = ($pinkel->pros_jasa / $pinkel->jangka) + 0.2;
                     if ($pinkel->pinjaman_anggota >= '3') {
                         $pros_jasa_anggota = $pros_jasa_kelompok * $pinkel->jangka;
