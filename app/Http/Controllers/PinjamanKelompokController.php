@@ -1283,11 +1283,7 @@ class PinjamanKelompokController extends Controller
             'wt_cair' => $pinkel->wt_cair,
             'lu' => date('Y-m-d H:i:s'),
             'user_id' => auth()->user()->id,
-            'struktur_kelompok' => json_encode([
-                "ketua" => "-",
-                "sekretaris" => "-",
-                "bendahara" => "-"
-            ])
+            'struktur_kelompok' => $pinkel->struktur_kelompok
         ]);
 
         $trx_cair = Transaksi::create([
