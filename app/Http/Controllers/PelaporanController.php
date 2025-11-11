@@ -537,13 +537,13 @@ class PelaporanController extends Controller
         $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
         $data['tgl'] = Tanggal::tahun($tgl);
         $data['jenis'] = 'Tahunan';
-        $data['awal'] = 'Tahun';
+        $data['awal'] = 'TAHUN';
         $tgl_lalu = ($thn - 1) . '-00-00';
         if ($data['bulanan']) {
             $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
             $data['jenis'] = 'Bulanan';
-            $data['awal'] = 'Bulan';
+            $data['awal'] = 'BULAN';
 
             $bulan_lalu = $bln - 1;
             if ($bulan_lalu <= 0) {
