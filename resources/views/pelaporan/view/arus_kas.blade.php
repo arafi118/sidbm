@@ -44,7 +44,14 @@
             </tr>
             <tr style="background: rgb({{ $bg }})">
                 <td width="5%" align="center">{{ $keuangan->romawi($ak->super_sub) }}</td>
-                <td width="80%">{{ $ak->nama_akun }}</td>
+                <td width="80%">
+                    @if ($ak->id == 1)
+                        {{ $ak->nama_akun }}{{ $awal }}
+                    @else
+                        {{ $ak->nama_akun }}
+                    @endif
+                </td>
+
                 <td width="15%" align="right">
                     @if ($ak->id == 1)
                         {{ number_format($saldo_bulan_lalu, 2) }}
