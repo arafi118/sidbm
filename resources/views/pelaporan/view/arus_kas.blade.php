@@ -46,7 +46,7 @@
                 <td width="5%" align="center">{{ $keuangan->romawi($ak->super_sub) }}</td>
                 <td width="80%">
                     @if ($ak->id == 1)
-                        {{ $ak->nama_akun }}{{ $awal }}
+                        {{ $ak->nama_akun }} {{ $awal }}
                     @else
                         {{ $ak->nama_akun }}
                     @endif
