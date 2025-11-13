@@ -617,6 +617,8 @@ class PinjamanAnggotaController extends Controller
             $tempo_pokok = ($jangka) - 24 / $sistem_pokok;
         } else if ($sa_pokok == 14) {
             $tempo_pokok = ($jangka) - 3 / $sistem_pokok;
+        } else if ($sa_pokok == 26) {
+            $tempo_pokok = ($jangka) - 6 / $sistem_pokok;
         } else if ($sa_pokok == 15) {
             $tempo_pokok = ($jangka) - 2 / $sistem_pokok;
         } else if ($sa_pokok == 20) {
@@ -629,6 +631,8 @@ class PinjamanAnggotaController extends Controller
             $tempo_jasa = ($jangka) - 24 / $sistem_jasa;
         } else if ($sa_jasa == 14) {
             $tempo_jasa = ($jangka) - 3 / $sistem_jasa;
+        } else if ($sa_jasa == 26) {
+            $tempo_jasa = ($jangka) - 6 / $sistem_jasa;
         } else if ($sa_jasa == 15) {
             $tempo_jasa = ($jangka) - 2 / $sistem_jasa;
         } else if ($sa_jasa == 20) {
