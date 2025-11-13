@@ -450,6 +450,9 @@ class GenerateController extends Controller
         } else if ($sistem_angsuran == 14) {
             $tempo = ($jangka_pinjaman) - 3 / $sistem;
             $mulai_angsuran = $jangka_pinjaman - $tempo;
+        } else if ($sistem_angsuran == 26) {
+            $tempo = ($jangka_pinjaman) - 6 / $sistem;
+            $mulai_angsuran = $jangka_pinjaman - $tempo;
         } else if ($sistem_angsuran == 15) {
             $tempo = ($jangka_pinjaman) - 2 / $sistem;
             $mulai_angsuran = $jangka_pinjaman - $tempo;
