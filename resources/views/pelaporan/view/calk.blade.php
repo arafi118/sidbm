@@ -85,13 +85,12 @@
                 </div>
             @else
                 <div style="text-align: justify">
-                    {{ $kec->nama_lembaga_sort }} adalah Badan Usaha yang didirikan dari transformasi UPK PNPM-MPd
-                    dengan
+                    {{ $kec->nama_lembaga_sort }} adalah Badan Usaha yang didirikan dari transformasi UPK PNPM-MPd dengan
                     kegiatan usaha Dana Bergulir Masyarakat (DBM) melalui produk usahanya SPP dan UEP. Dalam
-                    perkembangannya sebagian dari laba DBM UPK PNPM-MPd kemudian sebelum
-                    ditetapkannya PP 11 tahun 2021 telah digunakan untuk membentuk unit usaha Perdagangan dan
-                    Produksi*.
+                    perkembangannya sebagian dari laba DBM UPK PNPM-MPd sesuai PP 11 tahun 2021 dapat digunakan untuk
+                    membentuk unit usaha sebagaimana yang disebut dalam aktifitas investasi.
                 </div>
+
                 <p style="text-align: justify">
                     Bumdesma Lkd setelah didirikan sesuai ketentuan PP 11 tahun 2021 dilaksanakan transformasi
                     sesuai Permendesa
