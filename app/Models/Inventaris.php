@@ -2,20 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\TenantAware;
 use Illuminate\Database\Eloquent\Model;
 use Session;
 
 class Inventaris extends Model
 {
-    use HasFactory;
-    protected $table;
+    use TenantAware;
+    protected $baseTable = 'inventaris';
     public $timestamps = false;
 
     protected $guarded = ['id'];
-
-    public function __construct()
-    {
-        $this->table = 'inventaris_' . Session::get('lokasi');
-    }
 }

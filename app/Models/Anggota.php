@@ -2,22 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\TenantAware;
 use Illuminate\Database\Eloquent\Model;
 use Session;
 
 class Anggota extends Model
 {
-    use HasFactory;
-    protected $table;
+    use TenantAware;
+    protected $baseTable = 'anggota';
     public $timestamps = false;
 
     protected $guarded = ['id'];
-
-    public function __construct()
-    {
-        $this->table = 'anggota_' . Session::get('lokasi');
-    }
 
     public function pinjaman_anggota()
     {

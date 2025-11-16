@@ -25,6 +25,8 @@ class KecamatanController extends Controller
         }
 
         Session::put('lokasi', $kec->id);
+        config(['tenant.suffix' => '_' . $kec->id]);
+
         $title = 'Pelaporan ' . $kec->sebutan_kec . ' ' . $kec->nama_kec;
         return view('admin.kecamatan.index')->with(compact('title', 'kec', 'laporan', 'nama_kec'));
     }

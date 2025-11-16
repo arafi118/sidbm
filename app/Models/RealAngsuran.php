@@ -2,23 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\TenantAware;
 use Illuminate\Database\Eloquent\Model;
 use Session;
 
 class RealAngsuran extends Model
 {
-    use HasFactory;
+    use TenantAware;
 
-    protected $table;
+    protected $baseTable  = 'real_angsuran';
     public $timestamps = false;
 
     protected $guarded = [''];
-
-    public function __construct()
-    {
-        $this->table = 'real_angsuran_' . Session::get('lokasi');
-    }
 
     public function trx()
     {

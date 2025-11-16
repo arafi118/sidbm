@@ -2,23 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\TenantAware;
 use Illuminate\Database\Eloquent\Model;
 use Session;
 
 class Kelompok extends Model
 {
-    use HasFactory;
+    use TenantAware;
 
-    protected $table;
+    protected $baseTable = 'kelompok';
     public $timestamps = false;
 
     protected $guarded = ['id'];
-
-    public function __construct()
-    {
-        $this->table = 'kelompok_' . Session::get('lokasi');
-    }
 
     public function getRouteKeyName()
     {
