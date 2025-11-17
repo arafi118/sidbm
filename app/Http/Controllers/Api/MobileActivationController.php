@@ -39,6 +39,7 @@ class MobileActivationController extends Controller
                     'success' => true,
                     'msg' => 'Aktivasi SI DBM Mobile ' . $kecamatan . ' berhasil.',
                     'data' => [
+                        'token' => $request->token,
                         'code' => $token->unique_id,
                         'lokasi' => $token->lokasi
                     ]
