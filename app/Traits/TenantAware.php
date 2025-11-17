@@ -34,8 +34,8 @@ trait TenantAware
     }
 
     // Opsi 2: Dari session
-    if (session()->has('tenant_suffix')) {
-      return session('tenant_suffix');
+    if (session()->has('lokasi')) {
+      return '_' . session()->get('lokasi');
     }
 
     // Opsi 3: Dari request (middleware akan set ini)
