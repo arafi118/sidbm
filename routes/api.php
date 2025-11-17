@@ -38,5 +38,6 @@ Route::group(['middleware' => ['auth:sanctum', 'tenant'], 'prefix' => 'v1'], fun
     Route::get('/basis-data/lembaga_lain', [BasisDataController::class, 'lembagaLain']);
 
     Route::get('/angsuran/search', [AngsuranController::class, 'search']);
-    Route::get('/angsuran/{pinjaman}', [AngsuranController::class, 'pinjaman']);
+    Route::get('/angsuran/{pinjaman_id}', [AngsuranController::class, 'pinjaman']);
+    Route::post('/angsuran', [AngsuranController::class, 'simpan']);
 });
