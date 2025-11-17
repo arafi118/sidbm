@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/mobile-token-activation', [MobileActivationController::class, 'activation']);
-Route::get('/ambil_data_lokasi', [MobileActivationController::class, 'ambilDataLokasi']);
+Route::get('/ambil-data-lokasi', [MobileActivationController::class, 'ambilDataLokasi']);
 
 Route::post('/auth', [AuthController::class, 'auth']);
 
@@ -31,11 +31,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['auth:sanctum', 'tenant'], 'prefix' => 'v1'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
-    Route::get('/basis_data', [BasisDataController::class, 'index']);
-    Route::get('/basis_data/desa', [BasisDataController::class, 'desa']);
-    Route::get('/basis_data/penduduk', [BasisDataController::class, 'penduduk']);
-    Route::get('/basis_data/kelompok', [BasisDataController::class, 'kelompok']);
-    Route::get('/basis_data/lembaga_lain', [BasisDataController::class, 'lembagaLain']);
+    Route::get('/basis-data', [BasisDataController::class, 'index']);
+    Route::get('/basis-data/desa', [BasisDataController::class, 'desa']);
+    Route::get('/basis-data/penduduk', [BasisDataController::class, 'penduduk']);
+    Route::get('/basis-data/kelompok', [BasisDataController::class, 'kelompok']);
+    Route::get('/basis-data/lembaga_lain', [BasisDataController::class, 'lembagaLain']);
 
     Route::get('/angsuran/search', [AngsuranController::class, 'search']);
+    Route::get('/angsuran/{pinjaman}', [AngsuranController::class, 'pinjaman']);
 });

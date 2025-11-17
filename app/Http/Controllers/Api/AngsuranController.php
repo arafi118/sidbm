@@ -44,4 +44,9 @@ class AngsuranController extends Controller
             'data' => $pinjamanKelompok
         ], 200);
     }
+
+    public function pinjaman(PinjamanKelompok $pinjaman)
+    {
+        // 
+    }
 }
