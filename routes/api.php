@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AngsuranController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BasisDataController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\LaporanController;
 use App\Http\Controllers\Api\MobileActivationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -40,4 +41,7 @@ Route::group(['middleware' => ['auth:sanctum', 'tenant'], 'prefix' => 'v1'], fun
     Route::get('/angsuran/search', [AngsuranController::class, 'search']);
     Route::get('/angsuran/{pinjaman_id}', [AngsuranController::class, 'pinjaman']);
     Route::post('/angsuran', [AngsuranController::class, 'simpan']);
+
+    Route::get('/laporan', [LaporanController::class, 'index']);
+    Route::post('/laporan/preview', [LaporanController::class, 'preview']);
 });
