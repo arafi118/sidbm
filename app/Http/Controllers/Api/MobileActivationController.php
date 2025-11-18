@@ -26,7 +26,10 @@ class MobileActivationController extends Controller
         ]);
 
         if ($validate->fails()) {
-            return response()->json($validate->errors(), 422);
+            return response()->json([
+                'status' => false,
+                'message' => $validate->errors()
+            ], 400);
         }
 
         $listToken = Mobile::with('kec')->orderBy('lokasi', 'ASC')->get();

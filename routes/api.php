@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\BasisDataController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\LaporanController;
 use App\Http\Controllers\Api\MobileActivationController;
+use App\Http\Controllers\Api\PengaturanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,4 +45,12 @@ Route::group(['middleware' => ['auth:sanctum', 'tenant'], 'prefix' => 'v1'], fun
 
     Route::get('/laporan', [LaporanController::class, 'index']);
     Route::post('/laporan/preview', [LaporanController::class, 'preview']);
+
+    Route::get('/pengaturan', [PengaturanController::class, 'index']);
+    Route::get('/pengaturan/chart-of-account', [PengaturanController::class, 'chartOfAccount']);
+    Route::put('/pengaturan/update-user', [PengaturanController::class, 'updateUser']);
+    Route::put('/pengaturan/update-foto-user', [PengaturanController::class, 'updateFotoUser']);
+    Route::put('/pengaturan/update-tempat-lahir', [PengaturanController::class, 'updateTempatLahir']);
+    Route::put('/pengaturan/update-alamat', [PengaturanController::class, 'updateAlamat']);
+    Route::put('pengaturan/update-password', [PengaturanController::class, 'updatePassword']);
 });

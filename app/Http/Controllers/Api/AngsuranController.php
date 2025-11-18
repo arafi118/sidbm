@@ -164,7 +164,10 @@ class AngsuranController extends Controller
         ]);
 
         if ($validate->fails()) {
-            return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
+            return response()->json([
+                'status' => false,
+                'message' => $validate->errors()
+            ], 400);
         }
 
         if ($data['angsuran_pokok'] == 0 && $data['angsuran_jasa'] == 0 && $data['angsuran_denda'] == 0) {
