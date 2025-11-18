@@ -365,8 +365,8 @@ class Keuangan
         ])->first();
 
         return [
-            'debit' => floatval($saldo->debit),
-            'kredit' => floatval($saldo->kredit)
+            'debit' => floatval($saldo->debit ?? 0),
+            'kredit' => floatval($saldo->kredit ?? 0)
         ];
     }
 
