@@ -353,7 +353,9 @@ class PelaporanController extends Controller
         }
 
         $data['jenis_laporan'] = 'dokumen_pelaporan';
-        $data['tanda_tangan'] = Pinjaman::keyword($kec->tanda_tangan->tanda_tangan, $data);
+
+        $tanda_tangan = $kec->tanda_tangan->tanda_tangan ?? '';
+        $data['tanda_tangan'] = Pinjaman::keyword($tanda_tangan, $data);
 
         $data['laporan'] = $file_laporan;
         return $this->$file($data);
