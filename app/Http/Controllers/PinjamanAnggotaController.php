@@ -322,7 +322,7 @@ class PinjamanAnggotaController extends Controller
             });
 
             if ($pinkel->jenis_pp != '3') {
-                $anggota = $anggota->where('id_kel', $kel->id);
+                $anggota = $anggota->where('desa', $kel->desa);
             }
 
             $anggota = $anggota->orderBy('id', 'DESC')->get();
