@@ -2412,13 +2412,7 @@ class TransaksiController extends Controller
             $dibayar = ucwords($user->namadepan . ' ' . $user->namabelakang);
         }
 
-        $logo = $kec->logo;
-        if (empty($logo)) {
-            $gambar = '/storage/logo/1.png';
-        } else {
-            $gambar = '/storage/logo/' . $logo;
-        }
-
+        $gambar = $kec->logo;
         return view('transaksi.dokumen.kuitansi')->with(compact('trx', 'kec', 'jenis', 'dari', 'oleh', 'dibayar', 'gambar', 'keuangan'));
     }
 
@@ -2446,13 +2440,7 @@ class TransaksiController extends Controller
             $dibayar = ucwords($user->namadepan . ' ' . $user->namabelakang);
         }
 
-        $logo = $kec->logo;
-        if (empty($logo)) {
-            $gambar = '/storage/logo/1.png';
-        } else {
-            $gambar = '/storage/logo/' . $logo;
-        }
-
+        $gambar = $kec->logo;
         return view('transaksi.dokumen.kuitansi_thermal')->with(compact('trx', 'kec', 'jenis', 'dari', 'oleh', 'dibayar', 'gambar', 'keuangan', 'kertas'));
     }
 
@@ -2482,9 +2470,7 @@ class TransaksiController extends Controller
             ['lokasi', Session::get('lokasi')],
         ])->first();
 
-        $logo = $kec->logo;
-        $gambar = '/storage/logo/' . $logo;
-
+        $gambar = $kec->logo;
         return view('transaksi.dokumen.bkk')->with(compact('trx', 'kec', 'dir', 'sekr', 'dir_utama', 'gambar', 'keuangan'));
     }
 
@@ -2514,9 +2500,7 @@ class TransaksiController extends Controller
             ['lokasi', Session::get('lokasi')],
         ])->first();
 
-        $logo = $kec->logo;
-        $gambar = '/storage/logo/' . $logo;
-
+        $gambar = $kec->logo;
         return view('transaksi.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'dir_utama', 'gambar', 'keuangan'));
     }
 
@@ -2546,9 +2530,7 @@ class TransaksiController extends Controller
             ['lokasi', Session::get('lokasi')],
         ])->first();
 
-        $logo = $kec->logo;
-        $gambar = '/storage/logo/' . $logo;
-
+        $gambar = $kec->logo;
         return view('transaksi.dokumen.bm')->with(compact('trx', 'kec', 'dir', 'sekr', 'dir_utama', 'gambar', 'keuangan'));
     }
 
@@ -2578,9 +2560,7 @@ class TransaksiController extends Controller
             ['lokasi', Session::get('lokasi')],
         ])->first();
 
-        $logo = $kec->logo;
-        $gambar = '/storage/logo/' . $logo;
-
+        $gambar = $kec->logo;
         return view('transaksi.jurnal_angsuran.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'dir_utama', 'gambar', 'keuangan'));
     }
 
