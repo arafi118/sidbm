@@ -56,7 +56,7 @@ class AuthController extends Controller
                                         'id' => $user->id,
                                         'nama' => $user->namadepan . ' ' . $user->namabelakang,
                                         'jabatan' => $user->j->nama_jabatan,
-                                        'profil' => 'https://' . $kecamatan->web_kec . '/storage/profil/' . $user->foto
+                                        'profil' => $user->foto
                                     ],
                                     'token' => $token,
                                     'token_type' => 'Bearer'

@@ -64,7 +64,7 @@ class MobileActivationController extends Controller
         $getToken = Mobile::where('unique_id', $code)->with('kec')->first();
         if ($getToken) {
             if (Hash::check($token, $getToken->aktivasi)) {
-                $logoURI =  'https://' . $getToken->kec->web_kec . '/storage/logo/' . $getToken->kec->logo;
+                $logoURI =  $getToken->kec->logo;
 
                 return response()->json([
                     'success' => true,
