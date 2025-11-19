@@ -3,11 +3,10 @@
         <div class="card mt-4 border" data-animation="true">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                 <a class="d-block blur-shadow-image">
-                    <img src="{{ asset('storage/logo/' . Session::get('logo')) }}" alt="img-blur-shadow"
-                        class="img-fluid shadow border-radius-lg" id="previewLogo">
+                    <img src="{{ Session::get('logo') }}" alt="img-blur-shadow" class="img-fluid shadow border-radius-lg"
+                        id="previewLogo">
                 </a>
-                <div class="colored-shadow"
-                    style="background-image: url(&quot;{{ asset('storage/logo/' . Session::get('logo')) }}&quot;);">
+                <div class="colored-shadow" style="background-image: url(&quot;{{ Session::get('logo') }}&quot;);">
                 </div>
             </div>
             <div class="card-body text-center pb-0">
