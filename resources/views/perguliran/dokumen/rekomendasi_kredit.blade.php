@@ -1,7 +1,5 @@
 @php
     use App\Utils\Tanggal;
-    $logo = $kab->id . '.jpg';
-
     $ketua = $pinkel->kelompok->ketua;
     $sekretaris = $pinkel->kelompok->sekretaris;
     $bendahara = $pinkel->kelompok->bendahara;
@@ -89,8 +87,7 @@
             style="font-size: 11px; position: relative; top: -20px;">
             <tr class="b">
                 <td align="center">
-                    <img src="../storage/app/public/logo_kab/{{ $logo }}" width="70"
-                        alt="{{ $logo }}" style="margin-bottom: 8px;">
+                    <img src="{{ $logo }}" width="70" alt="{{ $logo }}" style="margin-bottom: 8px;">
                 </td>
                 <td align="center">
                     <div style="font-size: 18px;">

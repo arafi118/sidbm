@@ -11,8 +11,8 @@
                 <div class="row justify-content-center align-items-center">
                     <div class="col-sm-auto col-4">
                         <div class="avatar avatar-xl position-relative pointer" id="fileUpload">
-                            <img src="{{ asset('/storage/profil/' . $user->foto) }}" alt="bruce"
-                                class="w-100 rounded-circle shadow-sm" id="preview">
+                            <img src="{{ $user->foto }}" alt="bruce" class="w-100 rounded-circle shadow-sm"
+                                id="preview">
                         </div>
 
                         <form action="/profil/{{ $user->id }}" method="post" enctype="multipart/form-data"

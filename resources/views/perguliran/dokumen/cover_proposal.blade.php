@@ -71,7 +71,7 @@
 
     <main>
         <div class="center">
-            <img src="../storage/app/public/logo/{{ $logo }}" width="290" alt="{{ $logo }}">
+            <img src="{{ $logo }}" width="290" alt="{{ $logo }}">
             <div style="margin-top: 10px; font-size: 24px;">
                 {{ $pinkel->jenis_pp != '3' ? 'Kelompok' : '' }} {{ $pinkel->kelompok->nama_kelompok }}
             </div>

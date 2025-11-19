@@ -25,6 +25,7 @@ use App\Utils\Tanggal;
 use DB;
 use Dompdf\Dompdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use PDF;
 use Session;
 
@@ -263,7 +264,7 @@ class PelaporanController extends Controller
             ['sejak', '<=', date('Y-m-t', strtotime($request['tahun'] . '-' . $request['bulan'] . '-01'))]
         ])->first();
 
-        $data['logo'] = $kec->logo;
+        $data['logo'] = $this->supabaseToBase64($kec->logo);
         $data['nama_lembaga'] = $kec->nama_lembaga_sort;
         $data['nama_kecamatan'] = $kec->sebutan_kec . ' ' . $kec->nama_kec;
 
@@ -3741,7 +3742,7 @@ class PelaporanController extends Controller
         $kec = Kecamatan::where('id', str_replace('_', '', config('tenant.suffix')))->with('kabupaten', 'desa', 'ttd')->first();
         $kab = $kec->kabupaten;
 
-        $data['logo'] = $kec->logo;
+        $data['logo'] = $this->supabaseToBase64($kec->logo);
         $data['nama_lembaga'] = $kec->nama_lembaga_sort;
         $data['nama_kecamatan'] = $kec->sebutan_kec . ' ' . $kec->nama_kec;
 
@@ -3808,5 +3809,26 @@ class PelaporanController extends Controller
         $view = view('pelaporan.view.invoice', $data)->render();
         $pdf = PDF::loadHTML($view)->setPaper('A4', 'potrait');
         return $pdf->stream();
+    }
+
+    private function supabaseToBase64($url)
+    {
+        $response = Http::get($url);
+
+        if (!$response->successful()) {
+            return null;
+        }
+
+        $binary = $response->body();
+
+        $extension = pathinfo($url, PATHINFO_EXTENSION);
+        $mime = [
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'webp' => 'image/webp',
+        ][$extension] ?? 'application/octet-stream';
+
+        return "data:$mime;base64," . base64_encode($binary);
     }
 }
