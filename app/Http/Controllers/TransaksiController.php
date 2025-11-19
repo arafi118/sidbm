@@ -1632,9 +1632,13 @@ class TransaksiController extends Controller
 
             $label2 = 'Keperluan';
         } elseif ($id == 3) {
-            $rek1 = Rekening::whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi)->get();
+            $rek1 = Rekening::where(function ($query) use ($tgl_kondisi) {
+                $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
+            })->get();
 
-            $rek2 = Rekening::whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi)->get();
+            $rek2 = Rekening::where('kode_akun', 'NOT LIKE', '1.1.03%')->where(function ($query) use ($tgl_kondisi) {
+                $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
+            })->get();
 
             $label2 = 'Disimpan Ke';
         }
