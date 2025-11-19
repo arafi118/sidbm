@@ -61,11 +61,7 @@ class AuthController extends Controller
             }
         }
 
-        $logo = '/assets/img/icon/favicon.png';
-        if ($kec->logo) {
-            $logo = '/storage/logo/' . $kec->logo;
-        }
-
+        $logo = $kec->logo;
         return view('auth.login')->with(compact('kec', 'logo', 'setting'));
     }
 
