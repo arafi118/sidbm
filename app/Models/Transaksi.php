@@ -2,24 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\TenantAware;
 use Illuminate\Database\Eloquent\Model;
 use \Awobaz\Compoships\Compoships;
 use Session;
 
 class Transaksi extends Model
 {
-    use HasFactory, Compoships;
-    protected $table;
+    use TenantAware, Compoships;
+    protected $baseTable = 'transaksi';
     public $timestamps = false;
 
     protected $primaryKey = 'idt';
     protected $guarded = ['idt'];
-
-    public function __construct()
-    {
-        $this->table = 'transaksi_' . Session::get('lokasi');
-    }
 
     public function angs()
     {

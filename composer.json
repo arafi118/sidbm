@@ -13,6 +13,7 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "league/flysystem-aws-s3-v3": "^3.30",
         "maatwebsite/excel": "^3.1",
         "milon/barcode": "^10.0",
         "nesbot/carbon": "^2.68",

@@ -39,6 +39,9 @@ class KabupatenController extends Controller
 
             if ($wl->kec) {
                 Session::put('lokasi', $wl->kec->id);
+
+                config(['tenant.suffix' => "_{$wl->kec->id}"]);
+
                 $laba_rugi = Rekening::where('lev1', '>=', '4')->with([
                     'kom_saldo' => function ($query) use ($tahun, $bulan) {
                         $query->where('tahun', $tahun)->where(function ($query) use ($bulan) {
@@ -135,6 +138,8 @@ class KabupatenController extends Controller
         }
 
         Session::put('lokasi', $kec->id);
+        config(['tenant.suffix' => "_{$kec->id}"]);
+
         $title = 'Pelaporan ' . $kec->sebutan_kec . ' ' . $kec->nama_kec;
         return view('kabupaten.kecamatan')->with(compact('title', 'kec', 'laporan', 'nama_kec'));
     }

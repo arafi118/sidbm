@@ -2,23 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\TenantAware;
 use Illuminate\Database\Eloquent\Model;
 use \Awobaz\Compoships\Compoships;
 use Session;
 
 class Rekening extends Model
 {
-    use HasFactory, Compoships;
-    protected $table;
+    use TenantAware, Compoships;
+
+    protected $baseTable = 'rekening';
     public $timestamps = false;
 
     protected $guarded = ['id'];
-
-    public function __construct()
-    {
-        $this->table = 'rekening_' . Session::get('lokasi');
-    }
 
     public function trx_debit()
     {

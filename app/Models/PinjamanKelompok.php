@@ -2,22 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\TenantAware;
 use Illuminate\Database\Eloquent\Model;
 use Session;
 
 class PinjamanKelompok extends Model
 {
-    use HasFactory;
-    protected $table;
+    use TenantAware;
+    protected $baseTable = 'pinjaman_kelompok';
     public $timestamps = false;
 
     protected $guarded = ['id'];
-
-    public function __construct()
-    {
-        $this->table = 'pinjaman_kelompok_' . Session::get('lokasi');
-    }
 
     public function jpp()
     {

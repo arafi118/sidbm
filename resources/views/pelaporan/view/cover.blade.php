@@ -47,7 +47,7 @@
     </header>
 
     <main>
-        <img src="../storage/app/public/logo/{{ $logo }}" width="290" alt="{{ $logo }}">
+        <img src="{{ $logo }}" width="290" alt="{{ $logo }}">
     </main>
 
     <footer>

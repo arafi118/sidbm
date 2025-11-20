@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\TenantAware;
 use Illuminate\Database\Eloquent\Model;
 use \Awobaz\Compoships\Compoships;
 use Awobaz\Compoships\Database\Eloquent\Relations\BelongsTo;
@@ -10,14 +10,10 @@ use Session;
 
 class Saldo extends Model
 {
-    use HasFactory, Compoships;
-    protected $table;
-    public $timestamps = false;
+    use TenantAware, Compoships;
 
-    public function __construct()
-    {
-        $this->table = 'saldo_' . Session::get('lokasi');
-    }
+    protected $baseTable = 'saldo';
+    public $timestamps = false;
 
     protected $fillable = ['id', 'kode_akun', 'lokasi', 'tahun', 'bulan', 'debit', 'kredit'];
 

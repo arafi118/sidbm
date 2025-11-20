@@ -25,6 +25,7 @@ use App\Utils\Tanggal;
 use DB;
 use Dompdf\Dompdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use PDF;
 use Session;
 
@@ -33,12 +34,12 @@ class PelaporanController extends Controller
     public function index()
     {
         $id = '32';
-        if (Session::get('lokasi') == '277') {
+        if (str_replace('_', '', config('tenant.suffix')) == '277') {
             $id = '0';
         }
 
         $status = '0';
-        if (Session::get('lokasi') == '1') {
+        if (str_replace('_', '', config('tenant.suffix')) == '1') {
             $status = '2';
         }
 
@@ -47,7 +48,7 @@ class PelaporanController extends Controller
             ['status', '!=', $status],
             ['id', '!=', $id]
         ])->orderBy('urut', 'ASC')->get();
-        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
+        $kec = Kecamatan::where('id', str_replace('_', '', config('tenant.suffix')))->first();
 
         $title = 'Pelaporan';
         return view('pelaporan.index')->with(compact('title', 'kec', 'laporan'));
@@ -106,7 +107,7 @@ class PelaporanController extends Controller
             $bulan = request()->get('bulan');
 
             $calk = Calk::where([
-                ['lokasi', Session::get('lokasi')],
+                ['lokasi', str_replace('_', '', config('tenant.suffix'))],
                 ['tanggal', 'LIKE', $tahun . '-' . $bulan . '%']
             ])->first();
 
@@ -132,7 +133,7 @@ class PelaporanController extends Controller
         }
 
         if ($file == 5 || $file == 6) {
-            $status = (Session::get('lokasi') != '1') ? ['status', '1'] : ['status', '>=', '0'];
+            $status = (str_replace('_', '', config('tenant.suffix')) != '1') ? ['status', '1'] : ['status', '>=', '0'];
             $jenis_laporan = JenisLaporanPinjaman::where([
                 ['file', '!=', '0'],
                 $status
@@ -213,7 +214,7 @@ class PelaporanController extends Controller
     public function preview(Request $request, $lokasi = null)
     {
         if ($lokasi != null) {
-            Session::put('lokasi', $lokasi);
+            config(['tenant.suffix' => '_' . $lokasi]);
         }
 
         $data = $request->only([
@@ -230,19 +231,19 @@ class PelaporanController extends Controller
 
         if ($data['laporan'] == 'calk' && strlen($data['sub_laporan']) > 22) {
             Calk::where([
-                ['lokasi', Session::get('lokasi')],
+                ['lokasi', str_replace('_', '', config('tenant.suffix'))],
                 ['tanggal', 'LIKE', $data['tahun'] . '-' . $data['bulan'] . '%']
             ])->delete();
 
             Calk::create([
-                'lokasi' => Session::get('lokasi'),
+                'lokasi' => str_replace('_', '', config('tenant.suffix')),
                 'tanggal' => $data['tahun'] . '-' . $data['bulan'] . '-01',
                 'catatan' => $data['sub_laporan'],
             ]);
         }
 
         // $data['hari'] = ($data['hari']) ?: 31;
-        $kec = Kecamatan::where('id', Session::get('lokasi'))->with([
+        $kec = Kecamatan::where('id', str_replace('_', '', config('tenant.suffix')))->with([
             'kabupaten',
             'desa',
             'desa.saldo' => function ($query) use ($data) {
@@ -257,13 +258,13 @@ class PelaporanController extends Controller
         $level = '1';
 
         $dir = User::where([
-            ['lokasi', Session::get('lokasi')],
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))],
             ['jabatan', $jabatan],
             ['level', $level],
             ['sejak', '<=', date('Y-m-t', strtotime($request['tahun'] . '-' . $request['bulan'] . '-01'))]
         ])->first();
 
-        $data['logo'] = $kec->logo;
+        $data['logo'] = $this->supabaseToBase64($kec->logo);
         $data['nama_lembaga'] = $kec->nama_lembaga_sort;
         $data['nama_kecamatan'] = $kec->sebutan_kec . ' ' . $kec->nama_kec;
 
@@ -353,7 +354,9 @@ class PelaporanController extends Controller
         }
 
         $data['jenis_laporan'] = 'dokumen_pelaporan';
-        $data['tanda_tangan'] = Pinjaman::keyword($kec->tanda_tangan->tanda_tangan, $data);
+
+        $tanda_tangan = $kec->tanda_tangan->tanda_tangan ?? '';
+        $data['tanda_tangan'] = Pinjaman::keyword($tanda_tangan, $data);
 
         $data['laporan'] = $file_laporan;
         return $this->$file($data);
@@ -409,7 +412,7 @@ class PelaporanController extends Controller
         $data['dir_utama'] = User::where([
             ['level', '2'],
             ['jabatan', '65'],
-            ['lokasi', Session::get('lokasi')],
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))],
         ])->first();
 
         $view = view('pelaporan.view.surat_pengantar', $data)->render();
@@ -660,32 +663,32 @@ class PelaporanController extends Controller
         ])->orderBy('kode_akun', 'ASC')->get();
 
         $data['keterangan'] = Calk::where([
-            ['lokasi', Session::get('lokasi')],
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))],
             ['tanggal', 'LIKE', $data['tahun'] . '-' . $data['bulan'] . '%']
         ])->first();
 
         $data['sekr'] = User::where([
             ['level', '1'],
             ['jabatan', '2'],
-            ['lokasi', Session::get('lokasi')],
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))],
         ])->first();
 
         $data['bend'] = User::where([
             ['level', '1'],
             ['jabatan', '3'],
-            ['lokasi', Session::get('lokasi')],
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))],
         ])->first();
 
         $data['pengawas'] = User::where([
             ['level', '3'],
             ['jabatan', '1'],
-            ['lokasi', Session::get('lokasi')],
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))],
         ])->first();
 
         $data['dir_utama'] = User::where([
             ['level', '2'],
             ['jabatan', '65'],
-            ['lokasi', Session::get('lokasi')],
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))],
         ])->first();
 
         $data['saldo_calk'] = Saldo::where([
@@ -3242,19 +3245,19 @@ class PelaporanController extends Controller
         $data['dir'] = User::where([
             ['level', $data['kec']->ttd_mengetahui_lap],
             ['jabatan', '1'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))]
         ])->first();
 
         $data['pengawas'] = User::where([
             ['level', '3'],
             ['jabatan', '1'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))]
         ])->first();
 
         $data['bendahara'] = User::where([
             ['level', '1'],
             ['jabatan', '3'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))]
         ])->first();
 
         $view = view('pelaporan.view.penilaian_kesehatan', $data)->render();
@@ -3346,8 +3349,8 @@ class PelaporanController extends Controller
             $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
         }
 
-        $tb_pinkel = 'pinjaman_kelompok_' . Session::get('lokasi');
-        $tb_kel = 'kelompok_' . Session::get('lokasi');
+        $tb_pinkel = 'pinjaman_kelompok_' . str_replace('_', '', config('tenant.suffix'));
+        $tb_kel = 'kelompok_' . str_replace('_', '', config('tenant.suffix'));
         $data['pinjaman_kelompok'] = PinjamanKelompok::select([
             $tb_pinkel . '.*',
             $tb_kel . '.nama_kelompok',
@@ -3557,25 +3560,25 @@ class PelaporanController extends Controller
         $data['sekr'] = User::where([
             ['level', '1'],
             ['jabatan', '2'],
-            ['lokasi', Session::get('lokasi')],
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))],
         ])->first();
 
         $data['bend'] = User::where([
             ['level', '1'],
             ['jabatan', '3'],
-            ['lokasi', Session::get('lokasi')],
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))],
         ])->first();
 
         $data['pengawas'] = User::where([
             ['level', '3'],
             ['jabatan', '1'],
-            ['lokasi', Session::get('lokasi')],
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))],
         ])->first();
 
         $data['dir_utama'] = User::where([
             ['level', '2'],
             ['jabatan', '65'],
-            ['lokasi', Session::get('lokasi')],
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))],
         ])->first();
 
         $data['saldo_calk'] = Saldo::where([
@@ -3679,7 +3682,7 @@ class PelaporanController extends Controller
 
     public function beritaAcara()
     {
-        $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with([
+        $data['kec'] = Kecamatan::where('id', str_replace('_', '', config('tenant.suffix')))->with([
             'kabupaten'
         ])->first();
 
@@ -3718,13 +3721,13 @@ class PelaporanController extends Controller
         $data['direktur'] = User::where([
             ['jabatan', '1'],
             ['level', '1'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))]
         ])->first();
 
         $data['bendahara'] = User::where([
             ['jabatan', '3'],
             ['level', '1'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))]
         ])->first();
 
         $view = view('pelaporan.view.ba_pergantian_laporan', $data)->render();
@@ -3736,10 +3739,10 @@ class PelaporanController extends Controller
     public function mou()
     {
         $keuangan = new Keuangan;
-        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten', 'desa', 'ttd')->first();
+        $kec = Kecamatan::where('id', str_replace('_', '', config('tenant.suffix')))->with('kabupaten', 'desa', 'ttd')->first();
         $kab = $kec->kabupaten;
 
-        $data['logo'] = $kec->logo;
+        $data['logo'] = $this->supabaseToBase64($kec->logo);
         $data['nama_lembaga'] = $kec->nama_lembaga_sort;
         $data['nama_kecamatan'] = $kec->sebutan_kec . ' ' . $kec->nama_kec;
 
@@ -3760,13 +3763,13 @@ class PelaporanController extends Controller
 
         $jabatan = '1';
         $level = '1';
-        if (Session::get('lokasi') == '207') {
+        if (str_replace('_', '', config('tenant.suffix')) == '207') {
             $jabatan = '1';
             $level = '2';
         }
 
         $data['dir'] = User::where([
-            ['lokasi', Session::get('lokasi')],
+            ['lokasi', str_replace('_', '', config('tenant.suffix'))],
             ['jabatan', $jabatan],
             ['level', $level]
         ])->first();
@@ -3782,7 +3785,7 @@ class PelaporanController extends Controller
 
     public function ts()
     {
-        $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->first();
+        $data['kec'] = Kecamatan::where('id', str_replace('_', '', config('tenant.suffix')))->first();
 
         $view = view('pelaporan.view.ts', $data)->render();
         $pdf = PDF::loadHTML($view)->setPaper([0, 0, 595.28, 352], 'potrait');
@@ -3806,5 +3809,26 @@ class PelaporanController extends Controller
         $view = view('pelaporan.view.invoice', $data)->render();
         $pdf = PDF::loadHTML($view)->setPaper('A4', 'potrait');
         return $pdf->stream();
+    }
+
+    private function supabaseToBase64($url)
+    {
+        $response = Http::get($url);
+
+        if (!$response->successful()) {
+            return null;
+        }
+
+        $binary = $response->body();
+
+        $extension = pathinfo($url, PATHINFO_EXTENSION);
+        $mime = [
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'webp' => 'image/webp',
+        ][$extension] ?? 'application/octet-stream';
+
+        return "data:$mime;base64," . base64_encode($binary);
     }
 }

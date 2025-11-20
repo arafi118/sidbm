@@ -85,6 +85,8 @@ class KabupatenController extends Controller
 
         if ($lokasi && $tahun && $bulan) {
             Session::put('lokasi', $lokasi);
+            config(['tenant.suffix' => '_' . $lokasi]);
+
             $kec = Kecamatan::where('id', $lokasi)->first();
 
             if ($laporan == 'arus_kas') {
@@ -170,6 +172,8 @@ class KabupatenController extends Controller
         ]);
 
         Session::put('lokasi', Session::get('lokasi_terpilih'));
+        config(['tenant.suffix' => '_' . Session::get('lokasi_terpilih')]);
+
         $data['kab'] = Kabupaten::where([
             ['kd_kab', $kd_kab]
         ])->with([

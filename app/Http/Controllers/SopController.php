@@ -364,19 +364,21 @@ class SopController extends Controller
             $extension = $request->file('logo_kec')->getClientOriginalExtension();
 
             $filename = time() . '_' . $kec->id . '_' . date('Ymd') . '.' . $extension;
-            $path = $request->file('logo_kec')->storeAs('logo', $filename, 'public');
+            $path = $request->file('logo_kec')->storeAs('logo', $filename, 'supabase');
 
-            if (Storage::exists('logo/' . $kec->logo)) {
-                if ($kec->logo != '1.png') {
-                    Storage::delete('logo/' . $kec->logo);
+            $relativePath = str_replace(env('SUPABASE_PUBLIC_URL') . '/', '', $kec->logo);
+            if (Storage::disk('supabase')->exists($relativePath)) {
+                if ($relativePath != 'logo/1.png') {
+                    Storage::disk('supabase')->delete($relativePath);
                 }
             }
 
+            $publicUrl = env('SUPABASE_PUBLIC_URL') . '/' . $path;
             $kecamatan = Kecamatan::where('id', $kec->id)->update([
-                'logo' => str_replace('logo/', '', $path)
+                'logo' => $publicUrl
             ]);
 
-            Session::put('logo', str_replace('logo/', '', $path));
+            Session::put('logo', $publicUrl);
             return response()->json([
                 'success' => true,
                 'msg' => 'Logo berhasil diperbarui.'

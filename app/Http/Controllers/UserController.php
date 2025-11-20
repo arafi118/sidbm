@@ -182,20 +182,22 @@ class UserController extends Controller
                 $extension = $request->file('logo')->getClientOriginalExtension();
 
                 $filename = time() . '_' . $profil->lokasi . '_' . date('Ymd') . '.' . $extension;
-                $path = $request->file('logo')->storeAs('profil', $filename, 'public');
+                $path = $request->file('logo')->storeAs('profil', $filename, 'supabase');
 
-                if (Storage::exists('profil/' . $profil->foto)) {
-                    Storage::delete('profil/' . $profil->foto);
+                $relativePath = str_replace(env('SUPABASE_PUBLIC_URL') . '/', '', $profil->foto);
+                if (Storage::disk('supabase')->exists($relativePath)) {
+                    Storage::disk('supabase')->delete($relativePath);
                 }
 
+                $publicUrl = env('SUPABASE_PUBLIC_URL') . '/' . $path;
                 $user = User::where('id', $profil->id)->update([
-                    'foto' => str_replace('profil/', '', $path)
+                    'foto' => $publicUrl
                 ]);
 
-                Session::put('foto', str_replace('profil/', '', $path));
+                Session::put('foto', $publicUrl);
                 return response()->json([
                     'success' => true,
-                    'path' => $path
+                    'path' => $publicUrl
                 ]);
             }
 

@@ -86,6 +86,10 @@ class DashboardController extends Controller
         $data['jasa_spp'] = 0;
         $data['jasa_uep'] = 0;
         $data['jasa_pl'] = 0;
+
+        $data['pencairan_spp'] = 0;
+        $data['pencairan_uep'] = 0;
+        $data['pencairan_pl'] = 0;
         if ($trx) {
             $data['pokok_spp'] = $trx->pokok_spp;
             $data['pokok_uep'] = $trx->pokok_uep;

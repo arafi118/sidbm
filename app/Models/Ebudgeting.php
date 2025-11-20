@@ -2,21 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\TenantAware;
 use Illuminate\Database\Eloquent\Model;
 use \Awobaz\Compoships\Compoships;
 use Session;
 
 class Ebudgeting extends Model
 {
-    use HasFactory, Compoships;
-    protected $table;
+    use TenantAware, Compoships;
+    protected $baseTable = 'ebudgeting';
     public $timestamps = false;
 
     protected $guarded = ['id'];
-
-    public function __construct()
-    {
-        $this->table = 'ebudgeting_' . Session::get('lokasi');
-    }
 }

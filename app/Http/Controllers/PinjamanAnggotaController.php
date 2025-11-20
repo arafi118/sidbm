@@ -316,10 +316,16 @@ class PinjamanAnggotaController extends Controller
             $pinkel = PinjamanKelompok::where('id', request()->get('loan_id'))->first();
             $kel = Kelompok::where('id', $pinkel->id_kel)->first();
 
-            $anggota = Anggota::where('desa', $kel->desa)->where(function (Builder $query) {
+            $anggota = Anggota::where(function (Builder $query) {
                 $query->where('namadepan', 'like', '%' . request()->get('query') . '%')
                     ->orwhere('nik', 'like', '%' . request()->get('query') . '%');
-            })->orderBy('id', 'DESC')->get();
+            });
+
+            if ($pinkel->jenis_pp != '3') {
+                $anggota = $anggota->where('desa', $kel->desa);
+            }
+
+            $anggota = $anggota->orderBy('id', 'DESC')->get();
 
             return response()->json($anggota);
         }
