@@ -113,17 +113,18 @@
             @endphp
         @endforeach
 
+        <tr style="font-weight: bold;">
+            @if ($version == 'v1')
+                <td class="t l b" height="15" align="center" colspan="6">JUMLAH</td>
+            @else
+                <td class="t l b" height="15" align="center" colspan="5">JUMLAH</td>
+            @endif
+            <td class="t l b" align="right">{{ number_format($proposal) }}</td>
+            <td class="t l b r">&nbsp;</td>
+        </tr>
+
         <tr>
             <td colspan="{{ $version == 'v1' ? 8 : 7 }}" style="padding: 0px !important;">
-                <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
-                    style="table-layout: fixed;">
-                    <tr style="font-weight: bold;">
-                        <td class="t l b" height="15" align="center" width="75%">JUMLAH</td>
-                        <td class="t l b" align="right" width="15%">{{ number_format($proposal) }}</td>
-                        <td class="t l b r" width="10%">&nbsp;</td>
-                    </tr>
-                </table>
-
                 @if ($tanda_tangan)
                     <div>
                         {!! $tanda_tangan !!}
