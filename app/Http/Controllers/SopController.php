@@ -239,7 +239,7 @@ class SopController extends Controller
             Personalia::create([
                 'lokasi' => $kec->id,
                 'sebutan' => ucwords(strtolower($sebutan)),
-                'nama' => ucwords(strtolower($data['nama'][$key])),
+                'nama' => $data['nama'][$key],
             ]);
         }
 
