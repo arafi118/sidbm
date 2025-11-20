@@ -236,6 +236,10 @@ class SopController extends Controller
 
         Personalia::where('lokasi', $kec->id)->delete();
         foreach ($data['sebutan'] as $key => $sebutan) {
+            if (trim($sebutan) == '' || trim($data['nama'][$key]) == '') {
+                continue;
+            }
+
             Personalia::create([
                 'lokasi' => $kec->id,
                 'sebutan' => ucwords(strtolower($sebutan)),
