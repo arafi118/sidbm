@@ -27,7 +27,8 @@ class AuthController extends Controller
         if ($validate->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => $validate->errors()
+                'message' => 'Ada form yang belum diisi',
+                'form_error' => $validate->errors()
             ], 400);
         }
 
@@ -41,7 +42,6 @@ class AuthController extends Controller
                 $lokasi = $kecamatan->id;
 
                 $user = User::where([['uname', $data['username']], ['lokasi', $lokasi]])->first();
-                // dd($user, [['uname', $data['username']], ['lokasi', $lokasi]]);
                 if ($user) {
                     if ($data['password'] === $user->pass) {
                         if (Auth::loginUsingId($user->id)) {
@@ -50,7 +50,7 @@ class AuthController extends Controller
                             unset($user['pass']);
                             return response()->json([
                                 'success' => true,
-                                'message' => 'Login successful',
+                                'message' => 'Selamat Datang ' . $user->namadepan . ' ' . $user->namabelakang,
                                 'data' => [
                                     'user' => [
                                         'id' => $user->id,
@@ -61,7 +61,7 @@ class AuthController extends Controller
                                     'token' => $token,
                                     'token_type' => 'Bearer'
                                 ]
-                            ]);
+                            ], 200);
                         }
                     }
                 }
@@ -69,13 +69,13 @@ class AuthController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'Username atau password salah.'
-                ], 401);
+                ], 422);
             }
         }
 
         return response()->json([
             'success' => false,
             'message' => 'Token tidak valid.'
-        ], 400);
+        ], 422);
     }
 }

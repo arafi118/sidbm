@@ -6,6 +6,7 @@ use App\Models\AdminInvoice;
 use App\Models\AkunLevel1;
 use App\Models\JenisProdukPinjaman;
 use App\Models\Kecamatan;
+use App\Models\Personalia;
 use App\Models\PinjamanKelompok;
 use App\Models\Rekening;
 use App\Models\RencanaAngsuran;
@@ -31,7 +32,7 @@ class SopController extends Controller
     {
         $api = env('APP_API', 'http://localhost:8080');
 
-        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('ttd')->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('ttd', 'personalia')->first();
         $token = $kec->token;
 
         $title = "Personalisasi SOP";
@@ -214,6 +215,37 @@ class SopController extends Controller
             'success' => true,
             'msg' => 'Identitas Lembaga Berhasil Diperbarui.',
             'nama_lembaga' => ucwords(strtolower($data['nama_bumdesma']))
+        ]);
+    }
+
+    public function personalia(Request $request, Kecamatan $kec)
+    {
+        $data = $request->only([
+            'sebutan',
+            'nama'
+        ]);
+
+        $validate = Validator::make($data, [
+            'sebutan' => 'required|array',
+            'nama' => 'required|array'
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json($validate->errors(), Response::HTTP_MOVED_PERMANENTLY);
+        }
+
+        Personalia::where('lokasi', $kec->id)->delete();
+        foreach ($data['sebutan'] as $key => $sebutan) {
+            Personalia::create([
+                'lokasi' => $kec->id,
+                'sebutan' => ucwords(strtolower($sebutan)),
+                'nama' => ucwords(strtolower($data['nama'][$key])),
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Personalia Berhasil Diperbarui.'
         ]);
     }
 

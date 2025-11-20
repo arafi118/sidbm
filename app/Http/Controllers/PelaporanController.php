@@ -250,7 +250,8 @@ class PelaporanController extends Controller
                 $data['bulan'] = $data['bulan'] ?: 12;
                 $query->where('tahun', $data['tahun'])->where('bulan', '<=', $data['bulan'])->orderBy('bulan', 'ASC');
             },
-            'tanda_tangan'
+            'tanda_tangan',
+            'personalia'
         ])->first();
         $kab = $kec->kabupaten;
 

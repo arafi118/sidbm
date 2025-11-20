@@ -18,6 +18,14 @@
                     @endif
                     @if (in_array('personalisasi_sop.sebutan_pengelola', Session::get('tombol')))
                         <li class="nav-item pt-2">
+                            <a class="nav-link text-dark d-flex" data-scroll="" href="#personalia">
+                                <i class="material-icons text-lg me-2">assignment_ind</i>
+                                <span class="text-sm">Sebutan Personalia</span>
+                            </a>
+                        </li>
+                    @endif
+                    @if (in_array('personalisasi_sop.sebutan_pengelola', Session::get('tombol')))
+                        <li class="nav-item pt-2">
                             <a class="nav-link text-dark d-flex" data-scroll="" href="#pengelola">
                                 <i class="material-icons text-lg me-2">assignment_ind</i>
                                 <span class="text-sm">Sebutan Pengelola</span>
@@ -92,6 +100,16 @@
                     </div>
                     <div class="card-body pt-0">
                         @include('sop.partials._lembaga')
+                    </div>
+                </div>
+            @endif
+            @if (in_array('personalisasi_sop.sebutan_pengelola', Session::get('tombol')))
+                <div class="card mt-4" id="personalia">
+                    <div class="card-header">
+                        <h5 class="mb-0">Sebutan Personalia Bumdesma</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        @include('sop.partials._personalia')
                     </div>
                 </div>
             @endif
@@ -322,6 +340,13 @@
                     })
                 }
             })
+        })
+
+        $(document).on('click', '#TambahPersonalia', function(e) {
+            e.preventDefault()
+
+            var newPersonalia = $('#newPersonalia').html()
+            $('#FormPersonalia .row').append(newPersonalia)
         })
 
         var scanQr = 0;

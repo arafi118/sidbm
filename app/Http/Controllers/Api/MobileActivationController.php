@@ -28,7 +28,8 @@ class MobileActivationController extends Controller
         if ($validate->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => $validate->errors()
+                'message' => "Ada form yang belum diisi",
+                'form_error' => $validate->errors()
             ], 400);
         }
 
@@ -40,7 +41,7 @@ class MobileActivationController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'msg' => 'Aktivasi SI DBM Mobile ' . $kecamatan . ' berhasil.',
+                    'message' => 'Aktivasi SI DBM Mobile ' . $kecamatan . ' berhasil.',
                     'data' => [
                         'token' => $request->token,
                         'code' => $token->unique_id,
@@ -52,7 +53,7 @@ class MobileActivationController extends Controller
 
         return response()->json([
             'success' => false,
-            'msg' => 'Aktivasi SI DBM Mobile gagal. Token tidak valid.',
+            'message' => 'Aktivasi SI DBM Mobile gagal. Token tidak valid.',
         ], 422);
     }
 
@@ -80,7 +81,7 @@ class MobileActivationController extends Controller
 
         return response()->json([
             'success' => false,
-            'msg' => 'Token tidak valid.',
+            'message' => 'Token tidak valid.',
         ], 422);
     }
 

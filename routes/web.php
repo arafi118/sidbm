@@ -142,6 +142,7 @@ Route::group(['middleware' => 'tenant'], function () {
     Route::put('/pengaturan/custom_calk/{kec}', [SopController::class, 'setCustomCalk'])->middleware('auth');
 
     Route::put('/pengaturan/lembaga/{kec}', [SopController::class, 'lembaga'])->middleware('auth');
+    Route::put('/pengaturan/personalia/{kec}', [SopController::class, 'personalia'])->middleware('auth');
     Route::put('/pengaturan/pengelola/{kec}', [SopController::class, 'pengelola'])->middleware('auth');
     Route::put('/pengaturan/pinjaman/{kec}', [SopController::class, 'pinjaman'])->middleware('auth');
     Route::put('/pengaturan/asuransi/{kec}', [SopController::class, 'asuransi'])->middleware('auth');

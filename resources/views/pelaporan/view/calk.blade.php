@@ -132,58 +132,15 @@
                 </p>
             @endif
             <table style="margin-top: -10px; margin-left: 15px;">
-                <tr>
-                    <td style="padding: 0px; 4px;" width="100">{{ $kec->nama_bp_long }}</td>
-                    <td style="padding: 0px; 4px;">:</td>
-                    <td style="padding: 0px; 4px;">
-                        {{ $pengawas ? $pengawas->namadepan . ' ' . $pengawas->namabelakang : '......................................' }}
-                    </td>
-                </tr>
-                @if ($dir_utama)
+                @foreach ($kec->personalia as $personalia)
                     <tr>
-                        <td style="padding: 0px; 4px;">{{ $dir_utama->j->nama_jabatan }}</td>
+                        <td style="padding: 0px; 4px;">{{ $personalia->sebutan }}</td>
                         <td style="padding: 0px; 4px;">:</td>
                         <td style="padding: 0px; 4px;">
-                            {{ $dir_utama->namadepan . ' ' . $dir_utama->namabelakang }}
+                            {{ $personalia->nama }}
                         </td>
                     </tr>
-                @else
-                    <tr>
-                        <td style="padding: 0px; 4px;">{{ $kec->sebutan_level_1 }}</td>
-                        <td style="padding: 0px; 4px;">:</td>
-                        <td style="padding: 0px; 4px;">
-                            {{ $dir ? $dir->namadepan . ' ' . $dir->namabelakang : '......................................' }}
-                        </td>
-                    </tr>
-                @endif
-                <tr>
-                    <td style="padding: 0px; 4px;">{{ $kec->sebutan_level_2 }}</td>
-                    <td style="padding: 0px; 4px;">:</td>
-                    <td style="padding: 0px; 4px;">
-                        {{ $sekr ? $sekr->namadepan . ' ' . $sekr->namabelakang : '......................................' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding: 0px; 4px;">{{ $kec->sebutan_level_3 }}</td>
-                    <td style="padding: 0px; 4px;">:</td>
-                    <td style="padding: 0px; 4px;">
-                        {{ $bend ? $bend->namadepan . ' ' . $bend->namabelakang : '......................................' }}
-                    </td>
-                </tr>
-                @if ($dir_utama)
-                    <tr>
-                        <td style="padding: 0px; 4px;">{{ $kec->sebutan_level_1 }}</td>
-                        <td style="padding: 0px; 4px;">:</td>
-                        <td style="padding: 0px; 4px;">
-                            {{ $dir ? $dir->namadepan . ' ' . $dir->namabelakang : '......................................' }}
-                        </td>
-                    </tr>
-                @endif
-                {{-- <tr>
-                    <td style="padding: 0px; 4px;">Unit Usaha</td>
-                    <td style="padding: 0px; 4px;">:</td>
-                    <td style="padding: 0px; 4px;">.................................</td>
-                </tr> --}}
+                @endforeach
             </table>
         </li>
         <li style="margin-top: 12px;">

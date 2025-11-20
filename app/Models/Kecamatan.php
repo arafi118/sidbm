@@ -36,4 +36,9 @@ class Kecamatan extends Model
     {
         return $this->hasMany(Saldo::class, 'kode_akun', 'kd_kec');
     }
+
+    public function personalia()
+    {
+        return $this->hasMany(Personalia::class, 'lokasi', 'id');
+    }
 }
