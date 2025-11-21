@@ -152,15 +152,29 @@
 
         <ol style="text-align: justify; font-size: 14px;">
             <li>
-                Pihak Pertama setuju memberikan kredit/piutang kepada Pihak Kedua sebesar Rp.
+                @php
+                    $text = 'setuju memberikan kredit/piutang kepada Pihak Kedua sebesar';
+                    if ($pinkel->sumber == '2') {
+                        $text = 'setuju melakukan penjadwalan ulang atas sisa pinjaman Pihak Kedua sebesar';
+                    }
+                @endphp
+
+                Pihak Pertama {{ $text }} Rp.
                 {{ number_format($pinkel->alokasi) }} ({{ $keuangan->terbilang($pinkel->alokasi) }} Rupiah) yaitu jumlah
                 yang telah diputuskan dalam rapat penetapan pendanaan, berdasarkan permohonan dari Pihak Kedua dan para
                 pemberi kuasa yang dilakukan secara kelompok sesuai Surat Permohonan Kredit tanggal
                 {{ Tanggal::tglLatin($pinkel->tgl_proposal) }}.
             </li>
             <li>
-                Pihak Kedua dan Pemberi kuasa, menyatakan telah menerima uang dengan jumlah sebagaimana yang
-                tertulis pada ayat 1 diatas., dan telah diterima oleh para anggota pemanfaat sesuai kelayakan kredit
+                @php
+                    $text = 'menyatakan telah menerima uang dengan jumlah sebagaimana yang tertulis pada ayat 1 diatas';
+                    if ($pinkel->sumber == '2') {
+                        $text = 'menyatakan telah setuju penjadwalam ulang sbgmana yg tertulis pada ayat 1 diatas';
+                    }
+                @endphp
+
+                Pihak Kedua dan Pemberi kuasa, {{ $text }}., dan telah diterima oleh para anggota pemanfaat sesuai
+                kelayakan kredit
                 masing-masing anggota pemanfaat yang dibuktikan secara sah dengan daftar penerima dana terlampir,
                 dan sekaligus berlaku sebagai Surat Pengakuan Hutang, baik bagi setiap anggota penerima manfaat
                 maupun secara kelompok dalam pernyataan ketaatan tanggung-renteng.
