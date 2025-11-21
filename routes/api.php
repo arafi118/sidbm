@@ -26,11 +26,7 @@ Route::get('/ambil-data-lokasi', [MobileActivationController::class, 'ambilDataL
 
 Route::post('/auth', [AuthController::class, 'auth']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::group(['middleware' => ['auth:sanctum', 'tenant'], 'prefix' => 'v1'], function () {
+Route::group(['middleware' => ['tenant', 'auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
     Route::get('/basis-data', [BasisDataController::class, 'index']);

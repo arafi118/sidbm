@@ -146,7 +146,7 @@
                 <table border="0" width="100%" style="border-bottom: 1px solid #000;">
                     <tr>
                         <td width="40">
-                            <img src="../storage/app/public/logo/{{ $gambar }}" width="50" height="50">
+                            <img src="{{ $gambar }}" width="50" height="50">
                         </td>
                         <td>
                             <div class="fw-bold">{{ strtoupper($kec->nama_lembaga_sort) }}</div>

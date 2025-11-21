@@ -81,10 +81,10 @@ class DashboardController extends Controller
             $surplus[$key] = $saldo_pendapatan - $saldo_beban;
 
             if ($key == 0) {
-                $nama_bulan[$key] = 'Awal Tahun';
+                $nama_bulan[$key] = 'Awl';
             } else {
                 $tanggal = date('Y-m-d', strtotime(date('Y') . '-' . $key . '-01'));
-                $nama_bulan[$key] = Tanggal::namaBulan($tanggal);
+                $nama_bulan[$key] = substr(Tanggal::namaBulan($tanggal), 0, 3);
             }
         }
 
