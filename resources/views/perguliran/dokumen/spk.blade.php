@@ -251,18 +251,18 @@
             <ol style="text-align: justify;">
                 @if (Session::get('lokasi') == '270' && $pinkel->sumber == '2')
                     <li>
-                        Sisa pokok pinjaman per tanggal {{ Tanggal::tglLatin($pinkel->tgl_aktif) }} adalah sebesar Rp.
+                        Sisa pokok pinjaman per tanggal {{ Tanggal::tglLatin($pinkel->tgl_cair) }} adalah sebesar Rp.
                         {{ number_format($pinkel->alokasi) }}.
                     </li>
                     <li>
                         Jangka waktu kredit diubah menjadi {{ $pinkel->jangka }} bulan/tahun, terhitung mulai tanggal
-                        {{ Tanggal::tglLatin(date('Y-m-d', strtotime('+1 month', strtotime($pinkel->tgl_aktif)))) }}.
+                        {{ Tanggal::tglLatin(date('Y-m-d', strtotime('+1 month', strtotime($pinkel->tgl_cair)))) }}.
                     </li>
                     <li>
                         Besaran angsuran baru yang wajib dibayar PIHAK KEDUA adalah sebesar Rp.
                         {{ Keuangan::pembulatan($pinkel->alokasi / $tempo_pokok, (string) $kec->pembulatan) }} per bulan,
                         dibayarkan paling lambat tanggal
-                        {{ date('d', strtotime('+1 month', strtotime($pinkel->tgl_aktif))) }} setiap bulan.
+                        {{ date('d', strtotime('+1 month', strtotime($pinkel->tgl_cair))) }} setiap bulan.
                     </li>
                     <li>
                         Jadwal pembayaran angsuran terlampir dan menjadi bagian tidak terpisahkan dari perjanjian ini.
