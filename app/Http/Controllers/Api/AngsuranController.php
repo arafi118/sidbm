@@ -15,6 +15,34 @@ use Illuminate\Support\Facades\Validator;
 
 class AngsuranController extends Controller
 {
+    public function index()
+    {
+        $tanggal = date('Y-m-d');
+
+        $kelompok = 'kelompok_' . request()->user()->lokasi;
+        $pinjamanKelompok = 'pinjaman_kelompok_' . request()->user()->lokasi;
+
+        $daftarPinjaman = PinjamanKelompok::from("$pinjamanKelompok as pk")
+            ->select(
+                'pk.id',
+                'k.nama_kelompok',
+                'k.ketua',
+                'k.kd_kelompok',
+                'pk.tgl_cair',
+            )
+            ->join("$kelompok as k", 'k.id', '=', 'pk.id_kel')
+            ->where('pk.status', 'A')
+            ->whereRaw('DAY(pk.tgl_cair) = ?', [date('d', strtotime($tanggal))])
+            ->limit(10)
+            ->orderBy('pk.tgl_cair', 'asc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $daftarPinjaman
+        ], 200);
+    }
+
     public function search()
     {
         $keyword = request()->get('keyword');
@@ -26,14 +54,11 @@ class AngsuranController extends Controller
 
         $pinjamanKelompok = PinjamanKelompok::from("$pk as pk")
             ->select(
-                "pk.id",
-                "pk.id_kel",
-                "pk.struktur_kelompok",
-                "pk.tgl_cair",
-                "pk.alokasi",
-                "k.nama_kelompok",
-                "k.kd_kelompok",
-                "k.ketua"
+                'pk.id',
+                'k.nama_kelompok',
+                'k.ketua',
+                'k.kd_kelompok',
+                'pk.tgl_cair',
             )
             ->join("$k as k", "k.id", "=", "pk.id_kel")
             ->where("pk.status", "A")

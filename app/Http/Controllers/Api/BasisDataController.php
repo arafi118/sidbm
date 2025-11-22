@@ -31,10 +31,22 @@ class BasisDataController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'jumlah_desa' => $jumlahDesa,
-                'jumlah_anggota' => $jumlahAnggota,
-                'jumlah_kelompok' => $jumlahKelompok,
-                'jumlah_lembaga_lain' => $jumlahLembagaLain
+                [
+                    'nama' => 'Desa',
+                    'jumlah' => $jumlahDesa
+                ],
+                [
+                    'nama' => 'Penduduk',
+                    'jumlah' => $jumlahAnggota
+                ],
+                [
+                    'nama' => 'Kelompok',
+                    'jumlah' => $jumlahKelompok
+                ],
+                [
+                    'nama' => 'Lembaga Lain',
+                    'jumlah' => $jumlahLembagaLain
+                ],
             ]
         ]);
     }
