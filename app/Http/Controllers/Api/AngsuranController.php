@@ -193,7 +193,7 @@ class AngsuranController extends Controller
                 'status' => false,
                 'message' => 'Ada form yang belum diisi',
                 'form_error' => $validate->errors()
-            ], 400);
+            ], 422);
         }
 
         if ($data['angsuran_pokok'] == 0 && $data['angsuran_jasa'] == 0 && $data['angsuran_denda'] == 0) {
