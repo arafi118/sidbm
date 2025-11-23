@@ -21,7 +21,7 @@ class AngsuranController extends Controller
 
         $kelompok = 'kelompok_' . request()->user()->lokasi;
         $pinjamanKelompok = 'pinjaman_kelompok_' . request()->user()->lokasi;
-        $realAngsuran = 'real_angsuran_' . request()->user()->lokasi; // Sesuaikan jika ada suffix lokasi
+        $realAngsuran = 'real_angsuran_' . request()->user()->lokasi;
 
         $daftarPinjaman = PinjamanKelompok::from("$pinjamanKelompok as pk")
             ->select(
