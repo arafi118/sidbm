@@ -34,11 +34,11 @@ class AngsuranController extends Controller
             )
             ->join("$kelompok as k", 'k.id', '=', 'pk.id_kel')
             ->leftJoin("$realAngsuran as ra", function ($join) use ($realAngsuran) {
-                $join->on('ra.id_pinjaman', '=', 'pk.id')
+                $join->on('ra.loan_id', '=', 'pk.id')
                     ->whereRaw("ra.tgl_transaksi = (
                 SELECT MAX(tgl_transaksi) 
                 FROM $realAngsuran as ra2 
-                WHERE ra2.id_pinjaman = pk.id
+                WHERE ra2.loan_id = pk.id
             )");
             })
             ->where('pk.status', 'A')
