@@ -33,7 +33,7 @@ class AngsuranController extends Controller
                 DB::raw("MAX(ra.tgl_transaksi) as tgl_transaksi_terakhir")
             )
             ->join("$kelompok as k", 'k.id', '=', 'pk.id_kel')
-            ->leftJoin("$realAngsuran as ra", 'ra.id_pinjaman', '=', 'pk.id')
+            ->leftJoin("$realAngsuran as ra", 'ra.loan_id', '=', 'pk.id')
             ->where('pk.status', 'A')
             ->whereRaw('DAY(pk.tgl_cair) = ?', [date('d', strtotime($tanggal))])
             ->groupBy('pk.id', 'k.nama_kelompok', 'k.ketua', 'k.kd_kelompok', 'pk.tgl_cair')
