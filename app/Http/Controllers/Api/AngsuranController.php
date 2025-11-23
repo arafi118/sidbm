@@ -21,7 +21,7 @@ class AngsuranController extends Controller
 
         $kelompok = 'kelompok_' . request()->user()->lokasi;
         $pinjamanKelompok = 'pinjaman_kelompok_' . request()->user()->lokasi;
-        $realAngsuran = 'real_angsuran_' . request()->user()->lokasi;
+        $realAngsuran = 'real_angsuran_' . request()->user()->lokasi; // Sesuaikan jika ada suffix lokasi
 
         $daftarPinjaman = PinjamanKelompok::from("$pinjamanKelompok as pk")
             ->select(
@@ -30,23 +30,14 @@ class AngsuranController extends Controller
                 'k.ketua',
                 'k.kd_kelompok',
                 'pk.tgl_cair',
-                'ra.tgl_transaksi as tgl_transaksi_terakhir'
+                DB::raw("MAX(ra.tgl_transaksi) as tgl_transaksi_terakhir")
             )
             ->join("$kelompok as k", 'k.id', '=', 'pk.id_kel')
-            ->leftJoin("$realAngsuran as ra", function ($join) use ($realAngsuran) {
-                $join->on('ra.loan_id', '=', 'pk.id')
-                    ->whereRaw("ra.tgl_transaksi = (
-                SELECT MAX(tgl_transaksi) 
-                FROM $realAngsuran as ra2 
-                WHERE ra2.loan_id = pk.id
-            )");
-            })
+            ->leftJoin("$realAngsuran as ra", 'ra.id_pinjaman', '=', 'pk.id')
             ->where('pk.status', 'A')
             ->whereRaw('DAY(pk.tgl_cair) = ?', [date('d', strtotime($tanggal))])
-            ->where(function ($query) use ($tanggal) {
-                $query->whereNull('ra.tgl_transaksi')
-                    ->orWhereDate('ra.tgl_transaksi', '!=', $tanggal);
-            })
+            ->groupBy('pk.id', 'k.nama_kelompok', 'k.ketua', 'k.kd_kelompok', 'pk.tgl_cair')
+            ->havingRaw('MAX(ra.tgl_transaksi) IS NULL OR DATE(MAX(ra.tgl_transaksi)) != ?', [$tanggal])
             ->limit(10)
             ->orderBy('pk.tgl_cair', 'asc')
             ->get();
