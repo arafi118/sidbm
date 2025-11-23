@@ -191,7 +191,8 @@ class AngsuranController extends Controller
         if ($validate->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => $validate->errors()
+                'message' => 'Ada form yang belum diisi',
+                'form_error' => $validate->errors()
             ], 400);
         }
 
