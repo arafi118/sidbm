@@ -38,11 +38,13 @@ class LaporanController extends Controller
             $bulan[$i] = [
                 'aset' => 0,
                 'liabilitas' => 0,
-                'ekuitas' => 0
+                'ekuitas' => 0,
+                'pendapatan' => 0,
+                'biaya' => 0
             ];
         }
 
-        $rekening = Rekening::where('lev1', '<', '4')->with([
+        $rekening = Rekening::with([
             'kom_saldo' => function ($query) use ($tgl) {
                 $tahun = date('Y', strtotime($tgl));
                 $query->where([
@@ -75,6 +77,7 @@ class LaporanController extends Controller
                     $saldo = $saldo_awal + ($saldo_kredit - $saldo_debit);
                 }
 
+
                 if ($rek->lev1 == '1') {
                     $bulan[intval($kom_saldo->bulan)]['aset'] += $saldo;
                 }
@@ -84,7 +87,19 @@ class LaporanController extends Controller
                 }
 
                 if ($rek->lev1 == '3') {
+                    if ($rek->kode_akun == '3.2.02.01') {
+                        $saldo = 0;
+                    }
+
                     $bulan[intval($kom_saldo->bulan)]['ekuitas'] += $saldo;
+                }
+
+                if ($rek->lev1 == '4') {
+                    $bulan[intval($kom_saldo->bulan)]['pendapatan'] += $saldo;
+                }
+
+                if ($rek->lev1 == '5') {
+                    $bulan[intval($kom_saldo->bulan)]['biaya'] += $saldo;
                 }
             }
         }
@@ -97,16 +112,22 @@ class LaporanController extends Controller
             $saldo_aset = 0;
             $saldo_liabilitas = 0;
             $saldo_ekuitas = 0;
+            $saldo_pendapatan = 0;
+            $saldo_biaya = 0;
 
             if ($key > 0) {
                 $saldo_aset = $value['aset'];
                 $saldo_liabilitas = $value['liabilitas'];
                 $saldo_ekuitas = $value['ekuitas'];
+                $saldo_pendapatan = $value['pendapatan'];
+                $saldo_biaya = $value['biaya'];
             }
+
+            $surplus = $saldo_pendapatan - $saldo_biaya;
 
             $aset[$key] = $saldo_aset;
             $liabilitas[$key] = $saldo_liabilitas;
-            $ekuitas[$key] = $saldo_ekuitas;
+            $ekuitas[$key] = $saldo_ekuitas + $surplus;
 
             if ($key == 0) {
                 $nama_bulan[$key] = 'Awal Tahun';
