@@ -188,7 +188,7 @@
             @if (Session::get('lokasi') == '270' && $pinkel->sumber == '2')
                 <li>
                     PIHAK KEDUA mengajukan permohonan penjadwalan ulang pembayaran kredit karena mengalami penurunan
-                    kemampuan membayar yang disebabkan oleh: ___________________________.
+                    kemampuan membayar yang disebabkan oleh: penurunan usaha dan/atau penurunan pendapatan.
                 </li>
                 <li>
                     PIHAK PERTAMA telah melakukan evaluasi dan menyetujui permohonan tersebut.
@@ -385,7 +385,7 @@
                                                 serta untuk menjadikan periksa bagi yang berwenang
                                             </li>
                                             <li>
-                                                Perjanjian ini dibuat dalam ..............................., bermaterai
+                                                Perjanjian ini dibuat dalam bermaterai
                                                 cukup, dan mempunyai kekuatan hukum yang sama.
                                             </li>
                                         </ol>
