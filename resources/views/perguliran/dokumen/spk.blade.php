@@ -260,8 +260,8 @@
                     </li>
                     <li>
                         Besaran angsuran baru yang wajib dibayar PIHAK KEDUA adalah sebesar Rp.
-                        {{ Keuangan::pembulatan($pinkel->alokasi / $tempo_pokok, (string) $kec->pembulatan) }} per bulan,
-                        dibayarkan paling lambat tanggal
+                        {{ number_format(Keuangan::pembulatan($pinkel->alokasi / $tempo_pokok, (string) $kec->pembulatan)) }}
+                        per bulan, dibayarkan paling lambat tanggal
                         {{ date('d', strtotime('+1 month', strtotime($pinkel->tgl_cair))) }} setiap bulan.
                     </li>
                     <li>
