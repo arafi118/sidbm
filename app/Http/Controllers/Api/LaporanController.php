@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PelaporanController;
 use App\Models\JenisLaporan;
+use App\Models\Kecamatan;
 use App\Models\Rekening;
 use App\Utils\Tanggal;
 use Illuminate\Http\Request;
@@ -15,12 +16,20 @@ class LaporanController extends Controller
     {
         $charts = $this->_saldo_neraca(date('Y-m-d'));
         $daftarLaporan = JenisLaporan::where('mobile', 1)->orderBy('urut', 'ASC')->get();
+        $kec = Kecamatan::where('id', request()->user()->lokasi)->first();
+        $tahunPakai = Tanggal::tahun($kec->tgl_pakai);
+
+        $daftarTahun = [];
+        for ($i = date('Y'); $i >= $tahunPakai; $i--) {
+            $daftarTahun[] = intval($i);
+        }
 
         return response()->json([
             'success' => true,
             'data' => [
                 'charts' => $charts,
-                'daftarLaporan' => $daftarLaporan
+                'daftarLaporan' => $daftarLaporan,
+                'daftarTahun' => $daftarTahun
             ]
         ], 200);
     }
