@@ -53,19 +53,26 @@ class LaporanController extends Controller
         ])->get();
 
         foreach ($rekening as $rek) {
+            $awal_debit = 0;
+            $saldo_debit = 0;
+            $awal_kredit = 0;
+            $saldo_kredit = 0;
+
             foreach ($rek->kom_saldo as $kom_saldo) {
-                $debit = 0;
-                if ($kom_saldo->debit) {
-                    $debit = $kom_saldo->debit;
-                }
-                $kredit = 0;
-                if ($kom_saldo->kredit) {
-                    $kredit = $kom_saldo->kredit;
+                if ($kom_saldo->bulan == 0) {
+                    $awal_debit = floatval($kom_saldo->debit);
+                    $awal_kredit = floatval($kom_saldo->kredit);
+                } else {
+                    $saldo_debit = floatval($kom_saldo->debit);
+                    $saldo_kredit = floatval($kom_saldo->kredit);
                 }
 
-                $saldo = $kredit - $debit;
-                if ($rek->lev1 == '1') {
-                    $saldo = $debit - $kredit;
+                if ($rek->lev1 == '1' || $rek->lev1 == '5') {
+                    $saldo_awal = $awal_debit - $awal_kredit;
+                    $saldo = $saldo_awal + ($saldo_debit - $saldo_kredit);
+                } else {
+                    $saldo_awal = $awal_kredit - $awal_debit;
+                    $saldo = $saldo_awal + ($saldo_kredit - $saldo_debit);
                 }
 
                 if ($rek->lev1 == '1') {
@@ -82,7 +89,6 @@ class LaporanController extends Controller
             }
         }
 
-
         $nama_bulan = [];
         $aset = [];
         $liabilitas = [];
@@ -93,9 +99,9 @@ class LaporanController extends Controller
             $saldo_ekuitas = 0;
 
             if ($key > 0) {
-                $saldo_aset = $value['aset'] - $bulan[$key - 1]['aset'];
-                $saldo_liabilitas = $value['liabilitas'] - $bulan[$key - 1]['liabilitas'];
-                $saldo_ekuitas = $value['ekuitas'] - $bulan[$key - 1]['ekuitas'];
+                $saldo_aset = $value['aset'];
+                $saldo_liabilitas = $value['liabilitas'];
+                $saldo_ekuitas = $value['ekuitas'];
             }
 
             $aset[$key] = $saldo_aset;
