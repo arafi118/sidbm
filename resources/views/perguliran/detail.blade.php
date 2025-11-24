@@ -1067,6 +1067,8 @@
 
                             $('#ImportPemanfaatModal').modal('hide')
                         })
+                    } else {
+                        Swal.fire('Error', result.msg, 'error')
                     }
                 }
             })

@@ -221,7 +221,17 @@ class PinjamanAnggotaController extends Controller
             $pros_jasa = 1.8 * $pinkel->jangka;
         }
 
+        $alokasiKelompok = $pinkel->alokasi;
+        if ($pinkel->status == 'P') {
+            $alokasiKelompok = $pinkel->proposal;
+        }
+
+        if ($pinkel->status == 'V') {
+            $alokasiKelompok = $pinkel->verifikasi;
+        }
+
         $insert = [];
+        $totalAlokasi = 0;
         foreach ($data['alokasi_pengajuan_anggota'] as $key => $value) {
             $nia = $key;
             $alokasi = str_replace(',', '', str_replace('.00', '', $value));
@@ -258,6 +268,15 @@ class PinjamanAnggotaController extends Controller
                 'lu' => date('Y-m-d H:i:s'),
                 'user_id' => auth()->user()->id,
             ];
+
+            $totalAlokasi += $alokasi;
+        }
+
+        if ($totalAlokasi > $alokasiKelompok) {
+            return response()->json([
+                'success' => false,
+                'msg' => 'Alokasi pengajuan anggota melebihi alokasi kelompok'
+            ]);
         }
 
         PinjamanAnggota::where('id_pinkel', $pinkel->id)->whereIn('nia', $listNia)->delete();
