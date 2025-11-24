@@ -366,11 +366,13 @@
                         <tr>
                             <td style="padding: 0px !important;">
                                 @if (Session::get('lokasi') == '270' && $pinkel->sumber == '2')
-                                    <div>
-                                        <b style="font-size: 14px;">PASAL 5</b>
-                                    </div>
-                                    <div>
-                                        <b style="font-size: 14px;">PENUTUP</b>
+                                    <div style="text-align: center;">
+                                        <div>
+                                            <b style="font-size: 14px;">PASAL 5</b>
+                                        </div>
+                                        <div>
+                                            <b style="font-size: 14px;">PENUTUP</b>
+                                        </div>
                                     </div>
 
                                     <div style="text-align: justify; font-size: 14px;">
@@ -383,8 +385,8 @@
                                                 serta untuk menjadikan periksa bagi yang berwenang
                                             </li>
                                             <li>
-                                                Perjanjian ini dibuat dalam _ rangkap, bermaterai cukup, dan mempunyai
-                                                kekuatan hukum yang sama.
+                                                Perjanjian ini dibuat dalam ..............................., bermaterai
+                                                cukup, dan mempunyai kekuatan hukum yang sama.
                                             </li>
                                         </ol>
                                     </div>
