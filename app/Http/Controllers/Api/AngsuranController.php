@@ -21,6 +21,7 @@ class AngsuranController extends Controller
 
         $kelompok = 'kelompok_' . request()->user()->lokasi;
         $pinjamanKelompok = 'pinjaman_kelompok_' . request()->user()->lokasi;
+        $realAngsuran = 'real_angsuran_' . request()->user()->lokasi;
 
         $daftarPinjaman = PinjamanKelompok::from("$pinjamanKelompok as pk")
             ->select(
@@ -29,10 +30,14 @@ class AngsuranController extends Controller
                 'k.ketua',
                 'k.kd_kelompok',
                 'pk.tgl_cair',
+                DB::raw("MAX(ra.tgl_transaksi) as tgl_transaksi_terakhir")
             )
             ->join("$kelompok as k", 'k.id', '=', 'pk.id_kel')
+            ->leftJoin("$realAngsuran as ra", 'ra.loan_id', '=', 'pk.id')
             ->where('pk.status', 'A')
             ->whereRaw('DAY(pk.tgl_cair) = ?', [date('d', strtotime($tanggal))])
+            ->groupBy('pk.id', 'k.nama_kelompok', 'k.ketua', 'k.kd_kelompok', 'pk.tgl_cair')
+            ->havingRaw('MAX(ra.tgl_transaksi) IS NULL OR DATE(MAX(ra.tgl_transaksi)) != ?', [$tanggal])
             ->limit(10)
             ->orderBy('pk.tgl_cair', 'asc')
             ->get();
@@ -191,8 +196,9 @@ class AngsuranController extends Controller
         if ($validate->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => $validate->errors()
-            ], 400);
+                'message' => 'Ada form yang belum diisi',
+                'form_error' => $validate->errors()
+            ], 422);
         }
 
         if ($data['angsuran_pokok'] == 0 && $data['angsuran_jasa'] == 0 && $data['angsuran_denda'] == 0) {
