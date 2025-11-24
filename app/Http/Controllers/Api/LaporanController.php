@@ -137,6 +137,11 @@ class LaporanController extends Controller
             }
         }
 
+        unset($aset[0]);
+        unset($liabilitas[0]);
+        unset($ekuitas[0]);
+        unset($nama_bulan[0]);
+
         $saldo = [
             'nama_bulan' => $nama_bulan,
             'aset' => $aset,
