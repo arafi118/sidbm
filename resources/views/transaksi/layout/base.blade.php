@@ -117,7 +117,7 @@
             <table width="100%" style="border-bottom: 1px solid grey;">
                 <tr>
                     <td width="30">
-                        <img src="/storage/logo/{{ $logo }}" width="35" alt="{{ $logo }}">
+                        <img src="{{ $logo }}" width="35" alt="{{ $logo }}">
                     </td>
                     <td>
                         <div style="font-size: 12px;">{{ strtoupper($nama_lembaga) }}</div>
