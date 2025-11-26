@@ -50,4 +50,6 @@ Route::group(['middleware' => ['tenant', 'auth:sanctum'], 'prefix' => 'v1'], fun
     Route::put('/pengaturan/update-tempat-lahir', [PengaturanController::class, 'updateTempatLahir']);
     Route::put('/pengaturan/update-alamat', [PengaturanController::class, 'updateAlamat']);
     Route::put('pengaturan/update-password', [PengaturanController::class, 'updatePassword']);
+
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
 });

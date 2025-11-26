@@ -78,4 +78,13 @@ class AuthController extends Controller
             'message' => 'Token tidak valid.'
         ], 422);
     }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil logout.'
+        ], 200);
+    }
 }
