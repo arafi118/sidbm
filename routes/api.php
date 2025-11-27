@@ -28,6 +28,11 @@ Route::post('/auth', [AuthController::class, 'auth']);
 
 Route::group(['middleware' => ['tenant', 'auth:sanctum'], 'prefix' => 'v1'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/dashboard/proposal', [DashboardController::class, 'proposal']);
+    Route::get('/dashboard/verifikasi', [DashboardController::class, 'verifikasi']);
+    Route::get('/dashboard/waiting', [DashboardController::class, 'waiting']);
+    Route::get('/dashboard/aktif', [DashboardController::class, 'aktif']);
+    Route::get('/dashboard/lunas', [DashboardController::class, 'lunas']);
 
     Route::get('/basis-data', [BasisDataController::class, 'index']);
     Route::get('/basis-data/desa', [BasisDataController::class, 'desa']);
