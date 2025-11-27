@@ -22,6 +22,16 @@
     $data[] = 'Form Verifikasi';
     $data[] = 'Daftar Hadir Verifikasi';
     $data[] = 'Form Verifikasi Anggota';
+
+    $ketua = $pinkel->kelompok->ketua;
+    $sekretaris = $pinkel->kelompok->sekretaris;
+    $bendahara = $pinkel->kelompok->bendahara;
+    if ($pinkel->struktur_kelompok) {
+        $struktur_kelompok = json_decode($pinkel->struktur_kelompok, true);
+        $ketua = isset($struktur_kelompok['ketua']) ? $struktur_kelompok['ketua'] : '';
+        $sekretaris = isset($struktur_kelompok['sekretaris']) ? $struktur_kelompok['sekretaris'] : '';
+        $bendahara = isset($struktur_kelompok['bendahara']) ? $struktur_kelompok['bendahara'] : '';
+    }
 @endphp
 
 @extends('perguliran.dokumen.layout.base')
@@ -66,7 +76,7 @@
 
             <td>{{ $pinkel->jenis_pp != '3' ? 'Ketua' : 'Pimpinan' }}</td>
             <td width="5">:</td>
-            <td style="font-weight: bold;">{{ $pinkel->kelompok->ketua }}</td>
+            <td style="font-weight: bold;">{{ $ketua }}</td>
         </tr>
 
         <tr>
