@@ -165,7 +165,10 @@ class PengaturanController extends Controller
         if ($update) {
             return response()->json([
                 'status' => true,
-                'message' => 'Foto profil berhasil diubah.'
+                'message' => 'Foto profil berhasil diubah.',
+                'data' => [
+                    'foto' => $publicUrl
+                ]
             ], 200);
         }
 
