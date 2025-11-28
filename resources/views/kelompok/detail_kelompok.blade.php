@@ -29,7 +29,7 @@
         <tr>
             <td>Alamat</td>
             <td>:</td>
-            <td style="font-weight: bold !important;">{{ $pinkel->kelompok->alamt_kelompok }}</td>
+            <td style="font-weight: bold !important;">{{ $pinkel->kelompok->alamat_kelompok }}</td>
 
             <td>&nbsp;</td>
 
