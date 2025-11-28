@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\PinjamanKelompok;
 use App\Models\Rekening;
 use App\Utils\Tanggal;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -17,7 +16,7 @@ class DashboardController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $charts
+            'data' => $charts,
         ], 200);
     }
 
@@ -29,11 +28,11 @@ class DashboardController extends Controller
         $perPage = request()->get('per_page') ?? 10;
         $sortBy = request()->get('sort_by') ?? 'id';
         $sortOrder = request()->get('sort_order') ?? 'asc';
-        $search = request()->get('search') ?? [];
+        $search = request()->get('search') ?? '';
 
-        $tb_pinkel = 'pinjaman_kelompok_' . $user->lokasi;
-        $tb_pinj = 'pinjaman_anggota_' . $user->lokasi;
-        $tb_kel = 'kelompok_' . $user->lokasi;
+        $tb_pinkel = 'pinjaman_kelompok_'.$user->lokasi;
+        $tb_pinj = 'pinjaman_anggota_'.$user->lokasi;
+        $tb_kel = 'kelompok_'.$user->lokasi;
 
         $query = PinjamanKelompok::select(
             'pk.*',
@@ -43,25 +42,24 @@ class DashboardController extends Controller
             'desa.nama_desa',
             'jenis_produk_pinjaman.nama_jpp',
             DB::raw('COUNT(pa.id) as jumlah_anggota')
-        )->from($tb_pinkel . ' as pk')
+        )->from($tb_pinkel.' as pk')
             ->join('jenis_produk_pinjaman', 'pk.jenis_pp', '=', 'jenis_produk_pinjaman.id')
-            ->join($tb_kel . ' as k', 'k.id', '=', 'pk.id_kel')
+            ->join($tb_kel.' as k', 'k.id', '=', 'pk.id_kel')
             ->join('desa', 'k.desa', '=', 'desa.kd_desa')
-            ->leftJoin($tb_pinj . ' as pa', 'pa.id_pinkel', '=', 'pk.id')
+            ->leftJoin($tb_pinj.' as pa', 'pa.id_pinkel', '=', 'pk.id')
             ->where('pk.status', 'P')
             ->where(function ($query) use ($search) {
-                foreach ($search as $key => $value) {
-                    if (!empty($value)) {
-                        $query->orWhere($key, 'like', '%' . $value . '%');
-                    }
-                }
+                $query->where('k.nama_kelompok', 'LIKE', '%'.$search.'%')
+                    ->orWhere('jenis_produk_pinjaman.nama_jpp', 'LIKE', '%'.$search.'%')
+                    ->orWhere('pk.id', 'LIKE', '%'.$search.'%');
             })
             ->groupBy('pk.id', 'k.nama_kelompok', 'k.alamat_kelompok', 'k.desa', 'desa.nama_desa', 'jenis_produk_pinjaman.nama_jpp');
 
         $data = $query->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);
+
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => $data,
         ], 200);
     }
 
@@ -73,11 +71,11 @@ class DashboardController extends Controller
         $perPage = request()->get('per_page') ?? 10;
         $sortBy = request()->get('sort_by') ?? 'id';
         $sortOrder = request()->get('sort_order') ?? 'asc';
-        $search = request()->get('search') ?? [];
+        $search = request()->get('search') ?? '';
 
-        $tb_pinkel = 'pinjaman_kelompok_' . $user->lokasi;
-        $tb_pinj = 'pinjaman_anggota_' . $user->lokasi;
-        $tb_kel = 'kelompok_' . $user->lokasi;
+        $tb_pinkel = 'pinjaman_kelompok_'.$user->lokasi;
+        $tb_pinj = 'pinjaman_anggota_'.$user->lokasi;
+        $tb_kel = 'kelompok_'.$user->lokasi;
 
         $query = PinjamanKelompok::select(
             'pk.*',
@@ -87,25 +85,24 @@ class DashboardController extends Controller
             'desa.nama_desa',
             'jenis_produk_pinjaman.nama_jpp',
             DB::raw('COUNT(pa.id) as jumlah_anggota')
-        )->from($tb_pinkel . ' as pk')
+        )->from($tb_pinkel.' as pk')
             ->join('jenis_produk_pinjaman', 'pk.jenis_pp', '=', 'jenis_produk_pinjaman.id')
-            ->join($tb_kel . ' as k', 'k.id', '=', 'pk.id_kel')
+            ->join($tb_kel.' as k', 'k.id', '=', 'pk.id_kel')
             ->join('desa', 'k.desa', '=', 'desa.kd_desa')
-            ->leftJoin($tb_pinj . ' as pa', 'pa.id_pinkel', '=', 'pk.id')
+            ->leftJoin($tb_pinj.' as pa', 'pa.id_pinkel', '=', 'pk.id')
             ->where('pk.status', 'V')
             ->where(function ($query) use ($search) {
-                foreach ($search as $key => $value) {
-                    if (!empty($value)) {
-                        $query->orWhere($key, 'like', '%' . $value . '%');
-                    }
-                }
+                $query->where('k.nama_kelompok', 'LIKE', '%'.$search.'%')
+                    ->orWhere('jenis_produk_pinjaman.nama_jpp', 'LIKE', '%'.$search.'%')
+                    ->orWhere('pk.id', 'LIKE', '%'.$search.'%');
             })
             ->groupBy('pk.id', 'k.nama_kelompok', 'k.alamat_kelompok', 'k.desa', 'desa.nama_desa', 'jenis_produk_pinjaman.nama_jpp');
 
         $data = $query->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);
+
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => $data,
         ], 200);
     }
 
@@ -117,11 +114,11 @@ class DashboardController extends Controller
         $perPage = request()->get('per_page') ?? 10;
         $sortBy = request()->get('sort_by') ?? 'id';
         $sortOrder = request()->get('sort_order') ?? 'asc';
-        $search = request()->get('search') ?? [];
+        $search = request()->get('search') ?? '';
 
-        $tb_pinkel = 'pinjaman_kelompok_' . $user->lokasi;
-        $tb_pinj = 'pinjaman_anggota_' . $user->lokasi;
-        $tb_kel = 'kelompok_' . $user->lokasi;
+        $tb_pinkel = 'pinjaman_kelompok_'.$user->lokasi;
+        $tb_pinj = 'pinjaman_anggota_'.$user->lokasi;
+        $tb_kel = 'kelompok_'.$user->lokasi;
 
         $query = PinjamanKelompok::select(
             'pk.*',
@@ -131,25 +128,24 @@ class DashboardController extends Controller
             'desa.nama_desa',
             'jenis_produk_pinjaman.nama_jpp',
             DB::raw('COUNT(pa.id) as jumlah_anggota')
-        )->from($tb_pinkel . ' as pk')
+        )->from($tb_pinkel.' as pk')
             ->join('jenis_produk_pinjaman', 'pk.jenis_pp', '=', 'jenis_produk_pinjaman.id')
-            ->join($tb_kel . ' as k', 'k.id', '=', 'pk.id_kel')
+            ->join($tb_kel.' as k', 'k.id', '=', 'pk.id_kel')
             ->join('desa', 'k.desa', '=', 'desa.kd_desa')
-            ->leftJoin($tb_pinj . ' as pa', 'pa.id_pinkel', '=', 'pk.id')
+            ->leftJoin($tb_pinj.' as pa', 'pa.id_pinkel', '=', 'pk.id')
             ->where('pk.status', 'W')
             ->where(function ($query) use ($search) {
-                foreach ($search as $key => $value) {
-                    if (!empty($value)) {
-                        $query->orWhere($key, 'like', '%' . $value . '%');
-                    }
-                }
+                $query->where('k.nama_kelompok', 'LIKE', '%'.$search.'%')
+                    ->orWhere('jenis_produk_pinjaman.nama_jpp', 'LIKE', '%'.$search.'%')
+                    ->orWhere('pk.id', 'LIKE', '%'.$search.'%');
             })
             ->groupBy('pk.id', 'k.nama_kelompok', 'k.alamat_kelompok', 'k.desa', 'desa.nama_desa', 'jenis_produk_pinjaman.nama_jpp');
 
         $data = $query->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);
+
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => $data,
         ], 200);
     }
 
@@ -161,11 +157,11 @@ class DashboardController extends Controller
         $perPage = request()->get('per_page') ?? 10;
         $sortBy = request()->get('sort_by') ?? 'id';
         $sortOrder = request()->get('sort_order') ?? 'asc';
-        $search = request()->get('search') ?? [];
+        $search = request()->get('search') ?? '';
 
-        $tb_pinkel = 'pinjaman_kelompok_' . $user->lokasi;
-        $tb_pinj = 'pinjaman_anggota_' . $user->lokasi;
-        $tb_kel = 'kelompok_' . $user->lokasi;
+        $tb_pinkel = 'pinjaman_kelompok_'.$user->lokasi;
+        $tb_pinj = 'pinjaman_anggota_'.$user->lokasi;
+        $tb_kel = 'kelompok_'.$user->lokasi;
 
         $query = PinjamanKelompok::select(
             'pk.*',
@@ -175,25 +171,24 @@ class DashboardController extends Controller
             'desa.nama_desa',
             'jenis_produk_pinjaman.nama_jpp',
             DB::raw('COUNT(pa.id) as jumlah_anggota')
-        )->from($tb_pinkel . ' as pk')
+        )->from($tb_pinkel.' as pk')
             ->join('jenis_produk_pinjaman', 'pk.jenis_pp', '=', 'jenis_produk_pinjaman.id')
-            ->join($tb_kel . ' as k', 'k.id', '=', 'pk.id_kel')
+            ->join($tb_kel.' as k', 'k.id', '=', 'pk.id_kel')
             ->join('desa', 'k.desa', '=', 'desa.kd_desa')
-            ->leftJoin($tb_pinj . ' as pa', 'pa.id_pinkel', '=', 'pk.id')
+            ->leftJoin($tb_pinj.' as pa', 'pa.id_pinkel', '=', 'pk.id')
             ->where('pk.status', 'A')
             ->where(function ($query) use ($search) {
-                foreach ($search as $key => $value) {
-                    if (!empty($value)) {
-                        $query->orWhere($key, 'like', '%' . $value . '%');
-                    }
-                }
+                $query->where('k.nama_kelompok', 'LIKE', '%'.$search.'%')
+                    ->orWhere('jenis_produk_pinjaman.nama_jpp', 'LIKE', '%'.$search.'%')
+                    ->orWhere('pk.id', 'LIKE', '%'.$search.'%');
             })
             ->groupBy('pk.id', 'k.nama_kelompok', 'k.alamat_kelompok', 'k.desa', 'desa.nama_desa', 'jenis_produk_pinjaman.nama_jpp');
 
         $data = $query->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);
+
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => $data,
         ], 200);
     }
 
@@ -205,12 +200,12 @@ class DashboardController extends Controller
         $perPage = request()->get('per_page') ?? 10;
         $sortBy = request()->get('sort_by') ?? 'id';
         $sortOrder = request()->get('sort_order') ?? 'asc';
-        $search = request()->get('search') ?? [];
+        $search = request()->get('search') ?? '';
 
-        $tb_pinkel = 'pinjaman_kelompok_' . $user->lokasi;
-        $tb_pinj = 'pinjaman_anggota_' . $user->lokasi;
-        $tb_kel = 'kelompok_' . $user->lokasi;
-        $tb_real = 'real_angsuran_' . $user->lokasi;
+        $tb_pinkel = 'pinjaman_kelompok_'.$user->lokasi;
+        $tb_pinj = 'pinjaman_anggota_'.$user->lokasi;
+        $tb_kel = 'kelompok_'.$user->lokasi;
+        $tb_real = 'real_angsuran_'.$user->lokasi;
 
         $query = PinjamanKelompok::select(
             'pk.*',
@@ -220,26 +215,25 @@ class DashboardController extends Controller
             'desa.nama_desa',
             'jenis_produk_pinjaman.nama_jpp',
             DB::raw('COUNT(pa.id) as jumlah_anggota')
-        )->from($tb_pinkel . ' as pk')
+        )->from($tb_pinkel.' as pk')
             ->join('jenis_produk_pinjaman', 'pk.jenis_pp', '=', 'jenis_produk_pinjaman.id')
-            ->join($tb_kel . ' as k', 'k.id', '=', 'pk.id_kel')
+            ->join($tb_kel.' as k', 'k.id', '=', 'pk.id_kel')
             ->join('desa', 'k.desa', '=', 'desa.kd_desa')
-            ->leftJoin($tb_pinj . ' as pa', 'pa.id_pinkel', '=', 'pk.id')
+            ->leftJoin($tb_pinj.' as pa', 'pa.id_pinkel', '=', 'pk.id')
             ->where('pk.status', 'A')
-            ->whereRaw('pk.alokasi<=(SELECT SUM(realisasi_pokok) FROM ' . $tb_real . ' WHERE ' . $tb_real . '.loan_id=' . 'pk.id)')
+            ->whereRaw('pk.alokasi<=(SELECT SUM(realisasi_pokok) FROM '.$tb_real.' WHERE '.$tb_real.'.loan_id='.'pk.id)')
             ->where(function ($query) use ($search) {
-                foreach ($search as $key => $value) {
-                    if (!empty($value)) {
-                        $query->orWhere($key, 'like', '%' . $value . '%');
-                    }
-                }
+                $query->where('k.nama_kelompok', 'LIKE', '%'.$search.'%')
+                    ->orWhere('jenis_produk_pinjaman.nama_jpp', 'LIKE', '%'.$search.'%')
+                    ->orWhere('pk.id', 'LIKE', '%'.$search.'%');
             })
             ->groupBy('pk.id', 'k.nama_kelompok', 'k.alamat_kelompok', 'k.desa', 'desa.nama_desa', 'jenis_produk_pinjaman.nama_jpp');
 
         $data = $query->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);
+
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => $data,
         ], 200);
     }
 
@@ -249,7 +243,7 @@ class DashboardController extends Controller
         for ($i = 0; $i <= date('m'); $i++) {
             $bulan[$i] = [
                 'pendapatan' => 0,
-                'beban' => 0
+                'beban' => 0,
             ];
         }
 
@@ -287,7 +281,6 @@ class DashboardController extends Controller
             }
         }
 
-
         $nama_bulan = [];
         $pendapatan = [];
         $beban = [];
@@ -307,7 +300,7 @@ class DashboardController extends Controller
             if ($key == 0) {
                 $nama_bulan[$key] = 'Awl';
             } else {
-                $tanggal = date('Y-m-d', strtotime(date('Y') . '-' . $key . '-01'));
+                $tanggal = date('Y-m-d', strtotime(date('Y').'-'.$key.'-01'));
                 $nama_bulan[$key] = substr(Tanggal::namaBulan($tanggal), 0, 3);
             }
         }
@@ -316,7 +309,7 @@ class DashboardController extends Controller
             'nama_bulan' => $nama_bulan,
             'pendapatan' => $pendapatan,
             'beban' => $beban,
-            'surplus' => $surplus
+            'surplus' => $surplus,
         ];
 
         return $saldo;
