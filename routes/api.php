@@ -7,7 +7,6 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\LaporanController;
 use App\Http\Controllers\Api\MobileActivationController;
 use App\Http\Controllers\Api\PengaturanController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +32,7 @@ Route::group(['middleware' => ['tenant', 'auth:sanctum'], 'prefix' => 'v1'], fun
     Route::get('/dashboard/waiting', [DashboardController::class, 'waiting']);
     Route::get('/dashboard/aktif', [DashboardController::class, 'aktif']);
     Route::get('/dashboard/lunas', [DashboardController::class, 'lunas']);
+    Route::get('/dashboard/detail-pinjaman/{id}', [DashboardController::class, 'detailPinjaman']);
 
     Route::get('/basis-data', [BasisDataController::class, 'index']);
     Route::get('/basis-data/desa', [BasisDataController::class, 'desa']);

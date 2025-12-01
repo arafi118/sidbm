@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Traits\TenantAware;
 use Illuminate\Database\Eloquent\Model;
-use Session;
 
 class PinjamanKelompok extends Model
 {
     use TenantAware;
+
     protected $baseTable = 'pinjaman_kelompok';
+
     public $timestamps = false;
 
     protected $guarded = ['id'];
