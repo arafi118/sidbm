@@ -245,18 +245,36 @@ class DashboardController extends Controller
         $tb_kel = 'kelompok_'.$user->lokasi;
 
         $query = PinjamanKelompok::select(
-            'pk.*',
+            'pk.id',
+            'pk.id_kel',
+            'pk.jenis_pp',
+            'pk.tgl_proposal',
+            'pk.tgl_verifikasi',
+            'pk.tgl_tunggu',
+            'pk.tgl_cair',
+            'pk.proposal',
+            'pk.verifikasi',
+            'pk.alokasi',
+            'pk.jenis_jasa',
+            'pk.pros_jasa',
+            'pk.jangka',
+            'pk.sistem_angsuran',
+            'pk.sa_jasa',
             'k.nama_kelompok',
             'k.alamat_kelompok',
             'k.desa',
             'desa.nama_desa',
             'jenis_produk_pinjaman.nama_jpp',
+            'jenis_jasa.nama_jj',
         )->from($tb_pinkel.' as pk')
             ->join('jenis_produk_pinjaman', 'pk.jenis_pp', '=', 'jenis_produk_pinjaman.id')
+            ->join('jenis_jasa', 'pk.jenis_jasa', '=', 'jenis_jasa.id')
             ->join($tb_kel.' as k', 'k.id', '=', 'pk.id_kel')
             ->join('desa', 'k.desa', '=', 'desa.kd_desa')
             ->where('pk.id', $id)
             ->with([
+                'sis_pokok',
+                'sis_jasa',
                 'pinjaman_anggota' => function ($query) {
                     $query->select('id', 'id_pinkel', 'nia', 'proposal', 'verifikasi', 'alokasi');
                 },
