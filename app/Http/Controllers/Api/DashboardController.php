@@ -281,6 +281,8 @@ class DashboardController extends Controller
                 'pinjaman_anggota.anggota' => function ($query) {
                     $query->select('id', 'namadepan', 'nik');
                 },
+                'saldo',
+                'target',
             ])->first();
 
         return response()->json([
