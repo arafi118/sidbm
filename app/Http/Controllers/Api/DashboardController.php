@@ -242,7 +242,6 @@ class DashboardController extends Controller
         $user = request()->user();
 
         $tb_pinkel = 'pinjaman_kelompok_'.$user->lokasi;
-        $tb_pinj = 'pinjaman_anggota_'.$user->lokasi;
         $tb_kel = 'kelompok_'.$user->lokasi;
 
         $query = PinjamanKelompok::select(
@@ -252,12 +251,10 @@ class DashboardController extends Controller
             'k.desa',
             'desa.nama_desa',
             'jenis_produk_pinjaman.nama_jpp',
-            DB::raw('COUNT(pa.id) as jumlah_anggota')
         )->from($tb_pinkel.' as pk')
             ->join('jenis_produk_pinjaman', 'pk.jenis_pp', '=', 'jenis_produk_pinjaman.id')
             ->join($tb_kel.' as k', 'k.id', '=', 'pk.id_kel')
             ->join('desa', 'k.desa', '=', 'desa.kd_desa')
-            ->leftJoin($tb_pinj.' as pa', 'pa.id_pinkel', '=', 'pk.id')
             ->where('pk.id', $id)
             ->with([
                 'pinjaman_anggota' => function ($query) {
@@ -266,9 +263,7 @@ class DashboardController extends Controller
                 'pinjaman_anggota.anggota' => function ($query) {
                     $query->select('id', 'namadepan', 'nik');
                 },
-            ])
-            ->groupBy('pk.id', 'k.nama_kelompok', 'k.alamat_kelompok', 'k.desa', 'desa.nama_desa', 'jenis_produk_pinjaman.nama_jpp')
-            ->first();
+            ])->first();
 
         return response()->json([
             'success' => true,
