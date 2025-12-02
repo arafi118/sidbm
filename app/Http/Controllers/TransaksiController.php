@@ -21,12 +21,11 @@ use App\Utils\Inventaris as UtilsInventaris;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
 use DB;
-use PDF;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use PDF;
 use Session;
 
 class TransaksiController extends Controller
@@ -55,7 +54,7 @@ class TransaksiController extends Controller
 
         $rekening = Rekening::where([
             ['kode_akun', 'LIKE', '1.1.01.%'],
-            ['lev4', '!=', '02']
+            ['lev4', '!=', '02'],
         ])->orderBy('kode_akun')->get();
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         if (request()->get('pinkel')) {
@@ -66,6 +65,7 @@ class TransaksiController extends Controller
         }
 
         $api = env('APP_API', 'http://localhost:8080');
+
         return view('transaksi.jurnal_angsuran.index')->with(compact('title', 'rekening', 'pinkel', 'kec', 'api'));
     }
 
@@ -74,6 +74,7 @@ class TransaksiController extends Controller
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
 
         $title = 'E - Budgeting';
+
         return view('transaksi.ebudgeting.index')->with(compact('title', 'kec'));
     }
 
@@ -82,6 +83,7 @@ class TransaksiController extends Controller
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
 
         $title = 'Tutup Buku';
+
         return view('transaksi.tutup_buku.index')->with(compact('title', 'kec'));
     }
 
@@ -100,26 +102,26 @@ class TransaksiController extends Controller
         foreach ($rekening as $rek) {
             for ($i = $tahun_pakai; $i <= $tahun; $i++) {
                 $tahun_tb = $i - 1;
-                $tb = 'tb' . $tahun_tb;
-                $tbk = 'tbk' . $tahun_tb;
+                $tb = 'tb'.$tahun_tb;
+                $tbk = 'tbk'.$tahun_tb;
 
                 $saldo[] = [
-                    'id' => str_replace('.', '', $rek->kode_akun) . $i . '00',
+                    'id' => str_replace('.', '', $rek->kode_akun).$i.'00',
                     'kode_akun' => $rek->kode_akun,
                     'tahun' => intval($i),
                     'bulan' => '0',
                     'debit' => $rek->$tb,
-                    'kredit' => $rek->$tbk
+                    'kredit' => $rek->$tbk,
                 ];
 
-                $data_id[] = str_replace('.', '', $rek->kode_akun) . $i . '00';
+                $data_id[] = str_replace('.', '', $rek->kode_akun).$i.'00';
             }
         }
 
         Saldo::whereIn('id', $data_id)->delete();
         Saldo::insert($saldo);
 
-        echo "<script>window.close();</script>";
+        echo '<script>window.close();</script>';
     }
 
     public function saldoTutupBuku(Request $request)
@@ -145,7 +147,7 @@ class TransaksiController extends Controller
             },
         ])->orderBy('kode_akun', 'ASC')->get();
 
-        $tgl_kondisi = $tahun . '-' . $bulan . '-' . date('t', strtotime($tahun . '-' . $bulan . '-01'));
+        $tgl_kondisi = $tahun.'-'.$bulan.'-'.date('t', strtotime($tahun.'-'.$bulan.'-01'));
         $surplus = $keuangan->laba_rugi($tgl_kondisi);
 
         $total_riwayat = ($tahun + 1) - $tahun_pakai;
@@ -153,7 +155,7 @@ class TransaksiController extends Controller
 
         return response()->json([
             'success' => true,
-            'view' => view('transaksi.tutup_buku.partials.saldo')->with(compact('akun1', 'surplus', 'tgl_kondisi', 'tahun', 'tahun_lalu', 'total_riwayat', 'jumlah_riwayat'))->render()
+            'view' => view('transaksi.tutup_buku.partials.saldo')->with(compact('akun1', 'surplus', 'tgl_kondisi', 'tahun', 'tahun_lalu', 'total_riwayat', 'jumlah_riwayat'))->render(),
         ]);
     }
 
@@ -166,7 +168,7 @@ class TransaksiController extends Controller
         if ($tahun < date('Y')) {
             $bulan = 12;
         }
-        $tgl_kondisi = $tahun . '-' . $bulan . '-' . date('t', strtotime($tahun . '-' . $bulan . '-01'));
+        $tgl_kondisi = $tahun.'-'.$bulan.'-'.date('t', strtotime($tahun.'-'.$bulan.'-01'));
         $surplus = $keuangan->laba_rugi($tgl_kondisi);
 
         $tahun_tb = $tahun + 1;
@@ -176,9 +178,9 @@ class TransaksiController extends Controller
             'desa.saldo' => function ($query) use ($tahun, $bulan) {
                 $query->where('tahun', $tahun)->where('bulan', '<=', $bulan)->orderBy('bulan', 'ASC');
             },
-            'saldo' => function ($query) use ($tahun, $bulan) {
+            'saldo' => function ($query) use ($tahun) {
                 $query->where('tahun', $tahun);
-            }
+            },
         ])->first();
         $desa = $kec->desa;
 
@@ -186,7 +188,7 @@ class TransaksiController extends Controller
         $data_id = [];
         $saldo_tutup_buku = [];
         foreach ($desa as $d) {
-            $id = str_replace('.', '', $d->kode_desa) . $tahun_tb . 0;
+            $id = str_replace('.', '', $d->kode_desa).$tahun_tb. 0;
 
             $saldo_debit = 0;
             if ($d->saldo) {
@@ -200,7 +202,7 @@ class TransaksiController extends Controller
                 'tahun' => $tahun_tb,
                 'bulan' => '0',
                 'debit' => (string) $saldo_debit,
-                'kredit' => 0
+                'kredit' => 0,
             ];
 
             $data_id[] = $id;
@@ -208,7 +210,7 @@ class TransaksiController extends Controller
 
         foreach ($kec->saldo as $saldo) {
             $urut = substr($saldo->id, -1);
-            $id = str_replace('.', '', $kec->kd_kec) . $tahun_tb . str_pad($urut, '2', '0', STR_PAD_LEFT);
+            $id = str_replace('.', '', $kec->kd_kec).$tahun_tb.str_pad($urut, '2', '0', STR_PAD_LEFT);
 
             if ($urut <= 3) {
                 $saldo_tutup_buku[$id] = [
@@ -217,7 +219,7 @@ class TransaksiController extends Controller
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
                     'debit' => (string) floatval($saldo->kredit) + floatval($saldo->debit),
-                    'kredit' => 0
+                    'kredit' => 0,
                 ];
             } else {
                 $saldo_tutup_buku[$id] = [
@@ -226,7 +228,7 @@ class TransaksiController extends Controller
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
                     'debit' => (string) floatval($saldo->kredit) + floatval($saldo->debit),
-                    'kredit' => 0
+                    'kredit' => 0,
                 ];
             }
 
@@ -254,7 +256,7 @@ class TransaksiController extends Controller
                     $query->where('tahun', $tahun)->where(function ($query) use ($bulan) {
                         $query->where('bulan', '0')->orwhere('bulan', $bulan);
                     });
-                }
+                },
             ])->get();
 
             $data_id = [];
@@ -269,18 +271,26 @@ class TransaksiController extends Controller
                 if ($rek->lev1 >= 4) {
                     foreach ($rek->kom_saldo as $saldo) {
                         if ($saldo->bulan == 0) {
-                            if ($saldo->debit != 0) $saldo_awal_debit = floatval($saldo->debit);
-                            if ($saldo->kredit != 0) $saldo_awal_kredit = floatval($saldo->kredit);
+                            if ($saldo->debit != 0) {
+                                $saldo_awal_debit = floatval($saldo->debit);
+                            }
+                            if ($saldo->kredit != 0) {
+                                $saldo_awal_kredit = floatval($saldo->kredit);
+                            }
                         } else {
-                            if ($saldo->debit != 0) $debit = floatval($saldo->debit);
-                            if ($saldo->kredit != 0) $kredit = floatval($saldo->kredit);
+                            if ($saldo->debit != 0) {
+                                $debit = floatval($saldo->debit);
+                            }
+                            if ($saldo->kredit != 0) {
+                                $kredit = floatval($saldo->kredit);
+                            }
                         }
                     }
 
                     $saldo_debit = $debit;
                     $saldo_kredit = $kredit;
 
-                    $id = str_replace('.', '', $rek->kode_akun) . $tahun . '13';
+                    $id = str_replace('.', '', $rek->kode_akun).$tahun.'13';
                     if ($saldo_debit + $saldo_kredit != 0) {
                         $saldo_tutup_buku[] = [
                             'id' => $id,
@@ -288,7 +298,7 @@ class TransaksiController extends Controller
                             'tahun' => $tahun,
                             'bulan' => 13,
                             'debit' => (string) $saldo_debit,
-                            'kredit' => (string) $saldo_kredit
+                            'kredit' => (string) $saldo_kredit,
                         ];
 
                         $data_id[] = $id;
@@ -303,11 +313,19 @@ class TransaksiController extends Controller
                 if ($rek->lev1 < 4 && $rek->kode_akun != '3.2.02.01') {
                     foreach ($rek->kom_saldo as $saldo) {
                         if ($saldo->bulan == 0) {
-                            if ($saldo->debit != 0) $saldo_awal_debit = floatval($saldo->debit);
-                            if ($saldo->kredit != 0) $saldo_awal_kredit = floatval($saldo->kredit);
+                            if ($saldo->debit != 0) {
+                                $saldo_awal_debit = floatval($saldo->debit);
+                            }
+                            if ($saldo->kredit != 0) {
+                                $saldo_awal_kredit = floatval($saldo->kredit);
+                            }
                         } else {
-                            if ($saldo->debit != 0) $debit = floatval($saldo->debit);
-                            if ($saldo->kredit != 0) $kredit = floatval($saldo->kredit);
+                            if ($saldo->debit != 0) {
+                                $debit = floatval($saldo->debit);
+                            }
+                            if ($saldo->kredit != 0) {
+                                $kredit = floatval($saldo->kredit);
+                            }
                         }
                     }
                 }
@@ -319,14 +337,14 @@ class TransaksiController extends Controller
                     $saldo_kredit += $surplus;
                 }
 
-                $id = str_replace('.', '', $rek->kode_akun) . $tahun_tb . "00";
+                $id = str_replace('.', '', $rek->kode_akun).$tahun_tb.'00';
                 $saldo_tutup_buku[] = [
                     'id' => $id,
                     'kode_akun' => $rek->kode_akun,
                     'tahun' => $tahun_tb,
                     'bulan' => $bulan_tb,
                     'debit' => (string) $saldo_debit,
-                    'kredit' => (string) $saldo_kredit
+                    'kredit' => (string) $saldo_kredit,
                 ];
 
                 $data_id[] = $id;
@@ -337,13 +355,13 @@ class TransaksiController extends Controller
 
             $success = true;
 
-            return redirect('/transaksi/tutup_buku')->with('success', 'Tutup Buku Tahun ' . $tahun . ' berhasil.');
+            return redirect('/transaksi/tutup_buku')->with('success', 'Tutup Buku Tahun '.$tahun.' berhasil.');
         }
 
-        $surplus = $keuangan->laba_rugi($tahun . '-13-00');
+        $surplus = $keuangan->laba_rugi($tahun.'-13-00');
 
         $kec = Kecamatan::where('id', Session::get('lokasi'))->with([
-            'saldo' => function ($query) use ($tahun, $bulan) {
+            'saldo' => function ($query) use ($tahun) {
                 $query->where('tahun', $tahun);
             },
         ])->first();
@@ -351,13 +369,14 @@ class TransaksiController extends Controller
             $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
         })->get();
         $desa = Desa::where('kd_kec', $kec->kd_kec)->with([
-            'saldo' => function ($query) use ($tahun, $bulan) {
+            'saldo' => function ($query) use ($tahun) {
                 $query->where('tahun', $tahun);
             },
-            'sebutan_desa'
+            'sebutan_desa',
         ])->orderBy('kd_desa', 'ASC')->get();
 
         $title = 'Pembagian Laba';
+
         return view('transaksi.tutup_buku.tutup_buku')->with(compact('title', 'kec', 'surplus', 'rekening', 'desa', 'tgl_kondisi', 'tahun', 'migrasi_saldo', 'success'));
     }
 
@@ -365,14 +384,14 @@ class TransaksiController extends Controller
     {
         $keuangan = new Keuangan;
         $data = $request->only([
-            "surplus",
-            "masyarakat",
-            "total_laba_bagian_masyarakat",
-            "desa",
-            "total_laba_bagian_desa",
-            "total_laba_bagian_penyerta_modal",
-            "laba_ditahan",
-            'tgl_mad'
+            'surplus',
+            'masyarakat',
+            'total_laba_bagian_masyarakat',
+            'desa',
+            'total_laba_bagian_desa',
+            'total_laba_bagian_penyerta_modal',
+            'laba_ditahan',
+            'tgl_mad',
         ]);
 
         $data['tgl_mad'] = Tanggal::tglNasional($data['tgl_mad']);
@@ -387,9 +406,9 @@ class TransaksiController extends Controller
             'desa.saldo' => function ($query) use ($tahun, $bulan) {
                 $query->where('tahun', $tahun)->where('bulan', '<=', $bulan)->orderBy('bulan', 'ASC');
             },
-            'saldo' => function ($query) use ($tahun, $bulan) {
+            'saldo' => function ($query) use ($tahun) {
                 $query->where('tahun', $tahun);
-            }
+            },
         ])->first();
         $desa = $kec->desa;
         $rekening = Rekening::whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tanggal)->with([
@@ -397,7 +416,7 @@ class TransaksiController extends Controller
                 $query->where('tahun', $tahun)->where(function ($query) use ($bulan) {
                     $query->where('bulan', '0')->orwhere('bulan', $bulan);
                 });
-            }
+            },
         ])->get();
 
         $title_form = [
@@ -413,7 +432,7 @@ class TransaksiController extends Controller
             '2.1.04.01' => str_replace(',', '', str_replace('.00', '', $data['total_laba_bagian_masyarakat'])),
             '2.1.04.02' => str_replace(',', '', str_replace('.00', '', $data['total_laba_bagian_desa'])),
             '2.1.04.03' => str_replace(',', '', str_replace('.00', '', $data['total_laba_bagian_penyerta_modal'])),
-            '3.2.01.01' => 0
+            '3.2.01.01' => 0,
         ];
 
         $laba_ditahan = $data['laba_ditahan']; // Ditambahkan ke 3.2.01.01
@@ -434,7 +453,7 @@ class TransaksiController extends Controller
         $data_id = [];
         $saldo_tutup_buku = [];
         foreach ($desa as $d) {
-            $id = str_replace('.', '', $d->kode_desa) . $tahun_tb . 0;
+            $id = str_replace('.', '', $d->kode_desa).$tahun_tb. 0;
             $pembagian_desa = str_replace(',', '', str_replace('.00', '', $pembagian_laba_desa[$d->kd_desa]));
 
             $saldo_kredit = 0;
@@ -450,10 +469,10 @@ class TransaksiController extends Controller
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
                     'debit' => (string) $saldo_kredit,
-                    'kredit' => $pembagian_desa
+                    'kredit' => $pembagian_desa,
                 ];
 
-                $keterangan = 'Alokasi laba bagian ' . $d->sebutan_desa->sebutan_desa . ' ' . $d->nama_desa . ' tahun ' . $tahun;
+                $keterangan = 'Alokasi laba bagian '.$d->sebutan_desa->sebutan_desa.' '.$d->nama_desa.' tahun '.$tahun;
                 $trx['insert'][] = [
                     'tgl_transaksi' => $data['tgl_mad'],
                     'rekening_debit' => '3.2.01.01',
@@ -465,7 +484,7 @@ class TransaksiController extends Controller
                     'relasi' => '-',
                     'jumlah' => $pembagian_desa,
                     'urutan' => '0',
-                    'id_user' => auth()->user()->id
+                    'id_user' => auth()->user()->id,
                 ];
 
                 $trx['delete'][] = $keterangan;
@@ -476,7 +495,7 @@ class TransaksiController extends Controller
         foreach ($kec->saldo as $saldo) {
             $urut = substr($saldo->id, -1);
 
-            $id = str_replace('.', '', $kec->kd_kec) . $tahun_tb . str_pad($urut, '3', '0', STR_PAD_LEFT);
+            $id = str_replace('.', '', $kec->kd_kec).$tahun_tb.str_pad($urut, '3', '0', STR_PAD_LEFT);
             if ($urut <= 3) {
                 $saldo_tutup_buku[] = [
                     'id' => $id,
@@ -484,10 +503,10 @@ class TransaksiController extends Controller
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
                     'debit' => (string) $saldo->kredit,
-                    'kredit' => str_replace(',', '', str_replace('.00', '', $pembagian_laba_masyarakat[$urut]))
+                    'kredit' => str_replace(',', '', str_replace('.00', '', $pembagian_laba_masyarakat[$urut])),
                 ];
 
-                $keterangan = $title_form[$urut] . ' tahun ' . $tahun;
+                $keterangan = $title_form[$urut].' tahun '.$tahun;
                 if (str_replace(',', '', str_replace('.00', '', $pembagian_laba_masyarakat[$urut])) != '0') {
                     $trx['insert'][] = [
                         'tgl_transaksi' => $data['tgl_mad'],
@@ -500,7 +519,7 @@ class TransaksiController extends Controller
                         'relasi' => '-',
                         'jumlah' => str_replace(',', '', str_replace('.00', '', $pembagian_laba_masyarakat[$urut])),
                         'urutan' => '0',
-                        'id_user' => auth()->user()->id
+                        'id_user' => auth()->user()->id,
                     ];
                 }
 
@@ -512,7 +531,7 @@ class TransaksiController extends Controller
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
                     'debit' => (string) $saldo->kredit,
-                    'kredit' => str_replace(',', '', str_replace('.00', '', $pembagian_laba_ditahan[$urut]))
+                    'kredit' => str_replace(',', '', str_replace('.00', '', $pembagian_laba_ditahan[$urut])),
                 ];
             }
 
@@ -528,11 +547,19 @@ class TransaksiController extends Controller
             if ($rek->lev1 < 4 && $rek->kode_akun != '3.2.02.01') {
                 foreach ($rek->kom_saldo as $saldo) {
                     if ($saldo->bulan == 0) {
-                        if ($saldo->debit > 0) $saldo_awal_debit = $saldo->debit;
-                        if ($saldo->kredit > 0) $saldo_awal_kredit = $saldo->kredit;
+                        if ($saldo->debit > 0) {
+                            $saldo_awal_debit = $saldo->debit;
+                        }
+                        if ($saldo->kredit > 0) {
+                            $saldo_awal_kredit = $saldo->kredit;
+                        }
                     } else {
-                        if ($saldo->debit > 0) $debit = $saldo->debit;
-                        if ($saldo->kredit > 0) $kredit = $saldo->kredit;
+                        if ($saldo->debit > 0) {
+                            $debit = $saldo->debit;
+                        }
+                        if ($saldo->kredit > 0) {
+                            $kredit = $saldo->kredit;
+                        }
                     }
                 }
             }
@@ -541,14 +568,14 @@ class TransaksiController extends Controller
             $saldo_kredit = floatval($saldo_awal_kredit) + floatval($kredit);
 
             if (in_array($rek->kode_akun, array_keys($alokasi_laba))) {
-                $id = str_replace('.', '', $rek->kode_akun) . $tahun_tb . '00';
+                $id = str_replace('.', '', $rek->kode_akun).$tahun_tb.'00';
 
                 if ($rek->kode_akun == '3.2.01.01') {
                     $saldo_kredit += floatval($alokasi_laba['3.2.01.01']);
                 }
 
                 if ($rek->kode_akun == '2.1.04.03') {
-                    $keterangan = 'Laba Bagian Penyerta Modal tahun ' . $tahun;
+                    $keterangan = 'Laba Bagian Penyerta Modal tahun '.$tahun;
                     if (floatval($alokasi_laba['2.1.04.03']) != '0') {
                         $trx['insert'][] = [
                             'tgl_transaksi' => $data['tgl_mad'],
@@ -561,7 +588,7 @@ class TransaksiController extends Controller
                             'relasi' => '-',
                             'jumlah' => floatval($alokasi_laba['2.1.04.03']),
                             'urutan' => '0',
-                            'id_user' => auth()->user()->id
+                            'id_user' => auth()->user()->id,
                         ];
                     }
 
@@ -574,21 +601,21 @@ class TransaksiController extends Controller
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
                     'debit' => (string) $saldo_debit,
-                    'kredit' => (string) $saldo_kredit
+                    'kredit' => (string) $saldo_kredit,
                 ];
 
                 $data_id[] = $id;
             }
 
             if ($rek->lev1 >= 4) {
-                $id = str_replace('.', '', $rek->kode_akun) . $tahun_tb . '00';
+                $id = str_replace('.', '', $rek->kode_akun).$tahun_tb.'00';
                 $saldo_tutup_buku[] = [
                     'id' => $id,
                     'kode_akun' => $rek->kode_akun,
                     'tahun' => $tahun_tb,
                     'bulan' => '0',
                     'debit' => 0,
-                    'kredit' => 0
+                    'kredit' => 0,
                 ];
 
                 $data_id[] = $id;
@@ -603,7 +630,7 @@ class TransaksiController extends Controller
 
         return response()->json([
             'success' => true,
-            'msg' => 'Alokasi Pembagian Laba tahun ' . $tahun . ' berhasil.'
+            'msg' => 'Alokasi Pembagian Laba tahun '.$tahun.' berhasil.',
         ]);
     }
 
@@ -613,7 +640,7 @@ class TransaksiController extends Controller
 
         $validate = Validator::make($data, [
             'tahun' => 'required',
-            'bulan' => 'required'
+            'bulan' => 'required',
         ]);
 
         if ($validate->fails()) {
@@ -622,12 +649,12 @@ class TransaksiController extends Controller
 
         $cek = Ebudgeting::where([
             ['tahun', $request->tahun],
-            ['bulan', $request->bulan]
+            ['bulan', $request->bulan],
         ])->orderBy('bulan', 'ASC')->orderBy('kode_akun', 'ASC');
 
         $jumlah = $cek->count();
 
-        $tgl_kondisi = date('Y-m-t', strtotime($request->tahun . '-' . $request->bulan . '-01'));
+        $tgl_kondisi = date('Y-m-t', strtotime($request->tahun.'-'.$request->bulan.'-01'));
         if ($jumlah > 0) {
             $akun1 = AkunLevel1::where('lev1', '>=', '4')->with([
                 'akun2',
@@ -638,7 +665,7 @@ class TransaksiController extends Controller
                 'akun2.akun3.rek.eb' => function ($query) use ($data) {
                     $query->where([
                         ['tahun', $data['tahun']],
-                        ['bulan', $data['bulan']]
+                        ['bulan', $data['bulan']],
                     ]);
                 },
             ])->orderBy('kode_akun', 'ASC')->get();
@@ -652,7 +679,7 @@ class TransaksiController extends Controller
                 'akun2.akun3.rek.eb' => function ($query) use ($data) {
                     $query->where([
                         ['tahun', $data['tahun']],
-                        ['bulan', $data['bulan'] - 1]
+                        ['bulan', $data['bulan'] - 1],
                     ]);
                 },
             ])->orderBy('kode_akun', 'ASC')->get();
@@ -663,7 +690,7 @@ class TransaksiController extends Controller
 
         return response()->json([
             'success' => true,
-            'view' => view('transaksi.ebudgeting.create')->with(compact('akun1', 'jumlah', 'tahun', 'bulan'))->render()
+            'view' => view('transaksi.ebudgeting.create')->with(compact('akun1', 'jumlah', 'tahun', 'bulan'))->render(),
         ]);
     }
 
@@ -677,18 +704,18 @@ class TransaksiController extends Controller
                 $query->where('tahun', date('Y'))->where(function ($query) {
                     $query->where('bulan', (date('m') - 1))->orwhere('bulan', date('m'));
                 })->orderBy('bulan', 'asc');
-            }
+            },
         ])->get();
 
         $biaya = Rekening::where([
             ['lev1', '5'],
-            ['lev2', '!=', '4']
+            ['lev2', '!=', '4'],
         ])->with([
             'kom_saldo' => function ($query) {
                 $query->where('tahun', date('Y'))->where(function ($query) {
                     $query->where('bulan', (date('m') - 1))->orwhere('bulan', date('m'));
                 })->orderBy('bulan', 'asc');
-            }
+            },
         ])->get();
 
         $beban = 0;
@@ -697,24 +724,25 @@ class TransaksiController extends Controller
         }
 
         $title = 'Taksiran Pajak';
+
         return view('transaksi.taksiran_pajak.index')->with(compact('title', 'kec', 'akun2', 'keuangan', 'beban'));
     }
 
     public function cetakTaksiranPajak(Request $request)
     {
         $data = $request->only([
-            "nama_lembaga",
-            "npwp",
-            "tanggal_npwp",
-            "tahun_pajak",
-            "masa_pajak",
-            "pph_final",
-            "pph_badan",
-            "rekening",
-            "pendapatan",
-            "beban",
-            "laba",
-            "pph"
+            'nama_lembaga',
+            'npwp',
+            'tanggal_npwp',
+            'tahun_pajak',
+            'masa_pajak',
+            'pph_final',
+            'pph_badan',
+            'rekening',
+            'pendapatan',
+            'beban',
+            'laba',
+            'pph',
         ]);
 
         $data['kode_akun'] = array_keys($data['rekening']);
@@ -725,16 +753,17 @@ class TransaksiController extends Controller
         ])->get();
 
         if ($data['masa_pajak'] < '0') {
-            $awal_tahun = $data['tahun_pajak'] . '-01-01';
-            $akhir_tahun = $data['tahun_pajak'] . '-12-31';
+            $awal_tahun = $data['tahun_pajak'].'-01-01';
+            $akhir_tahun = $data['tahun_pajak'].'-12-31';
 
-            $data['bulan_masa_pajak'] = Tanggal::namaBulan($awal_tahun) . ' - ' . Tanggal::namaBulan($akhir_tahun);
+            $data['bulan_masa_pajak'] = Tanggal::namaBulan($awal_tahun).' - '.Tanggal::namaBulan($akhir_tahun);
         } else {
-            $data['bulan_masa_pajak'] = Tanggal::namaBulan($data['tahun_pajak'] . '-' . $data['masa_pajak'] . '-01');
+            $data['bulan_masa_pajak'] = Tanggal::namaBulan($data['tahun_pajak'].'-'.$data['masa_pajak'].'-01');
         }
 
         $view = view('transaksi.taksiran_pajak.dokumen.taksiran_pajak', $data)->render();
         $pdf = PDF::loadHTML($view);
+
         return $pdf->stream();
     }
 
@@ -748,9 +777,9 @@ class TransaksiController extends Controller
             $bulan_lalu = 0;
         }
 
-        $tgl_kondisi = date('Y-m-t', strtotime($tahun . '-' . $bulan . '-01'));
+        $tgl_kondisi = date('Y-m-t', strtotime($tahun.'-'.$bulan.'-01'));
         $rekening = Rekening::where([
-            ['lev1', '4']
+            ['lev1', '4'],
         ])->where(function ($query) use ($tgl_kondisi) {
             $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
         })->with([
@@ -758,7 +787,7 @@ class TransaksiController extends Controller
                 $query->where('tahun', $tahun)->where(function ($query) use ($bulan, $bulan_lalu) {
                     $query->where('bulan', $bulan_lalu)->orwhere('bulan', $bulan);
                 })->orderBy('bulan', 'asc');
-            }
+            },
         ])->get();
 
         $pendapatan = [];
@@ -772,7 +801,7 @@ class TransaksiController extends Controller
 
         $biaya = Rekening::where([
             ['lev1', '5'],
-            ['lev2', '!=', '4']
+            ['lev2', '!=', '4'],
         ])->where(function ($query) use ($tgl_kondisi) {
             $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
         })->with([
@@ -780,7 +809,7 @@ class TransaksiController extends Controller
                 $query->where('tahun', $tahun)->where(function ($query) use ($bulan, $bulan_lalu) {
                     $query->where('bulan', $bulan_lalu)->orwhere('bulan', $bulan);
                 })->orderBy('bulan', 'asc');
-            }
+            },
         ])->get();
 
         $beban = 0;
@@ -795,7 +824,7 @@ class TransaksiController extends Controller
         return response()->json([
             'success' => true,
             'pendapatan' => $pendapatan,
-            'beban' => $beban
+            'beban' => $beban,
         ]);
     }
 
@@ -820,11 +849,11 @@ class TransaksiController extends Controller
         if (strtotime($tgl_transaksi) < strtotime($kec->tgl_pakai)) {
             return response()->json([
                 'success' => false,
-                'msg' => 'Tanggal transaksi tidak boleh sebelum Tanggal Pakai Aplikasi'
+                'msg' => 'Tanggal transaksi tidak boleh sebelum Tanggal Pakai Aplikasi',
             ]);
         }
 
-        if (Keuangan::startWith($request->sumber_dana, '1.2.01') && Keuangan::startWith($request->disimpan_ke, '5.3.02.01') && $request->jenis_transaksi == '2') {
+        if ((Keuangan::startWith($request->sumber_dana, '1.2.01.01') || Keuangan::startWith($request->sumber_dana, '1.2.02')) && Keuangan::startWith($request->disimpan_ke, '5.3.02.01') && $request->jenis_transaksi == '2') {
             $data = $request->only([
                 'tgl_transaksi',
                 'jenis_transaksi',
@@ -835,7 +864,7 @@ class TransaksiController extends Controller
                 'alasan',
                 'unit',
                 'harga_jual',
-                '_nilai_buku'
+                '_nilai_buku',
             ]);
 
             $validate = Validator::make($data, [
@@ -847,7 +876,7 @@ class TransaksiController extends Controller
                 'nama_barang' => 'required',
                 'alasan' => 'required',
                 'unit' => 'required',
-                'harga_jual' => 'required'
+                'harga_jual' => 'required',
             ]);
 
             if ($validate->fails()) {
@@ -880,7 +909,7 @@ class TransaksiController extends Controller
                 'idtp' => '0',
                 'id_pinj' => '0',
                 'id_pinj_i' => '0',
-                'keterangan_transaksi' => (string) 'Penghapusan ' . $request->unit . ' unit ' . $barang . ' (' . $id_inv . ')' . ' karena ' . $status,
+                'keterangan_transaksi' => (string) 'Penghapusan '.$request->unit.' unit '.$barang.' ('.$id_inv.')'.' karena '.$status,
                 'relasi' => (string) $request->relasi,
                 'jumlah' => $nilai_buku,
                 'urutan' => '0',
@@ -889,12 +918,12 @@ class TransaksiController extends Controller
 
             $update_inventaris = [
                 'unit' => $sisa_unit,
-                'tgl_validasi' => Tanggal::tglNasional($request->tgl_transaksi)
+                'tgl_validasi' => Tanggal::tglNasional($request->tgl_transaksi),
             ];
 
             $update_sts_inventaris = [
                 'status' => ucwords($status),
-                'tgl_validasi' => Tanggal::tglNasional($request->tgl_transaksi)
+                'tgl_validasi' => Tanggal::tglNasional($request->tgl_transaksi),
             ];
 
             $insert_inventaris = [
@@ -917,7 +946,7 @@ class TransaksiController extends Controller
                 'idtp' => '0',
                 'id_pinj' => '0',
                 'id_pinj_i' => '0',
-                'keterangan_transaksi' => (string) 'Penjualan ' . $request->unit . ' unit ' . $barang . ' (' . $id_inv . ')',
+                'keterangan_transaksi' => (string) 'Penjualan '.$request->unit.' unit '.$barang.' ('.$id_inv.')',
                 'relasi' => (string) $request->relasi,
                 'jumlah' => str_replace(',', '', str_replace('.00', '', $request->harga_jual)),
                 'urutan' => '0',
@@ -965,7 +994,7 @@ class TransaksiController extends Controller
                         'idtp' => '0',
                         'id_pinj' => '0',
                         'id_pinj_i' => '0',
-                        'keterangan_transaksi' => (string) 'Revaluasi ' . $request->unit . ' unit ' . $barang . ' (' . $id_inv . ')',
+                        'keterangan_transaksi' => (string) 'Revaluasi '.$request->unit.' unit '.$barang.' ('.$id_inv.')',
                         'relasi' => '',
                         'jumlah' => $jumlah,
                         'urutan' => '0',
@@ -978,17 +1007,17 @@ class TransaksiController extends Controller
                 Inventaris::create($insert_inventaris_baru);
             }
 
-            $msg = 'Penghapusan ' . $request->unit . ' unit ' . $barang . ' karena ' . $status;
+            $msg = 'Penghapusan '.$request->unit.' unit '.$barang.' karena '.$status;
             if ($status == 'dijual') {
                 $transaksi = Transaksi::create($trx_penjualan);
-                $msg = 'Penjualan ' . $request->unit . ' unit ' . $barang;
+                $msg = 'Penjualan '.$request->unit.' unit '.$barang;
             }
 
             if ($status == 'rusak') {
                 return response()->json([
                     'success' => true,
                     'msg' => $msg,
-                    'view' => ''
+                    'view' => '',
                 ]);
             }
         } else {
@@ -1013,7 +1042,7 @@ class TransaksiController extends Controller
                     'nama_barang' => 'required',
                     'jumlah' => 'required',
                     'harga_satuan' => 'required',
-                    'umur_ekonomis' => 'required'
+                    'umur_ekonomis' => 'required',
                 ]);
 
                 if ($validate->fails()) {
@@ -1029,7 +1058,7 @@ class TransaksiController extends Controller
                     'idtp' => 0,
                     'id_pinj' => 0,
                     'id_pinj_i' => 0,
-                    'keterangan_transaksi' => (string) '(' . $rek_simpan->nama_akun . ') ' . $request->nama_barang,
+                    'keterangan_transaksi' => (string) '('.$rek_simpan->nama_akun.') '.$request->nama_barang,
                     'relasi' => (string) $request->relasi,
                     'jumlah' => str_replace(',', '', str_replace('.00', '', $request->harga_satuan)) * $request->jumlah,
                     'urutan' => 0,
@@ -1043,8 +1072,8 @@ class TransaksiController extends Controller
                     'unit' => $request->jumlah,
                     'harsat' => str_replace(',', '', str_replace('.00', '', $request->harga_satuan)),
                     'umur_ekonomis' => $request->umur_ekonomis,
-                    'jenis' => str_pad($rek_simpan->lev3, 1, "0", STR_PAD_LEFT),
-                    'kategori' => str_pad($rek_simpan->lev4, 1, "0", STR_PAD_LEFT),
+                    'jenis' => str_pad($rek_simpan->lev3, 1, '0', STR_PAD_LEFT),
+                    'kategori' => str_pad($rek_simpan->lev4, 1, '0', STR_PAD_LEFT),
                     'status' => 'Baik',
                     'tgl_validasi' => Tanggal::tglNasional($request->tgl_transaksi),
                 ];
@@ -1052,7 +1081,7 @@ class TransaksiController extends Controller
                 $transaksi = Transaksi::create($insert);
                 $inv = Inventaris::create($inventaris);
 
-                $msg = 'Transaksi ' .  $rek_simpan->nama_akun . ' (' . $insert['keterangan_transaksi'] . ') berhasil disimpan';
+                $msg = 'Transaksi '.$rek_simpan->nama_akun.' ('.$insert['keterangan_transaksi'].') berhasil disimpan';
             } else {
                 $data = $request->only([
                     'tgl_transaksi',
@@ -1061,7 +1090,7 @@ class TransaksiController extends Controller
                     'disimpan_ke',
                     'relasi',
                     'keterangan',
-                    'nominal'
+                    'nominal',
                 ]);
 
                 $validate = Validator::make($data, [
@@ -1069,7 +1098,7 @@ class TransaksiController extends Controller
                     'jenis_transaksi' => 'required',
                     'sumber_dana' => 'required',
                     'disimpan_ke' => 'required',
-                    'nominal' => 'required'
+                    'nominal' => 'required',
                 ]);
 
                 if ($validate->fails()) {
@@ -1077,7 +1106,9 @@ class TransaksiController extends Controller
                 }
 
                 $relasi = '';
-                if ($request->relasi) $relasi = $request->relasi;
+                if ($request->relasi) {
+                    $relasi = $request->relasi;
+                }
                 $insert = [
                     'tgl_transaksi' => (string) Tanggal::tglNasional($request->tgl_transaksi),
                     'rekening_debit' => (string) $request->disimpan_ke,
@@ -1093,19 +1124,20 @@ class TransaksiController extends Controller
                 ];
 
                 $transaksi = Transaksi::create($insert);
-                $msg = 'Transaksi ' . $insert['keterangan_transaksi'] . ' berhasil disimpan';
+                $msg = 'Transaksi '.$insert['keterangan_transaksi'].' berhasil disimpan';
             }
         }
 
         $trx = Transaksi::where('idt', $transaksi->idt)->with([
             'rek_debit',
-            'rek_kredit'
+            'rek_kredit',
         ])->first();
         $view = view('transaksi.jurnal_umum.partials.notifikasi')->with(compact('trx', 'keuangan'))->render();
+
         return response()->json([
             'success' => true,
             'msg' => $msg,
-            'view' => $view
+            'view' => $view,
         ]);
     }
 
@@ -1120,7 +1152,7 @@ class TransaksiController extends Controller
             'jasa',
             'denda',
             'tujuan',
-            'penyetor'
+            'penyetor',
         ]);
 
         $validate = Validator::make($data, [
@@ -1129,7 +1161,7 @@ class TransaksiController extends Controller
             'jasa' => 'required',
             'denda' => 'required',
             'tujuan' => 'required',
-            'penyetor' => 'required'
+            'penyetor' => 'required',
         ]);
 
         if ($validate->fails()) {
@@ -1147,7 +1179,7 @@ class TransaksiController extends Controller
         if ($request->pokok <= 0 && $request->jasa <= 0 && $request->denda <= 0) {
             return response()->json([
                 'success' => false,
-                'msg' => 'Total Bayar tidak boleh nol'
+                'msg' => 'Total Bayar tidak boleh nol',
             ]);
         }
 
@@ -1161,15 +1193,15 @@ class TransaksiController extends Controller
             'saldo' => function ($query) use ($request, $tgl_transaksi) {
                 $query->where([
                     ['loan_id', $request->id],
-                    ['tgl_transaksi', '<=', $tgl_transaksi]
+                    ['tgl_transaksi', '<=', $tgl_transaksi],
                 ]);
             },
             'target' => function ($query) use ($request, $tgl_transaksi) {
                 $query->where([
                     ['loan_id', $request->id],
-                    ['jatuh_tempo', '<=', $tgl_transaksi]
+                    ['jatuh_tempo', '<=', $tgl_transaksi],
                 ]);
-            }
+            },
         ])->first();
         $pinjaman_anggota = $pinkel->pinjaman_anggota;
 
@@ -1188,15 +1220,19 @@ class TransaksiController extends Controller
         }
 
         $tunggakan_pokok = $target_pokok - $sum_pokok;
-        if ($tunggakan_pokok < '0') $tunggakan_pokok = '0';
+        if ($tunggakan_pokok < '0') {
+            $tunggakan_pokok = '0';
+        }
 
         $tunggakan_jasa = $target_jasa - $sum_jasa;
-        if ($tunggakan_jasa < '0') $tunggakan_jasa = '0';
+        if ($tunggakan_jasa < '0') {
+            $tunggakan_jasa = '0';
+        }
 
         if (strtotime($tgl_transaksi) < strtotime($pinkel->tgl_cair)) {
             return response()->json([
                 'success' => false,
-                'msg' => 'Tanggal transaksi tidak boleh sebelum Tanggal Cair'
+                'msg' => 'Tanggal transaksi tidak boleh sebelum Tanggal Cair',
             ]);
         }
 
@@ -1222,13 +1258,13 @@ class TransaksiController extends Controller
         if (strtotime($tgl_transaksi) < strtotime($request->tgl_pakai_aplikasi)) {
             return response()->json([
                 'success' => false,
-                'msg' => 'Tanggal transaksi tidak boleh sebelum Tanggal Pakai Aplikasi'
+                'msg' => 'Tanggal transaksi tidak boleh sebelum Tanggal Pakai Aplikasi',
             ]);
         }
 
         $trx = [
             'idtp' => false,
-            'transaksi' => false
+            'transaksi' => false,
         ];
 
         $maxRetries = 2;
@@ -1236,7 +1272,7 @@ class TransaksiController extends Controller
         while ($retryCount < $maxRetries) {
             try {
                 $trx = DB::transaction(function () use ($request, $tgl_transaksi, $kas_umum, $poko_kredit, $jasa_kredit, $dend_kredit, $pinkel) {
-                    DB::table('transaksi_' . Session::get('lokasi'))->lockForUpdate()->get();
+                    DB::table('transaksi_'.Session::get('lokasi'))->lockForUpdate()->get();
 
                     $last_idtp = Transaksi::where('idtp', '!=', '0')->max('idtp');
                     $idtp = $last_idtp + 1;
@@ -1250,11 +1286,11 @@ class TransaksiController extends Controller
                             'idtp' => $idtp,
                             'id_pinj' => $pinkel->id,
                             'id_pinj_i' => '0',
-                            'keterangan_transaksi' => (string) 'Angs. (P) ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')' . ' [' . $pinkel->kelompok->d->nama_desa . ']',
+                            'keterangan_transaksi' => (string) 'Angs. (P) '.$pinkel->kelompok->nama_kelompok.' ('.$pinkel->id.')'.' ['.$pinkel->kelompok->d->nama_desa.']',
                             'relasi' => $request->penyetor,
                             'jumlah' => str_replace(',', '', str_replace('.00', '', $request->pokok)),
                             'urutan' => '0',
-                            'id_user' => auth()->user()->id
+                            'id_user' => auth()->user()->id,
                         ];
                     }
 
@@ -1275,11 +1311,11 @@ class TransaksiController extends Controller
                             'idtp' => $idtp,
                             'id_pinj' => $pinkel->id,
                             'id_pinj_i' => '0',
-                            'keterangan_transaksi' => (string) 'Angs. (J) ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')' . ' [' . $pinkel->kelompok->d->nama_desa . ']',
+                            'keterangan_transaksi' => (string) 'Angs. (J) '.$pinkel->kelompok->nama_kelompok.' ('.$pinkel->id.')'.' ['.$pinkel->kelompok->d->nama_desa.']',
                             'relasi' => $request->penyetor,
                             'jumlah' => str_replace(',', '', str_replace('.00', '', $request->jasa)),
                             'urutan' => '0',
-                            'id_user' => auth()->user()->id
+                            'id_user' => auth()->user()->id,
                         ];
                         // } else {
                         //     $angs_jasa = ($request->jasa - $tunggakan_jasa > 0) ? ($request->jasa - $tunggakan_jasa) : $request->jasa;
@@ -1333,18 +1369,18 @@ class TransaksiController extends Controller
                             'idtp' => $idtp,
                             'id_pinj' => $pinkel->id,
                             'id_pinj_i' => '0',
-                            'keterangan_transaksi' => (string) 'Denda. ' . $pinkel->kelompok->nama_kelompok . ' (' . $pinkel->id . ')' . ' [' . $pinkel->kelompok->d->nama_desa . ']',
+                            'keterangan_transaksi' => (string) 'Denda. '.$pinkel->kelompok->nama_kelompok.' ('.$pinkel->id.')'.' ['.$pinkel->kelompok->d->nama_desa.']',
                             'relasi' => $request->penyetor,
                             'jumlah' => str_replace(',', '', str_replace('.00', '', $request->denda)),
                             'urutan' => '0',
-                            'id_user' => auth()->user()->id
+                            'id_user' => auth()->user()->id,
                         ];
                     }
                     Transaksi::insert($transaksi);
 
                     return [
                         'idtp' => $idtp,
-                        'transaksi' => $transaksi
+                        'transaksi' => $transaksi,
                     ];
                 });
 
@@ -1352,7 +1388,7 @@ class TransaksiController extends Controller
             } catch (\Exception $e) {
                 DB::rollback();
 
-                Log::warning("Transaksi gagal, percobaan ke-$retryCount: " . $e->getMessage());
+                Log::warning("Transaksi gagal, percobaan ke-$retryCount: ".$e->getMessage());
                 $retryCount++;
                 if ($retryCount >= $maxRetries) {
                     throw $e;
@@ -1413,7 +1449,7 @@ class TransaksiController extends Controller
 
                 PinjamanAnggota::where('id', $pa->id)->update([
                     'kom_pokok' => $kom_pokok,
-                    'kom_jasa' => $kom_jasa
+                    'kom_jasa' => $kom_jasa,
                 ]);
             }
 
@@ -1444,7 +1480,9 @@ class TransaksiController extends Controller
                     $sum_pokok += $trx['jumlah'];
                     $alokasi_pokok -= $sum_pokok;
                     $tunggakan_pokok -= $trx['jumlah'];
-                    if ($tunggakan_pokok <= 0) $tunggakan_pokok = 0;
+                    if ($tunggakan_pokok <= 0) {
+                        $tunggakan_pokok = 0;
+                    }
 
                     $real_angsuran['realisasi_pokok'] = $trx['jumlah'];
                     $real_angsuran['sum_pokok'] = $sum_pokok;
@@ -1456,7 +1494,9 @@ class TransaksiController extends Controller
                     $sum_jasa += $trx['jumlah'];
                     $alokasi_jasa -= $sum_jasa;
                     $tunggakan_jasa -= $trx['jumlah'];
-                    if ($tunggakan_jasa <= 0) $tunggakan_jasa = 0;
+                    if ($tunggakan_jasa <= 0) {
+                        $tunggakan_jasa = 0;
+                    }
 
                     $real_angsuran['realisasi_jasa'] = $trx['jumlah'];
                     $real_angsuran['sum_jasa'] = $sum_jasa;
@@ -1471,39 +1511,39 @@ class TransaksiController extends Controller
             $pesan = '';
             if (strlen($pinkel->kelompok->telpon) >= 11 && strlen(auth()->user()->hp) >= 11 && (Keuangan::startWith($pinkel->kelompok->telpon, '08') || Keuangan::startWith($pinkel->kelompok->telpon, '628'))) {
                 $nama_kelompok = $pinkel->kelompok->nama_kelompok;
-                $desa = $pinkel->kelompok->d->sebutan_desa->sebutan_desa . ' ' . $pinkel->kelompok->d->nama_desa;
+                $desa = $pinkel->kelompok->d->sebutan_desa->sebutan_desa.' '.$pinkel->kelompok->d->nama_desa;
 
                 $whatsapp = true;
                 $pesan_wa = json_decode($kec->whatsapp, true);
                 $pesan = $pesan_wa['angsuran'];
                 $pesan = strtr($pesan, [
                     '{Nama Kelompok}' => $pinkel->kelompok->nama_kelompok,
-                    '{Nama Desa}' => $pinkel->kelompok->d->sebutan_desa->sebutan_desa . ' ' . $pinkel->kelompok->d->nama_desa,
+                    '{Nama Desa}' => $pinkel->kelompok->d->sebutan_desa->sebutan_desa.' '.$pinkel->kelompok->d->nama_desa,
                     '{Angsuran Pokok}' => number_format($request->pokok),
                     '{Angsuran Jasa}' => number_format($request->jasa),
                     '{Tanggal Angsuran}' => Tanggal::tglIndo($tgl_transaksi),
-                    '{User Login}' => auth()->user()->namadepan . ' ' . auth()->user()->namabelakang,
-                    '{Telpon}' => auth()->user()->hp
+                    '{User Login}' => auth()->user()->namadepan.' '.auth()->user()->namabelakang,
+                    '{Telpon}' => auth()->user()->hp,
                 ]);
             }
 
             return response()->json([
                 'success' => true,
-                'msg' => 'Angsuran kelompok ' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->d->nama_desa . '] berhasil diposting',
+                'msg' => 'Angsuran kelompok '.$pinkel->kelompok->nama_kelompok.' ['.$pinkel->kelompok->d->nama_desa.'] berhasil diposting',
                 'id_pinkel' => $pinkel->id,
                 'idtp' => $idtp,
                 'tgl_transaksi' => $tgl_transaksi,
                 'whatsapp' => $whatsapp,
                 'number' => $pinkel->kelompok->telpon,
                 'nama_kelompok' => $pinkel->kelompok->nama_kelompok,
-                'pesan' => $pesan
+                'pesan' => $pesan,
             ]);
         }
 
         return response()->json([
             'success' => false,
             'msg' => 'Transaksi gagal. Silahkan coba lagi. Jika masih belum berhasil segera hubungi TS',
-            'loan_id' => $request->id
+            'loan_id' => $request->id,
         ]);
     }
 
@@ -1513,11 +1553,11 @@ class TransaksiController extends Controller
         $view = view('transaksi.jurnal_angsuran.partials.notif', [
             'idtp' => $idtp,
             'id_pinkel' => $trx->id_pinj,
-            'idt' => $trx->idt
+            'idt' => $trx->idt,
         ])->render();
 
         return response()->json([
-            'view' => $view
+            'view' => $view,
         ]);
     }
 
@@ -1526,7 +1566,7 @@ class TransaksiController extends Controller
         $data = $request->only(['tahun', 'bulan', 'jumlah']);
         $validate = Validator::make($data, [
             'tahun' => 'required',
-            'bulan' => 'required'
+            'bulan' => 'required',
         ]);
 
         if ($validate->fails()) {
@@ -1539,7 +1579,7 @@ class TransaksiController extends Controller
                 'kode_akun' => $kode_akun,
                 'tahun' => $request->tahun,
                 'bulan' => $request->bulan,
-                'jumlah' => floatval(str_replace(',', '', $nominal))
+                'jumlah' => floatval(str_replace(',', '', $nominal)),
             ];
         }
 
@@ -1549,11 +1589,11 @@ class TransaksiController extends Controller
         ])->delete();
         Ebudgeting::insert($insert);
 
-        $nama_bulan = Tanggal::namaBulan($request->tahun . '-' . $request->bulan . '-01');
+        $nama_bulan = Tanggal::namaBulan($request->tahun.'-'.$request->bulan.'-01');
 
         return response()->json([
             'success' => true,
-            'msg' => 'Rencana Anggaran bulan ' . $nama_bulan . ' berhasil disimpan.'
+            'msg' => 'Rencana Anggaran bulan '.$nama_bulan.' berhasil disimpan.',
         ]);
     }
 
@@ -1597,7 +1637,7 @@ class TransaksiController extends Controller
         $tahun = request()->get('tahun');
         $bulan = request()->get('bulan');
 
-        $tgl_kondisi = date('Y-m-t', strtotime($tahun . '-' . $bulan . '-01'));
+        $tgl_kondisi = date('Y-m-t', strtotime($tahun.'-'.$bulan.'-01'));
         if ($id == 1) {
             $rek1 = Rekening::where(function ($query) {
                 $query->where(function ($query) {
@@ -1608,7 +1648,7 @@ class TransaksiController extends Controller
                     ['kode_akun', '!=', '2.1.04.03'],
                     ['kode_akun', '!=', '2.1.02.01'],
                     ['kode_akun', '!=', '2.1.03.01'],
-                    ['kode_akun', 'NOT LIKE', '4.1.01%']
+                    ['kode_akun', 'NOT LIKE', '4.1.01%'],
                 ]);
             })->where(function ($query) use ($tgl_kondisi) {
                 $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
@@ -1622,7 +1662,7 @@ class TransaksiController extends Controller
                 $query->where(function ($query) {
                     $query->where('lev1', '1')->orwhere('lev1', '2');
                 })->where([
-                    ['kode_akun', 'NOT LIKE', '2.1.04%']
+                    ['kode_akun', 'NOT LIKE', '2.1.04%'],
                 ]);
             })->where(function ($query) use ($tgl_kondisi) {
                 $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
@@ -1654,53 +1694,54 @@ class TransaksiController extends Controller
         $sumber_dana = request()->get('sumber_dana');
         $disimpan_ke = request()->get('disimpan_ke');
 
-        if (Keuangan::startWith($sumber_dana, '1.2.01') && Keuangan::startWith($disimpan_ke, '5.3.02.01') && $jenis_transaksi == 2) {
+        if ((Keuangan::startWith($sumber_dana, '1.2.01.01') || Keuangan::startWith($sumber_dana, '1.2.02')) && Keuangan::startWith($disimpan_ke, '5.3.02.01') && $jenis_transaksi == 2) {
             $kode = explode('.', $sumber_dana);
             $jenis = intval($kode[2]);
             $kategori = intval($kode[3]);
 
             $inventaris = Inventaris::where([
                 ['jenis', $jenis],
-                ['kategori', $kategori]
+                ['kategori', $kategori],
             ])->whereNotNull('tgl_beli')->where(function ($query) {
                 $query->where('status', 'Baik')->orwhere('status', 'Rusak');
             })->get();
+
             return view('transaksi.jurnal_umum.partials.form_hapus_inventaris')->with(compact('inventaris', 'tgl_transaksi'));
         } else {
             if (Keuangan::startWith($disimpan_ke, '1.2.01') || Keuangan::startWith($disimpan_ke, '1.2.03')) {
                 $kuitansi = false;
                 $relasi = false;
                 $files = 'bm';
-                if (Keuangan::startWith($disimpan_ke, '1.1.01') && !Keuangan::startWith($sumber_dana, '1.1.01')) {
-                    $file = "c_bkm";
-                    $files = "BKM";
+                if (Keuangan::startWith($disimpan_ke, '1.1.01') && ! Keuangan::startWith($sumber_dana, '1.1.01')) {
+                    $file = 'c_bkm';
+                    $files = 'BKM';
                     $kuitansi = true;
                     $relasi = true;
-                } elseif (!Keuangan::startWith($disimpan_ke, '1.1.01') && Keuangan::startWith($sumber_dana, '1.1.01')) {
-                    $file = "c_bkk";
-                    $files = "BKK";
+                } elseif (! Keuangan::startWith($disimpan_ke, '1.1.01') && Keuangan::startWith($sumber_dana, '1.1.01')) {
+                    $file = 'c_bkk';
+                    $files = 'BKK';
                     $kuitansi = true;
                     $relasi = true;
                 } elseif (Keuangan::startWith($disimpan_ke, '1.1.01') && Keuangan::startWith($sumber_dana, '1.1.01')) {
-                    $file = "c_bm";
-                    $files = "BM";
-                } elseif (Keuangan::startWith($disimpan_ke, '1.1.02') && !(Keuangan::startWith($sumber_dana, '1.1.01') || Keuangan::startWith($sumber_dana, '1.1.02'))) {
-                    $file = "c_bkm";
-                    $files = "BKM";
+                    $file = 'c_bm';
+                    $files = 'BM';
+                } elseif (Keuangan::startWith($disimpan_ke, '1.1.02') && ! (Keuangan::startWith($sumber_dana, '1.1.01') || Keuangan::startWith($sumber_dana, '1.1.02'))) {
+                    $file = 'c_bkm';
+                    $files = 'BKM';
                     $kuitansi = true;
                     $relasi = true;
                 } elseif (Keuangan::startWith($disimpan_ke, '1.1.02') && Keuangan::startWith($sumber_dana, '1.1.02')) {
-                    $file = "c_bm";
-                    $files = "BM";
-                } elseif (Keuangan::startWith($disimpan_ke, '5.') && !(Keuangan::startWith($sumber_dana, '1.1.01') || Keuangan::startWith($sumber_dana, '1.1.02'))) {
-                    $file = "c_bm";
-                    $files = "BM";
-                } elseif (!(Keuangan::startWith($disimpan_ke, '1.1.01') || Keuangan::startWith($disimpan_ke, '1.1.02')) && Keuangan::startWith($sumber_dana, '1.1.02')) {
-                    $file = "c_bm";
-                    $files = "BM";
-                } elseif (!(Keuangan::startWith($disimpan_ke, '1.1.01') || Keuangan::startWith($disimpan_ke, '1.1.02')) && Keuangan::startWith($sumber_dana, '4.')) {
-                    $file = "c_bm";
-                    $files = "BM";
+                    $file = 'c_bm';
+                    $files = 'BM';
+                } elseif (Keuangan::startWith($disimpan_ke, '5.') && ! (Keuangan::startWith($sumber_dana, '1.1.01') || Keuangan::startWith($sumber_dana, '1.1.02'))) {
+                    $file = 'c_bm';
+                    $files = 'BM';
+                } elseif (! (Keuangan::startWith($disimpan_ke, '1.1.01') || Keuangan::startWith($disimpan_ke, '1.1.02')) && Keuangan::startWith($sumber_dana, '1.1.02')) {
+                    $file = 'c_bm';
+                    $files = 'BM';
+                } elseif (! (Keuangan::startWith($disimpan_ke, '1.1.01') || Keuangan::startWith($disimpan_ke, '1.1.02')) && Keuangan::startWith($sumber_dana, '4.')) {
+                    $file = 'c_bm';
+                    $files = 'BM';
                 }
 
                 return view('transaksi.jurnal_umum.partials.form_inventaris')->with(compact('relasi'));
@@ -1710,59 +1751,59 @@ class TransaksiController extends Controller
 
                 $keterangan_transaksi = '';
                 if ($jenis_transaksi == 1) {
-                    if (!empty($disimpan_ke)) {
-                        $keterangan_transaksi = "Dari " . $rek_sumber->nama_akun . " ke " . $rek_simpan->nama_akun;
+                    if (! empty($disimpan_ke)) {
+                        $keterangan_transaksi = 'Dari '.$rek_sumber->nama_akun.' ke '.$rek_simpan->nama_akun;
                     }
-                } else if ($jenis_transaksi == 2) {
-                    if (!empty($disimpan_ke)) {
+                } elseif ($jenis_transaksi == 2) {
+                    if (! empty($disimpan_ke)) {
                         $keterangan_transaksi = $rek_simpan->nama_akun;
                         $kd = substr($sumber_dana, 0, 6);
                         if ($kd == '1.1.01') {
-                            $keterangan_transaksi = "Bayar " . $rek_simpan->nama_akun;
+                            $keterangan_transaksi = 'Bayar '.$rek_simpan->nama_akun;
                         }
                         if ($kd == '1.1.02') {
-                            $keterangan_transaksi = "Transfer " . $rek_simpan->nama_akun;
+                            $keterangan_transaksi = 'Transfer '.$rek_simpan->nama_akun;
                         }
                     }
-                } else if ($jenis_transaksi == 3) {
-                    if (!empty($disimpan_ke)) {
-                        $keterangan_transaksi = "Pemindahan Saldo " . $rek_sumber->nama_akun . " ke " . $rek_simpan->nama_akun;
+                } elseif ($jenis_transaksi == 3) {
+                    if (! empty($disimpan_ke)) {
+                        $keterangan_transaksi = 'Pemindahan Saldo '.$rek_sumber->nama_akun.' ke '.$rek_simpan->nama_akun;
                     }
                 }
 
                 $kuitansi = false;
                 $relasi = false;
                 $files = 'bm';
-                if (Keuangan::startWith($disimpan_ke, '1.1.01') && !Keuangan::startWith($sumber_dana, '1.1.01')) {
-                    $file = "c_bkm";
-                    $files = "BKM";
+                if (Keuangan::startWith($disimpan_ke, '1.1.01') && ! Keuangan::startWith($sumber_dana, '1.1.01')) {
+                    $file = 'c_bkm';
+                    $files = 'BKM';
                     $kuitansi = true;
                     $relasi = true;
-                } elseif (!Keuangan::startWith($disimpan_ke, '1.1.01') && Keuangan::startWith($sumber_dana, '1.1.01')) {
-                    $file = "c_bkk";
-                    $files = "BKK";
+                } elseif (! Keuangan::startWith($disimpan_ke, '1.1.01') && Keuangan::startWith($sumber_dana, '1.1.01')) {
+                    $file = 'c_bkk';
+                    $files = 'BKK';
                     $kuitansi = true;
                     $relasi = true;
                 } elseif (Keuangan::startWith($disimpan_ke, '1.1.01') && Keuangan::startWith($sumber_dana, '1.1.01')) {
-                    $file = "c_bm";
-                    $files = "BM";
-                } elseif (Keuangan::startWith($disimpan_ke, '1.1.02') && !(Keuangan::startWith($sumber_dana, '1.1.01') || Keuangan::startWith($sumber_dana, '1.1.02'))) {
-                    $file = "c_bkm";
-                    $files = "BKM";
+                    $file = 'c_bm';
+                    $files = 'BM';
+                } elseif (Keuangan::startWith($disimpan_ke, '1.1.02') && ! (Keuangan::startWith($sumber_dana, '1.1.01') || Keuangan::startWith($sumber_dana, '1.1.02'))) {
+                    $file = 'c_bkm';
+                    $files = 'BKM';
                     $kuitansi = true;
                     $relasi = true;
                 } elseif (Keuangan::startWith($disimpan_ke, '1.1.02') && Keuangan::startWith($sumber_dana, '1.1.02')) {
-                    $file = "c_bm";
-                    $files = "BM";
-                } elseif (Keuangan::startWith($disimpan_ke, '5.') && !(Keuangan::startWith($sumber_dana, '1.1.01') || Keuangan::startWith($sumber_dana, '1.1.02'))) {
-                    $file = "c_bm";
-                    $files = "BM";
-                } elseif (!(Keuangan::startWith($disimpan_ke, '1.1.01') || Keuangan::startWith($disimpan_ke, '1.1.02')) && Keuangan::startWith($sumber_dana, '1.1.02')) {
-                    $file = "c_bm";
-                    $files = "BM";
-                } elseif (!(Keuangan::startWith($disimpan_ke, '1.1.01') || Keuangan::startWith($disimpan_ke, '1.1.02')) && Keuangan::startWith($sumber_dana, '4.')) {
-                    $file = "c_bm";
-                    $files = "BM";
+                    $file = 'c_bm';
+                    $files = 'BM';
+                } elseif (Keuangan::startWith($disimpan_ke, '5.') && ! (Keuangan::startWith($sumber_dana, '1.1.01') || Keuangan::startWith($sumber_dana, '1.1.02'))) {
+                    $file = 'c_bm';
+                    $files = 'BM';
+                } elseif (! (Keuangan::startWith($disimpan_ke, '1.1.01') || Keuangan::startWith($disimpan_ke, '1.1.02')) && Keuangan::startWith($sumber_dana, '1.1.02')) {
+                    $file = 'c_bm';
+                    $files = 'BM';
+                } elseif (! (Keuangan::startWith($disimpan_ke, '1.1.01') || Keuangan::startWith($disimpan_ke, '1.1.02')) && Keuangan::startWith($sumber_dana, '4.')) {
+                    $file = 'c_bm';
+                    $files = 'BM';
                 }
 
                 $susut = 0;
@@ -1784,7 +1825,7 @@ class TransaksiController extends Controller
                         $bulan_lalu = 1;
                     }
 
-                    $tanggal_lalu = $tahun_lalu . '-' . $bulan_lalu . '-01';
+                    $tanggal_lalu = $tahun_lalu.'-'.$bulan_lalu.'-01';
                     $tanggal_lalu = date('Y-m-t', strtotime($tanggal_lalu));
 
                     $penyusutan = UtilsInventaris::penyusutan($tanggal, $kategori);
@@ -1792,8 +1833,10 @@ class TransaksiController extends Controller
                     // $saldo = UtilsInventaris::saldoSusut($tanggal, $sumber_dana);
 
                     $susut = floatval($penyusutan) - floatval($saldo);
-                    if ($susut < 0) $susut *= -1;
-                    $keterangan_transaksi .= ' (' . Tanggal::namaBulan($tgl_transaksi) . ')';
+                    if ($susut < 0) {
+                        $susut *= -1;
+                    }
+                    $keterangan_transaksi .= ' ('.Tanggal::namaBulan($tgl_transaksi).')';
                 }
 
                 return view('transaksi.jurnal_umum.partials.form_nominal')->with(compact('relasi', 'keterangan_transaksi', 'susut'));
@@ -1806,15 +1849,15 @@ class TransaksiController extends Controller
         $pinkel = PinjamanKelompok::where('id', $id_pinkel)->with('kelompok')->withSum([
             'rencana' => function ($query) {
                 $query->where('jatuh_tempo', '<=', date('Y-m-t'));
-            }
+            },
         ], 'wajib_pokok')->withSum([
             'rencana' => function ($query) {
                 $query->where('jatuh_tempo', '<=', date('Y-m-t'));
-            }
+            },
         ], 'wajib_jasa')->firstOrFail();
         $real = RealAngsuran::where([
             ['loan_id', $id_pinkel],
-            ['tgl_transaksi', '<=', date('Y-m-d')]
+            ['tgl_transaksi', '<=', date('Y-m-d')],
         ])->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
 
         $alokasi_jasa = $pinkel->alokasi * ($pinkel->pros_jasa / 100);
@@ -1854,7 +1897,7 @@ class TransaksiController extends Controller
             'alokasi_pokok' => $pinkel->alokasi,
             'alokasi_jasa' => $alokasi_jasa,
             'pinkel' => $pinkel,
-            'penyetor' => $bendahara
+            'penyetor' => $bendahara,
         ]);
     }
 
@@ -1868,8 +1911,8 @@ class TransaksiController extends Controller
 
         return response()->json([
             'success' => true,
-            'title' => 'Angsuran per Anggota Kelompok ' . $pinkel->kelompok->nama_kelompok . ' - Loan ID. ' . $pinkel->id,
-            'view' => view('transaksi.jurnal_angsuran.partials.angsuran_anggota')->with(compact('pinkel'))->render()
+            'title' => 'Angsuran per Anggota Kelompok '.$pinkel->kelompok->nama_kelompok.' - Loan ID. '.$pinkel->id,
+            'view' => view('transaksi.jurnal_angsuran.partials.angsuran_anggota')->with(compact('pinkel'))->render(),
         ]);
     }
 
@@ -1883,28 +1926,28 @@ class TransaksiController extends Controller
 
             $pinkel = PinjamanKelompok::where('id', $id_pinkel)->with('kelompok')->withSum([
                 'rencana' => function ($query) use ($tahun, $bulan, $hari) {
-                    $query->where('jatuh_tempo', '<=', $tahun . '-' . $bulan . '-' . $hari);
-                }
+                    $query->where('jatuh_tempo', '<=', $tahun.'-'.$bulan.'-'.$hari);
+                },
             ], 'wajib_pokok')->withSum([
                 'rencana' => function ($query) use ($tahun, $bulan, $hari) {
-                    $query->where('jatuh_tempo', '<=', $tahun . '-' . $bulan . '-' . $hari);
-                }
+                    $query->where('jatuh_tempo', '<=', $tahun.'-'.$bulan.'-'.$hari);
+                },
             ], 'wajib_jasa')->firstOrFail();
         } else {
             $pinkel = PinjamanKelompok::where('id', $id_pinkel)->with('kelompok')->withSum([
                 'rencana' => function ($query) {
                     $query->where('jatuh_tempo', '<=', date('Y-m-t'));
-                }
+                },
             ], 'wajib_pokok')->withSum([
                 'rencana' => function ($query) {
                     $query->where('jatuh_tempo', '<=', date('Y-m-t'));
-                }
+                },
             ], 'wajib_jasa')->firstOrFail();
         }
 
         $real = RealAngsuran::where([
             ['loan_id', $id_pinkel],
-            ['tgl_transaksi', '<=', date('Y-m-d')]
+            ['tgl_transaksi', '<=', date('Y-m-d')],
         ])->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
 
         if ($real->count() > 0) {
@@ -1922,7 +1965,7 @@ class TransaksiController extends Controller
 
         return response()->json([
             'saldo_pokok' => $saldo_pokok,
-            'saldo_jasa' => $saldo_jasa
+            'saldo_jasa' => $saldo_jasa,
         ]);
     }
 
@@ -1948,46 +1991,46 @@ class TransaksiController extends Controller
         $data['harian'] = true;
         if ($data['hari'] == null) {
             $data['harian'] = false;
-            $data['hari'] = date('t', strtotime($data['tahun'] . '-' . $data['bulan'] . '-01'));
+            $data['hari'] = date('t', strtotime($data['tahun'].'-'.$data['bulan'].'-01'));
         }
 
         $thn = $data['tahun'];
         $bln = $data['bulan'];
         $hari = $data['hari'];
 
-        $tgl = $thn . '-' . $bln . '-' . $hari;
-        $tgl = $thn . '-';
+        $tgl = $thn.'-'.$bln.'-'.$hari;
+        $tgl = $thn.'-';
         $data['judul'] = 'Laporan Tahunan';
-        $data['sub_judul'] = 'Tahun ' . Tanggal::tahun($tgl);
+        $data['sub_judul'] = 'Tahun '.Tanggal::tahun($tgl);
         $data['tgl'] = Tanggal::tahun($tgl);
-        $awal_bulan = $thn . '00-00';
+        $awal_bulan = $thn.'00-00';
         if ($data['bulanan']) {
-            $tgl = $thn . '-' . $bln . '-';
+            $tgl = $thn.'-'.$bln.'-';
             $data['judul'] = 'Laporan Bulanan';
-            $data['sub_judul'] = 'Bulan ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $data['tgl'] = Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
-            $bulan_lalu = date('m', strtotime('-1 month', strtotime($tgl . '01')));
-            $awal_bulan = $thn . '-' . $bulan_lalu . '-' . date('t', strtotime($thn . '-' . $bulan_lalu));
+            $data['sub_judul'] = 'Bulan '.Tanggal::namaBulan($tgl).' '.Tanggal::tahun($tgl);
+            $data['tgl'] = Tanggal::namaBulan($tgl).' '.Tanggal::tahun($tgl);
+            $bulan_lalu = date('m', strtotime('-1 month', strtotime($tgl.'01')));
+            $awal_bulan = $thn.'-'.$bulan_lalu.'-'.date('t', strtotime($thn.'-'.$bulan_lalu));
             if ($bln == 1) {
-                $awal_bulan = $thn . '00-00';
+                $awal_bulan = $thn.'00-00';
             }
         }
 
         if ($data['harian']) {
-            $tgl = $thn . '-' . $bln . '-' . $hari;
+            $tgl = $thn.'-'.$bln.'-'.$hari;
             $data['judul'] = 'Laporan Harian';
-            $data['sub_judul'] = 'Tanggal ' . $hari . ' ' . Tanggal::namaBulan($tgl) . ' ' . Tanggal::tahun($tgl);
+            $data['sub_judul'] = 'Tanggal '.$hari.' '.Tanggal::namaBulan($tgl).' '.Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::tglLatin($tgl);
             $awal_bulan = date('Y-m-d', strtotime('-1 day', strtotime($tgl)));
         }
 
-        $data['tgl_kondisi'] = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
+        $data['tgl_kondisi'] = $data['tahun'].'-'.$data['bulan'].'-'.$data['hari'];
 
         $data['is_dir'] = (auth()->guard('web')->user()->level == 1 && (auth()->guard('web')->user()->jabatan == 1 || auth()->guard('web')->user()->jabatan == 3)) ? true : false;
         $data['is_ben'] = (auth()->guard('web')->user()->level == 1 && (auth()->guard('web')->user()->jabatan == 3)) ? true : false;
 
         $data['rek'] = Rekening::where('kode_akun', $data['kode_akun'])->first();
-        $data['transaksi'] = Transaksi::where('tgl_transaksi', 'LIKE', '%' . $tgl . '%')->where(function ($query) use ($data) {
+        $data['transaksi'] = Transaksi::where('tgl_transaksi', 'LIKE', '%'.$tgl.'%')->where(function ($query) use ($data) {
             $query->where('rekening_debit', $data['kode_akun'])->orwhere('rekening_kredit', $data['kode_akun']);
         })->with('user')->orderBy('tgl_transaksi', 'ASC')->orderBy('urutan', 'ASC')->orderBy('idt', 'ASC')->get();
 
@@ -1997,9 +2040,9 @@ class TransaksiController extends Controller
         $data['k_bulan_lalu'] = $keuangan->saldoK($awal_bulan, $data['kode_akun']);
 
         return [
-            'label' => '<i class="fas fa-book"></i> ' . $data['rek']->kode_akun . ' - ' . $data['rek']->nama_akun . ' ' . $data['sub_judul'],
+            'label' => '<i class="fas fa-book"></i> '.$data['rek']->kode_akun.' - '.$data['rek']->nama_akun.' '.$data['sub_judul'],
             'view' => view('transaksi.jurnal_umum.partials.jurnal', $data)->render(),
-            'cetak' => view('transaksi.jurnal_umum.partials._jurnal', $data)->render()
+            'cetak' => view('transaksi.jurnal_umum.partials._jurnal', $data)->render(),
         ];
     }
 
@@ -2014,11 +2057,12 @@ class TransaksiController extends Controller
             $trx = Transaksi::where('idtp', $idtp)->orderBy('urutan', 'ASC')->sum('jumlah');
             $jumlah = $trx;
         }
+
         return response()->json([
             'idt' => $idt,
             'idtp' => $idtp,
             'id_pinj' => $id_pinj,
-            'jumlah' => number_format($jumlah)
+            'jumlah' => number_format($jumlah),
         ]);
     }
 
@@ -2054,11 +2098,11 @@ class TransaksiController extends Controller
                     'idtp' => $idtp_baru,
                     'id_pinj' => $trx->id_pinj,
                     'id_pinj_i' => $trx->id_pinj_i,
-                    'keterangan_transaksi' => (string) 'KOREKSI idt (' . $idt . ') : ' . $trx->keterangan_transaksi,
+                    'keterangan_transaksi' => (string) 'KOREKSI idt ('.$idt.') : '.$trx->keterangan_transaksi,
                     'relasi' => (string) $trx->relasi,
                     'jumlah' => ($trx->jumlah * -1),
                     'urutan' => $trx->urutan,
-                    'id_user' => auth()->user()->id
+                    'id_user' => auth()->user()->id,
                 ];
             }
             $reversal = Transaksi::insert($trx_reversal);
@@ -2082,7 +2126,7 @@ class TransaksiController extends Controller
 
                 PinjamanAnggota::where('id', $pa->id)->update([
                     'kom_pokok' => $kom_pokok,
-                    'kom_jasa' => $kom_jasa
+                    'kom_jasa' => $kom_jasa,
                 ]);
             }
 
@@ -2104,11 +2148,11 @@ class TransaksiController extends Controller
                 'idtp' => $trx->idtp,
                 'id_pinj' => $trx->id_pinj,
                 'id_pinj_i' => $trx->id_pinj_i,
-                'keterangan_transaksi' => (string) 'KOREKSI idt (' . $idt . ') : ' . $trx->keterangan_transaksi,
+                'keterangan_transaksi' => (string) 'KOREKSI idt ('.$idt.') : '.$trx->keterangan_transaksi,
                 'relasi' => (string) $trx->relasi,
                 'jumlah' => ($trx->jumlah * -1),
                 'urutan' => $trx->urutan,
-                'id_user' => auth()->user()->id
+                'id_user' => auth()->user()->id,
             ]);
         }
 
@@ -2118,13 +2162,13 @@ class TransaksiController extends Controller
 
         return response()->json([
             'success' => true,
-            'msg' => 'Transaksi Reversal untuk id ' . $idt . ' dengan nominal berhasil.',
+            'msg' => 'Transaksi Reversal untuk id '.$idt.' dengan nominal berhasil.',
             'idtp' => $last_idtp + 1,
             'tgl_transaksi' => date('Y-m-d'),
             'id_pinkel' => $id_pinj,
             'kode_akun' => implode(',', $kode_akun),
-            'bulan' => str_pad($bulan, 2, "0", STR_PAD_LEFT),
-            'tahun' => $tahun
+            'bulan' => str_pad($bulan, 2, '0', STR_PAD_LEFT),
+            'tahun' => $tahun,
         ]);
     }
 
@@ -2160,7 +2204,7 @@ class TransaksiController extends Controller
 
                     PinjamanAnggota::where('id', $pa->id)->update([
                         'kom_pokok' => $kom_pokok,
-                        'kom_jasa' => $kom_jasa
+                        'kom_jasa' => $kom_jasa,
                     ]);
                 }
 
@@ -2169,13 +2213,13 @@ class TransaksiController extends Controller
         } else {
             if ($id_pinj != '0') {
                 $pinkel = PinjamanKelompok::where('id', $id_pinj)->update([
-                    'status' => 'W'
+                    'status' => 'W',
                 ]);
 
                 $pinj_anggota = PinjamanAnggota::where('id_pinkel', $id_pinj)->update([
                     'status' => 'W',
                     'kom_pokok' => 0,
-                    'kom_jasa' => 0
+                    'kom_jasa' => 0,
                 ]);
             }
 
@@ -2191,7 +2235,7 @@ class TransaksiController extends Controller
                     ['jenis', $jenis],
                     ['kategori', $kategori],
                     ['tgl_beli', $trx->tgl_transaksi],
-                    ['nama_barang', $nama_barang]
+                    ['nama_barang', $nama_barang],
                 ])->delete();
             }
 
@@ -2216,25 +2260,25 @@ class TransaksiController extends Controller
             'success' => true,
             'msg' => 'Transaksi Berhasil Dihapus.',
             'kode_akun' => implode(',', $kode_akun),
-            'bulan' => str_pad($bulan, 2, "0", STR_PAD_LEFT),
-            'tahun' => $tahun
+            'bulan' => str_pad($bulan, 2, '0', STR_PAD_LEFT),
+            'tahun' => $tahun,
         ]);
     }
 
     // Inactive
     public function simpanSaldo(array $kode_akun, $bulan, $tahun)
     {
-        $date = $tahun . '-' . $bulan . '-01';
+        $date = $tahun.'-'.$bulan.'-01';
         $tgl_kondisi = date('Y-m-t', strtotime($date));
 
         $rekening = Rekening::withSum([
             'trx_debit' => function ($query) use ($tgl_kondisi, $tahun) {
-                $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
-            }
+                $query->whereBetween('tgl_transaksi', [$tahun.'-01-01', $tgl_kondisi]);
+            },
         ], 'jumlah')->withSum([
             'trx_kredit' => function ($query) use ($tgl_kondisi, $tahun) {
-                $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
-            }
+                $query->whereBetween('tgl_transaksi', [$tahun.'-01-01', $tgl_kondisi]);
+            },
         ], 'jumlah')->whereIn('kode_akun', $kode_akun)->orderBy('kode_akun', 'ASC')->get();
 
         foreach ($rekening as $rek) {
@@ -2252,17 +2296,17 @@ class TransaksiController extends Controller
         $pinkel = PinjamanKelompok::where('id', $id)->with([
             'real',
             'real.trx',
-            'kelompok'
+            'kelompok',
         ])->first();
 
         $is_dir = (auth()->guard('web')->user()->level == 1 && (auth()->guard('web')->user()->jabatan == 1 || auth()->guard('web')->user()->jabatan == 3)) ? true : false;
         $is_ben = (auth()->guard('web')->user()->level == 1 && (auth()->guard('web')->user()->jabatan == 3)) ? true : false;
 
         return [
-            'label' => '<i class="fas fa-book"></i> Detail Angsuran Kelompok ' . $pinkel->kelompok->nama_kelompok,
-            'label_cetak' => '<i class="fas fa-book"></i> Cetak Dokumen Angsuran Kelompok ' . $pinkel->kelompok->nama_kelompok,
+            'label' => '<i class="fas fa-book"></i> Detail Angsuran Kelompok '.$pinkel->kelompok->nama_kelompok,
+            'label_cetak' => '<i class="fas fa-book"></i> Cetak Dokumen Angsuran Kelompok '.$pinkel->kelompok->nama_kelompok,
             'view' => view('transaksi.jurnal_angsuran.partials.detail')->with(compact('pinkel', 'is_dir', 'is_ben'))->render(),
-            'cetak' => view('transaksi.jurnal_angsuran.partials._detail')->with(compact('pinkel'))->render()
+            'cetak' => view('transaksi.jurnal_angsuran.partials._detail')->with(compact('pinkel'))->render(),
         ];
     }
 
@@ -2274,7 +2318,7 @@ class TransaksiController extends Controller
             'kelompok.d',
             'kelompok.d.sebutan_desa',
             'jpp',
-            'sis_pokok'
+            'sis_pokok',
         ])->first();
 
         $data['ra_bulan_ini'] = RencanaAngsuran::where([
@@ -2301,7 +2345,7 @@ class TransaksiController extends Controller
             'kelompok.d',
             'kelompok.d.sebutan_desa',
             'jpp',
-            'sis_pokok'
+            'sis_pokok',
         ])->first();
 
         $data['ra_bulan_ini'] = RencanaAngsuran::where([
@@ -2334,7 +2378,7 @@ class TransaksiController extends Controller
             'kelompok.d',
             'kelompok.d.sebutan_desa',
             'jpp',
-            'sis_pokok'
+            'sis_pokok',
         ])->first();
 
         $data['ra_bulan_ini'] = RencanaAngsuran::where([
@@ -2369,11 +2413,11 @@ class TransaksiController extends Controller
             $bln = $data['bulan'];
             $hari = $data['hari'];
 
-            $tgl = $thn . '-' . $bln . '-';
-            $bulan_lalu = date('m', strtotime('-1 month', strtotime($tgl . '01')));
-            $awal_bulan = $thn . '-' . $bulan_lalu . '-' . date('t', strtotime($thn . '-' . $bulan_lalu));
+            $tgl = $thn.'-'.$bln.'-';
+            $bulan_lalu = date('m', strtotime('-1 month', strtotime($tgl.'01')));
+            $awal_bulan = $thn.'-'.$bulan_lalu.'-'.date('t', strtotime($thn.'-'.$bulan_lalu));
             if ($bln == 1) {
-                $awal_bulan = $thn . '00-00';
+                $awal_bulan = $thn.'00-00';
             }
 
             $data['tgl_kondisi'] = $tgl;
@@ -2389,7 +2433,7 @@ class TransaksiController extends Controller
         }
 
         return response()->json([
-            'saldo' => $total_saldo
+            'saldo' => $total_saldo,
         ]);
     }
 
@@ -2403,16 +2447,17 @@ class TransaksiController extends Controller
 
         $jenis = 'BKM';
         $dari = ucwords($trx->relasi);
-        $oleh = ucwords($user->namadepan . ' ' . $user->namabelakang);
+        $oleh = ucwords($user->namadepan.' '.$user->namabelakang);
         $dibayar = ucwords($trx->relasi);
         if ($trx->rekening_kredit == '1.1.01.01' or ($keuangan->startWith($trx->rekening_kredit, '1.1.02') || $keuangan->startWith($trx->rekening_kredit, '1.1.01'))) {
             $jenis = 'BKK';
-            $dari = $kec->sebutan_level_3 . " " . ucwords($kec->nama_lembaga_sort);
+            $dari = $kec->sebutan_level_3.' '.ucwords($kec->nama_lembaga_sort);
             $oleh = ucwords($trx->relasi);
-            $dibayar = ucwords($user->namadepan . ' ' . $user->namabelakang);
+            $dibayar = ucwords($user->namadepan.' '.$user->namabelakang);
         }
 
         $gambar = $kec->logo;
+
         return view('transaksi.dokumen.kuitansi')->with(compact('trx', 'kec', 'jenis', 'dari', 'oleh', 'dibayar', 'gambar', 'keuangan'));
     }
 
@@ -2431,16 +2476,17 @@ class TransaksiController extends Controller
 
         $jenis = 'BKM';
         $dari = ucwords($trx->relasi);
-        $oleh = ucwords(auth()->user()->namadepan . ' ' . auth()->user()->namabelakang);
+        $oleh = ucwords(auth()->user()->namadepan.' '.auth()->user()->namabelakang);
         $dibayar = ucwords($trx->relasi);
         if ($trx->rekening_kredit == '1.1.01.01' or ($keuangan->startWith($trx->rekening_kredit, '1.1.02') || $keuangan->startWith($trx->rekening_kredit, '1.1.01'))) {
             $jenis = 'BKK';
-            $dari = $kec->sebutan_level_3 . " " . ucwords($kec->nama_lembaga_sort);
+            $dari = $kec->sebutan_level_3.' '.ucwords($kec->nama_lembaga_sort);
             $oleh = ucwords($trx->relasi);
-            $dibayar = ucwords($user->namadepan . ' ' . $user->namabelakang);
+            $dibayar = ucwords($user->namadepan.' '.$user->namabelakang);
         }
 
         $gambar = $kec->logo;
+
         return view('transaksi.dokumen.kuitansi_thermal')->with(compact('trx', 'kec', 'jenis', 'dari', 'oleh', 'dibayar', 'gambar', 'keuangan', 'kertas'));
     }
 
@@ -2455,13 +2501,13 @@ class TransaksiController extends Controller
         $dir = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $sekr = User::where([
             ['level', '1'],
             ['jabatan', '3'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $dir_utama = User::where([
@@ -2471,6 +2517,7 @@ class TransaksiController extends Controller
         ])->first();
 
         $gambar = $kec->logo;
+
         return view('transaksi.dokumen.bkk')->with(compact('trx', 'kec', 'dir', 'sekr', 'dir_utama', 'gambar', 'keuangan'));
     }
 
@@ -2485,13 +2532,13 @@ class TransaksiController extends Controller
         $dir = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $sekr = User::where([
             ['level', '1'],
             ['jabatan', '3'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $dir_utama = User::where([
@@ -2501,6 +2548,7 @@ class TransaksiController extends Controller
         ])->first();
 
         $gambar = $kec->logo;
+
         return view('transaksi.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'dir_utama', 'gambar', 'keuangan'));
     }
 
@@ -2515,13 +2563,13 @@ class TransaksiController extends Controller
         $dir = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $sekr = User::where([
             ['level', '1'],
             ['jabatan', '3'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $dir_utama = User::where([
@@ -2531,6 +2579,7 @@ class TransaksiController extends Controller
         ])->first();
 
         $gambar = $kec->logo;
+
         return view('transaksi.dokumen.bm')->with(compact('trx', 'kec', 'dir', 'sekr', 'dir_utama', 'gambar', 'keuangan'));
     }
 
@@ -2545,13 +2594,13 @@ class TransaksiController extends Controller
         $dir = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $sekr = User::where([
             ['level', '1'],
             ['jabatan', '3'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $dir_utama = User::where([
@@ -2561,6 +2610,7 @@ class TransaksiController extends Controller
         ])->first();
 
         $gambar = $kec->logo;
+
         return view('transaksi.jurnal_angsuran.dokumen.bkm')->with(compact('trx', 'kec', 'dir', 'sekr', 'dir_utama', 'gambar', 'keuangan'));
     }
 
@@ -2575,13 +2625,13 @@ class TransaksiController extends Controller
         $data['dir'] = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $data['sekr'] = User::where([
             ['level', '1'],
             ['jabatan', '3'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $logo = $data['kec']->logo;
@@ -2590,6 +2640,7 @@ class TransaksiController extends Controller
 
         $view = view('transaksi.dokumen.cetak', $data)->render();
         $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+
         return $pdf->stream();
     }
 
@@ -2604,13 +2655,13 @@ class TransaksiController extends Controller
         $data['dir'] = User::where([
             ['level', '1'],
             ['jabatan', '1'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $data['sekr'] = User::where([
             ['level', '1'],
             ['jabatan', '3'],
-            ['lokasi', Session::get('lokasi')]
+            ['lokasi', Session::get('lokasi')],
         ])->first();
 
         $logo = $data['kec']->logo;
@@ -2619,10 +2670,13 @@ class TransaksiController extends Controller
 
         $view = view('transaksi.dokumen.cetak', $data)->render();
         $pdf = PDF::loadHTML($view)->setPaper('A4', 'landscape');
+
         return $pdf->stream();
     }
 
-    public function cetakKuitansi(Request $request) {}
+    public function cetakKuitansi(Request $request)
+    {
+    }
 
     public function lpp($id)
     {
@@ -2636,20 +2690,21 @@ class TransaksiController extends Controller
             'jasa',
             'target' => function ($query) {
                 $query->where('angsuran_ke', '1');
-            }
+            },
         ])->first();
 
         $data['rencana'] = RencanaAngsuran::where([
             ['loan_id', $id],
-            ['angsuran_ke', '!=', '0']
+            ['angsuran_ke', '!=', '0'],
         ])->with([
             'real' => function ($query) {
                 $query->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
             },
-            'ra'
+            'ra',
         ])->get();
 
-        $data['laporan'] = 'LPP Kelompok ' . $data['pinkel']->kelompok->nama_kelompok;
+        $data['laporan'] = 'LPP Kelompok '.$data['pinkel']->kelompok->nama_kelompok;
+
         return view('transaksi.jurnal_angsuran.dokumen.lpp', $data);
     }
 
@@ -2661,7 +2716,7 @@ class TransaksiController extends Controller
         if ($idtp == 0) {
             return response()->json([
                 'success' => false,
-                'msg' => 'Error'
+                'msg' => 'Error',
             ]);
         }
 
@@ -2669,17 +2724,17 @@ class TransaksiController extends Controller
 
         $transaksi = Transaksi::where([
             ['id_pinj', $pinkel->id],
-            ['idtp', $idtp]
+            ['idtp', $idtp],
         ])->get();
 
         $real = RealAngsuran::where([
             ['loan_id', $id_pinkel],
-            ['tgl_transaksi', '<=', $tgl_transaksi]
+            ['tgl_transaksi', '<=', $tgl_transaksi],
         ])->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
         $ra = RencanaAngsuran::where([
             ['loan_id', $id_pinkel],
             ['jatuh_tempo', '<=', $tgl_transaksi],
-            ['angsuran_ke', '!=', '0']
+            ['angsuran_ke', '!=', '0'],
         ])->orderBy('jatuh_tempo', 'DESC');
 
         $alokasi_pokok = intval($pinkel->alokasi);
@@ -2704,10 +2759,14 @@ class TransaksiController extends Controller
         }
 
         $tunggakan_pokok = $ra->target_pokok - $real->sum_pokok;
-        if ($tunggakan_pokok <= 0) $tunggakan_pokok = 0;
+        if ($tunggakan_pokok <= 0) {
+            $tunggakan_pokok = 0;
+        }
 
         $tunggakan_jasa = $ra->target_jasa - $real->sum_jasa;
-        if ($tunggakan_jasa <= 0) $tunggakan_jasa = 0;
+        if ($tunggakan_jasa <= 0) {
+            $tunggakan_jasa = 0;
+        }
 
         $insert = [
             'id' => $idtp,
@@ -2735,7 +2794,9 @@ class TransaksiController extends Controller
                 $insert['saldo_pokok'] -= $trx->jumlah;
                 $insert['tunggakan_pokok'] -= $trx->jumlah;
 
-                if ($insert['tunggakan_pokok'] <= 0) $insert['tunggakan_pokok'] = 0;
+                if ($insert['tunggakan_pokok'] <= 0) {
+                    $insert['tunggakan_pokok'] = 0;
+                }
             }
 
             if (in_array($trx->rekening_kredit, $rek_jasa)) {
@@ -2744,7 +2805,9 @@ class TransaksiController extends Controller
                 $insert['saldo_jasa'] -= $trx->jumlah;
                 $insert['tunggakan_jasa'] -= $trx->jumlah;
 
-                if ($insert['tunggakan_jasa'] <= 0) $insert['tunggakan_jasa'] = 0;
+                if ($insert['tunggakan_jasa'] <= 0) {
+                    $insert['tunggakan_jasa'] = 0;
+                }
             }
         }
 
@@ -2753,18 +2816,19 @@ class TransaksiController extends Controller
         }
 
         RealAngsuran::create($insert);
+
         return response()->json([
-            'success' => true
+            'success' => true,
         ]);
     }
 
     public function regenerateReal($pinkel)
     {
         $keuangan = new Keuangan;
-        if (!$pinkel) {
+        if (! $pinkel) {
             return response()->json([
                 'success' => false,
-                'msg' => 'Error'
+                'msg' => 'Error',
             ]);
         }
 
@@ -2774,9 +2838,9 @@ class TransaksiController extends Controller
             'tgl_transaksi'
         )->where([
             ['id_pinj', $pinkel->id],
-            ['idtp', '!=', '0']
+            ['idtp', '!=', '0'],
         ])->with([
-            'tr_idtp'
+            'tr_idtp',
         ])->groupBy('idtp', 'tgl_transaksi')->orderBy('tgl_transaksi', 'ASC')->orderBy('idtp', 'ASC')->get();
 
         $alokasi_pokok = intval($pinkel->alokasi);
@@ -2813,7 +2877,7 @@ class TransaksiController extends Controller
                 $ra = RencanaAngsuran::where([
                     ['loan_id', $id_pinkel],
                     ['jatuh_tempo', '<=', $tgl_transaksi],
-                    ['angsuran_ke', '!=', '0']
+                    ['angsuran_ke', '!=', '0'],
                 ])->orderBy('jatuh_tempo', 'DESC');
 
                 if ($ra->count() > 0) {
@@ -2828,7 +2892,9 @@ class TransaksiController extends Controller
                         $sum_pokok += intval($tr->jumlah);
 
                         $tunggakan_pokok = $ra->target_pokok - $sum_pokok;
-                        if ($tunggakan_pokok <= 0) $tunggakan_pokok = 0;
+                        if ($tunggakan_pokok <= 0) {
+                            $tunggakan_pokok = 0;
+                        }
 
                         $insert[$trx->idtp]['realisasi_pokok'] = $tr->jumlah;
                         $insert[$trx->idtp]['sum_pokok'] = $sum_pokok;
@@ -2840,7 +2906,9 @@ class TransaksiController extends Controller
                         $sum_jasa += intval($tr->jumlah);
 
                         $tunggakan_jasa = $ra->target_jasa - $sum_jasa;
-                        if ($tunggakan_jasa <= 0) $tunggakan_jasa = 0;
+                        if ($tunggakan_jasa <= 0) {
+                            $tunggakan_jasa = 0;
+                        }
 
                         $insert[$trx->idtp]['realisasi_jasa'] = $tr->jumlah;
                         $insert[$trx->idtp]['sum_jasa'] = $sum_jasa;
@@ -2856,7 +2924,7 @@ class TransaksiController extends Controller
         }
 
         return response()->json([
-            'success' => true
+            'success' => true,
         ]);
     }
 
@@ -2866,7 +2934,7 @@ class TransaksiController extends Controller
         $this->regenerateReal($pinkel);
 
         return response()->json([
-            'success' => true
+            'success' => true,
         ]);
     }
 }
