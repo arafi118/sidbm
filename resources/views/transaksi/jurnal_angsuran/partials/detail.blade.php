@@ -116,20 +116,23 @@
                             </button>
                         @endif
 
-                        @if (in_array('jurnal_angsuran.transaksi_reversal', Session::get('tombol')))
-                            <button type="button" data-idt="{{ $idt }}"
-                                class="btn btn-tumblr btn-icon-only btn-tooltip btn-reversal" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Reversal" data-container="body" data-animation="true">
-                                <span class="btn-inner--icon"><i class="fas fa-code-pull-request"></i></span>
-                            </button>
-                        @endif
+                        @if ($loop->last)
+                            @if (in_array('jurnal_angsuran.transaksi_reversal', Session::get('tombol')))
+                                <button type="button" data-idt="{{ $idt }}"
+                                    class="btn btn-tumblr btn-icon-only btn-tooltip btn-reversal"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Reversal"
+                                    data-container="body" data-animation="true">
+                                    <span class="btn-inner--icon"><i class="fas fa-code-pull-request"></i></span>
+                                </button>
+                            @endif
 
-                        @if (in_array('jurnal_angsuran.penghapusan_transaksi_angsuran', Session::get('tombol')) || $isDirektur)
-                            <button type="button" data-idt="{{ $idt }}"
-                                class="btn btn-github btn-icon-only btn-tooltip btn-delete" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="Hapus" data-container="body" data-animation="true">
-                                <span class="btn-inner--icon"><i class="fas fa-trash-can"></i></span>
-                            </button>
+                            @if (in_array('jurnal_angsuran.penghapusan_transaksi_angsuran', Session::get('tombol')) || $isDirektur)
+                                <button type="button" data-idt="{{ $idt }}"
+                                    class="btn btn-github btn-icon-only btn-tooltip btn-delete" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Hapus" data-container="body" data-animation="true">
+                                    <span class="btn-inner--icon"><i class="fas fa-trash-can"></i></span>
+                                </button>
+                            @endif
                         @endif
                     </div>
                 </td>

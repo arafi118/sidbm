@@ -273,22 +273,30 @@
                                 </button>
                             @endif
 
-                            @if (in_array('jurnal_umum.transaksi_reversal', Session::get('tombol')))
-                                <button type="button" data-idt="{{ $trx->idt }}"
-                                    class="btn btn-tumblr btn-icon-only btn-tooltip btn-reversal"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Reversal"
-                                    data-container="body" data-animation="true">
-                                    <span class="btn-inner--icon"><i class="fas fa-code-pull-request"></i></span>
-                                </button>
-                            @endif
+                            @if (
+                                !(
+                                    $keuangan->startWith($trx->rekening_debit, '1.1.03') ||
+                                    $keuangan->startWith($trx->rekening_kredit, '1.1.03') ||
+                                    $keuangan->startWith($trx->rekening_debit, '4.1.01') ||
+                                    $keuangan->startWith($trx->rekening_kredit, '4.1.01')
+                                ))
+                                @if (in_array('jurnal_umum.transaksi_reversal', Session::get('tombol')))
+                                    <button type="button" data-idt="{{ $trx->idt }}"
+                                        class="btn btn-tumblr btn-icon-only btn-tooltip btn-reversal"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Reversal"
+                                        data-container="body" data-animation="true">
+                                        <span class="btn-inner--icon"><i class="fas fa-code-pull-request"></i></span>
+                                    </button>
+                                @endif
 
-                            @if (in_array('jurnal_umum.penghapusan_transaksi', Session::get('tombol')) || $isDirektur)
-                                <button type="button" data-idt="{{ $trx->idt }}"
-                                    class="btn btn-github btn-icon-only btn-tooltip btn-delete"
-                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus"
-                                    data-container="body" data-animation="true">
-                                    <span class="btn-inner--icon"><i class="fas fa-trash-can"></i></span>
-                                </button>
+                                @if (in_array('jurnal_umum.penghapusan_transaksi', Session::get('tombol')) || $isDirektur)
+                                    <button type="button" data-idt="{{ $trx->idt }}"
+                                        class="btn btn-github btn-icon-only btn-tooltip btn-delete"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus"
+                                        data-container="body" data-animation="true">
+                                        <span class="btn-inner--icon"><i class="fas fa-trash-can"></i></span>
+                                    </button>
+                                @endif
                             @endif
                         </div>
                     </td>
