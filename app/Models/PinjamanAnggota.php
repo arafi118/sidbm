@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Traits\TenantAware;
 use Illuminate\Database\Eloquent\Model;
-use Session;
 
 class PinjamanAnggota extends Model
 {
     use TenantAware;
+
     protected $baseTable = 'pinjaman_anggota';
+
     public $timestamps = false;
 
     protected $guarded = ['id'];
@@ -17,6 +18,16 @@ class PinjamanAnggota extends Model
     public function sts()
     {
         return $this->belongsTo(StatusPinjaman::class, 'status', 'kd_status');
+    }
+
+    public function sis_pokok()
+    {
+        return $this->belongsTo(SistemAngsuran::class, 'sistem_angsuran');
+    }
+
+    public function sis_jasa()
+    {
+        return $this->belongsTo(SistemAngsuran::class, 'sa_jasa');
     }
 
     public function pinkel()
