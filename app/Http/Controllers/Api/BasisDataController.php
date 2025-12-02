@@ -93,6 +93,11 @@ class BasisDataController extends Controller
             ->select('anggota.*', 'desa.nama_desa', 'desa.kd_desa', 'sebutan_desa.sebutan_desa')
             ->join('desa', 'anggota.desa', '=', 'desa.kd_desa')
             ->join('sebutan_desa', 'desa.sebutan', '=', 'sebutan_desa.id')
+            ->with([
+                'pinjaman' => function ($query) {
+                    $query->orderBy('id', 'DESC');
+                },
+            ])
             ->where(function ($query) use ($search) {
                 $query->where('anggota.namadepan', 'like', '%'.$search.'%')
                     ->orWhere('anggota.nik', 'like', '%'.$search.'%')
