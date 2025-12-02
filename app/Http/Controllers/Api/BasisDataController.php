@@ -57,16 +57,19 @@ class BasisDataController extends Controller
         $perPage = request()->get('per_page') ?? 10;
         $sortBy = request()->get('sort_by') ?? 'id';
         $sortOrder = request()->get('sort_order') ?? 'asc';
-        $search = request()->get('search') ?? [];
+        $search = request()->get('search') ?? '';
 
         $kecamatan = Kecamatan::where('id', request()->user()->lokasi)->first();
 
-        $query = Desa::query()->where('kd_kec', $kecamatan->kd_kec);
-        foreach ($search as $key => $value) {
-            if (! empty($value)) {
-                $query->where($key, 'like', '%'.$value.'%');
-            }
-        }
+        $query = Desa::query()
+            ->select('desa.*', 'sebutan_desa.sebutan_desa')
+            ->join('sebutan_desa', 'desa.sebutan', '=', 'sebutan_desa.id')
+            ->where('desa.kd_kec', $kecamatan->kd_kec)
+            ->where(function ($query) use ($search) {
+                $query->where('desa.nama_desa', 'like', '%'.$search.'%')
+                    ->orWhere('desa.kd_desa', 'like', '%'.$search.'%')
+                    ->orWhere('sebutan_desa.sebutan_desa', 'like', '%'.$search.'%');
+            });
 
         $data = $query->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);
 
