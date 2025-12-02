@@ -34,22 +34,18 @@ class BasisDataController extends Controller
                 [
                     'nama' => 'Desa',
                     'jumlah' => $jumlahDesa,
-                    'apiEndpoint' => '/desa',
                 ],
                 [
                     'nama' => 'Penduduk',
                     'jumlah' => $jumlahAnggota,
-                    'apiEndpoint' => '/penduduk',
                 ],
                 [
                     'nama' => 'Kelompok',
                     'jumlah' => $jumlahKelompok,
-                    'apiEndpoint' => '/kelompok',
                 ],
                 [
                     'nama' => 'Lembaga Lain',
                     'jumlah' => $jumlahLembagaLain,
-                    'apiEndpoint' => '/lembaga-lain',
                 ],
             ],
         ]);
