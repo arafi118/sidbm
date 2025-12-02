@@ -118,14 +118,25 @@ class BasisDataController extends Controller
         $perPage = request()->get('per_page') ?? 10;
         $sortBy = request()->get('sort_by') ?? 'id';
         $sortOrder = request()->get('sort_order') ?? 'asc';
-        $search = request()->get('search') ?? [];
+        $search = request()->get('search') ?? '';
 
-        $query = Kelompok::query()->where('jenis_produk_pinjaman', '!=', 3);
-        foreach ($search as $key => $value) {
-            if (! empty($value)) {
-                $query->where($key, 'like', '%'.$value.'%');
-            }
-        }
+        $tb_kelompok = 'kelompok_'.request()->user()->lokasi;
+
+        $query = Kelompok::from($tb_kelompok.' as kelompok')
+            ->select('kelompok.*', 'desa.nama_desa', 'desa.kd_desa', 'sebutan_desa.sebutan_desa')
+            ->join('desa', 'kelompok.desa', '=', 'desa.kd_desa')
+            ->join('sebutan_desa', 'desa.sebutan', '=', 'sebutan_desa.id')
+            ->with([
+                'pinjaman' => function ($query) {
+                    $query->orderBy('tgl_proposal', 'DESC');
+                },
+            ])
+            ->where('kelompok.jenis_produk_pinjaman', '!=', 3)
+            ->where(function ($query) use ($search) {
+                $query->where('kelompok.nama_kelompok', 'like', '%'.$search.'%')
+                    ->orWhere('kelompok.kd_kelompok', 'like', '%'.$search.'%')
+                    ->orWhere('desa.nama_desa', 'like', '%'.$search.'%');
+            });
 
         $data = $query->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);
 
@@ -141,14 +152,25 @@ class BasisDataController extends Controller
         $perPage = request()->get('per_page') ?? 10;
         $sortBy = request()->get('sort_by') ?? 'id';
         $sortOrder = request()->get('sort_order') ?? 'asc';
-        $search = request()->get('search') ?? [];
+        $search = request()->get('search') ?? '';
 
-        $query = Kelompok::query()->where('jenis_produk_pinjaman', '=', 3);
-        foreach ($search as $key => $value) {
-            if (! empty($value)) {
-                $query->where($key, 'like', '%'.$value.'%');
-            }
-        }
+        $tb_kelompok = 'kelompok_'.request()->user()->lokasi;
+
+        $query = Kelompok::from($tb_kelompok.' as kelompok')
+            ->select('kelompok.*', 'desa.nama_desa', 'desa.kd_desa', 'sebutan_desa.sebutan_desa')
+            ->join('desa', 'kelompok.desa', '=', 'desa.kd_desa')
+            ->join('sebutan_desa', 'desa.sebutan', '=', 'sebutan_desa.id')
+            ->with([
+                'pinjaman' => function ($query) {
+                    $query->orderBy('tgl_proposal', 'DESC');
+                },
+            ])
+            ->where('kelompok.jenis_produk_pinjaman', '=', 3)
+            ->where(function ($query) use ($search) {
+                $query->where('kelompok.nama_kelompok', 'like', '%'.$search.'%')
+                    ->orWhere('kelompok.kd_kelompok', 'like', '%'.$search.'%')
+                    ->orWhere('desa.nama_desa', 'like', '%'.$search.'%');
+            });
 
         $data = $query->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);
 
