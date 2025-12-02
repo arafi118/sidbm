@@ -138,6 +138,7 @@ class BasisDataController extends Controller
                 'pinjaman.jangka',
                 'pinjaman.sistem_angsuran',
                 'pinjaman.sa_jasa',
+                'pinjaman.status',
                 'kelompok.nama_kelompok',
                 'kelompok.alamat_kelompok',
                 'kelompok.desa',
