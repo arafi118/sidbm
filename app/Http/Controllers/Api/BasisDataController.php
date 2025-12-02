@@ -33,21 +33,25 @@ class BasisDataController extends Controller
             'data' => [
                 [
                     'nama' => 'Desa',
-                    'jumlah' => $jumlahDesa
+                    'jumlah' => $jumlahDesa,
+                    'apiEndpoint' => '/desa',
                 ],
                 [
                     'nama' => 'Penduduk',
-                    'jumlah' => $jumlahAnggota
+                    'jumlah' => $jumlahAnggota,
+                    'apiEndpoint' => '/penduduk',
                 ],
                 [
                     'nama' => 'Kelompok',
-                    'jumlah' => $jumlahKelompok
+                    'jumlah' => $jumlahKelompok,
+                    'apiEndpoint' => '/kelompok',
                 ],
                 [
                     'nama' => 'Lembaga Lain',
-                    'jumlah' => $jumlahLembagaLain
+                    'jumlah' => $jumlahLembagaLain,
+                    'apiEndpoint' => '/lembaga-lain',
                 ],
-            ]
+            ],
         ]);
     }
 
@@ -63,15 +67,16 @@ class BasisDataController extends Controller
 
         $query = Desa::query()->where('kd_kec', $kecamatan->kd_kec);
         foreach ($search as $key => $value) {
-            if (!empty($value)) {
-                $query->where($key, 'like', '%' . $value . '%');
+            if (! empty($value)) {
+                $query->where($key, 'like', '%'.$value.'%');
             }
         }
 
         $data = $query->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);
+
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => $data,
         ], 200);
     }
 
@@ -85,15 +90,16 @@ class BasisDataController extends Controller
 
         $query = Anggota::query();
         foreach ($search as $key => $value) {
-            if (!empty($value)) {
-                $query->where($key, 'like', '%' . $value . '%');
+            if (! empty($value)) {
+                $query->where($key, 'like', '%'.$value.'%');
             }
         }
 
         $data = $query->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);
+
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => $data,
         ], 200);
     }
 
@@ -107,15 +113,16 @@ class BasisDataController extends Controller
 
         $query = Kelompok::query()->where('jenis_produk_pinjaman', '!=', 3);
         foreach ($search as $key => $value) {
-            if (!empty($value)) {
-                $query->where($key, 'like', '%' . $value . '%');
+            if (! empty($value)) {
+                $query->where($key, 'like', '%'.$value.'%');
             }
         }
 
         $data = $query->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);
+
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => $data,
         ], 200);
     }
 
@@ -129,15 +136,16 @@ class BasisDataController extends Controller
 
         $query = Kelompok::query()->where('jenis_produk_pinjaman', '=', 3);
         foreach ($search as $key => $value) {
-            if (!empty($value)) {
-                $query->where($key, 'like', '%' . $value . '%');
+            if (! empty($value)) {
+                $query->where($key, 'like', '%'.$value.'%');
             }
         }
 
         $data = $query->orderBy($sortBy, $sortOrder)->paginate($perPage, ['*'], 'page', $page);
+
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data' => $data,
         ], 200);
     }
 }
