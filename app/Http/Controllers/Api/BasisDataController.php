@@ -124,6 +124,7 @@ class BasisDataController extends Controller
             ->select(
                 'pinjaman.id',
                 'pinjaman.id_kel',
+                'pinjaman.id_pinkel',
                 'pinjaman.jenis_pp',
                 'pinjaman.tgl_proposal',
                 'pinjaman.tgl_verifikasi',
