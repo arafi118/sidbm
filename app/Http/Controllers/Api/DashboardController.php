@@ -260,6 +260,7 @@ class DashboardController extends Controller
                 'pinkel.tgl_cair',
                 'kelompok.nama_kelompok',
                 'kelompok.ketua',
+                'kelompok.alamat_kelompok',
                 'desa.nama_desa',
                 DB::raw('COALESCE(SUM(target.wajib_pokok), 0) as target_pokok'),
                 DB::raw('COALESCE(SUM(target.wajib_jasa), 0) as target_jasa'),
