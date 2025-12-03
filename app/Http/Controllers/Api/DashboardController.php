@@ -384,7 +384,7 @@ class DashboardController extends Controller
                     SUM(wajib_pokok) as total_wajib_pokok,
                     SUM(wajib_jasa) as total_wajib_jasa
                 FROM $tb_rencana
-                WHERE jatuh_tempo <= '$tgl'
+                WHERE jatuh_tempo = '$tgl'
                 AND angsuran_ke != '0'
                 GROUP BY loan_id
             ) as target_sum"), 'target_sum.loan_id', '=', 'pinkel.id')
