@@ -40,6 +40,7 @@ Route::group(['middleware' => ['tenant', 'auth:sanctum'], 'prefix' => 'v1'], fun
     Route::get('/basis-data/penduduk/{id}', [BasisDataController::class, 'detailPenduduk']);
     Route::get('/basis-data/kelompok', [BasisDataController::class, 'kelompok']);
     Route::get('/basis-data/lembaga-lain', [BasisDataController::class, 'lembagaLain']);
+    Route::get('/basis-data/kelompok/{id}', [BasisDataController::class, 'detailKelompok']);
 
     Route::get('/angsuran', [AngsuranController::class, 'index']);
     Route::get('/angsuran/search', [AngsuranController::class, 'search']);

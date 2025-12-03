@@ -8,6 +8,7 @@ use App\Models\Desa;
 use App\Models\Kecamatan;
 use App\Models\Kelompok;
 use App\Models\PinjamanAnggota;
+use App\Models\PinjamanKelompok;
 use Illuminate\Support\Facades\DB;
 
 class BasisDataController extends Controller
@@ -230,6 +231,58 @@ class BasisDataController extends Controller
         return response()->json([
             'success' => true,
             'data' => $data,
+        ], 200);
+    }
+
+    public function detailKelompok($id)
+    {
+        $user = request()->user();
+
+        $tb_pinjaman = 'pinjaman_kelompok_'.$user->lokasi;
+        $tb_kelompok = 'kelompok_'.$user->lokasi;
+
+        $pinjaman = PinjamanKelompok::from($tb_pinjaman.' as pinjaman')
+            ->select(
+                'pinjaman.id',
+                'pinjaman.id_kel',
+                'pinjaman.jenis_pp',
+                'pinjaman.tgl_proposal',
+                'pinjaman.tgl_verifikasi',
+                'pinjaman.tgl_tunggu',
+                'pinjaman.tgl_cair',
+                'pinjaman.proposal',
+                'pinjaman.verifikasi',
+                'pinjaman.alokasi',
+                'pinjaman.jenis_jasa',
+                'pinjaman.pros_jasa',
+                'pinjaman.jangka',
+                'pinjaman.sistem_angsuran',
+                'pinjaman.sa_jasa',
+                'pinjaman.status',
+                'pinjaman.struktur_kelompok',
+                'kelompok.nama_kelompok',
+                'kelompok.alamat_kelompok',
+                'kelompok.desa',
+                'desa.nama_desa',
+                'jenis_produk_pinjaman.nama_jpp',
+                'jenis_jasa.nama_jj',
+            )
+            ->join('jenis_produk_pinjaman', 'pinjaman.jenis_pp', '=', 'jenis_produk_pinjaman.id')
+            ->join('jenis_jasa', 'pinjaman.jenis_jasa', '=', 'jenis_jasa.id')
+            ->join($tb_kelompok.' as kelompok', 'pinjaman.id_kel', '=', 'kelompok.id')
+            ->join('desa', 'kelompok.desa', '=', 'desa.kd_desa')
+            ->join('sebutan_desa', 'desa.sebutan', '=', 'sebutan_desa.id')
+            ->with([
+                'sis_pokok',
+                'sis_jasa',
+            ])
+            ->where('pinjaman.id_kel', $id)
+            ->orderBy('pinjaman.tgl_proposal', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $pinjaman,
         ], 200);
     }
 }
