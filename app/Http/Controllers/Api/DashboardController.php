@@ -251,6 +251,7 @@ class DashboardController extends Controller
         $tb_pinkel = 'pinjaman_kelompok_'.$user->lokasi;
         $tb_rencana = 'rencana_angsuran_'.$user->lokasi;
         $tb_realiasi = 'real_angsuran_'.$user->lokasi;
+        $tb_pinj = 'pinjaman_anggota_'.$user->lokasi;
         $tb_kel = 'kelompok_'.$user->lokasi;
 
         $dataTunggakan = PinjamanKelompok::from("$tb_pinkel as pinkel")
@@ -262,6 +263,8 @@ class DashboardController extends Controller
                 'kelompok.ketua',
                 'kelompok.alamat_kelompok',
                 'desa.nama_desa',
+                'jenis_produk_pinjaman.nama_jpp',
+                DB::raw('COUNT(DISTINCT pa.id) as jumlah_anggota'),
                 DB::raw('COALESCE(SUM(target.wajib_pokok), 0) as target_pokok'),
                 DB::raw('COALESCE(SUM(target.wajib_jasa), 0) as target_jasa'),
                 DB::raw('COALESCE(SUM(saldo.realisasi_pokok), 0) as sum_pokok'),
@@ -269,7 +272,9 @@ class DashboardController extends Controller
                 DB::raw('GREATEST(COALESCE(SUM(target.wajib_pokok), 0) - COALESCE(SUM(saldo.realisasi_pokok), 0), 0) as tunggakan_pokok'),
                 DB::raw('GREATEST(COALESCE(SUM(target.wajib_jasa), 0) - COALESCE(SUM(saldo.realisasi_jasa), 0), 0) as tunggakan_jasa'),
             ])
+            ->join('jenis_produk_pinjaman', 'pinkel.jenis_pp', '=', 'jenis_produk_pinjaman.id')
             ->join("$tb_kel as kelompok", 'pinkel.id_kel', '=', 'kelompok.id')
+            ->leftJoin("$tb_pinj as pa", 'pa.id_pinkel', '=', 'pinkel.id')
             ->join('desa', 'kelompok.desa', '=', 'desa.kd_desa')
             ->leftJoin("$tb_rencana as target", function ($join) use ($tgl) {
                 $join->on('pinkel.id', '=', 'target.loan_id')
@@ -298,11 +303,27 @@ class DashboardController extends Controller
                 'pinkel.tgl_cair',
                 'kelompok.nama_kelompok',
                 'kelompok.ketua',
-                'desa.nama_desa'
+                'kelompok.alamat_kelompok',
+                'desa.nama_desa',
+                'jenis_produk_pinjaman.nama_jpp'
             )
-            ->havingRaw('tunggakan_pokok > 0 OR tunggakan_jasa > 0')
-            ->orderBy($sortBy, $sortOrder)
-            ->paginate($perPage, ['*'], 'page', $page);
+            ->havingRaw('tunggakan_pokok > 0 OR tunggakan_jasa > 0');
+
+        $allowedSorts = [
+            'id' => 'pinkel.id',
+            'tgl_cair' => 'pinkel.tgl_cair',
+            'nama_kelompok' => 'kelompok.nama_kelompok',
+            'ketua' => 'kelompok.ketua',
+            'desa' => 'desa.nama_desa',
+            'tunggakan_pokok' => 'tunggakan_pokok',
+            'tunggakan_jasa' => 'tunggakan_jasa',
+            'jumlah_anggota' => 'jumlah_anggota',
+        ];
+
+        $sortColumn = $allowedSorts[$sortBy] ?? 'pinkel.id';
+        $dataTunggakan = $dataTunggakan->orderByRaw("$sortColumn $sortOrder");
+
+        $dataTunggakan = $dataTunggakan->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json([
             'success' => true,
