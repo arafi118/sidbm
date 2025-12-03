@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdminInvoice;
-use App\Models\AkunLevel1;
-use App\Models\Desa;
 use App\Models\Kecamatan;
 use App\Models\PinjamanAnggota;
 use App\Models\PinjamanKelompok;
@@ -15,9 +13,9 @@ use App\Models\Saldo;
 use App\Models\Transaksi;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
-use Illuminate\Http\Request;
 use Cookie;
 use DB;
+use Illuminate\Http\Request;
 use Session;
 
 class DashboardController extends Controller
@@ -32,25 +30,25 @@ class DashboardController extends Controller
 
         $tgl_pakai = $kec->tgl_pakai;
         $tgl = date('Y-m-d');
-        $jumlah = 1 + (date("Y", strtotime($tgl)) - date("Y", strtotime($tgl_pakai))) * 12;
-        $jumlah += date("m", strtotime($tgl)) - date("m", strtotime($tgl_pakai));
+        $jumlah = 1 + (date('Y', strtotime($tgl)) - date('Y', strtotime($tgl_pakai))) * 12;
+        $jumlah += date('m', strtotime($tgl)) - date('m', strtotime($tgl_pakai));
         $data['jumlah'] = Rekening::count() + $jumlah;
-        $data['request'] = '?tahun=' . date('Y', strtotime($tgl_pakai)) . '&bulan=' . date('m');
+        $data['request'] = '?tahun='.date('Y', strtotime($tgl_pakai)).'&bulan='.date('m');
 
         $pinj_anggota = PinjamanAnggota::where([
             ['status', 'A'],
-            ['tgl_cair', '<=', $tgl]
+            ['tgl_cair', '<=', $tgl],
         ])->count();
 
         $pinkel = PinjamanKelompok::where([
             ['status', 'A'],
-            ['tgl_cair', '<=', $tgl]
+            ['tgl_cair', '<=', $tgl],
         ])->count();
 
         $data['pinjaman_anggota'] = $pinj_anggota;
         $data['pinjaman_kelompok'] = $pinkel;
 
-        $tb = 'pinjaman_kelompok_' . Session::get('lokasi');
+        $tb = 'pinjaman_kelompok_'.Session::get('lokasi');
         $pinj = PinjamanKelompok::select([
             DB::raw("(SELECT count(*) FROM $tb WHERE status='P') as p"),
             DB::raw("(SELECT count(*) FROM $tb WHERE status='V') as v"),
@@ -66,7 +64,7 @@ class DashboardController extends Controller
             $data['waiting'] = $pinj->w;
         }
 
-        $tb = 'transaksi_' . Session::get('lokasi');
+        $tb = 'transaksi_'.Session::get('lokasi');
         $trx = Transaksi::select([
             DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_debit LIKE '1.1.01.%' AND rekening_kredit='1.1.03.01' AND tgl_transaksi='$tgl') as pokok_spp"),
             DB::raw("(SELECT SUM(jumlah) as j FROM $tb WHERE rekening_debit LIKE '1.1.01.%' AND rekening_kredit='1.1.03.02' AND tgl_transaksi='$tgl') as pokok_uep"),
@@ -106,10 +104,11 @@ class DashboardController extends Controller
         $data['kec'] = $kec;
         $data['user'] = auth()->user();
         $data['charts'] = json_encode($this->_saldo($tgl));
-        $data['jumlah_saldo'] = Saldo::where('kode_akun', 'NOT LIKE', $kec->kd_kec . '%')->count();
+        $data['jumlah_saldo'] = Saldo::where('kode_akun', 'NOT LIKE', $kec->kd_kec.'%')->count();
 
         $data['api'] = env('APP_API', 'http://localhost:8080');
-        $data['title'] = "Dashboard";
+        $data['title'] = 'Dashboard';
+
         return view('dashboard.index')->with($data);
     }
 
@@ -119,10 +118,10 @@ class DashboardController extends Controller
         if ($status == 'P') {
             $tgl = 'tgl_proposal';
             $alokasi = 'proposal';
-        } else if ($status == 'V') {
+        } elseif ($status == 'V') {
             $tgl = 'tgl_verifikasi';
             $alokasi = 'verifikasi';
-        } else if ($status == 'W') {
+        } elseif ($status == 'W') {
             $tgl = 'tgl_tunggu';
             $alokasi = 'alokasi';
         } else {
@@ -140,22 +139,22 @@ class DashboardController extends Controller
 
             $table .= '<tr>';
             if ($pinkel->status == 'A') {
-                $table .= '<td align="center">' . $no . '</td>';
-                $table .= '<td align="center">' . Tanggal::tglIndo($pinkel->tgl_cair) . '</td>';
-                $table .= '<td class="text-start d-flex justify-content-between">' . $pinkel->kelompok->nama_kelompok . '(' . $pinkel->jpp->nama_jpp . ') <span class="badge badge-' . $status . '">Loan ID. ' . $pinkel->id . '</span></td>';
-                $table .= '<td align="right">' . number_format($pinkel->alokasi) . '</td>';
+                $table .= '<td align="center">'.$no.'</td>';
+                $table .= '<td align="center">'.Tanggal::tglIndo($pinkel->tgl_cair).'</td>';
+                $table .= '<td class="text-start d-flex justify-content-between">'.$pinkel->kelompok->nama_kelompok.'('.$pinkel->jpp->nama_jpp.') <span class="badge badge-'.$status.'">Loan ID. '.$pinkel->id.'</span></td>';
+                $table .= '<td align="right">'.number_format($pinkel->alokasi).'</td>';
                 if ($pinkel->saldo) {
-                    $table .= '<td align="right">' . number_format($pinkel->saldo->saldo_pokok) . '</td>';
+                    $table .= '<td align="right">'.number_format($pinkel->saldo->saldo_pokok).'</td>';
                 } else {
-                    $table .= '<td align="right">' . number_format($pinkel->$alokasi) . '</td>';
+                    $table .= '<td align="right">'.number_format($pinkel->$alokasi).'</td>';
                 }
-                $table .= '<td align="center">' . $pinkel->pinjaman_anggota_count . '</td>';
+                $table .= '<td align="center">'.$pinkel->pinjaman_anggota_count.'</td>';
             } else {
-                $table .= '<td align="center">' . $no . '</td>';
-                $table .= '<td align="center">' . Tanggal::tglIndo($pinkel->$tgl) . '</td>';
-                $table .= '<td class="text-start d-flex justify-content-between">' . $pinkel->kelompok->nama_kelompok . '(' . $pinkel->jpp->nama_jpp . ') <span class="badge badge-' . $status . '">Loan ID. ' . $pinkel->id . '</span></td>';
-                $table .= '<td align="right">' . number_format($pinkel->$alokasi) . '</td>';
-                $table .= '<td align="center">' . $pinkel->pinjaman_anggota_count . '</td>';
+                $table .= '<td align="center">'.$no.'</td>';
+                $table .= '<td align="center">'.Tanggal::tglIndo($pinkel->$tgl).'</td>';
+                $table .= '<td class="text-start d-flex justify-content-between">'.$pinkel->kelompok->nama_kelompok.'('.$pinkel->jpp->nama_jpp.') <span class="badge badge-'.$status.'">Loan ID. '.$pinkel->id.'</span></td>';
+                $table .= '<td align="right">'.number_format($pinkel->$alokasi).'</td>';
+                $table .= '<td align="center">'.$pinkel->pinjaman_anggota_count.'</td>';
             }
             $table .= '</tr>';
 
@@ -164,7 +163,7 @@ class DashboardController extends Controller
 
         return response()->json([
             'success' => true,
-            'table' => $table
+            'table' => $table,
         ]);
     }
 
@@ -174,10 +173,10 @@ class DashboardController extends Controller
         if ($status == 'P') {
             $tgl = 'tgl_proposal';
             $alokasi = 'proposal';
-        } else if ($status == 'V') {
+        } elseif ($status == 'V') {
             $tgl = 'tgl_verifikasi';
             $alokasi = 'verifikasi';
-        } else if ($status == 'W') {
+        } elseif ($status == 'W') {
             $tgl = 'tgl_tunggu';
             $alokasi = 'alokasi';
         } else {
@@ -192,22 +191,22 @@ class DashboardController extends Controller
             'anggota',
             'anggota.d',
             'anggota.d.sebutan_desa',
-            'kelompok'
+            'kelompok',
         ])->orderBy('tgl_cair', 'ASC')->get();
         foreach ($pinjaman as $pinkel) {
             $nama_desa = '';
             if ($pinkel->anggota->d) {
-                $nama_desa = $pinkel->anggota->d->sebutan_desa->sebutan_desa . ' ' . $pinkel->anggota->d->nama_desa;
+                $nama_desa = $pinkel->anggota->d->sebutan_desa->sebutan_desa.' '.$pinkel->anggota->d->nama_desa;
             }
             $table .= '<tr>';
 
-            $table .= '<td align="center">' . $no . '</td>';
-            $table .= '<td>' . $pinkel->kelompok->nama_kelompok . ' - Loan ID. ' . $pinkel->id_pinkel . '</td>';
-            $table .= '<td align="center">' . $pinkel->anggota->nik . '</td>';
-            $table .= '<td>' . $pinkel->anggota->namadepan . '</td>';
-            $table .= '<td>' . $nama_desa . ' ' . $pinkel->anggota->alamat . '</td>';
-            $table .= '<td align="center">' . Tanggal::tglIndo($pinkel->$tgl) . '</td>';
-            $table .= '<td align="right">' . number_format($pinkel->$alokasi) . '</td>';
+            $table .= '<td align="center">'.$no.'</td>';
+            $table .= '<td>'.$pinkel->kelompok->nama_kelompok.' - Loan ID. '.$pinkel->id_pinkel.'</td>';
+            $table .= '<td align="center">'.$pinkel->anggota->nik.'</td>';
+            $table .= '<td>'.$pinkel->anggota->namadepan.'</td>';
+            $table .= '<td>'.$nama_desa.' '.$pinkel->anggota->alamat.'</td>';
+            $table .= '<td align="center">'.Tanggal::tglIndo($pinkel->$tgl).'</td>';
+            $table .= '<td align="right">'.number_format($pinkel->$alokasi).'</td>';
 
             $table .= '</tr>';
 
@@ -216,15 +215,15 @@ class DashboardController extends Controller
 
         return response()->json([
             'success' => true,
-            'table' => $table
+            'table' => $table,
         ]);
     }
 
     public function piutang()
     {
         $thn = date('Y');
-        $thn_lalu = ($thn - 1) . "-12-31";
-        $thn_awal = $thn . "-01-01";
+        $thn_lalu = ($thn - 1).'-12-31';
+        $thn_awal = $thn.'-01-01';
 
         $year = date('Y');
         $month = date('m');
@@ -238,7 +237,7 @@ class DashboardController extends Controller
             foreach ($pinjaman_kelompok as $pinkel) {
                 $real = RealAngsuran::where([
                     ['loan_id', $pinkel->id],
-                    ['tgl_transaksi', '<=', $year . '-' . $month . '-' . $day]
+                    ['tgl_transaksi', '<=', $year.'-'.$month.'-'.$day],
                 ])->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
 
                 if ($real->count() > 0) {
@@ -250,8 +249,8 @@ class DashboardController extends Controller
 
                 $ra = RencanaAngsuran::where([
                     ['loan_id', $pinkel->id],
-                    ['jatuh_tempo', '<=', $year . '-' . $month . '-' . $day],
-                    ['angsuran_ke', '!=', '0']
+                    ['jatuh_tempo', '<=', $year.'-'.$month.'-'.$day],
+                    ['angsuran_ke', '!=', '0'],
                 ])->orderBy('id', 'DESC');
 
                 if ($pinkel->jenis_pp == '1') {
@@ -282,7 +281,7 @@ class DashboardController extends Controller
                         'idtp' => 0,
                         'id_pinj' => $pinkel->id,
                         'id_pinj_i' => 0,
-                        'keterangan_transaksi' => 'Hutang jasa ' . $pinkel->kelompok->nama_kelompok . '(' . $pinkel->id . ') angsuran ke ' . $rencana->angsuran_ke,
+                        'keterangan_transaksi' => 'Hutang jasa '.$pinkel->kelompok->nama_kelompok.'('.$pinkel->id.') angsuran ke '.$rencana->angsuran_ke,
                         'relasi' => $pinkel->kelompok->nama_kelompok,
                         'jumlah' => $nunggak_jasa,
                         'urutan' => 0,
@@ -302,8 +301,8 @@ class DashboardController extends Controller
     private function _piutang()
     {
         $thn = date('Y');
-        $thn_lalu = ($thn - 1) . "-12-31";
-        $thn_awal = $thn . "-01-01";
+        $thn_lalu = ($thn - 1).'-12-31';
+        $thn_awal = $thn.'-01-01';
 
         $piutang_jasa = [];
         $piutang_jasa['1.1.03.04'] = 0;
@@ -335,12 +334,12 @@ class DashboardController extends Controller
             $ra = RencanaAngsuran::where([
                 ['loan_id', '=', $pinkel->id],
                 ['jatuh_tempo', '<=', $thn_lalu],
-                ['angsuran_ke', '!=', '0']
+                ['angsuran_ke', '!=', '0'],
             ])->orderBy('jatuh_tempo', 'DESC');
 
             $real = RealAngsuran::where([
                 ['loan_id', '=', $pinkel->id],
-                ['tgl_transaksi', '<=', $thn_lalu]
+                ['tgl_transaksi', '<=', $thn_lalu],
             ])->orderBy('tgl_transaksi', 'DESC');
 
             if ($real->count() > 0) {
@@ -363,13 +362,13 @@ class DashboardController extends Controller
 
             if (Keuangan::startWith($key, '4.1.01')) {
                 $update = [
-                    'tbk' . (date('Y') - 1) => $rek->tbk2022 + $val
+                    'tbk'.(date('Y') - 1) => $rek->tbk2022 + $val,
                 ];
 
                 $kd_rek = $rek->tbk2022;
             } else {
                 $update = [
-                    'tb' . (date('Y') - 1) => $rek->tb_2022 + $val
+                    'tb'.(date('Y') - 1) => $rek->tb_2022 + $val,
                 ];
                 $kd_rek = $rek->tb2022;
             }
@@ -389,14 +388,14 @@ class DashboardController extends Controller
             'target' => function ($query) use ($tgl) {
                 $query->where([
                     ['jatuh_tempo', $tgl],
-                    ['angsuran_ke', '!=', '0']
+                    ['angsuran_ke', '!=', '0'],
                 ]);
             },
             'saldo' => function ($query) use ($tgl) {
                 $query->where('tgl_transaksi', '<=', $tgl);
             },
             'kelompok',
-            'kelompok.d'
+            'kelompok.d',
         ])->get();
 
         $table = '';
@@ -419,12 +418,12 @@ class DashboardController extends Controller
 
                     $table .= '<tr>';
 
-                    $table .= '<td align="center">' . $no++ . '</td>';
-                    $table .= '<td>' . $pinkel->kelompok->nama_kelompok . ' [' . $pinkel->kelompok->ketua . '][' . $pinkel->kelompok->d->nama_desa . '] - ' . $pinkel->id . '</td>';
-                    $table .= '<td>' . Tanggal::tglIndo($pinkel->tgl_cair) . '</td>';
-                    $table .= '<td align="right">' . number_format($pinkel->alokasi) . '</td>';
-                    $table .= '<td align="right">' . number_format($nunggak_pokok) . '</td>';
-                    $table .= '<td align="right">' . number_format($nunggak_jasa) . '</td>';
+                    $table .= '<td align="center">'.$no++.'</td>';
+                    $table .= '<td>'.$pinkel->kelompok->nama_kelompok.' ['.$pinkel->kelompok->ketua.']['.$pinkel->kelompok->d->nama_desa.'] - '.$pinkel->id.'</td>';
+                    $table .= '<td>'.Tanggal::tglIndo($pinkel->tgl_cair).'</td>';
+                    $table .= '<td align="right">'.number_format($pinkel->alokasi).'</td>';
+                    $table .= '<td align="right">'.number_format($nunggak_pokok).'</td>';
+                    $table .= '<td align="right">'.number_format($nunggak_jasa).'</td>';
 
                     $table .= '</tr>';
                 }
@@ -434,7 +433,7 @@ class DashboardController extends Controller
         return response()->json([
             'success' => true,
             'jatuh_tempo' => $jatuh_tempo,
-            'hari_ini' => $table
+            'hari_ini' => $table,
         ]);
     }
 
@@ -454,14 +453,14 @@ class DashboardController extends Controller
             'target' => function ($query) use ($tgl) {
                 $query->where([
                     ['jatuh_tempo', '<=', $tgl],
-                    ['angsuran_ke', '!=', '0']
+                    ['angsuran_ke', '!=', '0'],
                 ]);
             },
             'saldo' => function ($query) use ($tgl) {
                 $query->where('tgl_transaksi', '<=', $tgl);
             },
             'kelompok',
-            'kelompok.d'
+            'kelompok.d',
         ])->orderBy('tgl_cair', 'ASC')->orderBy('id', 'ASC')->get();
 
         $dataTunggakan = [];
@@ -498,7 +497,7 @@ class DashboardController extends Controller
                     'tgl_cair' => Tanggal::tglIndo($pinkel->tgl_cair),
                     'alokasi' => number_format($pinkel->alokasi),
                     'tunggakan_pokok' => number_format($tunggakan_pokok),
-                    'tunggakan_jasa' => number_format($tunggakan_jasa)
+                    'tunggakan_jasa' => number_format($tunggakan_jasa),
                 ];
             }
         }
@@ -506,7 +505,7 @@ class DashboardController extends Controller
         return response()->json([
             'success' => true,
             'nunggak' => str_pad(count($dataTunggakan), '2', '0', STR_PAD_LEFT),
-            'data' => $dataTunggakan
+            'data' => $dataTunggakan,
         ]);
     }
 
@@ -522,15 +521,15 @@ class DashboardController extends Controller
         $pesan = strtr($pesan, [
             '{Tanggal Jatuh Tempo}' => $request->tgl_tagihan,
             '{Tanggal Bayar}' => $request->tgl_pembayaran,
-            '{User Login}' => auth()->user()->namadepan . ' ' . auth()->user()->namabelakang,
-            '{Telpon}' => auth()->user()->hp
+            '{User Login}' => auth()->user()->namadepan.' '.auth()->user()->namabelakang,
+            '{Telpon}' => auth()->user()->hp,
         ]);
 
         $pinjaman = PinjamanKelompok::where('status', 'A')->whereDay('tgl_cair', date('d', strtotime($tanggal)))->with([
             'target' => function ($query) use ($tanggal) {
                 $query->where([
                     ['jatuh_tempo', '<=', $tanggal],
-                    ['angsuran_ke', '!=', '0']
+                    ['angsuran_ke', '!=', '0'],
                 ]);
             },
             'saldo' => function ($query) use ($tanggal) {
@@ -538,12 +537,12 @@ class DashboardController extends Controller
             },
             'kelompok',
             'kelompok.d',
-            'kelompok.d.sebutan_desa'
+            'kelompok.d.sebutan_desa',
         ])->get();
 
         return response()->json([
             'success' => true,
-            'tagihan' => view('dashboard.partials.tagihan')->with(compact('pinjaman', 'pesan'))->render()
+            'tagihan' => view('dashboard.partials.tagihan')->with(compact('pinjaman', 'pesan'))->render(),
         ]);
     }
 
@@ -563,85 +562,85 @@ class DashboardController extends Controller
         $bulan = date('m');
         $kec = Kecamatan::where('id', Session::get('lokasi'))->with('desa')->first();
 
-        if (Saldo::where([['kode_akun', 'LIKE', '%' . $kec->kd_kec . '%']])->count() <= 0) {
+        if (Saldo::where([['kode_akun', 'LIKE', '%'.$kec->kd_kec.'%']])->count() <= 0) {
             $saldo_desa = [];
             foreach ($kec->desa as $desa) {
                 $saldo_desa[] = [
-                    'id' => $desa->kd_desa . $tahun . 0,
+                    'id' => $desa->kd_desa.$tahun. 0,
                     'kode_akun' => $desa->kode_desa,
                     'tahun' => $tahun,
                     'bulan' => 0,
                     'debit' => 0,
-                    'kredit' => 0
+                    'kredit' => 0,
                 ];
             }
 
             $saldo_desa[] = [
-                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 1,
+                'id' => str_replace('.', '', $kec->kd_kec).$tahun. 1,
                 'kode_akun' => $kec->kd_kec,
                 'tahun' => $tahun,
                 'bulan' => 0,
                 'debit' => 0,
-                'kredit' => 0
+                'kredit' => 0,
             ];
             $saldo_desa[] = [
-                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 2,
+                'id' => str_replace('.', '', $kec->kd_kec).$tahun. 2,
                 'kode_akun' => $kec->kd_kec,
                 'tahun' => $tahun,
                 'bulan' => 0,
                 'debit' => 0,
-                'kredit' => 0
+                'kredit' => 0,
             ];
             $saldo_desa[] = [
-                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 3,
+                'id' => str_replace('.', '', $kec->kd_kec).$tahun. 3,
                 'kode_akun' => $kec->kd_kec,
                 'tahun' => $tahun,
                 'bulan' => 0,
                 'debit' => 0,
-                'kredit' => 0
+                'kredit' => 0,
             ];
             $saldo_desa[] = [
-                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 4,
+                'id' => str_replace('.', '', $kec->kd_kec).$tahun. 4,
                 'kode_akun' => $kec->kd_kec,
                 'tahun' => $tahun,
                 'bulan' => 0,
                 'debit' => 0,
-                'kredit' => 0
+                'kredit' => 0,
             ];
             $saldo_desa[] = [
-                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 5,
+                'id' => str_replace('.', '', $kec->kd_kec).$tahun. 5,
                 'kode_akun' => $kec->kd_kec,
                 'tahun' => $tahun,
                 'bulan' => 0,
                 'debit' => 0,
-                'kredit' => 0
+                'kredit' => 0,
             ];
             $saldo_desa[] = [
-                'id' => str_replace('.', '', $kec->kd_kec) . $tahun . 6,
+                'id' => str_replace('.', '', $kec->kd_kec).$tahun. 6,
                 'kode_akun' => $kec->kd_kec,
                 'tahun' => $tahun,
                 'bulan' => 0,
                 'debit' => 0,
-                'kredit' => 0
+                'kredit' => 0,
             ];
 
             Saldo::insert($saldo_desa);
         }
 
-        $date = $tahun . '-' . $bulan . '-01';
+        $date = $tahun.'-'.$bulan.'-01';
 
         $saldo = Saldo::where([
             ['tahun', $tahun],
-            ['bulan', $bulan]
+            ['bulan', $bulan],
         ])->with([
             'saldo' => function ($query) use ($tahun, $bulan) {
                 $bulan = (($bulan - 1) < 1) ? 1 : $bulan - 1;
 
                 $query->where([
                     ['tahun', $tahun],
-                    ['bulan', $bulan]
+                    ['bulan', $bulan],
                 ]);
-            }
+            },
         ])->orderBy('kode_akun', 'ASC')->get();
 
         $data_id = [];
@@ -671,14 +670,14 @@ class DashboardController extends Controller
             }
 
             if ($debit < $debit_lalu || $kredit < $kredit_lalu) {
-                $id = str_replace('.', '', $s->kode_akun) . $tahun . str_pad($bulan, 2, "0", STR_PAD_LEFT);
+                $id = str_replace('.', '', $s->kode_akun).$tahun.str_pad($bulan, 2, '0', STR_PAD_LEFT);
                 $insert[] = [
                     'id' => $id,
                     'kode_akun' => $s->kode_akun,
                     'tahun' => $tahun,
                     'bulan' => $bulan,
                     'debit' => $debit_lalu,
-                    'kredit' => $kredit_lalu
+                    'kredit' => $kredit_lalu,
                 ];
 
                 $data_id[] = $id;
@@ -691,10 +690,10 @@ class DashboardController extends Controller
 
             $update = Saldo::where([
                 ['tahun', $tahun],
-                ['bulan', '>', $bulan]
+                ['bulan', '>', $bulan],
             ])->update([
                 'debit' => 0,
-                'kredit' => 0
+                'kredit' => 0,
             ]);
         }
     }
@@ -705,7 +704,7 @@ class DashboardController extends Controller
         for ($i = 0; $i <= date('m'); $i++) {
             $bulan[$i] = [
                 'pendapatan' => 0,
-                'beban' => 0
+                'beban' => 0,
             ];
         }
 
@@ -743,7 +742,6 @@ class DashboardController extends Controller
             }
         }
 
-
         $nama_bulan = [];
         $pendapatan = [];
         $beban = [];
@@ -764,7 +762,7 @@ class DashboardController extends Controller
             if ($key == 0) {
                 $nama_bulan[$key] = 'Awal Tahun';
             } else {
-                $tanggal = date('Y-m-d', strtotime(date('Y') . '-' . $key . '-01'));
+                $tanggal = date('Y-m-d', strtotime(date('Y').'-'.$key.'-01'));
                 $nama_bulan[$key] = Tanggal::namaBulan($tanggal);
             }
         }
@@ -773,7 +771,7 @@ class DashboardController extends Controller
             'nama_bulan' => $nama_bulan,
             'pendapatan' => $pendapatan,
             'beban' => $beban,
-            'surplus' => $surplus
+            'surplus' => $surplus,
         ];
 
         return $saldo;
@@ -783,7 +781,7 @@ class DashboardController extends Controller
     {
         $invoice = AdminInvoice::where([
             ['lokasi', Session::get('lokasi')],
-            ['status', 'UNPAID']
+            ['status', 'UNPAID'],
         ])->orderBy('tgl_invoice', 'DESC');
 
         $jumlah = 0;
@@ -794,7 +792,7 @@ class DashboardController extends Controller
 
         return response()->json([
             'success' => true,
-            'invoice' => $jumlah
+            'invoice' => $jumlah,
         ]);
     }
 
@@ -810,105 +808,105 @@ class DashboardController extends Controller
         if ($bulan == '00') {
 
             if (Saldo::where([
-                ['kode_akun', 'LIKE', '%' . $kec->kd_kec . '%'],
-                ['tahun', $tahun]
+                ['kode_akun', 'LIKE', '%'.$kec->kd_kec.'%'],
+                ['tahun', $tahun],
             ])->count() <= 0) {
                 $saldo_desa = [];
                 foreach ($kec->desa as $desa) {
                     $saldo_desa[] = [
-                        'id' => $desa->kd_desa . $tahun . 0,
+                        'id' => $desa->kd_desa.$tahun. 0,
                         'kode_akun' => $desa->kode_desa,
                         'tahun' => $tahun,
                         'bulan' => 0,
                         'debit' => 0,
-                        'kredit' => 0
+                        'kredit' => 0,
                     ];
                 }
 
                 $saldo_desa[] = [
-                    'id' => str_replace('.', '', $kec->kd_kec) . $tahun . '001',
+                    'id' => str_replace('.', '', $kec->kd_kec).$tahun.'001',
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun,
                     'bulan' => 0,
                     'debit' => 0,
-                    'kredit' => 0
+                    'kredit' => 0,
                 ];
                 $saldo_desa[] = [
-                    'id' => str_replace('.', '', $kec->kd_kec) . $tahun . '002',
+                    'id' => str_replace('.', '', $kec->kd_kec).$tahun.'002',
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun,
                     'bulan' => 0,
                     'debit' => 0,
-                    'kredit' => 0
+                    'kredit' => 0,
                 ];
                 $saldo_desa[] = [
-                    'id' => str_replace('.', '', $kec->kd_kec) . $tahun . '003',
+                    'id' => str_replace('.', '', $kec->kd_kec).$tahun.'003',
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun,
                     'bulan' => 0,
                     'debit' => 0,
-                    'kredit' => 0
+                    'kredit' => 0,
                 ];
                 $saldo_desa[] = [
-                    'id' => str_replace('.', '', $kec->kd_kec) . $tahun . '004',
+                    'id' => str_replace('.', '', $kec->kd_kec).$tahun.'004',
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun,
                     'bulan' => 0,
                     'debit' => 0,
-                    'kredit' => 0
+                    'kredit' => 0,
                 ];
                 $saldo_desa[] = [
-                    'id' => str_replace('.', '', $kec->kd_kec) . $tahun . '005',
+                    'id' => str_replace('.', '', $kec->kd_kec).$tahun.'005',
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun,
                     'bulan' => 0,
                     'debit' => 0,
-                    'kredit' => 0
+                    'kredit' => 0,
                 ];
                 $saldo_desa[] = [
-                    'id' => str_replace('.', '', $kec->kd_kec) . $tahun . '006',
+                    'id' => str_replace('.', '', $kec->kd_kec).$tahun.'006',
                     'kode_akun' => $kec->kd_kec,
                     'tahun' => $tahun,
                     'bulan' => 0,
                     'debit' => 0,
-                    'kredit' => 0
+                    'kredit' => 0,
                 ];
 
                 Saldo::insert($saldo_desa);
             }
 
             $tahun_tb = $tahun - 1;
-            $tb = 'tb' . $tahun_tb;
-            $tbk = 'tbk' . $tahun_tb;
+            $tb = 'tb'.$tahun_tb;
+            $tbk = 'tbk'.$tahun_tb;
 
             $rekening = Rekening::orderBy('kode_akun', 'ASC')->get();
             foreach ($rekening as $rek) {
                 $saldo_debit = $rek->$tb;
                 $saldo_kredit = $rek->$tbk;
 
-                $id = str_replace('.', '', $rek->kode_akun) . $tahun . "00";
+                $id = str_replace('.', '', $rek->kode_akun).$tahun.'00';
                 $saldo[] = [
                     'id' => $id,
                     'kode_akun' => $rek->kode_akun,
                     'tahun' => $tahun,
                     'bulan' => 0,
                     'debit' => $saldo_debit,
-                    'kredit' => $saldo_kredit
+                    'kredit' => $saldo_kredit,
                 ];
 
                 $data_id[] = $id;
             }
         } else {
-            $date = $tahun . '-' . $bulan . '-01';
+            $date = $tahun.'-'.$bulan.'-01';
             $tgl_kondisi = date('Y-m-t', strtotime($date));
             $rekening = Rekening::withSum([
                 'trx_debit' => function ($query) use ($tgl_kondisi, $tahun) {
-                    $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
-                }
+                    $query->whereBetween('tgl_transaksi', [$tahun.'-01-01', $tgl_kondisi]);
+                },
             ], 'jumlah')->withSum([
                 'trx_kredit' => function ($query) use ($tgl_kondisi, $tahun) {
-                    $query->whereBetween('tgl_transaksi', [$tahun . '-01-01', $tgl_kondisi]);
-                }
+                    $query->whereBetween('tgl_transaksi', [$tahun.'-01-01', $tgl_kondisi]);
+                },
             ], 'jumlah')->orderBy('kode_akun', 'ASC');
             if ($kode_akun != '0') {
                 $kode = explode(',', $kode_akun);
@@ -918,14 +916,14 @@ class DashboardController extends Controller
             $rekening = $rekening->get();
 
             foreach ($rekening as $rek) {
-                $id = str_replace('.', '', $rek->kode_akun) . $tahun . str_pad($bulan, 2, "0", STR_PAD_LEFT);
+                $id = str_replace('.', '', $rek->kode_akun).$tahun.str_pad($bulan, 2, '0', STR_PAD_LEFT);
                 $saldo[] = [
                     'id' => $id,
                     'kode_akun' => $rek->kode_akun,
                     'tahun' => $tahun,
                     'bulan' => intval($bulan),
                     'debit' => $rek->trx_debit_sum_jumlah,
-                    'kredit' => $rek->trx_kredit_sum_jumlah
+                    'kredit' => $rek->trx_kredit_sum_jumlah,
                 ];
 
                 $data_id[] = $id;
@@ -935,7 +933,7 @@ class DashboardController extends Controller
         if ($bulan < 1) {
             $jumlah = Saldo::where([
                 ['tahun', $tahun],
-                ['bulan', '0']
+                ['bulan', '0'],
             ])->whereRaw('LENGTH(kode_akun)=9')->count();
 
             if ($jumlah <= '0') {
@@ -955,20 +953,20 @@ class DashboardController extends Controller
         } else {
             $query['bulan'] = date('m') + 1;
         }
-        if (!isset($query['tahun'])) {
+        if (! isset($query['tahun'])) {
             $query['tahun'] = date('Y');
         }
 
         $query['bulan'] = str_pad($query['bulan'], 2, '0', STR_PAD_LEFT);
-        $next = $link . '?' . http_build_query($query);
+        $next = $link.'?'.http_build_query($query);
 
-        if ((!($kode_akun == '0' || $tahun != date('Y')) && $bulan >= date('m'))) {
+        if ((! ($kode_akun == '0' || $tahun != date('Y')) && $bulan >= date('m'))) {
             echo '<script>window.opener.postMessage("closed", "*"); window.close();</script>';
             exit;
         }
 
         if ($query['bulan'] < 13) {
-            echo '<a href="' . $next . '" id="next"></a><script>document.querySelector("#next").click()</script>';
+            echo '<a href="'.$next.'" id="next"></a><script>document.querySelector("#next").click()</script>';
             exit;
         } else {
             echo '<script>window.opener.postMessage("closed", "*"); window.close();</script>';

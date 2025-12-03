@@ -33,6 +33,7 @@ Route::group(['middleware' => ['tenant', 'auth:sanctum'], 'prefix' => 'v1'], fun
     Route::get('/dashboard/aktif', [DashboardController::class, 'aktif']);
     Route::get('/dashboard/lunas', [DashboardController::class, 'lunas']);
     Route::get('/dashboard/detail-pinjaman/{id}', [DashboardController::class, 'detailPinjaman']);
+    Route::get('/dashboard/nunggak', [DashboardController::class, 'nunggak']);
 
     Route::get('/basis-data', [BasisDataController::class, 'index']);
     Route::get('/basis-data/desa', [BasisDataController::class, 'desa']);

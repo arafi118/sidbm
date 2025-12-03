@@ -237,6 +237,78 @@ class DashboardController extends Controller
         ], 200);
     }
 
+    public function nunggak()
+    {
+        $user = request()->user();
+        $tgl = date('Y-m-d');
+
+        $page = request()->get('page') ?? 1;
+        $perPage = request()->get('per_page') ?? 10;
+        $sortBy = request()->get('sort_by') ?? 'id';
+        $sortOrder = request()->get('sort_order') ?? 'asc';
+        $search = request()->get('search') ?? '';
+
+        $tb_pinkel = 'pinjaman_kelompok_'.$user->lokasi;
+        $tb_rencana = 'rencana_angsuran_'.$user->lokasi;
+        $tb_realiasi = 'real_angsuran_'.$user->lokasi;
+        $tb_kel = 'kelompok_'.$user->lokasi;
+
+        $dataTunggakan = PinjamanKelompok::from("$tb_pinkel as pinkel")
+            ->select([
+                'pinkel.id',
+                'pinkel.alokasi',
+                'pinkel.tgl_cair',
+                'kelompok.nama_kelompok',
+                'kelompok.ketua',
+                'desa.nama_desa',
+                DB::raw('COALESCE(SUM(target.wajib_pokok), 0) as target_pokok'),
+                DB::raw('COALESCE(SUM(target.wajib_jasa), 0) as target_jasa'),
+                DB::raw('COALESCE(SUM(saldo.realisasi_pokok), 0) as sum_pokok'),
+                DB::raw('COALESCE(SUM(saldo.realisasi_jasa), 0) as sum_jasa'),
+                DB::raw('GREATEST(COALESCE(SUM(target.wajib_pokok), 0) - COALESCE(SUM(saldo.realisasi_pokok), 0), 0) as tunggakan_pokok'),
+                DB::raw('GREATEST(COALESCE(SUM(target.wajib_jasa), 0) - COALESCE(SUM(saldo.realisasi_jasa), 0), 0) as tunggakan_jasa'),
+            ])
+            ->join("$tb_kel as kelompok", 'pinkel.id_kel', '=', 'kelompok.id')
+            ->join('desa', 'kelompok.desa', '=', 'desa.kd_desa')
+            ->leftJoin("$tb_rencana as target", function ($join) use ($tgl) {
+                $join->on('pinkel.id', '=', 'target.loan_id')
+                    ->where('target.jatuh_tempo', '<=', $tgl)
+                    ->where('target.angsuran_ke', '!=', '0');
+            })
+            ->leftJoin("$tb_realiasi as saldo", function ($join) use ($tgl) {
+                $join->on('pinkel.id', '=', 'saldo.loan_id')
+                    ->where('saldo.tgl_transaksi', '<=', $tgl);
+            })
+            ->where('pinkel.status', 'A')
+            ->where('pinkel.tgl_cair', '<=', $tgl);
+
+        if ($search) {
+            $dataTunggakan->where(function ($query) use ($search) {
+                $query->where('kelompok.nama_kelompok', 'like', "%$search%")
+                    ->orWhere('kelompok.ketua', 'like', "%$search%")
+                    ->orWhere('desa.nama_desa', 'like', "%$search%");
+            });
+        }
+
+        $dataTunggakan = $dataTunggakan
+            ->groupBy(
+                'pinkel.id',
+                'pinkel.alokasi',
+                'pinkel.tgl_cair',
+                'kelompok.nama_kelompok',
+                'kelompok.ketua',
+                'desa.nama_desa'
+            )
+            ->havingRaw('tunggakan_pokok > 0 OR tunggakan_jasa > 0')
+            ->orderBy($sortBy, $sortOrder)
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        return response()->json([
+            'success' => true,
+            'data' => $dataTunggakan,
+        ], 200);
+    }
+
     public function detailPinjaman($id)
     {
         $user = request()->user();
