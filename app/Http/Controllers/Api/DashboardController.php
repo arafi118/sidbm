@@ -263,25 +263,35 @@ class DashboardController extends Controller
                 'kelompok.alamat_kelompok',
                 'desa.nama_desa',
                 'jenis_produk_pinjaman.nama_jpp',
-                DB::raw('COALESCE(SUM(target.wajib_pokok), 0) as target_pokok'),
-                DB::raw('COALESCE(SUM(target.wajib_jasa), 0) as target_jasa'),
-                DB::raw('COALESCE(SUM(saldo.realisasi_pokok), 0) as sum_pokok'),
-                DB::raw('COALESCE(SUM(saldo.realisasi_jasa), 0) as sum_jasa'),
-                DB::raw('GREATEST(COALESCE(SUM(target.wajib_pokok), 0) - COALESCE(SUM(saldo.realisasi_pokok), 0), 0) as tunggakan_pokok'),
-                DB::raw('GREATEST(COALESCE(SUM(target.wajib_jasa), 0) - COALESCE(SUM(saldo.realisasi_jasa), 0), 0) as tunggakan_jasa'),
+                DB::raw('COALESCE(target_sum.total_wajib_pokok, 0) as target_pokok'),
+                DB::raw('COALESCE(target_sum.total_wajib_jasa, 0) as target_jasa'),
+                DB::raw('COALESCE(saldo_sum.total_realisasi_pokok, 0) as sum_pokok'),
+                DB::raw('COALESCE(saldo_sum.total_realisasi_jasa, 0) as sum_jasa'),
+                DB::raw('GREATEST(COALESCE(target_sum.total_wajib_pokok, 0) - COALESCE(saldo_sum.total_realisasi_pokok, 0), 0) as tunggakan_pokok'),
+                DB::raw('GREATEST(COALESCE(target_sum.total_wajib_jasa, 0) - COALESCE(saldo_sum.total_realisasi_jasa, 0), 0) as tunggakan_jasa'),
             ])
             ->join('jenis_produk_pinjaman', 'pinkel.jenis_pp', '=', 'jenis_produk_pinjaman.id')
             ->join("$tb_kel as kelompok", 'pinkel.id_kel', '=', 'kelompok.id')
             ->join('desa', 'kelompok.desa', '=', 'desa.kd_desa')
-            ->leftJoin("$tb_rencana as target", function ($join) use ($tgl) {
-                $join->on('pinkel.id', '=', 'target.loan_id')
-                    ->where('target.jatuh_tempo', '<=', $tgl)
-                    ->where('target.angsuran_ke', '!=', '0');
-            })
-            ->leftJoin("$tb_realiasi as saldo", function ($join) use ($tgl) {
-                $join->on('pinkel.id', '=', 'saldo.loan_id')
-                    ->where('saldo.tgl_transaksi', '<=', $tgl);
-            })
+            ->leftJoin(DB::raw("(
+                SELECT 
+                    loan_id,
+                    SUM(wajib_pokok) as total_wajib_pokok,
+                    SUM(wajib_jasa) as total_wajib_jasa
+                FROM $tb_rencana
+                WHERE jatuh_tempo <= '$tgl'
+                AND angsuran_ke != '0'
+                GROUP BY loan_id
+            ) as target_sum"), 'target_sum.loan_id', '=', 'pinkel.id')
+            ->leftJoin(DB::raw("(
+                SELECT 
+                    loan_id,
+                    SUM(realisasi_pokok) as total_realisasi_pokok,
+                    SUM(realisasi_jasa) as total_realisasi_jasa
+                FROM $tb_realiasi
+                WHERE tgl_transaksi <= '$tgl'
+                GROUP BY loan_id
+            ) as saldo_sum"), 'saldo_sum.loan_id', '=', 'pinkel.id')
             ->where('pinkel.status', 'A')
             ->where('pinkel.tgl_cair', '<=', $tgl);
 
@@ -302,10 +312,15 @@ class DashboardController extends Controller
                 'kelompok.ketua',
                 'kelompok.alamat_kelompok',
                 'desa.nama_desa',
-                'jenis_produk_pinjaman.nama_jpp'
+                'jenis_produk_pinjaman.nama_jpp',
+                'target_sum.total_wajib_pokok',
+                'target_sum.total_wajib_jasa',
+                'saldo_sum.total_realisasi_pokok',
+                'saldo_sum.total_realisasi_jasa'
             )
             ->havingRaw('tunggakan_pokok > 0 OR tunggakan_jasa > 0');
 
+        // Handle sorting
         $allowedSorts = [
             'id' => 'pinkel.id',
             'tgl_cair' => 'pinkel.tgl_cair',
