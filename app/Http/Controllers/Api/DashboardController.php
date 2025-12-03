@@ -251,7 +251,6 @@ class DashboardController extends Controller
         $tb_pinkel = 'pinjaman_kelompok_'.$user->lokasi;
         $tb_rencana = 'rencana_angsuran_'.$user->lokasi;
         $tb_realiasi = 'real_angsuran_'.$user->lokasi;
-        $tb_pinj = 'pinjaman_anggota_'.$user->lokasi;
         $tb_kel = 'kelompok_'.$user->lokasi;
 
         $dataTunggakan = PinjamanKelompok::from("$tb_pinkel as pinkel")
@@ -264,7 +263,6 @@ class DashboardController extends Controller
                 'kelompok.alamat_kelompok',
                 'desa.nama_desa',
                 'jenis_produk_pinjaman.nama_jpp',
-                DB::raw('COUNT(DISTINCT pa.id) as jumlah_anggota'),
                 DB::raw('COALESCE(SUM(target.wajib_pokok), 0) as target_pokok'),
                 DB::raw('COALESCE(SUM(target.wajib_jasa), 0) as target_jasa'),
                 DB::raw('COALESCE(SUM(saldo.realisasi_pokok), 0) as sum_pokok'),
@@ -274,7 +272,6 @@ class DashboardController extends Controller
             ])
             ->join('jenis_produk_pinjaman', 'pinkel.jenis_pp', '=', 'jenis_produk_pinjaman.id')
             ->join("$tb_kel as kelompok", 'pinkel.id_kel', '=', 'kelompok.id')
-            ->leftJoin("$tb_pinj as pa", 'pa.id_pinkel', '=', 'pinkel.id')
             ->join('desa', 'kelompok.desa', '=', 'desa.kd_desa')
             ->leftJoin("$tb_rencana as target", function ($join) use ($tgl) {
                 $join->on('pinkel.id', '=', 'target.loan_id')
