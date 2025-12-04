@@ -136,6 +136,8 @@ class PengaturanController extends Controller
             'files',
         ]);
 
+        dd($request->file('files'));
+
         $validate = Validator::make($data, [
             'files' => 'required|image|mimes:jpg,png,jpeg|max:8192',
         ]);
