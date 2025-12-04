@@ -270,7 +270,7 @@ class PengaturanController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => $validate->errors(),
-            ], 400);
+            ], 422);
         }
 
         if ($data['password_lama'] == request()->user()->pass) {
