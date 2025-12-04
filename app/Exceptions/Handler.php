@@ -2,8 +2,8 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -37,7 +37,7 @@ class Handler extends ExceptionHandler
     {
         // Untuk API request, return JSON 401
         if ($request->expectsJson() || $request->is('api/*')) {
-            return response()->json(['message' => 'Unauthenticated.'], 401);
+            return response()->json(['message' => 'Unauthenticated 2312.'], 401);
         }
 
         // Untuk web request, redirect ke halaman awal
