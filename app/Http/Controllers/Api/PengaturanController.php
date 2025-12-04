@@ -257,7 +257,7 @@ class PengaturanController extends Controller
         $data = $request->only([
             'password_lama',
             'password_baru',
-            'password_konfirmasi',
+            'konfirmasi_password',
         ]);
 
         $validate = Validator::make($data, [
@@ -269,7 +269,8 @@ class PengaturanController extends Controller
         if ($validate->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => $validate->errors(),
+                'message' => 'Ada form yang belum diisi',
+                'form_error' => $validate->errors(),
             ], 422);
         }
 
