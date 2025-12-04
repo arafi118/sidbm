@@ -150,7 +150,7 @@ class PengaturanController extends Controller
         $extension = $request->file('foto')->getClientOriginalExtension();
 
         $filename = time().'_'.$user->lokasi.'_'.date('Ymd').'.'.$extension;
-        $path = $request->file('logo')->storeAs('profil', $filename, 'supabase');
+        $path = $request->file('foto')->storeAs('profil', $filename, 'supabase');
 
         $relativePath = str_replace(env('SUPABASE_PUBLIC_URL').'/', '', $user->foto);
         if (Storage::disk('supabase')->exists($relativePath)) {
