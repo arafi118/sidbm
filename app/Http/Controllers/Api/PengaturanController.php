@@ -26,35 +26,35 @@ class PengaturanController extends Controller
         $akun1 = AkunLevel1::with([
             'akun2',
             'akun2.akun3',
-            'akun2.akun3.rek'
+            'akun2.akun3.rek',
         ])->get();
 
         $coa = [];
         foreach ($akun1 as $ak1) {
             $akun_level_1 = [
-                "id" => $ak1->kode_akun,
-                "text" => $ak1->kode_akun . '. ' . $ak1->nama_akun,
-                'children' => []
+                'id' => $ak1->kode_akun,
+                'text' => $ak1->kode_akun.'. '.$ak1->nama_akun,
+                'children' => [],
             ];
 
             foreach ($ak1->akun2 as $ak2) {
                 $akun2 = [
-                    "id" => $ak2->kode_akun,
-                    "text" => $ak2->kode_akun . '. ' . $ak2->nama_akun,
-                    'children' => []
+                    'id' => $ak2->kode_akun,
+                    'text' => $ak2->kode_akun.'. '.$ak2->nama_akun,
+                    'children' => [],
                 ];
 
                 foreach ($ak2->akun3 as $ak3) {
                     $akun3 = [
-                        "id" => $ak3->kode_akun,
-                        "text" => $ak3->kode_akun . '. ' . $ak3->nama_akun,
-                        'children' => []
+                        'id' => $ak3->kode_akun,
+                        'text' => $ak3->kode_akun.'. '.$ak3->nama_akun,
+                        'children' => [],
                     ];
 
                     foreach ($ak3->rek as $rek) {
                         $akun4 = [
-                            "id" => $rek->kode_akun,
-                            "text" => $rek->kode_akun . '. ' . $rek->nama_akun,
+                            'id' => $rek->kode_akun,
+                            'text' => $rek->kode_akun.'. '.$rek->nama_akun,
                         ];
 
                         array_push($akun3['children'], $akun4);
@@ -79,8 +79,8 @@ class PengaturanController extends Controller
             'nama_lengkap',
             'inisial',
             'jenis_kelamin',
-            'no_hp',
-            'username'
+            'nomor_hp',
+            'username',
         ]);
 
         $validate = Validator::make($data, [
@@ -88,14 +88,14 @@ class PengaturanController extends Controller
             'nama_lengkap' => 'required',
             'inisial' => 'required',
             'jenis_kelamin' => 'required',
-            'no_hp' => 'required',
-            'username' => 'required'
+            'nomor_hp' => 'required',
+            'username' => 'required',
         ]);
 
         if ($validate->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => $validate->errors()
+                'message' => $validate->errors(),
             ], 400);
         }
 
@@ -112,20 +112,20 @@ class PengaturanController extends Controller
             'namabelakang' => $nama_belakang,
             'ins' => $data['inisial'],
             'jk' => $data['jenis_kelamin'],
-            'hp' => $data['no_hp'],
-            'uname' => $data['username']
+            'hp' => $data['nomor_hp'],
+            'uname' => $data['username'],
         ]);
 
         if ($update) {
             return response()->json([
                 'status' => true,
-                'message' => 'Data berhasil diubah'
+                'message' => 'Data berhasil diubah',
             ], 200);
         }
 
         return response()->json([
             'status' => false,
-            'message' => 'Data gagal diubah'
+            'message' => 'Data gagal diubah',
         ], 400);
     }
 
@@ -133,33 +133,33 @@ class PengaturanController extends Controller
     {
         $user = request()->user();
         $data = $request->only([
-            'foto'
+            'foto',
         ]);
 
         $validate = Validator::make($data, [
-            'foto' => 'required|image|mimes:jpg,png,jpeg|max:8192'
+            'foto' => 'required|image|mimes:jpg,png,jpeg|max:8192',
         ]);
 
         if ($validate->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => $validate->errors()
+                'message' => $validate->errors(),
             ], 400);
         }
 
         $extension = $request->file('foto')->getClientOriginalExtension();
 
-        $filename = time() . '_' . $user->lokasi . '_' . date('Ymd') . '.' . $extension;
+        $filename = time().'_'.$user->lokasi.'_'.date('Ymd').'.'.$extension;
         $path = $request->file('logo')->storeAs('profil', $filename, 'supabase');
 
-        $relativePath = str_replace(env('SUPABASE_PUBLIC_URL') . '/', '', $user->foto);
+        $relativePath = str_replace(env('SUPABASE_PUBLIC_URL').'/', '', $user->foto);
         if (Storage::disk('supabase')->exists($relativePath)) {
             Storage::disk('supabase')->delete($relativePath);
         }
 
-        $publicUrl = env('SUPABASE_PUBLIC_URL') . '/' . $path;
+        $publicUrl = env('SUPABASE_PUBLIC_URL').'/'.$path;
         $update = User::where('id', $user->id)->update([
-            'foto' => $publicUrl
+            'foto' => $publicUrl,
         ]);
 
         if ($update) {
@@ -167,14 +167,14 @@ class PengaturanController extends Controller
                 'status' => true,
                 'message' => 'Foto profil berhasil diubah.',
                 'data' => [
-                    'foto' => $publicUrl
-                ]
+                    'foto' => $publicUrl,
+                ],
             ], 200);
         }
 
         return response()->json([
             'status' => false,
-            'message' => 'Foto profil gagal diubah.'
+            'message' => 'Foto profil gagal diubah.',
         ], 400);
     }
 
@@ -182,30 +182,30 @@ class PengaturanController extends Controller
     {
         $data = $request->only([
             'tempat_lahir',
-            'tanggal_lahir'
+            'tanggal_lahir',
         ]);
 
         $validate = Validator::make($data, [
             'tempat_lahir' => 'required',
-            'tanggal_lahir' => 'required'
+            'tanggal_lahir' => 'required',
         ]);
 
         if ($validate->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => $validate->errors()
+                'message' => $validate->errors(),
             ], 400);
         }
 
         $update = User::where('id', request()->user()->id)->update([
             'tempat_lahir' => $data['tempat_lahir'],
-            'tgl_lahir' => $data['tanggal_lahir']
+            'tgl_lahir' => $data['tanggal_lahir'],
         ]);
 
         if ($update) {
             return response()->json([
                 'status' => true,
-                'message' => 'Tempat lahir berhasil diubah'
+                'message' => 'Tempat lahir berhasil diubah',
             ], 200);
         }
 
@@ -218,34 +218,34 @@ class PengaturanController extends Controller
     public function updateAlamat(Request $request)
     {
         $data = $request->only([
-            'alamat'
+            'alamat',
         ]);
 
         $validate = Validator::make($data, [
-            'alamat' => 'required'
+            'alamat' => 'required',
         ]);
 
         if ($validate->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => $validate->errors()
+                'message' => $validate->errors(),
             ], 400);
         }
 
         $update = User::where('id', request()->user()->id)->update([
-            'alamat' => $data['alamat']
+            'alamat' => $data['alamat'],
         ]);
 
         if ($update) {
             return response()->json([
                 'status' => true,
-                'message' => 'Alamat berhasil diubah'
+                'message' => 'Alamat berhasil diubah',
             ], 200);
         }
 
         return response()->json([
             'status' => false,
-            'message' => 'Alamat gagal diubah'
+            'message' => 'Alamat gagal diubah',
         ], 400);
     }
 
@@ -254,19 +254,19 @@ class PengaturanController extends Controller
         $data = $request->only([
             'password_lama',
             'password_baru',
-            'password_konfirmasi'
+            'password_konfirmasi',
         ]);
 
         $validate = Validator::make($data, [
             'password_lama' => 'required',
             'password_baru' => 'required',
-            'password_konfirmasi' => 'required'
+            'password_konfirmasi' => 'required',
         ]);
 
         if ($validate->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => $validate->errors()
+                'message' => $validate->errors(),
             ], 400);
         }
 
@@ -275,30 +275,30 @@ class PengaturanController extends Controller
                 if ($data['password_baru'] == request()->user()->pass) {
                     return response()->json([
                         'status' => false,
-                        'message' => 'Password baru tidak boleh sama dengan password lama'
+                        'message' => 'Password baru tidak boleh sama dengan password lama',
                     ], 400);
                 }
 
                 $update = User::where('id', request()->user()->id)->update([
-                    'pass' => $data['password_baru']
+                    'pass' => $data['password_baru'],
                 ]);
 
                 if ($update) {
                     return response()->json([
                         'status' => true,
-                        'message' => 'Password berhasil diubah'
+                        'message' => 'Password berhasil diubah',
                     ], 200);
                 }
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Password konfirmasi tidak cocok'
+                    'message' => 'Password konfirmasi tidak cocok',
                 ], 400);
             }
         } else {
             return response()->json([
                 'status' => false,
-                'message' => 'Password lama tidak cocok'
+                'message' => 'Password lama tidak cocok',
             ], 400);
         }
     }
