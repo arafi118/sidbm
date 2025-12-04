@@ -133,11 +133,11 @@ class PengaturanController extends Controller
     {
         $user = request()->user();
         $data = $request->only([
-            'foto',
+            'files',
         ]);
 
         $validate = Validator::make($data, [
-            'foto' => 'required|image|mimes:jpg,png,jpeg|max:8192',
+            'files' => 'required|image|mimes:jpg,png,jpeg|max:8192',
         ]);
 
         if ($validate->fails()) {
@@ -147,10 +147,10 @@ class PengaturanController extends Controller
             ], 400);
         }
 
-        $extension = $request->file('foto')->getClientOriginalExtension();
+        $extension = $request->file('files')->getClientOriginalExtension();
 
         $filename = time().'_'.$user->lokasi.'_'.date('Ymd').'.'.$extension;
-        $path = $request->file('foto')->storeAs('profil', $filename, 'supabase');
+        $path = $request->file('files')->storeAs('profil', $filename, 'supabase');
 
         $relativePath = str_replace(env('SUPABASE_PUBLIC_URL').'/', '', $user->foto);
         if (Storage::disk('supabase')->exists($relativePath)) {
