@@ -1,5 +1,6 @@
 @php
     use App\Utils\Tanggal;
+    use App\Utils\Pinjaman;
 
     $ketua = $pinkel->kelompok->ketua;
     $sekretaris = $pinkel->kelompok->sekretaris;
