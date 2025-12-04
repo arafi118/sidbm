@@ -121,6 +121,7 @@ class PengaturanController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Data berhasil diubah',
+                'data' => User::where('id', request()->user()->id)->first(),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
