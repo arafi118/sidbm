@@ -263,7 +263,7 @@ class PengaturanController extends Controller
         $validate = Validator::make($data, [
             'password_lama' => 'required',
             'password_baru' => 'required',
-            'password_konfirmasi' => 'required',
+            'konfirmasi_password' => 'required',
         ]);
 
         if ($validate->fails()) {
@@ -274,7 +274,7 @@ class PengaturanController extends Controller
         }
 
         if ($data['password_lama'] == request()->user()->pass) {
-            if ($data['password_baru'] === $data['password_konfirmasi']) {
+            if ($data['password_baru'] === $data['konfirmasi_password']) {
                 if ($data['password_baru'] == request()->user()->pass) {
                     return response()->json([
                         'status' => false,
