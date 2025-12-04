@@ -328,30 +328,6 @@
                     <div style="font-size: 14px;">
                         {!! $tanda_tangan_anggota !!}
                     </div>
-                @else
-                    @if ($kec->kd_kab == '33.13')
-                        <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
-                            style="font-size: 11px;">
-                            <tr>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td align="center">
-                                    <div>Mengetahui</div>
-                                    <div>{{ $pinkel->kelompok->d->sebutan_desa->sebutan_kades }}
-                                        {{ $pinkel->kelompok->d->nama_desa }}</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td height="30">&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td align="center">
-                                    {{ $pinkel->kelompok->d->kades }}
-                                </td>
-                            </tr>
-                        </table>
-                    @endif
                 @endif
             </td>
         </tr>
