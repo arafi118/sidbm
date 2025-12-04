@@ -178,8 +178,16 @@ class PengaturanController extends Controller
 
         try {
             $filename = time().'_'.$user->lokasi.'_'.date('Ymd').'.'.$extension;
-            $path = $file->storeAs('profil', $filename, 'supabase');
+            $path = 'profil/'.$filename;
 
+            // GANTI: Simpan manual tanpa Storage facade
+            // Baca file content
+            $fileContent = file_get_contents($file->getRealPath());
+
+            // Simpan langsung ke Supabase storage menggunakan put
+            Storage::disk('supabase')->put($path, $fileContent);
+
+            // Delete old photo
             $relativePath = str_replace(env('SUPABASE_PUBLIC_URL').'/', '', $user->foto);
             if (Storage::disk('supabase')->exists($relativePath)) {
                 Storage::disk('supabase')->delete($relativePath);
