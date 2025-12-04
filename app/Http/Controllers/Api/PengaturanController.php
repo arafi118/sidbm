@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\AkunLevel1;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -106,27 +107,28 @@ class PengaturanController extends Controller
             $nama_belakang = implode(' ', $nama);
         }
 
-        $update = User::where('id', request()->user()->id)->update([
-            'nik' => $data['nik'],
-            'namadepan' => $nama_depan,
-            'namabelakang' => $nama_belakang,
-            'ins' => $data['inisial'],
-            'jk' => $data['jenis_kelamin'],
-            'hp' => $data['nomor_hp'],
-            'uname' => $data['username'],
-        ]);
+        try {
+            $update = User::where('id', request()->user()->id)->update([
+                'nik' => $data['nik'],
+                'namadepan' => $nama_depan,
+                'namabelakang' => $nama_belakang,
+                'ins' => $data['inisial'],
+                'jk' => $data['jenis_kelamin'],
+                'hp' => $data['nomor_hp'],
+                'uname' => $data['username'],
+            ]);
 
-        if ($update) {
             return response()->json([
                 'status' => true,
                 'message' => 'Data berhasil diubah',
             ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data gagal diubah',
+                'error' => $e->getMessage(),
+            ], 400);
         }
-
-        return response()->json([
-            'status' => false,
-            'message' => 'Data gagal diubah',
-        ], 400);
     }
 
     public function updateFotoUser(Request $request)
