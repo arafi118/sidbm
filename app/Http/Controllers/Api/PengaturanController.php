@@ -132,94 +132,50 @@ class PengaturanController extends Controller
     public function updateFotoUser(Request $request)
     {
         $user = request()->user();
+        $data = $request->only([
+            'foto',
+        ]);
 
-        if (! $request->hasFile('files')) {
+        $validate = Validator::make($data, [
+            'foto' => 'required|image|mimes:jpg,png,jpeg|max:8192',
+        ]);
+
+        if ($validate->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => 'File tidak ditemukan',
+                'message' => $validate->errors(),
             ], 400);
         }
 
-        $file = $request->file('files');
+        $extension = $request->file('foto')->getClientOriginalExtension();
 
-        $extension = strtolower($file->getClientOriginalExtension());
-        $fileSize = $file->getSize();
+        $filename = time().'_'.$user->lokasi.'_'.date('Ymd').'.'.$extension;
+        $path = $request->file('foto')->storeAs('profil', $filename, 'supabase');
 
-        $allowedExtensions = ['jpg', 'jpeg', 'png'];
-        if (! in_array($extension, $allowedExtensions)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Format file harus JPG, JPEG, atau PNG',
-            ], 400);
+        $relativePath = str_replace(env('SUPABASE_PUBLIC_URL').'/', '', $user->foto);
+        if (Storage::disk('supabase')->exists($relativePath)) {
+            Storage::disk('supabase')->delete($relativePath);
         }
 
-        if ($fileSize > 8388608) {
+        $publicUrl = env('SUPABASE_PUBLIC_URL').'/'.$path;
+        $update = User::where('id', $user->id)->update([
+            'foto' => $publicUrl,
+        ]);
+
+        if ($update) {
             return response()->json([
-                'status' => false,
-                'message' => 'Ukuran file maksimal 8MB',
-            ], 400);
+                'status' => true,
+                'message' => 'Foto profil berhasil diubah.',
+                'data' => [
+                    'foto' => $publicUrl,
+                ],
+            ], 200);
         }
 
-        $fileContent = file_get_contents($file->getRealPath());
-        $isImage = false;
-
-        if (substr($fileContent, 0, 2) === "\xFF\xD8") {
-            $isImage = true;
-        } elseif (substr($fileContent, 0, 8) === "\x89\x50\x4E\x47\x0D\x0A\x1A\x0A") {
-            $isImage = true;
-        }
-
-        if (! $isImage) {
-            return response()->json([
-                'status' => false,
-                'message' => 'File bukan gambar yang valid',
-            ], 400);
-        }
-
-        try {
-            $filename = time().'_'.$user->lokasi.'_'.date('Ymd').'.'.$extension;
-            $path = 'profil/'.$filename;
-
-            // GANTI: Simpan manual tanpa Storage facade
-            // Baca file content
-            $fileContent = file_get_contents($file->getRealPath());
-
-            // Simpan langsung ke Supabase storage menggunakan put
-            Storage::disk('supabase')->put($path, $fileContent);
-
-            // Delete old photo
-            $relativePath = str_replace(env('SUPABASE_PUBLIC_URL').'/', '', $user->foto);
-            if (Storage::disk('supabase')->exists($relativePath)) {
-                Storage::disk('supabase')->delete($relativePath);
-            }
-
-            $publicUrl = env('SUPABASE_PUBLIC_URL').'/'.$path;
-
-            $update = User::where('id', $user->id)->update([
-                'foto' => $publicUrl,
-            ]);
-
-            if ($update) {
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Foto profil berhasil diubah.',
-                    'data' => [
-                        'foto' => $publicUrl,
-                    ],
-                ], 200);
-            }
-
-            return response()->json([
-                'status' => false,
-                'message' => 'Foto profil gagal diubah.',
-            ], 400);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Terjadi kesalahan: '.$e->getMessage(),
-            ], 500);
-        }
+        return response()->json([
+            'status' => false,
+            'message' => 'Foto profil gagal diubah.',
+        ], 400);
     }
 
     public function updateTempatLahir(Request $request)
