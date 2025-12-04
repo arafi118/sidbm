@@ -132,50 +132,86 @@ class PengaturanController extends Controller
     public function updateFotoUser(Request $request)
     {
         $user = request()->user();
-        $data = $request->only([
-            'files',
-        ]);
 
-        $validate = Validator::make($data, [
-            'files' => 'required|image|mimes:jpg,png,jpeg|max:8192',
-        ]);
-
-        if ($validate->fails()) {
+        if (! $request->hasFile('files')) {
             return response()->json([
                 'status' => false,
-                'message' => $validate->errors(),
+                'message' => 'File tidak ditemukan',
             ], 400);
         }
 
-        $extension = $request->file('files')->getClientOriginalExtension();
+        $file = $request->file('files');
 
-        $filename = time().'_'.$user->lokasi.'_'.date('Ymd').'.'.$extension;
-        $path = $request->file('files')->storeAs('profil', $filename, 'supabase');
+        $extension = strtolower($file->getClientOriginalExtension());
+        $fileSize = $file->getSize();
 
-        $relativePath = str_replace(env('SUPABASE_PUBLIC_URL').'/', '', $user->foto);
-        if (Storage::disk('supabase')->exists($relativePath)) {
-            Storage::disk('supabase')->delete($relativePath);
-        }
-
-        $publicUrl = env('SUPABASE_PUBLIC_URL').'/'.$path;
-        $update = User::where('id', $user->id)->update([
-            'foto' => $publicUrl,
-        ]);
-
-        if ($update) {
+        $allowedExtensions = ['jpg', 'jpeg', 'png'];
+        if (! in_array($extension, $allowedExtensions)) {
             return response()->json([
-                'status' => true,
-                'message' => 'Foto profil berhasil diubah.',
-                'data' => [
-                    'foto' => $publicUrl,
-                ],
-            ], 200);
+                'status' => false,
+                'message' => 'Format file harus JPG, JPEG, atau PNG',
+            ], 400);
         }
 
-        return response()->json([
-            'status' => false,
-            'message' => 'Foto profil gagal diubah.',
-        ], 400);
+        if ($fileSize > 8388608) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Ukuran file maksimal 8MB',
+            ], 400);
+        }
+
+        $fileContent = file_get_contents($file->getRealPath());
+        $isImage = false;
+
+        if (substr($fileContent, 0, 2) === "\xFF\xD8") {
+            $isImage = true;
+        } elseif (substr($fileContent, 0, 8) === "\x89\x50\x4E\x47\x0D\x0A\x1A\x0A") {
+            $isImage = true;
+        }
+
+        if (! $isImage) {
+            return response()->json([
+                'status' => false,
+                'message' => 'File bukan gambar yang valid',
+            ], 400);
+        }
+
+        try {
+            $filename = time().'_'.$user->lokasi.'_'.date('Ymd').'.'.$extension;
+            $path = $file->storeAs('profil', $filename, 'supabase');
+
+            $relativePath = str_replace(env('SUPABASE_PUBLIC_URL').'/', '', $user->foto);
+            if (Storage::disk('supabase')->exists($relativePath)) {
+                Storage::disk('supabase')->delete($relativePath);
+            }
+
+            $publicUrl = env('SUPABASE_PUBLIC_URL').'/'.$path;
+
+            $update = User::where('id', $user->id)->update([
+                'foto' => $publicUrl,
+            ]);
+
+            if ($update) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Foto profil berhasil diubah.',
+                    'data' => [
+                        'foto' => $publicUrl,
+                    ],
+                ], 200);
+            }
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Foto profil gagal diubah.',
+            ], 400);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan: '.$e->getMessage(),
+            ], 500);
+        }
     }
 
     public function updateTempatLahir(Request $request)
