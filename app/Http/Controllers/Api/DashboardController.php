@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ApiEndpoint;
+use App\Models\Kecamatan;
 use App\Models\PinjamanKelompok;
 use App\Models\Rekening;
 use App\Utils\Tanggal;
@@ -498,6 +500,49 @@ class DashboardController extends Controller
         return response()->json([
             'success' => true,
             'data' => $query,
+        ], 200);
+    }
+
+    public function tagihan()
+    {
+        $user = request()->user();
+
+        $apiEndpoint = ApiEndpoint::first();
+        $kec = Kecamatan::where('id', $user->lokasi)->first();
+        $pesan_wa = json_decode($kec->whatsapp, true);
+
+        $tanggal = request()->get('tanggal_tagihan');
+        $tgl_bayar = request()->get('tanggal_pembayaran');
+        $pesan = $pesan_wa['tagihan'];
+
+        $pesan = strtr($pesan, [
+            '{Tanggal Jatuh Tempo}' => $tanggal,
+            '{Tanggal Bayar}' => $tgl_bayar,
+            '{User Login}' => auth()->user()->namadepan.' '.auth()->user()->namabelakang,
+            '{Telpon}' => auth()->user()->hp,
+        ]);
+
+        $pinjaman = PinjamanKelompok::where('status', 'A')->whereDay('tgl_cair', date('d', strtotime($tanggal)))->with([
+            'target' => function ($query) use ($tanggal) {
+                $query->where([
+                    ['jatuh_tempo', '<=', $tanggal],
+                    ['angsuran_ke', '!=', '0'],
+                ]);
+            },
+            'saldo' => function ($query) use ($tanggal) {
+                $query->where('tgl_transaksi', '<=', $tanggal);
+            },
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+        ])->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'url' => $apiEndpoint->whatsapp_api,
+                'pinjaman' => $pinjaman,
+            ],
         ], 200);
     }
 

@@ -21,7 +21,7 @@
             </thead>
             <tbody>
                 @foreach ($pinjaman as $pinj)
-                    @if ($pinj-> )
+                    @if ($pinj->target)
                         @php
                             $nomor = $pinj->kelompok->telpon;
                             $desa = $pinj->kelompok->d->sebutan_desa->sebutan_desa;
