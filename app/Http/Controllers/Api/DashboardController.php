@@ -512,7 +512,7 @@ class DashboardController extends Controller
         $pesan_wa = json_decode($kec->whatsapp, true);
 
         $tanggal = request()->get('tanggal_tagihan');
-        $tgl_bayar = request()->get('tanggal_pembayaran');
+        $tgl_bayar = request()->get('tanggal_bayar');
         $pesan = $pesan_wa['tagihan'];
 
         $pesan = strtr($pesan, [
