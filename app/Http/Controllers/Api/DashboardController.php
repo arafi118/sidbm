@@ -541,7 +541,7 @@ class DashboardController extends Controller
             'success' => true,
             'data' => [
                 'url' => $apiEndpoint->whatsapp_api,
-                'pinjaman' => $pinjaman,
+                'data' => $pinjaman,
             ],
         ], 200);
     }
