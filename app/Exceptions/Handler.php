@@ -37,7 +37,7 @@ class Handler extends ExceptionHandler
     {
         // Untuk API request, return JSON 401
         if ($request->expectsJson() || $request->is('api/*')) {
-            return response()->json(['message' => 'Unauthenticated 2312.'], 401);
+            return response()->json(['message' => 'Akses Ditolak.'], 401);
         }
 
         // Untuk web request, redirect ke halaman awal

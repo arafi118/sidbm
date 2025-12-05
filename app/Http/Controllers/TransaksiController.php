@@ -1696,8 +1696,13 @@ class TransaksiController extends Controller
 
         if ((Keuangan::startWith($sumber_dana, '1.2.01.01') || Keuangan::startWith($sumber_dana, '1.2.02')) && Keuangan::startWith($disimpan_ke, '5.3.02.01') && $jenis_transaksi == 2) {
             $kode = explode('.', $sumber_dana);
+
             $jenis = intval($kode[2]);
             $kategori = intval($kode[3]);
+            if (Keuangan::startWith($sumber_dana, '1.2.02')) {
+                $jenis = intval($kode[2] - 1);
+                $kategori = intval($kode[3] + 1);
+            }
 
             $inventaris = Inventaris::where([
                 ['jenis', $jenis],
