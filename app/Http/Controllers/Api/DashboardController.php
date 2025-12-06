@@ -612,7 +612,7 @@ class DashboardController extends Controller
             'data' => [
                 'url' => $apiEndpoint->whatsapp_api,
                 'data' => $pinjaman,
-                'whatsapp_token' => $kec->token,
+                'token' => $kec->token,
                 'pesan' => $pesan,
             ],
         ], 200);
