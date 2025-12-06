@@ -540,6 +540,7 @@ class DashboardController extends Controller
                 'kelompok.alamat_kelompok',
                 'kelompok.telpon',
                 'desa.nama_desa',
+                'sebutan_desa.sebutan_desa',
                 'jenis_produk_pinjaman.nama_jpp',
                 DB::raw('COALESCE(target_sum.total_wajib_pokok, 0) as target_pokok'),
                 DB::raw('COALESCE(target_sum.total_wajib_jasa, 0) as target_jasa'),
@@ -551,6 +552,7 @@ class DashboardController extends Controller
             ->join('jenis_produk_pinjaman', 'pinkel.jenis_pp', '=', 'jenis_produk_pinjaman.id')
             ->join("$tb_kel as kelompok", 'pinkel.id_kel', '=', 'kelompok.id')
             ->join('desa', 'kelompok.desa', '=', 'desa.kd_desa')
+            ->join('sebutan_desa', 'desa.sebutan', '=', 'sebutan_desa.id')
             ->leftJoin(DB::raw("(
                 SELECT 
                     loan_id,
@@ -582,6 +584,7 @@ class DashboardController extends Controller
                 'kelompok.ketua',
                 'kelompok.alamat_kelompok',
                 'desa.nama_desa',
+                'sebutan_desa.sebutan_desa',
                 'jenis_produk_pinjaman.nama_jpp',
                 'target_sum.total_wajib_pokok',
                 'target_sum.total_wajib_jasa',
