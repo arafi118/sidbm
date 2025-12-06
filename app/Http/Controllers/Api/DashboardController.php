@@ -511,8 +511,8 @@ class DashboardController extends Controller
         $kec = Kecamatan::where('id', $user->lokasi)->first();
         $pesan_wa = json_decode($kec->whatsapp, true);
 
-        $tanggal = request()->get('tanggal_tagihan');
-        $tgl_bayar = request()->get('tanggal_bayar');
+        $tanggal = date('Y-m-d', strtotime(request()->get('tanggal_tagihan')));
+        $tgl_bayar = date('Y-m-d', strtotime(request()->get('tanggal_bayar')));
         $pesan = $pesan_wa['tagihan'];
 
         $pesan = strtr($pesan, [
