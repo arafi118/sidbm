@@ -581,7 +581,6 @@ class DashboardController extends Controller
                 'kelompok.nama_kelompok',
                 'kelompok.ketua',
                 'kelompok.alamat_kelompok',
-                'kelompok.telpon',
                 'desa.nama_desa',
                 'jenis_produk_pinjaman.nama_jpp',
                 'target_sum.total_wajib_pokok',
