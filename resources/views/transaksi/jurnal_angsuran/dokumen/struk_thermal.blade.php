@@ -109,6 +109,8 @@
     }
 </style>
 
+<title>Kuitansi</title>
+
 <body onload="window.print()">
     <table width="100%" action="" border="0" align="center" cellpadding="1" cellspacing="0" class="style1">
 

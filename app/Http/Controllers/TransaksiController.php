@@ -2406,7 +2406,7 @@ class TransaksiController extends Controller
         }
 
         $dompdf = new Dompdf();
-        $dompdf->setPaper([0, 0, $lebarKertas, 566, 929]);
+        $dompdf->setPaper([0, 0, $lebarKertas, 566.929]);
 
         $GLOBALS['bodyHeight'] = 0;
 
