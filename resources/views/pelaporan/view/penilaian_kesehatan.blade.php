@@ -174,10 +174,10 @@
         } elseif ($saldo_piuang > 70) {
             $skor_b5 = 5;
             $status_b5 = 'Kurang Sehat';
-        } elseif ($saldo_piuang > 65) {
+        } elseif ($saldo_piuang > 60) {
             $skor_b5 = 3.75;
             $status_b5 = 'Kurang Sehat';
-        } elseif ($saldo_piuang > 65) {
+        } elseif ($saldo_piuang > 60) {
             $skor_b5 = 2.5;
             $status_b5 = 'Tidak Sehat';
         } else {
@@ -453,11 +453,11 @@
             </td>
             <td class="t l b" rowspan="2">
                 <div>{{ 'R > 70% skor 5' }}</div>
-                <div>{{ 'R > 65% skor 3.75' }}</div>
+                <div>{{ 'R > 60% skor 3.75' }}</div>
             </td>
             <td class="t l b" rowspan="2">
-                <div>{{ 'R > 65% skor 2.5' }}</div>
-                <div>{{ 'R <= 65% skor 0' }}</div>
+                <div>{{ 'R > 60% skor 2.5' }}</div>
+                <div>{{ 'R <= 60% skor 0' }}</div>
             </td>
             <td class="t l b" rowspan="2" align="center">{{ $skor_b5 }}</td>
             <td class="t l b r" rowspan="2" align="center">{{ $status_b5 }}</td>
