@@ -59,16 +59,6 @@
 
 @if ($kertas == '80')
     <style type="text/css">
-        @media print {
-            @page {
-                size: 80mm 90mm;
-            }
-
-            body {
-                padding: 4px;
-            }
-        }
-
         .style1 {
             font-family: Arial, Helvetica, sans-serif;
             font-size: 8px;
@@ -81,16 +71,6 @@
     </style>
 @else
     <style type="text/css">
-        @media print {
-            @page {
-                size: 58mm 68mm;
-            }
-
-            body {
-                padding: 4px;
-            }
-        }
-
         .style1 {
             font-family: Arial, Helvetica, sans-serif;
             font-size: 6px;

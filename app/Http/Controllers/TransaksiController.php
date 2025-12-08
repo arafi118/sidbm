@@ -21,6 +21,7 @@ use App\Utils\Inventaris as UtilsInventaris;
 use App\Utils\Keuangan;
 use App\Utils\Tanggal;
 use DB;
+use Dompdf\Dompdf;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -2399,7 +2400,43 @@ class TransaksiController extends Controller
         $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
         $data['keuangan'] = new Keuangan;
 
-        return view('transaksi.jurnal_angsuran.dokumen.struk_thermal', $data);
+        $lebarKertas = 226.772;
+        if ($data['kertas'] != '80') {
+            $lebarKertas = 164.409;
+        }
+
+        $dompdf = new Dompdf();
+        $dompdf->setPaper([0, 0, $lebarKertas, 566, 929]);
+
+        $GLOBALS['bodyHeight'] = 0;
+
+        $dompdf->setCallbacks(
+            [
+                'myCallbacks' => [
+                    'event' => 'end_frame', 'f' => function ($infos) {
+                        $frame = $infos->get_frame();
+
+                        if (strtolower($frame->get_node()->nodeName) === 'body') {
+                            $padding_box = $frame->get_padding_box();
+                            $GLOBALS['bodyHeight'] += $padding_box['h'];
+
+                            return;
+                        }
+                    },
+                ],
+            ]
+        );
+
+        $html = view('transaksi.jurnal_angsuran.dokumen.struk_thermal', $data)->render();
+
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+        unset($dompdf);
+
+        $pdf = PDF::loadHTML($html);
+        $pdf->setPaper([0, 0, $lebarKertas, $GLOBALS['bodyHeight'] + 80]);
+
+        return $pdf->stream();
     }
 
     public function saldo($kode_akun)
