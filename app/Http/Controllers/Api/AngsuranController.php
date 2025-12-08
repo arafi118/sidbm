@@ -386,10 +386,12 @@ class AngsuranController extends Controller
         }
 
         RealAngsuran::insert($realAngsuran);
-
         return response()->json([
             'success' => true,
             'message' => 'Angsuran kelompok ' . $data['keterangan_angsuran'] . ' berhasil diposting.',
+            'data' => [
+                'idtp' => $idtp,
+            ]
         ]);
     }
 }
