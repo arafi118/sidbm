@@ -1677,7 +1677,7 @@ class TransaksiController extends Controller
                 $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
             })->get();
 
-            $rek2 = Rekening::where('kode_akun', 'NOT LIKE', '1.1.03%')->where(function ($query) use ($tgl_kondisi) {
+            $rek2 = Rekening::where('kode_akun', 'NOT LIKE', '1.1.03%')->where('lev4', '<', '4')->where(function ($query) use ($tgl_kondisi) {
                 $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
             })->get();
 
