@@ -58,8 +58,8 @@
                     <th class="t l b" width="10%">Pinjaman Lalu</th>
                     <th class="t l b" width="10%">Verifikasi</th>
                     <th class="t l b r" width="10%">Verifikasi Lalu</th>
-                    <th class="t l b" width="10%">Waiting</th>
-                    <th class="t l b r" width="10%">Waiting Lalu</th>
+                    <th class="t l b" width="10%">Alokasi</th>
+                    <th class="t l b r" width="10%">Alokasi Lalu</th>
                 </tr>
             </thead>
 
