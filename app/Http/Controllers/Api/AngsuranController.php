@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ApiEndpoint;
+use App\Models\Kecamatan;
+use App\Models\Kelompok;
 use App\Models\PinjamanAnggota;
 use App\Models\PinjamanKelompok;
 use App\Models\RealAngsuran;
 use App\Models\Rekening;
 use App\Models\RencanaAngsuran;
 use App\Models\Transaksi;
+use App\Utils\Keuangan;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,9 +25,9 @@ class AngsuranController extends Controller
     {
         $tanggal = date('Y-m-d');
 
-        $kelompok = 'kelompok_' . request()->user()->lokasi;
-        $pinjamanKelompok = 'pinjaman_kelompok_' . request()->user()->lokasi;
-        $realAngsuran = 'real_angsuran_' . request()->user()->lokasi;
+        $kelompok = 'kelompok_'.request()->user()->lokasi;
+        $pinjamanKelompok = 'pinjaman_kelompok_'.request()->user()->lokasi;
+        $realAngsuran = 'real_angsuran_'.request()->user()->lokasi;
 
         $daftarPinjaman = PinjamanKelompok::from("$pinjamanKelompok as pk")
             ->select(
@@ -32,7 +36,7 @@ class AngsuranController extends Controller
                 'k.ketua',
                 'k.kd_kelompok',
                 'pk.tgl_cair',
-                DB::raw("MAX(ra.tgl_transaksi) as tgl_transaksi_terakhir")
+                DB::raw('MAX(ra.tgl_transaksi) as tgl_transaksi_terakhir')
             )
             ->join("$kelompok as k", 'k.id', '=', 'pk.id_kel')
             ->leftJoin("$realAngsuran as ra", 'ra.loan_id', '=', 'pk.id')
@@ -46,7 +50,7 @@ class AngsuranController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $daftarPinjaman
+            'data' => $daftarPinjaman,
         ], 200);
     }
 
@@ -67,12 +71,12 @@ class AngsuranController extends Controller
                 'k.kd_kelompok',
                 'pk.tgl_cair',
             )
-            ->join("$k as k", "k.id", "=", "pk.id_kel")
-            ->where("pk.status", "A")
+            ->join("$k as k", 'k.id', '=', 'pk.id_kel')
+            ->where('pk.status', 'A')
             ->where(function ($q) use ($keyword) {
-                $q->whereRaw("LOWER(k.nama_kelompok) LIKE ?", ["%$keyword%"])
-                    ->orWhereRaw("LOWER(k.kd_kelompok) LIKE ?", ["%$keyword%"])
-                    ->orWhereRaw("LOWER(k.ketua) LIKE ?", ["%$keyword%"]);
+                $q->whereRaw('LOWER(k.nama_kelompok) LIKE ?', ["%$keyword%"])
+                    ->orWhereRaw('LOWER(k.kd_kelompok) LIKE ?', ["%$keyword%"])
+                    ->orWhereRaw('LOWER(k.ketua) LIKE ?', ["%$keyword%"]);
             })
             ->limit(10)
             ->orderBy('k.nama_kelompok', 'asc')
@@ -80,7 +84,7 @@ class AngsuranController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $pinjamanKelompok
+            'data' => $pinjamanKelompok,
         ], 200);
     }
 
@@ -97,16 +101,16 @@ class AngsuranController extends Controller
             ])
             ->first();
 
-        if (!$pinjaman) {
+        if (! $pinjaman) {
             return response()->json([
                 'success' => false,
-                'message' => 'Pinjaman tidak ditemukan'
+                'message' => 'Pinjaman tidak ditemukan',
             ], 404);
         }
 
         $target = RencanaAngsuran::where([
             ['loan_id', $pinjaman_id],
-            ['jatuh_tempo', '<=', $tanggal]
+            ['jatuh_tempo', '<=', $tanggal],
         ])->orderBy('jatuh_tempo', 'DESC')->first();
 
         $target_pokok = 0;
@@ -118,7 +122,7 @@ class AngsuranController extends Controller
 
         $saldo = RealAngsuran::where([
             ['loan_id', $pinjaman_id],
-            ['tgl_transaksi', '<=', $tanggal]
+            ['tgl_transaksi', '<=', $tanggal],
         ])->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC')->first();
 
         $sum_pokok = 0;
@@ -139,7 +143,7 @@ class AngsuranController extends Controller
                 $metode = 'Tunai';
             } else {
                 $namaAkun = trim(str_replace('kas di', '', strtolower($rk->nama_akun)));
-                $metode = 'Transfer ' . ucwords($namaAkun);
+                $metode = 'Transfer '.ucwords($namaAkun);
             }
 
             $metodeAngsuran[] = [
@@ -151,17 +155,17 @@ class AngsuranController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                "pinjaman" => $pinjaman,
-                "angsuran" => [
+                'pinjaman' => $pinjaman,
+                'angsuran' => [
                     'wajib_pokok' => $wajib_pokok,
                     'wajib_jasa' => $wajib_jasa,
                     'target_pokok' => $target_pokok,
                     'target_jasa' => $target_jasa,
                     'sum_pokok' => $sum_pokok,
-                    'sum_jasa' => $sum_jasa
+                    'sum_jasa' => $sum_jasa,
                 ],
-                'metode_angsuran' => $metodeAngsuran
-            ]
+                'metode_angsuran' => $metodeAngsuran,
+            ],
         ], 200);
     }
 
@@ -169,6 +173,7 @@ class AngsuranController extends Controller
     {
         $data = $request->only([
             'id',
+            'id_kelompok',
             'jenis_pp',
             'alokasi',
             'pros_jasa',
@@ -192,24 +197,28 @@ class AngsuranController extends Controller
             'angsuran_denda' => 'required|numeric',
             'metode_angsuran' => 'required',
             'keterangan_angsuran' => 'required|string',
-            'penyetor' => 'required'
+            'penyetor' => 'required',
         ]);
 
         if ($validate->fails()) {
             return response()->json([
                 'status' => false,
                 'message' => 'Ada form yang belum diisi',
-                'form_error' => $validate->errors()
+                'form_error' => $validate->errors(),
             ], 422);
         }
 
         if ($data['angsuran_pokok'] == 0 && $data['angsuran_jasa'] == 0 && $data['angsuran_denda'] == 0) {
             return response()->json([
                 'success' => false,
-                'message' => 'Angsuran tidak boleh bernilai 0'
+                'message' => 'Angsuran tidak boleh bernilai 0',
             ], 422);
         }
 
+        $user = request()->user();
+        $apiEndpoint = ApiEndpoint::first();
+        $kec = Kecamatan::where('id', $user->lokasi)->first();
+        $kelompok = Kelompok::where('id', $data['id_kelompok'])->with('d.sebutan_desa')->first();
         $pinjamanAnggota = PinjamanAnggota::where('id_pinkel', $data['id'])->get();
         $target = RencanaAngsuran::where('loan_id', $data['id'])
             ->where('jatuh_tempo', '<=', $data['tanggal_angsuran'])
@@ -263,7 +272,7 @@ class AngsuranController extends Controller
                     if ($data['angsuran_pokok'] > 0) {
                         $transaksi[] = array_merge($baseTransaksi, [
                             'rekening_kredit' => $rekening['pokok'],
-                            'keterangan_transaksi' => 'Angs. (P) ' . $data['keterangan_angsuran'],
+                            'keterangan_transaksi' => 'Angs. (P) '.$data['keterangan_angsuran'],
                             'jumlah' => $data['angsuran_pokok'],
                         ]);
                     }
@@ -271,7 +280,7 @@ class AngsuranController extends Controller
                     if ($data['angsuran_jasa'] > 0) {
                         $transaksi[] = array_merge($baseTransaksi, [
                             'rekening_kredit' => $rekening['jasa'],
-                            'keterangan_transaksi' => 'Angs. (J) ' . $data['keterangan_angsuran'],
+                            'keterangan_transaksi' => 'Angs. (J) '.$data['keterangan_angsuran'],
                             'jumlah' => $data['angsuran_jasa'],
                         ]);
                     }
@@ -279,7 +288,7 @@ class AngsuranController extends Controller
                     if ($data['angsuran_denda'] > 0) {
                         $transaksi[] = array_merge($baseTransaksi, [
                             'rekening_kredit' => $rekening['denda'],
-                            'keterangan_transaksi' => 'Denda ' . $data['keterangan_angsuran'],
+                            'keterangan_transaksi' => 'Denda '.$data['keterangan_angsuran'],
                             'jumlah' => $data['angsuran_denda'],
                         ]);
                     }
@@ -291,13 +300,13 @@ class AngsuranController extends Controller
 
                 break;
             } catch (Exception $e) {
-                Log::warning("Transaksi gagal, percobaan ke-" . ($retryCount + 1) . ": " . $e->getMessage());
+                Log::warning('Transaksi gagal, percobaan ke-'.($retryCount + 1).': '.$e->getMessage());
 
                 if ($retryCount >= $maxRetries - 1) {
                     return response()->json([
                         'success' => false,
                         'message' => 'Transaksi gagal. Silahkan coba lagi.',
-                        'loan_id' => $data['id']
+                        'loan_id' => $data['id'],
                     ], 500);
                 }
 
@@ -305,17 +314,16 @@ class AngsuranController extends Controller
             }
         }
 
-        if (!$angsuran || !$angsuran['transaksi']) {
+        if (! $angsuran || ! $angsuran['transaksi']) {
             return response()->json([
                 'success' => false,
                 'message' => 'Transaksi gagal. Silahkan coba lagi.',
-                'loan_id' => $data['id']
+                'loan_id' => $data['id'],
             ], 500);
         }
 
         $idtp = $angsuran['idtp'];
         $transaksi = $angsuran['transaksi'];
-
 
         $jasaPinjaman = ($data['pros_jasa'] / 100) * $data['alokasi'];
 
@@ -337,7 +345,7 @@ class AngsuranController extends Controller
 
             $pa->update([
                 'kom_pokok' => $komPokok,
-                'kom_jasa' => $komJasa
+                'kom_jasa' => $komJasa,
             ]);
         }
 
@@ -386,12 +394,36 @@ class AngsuranController extends Controller
         }
 
         RealAngsuran::insert($realAngsuran);
+
+        $whatsapp = false;
+        $pesan = '';
+        if (strlen($kelompok->telpon) >= 11 && strlen(auth()->user()->hp) >= 11 && (Keuangan::startWith($kelompok->telpon, '08') || Keuangan::startWith($kelompok->telpon, '628'))) {
+            $nama_kelompok = $kelompok->nama_kelompok;
+            $desa = $kelompok->d->sebutan_desa->sebutan_desa.' '.$kelompok->d->nama_desa;
+
+            $whatsapp = true;
+            $pesan_wa = json_decode($kec->whatsapp, true);
+            $pesan = $pesan_wa['angsuran'];
+            $pesan = strtr($pesan, [
+                '{Nama Kelompok}' => $nama_kelompok,
+                '{Nama Desa}' => $desa,
+                '{Angsuran Pokok}' => number_format($data['angsuran_pokok'], 0, ',', '.'),
+                '{Angsuran Jasa}' => number_format($data['angsuran_jasa'], 0, ',', '.'),
+                '{Tanggal Angsuran}' => $data['tanggal_angsuran'],
+                '{User Login}' => $user->namadepan.' '.$user->namabelakang,
+                '{Telpon}' => $user->hp,
+            ]);
+        }
+
         return response()->json([
             'success' => true,
-            'message' => 'Angsuran kelompok ' . $data['keterangan_angsuran'] . ' berhasil diposting.',
+            'message' => 'Angsuran kelompok '.$data['keterangan_angsuran'].' berhasil diposting.',
             'data' => [
                 'idtp' => $idtp,
-            ]
+                'send_whatsapp' => $whatsapp,
+                'pesan' => $pesan,
+                'url' => $apiEndpoint->whatsapp_api,
+            ],
         ]);
     }
 }
