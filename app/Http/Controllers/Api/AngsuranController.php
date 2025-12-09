@@ -406,7 +406,7 @@ class AngsuranController extends Controller
             '{Nama Desa}' => $desa,
             '{Angsuran Pokok}' => number_format($data['angsuran_pokok'], 0, ',', '.'),
             '{Angsuran Jasa}' => number_format($data['angsuran_jasa'], 0, ',', '.'),
-            '{Tanggal Angsuran}' => $data['tanggal_angsuran'],
+            '{Tanggal Angsuran}' => date('Y-m-d', strtotime($data['tanggal_angsuran'])),
             '{User Login}' => $user->namadepan.' '.$user->namabelakang,
             '{Telpon}' => $user->hp,
         ]);
