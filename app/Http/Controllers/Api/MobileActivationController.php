@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\AppUpdate;
 use App\Models\Mobile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class MobileActivationController extends Controller
@@ -19,6 +19,16 @@ class MobileActivationController extends Controller
         //
     }
 
+    public function cekUpdate()
+    {
+        $update = AppUpdate::latest()->first();
+
+        return response()->json([
+            'success' => true,
+            'data' => $update,
+        ], 200);
+    }
+
     public function activation(Request $request)
     {
         $validate = Validator::make($request->all(), [
@@ -28,8 +38,8 @@ class MobileActivationController extends Controller
         if ($validate->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => "Ada form yang belum diisi",
-                'form_error' => $validate->errors()
+                'message' => 'Ada form yang belum diisi',
+                'form_error' => $validate->errors(),
             ], 400);
         }
 
@@ -37,16 +47,16 @@ class MobileActivationController extends Controller
         foreach ($listToken as $token) {
             if (Hash::check($request->token, $token->aktivasi)) {
                 $kec = $token->kec;
-                $kecamatan = $kec->nama_lembaga_sort . ' ' . $kec->sebutan_kec . ' ' . $kec->nama_kec;
+                $kecamatan = $kec->nama_lembaga_sort.' '.$kec->sebutan_kec.' '.$kec->nama_kec;
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Aktivasi SI DBM Mobile ' . $kecamatan . ' berhasil.',
+                    'message' => 'Aktivasi SI DBM Mobile '.$kecamatan.' berhasil.',
                     'data' => [
                         'token' => $request->token,
                         'code' => $token->unique_id,
-                        'lokasi' => $token->lokasi
-                    ]
+                        'lokasi' => $token->lokasi,
+                    ],
                 ], 200);
             }
         }
@@ -65,16 +75,16 @@ class MobileActivationController extends Controller
         $getToken = Mobile::where('unique_id', $code)->with('kec')->first();
         if ($getToken) {
             if (Hash::check($token, $getToken->aktivasi)) {
-                $logoURI =  $getToken->kec->logo;
+                $logoURI = $getToken->kec->logo;
 
                 return response()->json([
                     'success' => true,
                     'data' => [
                         'nama_lembaga' => $getToken->kec->nama_lembaga_sort,
-                        'nama_kec' => $getToken->kec->sebutan_kec . ' ' . $getToken->kec->nama_kec,
+                        'nama_kec' => $getToken->kec->sebutan_kec.' '.$getToken->kec->nama_kec,
                         'nama_kab' => ucwords(strtolower($getToken->kec->kabupaten->nama_kab)),
-                        'logo' => $logoURI
-                    ]
+                        'logo' => $logoURI,
+                    ],
                 ], 200);
             }
         }
