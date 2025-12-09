@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\TransaksiController;
 use App\Models\ApiEndpoint;
 use App\Models\Kecamatan;
 use App\Models\Kelompok;
@@ -13,12 +12,15 @@ use App\Models\RealAngsuran;
 use App\Models\Rekening;
 use App\Models\RencanaAngsuran;
 use App\Models\Transaksi;
+use App\Models\User;
 use App\Utils\Keuangan;
+use Dompdf\Dompdf;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Log;
+use PDF;
 
 class AngsuranController extends Controller
 {
@@ -430,8 +432,67 @@ class AngsuranController extends Controller
 
     public function detailAngsuran(Request $request, $idtp)
     {
-        $transaksiController = new TransaksiController();
+        $user = request()->user();
 
-        return $transaksiController->strukThermal($idtp);
+        $data['kertas'] = '80';
+        $data['real'] = RealAngsuran::where('id', $idtp)->with('trx', 'trx.user')->firstOrFail();
+        $data['pinkel'] = PinjamanKelompok::where('id', $data['real']->loan_id)->with([
+            'kelompok',
+            'kelompok.d',
+            'kelompok.d.sebutan_desa',
+            'jpp',
+            'sis_pokok',
+        ])->first();
+
+        $data['ra_bulan_ini'] = RencanaAngsuran::where([
+            ['loan_id', $data['real']->loan_id],
+            ['jatuh_tempo', '<=', date('Y-m-t', strtotime($data['real']->tgl_transaksi))],
+        ])->orderBy('jatuh_tempo', 'DESC')->first();
+        $data['angsuran'] = RencanaAngsuran::where([
+            ['loan_id', $data['real']->loan_id],
+            ['target_pokok', '<=', $data['real']->sum_pokok],
+        ])->orderBy('jatuh_tempo', 'DESC')->first();
+
+        $data['user'] = User::where('id', $data['real']->id_user)->first();
+        $data['kec'] = Kecamatan::where('id', $user->lokasi)->with('kabupaten')->first();
+        $data['keuangan'] = new Keuangan;
+
+        $lebarKertas = 226.772;
+        if ($data['kertas'] != '80') {
+            $lebarKertas = 164.409;
+        }
+
+        $dompdf = new Dompdf();
+        $dompdf->setPaper([0, 0, $lebarKertas, 566.929]);
+
+        $GLOBALS['bodyHeight'] = 0;
+
+        $dompdf->setCallbacks(
+            [
+                'myCallbacks' => [
+                    'event' => 'end_frame', 'f' => function ($infos) {
+                        $frame = $infos->get_frame();
+
+                        if (strtolower($frame->get_node()->nodeName) === 'body') {
+                            $padding_box = $frame->get_padding_box();
+                            $GLOBALS['bodyHeight'] += $padding_box['h'];
+
+                            return;
+                        }
+                    },
+                ],
+            ]
+        );
+
+        $html = view('transaksi.jurnal_angsuran.dokumen.struk_thermal', $data)->render();
+
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+        unset($dompdf);
+
+        $pdf = PDF::loadHTML($html);
+        $pdf->setPaper([0, 0, $lebarKertas, $GLOBALS['bodyHeight'] + 80]);
+
+        return $pdf->stream();
     }
 }
