@@ -396,23 +396,23 @@ class AngsuranController extends Controller
         RealAngsuran::insert($realAngsuran);
 
         $whatsapp = false;
-        $pesan = '';
-        if (strlen($kelompok->telpon) >= 11 && strlen(auth()->user()->hp) >= 11 && (Keuangan::startWith($kelompok->telpon, '08') || Keuangan::startWith($kelompok->telpon, '628'))) {
-            $nama_kelompok = $kelompok->nama_kelompok;
-            $desa = $kelompok->d->sebutan_desa->sebutan_desa.' '.$kelompok->d->nama_desa;
+        $nama_kelompok = $kelompok->nama_kelompok;
+        $desa = $kelompok->d->sebutan_desa->sebutan_desa.' '.$kelompok->d->nama_desa;
 
+        $pesan_wa = json_decode($kec->whatsapp, true);
+        $pesan = $pesan_wa['angsuran'];
+        $pesan = strtr($pesan, [
+            '{Nama Kelompok}' => $nama_kelompok,
+            '{Nama Desa}' => $desa,
+            '{Angsuran Pokok}' => number_format($data['angsuran_pokok'], 0, ',', '.'),
+            '{Angsuran Jasa}' => number_format($data['angsuran_jasa'], 0, ',', '.'),
+            '{Tanggal Angsuran}' => $data['tanggal_angsuran'],
+            '{User Login}' => $user->namadepan.' '.$user->namabelakang,
+            '{Telpon}' => $user->hp,
+        ]);
+
+        if (strlen($kelompok->telpon) >= 11 && strlen(auth()->user()->hp) >= 11 && (Keuangan::startWith($kelompok->telpon, '08') || Keuangan::startWith($kelompok->telpon, '628'))) {
             $whatsapp = true;
-            $pesan_wa = json_decode($kec->whatsapp, true);
-            $pesan = $pesan_wa['angsuran'];
-            $pesan = strtr($pesan, [
-                '{Nama Kelompok}' => $nama_kelompok,
-                '{Nama Desa}' => $desa,
-                '{Angsuran Pokok}' => number_format($data['angsuran_pokok'], 0, ',', '.'),
-                '{Angsuran Jasa}' => number_format($data['angsuran_jasa'], 0, ',', '.'),
-                '{Tanggal Angsuran}' => $data['tanggal_angsuran'],
-                '{User Login}' => $user->namadepan.' '.$user->namabelakang,
-                '{Telpon}' => $user->hp,
-            ]);
         }
 
         return response()->json([
