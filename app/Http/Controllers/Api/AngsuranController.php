@@ -422,7 +422,7 @@ class AngsuranController extends Controller
                 'idtp' => $idtp,
                 'send_whatsapp' => $whatsapp,
                 'pesan' => $pesan,
-                'url' => $apiEndpoint->whatsapp_api,
+                'url' => $apiEndpoint->whatsapp_api.'/'.$kec->token.'/send-message',
             ],
         ]);
     }
