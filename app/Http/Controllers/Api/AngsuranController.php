@@ -424,6 +424,7 @@ class AngsuranController extends Controller
             'data' => [
                 'idtp' => $idtp,
                 'send_whatsapp' => $whatsapp,
+                'telpon' => $kelompok->telpon,
                 'pesan' => $pesan,
                 'url' => $apiEndpoint->whatsapp_api.'/'.$kec->token.'/send-message',
             ],
