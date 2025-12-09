@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\TransaksiController;
 use App\Models\ApiEndpoint;
 use App\Models\Kecamatan;
 use App\Models\Kelompok;
@@ -425,5 +426,12 @@ class AngsuranController extends Controller
                 'url' => $apiEndpoint->whatsapp_api.'/'.$kec->token.'/send-message',
             ],
         ]);
+    }
+
+    public function detailAngsuran(Request $request, $idtp)
+    {
+        $transaksiController = new TransaksiController();
+
+        return $transaksiController->strukThermal($idtp);
     }
 }
