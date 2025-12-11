@@ -80,6 +80,7 @@ Route::group(['prefix' => 'master', 'as' => 'master.', 'middleware' => 'master']
     Route::post('/upload_aplikasi/upload', [UploadAplikasiController::class, 'upload'])->name('version.upload');
     Route::post('/upload_aplikasi/store', [UploadAplikasiController::class, 'store'])->name('version.store');
     Route::get('/upload_aplikasi/list', [UploadAplikasiController::class, 'list'])->name('version.list');
+    Route::delete('/upload_aplikasi/{id}', [UploadAplikasiController::class, 'destroy'])->name('version.destroy');
 
     Route::resource('/menu', MenuController::class);
 

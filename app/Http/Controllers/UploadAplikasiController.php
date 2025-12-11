@@ -85,4 +85,21 @@ class UploadAplikasiController extends Controller
             'data' => $versions,
         ]);
     }
+
+    public function destroy($id)
+    {
+        $update = AppUpdate::findOrFail($id);
+
+        // Hapus file dari storage jika ada
+        if ($update->apk_url && \Storage::disk('public')->exists($update->apk_url)) {
+            \Storage::disk('public')->delete($update->apk_url);
+        }
+
+        $update->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Version berhasil dihapus',
+        ]);
+    }
 }

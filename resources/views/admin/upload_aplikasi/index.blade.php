@@ -12,7 +12,7 @@
                                 <div class="input-group input-group-static my-3">
                                     <label for="latest_version">Latest Version</label>
                                     <input autocomplete="off" type="text" name="latest_version" id="latest_version"
-                                        class="form-control" value="{{ $daftarUpdate[0]->latest_version ?? '1.0.1' }}">
+                                        class="form-control" value="">
                                     <small class="text-danger" id="msg_latest_version"></small>
                                 </div>
                             </div>
@@ -20,8 +20,7 @@
                                 <div class="input-group input-group-static my-3">
                                     <label for="version_code">Version Code</label>
                                     <input autocomplete="off" type="text" name="version_code" id="version_code"
-                                        class="form-control" value="{{ $daftarUpdate[0]->version_code + 1 ?? '1' }}"
-                                        readonly>
+                                        class="form-control" value="" readonly>
                                     <small class="text-danger" id="msg_version_code"></small>
                                 </div>
                             </div>
@@ -74,14 +73,7 @@
                 </div>
                 <div class="card-body pt-0">
                     <div id="version-list">
-                        @foreach ($daftarUpdate as $update)
-                            <div class="version-item">
-                                <h6>v{{ $update->latest_version }} ({{ $update->version_code }})</h6>
-                                <small>{!! nl2br($update->changelog) !!}</small>
-                                <br>
-                                <small class="text-muted">{{ date('Y-m-d', strtotime($update->created_at)) }}</small>
-                            </div>
-                        @endforeach
+                        <p class="text-muted text-center">Memuat data...</p>
                     </div>
                 </div>
             </div>
@@ -274,7 +266,7 @@
                         myDropzone.removeAllFiles();
                         uploadedFile = null;
 
-                        window.location.reload();
+                        loadVersionList();
                     } else {
                         showNotification('error', data.message || 'Terjadi kesalahan');
                     }
@@ -292,5 +284,96 @@
                 Toastr('error', message);
             }
         }
+
+        function deleteVersion(id) {
+            Swal.fire({
+                title: 'Hapus Version?',
+                text: 'Apakah Anda yakin ingin menghapus version ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/master/upload_aplikasi/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                showNotification('success', data.message);
+                                loadVersionList();
+                            } else {
+                                showNotification('error', data.message || 'Gagal menghapus version');
+                            }
+                        })
+                        .catch(error => {
+                            showNotification('error', 'Terjadi kesalahan saat menghapus data');
+                            console.error(error);
+                        });
+                }
+            });
+        }
+
+        function loadVersionList() {
+            const versionList = document.getElementById('version-list');
+            versionList.innerHTML = '<p class="text-muted text-center">Memuat data...</p>';
+
+            fetch('/master/upload_aplikasi/list')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.data && data.data.length > 0) {
+                        versionList.innerHTML = data.data.map(version => `
+                            <div class="version-item d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">v${version.latest_version} (${version.version_code})</h6>
+                                    <small>${version.changelog ? version.changelog.replace(/\n/g, '<br>') : ''}</small>
+                                    <br>
+                                    <small class="text-muted">${version.created_at ? version.created_at.split('T')[0] : ''}</small>
+                                </div>
+                                <button type="button" class="btn btn-link text-danger p-0" onclick="deleteVersion(${version.id})" title="Hapus">
+                                    <i class="material-icons">delete</i>
+                                </button>
+                            </div>
+                        `).join('');
+                    } else {
+                        versionList.innerHTML = '<p class="text-muted text-center">Belum ada version history</p>';
+                    }
+                })
+                .catch(error => {
+                    versionList.innerHTML = '<p class="text-danger text-center">Gagal memuat data</p>';
+                    console.error(error);
+                })
+                .finally(() => {
+                    updateFormFields();
+                });
+        }
+
+        function updateFormFields() {
+            fetch('/master/upload_aplikasi/list')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.data && data.data.length > 0) {
+                        const latestVersion = data.data[0].latest_version;
+                        const latestVersionCode = parseInt(data.data[0].version_code) + 1;
+
+                        document.getElementById('latest_version').value = latestVersion;
+                        document.getElementById('version_code').value = latestVersionCode;
+                    } else {
+                        document.getElementById('latest_version').value = '1.0.0';
+                        document.getElementById('version_code').value = '1';
+                    }
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadVersionList();
+        });
     </script>
 @endsection
