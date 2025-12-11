@@ -24,6 +24,10 @@
         $angsuran_ke = intval($angsuran->angsuran_ke);
     }
 
+    if ($real->sum_pokok == '0') {
+        $angsuran_ke = 0;
+    }
+
     $jum_angsuran = $pinkel->jangka / $pinkel->sis_pokok->sistem;
 
     if ($pinkel->jangka <= $ra_bulan_ini->angsuran_ke) {
