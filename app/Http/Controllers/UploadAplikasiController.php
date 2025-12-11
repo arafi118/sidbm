@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AppUpdate;
+use App\Utils\Keuangan;
 use Illuminate\Http\Request;
 use Storage;
 
@@ -90,6 +91,13 @@ class UploadAplikasiController extends Controller
     public function destroy($id)
     {
         $update = AppUpdate::findOrFail($id);
+
+        if (! Keuangan::startWith($update->apk_url, request()->schemeAndHttpHost())) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak berhak menghapus file ini',
+            ], 422);
+        }
 
         $appPath = 'aplikasi/'.$update->apk_name;
         if ($update->apk_name && Storage::disk('public')->exists($appPath)) {
