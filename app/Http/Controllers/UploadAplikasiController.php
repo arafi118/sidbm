@@ -21,7 +21,7 @@ class UploadAplikasiController extends Controller
     public function upload(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|max:102400',
+            'file' => 'required|file|max:512000',
             'version' => 'required|string',
         ]);
 
