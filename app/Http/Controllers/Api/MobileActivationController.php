@@ -29,6 +29,21 @@ class MobileActivationController extends Controller
         ], 200);
     }
 
+    public function update($apk_name)
+    {
+        $update = AppUpdate::where('apk_name', $apk_name)->first();
+        $filePath = storage_path('app/public/'.$update->apk_url);
+
+        if (! file_exists($filePath)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'File tidak ditemukan',
+            ], 422);
+        }
+
+        return response()->download($filePath);
+    }
+
     public function activation(Request $request)
     {
         $validate = Validator::make($request->all(), [
@@ -107,14 +122,6 @@ class MobileActivationController extends Controller
      * Display the specified resource.
      */
     public function show(Mobile $mobile)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Mobile $mobile)
     {
         //
     }
