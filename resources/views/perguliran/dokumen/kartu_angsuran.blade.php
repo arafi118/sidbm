@@ -100,7 +100,7 @@
                         Telp. {{ $kec->telpon_kec }}
                     </div>
                     <div style="margin-top: 8px;">
-                        <img width="150" src="data:image/png;base64,{{ $barcode }}"
+                        <img height="40" src="data:image/png;base64,{{ $barcode }}"
                             alt="{{ $pinkel->kelompok->kd_kelompok }}">
                     </div>
                     <div style="font-size: 14px;">{{ $pinkel->kelompok->kd_kelompok }}</div>
@@ -366,7 +366,7 @@
                 <td colspan="3" style="font-weight: bold;" height="10">&nbsp;</td>
             </tr>
             <tr>
-                <td colspan="5">
+                <td colspan="4">
                     <ol>
                         <b>Perhatian:</b>
                         <li>Bayarlah angsuran tepat waktu sesuai dengan jadwal diatas</li>
@@ -377,6 +377,11 @@
                         <li>Jika lembar ini tidak mencukupi, cetak pada lembar baliknya dengan dibubuhi stempel
                             {{ $kec->nama_lembaga_sort }}</li>
                     </ol>
+                </td>
+                <td>
+                    <div style="display: flex; height: 100%; justify-content: center; align-items: center;">
+                        {{ $qrCode }}
+                    </div>
                 </td>
             </tr>
         </table>
