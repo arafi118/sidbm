@@ -41,11 +41,15 @@ class MobileActivationController extends Controller
             ], 422);
         }
 
-        return response()->file($filePath, [
-            'Content-Type' => mime_content_type($filePath),
-            'Content-Length' => filesize($filePath),
-            'Content-Disposition' => 'attachment; filename="'.$update->apk_name.'"',
-        ]);
+        return response()->make(
+            file_get_contents($filePath),
+            200,
+            [
+                'Content-Type' => 'application/vnd.android.package-archive',
+                'Content-Length' => filesize($filePath),
+                'Content-Disposition' => 'attachment; filename="'.$update->apk_name.'"',
+            ]
+        );
     }
 
     public function activation(Request $request)
