@@ -31,7 +31,7 @@ class MobileActivationController extends Controller
 
     public function update($apk_name)
     {
-        $update = AppUpdate::where('apk_name', $apk_name)->first();
+        $update = AppUpdate::where('apk_name', $apk_name)->orderBy('created_at', 'desc')->first();
         $filePath = storage_path('app/public/'.$update->apk_url);
 
         if (! file_exists($filePath)) {

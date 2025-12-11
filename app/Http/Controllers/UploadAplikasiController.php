@@ -37,7 +37,7 @@ class UploadAplikasiController extends Controller
         $version = $request->input('version');
 
         $filename = str_replace(' ', '_', strtolower($appName).'_'.$version).'.'.$extension;
-        $path = $file->storeAs('aplikasi', $filename, 'public');
+        $path = $file->storeAs('update', $filename, 'public');
 
         return response()->json([
             'success' => true,
@@ -64,7 +64,7 @@ class UploadAplikasiController extends Controller
             'latest_version' => $request->latest_version,
             'version_code' => $request->version_code,
             'apk_name' => $request->file['filename'],
-            'apk_url' => $request->file['path'],
+            'apk_url' => $request->schemeAndHttpHost().'/api/v1/'.$request->file['path'],
             'changelog' => $request->changelog,
             'force_update' => false,
             'min_supported_version' => $request->version_code,
