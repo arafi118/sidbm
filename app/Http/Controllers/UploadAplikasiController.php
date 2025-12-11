@@ -63,7 +63,7 @@ class UploadAplikasiController extends Controller
         AppUpdate::create([
             'latest_version' => $request->latest_version,
             'version_code' => $request->version_code,
-            'apk_name' => $request->file['original_name'] ?? $request->file['filename'],
+            'apk_name' => $request->file['filename'],
             'apk_url' => $request->file['path'],
             'changelog' => $request->changelog,
             'force_update' => false,
