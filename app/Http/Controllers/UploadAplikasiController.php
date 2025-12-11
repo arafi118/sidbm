@@ -65,7 +65,7 @@ class UploadAplikasiController extends Controller
             'latest_version' => $request->latest_version,
             'version_code' => $request->version_code,
             'apk_name' => $request->file['filename'],
-            'apk_url' => $request->schemeAndHttpHost().'/api/'.$request->file['path'],
+            'apk_url' => $request->file['path'],
             'changelog' => $request->changelog,
             'force_update' => false,
             'min_supported_version' => $request->version_code,
