@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AppUpdate;
 use Illuminate\Http\Request;
+use Storage;
 
 class UploadAplikasiController extends Controller
 {
@@ -37,7 +38,7 @@ class UploadAplikasiController extends Controller
         $version = $request->input('version');
 
         $filename = str_replace(' ', '_', strtolower($appName).'_'.$version).'.'.$extension;
-        $path = $file->storeAs('update', $filename, 'public');
+        $path = $file->storeAs('aplikasi', $filename, 'public');
 
         return response()->json([
             'success' => true,
@@ -64,7 +65,7 @@ class UploadAplikasiController extends Controller
             'latest_version' => $request->latest_version,
             'version_code' => $request->version_code,
             'apk_name' => $request->file['filename'],
-            'apk_url' => $request->schemeAndHttpHost().'/api/v1/'.$request->file['path'],
+            'apk_url' => $request->schemeAndHttpHost().'/api/'.$request->file['path'],
             'changelog' => $request->changelog,
             'force_update' => false,
             'min_supported_version' => $request->version_code,
@@ -90,9 +91,9 @@ class UploadAplikasiController extends Controller
     {
         $update = AppUpdate::findOrFail($id);
 
-        // Hapus file dari storage jika ada
-        if ($update->apk_url && \Storage::disk('public')->exists($update->apk_url)) {
-            \Storage::disk('public')->delete($update->apk_url);
+        $appPath = 'aplikasi/'.$update->apk_name;
+        if ($update->apk_name && Storage::disk('public')->exists($appPath)) {
+            Storage::disk('public')->delete($appPath);
         }
 
         $update->delete();

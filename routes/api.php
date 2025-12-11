@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/cek-update', [MobileActivationController::class, 'cekUpdate']);
-Route::get('/update/{apk_name}', [MobileActivationController::class, 'update']);
+Route::get('/aplikasi/{apk_name}', [MobileActivationController::class, 'aplikasi']);
 Route::post('/mobile-token-activation', [MobileActivationController::class, 'activation']);
 Route::get('/ambil-data-lokasi', [MobileActivationController::class, 'ambilDataLokasi']);
 
