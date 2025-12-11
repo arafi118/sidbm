@@ -1,6 +1,9 @@
 <?php
+
 ini_set('memory_limit', '3072M');
 ini_set('max_execution_time', '300');
+ini_set('upload_max_filesize', '500M');
+ini_set('post_max_size', '500M');
 
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
@@ -18,7 +21,7 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
-if (file_exists($maintenance = __DIR__ . '/../storage/framework/maintenance.php')) {
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;
 }
 
@@ -33,7 +36,7 @@ if (file_exists($maintenance = __DIR__ . '/../storage/framework/maintenance.php'
 |
 */
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +49,7 @@ require __DIR__ . '/../vendor/autoload.php';
 |
 */
 
-$app = require_once __DIR__ . '/../bootstrap/app.php';
+$app = require_once __DIR__.'/../bootstrap/app.php';
 
 $kernel = $app->make(Kernel::class);
 
