@@ -25,6 +25,7 @@ use App\Http\Controllers\ServiceWorkerController;
 use App\Http\Controllers\SopController;
 use App\Http\Controllers\TandaTanganController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\UploadAplikasiController;
 use App\Http\Controllers\UserController;
 use App\Models\Kecamatan;
 use App\Models\User;
@@ -74,6 +75,11 @@ Route::group(['prefix' => 'master', 'as' => 'master.', 'middleware' => 'master']
 
     Route::post('/buat_invoice', [InvoiceController::class, 'store']);
     Route::put('/{invoice}/simpan', [InvoiceController::class, 'simpan']);
+
+    Route::get('/upload_aplikasi', [UploadAplikasiController::class, 'index']);
+    Route::post('/upload_aplikasi/upload', [UploadAplikasiController::class, 'upload'])->name('version.upload');
+    Route::post('/upload_aplikasi/store', [UploadAplikasiController::class, 'store'])->name('version.store');
+    Route::get('/upload_aplikasi/list', [UploadAplikasiController::class, 'list'])->name('version.list');
 
     Route::resource('/menu', MenuController::class);
 
@@ -291,14 +297,15 @@ Route::group(['middleware' => 'tenant'], function () {
 
     Route::get('/sync/{lokasi}', [DashboardController::class, 'sync'])->middleware('auth');
     Route::get('/link', function () {
-        $target = __DIR__ . '/../storage/app/public';
-        $shortcut = __DIR__ . '/../public/storage';
+        $target = __DIR__.'/../storage/app/public';
+        $shortcut = __DIR__.'/../public/storage';
 
         try {
             symlink($target, $shortcut);
-            return response()->json("Symlink created successfully.");
+
+            return response()->json('Symlink created successfully.');
         } catch (\Exception $e) {
-            return response()->json("Failed to create symlink: " . $e->getMessage());
+            return response()->json('Failed to create symlink: '.$e->getMessage());
         }
     });
 
@@ -317,7 +324,7 @@ Route::group(['middleware' => 'tenant'], function () {
     });
 
     Route::get('/download/{file}', function ($file) {
-        return response()->download(storage_path('app/public/docs/' . $file));
+        return response()->download(storage_path('app/public/docs/'.$file));
     })->name('download');
 
     Route::get('/generate', [GenerateController::class, 'index']);
@@ -330,7 +337,6 @@ Route::group(['middleware' => 'tenant'], function () {
 
     Route::get('/manifest.json', [ServiceWorkerController::class, 'manifest']);
     Route::get('/cache-files', [ServiceWorkerController::class, 'assets']);
-
 
     Route::get('/{invoice}', [PelaporanController::class, 'invoice']);
 });

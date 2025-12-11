@@ -11,5 +11,13 @@ class AppUpdate extends Model
 
     protected $table = 'app_update';
 
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'latest_version',
+        'version_code',
+        'apk_name',
+        'apk_url',
+        'changelog',
+        'force_update',
+        'min_supported_version',
+    ];
 }
