@@ -41,7 +41,11 @@ class MobileActivationController extends Controller
             ], 422);
         }
 
-        return response()->download($filePath);
+        return response()->file($filePath, [
+            'Content-Type' => mime_content_type($filePath),
+            'Content-Length' => filesize($filePath),
+            'Content-Disposition' => 'attachment; filename="'.$update->apk_name.'"',
+        ]);
     }
 
     public function activation(Request $request)
