@@ -6,7 +6,6 @@ use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\KabupatenController as AdminKabupatenController;
 use App\Http\Controllers\Admin\KecamatanController;
 use App\Http\Controllers\Admin\MenuController;
-use App\Http\Controllers\Admin\UpkController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AuthController;
@@ -82,15 +81,9 @@ Route::group(['prefix' => 'master', 'as' => 'master.', 'middleware' => 'master']
     Route::get('/upload_aplikasi/list', [UploadAplikasiController::class, 'list'])->name('version.list');
     Route::delete('/upload_aplikasi/{id}', [UploadAplikasiController::class, 'destroy'])->name('version.destroy');
 
+    Route::get('/transaksi', [AdminController::class, 'transaksi']);
+
     Route::resource('/menu', MenuController::class);
-
-    Route::get('/migrasi_upk/server/{server}', [UpkController::class, 'Server']);
-    Route::get('/migrasi_upk/{id}/rekening', [UpkController::class, 'Rekening']);
-    Route::get('/migrasi_upk/{id}/rekening/insert', [UpkController::class, 'InsertRekening']);
-    Route::get('/migrasi_upk/{id}/transaksi', [UpkController::class, 'Transaksi']);
-    Route::get('/migrasi_upk/{id}/desa', [UpkController::class, 'Desa']);
-
-    Route::resource('/migrasi_upk', UpkController::class);
 
     Route::post('/logout', [AdminAuthController::class, 'logout']);
 });

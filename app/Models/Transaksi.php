@@ -3,17 +3,18 @@
 namespace App\Models;
 
 use App\Traits\TenantAware;
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Model;
-use \Awobaz\Compoships\Compoships;
-use Session;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaksi extends Model
 {
-    use TenantAware, Compoships;
+    use TenantAware, Compoships, SoftDeletes;
+
     protected $baseTable = 'transaksi';
-    public $timestamps = false;
 
     protected $primaryKey = 'idt';
+
     protected $guarded = ['idt'];
 
     public function angs()
