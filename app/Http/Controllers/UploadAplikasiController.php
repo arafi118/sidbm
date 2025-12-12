@@ -69,7 +69,7 @@ class UploadAplikasiController extends Controller
             'apk_url' => $request->schemeAndHttpHost().'/storage/'.$request->file['path'],
             'changelog' => $request->changelog,
             'force_update' => false,
-            'min_supported_version' => $request->version_code,
+            'min_supported_version' => '1',
         ]);
 
         return response()->json([
