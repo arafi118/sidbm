@@ -77,8 +77,8 @@ class AdminController extends Controller
                 NEW.rekening_debit, 
                 newTahun, 
                 newBulan, 
-                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = NEW.rekening_debit AND YEAR(tgl_transaksi) = newTahun AND MONTH(tgl_transaksi) = newBulan AND deleted_at IS NULL), 0), 
-                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = NEW.rekening_debit AND YEAR(tgl_transaksi) = newTahun AND MONTH(tgl_transaksi) = newBulan AND deleted_at IS NULL), 0)
+                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = NEW.rekening_debit AND YEAR(NEW.tgl_transaksi) = newTahun AND MONTH(NEW.tgl_transaksi) = newBulan AND deleted_at IS NULL), 0), 
+                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = NEW.rekening_debit AND YEAR(NEW.tgl_transaksi) = newTahun AND MONTH(NEW.tgl_transaksi) = newBulan AND deleted_at IS NULL), 0)
             )
             ON DUPLICATE KEY UPDATE debit = VALUES(debit), kredit = VALUES(kredit);
 
@@ -88,8 +88,8 @@ class AdminController extends Controller
                 NEW.rekening_kredit, 
                 newTahun, 
                 newBulan, 
-                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = NEW.rekening_kredit AND YEAR(tgl_transaksi) = newTahun AND MONTH(tgl_transaksi) = newBulan AND deleted_at IS NULL), 0), 
-                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = NEW.rekening_kredit AND YEAR(tgl_transaksi) = newTahun AND MONTH(tgl_transaksi) = newBulan AND deleted_at IS NULL), 0)
+                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = NEW.rekening_kredit AND YEAR(NEW.tgl_transaksi) = newTahun AND MONTH(NEW.tgl_transaksi) = newBulan AND deleted_at IS NULL), 0), 
+                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = NEW.rekening_kredit AND YEAR(NEW.tgl_transaksi) = newTahun AND MONTH(NEW.tgl_transaksi) = newBulan AND deleted_at IS NULL), 0)
             )
             ON DUPLICATE KEY UPDATE debit = VALUES(debit), kredit = VALUES(kredit);
         END
@@ -114,8 +114,8 @@ class AdminController extends Controller
                 OLD.rekening_debit, 
                 oldTahun, 
                 oldBulan, 
-                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = OLD.rekening_debit AND YEAR(tgl_transaksi) = oldTahun AND MONTH(tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0), 
-                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = OLD.rekening_debit AND YEAR(tgl_transaksi) = oldTahun AND MONTH(tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0)
+                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = OLD.rekening_debit AND YEAR(OLD.tgl_transaksi) = oldTahun AND MONTH(OLD.tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0), 
+                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = OLD.rekening_debit AND YEAR(OLD.tgl_transaksi) = oldTahun AND MONTH(OLD.tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0)
             )
             ON DUPLICATE KEY UPDATE debit = VALUES(debit), kredit = VALUES(kredit);
 
@@ -125,8 +125,8 @@ class AdminController extends Controller
                 OLD.rekening_kredit, 
                 oldTahun, 
                 oldBulan, 
-                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = OLD.rekening_kredit AND YEAR(tgl_transaksi) = oldTahun AND MONTH(tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0), 
-                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = OLD.rekening_kredit AND YEAR(tgl_transaksi) = oldTahun AND MONTH(tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0)
+                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = OLD.rekening_kredit AND YEAR(OLD.tgl_transaksi) = oldTahun AND MONTH(OLD.tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0), 
+                COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = OLD.rekening_kredit AND YEAR(OLD.tgl_transaksi) = oldTahun AND MONTH(OLD.tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0)
             )
             ON DUPLICATE KEY UPDATE debit = VALUES(debit), kredit = VALUES(kredit);
         END
@@ -167,8 +167,8 @@ class AdminController extends Controller
                     NEW.rekening_debit, 
                     newTahun, 
                     newBulan, 
-                    COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = NEW.rekening_debit AND YEAR(tgl_transaksi) = newTahun AND MONTH(tgl_transaksi) = newBulan AND deleted_at IS NULL), 0), 
-                    COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = NEW.rekening_debit AND YEAR(tgl_transaksi) = newTahun AND MONTH(tgl_transaksi) = newBulan AND deleted_at IS NULL), 0)
+                    COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = NEW.rekening_debit AND YEAR(NEW.tgl_transaksi) = newTahun AND MONTH(NEW.tgl_transaksi) = newBulan AND deleted_at IS NULL), 0), 
+                    COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = NEW.rekening_debit AND YEAR(NEW.tgl_transaksi) = newTahun AND MONTH(NEW.tgl_transaksi) = newBulan AND deleted_at IS NULL), 0)
                 )
                 ON DUPLICATE KEY UPDATE debit = VALUES(debit), kredit = VALUES(kredit);
 
@@ -178,8 +178,8 @@ class AdminController extends Controller
                     NEW.rekening_kredit, 
                     newTahun, 
                     newBulan, 
-                    COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = NEW.rekening_kredit AND YEAR(tgl_transaksi) = newTahun AND MONTH(tgl_transaksi) = newBulan AND deleted_at IS NULL), 0), 
-                    COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = NEW.rekening_kredit AND YEAR(tgl_transaksi) = newTahun AND MONTH(tgl_transaksi) = newBulan AND deleted_at IS NULL), 0)
+                    COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = NEW.rekening_kredit AND YEAR(NEW.tgl_transaksi) = newTahun AND MONTH(NEW.tgl_transaksi) = newBulan AND deleted_at IS NULL), 0), 
+                    COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = NEW.rekening_kredit AND YEAR(NEW.tgl_transaksi) = newTahun AND MONTH(NEW.tgl_transaksi) = newBulan AND deleted_at IS NULL), 0)
                 )
                 ON DUPLICATE KEY UPDATE debit = VALUES(debit), kredit = VALUES(kredit);
 
@@ -190,8 +190,8 @@ class AdminController extends Controller
                         OLD.rekening_debit, 
                         oldTahun, 
                         oldBulan, 
-                        COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = OLD.rekening_debit AND YEAR(tgl_transaksi) = oldTahun AND MONTH(tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0), 
-                        COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = OLD.rekening_debit AND YEAR(tgl_transaksi) = oldTahun AND MONTH(tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0)
+                        COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = OLD.rekening_debit AND YEAR(OLD.tgl_transaksi) = oldTahun AND MONTH(OLD.tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0), 
+                        COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = OLD.rekening_debit AND YEAR(OLD.tgl_transaksi) = oldTahun AND MONTH(OLD.tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0)
                     )
                     ON DUPLICATE KEY UPDATE debit = VALUES(debit), kredit = VALUES(kredit);
 
@@ -201,8 +201,8 @@ class AdminController extends Controller
                         OLD.rekening_kredit, 
                         oldTahun, 
                         oldBulan, 
-                        COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = OLD.rekening_kredit AND YEAR(tgl_transaksi) = oldTahun AND MONTH(tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0), 
-                        COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = OLD.rekening_kredit AND YEAR(tgl_transaksi) = oldTahun AND MONTH(tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0)
+                        COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_debit = OLD.rekening_kredit AND YEAR(OLD.tgl_transaksi) = oldTahun AND MONTH(OLD.tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0), 
+                        COALESCE((SELECT SUM(jumlah) FROM transaksi_{$lokasi} WHERE rekening_kredit = OLD.rekening_kredit AND YEAR(OLD.tgl_transaksi) = oldTahun AND MONTH(OLD.tgl_transaksi) = oldBulan AND deleted_at IS NULL), 0)
                     )
                     ON DUPLICATE KEY UPDATE debit = VALUES(debit), kredit = VALUES(kredit);
                 END IF;
