@@ -30,9 +30,13 @@
 
     <link href="/assets/css/nucleo-icons.css" rel="stylesheet" />
     <link href="/assets/css/nucleo-svg.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=apk_install" />
 
     <link id="pagestyle" href="/assets/css/material-dashboard.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/assets/css/style.css">
@@ -40,6 +44,19 @@
     <style>
         .swal2-container {
             height: unset !important;
+        }
+
+        .download-app {
+            position: absolute;
+            z-index: 999;
+            right: 24px;
+            bottom: 24px;
+        }
+
+        .download-app .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </style>
     <script>
@@ -60,6 +77,15 @@
     <main class="main-content  mt-0">
         <section>
             <div class="page-header min-vh-100">
+                <div class="download-app">
+                    <button type="button" id="download-app"
+                        class="btn btn-lg btn-facebook btn-icon-only rounded-circle">
+                        <span class="btn-inner--icon">
+                            <i class="fas fa-cloud-download-alt"></i>
+                        </span>
+                    </button>
+                </div>
+
                 <div class="container">
                     <div class="row">
                         <div
@@ -68,7 +94,8 @@
                                 style="background-image: url('/assets/img/login.png'); background-size: cover;">
                             </div>
                         </div>
-                        <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
+                        <div
+                            class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5 position-relative">
                             <div class="card card-plain">
                                 <div style="text-wrap: nowrap;"
                                     class="card-header mb-0 d-flex flex-column align-items-center">
@@ -104,10 +131,6 @@
                                 </div>
                                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                     <p class="mb-4 text-sm mx-auto">
-                                        {{-- Belum punya SI DBM?
-                                        <a href="javascript:;" class="text-info text-gradient font-weight-bold">
-                                            Daftar Sekarang
-                                        </a> --}}
                                         &copy; {{ date('Y') }} PT. Asta Brata
                                         Teknologi &mdash; {{ str_pad($kec->id, 4, '0', STR_PAD_LEFT) }}
                                     </p>
@@ -149,6 +172,12 @@
                 }
             });
         }
+
+        $(document).on('click', '#download-app', function(e) {
+            e.preventDefault();
+
+            window.open('{{ $app->apk_url }}', '_blank');
+        })
     </script>
 
     @if (session('pesan'))

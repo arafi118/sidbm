@@ -111,6 +111,7 @@ Route::get('/', [AuthController::class, 'index'])->middleware('guest')->name('/'
 Route::get('/login', [AuthController::class, 'index'])->middleware('guest');
 Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 Route::get('/app', [AuthController::class, 'app']);
+Route::get('/download-app', [AuthController::class, 'downloadApp']);
 
 Route::group(['middleware' => 'tenant'], function () {
     Route::get('/pelaporan', [PelaporanController::class, 'index'])->middleware('basic');
@@ -141,6 +142,7 @@ Route::group(['middleware' => 'tenant'], function () {
     Route::get('/pengaturan/custom_calk', [SopController::class, 'customCalk'])->middleware('auth');
     Route::put('/pengaturan/custom_calk/{kec}', [SopController::class, 'setCustomCalk'])->middleware('auth');
 
+    Route::put('/pengaturan/app-token/{kec}', [SopController::class, 'appToken'])->middleware('auth');
     Route::put('/pengaturan/lembaga/{kec}', [SopController::class, 'lembaga'])->middleware('auth');
     Route::put('/pengaturan/personalia/{kec}', [SopController::class, 'personalia'])->middleware('auth');
     Route::put('/pengaturan/pengelola/{kec}', [SopController::class, 'pengelola'])->middleware('auth');

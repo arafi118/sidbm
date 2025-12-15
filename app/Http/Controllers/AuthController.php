@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AdminInvoice;
 use App\Models\AdminJenisPembayaran;
+use App\Models\AppUpdate;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Menu;
@@ -61,8 +62,10 @@ class AuthController extends Controller
             }
         }
 
+        $app = AppUpdate::latest()->first();
+
         $logo = $kec->logo;
-        return view('auth.login')->with(compact('kec', 'logo', 'setting'));
+        return view('auth.login')->with(compact('kec', 'logo', 'setting', 'app'));
     }
 
     public function login(Request $request)

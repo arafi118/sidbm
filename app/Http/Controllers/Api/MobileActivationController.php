@@ -43,7 +43,10 @@ class MobileActivationController extends Controller
             ], 400);
         }
 
-        $listToken = Mobile::with('kec')->orderBy('lokasi', 'ASC')->get();
+        $listToken = Mobile::where(function ($query) {
+            $query->where('expired_at', '>=', now())
+                ->orWhere('expired_at', null);
+        })->with('kec')->orderBy('lokasi', 'ASC')->get();
         foreach ($listToken as $token) {
             if (Hash::check($request->token, $token->aktivasi)) {
                 $kec = $token->kec;

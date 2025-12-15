@@ -93,8 +93,16 @@
         </div>
 
         <div class="col-lg-9 mt-lg-0 mt-4">
+            <div class="card" id="app-token">
+                <div class="card-header">
+                    <h5 class="mb-0">Token Aplikasi</h5>
+                </div>
+                <div class="card-body pt-0">
+                    @include('sop.partials._app_token')
+                </div>
+            </div>
             @if (in_array('personalisasi_sop.identitas_lembaga', Session::get('tombol')))
-                <div class="card" id="lembaga">
+                <div class="card mt-4" id="lembaga">
                     <div class="card-header">
                         <h5 class="mb-0">Identitas Lembaga</h5>
                     </div>
@@ -492,5 +500,66 @@
                 })
             }
         })
+
+        $(document).on('click', '#copy-token', function(e) {
+            e.preventDefault();
+
+            const token = $('#hidden-app-token').val();
+
+            if (!token || token.trim() === '') {
+                Toastr('error', 'Token tidak valid');
+                return;
+            }
+
+            const textarea = document.createElement('textarea');
+            textarea.value = token;
+
+            textarea.style.position = 'fixed';
+            textarea.style.top = '-9999px';
+            textarea.style.left = '-9999px';
+            textarea.style.opacity = '0';
+            textarea.setAttribute('readonly', '');
+
+            document.body.appendChild(textarea);
+
+            textarea.focus();
+            textarea.select();
+
+            textarea.setSelectionRange(0, token.length);
+            let copySuccess = false;
+
+            try {
+                copySuccess = document.execCommand('copy');
+
+                if (copySuccess) {
+                    Toastr('success', 'Token berhasil disalin');
+
+                    saveTokenToServer();
+                } else {
+                    Toastr('error', 'Gagal menyalin token');
+                }
+            } catch (err) {
+                console.error('Error saat copy:', err);
+                Toastr('error', 'Terjadi kesalahan saat menyalin token');
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        });
+
+        function saveTokenToServer() {
+            const form = $('#FormAppToken');
+
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function(result) {
+                    console.log('Token berhasil disimpan ke server');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Gagal menyimpan token:', error);
+                }
+            });
+        }
     </script>
 @endsection
