@@ -19,6 +19,27 @@ class MobileActivationController extends Controller
         //
     }
 
+    public function generate(Request $request, $id_kec)
+    {
+        $token = $request->token;
+
+        $unique_id = uniqid();
+        $hashToken = Hash::make($token);
+        $expiredAt = date('Y-m-d H:i:s', strtotime('+1 day'));
+
+        Mobile::insert([
+            'lokasi' => $id_kec,
+            'unique_id' => $unique_id,
+            'aktivasi' => $hashToken,
+            'expired_at' => $expiredAt,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'msg' => 'Token berhasil diaktifkan',
+        ]);
+    }
+
     public function cekUpdate()
     {
         $update = AppUpdate::latest()->first();
