@@ -102,6 +102,7 @@ class PengaturanController extends Controller
 
         $nama = explode(' ', $data['nama_lengkap']);
         $nama_depan = $nama[0];
+        $nama_belakang = '';
         if (isset($nama[1])) {
             unset($nama[0]);
             $nama_belakang = implode(' ', $nama);
