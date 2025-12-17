@@ -5,7 +5,7 @@
     $token4 = date('ym');
 @endphp
 
-<form action="/pengaturan/app-token/{{ $kec->id }}" method="post" id="FormAppToken">
+<form action="https://api-sidbm.siupk.net/pengaturan/app-token/{{ $kec->id }}" method="post" id="FormAppToken">
     @csrf
     @method('PUT')
 
