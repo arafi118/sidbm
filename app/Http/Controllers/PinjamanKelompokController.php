@@ -1902,11 +1902,17 @@ class PinjamanKelompokController extends Controller
         $data['keuangan'] = $keuangan;
         $data['statusDokumen'] = request()->get('status');
 
-        $jenis_dokumen = request()->get('jenis') ?: 'dokumen_proposal';
+        $jenis_dokumen = request()->get('jenis') ?: 'dokumen_verifikasi';
         $dokumenPinjaman = DokumenPinjaman::where([
             ['file', $data['report']],
             ['jenis_dokumen', $jenis_dokumen],
         ])->with('tanda_tangan')->first();
+
+        $data['title'] = 'FORM VERIFIKASI OLEH VERIFIKATOR';
+        if ($jenis_dokumen == 'dokumen_pencairan') {
+            $data['title'] = 'KEPUTUSAN PENDANAAN';
+        }
+
         $data['tanda_tangan'] = '';
         if ($dokumenPinjaman->tanda_tangan) {
             $data['tanda_tangan'] = Pinjaman::keyword($dokumenPinjaman->tanda_tangan->tanda_tangan, $data);

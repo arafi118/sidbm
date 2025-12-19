@@ -927,6 +927,12 @@
             }
         });
 
+        $(document).on('click', '#cetakRekomTV', function(e) {
+            e.preventDefault()
+
+            $('#formCetakRekomTV').submit()
+        })
+
         $(document).on('click', '#btnCatatanBimbingan', function() {
             catatan()
         })

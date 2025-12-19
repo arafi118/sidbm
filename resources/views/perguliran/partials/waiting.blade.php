@@ -271,38 +271,68 @@
     @php
         $Class = '';
         $CetakDokumen = false;
+
+        $cetakDokumenProposal = false;
+        $cetakDokumenPencairan = false;
+        $cetakDokumenVerifikasi = false;
         if (
             in_array('tahapan_perguliran.waiting.cetak_dokumen_proposal', Session::get('tombol')) ||
-            in_array('tahapan_perguliran.waiting.cetak_dokumen_pencairan', Session::get('tombol'))
+            in_array('tahapan_perguliran.waiting.cetak_dokumen_pencairan', Session::get('tombol')) ||
+            in_array('tahapan_perguliran.waiting.cetak_dokumen_verifikasi', Session::get('tombol'))
         ) {
-            $Class = 'col-12 col-sm-6 col-md-6';
             $CetakDokumen = true;
+            $jumlah = 0;
 
-            if (!in_array('tahapan_perguliran.waiting.cetak_dokumen_proposal', Session::get('tombol'))) {
-                $Class = 'col-12 col-sm-12 col-md-12';
+            if (in_array('tahapan_perguliran.waiting.cetak_dokumen_proposal', Session::get('tombol'))) {
+                $cetakDokumenProposal = true;
+                $jumlah++;
             }
 
-            if (!in_array('tahapan_perguliran.waiting.cetak_dokumen_pencairan', Session::get('tombol'))) {
-                $Class = 'col-12 col-sm-12 col-md-12';
+            if (in_array('tahapan_perguliran.waiting.cetak_dokumen_pencairan', Session::get('tombol'))) {
+                $cetakDokumenPencairan = true;
+                $jumlah++;
             }
+
+            if (in_array('tahapan_perguliran.waiting.cetak_dokumen_verifikasi', Session::get('tombol'))) {
+                $cetakDokumenVerifikasi = true;
+                $jumlah++;
+            }
+
+            $Class = 'col-12 col-sm-' . 12 / $jumlah . ' col-md-' . 12 / $jumlah . '';
         }
     @endphp
 
     @if ($CetakDokumen)
         <div class="card card-body p-2 pb-0 mb-3">
             <div class="row">
-                <div class="{{ $Class }}">
-                    <div class="d-grid">
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenProposal"
-                            class="btn btn-info btn-sm mb-2">Cetak Dokumen Proposal</button>
+                @if ($cetakDokumenProposal)
+                    <div class="{{ $Class }}">
+                        <div class="d-grid">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenProposal"
+                                class="btn btn-info btn-sm mb-2">Cetak Dokumen Proposal</button>
+                        </div>
                     </div>
-                </div>
-                <div class="{{ $Class }}">
-                    <div class="d-grid">
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenPencairan"
-                            class="btn btn-info btn-sm mb-2">Cetak Dokumen Pencairan</button>
+                @endif
+
+                @if ($cetakDokumenVerifikasi)
+                    <div class="{{ $Class }}">
+                        <div class="d-grid">
+                            <button type="button" id="cetakRekomTV" class="btn btn-info btn-sm mb-2">
+                                Cetak Rekom TV
+                            </button>
+                        </div>
                     </div>
-                </div>
+                @endif
+
+                @if ($cetakDokumenPencairan)
+                    <div class="{{ $Class }}">
+                        <div class="d-grid">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenPencairan"
+                                class="btn btn-info btn-sm mb-2">Cetak Dokumen Pencairan</button>
+                        </div>
+                    </div>
+                @endif
+
             </div>
         </div>
     @endif
@@ -382,6 +412,14 @@
 <form action="/perguliran/tidak_layak_cair/{{ $perguliran->id }}?save=true" method="post"
     id="formTidakLayakDicairkan">
     @csrf
+</form>
+
+<form action="/perguliran/dokumen?status=P&jenis=dokumen_verifikasi" target="_blank" method="post"
+    id="formCetakRekomTV">
+    @csrf
+
+    <input type="hidden" name="id" value="{{ $perguliran->id }}">
+    <input type="hidden" name="report" value="formVerifikasi#pdf">
 </form>
 
 <script>

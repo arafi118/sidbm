@@ -20,7 +20,7 @@
         <tr>
             <td colspan="3" align="center">
                 <div style="font-size: 18px;">
-                    <b>FORM VERIFIKASI OLEH VERIFIKATOR</b>
+                    <b>{{ $title }}</b>
                 </div>
                 <div style="font-size: 16px;">
                     <b>PINJAMAN KELOMPOK {{ strtoupper($pinkel->jpp->nama_jpp) }}</b>

@@ -196,11 +196,54 @@
         </div>
     </div>
 
-    @if (in_array('tahapan_perguliran.verifikasi.cetak_dokumen_verifikasi', Session::get('tombol')))
+    @php
+        $Class = '';
+        $CetakDokumen = false;
+
+        $cetakDokumenProposal = false;
+        $cetakDokumenVerifikasi = false;
+        if (
+            in_array('tahapan_perguliran.verifikasi.cetak_dokumen_proposal', Session::get('tombol')) ||
+            in_array('tahapan_perguliran.verifikasi.cetak_dokumen_verifikasi', Session::get('tombol'))
+        ) {
+            $CetakDokumen = true;
+            $jumlah = 0;
+
+            if (in_array('tahapan_perguliran.verifikasi.cetak_dokumen_proposal', Session::get('tombol'))) {
+                $cetakDokumenProposal = true;
+                $jumlah++;
+            }
+
+            if (in_array('tahapan_perguliran.verifikasi.cetak_dokumen_verifikasi', Session::get('tombol'))) {
+                $cetakDokumenVerifikasi = true;
+                $jumlah++;
+            }
+
+            $Class = 'col-12 col-sm-' . 12 / $jumlah . ' col-md-' . 12 / $jumlah . '';
+        }
+    @endphp
+
+    @if ($CetakDokumen)
         <div class="card card-body p-2 pb-0 mb-3">
-            <div class="d-grid">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenProposal"
-                    class="btn btn-info btn-sm mb-2">Cetak Dokumen Verifikasi</button>
+            <div class="row">
+                @if ($cetakDokumenProposal)
+                    <div class="{{ $Class }}">
+                        <div class="d-grid">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenProposal"
+                                class="btn btn-info btn-sm mb-2">Cetak Dokumen Proposal</button>
+                        </div>
+                    </div>
+                @endif
+
+                @if ($cetakDokumenVerifikasi)
+                    <div class="{{ $Class }}">
+                        <div class="d-grid">
+                            <button type="button" id="cetakRekomTV" class="btn btn-info btn-sm mb-2">
+                                Cetak Rekom TV
+                            </button>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     @endif
@@ -220,7 +263,8 @@
                         <div class="input-group input-group-static my-3">
                             <label for="tgl_tunggu">Tgl Penetapan</label>
                             <input autocomplete="off" type="text" name="tgl_tunggu" id="tgl_tunggu"
-                                class="form-control date" value="{{ Tanggal::tglIndo($perguliran->tgl_verifikasi) }}">
+                                class="form-control date"
+                                value="{{ Tanggal::tglIndo($perguliran->tgl_verifikasi) }}">
                             <small class="text-danger" id="msg_tgl_tunggu"></small>
                         </div>
                     </div>
@@ -344,6 +388,14 @@
 <form action="/perguliran/tidak_layak_cair/{{ $perguliran->id }}?save=true" method="post"
     id="formTidakLayakDicairkan">
     @csrf
+</form>
+
+<form action="/perguliran/dokumen?status=P&jenis=dokumen_verifikasi" target="_blank" method="post"
+    id="formCetakRekomTV">
+    @csrf
+
+    <input type="hidden" name="id" value="{{ $perguliran->id }}">
+    <input type="hidden" name="report" value="formVerifikasi#pdf">
 </form>
 
 <script>
