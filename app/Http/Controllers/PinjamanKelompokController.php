@@ -1908,7 +1908,7 @@ class PinjamanKelompokController extends Controller
             ['jenis_dokumen', $jenis_dokumen],
         ])->with('tanda_tangan')->first();
 
-        $data['title'] = 'FORM VERIFIKASI OLEH VERIFIKATOR';
+        $data['title'] = 'DATA VERIFIKASI';
         if ($jenis_dokumen == 'dokumen_pencairan') {
             $data['title'] = 'KEPUTUSAN PENDANAAN';
         }
