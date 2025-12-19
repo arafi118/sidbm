@@ -80,6 +80,7 @@ class MobileActivationController extends Controller
                         'token' => $request->token,
                         'code' => $token->unique_id,
                         'lokasi' => $token->lokasi,
+                        'web_api' => 'https://'.$kec->web_kec.'/api',
                     ],
                 ], 200);
             }
