@@ -1894,11 +1894,6 @@ class PinjamanKelompokController extends Controller
             'user',
         ])->first();
 
-        $data['user'] = User::where([
-            ['lokasi', Session::get('lokasi')],
-            ['level', '4'],
-        ])->with('j')->orderBy('id')->get();
-
         $data['keuangan'] = $keuangan;
         $data['statusDokumen'] = request()->get('status');
 
@@ -1909,15 +1904,23 @@ class PinjamanKelompokController extends Controller
         ])->with('tanda_tangan')->first();
 
         $data['title'] = 'DATA VERIFIKASI';
-        if ($jenis_dokumen == 'dokumen_pencairan') {
-            $data['title'] = 'KEPUTUSAN PENDANAAN';
+        if ($jenis_dokumen == 'dokumen_verifikasi') {
+            $data['title'] = 'DATA VERIFIKASI';
         }
 
+        $level = '4';
         $data['tanda_tangan'] = '';
         if ($dokumenPinjaman->tanda_tangan) {
+            $level = '5';
             $data['tanda_tangan'] = Pinjaman::keyword($dokumenPinjaman->tanda_tangan->tanda_tangan, $data);
         }
 
+        $data['user'] = User::where([
+            ['lokasi', Session::get('lokasi')],
+            ['level', $level],
+        ])->with('j')->orderBy('id')->get();
+
+        $data['jenis_dokumen'] = $jenis_dokumen;
         $data['judul'] = 'Form Verifikasi ('.$data['pinkel']->kelompok->nama_kelompok.' - Loan ID. '.$data['pinkel']->id.')';
         $view = view('perguliran.dokumen.form_verifikasi', $data)->render();
 

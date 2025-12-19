@@ -19,6 +19,7 @@
     }
 
     $dokumen_proposal = [];
+    $dokumen_verifikasi = [];
     $dokumen_pencairan = [];
     foreach ($dokumenPinjaman as $dokumen) {
         $daftarDokumen = [
@@ -29,7 +30,13 @@
 
         if ($dokumen->jenis_dokumen == 'dokumen_proposal') {
             $dokumen_proposal[] = $daftarDokumen;
-        } else {
+        }
+
+        if ($dokumen->jenis_dokumen == 'dokumen_verifikasi') {
+            $dokumen_verifikasi[] = $daftarDokumen;
+        }
+
+        if ($dokumen->jenis_dokumen == 'dokumen_pencairan') {
             $dokumen_pencairan[] = $daftarDokumen;
         }
     }
@@ -203,6 +210,37 @@
                         <input type="hidden" name="id" value="{{ $perguliran->id }}">
                         <div class="row">
                             @foreach ($dokumen_proposal as $doc => $val)
+                                <div class="col-md-3 d-grid">
+                                    @if ($val['withExcel'])
+                                        <div class="btn-group">
+                                            <button class="btn btn-linkedin btn-sm text-start" type="submit"
+                                                name="report" value="{{ $val['file'] }}#pdf">
+                                                {{ $loop->iteration }}. {{ $val['title'] }}
+                                            </button>
+                                            <button class="btn btn-icon btn-sm btn-instagram" type="submit"
+                                                name="report" value="{{ $val['file'] }}#excel">
+                                                <i class="fas fa-file-excel"></i>
+                                            </button>
+                                        </div>
+                                    @else
+                                        <button class="btn btn-linkedin btn-sm text-start" type="submit" name="report"
+                                            value="{{ $val['file'] }}#pdf">
+                                            {{ $loop->iteration }}. {{ $val['title'] }}
+                                        </button>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    </form>
+
+                    <hr>
+
+                    <form action="/perguliran/dokumen?status=V&jenis=dokumen_verifikasi" target="_blank" method="post">
+                        @csrf
+
+                        <input type="hidden" name="id" value="{{ $perguliran->id }}">
+                        <div class="row">
+                            @foreach ($dokumen_verifikasi as $doc => $val)
                                 <div class="col-md-3 d-grid">
                                     @if ($val['withExcel'])
                                         <div class="btn-group">

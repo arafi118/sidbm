@@ -272,19 +272,38 @@
                     </tr>
                     <tr>
                         <td width="50%" align="justify" style="vertical-align: text-top;">
-                            <div>Verified Sign:</div>
-                            <div>
-                                {{ $kec->nama_tv_sort }} {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }}
-                                {{ $kec->nama_kec }}
-                                menyatakan dengan sebenar-benarnya sesuai
-                                dengan hasil survey lapangan bahwa kelompok dengan identitas tersebut di atas <b>ADA/TIDAK
-                                    ADA</b>
-                                keberadaannya dan dapat dipertanggungjawabkan sesuai dengan peraturan yang berlaku. Serta
-                                <b>LAYAK/TIDAK
-                                    LAYAK</b> untuk diberikan piutang sesuai dengan hasil rekomendasi Verifikasi di atas.
-                                Form ini
-                                digunakan sebagai dasar Verified pada SI DBM.
-                            </div>
+                            @if ($jenis_dokumen == 'dokumen_verifikasi')
+                                <div>Verified Sign:</div>
+                                <div>
+                                    {{ $kec->nama_tv_sort }} {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }}
+                                    {{ $kec->nama_kec }}
+                                    menyatakan dengan sebenar-benarnya sesuai
+                                    dengan hasil survey lapangan bahwa kelompok dengan identitas tersebut di atas
+                                    <b>ADA/TIDAK
+                                        ADA</b>
+                                    keberadaannya dan dapat dipertanggungjawabkan sesuai dengan peraturan yang berlaku.
+                                    Serta
+                                    <b>LAYAK/TIDAK
+                                        LAYAK</b> untuk diberikan piutang sesuai dengan hasil rekomendasi Verifikasi di
+                                    atas.
+                                    Form ini
+                                    digunakan sebagai dasar Verified pada SI DBM.
+                                </div>
+                            @else
+                                <div>Catatan Keputusan Pendanaan:</div>
+                                <div>
+                                    Tim Pendanaan {{ $kec->nama_lembaga_sort }} {{ $kec->sebutan_kec }}
+                                    {{ $kec->nama_kec }} menyatakan bahwa berdasarkan hasil survei lapangan, kelompok
+                                    dengan
+                                    identitas tersebut di atas <b>ADA/TIDAK ADA</b> keberadaannya dan dapat
+                                    dipertanggungjawabkan
+                                    sesuai dengan peraturan yang berlaku. Berdasarkan hasil Pendanaan dan rekomendasi yang
+                                    telah
+                                    dilakukan, kelompok tersebut dinyatakan <b>LAYAK/TIDAK LAYAK</b> untuk diberikan
+                                    pendanaan/piutang. Pernyataan ini digunakan sebagai dasar verifikasi pada SI DBM.
+                                </div>
+                            @endif
+
                         </td>
                         <td width="50%" align="justify" style="vertical-align: top;">
                             <div>Diverifikasi oleh, {{ $kec->nama_tv_sort }} {{ $kec->nama_lembaga_sort }}
