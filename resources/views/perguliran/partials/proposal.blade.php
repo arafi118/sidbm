@@ -170,9 +170,21 @@
 
     @if (in_array('tahapan_perguliran.proposal.cetak_dokumen_proposal', Session::get('tombol')))
         <div class="card card-body p-2 pb-0 mb-3">
-            <div class="d-grid">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenProposal"
-                    class="btn btn-info btn-sm mb-2">Cetak Dokumen Proposal</button>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-6">
+                    <div class="d-grid">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#CetakDokumenProposal"
+                            class="btn btn-info btn-sm mb-2">Cetak Dokumen Proposal</button>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-6">
+                    <div class="d-grid">
+                        <button type="button" id="cetakRekomTV" class="btn btn-info btn-sm mb-2">
+                            Form Verifikasi
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     @endif
@@ -283,6 +295,14 @@
             </div>
         </div>
     @endif
+</form>
+
+<form action="/perguliran/dokumen?status=P&jenis=dokumen_verifikasi" target="_blank" method="post"
+    id="formCetakRekomTV">
+    @csrf
+
+    <input type="hidden" name="id" value="{{ $perguliran->id }}">
+    <input type="hidden" name="report" value="formVerifikasi#pdf">
 </form>
 
 <script>

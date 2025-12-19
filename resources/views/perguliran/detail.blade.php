@@ -232,37 +232,6 @@
                             @endforeach
                         </div>
                     </form>
-
-                    <hr>
-
-                    <form action="/perguliran/dokumen?status=V&jenis=dokumen_verifikasi" target="_blank" method="post">
-                        @csrf
-
-                        <input type="hidden" name="id" value="{{ $perguliran->id }}">
-                        <div class="row">
-                            @foreach ($dokumen_verifikasi as $doc => $val)
-                                <div class="col-md-3 d-grid">
-                                    @if ($val['withExcel'])
-                                        <div class="btn-group">
-                                            <button class="btn btn-linkedin btn-sm text-start" type="submit"
-                                                name="report" value="{{ $val['file'] }}#pdf">
-                                                {{ $loop->iteration }}. {{ $val['title'] }}
-                                            </button>
-                                            <button class="btn btn-icon btn-sm btn-instagram" type="submit"
-                                                name="report" value="{{ $val['file'] }}#excel">
-                                                <i class="fas fa-file-excel"></i>
-                                            </button>
-                                        </div>
-                                    @else
-                                        <button class="btn btn-linkedin btn-sm text-start" type="submit" name="report"
-                                            value="{{ $val['file'] }}#pdf">
-                                            {{ $loop->iteration }}. {{ $val['title'] }}
-                                        </button>
-                                    @endif
-                                </div>
-                            @endforeach
-                        </div>
-                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
