@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kecamatan;
-use Illuminate\Http\Request;
-use Storage;
+use Exception;
+use Illuminate\Support\Facades\Http;
 
 class ServiceWorkerController extends Controller
 {
@@ -48,42 +48,122 @@ class ServiceWorkerController extends Controller
         ]);
     }
 
-    private function resize($logo, $witdh, $height)
+    private function resize($logo, $width, $height)
     {
-        if (!$logo) {
+        if (! $logo) {
             $logo = '1.png';
         }
 
-        $imagePath = 'logo/' . $logo;
-        $filePath = storage_path('app/public/' . $imagePath);
-        if (!file_exists($filePath)) {
-            throw new Exception('File not found: ' . $filePath);
+        // Cek apakah logo adalah URL Supabase
+        if ($this->isSupabaseUrl($logo)) {
+            // Ambil gambar dari Supabase
+            $imageContent = $this->getImageFromSupabase($logo);
+            if (! $imageContent) {
+                throw new Exception('Failed to fetch image from Supabase: '.$logo);
+            }
+        } else {
+            // Ambil gambar dari local storage
+            $imagePath = 'logo/'.$logo;
+            $filePath = storage_path('app/public/'.$imagePath);
+
+            if (! file_exists($filePath)) {
+                throw new Exception('File not found: '.$filePath);
+            }
+
+            $imageContent = file_get_contents($filePath);
+            if (! $imageContent) {
+                throw new Exception('Failed to read image file: '.$filePath);
+            }
         }
 
-        $imageContent = file_get_contents($filePath);
-        if (!$imageContent) {
-            throw new Exception('Failed to read image file: ' . $filePath);
-        }
-
+        // Buat image dari string
         $image = @imagecreatefromstring($imageContent);
-        list($width, $height) = getimagesizefromstring($imageContent);
+        if (! $image) {
+            throw new Exception('Failed to create image from content');
+        }
 
-        $newWidth = $witdh;
-        $newHeight = $height;
+        // Dapatkan dimensi asli
+        $imageSize = getimagesizefromstring($imageContent);
+        if (! $imageSize) {
+            imagedestroy($image);
+            throw new Exception('Failed to get image size');
+        }
 
-        $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
-        imagecopyresampled($resizedImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+        [$originalWidth, $originalHeight] = $imageSize;
 
+        // Buat gambar baru dengan ukuran yang diinginkan
+        $resizedImage = imagecreatetruecolor($width, $height);
+
+        // Preserve transparency untuk PNG
+        imagealphablending($resizedImage, false);
+        imagesavealpha($resizedImage, true);
+        $transparent = imagecolorallocatealpha($resizedImage, 255, 255, 255, 127);
+        imagefilledrectangle($resizedImage, 0, 0, $width, $height, $transparent);
+
+        // Resize gambar
+        imagecopyresampled(
+            $resizedImage,
+            $image,
+            0, 0, 0, 0,
+            $width,
+            $height,
+            $originalWidth,
+            $originalHeight
+        );
+
+        // Convert ke base64
         ob_start();
-        imagejpeg($resizedImage);
+        imagepng($resizedImage); // Gunakan PNG untuk kualitas lebih baik
         $imageData = ob_get_contents();
         ob_end_clean();
 
         $base64Image = base64_encode($imageData);
 
+        // Bersihkan memori
         imagedestroy($image);
         imagedestroy($resizedImage);
 
-        return 'data:image/png;base64,' . $base64Image;
+        return 'data:image/png;base64,'.$base64Image;
+    }
+
+    private function isSupabaseUrl($url)
+    {
+        // Cek apakah URL mengandung domain Supabase atau dimulai dengan http/https
+        return filter_var($url, FILTER_VALIDATE_URL) !== false &&
+               (strpos($url, 'supabase.co') !== false ||
+                strpos($url, 'http://') === 0 ||
+                strpos($url, 'https://') === 0);
+    }
+
+    private function getImageFromSupabase($url)
+    {
+        $response = Http::withOptions([
+            'verify' => false,
+        ])->timeout(30)->get($url);
+
+        if (! $response->successful()) {
+            return null;
+        }
+
+        return $response->body();
+    }
+
+    private function supabaseToBase64($url)
+    {
+        $imageContent = $this->getImageFromSupabase($url);
+
+        if (! $imageContent) {
+            return null;
+        }
+
+        $extension = pathinfo($url, PATHINFO_EXTENSION);
+        $mime = [
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'webp' => 'image/webp',
+        ][$extension] ?? 'application/octet-stream';
+
+        return "data:$mime;base64,".base64_encode($imageContent);
     }
 }
