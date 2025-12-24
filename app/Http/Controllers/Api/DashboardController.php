@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\ApiEndpoint;
+use App\Models\DataPemanfaat;
 use App\Models\Kecamatan;
+use App\Models\PinjamanAnggota;
 use App\Models\PinjamanKelompok;
 use App\Models\Rekening;
 use App\Utils\Tanggal;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -615,6 +618,32 @@ class DashboardController extends Controller
                 'token' => $kec->token,
                 'pesan' => $pesan,
             ],
+        ], 200);
+    }
+
+    public function pelunasan(Request $request, $idPinjaman)
+    {
+        $user = request()->user();
+
+        $pinkel = PinjamanKelompok::where('id', $idPinjaman)->with('kelompok')->first();
+
+        PinjamanAnggota::where('id_pinkel', $idPinjaman)->update([
+            'status' => 'L',
+            'tgl_lunas' => date('Y-m-d'),
+        ]);
+
+        DataPemanfaat::where('id_pinkel', $idPinjaman)->where('lokasi', $user->lokasi)->update([
+            'status' => 'L',
+        ]);
+
+        PinjamanKelompok::where('id', $idPinjaman)->update([
+            'status' => 'L',
+            'tgl_lunas' => date('Y-m-d'),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Validasi Pelunasan Piutang Kelompok '.$pinkel->kelompok->nama_kelompok.' berhasil.',
         ], 200);
     }
 

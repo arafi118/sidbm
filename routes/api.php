@@ -38,6 +38,7 @@ Route::group(['middleware' => ['tenant', 'auth:sanctum'], 'prefix' => 'v1'], fun
     Route::get('/dashboard/nunggak', [DashboardController::class, 'nunggak']);
     Route::get('/dashboard/jatuh-tempo', [DashboardController::class, 'jatuhTempo']);
     Route::get('/dashboard/tagihan', [DashboardController::class, 'tagihan']);
+    Route::put('/dashboard/pelunasan/{idPinjaman}', [DashboardController::class, 'pelunasan']);
 
     Route::get('/basis-data', [BasisDataController::class, 'index']);
     Route::get('/basis-data/desa', [BasisDataController::class, 'desa']);
