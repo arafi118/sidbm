@@ -9,7 +9,6 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Menu;
 use App\Models\MenuTombol;
-use App\Models\PinjamanAnggota;
 use App\Models\PinjamanKelompok;
 use App\Models\User;
 use App\Utils\Keuangan;
@@ -32,9 +31,9 @@ class AuthController extends Controller
         }
 
         $kec = Kecamatan::where('web_kec', request()->getHost())->orwhere('web_alternatif', request()->getHost())->first();
-        if (!$kec) {
+        if (! $kec) {
             $kab = Kabupaten::where('web_kab', request()->getHost())->orwhere('web_kab_alternatif', request()->getHost())->first();
-            if (!$kab) {
+            if (! $kab) {
                 abort(404);
             }
 
@@ -43,17 +42,17 @@ class AuthController extends Controller
 
         $invoice = AdminInvoice::where([
             ['lokasi', $kec->id],
-            ['status', 'UNPAID']
+            ['status', 'UNPAID'],
         ])->with(['jp'])->orderBy('tgl_invoice', 'DESC')->first();
 
         $setting = [
-            'login' => true
+            'login' => true,
         ];
 
         Session::put('login', true);
         if ($invoice) {
             $tgl_pakai = $kec->tgl_registrasi;
-            $tgl_aktif = date('Y') . '-' . date('m-d', strtotime($tgl_pakai));
+            $tgl_aktif = date('Y').'-'.date('m-d', strtotime($tgl_pakai));
             $batas_akhir_pembayaran = date('Y-m-d', strtotime('+1 month', strtotime($tgl_aktif)));
 
             if (date('Y-m-d') > $batas_akhir_pembayaran) {
@@ -65,6 +64,7 @@ class AuthController extends Controller
         $app = AppUpdate::latest()->first();
 
         $logo = $kec->logo;
+
         return view('auth.login')->with(compact('kec', 'logo', 'setting', 'app'));
     }
 
@@ -80,11 +80,11 @@ class AuthController extends Controller
         } else {
             $validate = $this->validate($request, [
                 'username' => 'required',
-                'password' => 'required'
+                'password' => 'required',
             ]);
         }
 
-        if (!Session::get('login')) {
+        if (! Session::get('login')) {
             return redirect()->back()->with('error', 'Invoice belum terbayar');
         }
 
@@ -93,23 +93,23 @@ class AuthController extends Controller
 
         $icon = '/assets/img/icon/favicon.png';
         if ($kec->logo) {
-            $icon = '/storage/logo/' . $kec->logo;
+            $icon = '/storage/logo/'.$kec->logo;
         }
 
         if ($username == 'superadmin' && $password == 'superadmin') {
             User::where([
                 'uname' => $username,
-                'pass' => $password
+                'pass' => $password,
             ])->update([
-                'lokasi' => $lokasi
+                'lokasi' => $lokasi,
             ]);
         }
 
         $token = $kec->token;
         if (strlen($kec->token) < 45) {
-            $token = 'dbm-' . str_replace('.', '', $kec->kd_kec) . '-' . str_pad($kec->id, 3, '0', STR_PAD_LEFT);
+            $token = 'dbm-'.str_replace('.', '', $kec->kd_kec).'-'.str_pad($kec->id, 3, '0', STR_PAD_LEFT);
             $UpdateKec = Kecamatan::where('id', $kec->id)->update([
-                'token' => $token
+                'token' => $token,
             ]);
         }
 
@@ -133,12 +133,12 @@ class AuthController extends Controller
                                 $query->where('aktif', 'Y');
                             }
                         },
-                        'child.child'  => function ($query) use ($hak_akses, $url) {
+                        'child.child' => function ($query) use ($hak_akses, $url) {
                             $query->whereNotIn('id', $hak_akses);
                             if ($url != 'sidbm_baru.test') {
                                 $query->where('aktif', 'Y');
                             }
-                        }
+                        },
                     ])->orderBy('sort', 'ASC')->orderBy('id', 'ASC')->get();
 
                     $AksesMenu = explode(',', $user->akses_menu);
@@ -166,7 +166,7 @@ class AuthController extends Controller
                     $cookie = cookie('config', json_encode($config), 60 * 24 * 365);
                     session([
                         'nama_lembaga' => str_replace('DBM ', '', $kec->nama_lembaga_sort),
-                        'nama' => $user->namadepan . ' ' . $user->namabelakang,
+                        'nama' => $user->namadepan.' '.$user->namabelakang,
                         'foto' => $user->foto,
                         'logo' => $kec->logo,
                         'lokasi' => $user->lokasi,
@@ -176,20 +176,20 @@ class AuthController extends Controller
                         'akses_menu' => $Menu,
                         'icon' => $icon,
                         'config' => json_encode($config),
-                        'token' => $token
+                        'token' => $token,
                     ]);
 
                     $redirect = '/dashboard';
                     if (in_array('1', $hak_akses)) {
                         $menu_redirect = Menu::where([
                             ['parent_id', '0'],
-                            ['aktif', 'Y']
+                            ['aktif', 'Y'],
                         ])->whereNotIn('id', $hak_akses)->where('link', 'LIKE', '/%')->orderBy('sort', 'ASC')->orderBy('id', 'ASC')->first();
                         $redirect = $menu_redirect->link;
                     }
 
                     return redirect($redirect)->with([
-                        'pesan' => 'Selamat Datang ' . $user->namadepan . ' ' . $user->namabelakang,
+                        'pesan' => 'Selamat Datang '.$user->namadepan.' '.$user->namabelakang,
                         'invoice' => $inv['invoice'],
                         'msg' => $inv['msg'],
                         'hp_dir' => $inv['dir'],
@@ -214,14 +214,14 @@ class AuthController extends Controller
 
         $icon = '/assets/img/icon/favicon.png';
         if ($kec->logo) {
-            $icon = '/storage/logo/' . $kec->logo;
+            $icon = '/storage/logo/'.$kec->logo;
         }
 
         User::where([
             'uname' => $username,
-            'pass' => $password
+            'pass' => $password,
         ])->update([
-            'lokasi' => $lokasi
+            'lokasi' => $lokasi,
         ]);
 
         $user = User::where([['uname', $username], ['lokasi', $lokasi]])->first();
@@ -239,9 +239,9 @@ class AuthController extends Controller
                         'child' => function ($query) use ($hak_akses) {
                             $query->whereNotIn('id', $hak_akses);
                         },
-                        'child.child'  => function ($query) use ($hak_akses) {
+                        'child.child' => function ($query) use ($hak_akses) {
                             $query->whereNotIn('id', $hak_akses);
-                        }
+                        },
                     ])->orderBy('sort', 'ASC')->orderBy('id', 'ASC')->get();
 
                     $angsuran = true;
@@ -252,17 +252,17 @@ class AuthController extends Controller
                     $request->session()->regenerate();
                     session([
                         'nama_lembaga' => str_replace('DBM ', '', $kec->nama_lembaga_sort),
-                        'nama' => $user->namadepan . ' ' . $user->namabelakang,
+                        'nama' => $user->namadepan.' '.$user->namabelakang,
                         'foto' => $user->foto,
                         'logo' => $kec->logo,
                         'lokasi' => $user->lokasi,
                         'lokasi_user' => $user->lokasi,
                         'menu' => $menu,
                         'icon' => $icon,
-                        'angsuran' => $angsuran
+                        'angsuran' => $angsuran,
                     ]);
 
-                    return redirect('/dashboard')->with('pesan', 'Selamat Datang ' . $user->namadepan . ' ' . $user->namabelakang);
+                    return redirect('/dashboard')->with('pesan', 'Selamat Datang '.$user->namadepan.' '.$user->namabelakang);
                 }
             }
         }
@@ -272,13 +272,13 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $user = auth()->user()->namadepan . ' ' . auth()->user()->namabelakang;
+        $user = auth()->user()->namadepan.' '.auth()->user()->namabelakang;
         FacadesAuth::guard('web')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('pesan', 'Terima Kasih ' . $user);
+        return redirect('/')->with('pesan', 'Terima Kasih '.$user);
     }
 
     private function generateInvoice($kec)
@@ -286,20 +286,20 @@ class AuthController extends Controller
         $return = [
             'invoice' => false,
             'msg' => '',
-            'dir' => ''
+            'dir' => '',
         ];
 
         $bulan_pakai = date('m-d', strtotime($kec->tgl_registrasi));
-        $tgl_pakai = date('Y') . '-' . $bulan_pakai;
+        $tgl_pakai = date('Y').'-'.$bulan_pakai;
 
         $tgl_invoice = date('Y-m-d', strtotime('-1 month', strtotime($tgl_pakai)));
 
         $invoice = AdminInvoice::where([
             ['lokasi', $kec->id],
-            ['jenis_pembayaran', '2']
+            ['jenis_pembayaran', '2'],
         ])->whereBetween('tgl_invoice', [$tgl_invoice, $tgl_pakai]);
 
-        $pesan = "";
+        $pesan = '';
         if ($invoice->count() <= 0 && (date('Y-m-d') <= $tgl_pakai && date('Y-m-d') >= $tgl_invoice)) {
 
             $tanggal = date('Y-m-d');
@@ -316,16 +316,16 @@ class AuthController extends Controller
                 'tgl_lunas' => date('Y-m-d'),
                 'status' => 'UNPAID',
                 'jumlah' => $kec->biaya_tahunan,
-                'id_user' => 1
+                'id_user' => 1,
             ]);
 
             $jenis_pembayaran = AdminJenisPembayaran::where('id', '2')->first();
-            $pesan .= "_#Invoice - " . str_pad($kec->id, '3', '0', STR_PAD_LEFT) . " " . $kec->nama_kec . " - " . $kec->kabupaten->nama_kab . "_\n";
-            $pesan .= $jenis_pembayaran->nama_jp . "\n";
-            $pesan .= "Jumlah           : Rp. " . number_format($kec->biaya_tahunan) . "\n";
-            $pesan .= "Jatuh Tempo  : " . Tanggal::tglIndo($tgl_pakai) . "\n\n";
+            $pesan .= '_#Invoice - '.str_pad($kec->id, '3', '0', STR_PAD_LEFT).' '.$kec->nama_kec.' - '.$kec->kabupaten->nama_kab."_\n";
+            $pesan .= $jenis_pembayaran->nama_jp."\n";
+            $pesan .= 'Jumlah           : Rp. '.number_format($kec->biaya_tahunan)."\n";
+            $pesan .= 'Jatuh Tempo  : '.Tanggal::tglIndo($tgl_pakai)."\n\n";
             $pesan .= "*Detail Invoice*\n";
-            $pesan .= "_https://" . $kec->web_alternatif . "/" . $invoice->id . "_";
+            $pesan .= '_https://'.$kec->web_alternatif.'/'.$invoice->id.'_';
 
             $return['invoice'] = true;
             $return['msg'] = $pesan;
@@ -333,7 +333,7 @@ class AuthController extends Controller
             $dir = User::where([
                 ['lokasi', $kec->id],
                 ['jabatan', '1'],
-                ['level', '1']
+                ['level', '1'],
             ])->first();
 
             $return['dir'] = $dir->hp;
@@ -362,13 +362,13 @@ class AuthController extends Controller
         $params = [];
 
         foreach ($UpdateDataPemanfaat as $update) {
-            $cases[] = "WHEN id_pinkel = ? THEN ?";
+            $cases[] = 'WHEN id_pinkel = ? THEN ?';
             $params[] = $update['id_pinkel'];
             $params[] = $update['pros_jasa'];
         }
 
         $query .= implode(' ', $cases);
-        $query .= " ELSE pros_jasa END";
+        $query .= ' ELSE pros_jasa END';
         DB::update($query, $params);
     }
 }
