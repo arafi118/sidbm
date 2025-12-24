@@ -49,18 +49,6 @@ class AuthController extends Controller
                         if (Auth::loginUsingId($user->id)) {
                             $token = $user->createToken($token)->plainTextToken;
 
-                            $hak_akses = explode(',', $user->akses_menu);
-                            $menu = Menu::where(function ($query) use ($hak_akses) {
-                                $query->where('parent_id', '0')->whereNotIn('id', $hak_akses);
-                            })->where('aktif', 'Y')->with([
-                                'child' => function ($query) use ($hak_akses) {
-                                    $query->whereNotIn('id', $hak_akses)->where('aktif', 'Y');
-                                },
-                                'child.child' => function ($query) use ($hak_akses) {
-                                    $query->whereNotIn('id', $hak_akses)->where('aktif', 'Y');
-                                },
-                            ])->orderBy('sort', 'ASC')->orderBy('id', 'ASC')->get();
-
                             $AksesMenu = explode(',', $user->akses_menu);
                             $Menu = Menu::whereNotIn('id', $AksesMenu)->pluck('akses')->toArray();
 
