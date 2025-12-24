@@ -647,6 +647,40 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="card">
+                            <div class="card-body p-3">
+                                <table class="table table-striped">
+                                    @foreach ($perguliran->pinjaman_anggota as $pinjaman_anggota)
+                                        <tr>
+                                            <td>
+                                                <div class="fw-bold">{{ $pinjaman_anggota->anggota->namadepan }}</div>
+                                                <div>{{ $pinjaman_anggota->anggota->nik }} ({{ $pinjaman_anggota->id }})
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group input-group-dynamic mb-0">
+                                                    <input autocomplete="off" type="text"
+                                                        name="alokasi_pokok_anggota[{{ $pinjaman_anggota->id }}]"
+                                                        id="alokasi-pokok-anggota-{{ $pinjaman_anggota->id }}"
+                                                        data-id="{{ $pinjaman_anggota->id }}"
+                                                        class="form-control money alokasi_pokok_anggota">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group input-group-dynamic mb-0">
+                                                    <input autocomplete="off" type="text" disabled
+                                                        name="alokasi_jasa_anggota[{{ $pinjaman_anggota->id }}]"
+                                                        id="alokasi-jasa-anggota-{{ $pinjaman_anggota->id }}"
+                                                        data-id="{{ $pinjaman_anggota->id }}"
+                                                        class="form-control money alokasi_jasa_anggota">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -1236,6 +1270,41 @@
                     })
                 }
             })
+        })
+
+        $(document).on('change', '.alokasi_pokok_anggota, #pros_jasa', function(e) {
+            e.preventDefault();
+
+            var prosJasa = $('#pros_jasa').val();
+            var saldoPokok = Number('{{ $saldo_pokok }}');
+            var alokasiAnggotaResc = 0;
+
+            var alokasiPokokAnggota = $('.alokasi_pokok_anggota');
+            alokasiPokokAnggota.each((i) => {
+                var inputValue = Number(alokasiPokokAnggota[i].value.replace(/,/g, ''));
+
+                if (inputValue > 0) {
+                    var pinjamanAnggotaId = alokasiPokokAnggota[i].getAttribute('data-id');
+
+                    var jasaAnggota = 0;
+                    if (prosJasa > 0) {
+                        jasaAnggota = inputValue * prosJasa / 100;
+                    }
+
+                    $('#alokasi-jasa-anggota-' + pinjamanAnggotaId).val(formatter.format(jasaAnggota))
+                }
+
+                alokasiAnggotaResc += inputValue;
+            })
+
+            if (alokasiAnggotaResc > saldoPokok) {
+                Swal.fire('Berhasil', 'Total Alokasi Rescheduling Anggota tidak boleh melebihi Alokasi Kelompok',
+                    'warning')
+
+                $('#SimpanRescedule').attr('disabled', 'true')
+            } else {
+                $('#SimpanRescedule').removeAttr('disabled')
+            }
         })
 
         $(document).on('click', '#SimpanRescedule', async function(e) {

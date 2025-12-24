@@ -1,5 +1,6 @@
 @php
     use App\Utils\Tanggal;
+    use App\Utils\Keuangan;
 
     $data_idtp = [];
     $tgl_trx = [];
@@ -100,6 +101,14 @@
                         ) {
                             continue;
                         }
+                    }
+
+                    if (
+                        $rek->kode_akun == '1.1.01.01' &&
+                        (Keuangan::startWith($trx->rekening_debit, '1.1.03') ||
+                            Keuangan::startWith($trx->rekening_kredit, '1.1.03'))
+                    ) {
+                        continue;
                     }
 
                     $tgl_trx[$trx->idtp] = $trx->tgl_transaksi;
