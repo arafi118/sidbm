@@ -79,7 +79,7 @@ class AuthController extends Controller
                                         'jabatan' => $user->j->nama_jabatan,
                                         'level_id' => $user->level,
                                         'jabatan_id' => $user->jabatan,
-                                        'menu' => $menu,
+                                        'menu' => $Menu,
                                         'menu_tombol' => $MenuTombol,
                                         'profil' => $user->foto,
                                     ],
