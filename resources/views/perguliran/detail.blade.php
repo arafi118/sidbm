@@ -648,7 +648,7 @@
                             </div>
                         </div>
 
-                        <div class="card">
+                        {{-- <div class="card">
                             <div class="card-body p-3">
                                 <table class="table table-striped">
                                     @foreach ($perguliran->pinjaman_anggota as $pinjaman_anggota)
@@ -682,7 +682,7 @@
 
                                 <input type="hidden" id="total-alokasi-anggota" name="total_alokasi_anggota">
                             </div>
-                        </div>
+                        </div> --}}
                     </form>
                 </div>
                 <div class="modal-footer">
