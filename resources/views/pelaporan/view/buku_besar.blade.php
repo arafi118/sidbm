@@ -103,11 +103,7 @@
                         }
                     }
 
-                    if (
-                        $rek->kode_akun == '1.1.01.01' &&
-                        (Keuangan::startWith($trx->rekening_debit, '1.1.03') ||
-                            Keuangan::startWith($trx->rekening_kredit, '1.1.03'))
-                    ) {
+                    if ($rek->kode_akun == '1.1.01.01' && Keuangan::startWith($trx->rekening_kredit, '1.1.03')) {
                         continue;
                     }
 

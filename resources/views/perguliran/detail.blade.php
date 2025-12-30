@@ -679,6 +679,8 @@
                                         </tr>
                                     @endforeach
                                 </table>
+
+                                <input type="hidden" id="total-alokasi-anggota" name="total_alokasi_anggota">
                             </div>
                         </div>
                     </form>
@@ -1305,11 +1307,20 @@
             } else {
                 $('#SimpanRescedule').removeAttr('disabled')
             }
+
+            $('#total-alokasi-anggota').val(alokasiAnggotaResc)
         })
 
         $(document).on('click', '#SimpanRescedule', async function(e) {
             e.preventDefault()
             $('#Rescedule').modal('hide')
+
+            console.log(
+                $('#total-alokasi-anggota').val(),
+                '{{ $saldo_pokok }}',
+            )
+
+            return;
 
             const {
                 value: spk
