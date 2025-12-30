@@ -103,9 +103,9 @@
                         }
                     }
 
-                    if ($rek->kode_akun == '1.1.01.01' && Keuangan::startWith($trx->rekening_kredit, '1.1.03')) {
-                        continue;
-                    }
+                    // if ($rek->kode_akun == '1.1.01.01' && Keuangan::startWith($trx->rekening_kredit, '1.1.03')) {
+                    //     continue;
+                    // }
 
                     $tgl_trx[$trx->idtp] = $trx->tgl_transaksi;
 
