@@ -1315,12 +1315,12 @@
             e.preventDefault()
             $('#Rescedule').modal('hide')
 
-            console.log(
-                $('#total-alokasi-anggota').val(),
-                '{{ $saldo_pokok }}',
-            )
+            // console.log(
+            //     $('#total-alokasi-anggota').val(),
+            //     '{{ $saldo_pokok }}',
+            // )
 
-            return;
+            // return;
 
             const {
                 value: spk
