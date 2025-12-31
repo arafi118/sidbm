@@ -273,10 +273,26 @@
                                 </button>
                             @endif
 
+                            @php
+                                $isDebitPiutang = false;
+                                $isKreditPiutang = false;
+
+                                $kodeDebit = explode('.', $trx->rekening_debit);
+                                $kodeKredit = explode('.', $trx->rekening_kredit);
+
+                                if ($keuangan->startWith($trx->rekening_debit, '1.1.03') && $kodeDebit[3] <= 6) {
+                                    $isDebitPiutang = true;
+                                }
+
+                                if ($keuangan->startWith($trx->rekening_kredit, '1.1.03') && $kodeKredit[3] <= 6) {
+                                    $isKreditPiutang = true;
+                                }
+                            @endphp
+
                             @if (
                                 !(
-                                    $keuangan->startWith($trx->rekening_debit, '1.1.03') ||
-                                    $keuangan->startWith($trx->rekening_kredit, '1.1.03') ||
+                                    $isDebitPiutang ||
+                                    $isKreditPiutang ||
                                     $keuangan->startWith($trx->rekening_debit, '4.1.01') ||
                                     $keuangan->startWith($trx->rekening_kredit, '4.1.01')
                                 ))
