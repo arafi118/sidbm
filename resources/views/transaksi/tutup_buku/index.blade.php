@@ -9,7 +9,7 @@
                 <input type="hidden" name="tgl_pakai" id="tgl_pakai" value="{{ $kec->tgl_pakai }}">
                 <div class="col-12">
                     <div class="my-2">
-                        <label class="form-label" for="tahun">Tahun</label>
+                        <label class="form-label" for="tahun">Tahun Buku</label>
                         <select class="form-control" name="tahun" id="tahun">
                             @php
                                 $tgl_pakai = $kec->tgl_pakai;
