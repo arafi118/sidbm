@@ -582,7 +582,7 @@ class SopController extends Controller
             ->whereNotIn($tb_pinj.'.status', ['P', 'V', 'W'])
             ->orderBy($tb_ra.'.jatuh_tempo')->get();
 
-        $data['logo'] = $data['kec']->logo;
+        $data['logo'] = $this->supabaseToBase64($data['kec']->logo);
         $data['nama_lembaga'] = $data['kec']->nama_lembaga_sort;
         $data['nama_kecamatan'] = $data['kec']->sebutan_kec.' '.$data['kec']->nama_kec;
 
@@ -878,35 +878,27 @@ class SopController extends Controller
             'msg' => 'Pengaturan Halaman berhasil disimpan',
         ])->cookie($cookie);
     }
-}[
-    'sidebar-color' => [
-        'target' => '#sidenav-main',
-        'attr' => 'data-color',
-        'default-value' => 'success',
-        'value' => '',
-    ],
-'sidebar-tipe' => [
-    'target' => '#sidenav-main',
-    'attr' => 'class',
-    'default-value' => 'bg-gradient-dark',
-    'value' => '',
-],
-'navbar-fixed' => [
-    'target' => '#navbarBlur',
-    'attr' => 'class',
-    'default-value' => 'position-sticky blur shadow-blur mt-4 left-auto top-1 z-index-sticky',
-    'value' => '',
-],
-'sidebar-mini' => [
-    'target' => 'body',
-    'attr' => 'class',
-    'default-value' => 'g-sidenav-pinned',
-    'value' => 'g-sidenav-hidden',
-],
-'sidebar-mini' => [
-    'target' => 'body',
-    'attr' => 'class',
-    'default-value' => '',
-    'value' => 'dark-version',
-],
-];
+
+    private function supabaseToBase64($url)
+    {
+        $response = Http::withOptions([
+            'verify' => false,
+        ])->get($url);
+
+        if (! $response->successful()) {
+            return null;
+        }
+
+        $binary = $response->body();
+
+        $extension = pathinfo($url, PATHINFO_EXTENSION);
+        $mime = [
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'webp' => 'image/webp',
+        ][$extension] ?? 'application/octet-stream';
+
+        return "data:$mime;base64,".base64_encode($binary);
+    }
+}
