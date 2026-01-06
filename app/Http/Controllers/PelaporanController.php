@@ -226,7 +226,7 @@ class PelaporanController extends Controller
 
         // dd($data);
 
-        if ($data['laporan'] == 'calk' && strlen($data['sub_laporan']) > 22) {
+        if ($data['laporan'] == '30|calk' && strlen($data['sub_laporan']) > 22) {
             Calk::where([
                 ['lokasi', str_replace('_', '', config('tenant.suffix'))],
                 ['tanggal', 'LIKE', $data['tahun'].'-'.$data['bulan'].'%'],
