@@ -576,7 +576,7 @@ class SopController extends Controller
         $tb_pinj = 'pinjaman_kelompok_'.Session::get('lokasi');
 
         $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
-        $data['jenis_pp'] = JenisProdukPinjaman::all();
+        $data['jenis_pp'] = JenisProdukPinjaman::all();//
         $data['rencana'] = RencanaAngsuran::select($tb_ra.'.*', $tb_pinj.'.jenis_pp')->join($tb_pinj, $tb_pinj.'.id', '=', $tb_ra.'.loan_id')
             ->where($tb_ra.'.jatuh_tempo', 'LIKE', $data['tahun'].'-%')
             ->whereNotIn($tb_pinj.'.status', ['P', 'V', 'W'])
