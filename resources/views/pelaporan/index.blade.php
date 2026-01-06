@@ -212,7 +212,7 @@
 
             $(this).parent('div').parent('div').find('form').find('#type').val('pdf')
             var file = $('select#laporan').val()
-            if (file == 'calk') {
+            if (file == '30|calk') {
                 await $('textarea#sub_laporan').val(quill.container.firstChild.innerHTML)
             }
 
