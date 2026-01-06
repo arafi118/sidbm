@@ -576,7 +576,15 @@ class SopController extends Controller
         $tb_pinj = 'pinjaman_kelompok_'.Session::get('lokasi');
 
         $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
-        $data['jenis_pp'] = JenisProdukPinjaman::all();//
+        $data['jenis_pp'] = JenisProdukPinjaman::where(function ($query) {
+            $query->where('lokasi', '0')
+                ->where('kecuali', 'NOT LIKE', '%#' . session('lokasi') . '#%');
+        })
+            ->orWhere(function ($query) {
+                $query->where('lokasi', session('lokasi'))
+                    ->where('kecuali', 'NOT LIKE', '%#' . session('lokasi') . '#%');
+            })
+            ->get();
         $data['rencana'] = RencanaAngsuran::select($tb_ra.'.*', $tb_pinj.'.jenis_pp')->join($tb_pinj, $tb_pinj.'.id', '=', $tb_ra.'.loan_id')
             ->where($tb_ra.'.jatuh_tempo', 'LIKE', $data['tahun'].'-%')
             ->whereNotIn($tb_pinj.'.status', ['P', 'V', 'W'])
@@ -878,35 +886,4 @@ class SopController extends Controller
             'msg' => 'Pengaturan Halaman berhasil disimpan',
         ])->cookie($cookie);
     }
-}[
-    'sidebar-color' => [
-        'target' => '#sidenav-main',
-        'attr' => 'data-color',
-        'default-value' => 'success',
-        'value' => '',
-    ],
-'sidebar-tipe' => [
-    'target' => '#sidenav-main',
-    'attr' => 'class',
-    'default-value' => 'bg-gradient-dark',
-    'value' => '',
-],
-'navbar-fixed' => [
-    'target' => '#navbarBlur',
-    'attr' => 'class',
-    'default-value' => 'position-sticky blur shadow-blur mt-4 left-auto top-1 z-index-sticky',
-    'value' => '',
-],
-'sidebar-mini' => [
-    'target' => 'body',
-    'attr' => 'class',
-    'default-value' => 'g-sidenav-pinned',
-    'value' => 'g-sidenav-hidden',
-],
-'sidebar-mini' => [
-    'target' => 'body',
-    'attr' => 'class',
-    'default-value' => '',
-    'value' => 'dark-version',
-],
-];
+}
