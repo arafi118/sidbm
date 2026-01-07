@@ -576,13 +576,21 @@ class SopController extends Controller
         $tb_pinj = 'pinjaman_kelompok_'.Session::get('lokasi');
 
         $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
-        $data['jenis_pp'] = JenisProdukPinjaman::all();
+        $data['jenis_pp'] = JenisProdukPinjaman::where(function ($query) {
+            $query->where('lokasi', '0')
+                ->where('kecuali', 'NOT LIKE', '%#' . session('lokasi') . '#%');
+        })
+            ->orWhere(function ($query) {
+                $query->where('lokasi', session('lokasi'))
+                    ->where('kecuali', 'NOT LIKE', '%#' . session('lokasi') . '#%');
+            })
+            ->get();
         $data['rencana'] = RencanaAngsuran::select($tb_ra.'.*', $tb_pinj.'.jenis_pp')->join($tb_pinj, $tb_pinj.'.id', '=', $tb_ra.'.loan_id')
             ->where($tb_ra.'.jatuh_tempo', 'LIKE', $data['tahun'].'-%')
             ->whereNotIn($tb_pinj.'.status', ['P', 'V', 'W'])
             ->orderBy($tb_ra.'.jatuh_tempo')->get();
 
-        $data['logo'] = $this->supabaseToBase64($data['kec']->logo);
+        $data['logo'] = $data['kec']->logo;
         $data['nama_lembaga'] = $data['kec']->nama_lembaga_sort;
         $data['nama_kecamatan'] = $data['kec']->sebutan_kec.' '.$data['kec']->nama_kec;
 
@@ -877,28 +885,5 @@ class SopController extends Controller
             'success' => true,
             'msg' => 'Pengaturan Halaman berhasil disimpan',
         ])->cookie($cookie);
-    }
-
-    private function supabaseToBase64($url)
-    {
-        $response = Http::withOptions([
-            'verify' => false,
-        ])->get($url);
-
-        if (! $response->successful()) {
-            return null;
-        }
-
-        $binary = $response->body();
-
-        $extension = pathinfo($url, PATHINFO_EXTENSION);
-        $mime = [
-            'jpg' => 'image/jpeg',
-            'jpeg' => 'image/jpeg',
-            'png' => 'image/png',
-            'webp' => 'image/webp',
-        ][$extension] ?? 'application/octet-stream';
-
-        return "data:$mime;base64,".base64_encode($binary);
     }
 }
