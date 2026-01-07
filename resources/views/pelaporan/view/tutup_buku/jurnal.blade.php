@@ -61,8 +61,8 @@
                 <td align="left">{{ substr($trx->id, 0, 6) }}</td>
                 <td align="center">{{ $rek->kode_akun }}</td>
                 <td align="left">{{ $rek_debit }}</td>
-                <td align="right">{{ number_format($jumlah, 2) }}</td>
                 <td align="right">&nbsp;</td>
+                <td align="right">{{ number_format($jumlah, 2) }}</td>
                 <td align="center">&nbsp;</td>
             </tr>
             <tr style="background: {{ $bg }};">
@@ -71,8 +71,8 @@
                 <td align="left">{{ substr($trx->id, 0, 6) }}</td>
                 <td align="center">{{ $trx->kode_akun }}</td>
                 <td align="left">{{ $rek_kredit }}</td>
-                <td align="right">&nbsp;</td>
                 <td align="right">{{ number_format($jumlah, 2) }}</td>
+                <td align="right">&nbsp;</td>
                 <td align="center">&nbsp;</td>
             </tr>
 
