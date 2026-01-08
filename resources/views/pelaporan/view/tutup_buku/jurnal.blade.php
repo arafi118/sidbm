@@ -56,16 +56,6 @@
                 }
             @endphp
             <tr style="background: {{ $bg }};">
-                <td height="15" align="center">{{ $number }}.</td>
-                <td align="center">{{ Tanggal::tglIndo($tgl_transaksi) }}</td>
-                <td align="left">{{ substr($trx->id, 0, 6) }}</td>
-                <td align="center">{{ $rek->kode_akun }}</td>
-                <td align="left">{{ $rek_debit }}</td>
-                <td align="right">&nbsp;</td>
-                <td align="right">{{ number_format($jumlah, 2) }}</td>
-                <td align="center">&nbsp;</td>
-            </tr>
-            <tr style="background: {{ $bg }};">
                 <td height="15" align="center">&nbsp;</td>
                 <td align="center">&nbsp;</td>
                 <td align="left">{{ substr($trx->id, 0, 6) }}</td>
@@ -73,6 +63,16 @@
                 <td align="left">{{ $rek_kredit }}</td>
                 <td align="right">{{ number_format($jumlah, 2) }}</td>
                 <td align="right">&nbsp;</td>
+                <td align="center">&nbsp;</td>
+            </tr>
+            <tr style="background: {{ $bg }};">
+                <td height="15" align="center">{{ $number }}.</td>
+                <td align="center">{{ Tanggal::tglIndo($tgl_transaksi) }}</td>
+                <td align="left">{{ substr($trx->id, 0, 6) }}</td>
+                <td align="center">{{ $rek->kode_akun }}</td>
+                <td align="left">{{ $rek_debit }}</td>
+                <td align="right">&nbsp;</td>
+                <td align="right">{{ number_format($jumlah, 2) }}</td>
                 <td align="center">&nbsp;</td>
             </tr>
 
