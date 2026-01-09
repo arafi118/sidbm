@@ -78,11 +78,14 @@
             @endforeach
 
             <tr style="font-weight: bold;">
-                <td colspan="7" align="center">
+                <td colspan="6" align="center">
                     JUMLAH
                 </td>
                 <td align="right">
                     {{ number_format($jumlah) }}
+                </td>
+                <td align="right">
+                    &nbsp;
                 </td>
             </tr>
         </tbody>
