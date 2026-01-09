@@ -33,12 +33,13 @@
         <thead>
             <tr style="background: rgb(232,232,232)">
                 <th width="4%">No</th>
-                <th width="21%">Nama Kelompok</th>
-                <th width="">Alamat</th>
-                <th width="5%">Jenis</th>
-                <th width="8%">Anggota</th>
-                <th width="17%">Ketua Kelompok</th>
-                <th width="13%">Alokasi Pendanaan</th>
+                <th width="18%">Nama Kelompok</th>
+                <th width="25%">Alamat</th>
+                <th width="7%">Jenis</th>
+                <th width="7%">Anggota</th>
+                <th width="16%">Ketua Kelompok</th>
+                <th width="14%">Alokasi Pendanaan</th>
+                <th width="9%">Tenor</th>
             </tr>
         </thead>
 
@@ -70,11 +71,14 @@
                     <td align="right">
                         {{ number_format($pinkel->alokasi) }}
                     </td>
+                    <td align="right">
+                        {{ ($pinkel->jangka) }} Bulan
+                    </td>
                 </tr>
             @endforeach
 
             <tr style="font-weight: bold;">
-                <td colspan="6" align="center">
+                <td colspan="7" align="center">
                     JUMLAH
                 </td>
                 <td align="right">
