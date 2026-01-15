@@ -68,6 +68,14 @@
         $jasa_bulan_depan = 0;
     }
 
+    if ($pokok_bulan_depan > $real->saldo_pokok) {
+        $pokok_bulan_depan = $real->saldo_pokok;
+    }
+
+    if ($jasa_bulan_depan > $real->saldo_jasa) {
+        $jasa_bulan_depan = $real->saldo_jasa;
+    }
+
     $penyetor = '';
     $nama_user = '';
     $no_kuitansi = '';
