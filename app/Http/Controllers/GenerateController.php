@@ -3,13 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kecamatan;
-use App\Models\PinjamanAnggota;
-use App\Models\PinjamanIndividu;
 use App\Models\PinjamanKelompok;
 use App\Models\RealAngsuran;
-use App\Models\RealAngsuranI;
 use App\Models\RencanaAngsuran;
-use App\Models\RencanaAngsuranI;
 use App\Utils\Keuangan;
 use Illuminate\Http\Request;
 use Session;
@@ -27,11 +23,11 @@ class GenerateController extends Controller
 
         $logo = '/assets/img/icon/favicon.png';
         if ($kec->logo) {
-            $logo = '/storage/logo/' . $kec->logo;
+            $logo = '/storage/logo/'.$kec->logo;
         }
 
         $database = env('DB_DATABASE', 'siupk_dbm');
-        $table = 'pinjaman_kelompok_' . Session::get('lokasi');
+        $table = 'pinjaman_kelompok_'.Session::get('lokasi');
 
         $strukturTabel = \DB::select("
             SELECT COLUMN_NAME
@@ -88,9 +84,8 @@ class GenerateController extends Controller
             'trx_penghapusan',
             'trx_penghapusan.tr_idtp',
             'kelompok',
-            'kelompok.d'
+            'kelompok.d',
         ]);
-
 
         $data_pinjaman = [];
         $data_pinjaman_H = [];
@@ -99,6 +94,7 @@ class GenerateController extends Controller
         foreach ($pinjaman as $pinkel) {
             if ($pinkel->status == 'H') {
                 $data_pinjaman_H[] = $pinkel->id;
+
                 continue;
             }
 
@@ -161,7 +157,9 @@ class GenerateController extends Controller
             $data_penghapusan = [];
             $data_idtp_penghapusan = [];
             foreach ($pinkel->trx_penghapusan as $trx_penghapusan) {
-                if (in_array($trx_penghapusan->idtp, $data_idtp_penghapusan)) continue;
+                if (in_array($trx_penghapusan->idtp, $data_idtp_penghapusan)) {
+                    continue;
+                }
 
                 $penghapusan_pokok = 0;
                 $penghapusan_jasa = 0;
@@ -182,7 +180,7 @@ class GenerateController extends Controller
                     'penghapusan_jasa' => $penghapusan_jasa,
                     'id_pinjaman_anggota' => $trx_penghapusan->id_pinj_i,
                     'alokasi_pokok_pinjaman' => 0,
-                    'alokasi_jasa_pinjaman' => 0
+                    'alokasi_jasa_pinjaman' => 0,
                 ];
 
                 $nomor++;
@@ -200,7 +198,7 @@ class GenerateController extends Controller
                 'target_pokok' => $target_pokok,
                 'target_jasa' => $target_jasa,
                 'lu' => date('Y-m-d H:i:s'),
-                'id_user' => 1
+                'id_user' => 1,
             ];
             $rencana[] = $data_rencana[strtotime($tgl_cair)];
 
@@ -230,7 +228,7 @@ class GenerateController extends Controller
                                     'target_pokok' => $target_pokok + $value['penghapusan_pokok'],
                                     'target_jasa' => $target_jasa + $value['penghapusan_jasa'],
                                     'lu' => date('Y-m-d H:i:s'),
-                                    'id_user' => 1
+                                    'id_user' => 1,
                                 ];
                                 $rencana[] = $data_rencana[strtotime($value['tgl_transaksi'])];
 
@@ -295,7 +293,7 @@ class GenerateController extends Controller
                     'target_pokok' => $target_pokok,
                     'target_jasa' => $target_jasa,
                     'lu' => date('Y-m-d H:i:s'),
-                    'id_user' => 1
+                    'id_user' => 1,
                 ];
                 $rencana[] = $data_rencana[strtotime($jatuh_tempo)];
             }
@@ -308,7 +306,9 @@ class GenerateController extends Controller
             $data_idtp = [];
             ksort($data_rencana);
             foreach ($pinkel->trx as $trx) {
-                if (in_array($trx->idtp, $data_idtp)) continue;
+                if (in_array($trx->idtp, $data_idtp)) {
+                    continue;
+                }
 
                 $realisasi_pokok = 0;
                 $realisasi_jasa = 0;
@@ -354,7 +354,7 @@ class GenerateController extends Controller
                     $tunggakan_jasa = 0;
                 }
 
-                if (!($realisasi_pokok == '0' && $realisasi_jasa == '0')) {
+                if (! ($realisasi_pokok == '0' && $realisasi_jasa == '0')) {
                     $real[$trx->idtp] = [
                         'id' => $trx->idtp,
                         'loan_id' => $pinkel->id,
@@ -387,6 +387,7 @@ class GenerateController extends Controller
         array_push($data_pinjaman, $data_pinjaman_H);
         $data = $request->all();
         $offset = $offset + $limit;
+
         return view('generate.generate')->with(compact('data_pinjaman', 'data', 'offset', 'limit'));
     }
 
@@ -405,7 +406,7 @@ class GenerateController extends Controller
             if (is_array($val)) {
                 $opt = $val['operator'];
                 $value = $val['value'];
-                if (!$value) {
+                if (! $value) {
                     continue;
                 }
 
@@ -438,7 +439,7 @@ class GenerateController extends Controller
         return [
             'where' => $where,
             'whereIn' => $whereIn,
-            'whereNotIn' => $whereNotIn
+            'whereNotIn' => $whereNotIn,
         ];
     }
 
@@ -447,19 +448,19 @@ class GenerateController extends Controller
         if ($sistem_angsuran == 11) {
             $tempo = ($jangka_pinjaman) - 24 / $sistem;
             $mulai_angsuran = $jangka_pinjaman - $tempo;
-        } else if ($sistem_angsuran == 14) {
+        } elseif ($sistem_angsuran == 14) {
             $tempo = ($jangka_pinjaman) - 3 / $sistem;
             $mulai_angsuran = $jangka_pinjaman - $tempo;
-        } else if ($sistem_angsuran == 26) {
+        } elseif ($sistem_angsuran == 26) {
             $tempo = ($jangka_pinjaman) - 6 / $sistem;
             $mulai_angsuran = $jangka_pinjaman - $tempo;
-        } else if ($sistem_angsuran == 15) {
+        } elseif ($sistem_angsuran == 15) {
             $tempo = ($jangka_pinjaman) - 2 / $sistem;
             $mulai_angsuran = $jangka_pinjaman - $tempo;
-        } else if ($sistem_angsuran == 25) {
+        } elseif ($sistem_angsuran == 25) {
             $tempo = ($jangka_pinjaman) - 1 / $sistem;
             $mulai_angsuran = $jangka_pinjaman - $tempo;
-        } else if ($sistem_angsuran == 20) {
+        } elseif ($sistem_angsuran == 20) {
             $tempo = ($jangka_pinjaman) - 12 / $sistem;
             $mulai_angsuran = $jangka_pinjaman - $tempo;
         } else {
@@ -486,14 +487,14 @@ class GenerateController extends Controller
             $alokasi = $pinjaman->alokasi;
             $tgl_cair = $pinjaman->tgl_cair;
 
-            if ($tgl_cair == "0000-00-00") {
+            if ($tgl_cair == '0000-00-00') {
                 $tgl_cair = $pinjaman->tgl_tunggu;
             }
         } else {
             $alokasi = $pinjaman->alokasi;
             $tgl_cair = $pinjaman->tgl_cair;
 
-            if ($tgl_cair == "0000-00-00") {
+            if ($tgl_cair == '0000-00-00') {
                 $tgl_cair = $pinjaman->tgl_tunggu;
             }
         }
@@ -503,7 +504,7 @@ class GenerateController extends Controller
             $angsuran_desa = $desa->jadwal_angsuran_desa;
             if ($angsuran_desa > 0) {
                 $tgl_pinjaman = date('Y-m', strtotime($tgl_cair));
-                $tgl_cair = $tgl_pinjaman . '-' . $angsuran_desa;
+                $tgl_cair = $tgl_pinjaman.'-'.$angsuran_desa;
             }
         }
 
@@ -516,7 +517,7 @@ class GenerateController extends Controller
 
         return [
             'alokasi' => $alokasi,
-            'tgl_cair' => $tgl_cair
+            'tgl_cair' => $tgl_cair,
         ];
     }
 
@@ -583,7 +584,7 @@ class GenerateController extends Controller
         if (date('d', strtotime($tanggal)) > date('t', strtotime($jatuh_tempo))) {
             $jatuh_tempo = date('Y-m-t', strtotime($jatuh_tempo));
         } else {
-            $jatuh_tempo = date('Y-m', strtotime($jatuh_tempo)) . '-' . date('d', strtotime($tanggal));
+            $jatuh_tempo = date('Y-m', strtotime($jatuh_tempo)).'-'.date('d', strtotime($tanggal));
         }
 
         return $jatuh_tempo;
@@ -610,7 +611,7 @@ class GenerateController extends Controller
             if (is_array($val)) {
                 $opt = $val['operator'];
                 $value = $val['value'];
-                if (!$value) {
+                if (! $value) {
                     continue;
                 }
 
@@ -665,7 +666,7 @@ class GenerateController extends Controller
             },
             'trx.tr_idtp',
             'kelompok',
-            'kelompok.d'
+            'kelompok.d',
         ]);
 
         $pinjaman = $pinjaman->limit($limit)->offset($offset)->orderBy('id', 'ASC')->get();
@@ -676,6 +677,7 @@ class GenerateController extends Controller
         foreach ($pinjaman as $pinkel) {
             if ($pinkel->pinjaman) {
                 $data_pinj_H[] = $pinkel->id;
+
                 continue;
             }
 
@@ -691,14 +693,14 @@ class GenerateController extends Controller
                 $alokasi = $pinkel->alokasi;
                 $tgl_cair = $pinkel->tgl_cair;
 
-                if ($tgl_cair == "0000-00-00") {
+                if ($tgl_cair == '0000-00-00') {
                     $tgl_cair = $pinkel->tgl_tunggu;
                 }
             } else {
                 $alokasi = $pinkel->alokasi;
                 $tgl_cair = $pinkel->tgl_cair;
 
-                if ($tgl_cair == "0000-00-00") {
+                if ($tgl_cair == '0000-00-00') {
                     $tgl_cair = $pinkel->tgl_tunggu;
                 }
             }
@@ -710,7 +712,7 @@ class GenerateController extends Controller
                 $angsuran_desa = $desa->jadwal_angsuran_desa;
                 if ($angsuran_desa > 0) {
                     $tgl_pinjaman = date('Y-m', strtotime($tgl_cair));
-                    $tgl_cair = $tgl_pinjaman . '-' . $angsuran_desa;
+                    $tgl_cair = $tgl_pinjaman.'-'.$angsuran_desa;
                 }
             }
 
@@ -733,19 +735,19 @@ class GenerateController extends Controller
             if ($sa_pokok == 11) {
                 $tempo_pokok = ($jangka) - 24 / $sistem_pokok;
                 $mulai_angsuran_pokok = $jangka - $tempo_pokok;
-            } else if ($sa_pokok == 14) {
+            } elseif ($sa_pokok == 14) {
                 $tempo_pokok = ($jangka) - 3 / $sistem_pokok;
                 $mulai_angsuran_pokok = $jangka - $tempo_pokok;
-            } else if ($sa_pokok == 26) {
+            } elseif ($sa_pokok == 26) {
                 $tempo_pokok = ($jangka) - 6 / $sistem_pokok;
                 $mulai_angsuran_pokok = $jangka - $tempo_pokok;
-            } else if ($sa_pokok == 15) {
+            } elseif ($sa_pokok == 15) {
                 $tempo_pokok = ($jangka) - 2 / $sistem_pokok;
                 $mulai_angsuran_pokok = $jangka - $tempo_pokok;
-            } else if ($sa_pokok == 25) {
+            } elseif ($sa_pokok == 25) {
                 $tempo_pokok = ($jangka) - 1 / $sistem_pokok;
                 $mulai_angsuran_pokok = $jangka - $tempo_pokok;
-            } else if ($sa_pokok == 20) {
+            } elseif ($sa_pokok == 20) {
                 $tempo_pokok = ($jangka) - 12 / $sistem_pokok;
                 $mulai_angsuran_pokok = $jangka - $tempo_pokok;
             } else {
@@ -756,19 +758,19 @@ class GenerateController extends Controller
             if ($sa_jasa == 11) {
                 $tempo_jasa = ($jangka) - 24 / $sistem_jasa;
                 $mulai_angsuran_jasa = $jangka - $tempo_jasa;
-            } else if ($sa_jasa == 14) {
+            } elseif ($sa_jasa == 14) {
                 $tempo_jasa = ($jangka) - 3 / $sistem_jasa;
                 $mulai_angsuran_jasa = $jangka - $tempo_jasa;
-            } else if ($sa_jasa == 26) {
+            } elseif ($sa_jasa == 26) {
                 $tempo_jasa = ($jangka) - 6 / $sistem_jasa;
                 $mulai_angsuran_jasa = $jangka - $tempo_jasa;
-            } else if ($sa_jasa == 15) {
+            } elseif ($sa_jasa == 15) {
                 $tempo_jasa = ($jangka) - 2 / $sistem_jasa;
                 $mulai_angsuran_jasa = $jangka - $tempo_jasa;
-            } else if ($sa_pokok == 25) {
+            } elseif ($sa_pokok == 25) {
                 $tempo_jasa = ($jangka) - 1 / $sistem_jasa;
                 $mulai_angsuran_jasa = $jangka - $tempo_jasa;
-            } else if ($sa_jasa == 20) {
+            } elseif ($sa_jasa == 20) {
                 $tempo_jasa = ($jangka) - 12 / $sistem_jasa;
                 $mulai_angsuran_jasa = $jangka - $tempo_jasa;
             } else {
@@ -860,13 +862,13 @@ class GenerateController extends Controller
                 'target_pokok' => $target_pokok,
                 'target_jasa' => $target_jasa,
                 'lu' => date('Y-m-d H:i:s'),
-                'id_user' => 1
+                'id_user' => 1,
             ];
             $rencana[] = $data_rencana[strtotime($tgl_cair)];
 
             for ($x = 1; $x <= $jangka; $x++) {
-                $bulan  = substr($tgl_cair, 5, 2);
-                $tahun  = substr($tgl_cair, 0, 4);
+                $bulan = substr($tgl_cair, 5, 2);
+                $tahun = substr($tgl_cair, 0, 4);
 
                 if ($sa_pokok == 12) {
                     $tambah = $x * 7;
@@ -881,7 +883,7 @@ class GenerateController extends Controller
                 if (date('d', strtotime($tgl_cair)) > date('t', strtotime($jatuh_tempo))) {
                     $jatuh_tempo = date('Y-m-t', strtotime($jatuh_tempo));
                 } else {
-                    $jatuh_tempo = date('Y-m', strtotime($jatuh_tempo)) . '-' . date('d', strtotime($tgl_cair));
+                    $jatuh_tempo = date('Y-m', strtotime($jatuh_tempo)).'-'.date('d', strtotime($tgl_cair));
                 }
 
                 $pokok = $ra[$x]['pokok'];
@@ -907,7 +909,7 @@ class GenerateController extends Controller
                     'target_pokok' => $target_pokok,
                     'target_jasa' => $target_jasa,
                     'lu' => date('Y-m-d H:i:s'),
-                    'id_user' => 1
+                    'id_user' => 1,
                 ];
                 $rencana[] = $data_rencana[strtotime($jatuh_tempo)];
             }
@@ -925,8 +927,12 @@ class GenerateController extends Controller
                 $jasa_kredit = ['1.1.03.04', '1.1.03.05', '1.1.03.06', '4.1.01.01', '4.1.01.02', '4.1.01.03'];
                 $dend_kredit = ['4.1.01.04', '4.1.01.05', '4.1.01.06'];
 
-                if (in_array($trx->rekening_kredit, $dend_kredit)) continue;
-                if (in_array($trx->idtp, $data_idtp)) continue;
+                if (in_array($trx->rekening_kredit, $dend_kredit)) {
+                    continue;
+                }
+                if (in_array($trx->idtp, $data_idtp)) {
+                    continue;
+                }
 
                 $tgl_transaksi = $trx->tgl_transaksi;
                 $realisasi_pokok = 0;
@@ -975,7 +981,7 @@ class GenerateController extends Controller
                     $tunggakan_jasa = 0;
                 }
 
-                if (!($realisasi_pokok == '0' && $realisasi_jasa == '0')) {
+                if (! ($realisasi_pokok == '0' && $realisasi_jasa == '0')) {
                     $real[$trx->idtp] = [
                         'id' => $trx->idtp,
                         'loan_id' => $pinkel->id,
@@ -1010,6 +1016,7 @@ class GenerateController extends Controller
         $offset = $offset + $limit;
 
         $data_pinjaman = $data_id_pinj;
+
         return view('generate.generate')->with(compact('data_pinjaman', 'data', 'offset', 'limit'));
     }
 }

@@ -93,51 +93,59 @@
 
     <div class="card mt-3">
         <div class="card-body p-2">
-            @if ($perguliran->status == 'L' || $perguliran->status == 'H')
-                @if (
-                    $perguliran->status != 'H' &&
-                        in_array('tahapan_perguliran.lunas.cetak_keterangan_pelunasan', Session::get('tombol')))
-                    <button class="btn btn-warning btn-sm float-end ms-2"
-                        onclick="window.open('/cetak_keterangan_lunas/{{ $perguliran->id }}')" type="button">
-                        <i class="fa fa-print"></i> Cetak Keterangan Pelunasan
-                    </button>
+            <div class="d-flex justify-content-end">
+                <button type="button" id="sinkronisasi" class="btn btn-sm btn-facebook btn-icon mb-0">
+                    <span class="btn-inner--icon"><i class="fas fa-sync"></i></span>
+                    <span class="btn-inner--text">Sinkronisasi</span>
+                </button>
+
+                @if ($perguliran->status == 'L' || $perguliran->status == 'H')
+                    @if (
+                        $perguliran->status != 'H' &&
+                            in_array('tahapan_perguliran.lunas.cetak_keterangan_pelunasan', Session::get('tombol')))
+                        <button class="btn btn-warning btn-sm ms-2"
+                            onclick="window.open('/cetak_keterangan_lunas/{{ $perguliran->id }}')" type="button">
+                            <i class="fa fa-print"></i> Cetak Keterangan Pelunasan
+                        </button>
+                    @endif
+
+                    <a href="/database/kelompok/{{ $perguliran->kelompok->kd_kelompok }}"
+                        class="btn btn-info btn-sm mb-0 ms-2">Kembali</a>
+                @else
+                    <a href="/perguliran?status={{ $perguliran->status }}"
+                        class="btn btn-info btn-sm mb-0 ms-2">Kembali</a>
+
+                    @if (
+                        !in_array('tahapan_perguliran.verifikasi.simpan_keputusan_pendanaan', Session::get('tombol')) &&
+                            $perguliran->status == 'V')
+                        @if (in_array('tahapan_perguliran.verifikasi.tidak_layak_dicairkan', Session::get('tombol')))
+                            <button type="button" id="tidakLayakDicairkan" class="btn btn-danger btn-sm ms-2">
+                                Tidak Layak Dicairkan
+                            </button>
+                        @endif
+
+                        @if (in_array('tahapan_perguliran.verifikasi.kembalikan_ke_proposal', Session::get('tombol')))
+                            <button type="button" id="kembaliProposal" class="btn btn-warning btn-sm ms-2 mb-2">
+                                Kembalikan Ke Proposal
+                            </button>
+                        @endif
+                    @endif
+
+                    @if (!in_array('tahapan_perguliran.waiting.pencairan', Session::get('tombol')) && $perguliran->status == 'W')
+                        @if (in_array('tahapan_perguliran.waiting.tidak_layak_dicairkan', Session::get('tombol')))
+                            <button type="button" id="tidakLayakDicairkan" class="btn btn-danger btn-sm ms-2">
+                                Tidak Layak Dicairkan
+                            </button>
+                        @endif
+
+                        @if (in_array('tahapan_perguliran.waiting.kembalikan_ke_proposal', Session::get('tombol')))
+                            <button type="button" id="kembaliProposal" class="btn btn-warning btn-sm ms-2 mb-2">
+                                Kembalikan Ke Proposal
+                            </button>
+                        @endif
+                    @endif
                 @endif
-                <a href="/database/kelompok/{{ $perguliran->kelompok->kd_kelompok }}"
-                    class="btn btn-info float-end btn-sm mb-0">Kembali</a>
-            @else
-                <a href="/perguliran?status={{ $perguliran->status }}"
-                    class="btn btn-info float-end btn-sm mb-0">Kembali</a>
-
-                @if (
-                    !in_array('tahapan_perguliran.verifikasi.simpan_keputusan_pendanaan', Session::get('tombol')) &&
-                        $perguliran->status == 'V')
-                    @if (in_array('tahapan_perguliran.verifikasi.tidak_layak_dicairkan', Session::get('tombol')))
-                        <button type="button" id="tidakLayakDicairkan" class="btn btn-danger btn-sm">
-                            Tidak Layak Dicairkan
-                        </button>
-                    @endif
-
-                    @if (in_array('tahapan_perguliran.verifikasi.kembalikan_ke_proposal', Session::get('tombol')))
-                        <button type="button" id="kembaliProposal" class="btn float-end btn-warning btn-sm me-2 mb-2 ms-1">
-                            Kembalikan Ke Proposal
-                        </button>
-                    @endif
-                @endif
-
-                @if (!in_array('tahapan_perguliran.waiting.pencairan', Session::get('tombol')) && $perguliran->status == 'W')
-                    @if (in_array('tahapan_perguliran.waiting.tidak_layak_dicairkan', Session::get('tombol')))
-                        <button type="button" id="tidakLayakDicairkan" class="btn btn-danger btn-sm">
-                            Tidak Layak Dicairkan
-                        </button>
-                    @endif
-
-                    @if (in_array('tahapan_perguliran.waiting.kembalikan_ke_proposal', Session::get('tombol')))
-                        <button type="button" id="kembaliProposal" class="btn float-end btn-warning btn-sm me-2 mb-2 ms-1">
-                            Kembalikan Ke Proposal
-                        </button>
-                    @endif
-                @endif
-            @endif
+            </div>
         </div>
     </div>
 
@@ -831,6 +839,15 @@
             </div>
         </div>
     </div>
+
+    <form action="/generate_v2/save" method="post" target="_blank" id="FormSinkronisasi">
+        @csrf
+
+        <input type="hidden" name="pinjaman" value="kelompok">
+        <input type="hidden" name="generate_version" value="v2">
+        <input type="hidden" name="id[operator]" value="=">
+        <input type="hidden" name="id[value]" value="{{ $perguliran->id }}">
+    </form>
 @endsection
 
 @section('script')
@@ -1509,6 +1526,12 @@
             var action = $(this).attr('data-action')
 
             open_window(action)
+        })
+
+        $(document).on('click', ' #sinkronisasi', function(e) {
+            e.preventDefault()
+
+            $('#FormSinkronisasi').submit()
         })
 
         function catatan() {
