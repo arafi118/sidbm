@@ -23,6 +23,7 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use PDF;
+use Session;
 
 class PelaporanController extends Controller
 {
@@ -3967,7 +3968,6 @@ class PelaporanController extends Controller
         $view = view('pelaporan.view.mou', $data)->render();
 
         $paperSize = Session::get('lokasi') == 109 ? [0, 0, 595.28, 935.43] : 'A4';
-
 
         $pdf = PDF::loadHTML($view)->setPaper($paperSize, 'potrait');
 
