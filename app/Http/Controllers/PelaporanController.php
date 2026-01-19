@@ -1910,7 +1910,7 @@ class PelaporanController extends Controller
         $view = view('pelaporan.view.perkembangan_piutang.kolek_kelompok', $data)->render();
 
         if ($data['type'] == 'pdf') {
-            $paperSize = session::get('lokasi') == 109 ? [0, 0, 595.28, 935.43] : 'A4';
+            $paperSize = Session::get('lokasi') == 109 ? [0, 0, 595.28, 935.43] : 'A4';
 
             $pdf = PDF::loadHTML($view)->setPaper($paperSize, 'landscape');
 
