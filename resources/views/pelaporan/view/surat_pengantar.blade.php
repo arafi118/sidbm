@@ -85,9 +85,16 @@
         <tr>
             <td colspan="3">
                 <div>
-                    Tembusan :
+                    Tembusan : {{ $kec->kd_kab == '33.01' ? 'Kepada' : '' }}
                     <ol>
-                        <li>Arsip</li>
+                        @if ($kec->kd_kab == '33.01')
+                            <li>Yth. Camat {{ $kec->nama_kec }} (Sebagai Laporan)</li>
+                            <li>Yth. Penasehat (Sebagai Laporan)</li>
+                            <li>Yth. Pengurus Forum Bumdesma Kab. {{ $kec->kabupaten->nama_kab }}</li>
+                            <li>Arsip</li>
+                        @else
+                            <li>Arsip</li>
+                        @endif
                     </ol>
                 </div>
             </td>
