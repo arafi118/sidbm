@@ -23,6 +23,7 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use PDF;
+use Session;
 
 class PelaporanController extends Controller
 {
