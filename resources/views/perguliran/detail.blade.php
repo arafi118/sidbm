@@ -94,10 +94,12 @@
     <div class="card mt-3">
         <div class="card-body p-2">
             <div class="d-flex justify-content-end">
-                <button type="button" id="sinkronisasi" class="btn btn-sm btn-facebook btn-icon mb-0">
-                    <span class="btn-inner--icon"><i class="fas fa-sync"></i></span>
-                    <span class="btn-inner--text">Sinkronisasi</span>
-                </button>
+                @if (in_array($perguliran->status, ['W', 'A']))
+                    <button type="button" id="sinkronisasi" class="btn btn-sm btn-facebook btn-icon mb-0">
+                        <span class="btn-inner--icon"><i class="fas fa-sync"></i></span>
+                        <span class="btn-inner--text">Sinkronisasi</span>
+                    </button>
+                @endif
 
                 @if ($perguliran->status == 'L' || $perguliran->status == 'H')
                     @if (
