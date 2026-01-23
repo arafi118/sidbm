@@ -306,9 +306,17 @@
 
                         </td>
                         <td width="50%" align="justify" style="vertical-align: top;">
-                            <div>Diverifikasi oleh, {{ $kec->nama_tv_sort }} {{ $kec->nama_lembaga_sort }}
-                                {{ $kec->sebutan_kec }}
-                                {{ $kec->nama_kec }}</div>
+                            <div>
+                                @if ($jenis_dokumen == 'dokumen_verifikasi')
+                                    Diverifikasi oleh, {{ $kec->nama_tv_sort }} {{ $kec->nama_lembaga_sort }}
+                                    {{ $kec->sebutan_kec }}
+                                    {{ $kec->nama_kec }}
+                                @else
+                                    Disetujui oleh, Tim Pendanaan {{ $kec->nama_lembaga_sort }}
+                                    {{ $kec->sebutan_kec }}
+                                    {{ $kec->nama_kec }}
+                                @endif
+                            </div>
                             <div style="margin-top: 12px;">
                                 <table border="0" width="100%" cellspacing="0" cellpadding="0"
                                     style="font-size: 11px;">
