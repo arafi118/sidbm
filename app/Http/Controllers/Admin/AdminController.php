@@ -28,7 +28,7 @@ class AdminController extends Controller
 
     public function transaksi()
     {
-        $kecamatan = Kecamatan::where('kd_kab', 'like', '33.%')->orderBy('id', 'ASC')->get();
+        $kecamatan = Kecamatan::where('id', 'like', '528')->orderBy('id', 'ASC')->get();
 
         foreach ($kecamatan as $item) {
             $lokasi = $item->id;
