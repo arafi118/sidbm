@@ -510,8 +510,8 @@ class PinjamanKelompokController extends Controller
             'sis_jasa',
             'jpp',
             'jasa',
-            'pinjaman_anggota' => function ($query) use($perguliran) {
-                $query->where('status',$perguliran->status);
+            'pinjaman_anggota' => function ($query) use ($perguliran) {
+                $query->where('status', $perguliran->status);
             },
             'pinjaman_anggota.anggota',
             'pinjaman_anggota.anggota.pemanfaat' => function ($query) {
@@ -1890,7 +1890,7 @@ class PinjamanKelompokController extends Controller
             'pinjaman_anggota.pinj_ang' => function ($query) use ($id) {
                 $query->where([
                     ['id_pinkel', '!=', $id],
-                ]);
+                ])->whereNotIn('status', ['P', 'V', 'W']);
             },
             'sis_pokok',
             'user',
