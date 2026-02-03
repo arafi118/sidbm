@@ -1890,7 +1890,7 @@ class PinjamanKelompokController extends Controller
             'pinjaman_anggota.pinj_ang' => function ($query) use ($id) {
                 $query->where([
                     ['id_pinkel', '!=', $id],
-                ])->whereNotIn('status', ['P', 'V', 'W']);
+                ]);
             },
             'sis_pokok',
             'user',
