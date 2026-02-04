@@ -408,7 +408,7 @@ class TransaksiController extends Controller
                 $query->where('tahun', $tahun)->where('bulan', '<=', $bulan)->orderBy('bulan', 'ASC');
             },
             'saldo' => function ($query) use ($tahun) {
-                $query->where('tahun', $tahun);
+                $query->where('tahun', $tahun)->whereRaw('LENGTH(id) >= 13');
             },
         ])->first();
         $desa = $kec->desa;
