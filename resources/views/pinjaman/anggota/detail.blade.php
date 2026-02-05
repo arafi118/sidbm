@@ -33,7 +33,7 @@
                 </h5>
 
                 <div class="text-muted">
-                    {{ $pinj->anggota->nik }}
+                    {{ $pinj->anggota->nik }} ({{ $pinj->anggota->id }})
                 </div>
 
                 @if ($umur->m == 0)
