@@ -225,8 +225,6 @@ class PelaporanController extends Controller
             'type',
         ]);
 
-        // dd($data);
-
         if ($data['laporan'] == '30|calk' && strlen($data['sub_laporan']) > 22) {
             Calk::where([
                 ['lokasi', str_replace('_', '', config('tenant.suffix'))],
@@ -319,7 +317,7 @@ class PelaporanController extends Controller
 
         $file = $file_laporan;
         if ($request->sub_laporan && $file != 'calk') {
-            if (str_contains($request->sub_laporan, '_') && ! in_array($file, ['5', '6', 'tutup_buku'])) {
+            if (str_contains($request->sub_laporan, '_') && ! in_array($file, ['1', '2', '5', '6', 'tutup_buku'])) {
                 $laporan = explode('_', $request->sub_laporan);
 
                 if ($file == 3) {
@@ -554,7 +552,7 @@ class PelaporanController extends Controller
         $data['jenis'] = 'Tahunan';
         $data['awal'] = 'TAHUN';
         $tgl_lalu = ($thn).'-00-00';
-        if ($data['bulanan']) {
+        if ($data['bulanan'] && ! ($data['laporan'] == '1' || $data['laporan'] == '2')) {
             $data['sub_judul'] = 'Bulan '.Tanggal::namaBulan($tgl).' '.Tanggal::tahun($tgl);
             $data['tgl'] = Tanggal::namaBulan($tgl).' '.Tanggal::tahun($tgl);
             $data['jenis'] = 'Bulanan';
@@ -567,6 +565,20 @@ class PelaporanController extends Controller
             }
 
             $tgl_lalu = $thn.'-'.$bulan_lalu.'-'.date('t', strtotime($thn.'-'.$bulan_lalu.'-01'));
+        }
+
+        if ($data['laporan'] == '1') {
+            $data['laporan'] = 'Arus Kas Semester I';
+            $data['sub_judul'] = 'Semester I Tahun '.Tanggal::tahun($tgl);
+            $data['jenis'] = 'Semester I';
+            $data['tgl'] = Tanggal::tglLatin($thn.'-01-01').' S.D '.Tanggal::tglLatin($thn.'-06-30');
+        }
+
+        if ($data['laporan'] == '2') {
+            $data['laporan'] = 'Arus Kas Semester II';
+            $data['sub_judul'] = 'Semester II Tahun '.Tanggal::tahun($tgl);
+            $data['jenis'] = 'Semester II';
+            $data['tgl'] = Tanggal::tglLatin($thn.'-07-01').' S.D '.Tanggal::tglLatin($thn.'-12-31');
         }
 
         $data['keuangan'] = $keuangan;

@@ -789,6 +789,12 @@ class Keuangan
             $tgl_awal = $thn.'-01-01';
         } elseif ($jenis == 'Bulanan') {
             $tgl_awal = $thn.'-'.$bln.'-01';
+        } elseif ($jenis == 'Semester I') {
+            $tgl_awal = $thn.'-01-01';
+            $tgl_kondisi = $thn.'-06-30';
+        } elseif ($jenis == 'Semester II') {
+            $tgl_awal = $thn.'-07-01';
+            $tgl_kondisi = $thn.'-12-31';
         } else {
             $tgl_awal = $tgl_kondisi;
         }
