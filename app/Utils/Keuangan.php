@@ -18,7 +18,7 @@ class Keuangan
         $angka = round($angka);
 
         $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
-        $pembulatan    = number_format($kec->pembulatan, 0, '', '');
+        $pembulatan = number_format($kec->pembulatan, 0, '', '');
         $ratusan = substr($angka, -3);
         $nilai_tengah = $pembulatan / 2;
 
@@ -27,6 +27,7 @@ class Keuangan
         } else {
             $akhir = $angka + ($pembulatan - $ratusan);
         }
+
         return $akhir;
     }
 
@@ -36,7 +37,7 @@ class Keuangan
 
         if ($pembulatan == null) {
             $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
-            $pembulatan    = (string) $kec->pembulatan;
+            $pembulatan = (string) $kec->pembulatan;
         }
 
         $sistem = 'auto';
@@ -79,74 +80,79 @@ class Keuangan
     {
         $string = (string) $string;
         $len = strlen($startString);
-        return (substr($string, 0, $len) === $startString);
+
+        return substr($string, 0, $len) === $startString;
     }
 
     public function penyebut($nilai)
     {
         $nilai = abs($nilai);
-        $huruf = array("", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
-        $temp = "";
+        $huruf = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan', 'sembilan', 'sepuluh', 'sebelas'];
+        $temp = '';
         if ($nilai < 12) {
-            $temp = " " . $huruf[$nilai];
-        } else if ($nilai < 20) {
-            $temp = $this->penyebut($nilai - 10) . " belas";
-        } else if ($nilai < 100) {
-            $temp = $this->penyebut($nilai / 10) . " puluh" . $this->penyebut($nilai % 10);
-        } else if ($nilai < 200) {
-            $temp = " seratus" . $this->penyebut($nilai - 100);
-        } else if ($nilai < 1000) {
-            $temp = $this->penyebut($nilai / 100) . " ratus" . $this->penyebut($nilai % 100);
-        } else if ($nilai < 2000) {
-            $temp = " seribu" . $this->penyebut($nilai - 1000);
-        } else if ($nilai < 1000000) {
-            $temp = $this->penyebut($nilai / 1000) . " ribu" . $this->penyebut($nilai % 1000);
-        } else if ($nilai < 1000000000) {
-            $temp = $this->penyebut($nilai / 1000000) . " juta" . $this->penyebut($nilai % 1000000);
-        } else if ($nilai < 1000000000000) {
-            $temp = $this->penyebut($nilai / 1000000000) . " milyar" . $this->penyebut(fmod($nilai, 1000000000));
-        } else if ($nilai < 1000000000000000) {
-            $temp = $this->penyebut($nilai / 1000000000000) . " trilyun" . $this->penyebut(fmod($nilai, 1000000000000));
+            $temp = ' '.$huruf[$nilai];
+        } elseif ($nilai < 20) {
+            $temp = $this->penyebut($nilai - 10).' belas';
+        } elseif ($nilai < 100) {
+            $temp = $this->penyebut($nilai / 10).' puluh'.$this->penyebut($nilai % 10);
+        } elseif ($nilai < 200) {
+            $temp = ' seratus'.$this->penyebut($nilai - 100);
+        } elseif ($nilai < 1000) {
+            $temp = $this->penyebut($nilai / 100).' ratus'.$this->penyebut($nilai % 100);
+        } elseif ($nilai < 2000) {
+            $temp = ' seribu'.$this->penyebut($nilai - 1000);
+        } elseif ($nilai < 1000000) {
+            $temp = $this->penyebut($nilai / 1000).' ribu'.$this->penyebut($nilai % 1000);
+        } elseif ($nilai < 1000000000) {
+            $temp = $this->penyebut($nilai / 1000000).' juta'.$this->penyebut($nilai % 1000000);
+        } elseif ($nilai < 1000000000000) {
+            $temp = $this->penyebut($nilai / 1000000000).' milyar'.$this->penyebut(fmod($nilai, 1000000000));
+        } elseif ($nilai < 1000000000000000) {
+            $temp = $this->penyebut($nilai / 1000000000000).' trilyun'.$this->penyebut(fmod($nilai, 1000000000000));
         }
+
         return $temp;
     }
 
     public function terbilang($nilai)
     {
         if ($nilai < 0) {
-            $hasil = "minus " . trim($this->penyebut($nilai));
+            $hasil = 'minus '.trim($this->penyebut($nilai));
         } else {
             $hasil = trim($this->penyebut($nilai));
         }
+
         return ucwords($hasil);
     }
 
     public function Saldo($tgl_kondisi, $kode_akun)
     {
         $thn_kondisi = explode('-', $tgl_kondisi)[0];
-        $awal_tahun = $thn_kondisi . '-01-01';
+        $awal_tahun = $thn_kondisi.'-01-01';
         $thn_lalu = $thn_kondisi - 1;
 
         $rekening = Rekening::select(
             DB::raw("SUM(tb$thn_lalu) as debit"),
             DB::raw("SUM(tbk$thn_lalu) as kredit"),
             DB::raw('(SELECT sum(jumlah) as dbt FROM 
-            transaksi_' . Session::get('lokasi') . ' as td WHERE 
-            td.rekening_debit=rekening_' . Session::get('lokasi') . '.kode_akun AND 
-            td.tgl_transaksi BETWEEN "' . $awal_tahun . '" AND "' . $tgl_kondisi . '"
+            transaksi_'.Session::get('lokasi').' as td WHERE 
+            td.rekening_debit=rekening_'.Session::get('lokasi').'.kode_akun AND 
+            td.tgl_transaksi BETWEEN "'.$awal_tahun.'" AND "'.$tgl_kondisi.'"
             ) as saldo_debit'),
             DB::raw('(SELECT sum(jumlah) as dbt FROM 
-            transaksi_' . Session::get('lokasi') . ' as td WHERE 
-            td.rekening_kredit=rekening_' . Session::get('lokasi') . '.kode_akun AND 
-            td.tgl_transaksi BETWEEN "' . $awal_tahun . '" AND "' . $tgl_kondisi . '"
+            transaksi_'.Session::get('lokasi').' as td WHERE 
+            td.rekening_kredit=rekening_'.Session::get('lokasi').'.kode_akun AND 
+            td.tgl_transaksi BETWEEN "'.$awal_tahun.'" AND "'.$tgl_kondisi.'"
             ) as saldo_kredit'),
             'kode_akun'
         )
-            ->groupBy(DB::raw("kode_akun", "jenis_mutasi"))->where('kode_akun', $kode_akun)->first();
+            ->groupBy(DB::raw('kode_akun', 'jenis_mutasi'))->where('kode_akun', $kode_akun)->first();
 
         $lev1 = explode('.', $kode_akun)[0];
         $jenis_mutasi = 'kredit';
-        if ($lev1 == '1' || $lev1 == '5') $jenis_mutasi = 'debet';
+        if ($lev1 == '1' || $lev1 == '5') {
+            $jenis_mutasi = 'debet';
+        }
 
         if (strtolower($jenis_mutasi) == 'debet') {
             $saldo = ($rekening->debit - $rekening->kredit) + $rekening->saldo_debit - $rekening->saldo_kredit;
@@ -161,9 +167,10 @@ class Keuangan
     public function saldoD($tgl_kondisi, $kode_akun)
     {
         $thn_kondisi = explode('-', $tgl_kondisi)[0];
-        $awal_tahun = $thn_kondisi . '-01-01';
+        $awal_tahun = $thn_kondisi.'-01-01';
 
         $trx = Transaksi::where('rekening_debit', $kode_akun)->whereBetween('tgl_transaksi', [$awal_tahun, $tgl_kondisi])->sum('jumlah');
+
         return $trx;
     }
 
@@ -171,9 +178,10 @@ class Keuangan
     public function saldoK($tgl_kondisi, $kode_akun)
     {
         $thn_kondisi = explode('-', $tgl_kondisi)[0];
-        $awal_tahun = $thn_kondisi . '-01-01';
+        $awal_tahun = $thn_kondisi.'-01-01';
 
         $trx = Transaksi::where('rekening_kredit', $kode_akun)->whereBetween('tgl_transaksi', [$awal_tahun, $tgl_kondisi])->sum('jumlah');
+
         return $trx;
     }
 
@@ -303,9 +311,9 @@ class Keuangan
                 'kom_saldo' => function ($query) use ($thn) {
                     $query->where([
                         ['tahun', $thn + 1],
-                        ['bulan', '0']
+                        ['bulan', '0'],
                     ]);
-                }
+                },
             ])->get();
         } else {
             $rekening = Rekening::where(function ($query) use ($tgl_kondisi) {
@@ -317,7 +325,7 @@ class Keuangan
                     $query->where('tahun', $thn)->where(function ($query) use ($bln) {
                         $query->where('bulan', '0')->orwhere('bulan', $bln);
                     });
-                }
+                },
             ])->get();
         }
         foreach ($rekening as $rek) {
@@ -361,12 +369,12 @@ class Keuangan
         $saldo = Saldo::where([
             ['tahun', $thn_kondisi],
             ['bulan', '0'],
-            ['kode_akun', $kode_akun]
+            ['kode_akun', $kode_akun],
         ])->first();
 
         return [
             'debit' => floatval($saldo->debit ?? 0),
-            'kredit' => floatval($saldo->kredit ?? 0)
+            'kredit' => floatval($saldo->kredit ?? 0),
         ];
     }
 
@@ -378,19 +386,19 @@ class Keuangan
         if ($bln < '1') {
             return [
                 'debit' => '0',
-                'kredit' => '0'
+                'kredit' => '0',
             ];
         }
 
         $saldo = Saldo::where([
             ['tahun', $thn],
             ['bulan', $bln],
-            ['kode_akun', $kode_akun]
+            ['kode_akun', $kode_akun],
         ])->first();
 
         return [
             'debit' => floatval($saldo->debit),
-            'kredit' => floatval($saldo->kredit)
+            'kredit' => floatval($saldo->kredit),
         ];
     }
 
@@ -398,7 +406,7 @@ class Keuangan
     {
         $data = [
             'tahun' => explode('-', $tgl_kondisi)[0],
-            'bulan' => explode('-', $tgl_kondisi)[1]
+            'bulan' => explode('-', $tgl_kondisi)[1],
         ];
 
         $saldo = 0;
@@ -409,7 +417,7 @@ class Keuangan
                 $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
                     $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
                 });
-            }
+            },
         ])->get();
         foreach ($rekening as $rek) {
             $saldo += $this->komSaldo($rek);
@@ -422,7 +430,7 @@ class Keuangan
     {
         $data = [
             'tahun' => explode('-', $tgl_kondisi)[0],
-            'bulan' => explode('-', $tgl_kondisi)[1]
+            'bulan' => explode('-', $tgl_kondisi)[1],
         ];
 
         $saldo = 0;
@@ -433,7 +441,7 @@ class Keuangan
                 $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
                     $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
                 });
-            }
+            },
         ])->get();
         foreach ($rekening as $rek) {
             $saldo += $this->komSaldo($rek);
@@ -447,7 +455,7 @@ class Keuangan
         $pendapatan = $this->pendapatan($tgl_kondisi);
         $biaya = $this->biaya($tgl_kondisi);
 
-        return ($pendapatan - $biaya);
+        return $pendapatan - $biaya;
     }
 
     public function laba_rugi($tgl_kondisi)
@@ -457,7 +465,7 @@ class Keuangan
         $bulan = $array_tgl[1];
         $hari = $array_tgl[2];
         $surplus = Rekening::where([
-            ['lev1', '>=', '4']
+            ['lev1', '>=', '4'],
         ])->where(function ($query) use ($tgl_kondisi) {
             $query->whereNull('tgl_nonaktif')->orwhere('tgl_nonaktif', '>', $tgl_kondisi);
         })->with([
@@ -465,7 +473,7 @@ class Keuangan
                 $query->where('tahun', $tahun)->where(function ($query) use ($bulan) {
                     $query->where('bulan', '0')->orwhere('bulan', $bulan);
                 });
-            }
+            },
         ])->orderBy('kode_akun', 'ASC')->get();
 
         $pendapatan = 0;
@@ -526,31 +534,31 @@ class Keuangan
             ->where(function ($query) use ($data) {
                 $query->where([
                     ['status', 'A'],
-                    ['tgl_cair', '<=', $data['tgl_kondisi']]
+                    ['tgl_cair', '<=', $data['tgl_kondisi']],
                 ])->orwhere([
                     ['status', 'L'],
                     ['tgl_cair', '<=', $data['tgl_kondisi']],
-                    ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ['tgl_lunas', '>=', "$data[tahun]-01-01"],
                 ])->orwhere([
                     ['status', 'L'],
                     ['tgl_lunas', '<=', $data['tgl_kondisi']],
-                    ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ['tgl_lunas', '>=', "$data[tahun]-01-01"],
                 ])->orwhere([
                     ['status', 'R'],
                     ['tgl_cair', '<=', $data['tgl_kondisi']],
-                    ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ['tgl_lunas', '>=', "$data[tahun]-01-01"],
                 ])->orwhere([
                     ['status', 'R'],
                     ['tgl_lunas', '<=', $data['tgl_kondisi']],
-                    ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ['tgl_lunas', '>=', "$data[tahun]-01-01"],
                 ])->orwhere([
                     ['status', 'H'],
                     ['tgl_cair', '<=', $data['tgl_kondisi']],
-                    ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ['tgl_lunas', '>=', "$data[tahun]-01-01"],
                 ])->orwhere([
                     ['status', 'H'],
                     ['tgl_lunas', '<=', $data['tgl_kondisi']],
-                    ['tgl_lunas', '>=', "$data[tahun]-01-01"]
+                    ['tgl_lunas', '>=', "$data[tahun]-01-01"],
                 ]);
             })->with([
                 'saldo' => function ($query) use ($data) {
@@ -558,7 +566,7 @@ class Keuangan
                 },
                 'target' => function ($query) use ($data) {
                     $query->where('jatuh_tempo', '<=', $data['tgl_kondisi']);
-                }
+                },
             ])->get();
 
         foreach ($pinjaman_kelompok as $pinkel) {
@@ -666,7 +674,7 @@ class Keuangan
             'nunggak_jasa' => $sum_nunggak_jasa,
             'saldo_pokok' => $sum_saldo_pokok,
             'saldo_jasa' => $sum_saldo_jasa,
-            'sum_kolek' => ($kolek_1 + $kolek_2 + $kolek_3)
+            'sum_kolek' => ($kolek_1 + $kolek_2 + $kolek_3),
         ];
     }
 
@@ -674,7 +682,7 @@ class Keuangan
     {
         $data = [
             'tahun' => explode('-', $tgl_kondisi)[0],
-            'bulan' => explode('-', $tgl_kondisi)[1]
+            'bulan' => explode('-', $tgl_kondisi)[1],
         ];
 
         $aset_produktif = 0;
@@ -689,7 +697,7 @@ class Keuangan
                 $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
                     $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
                 });
-            }
+            },
         ])->get();
         foreach ($rekening as $rek) {
             $saldo = $this->komSaldo($rek);
@@ -705,7 +713,7 @@ class Keuangan
         return [
             'aset_ekonomi' => $aset_ekonomi,
             'aset_produktif' => $aset_produktif,
-            'cadangan_piutang' => $cadangan_piutang * -1
+            'cadangan_piutang' => $cadangan_piutang * -1,
         ];
     }
 
@@ -713,7 +721,7 @@ class Keuangan
     {
         $data = [
             'tahun' => explode('-', $tgl_kondisi)[0],
-            'bulan' => explode('-', $tgl_kondisi)[1]
+            'bulan' => explode('-', $tgl_kondisi)[1],
         ];
 
         $rekening = Rekening::where(function ($query) {
@@ -725,7 +733,7 @@ class Keuangan
                 $query->where('tahun', $data['tahun'])->where(function ($query) use ($data) {
                     $query->where('bulan', '0')->orwhere('bulan', $data['bulan']);
                 });
-            }
+            },
         ])->get();
 
         $modalawal = 0;
@@ -745,7 +753,7 @@ class Keuangan
         $angka = intval($angka);
         $result = '';
 
-        $lookup = array(
+        $lookup = [
             'M' => 1000,
             'CM' => 900,
             'D' => 500,
@@ -758,8 +766,8 @@ class Keuangan
             'IX' => 9,
             'V' => 5,
             'IV' => 4,
-            'I' => 1
-        );
+            'I' => 1,
+        ];
 
         foreach ($lookup as $roman => $value) {
             $matches = intval($angka / $value);
@@ -778,9 +786,9 @@ class Keuangan
         $tgl = $tanggal[2];
 
         if ($jenis == 'Tahunan') {
-            $tgl_awal = $thn . '-01-01';
+            $tgl_awal = $thn.'-01-01';
         } elseif ($jenis == 'Bulanan') {
-            $tgl_awal = $thn . '-' . $bln . '-01';
+            $tgl_awal = $thn.'-'.$bln.'-01';
         } else {
             $tgl_awal = $tgl_kondisi;
         }
@@ -794,10 +802,10 @@ class Keuangan
 
             $trx = Transaksi::where([
                 ['rekening_debit', 'like', "$debit"],
-                ['rekening_kredit', 'like', "$kredit"]
+                ['rekening_kredit', 'like', "$kredit"],
             ])->where([
                 ['tgl_transaksi', '>=', $tgl_awal],
-                ['tgl_transaksi', '<=', $tgl_kondisi]
+                ['tgl_transaksi', '<=', $tgl_kondisi],
             ])->sum('jumlah');
 
             $jumlah += $trx;
@@ -828,9 +836,9 @@ class Keuangan
             'saldo' => function ($query) use ($tahun) {
                 $query->where([
                     ['tahun', $tahun],
-                    ['bulan', '0']
+                    ['bulan', '0'],
                 ]);
-            }
+            },
         ])->first();
 
         $debit_bulan_ini = 0;
@@ -866,7 +874,7 @@ class Keuangan
 
         return [
             'bulan_lalu' => $saldo_bulan_lalu,
-            'bulan_ini' => $saldo_bulan_ini
+            'bulan_ini' => $saldo_bulan_ini,
         ];
     }
 
@@ -888,7 +896,7 @@ class Keuangan
                 if ($bulan == '1' && $hari == '1') {
                     $query->where([
                         ['tahun', $tahun],
-                        ['bulan', '0']
+                        ['bulan', '0'],
                     ]);
                 } else {
                     $query->where('tahun', $tahun)->where(function ($query) use ($bulan, $bulan_lalu) {
@@ -899,9 +907,9 @@ class Keuangan
             'rek.saldo' => function ($query) use ($tahun) {
                 $query->where([
                     ['tahun', $tahun],
-                    ['bulan', '0']
+                    ['bulan', '0'],
                 ]);
-            }
+            },
         ])->orderBy('kode_akun', 'ASC')->get();
 
         $pendapatan = [];
@@ -951,7 +959,7 @@ class Keuangan
                     'kode_akun' => $rek->kode_akun,
                     'nama_akun' => $rek->nama_akun,
                     'saldo' => $saldo_bulan_ini,
-                    'saldo_bln_lalu' => $saldo_bulan_lalu
+                    'saldo_bln_lalu' => $saldo_bulan_lalu,
                 ];
             }
 
@@ -960,7 +968,7 @@ class Keuangan
                 $pendapatan[$akn2->lev2] = [
                     'kode_akun' => $akn2->kode_akun,
                     'nama_akun' => $akn2->nama_akun,
-                    'rek'       => $data
+                    'rek' => $data,
                 ];
             }
 
@@ -969,7 +977,7 @@ class Keuangan
                 $beban[$akn2->lev2] = [
                     'kode_akun' => $akn2->kode_akun,
                     'nama_akun' => $akn2->nama_akun,
-                    'rek'       => $data
+                    'rek' => $data,
                 ];
             }
 
@@ -978,7 +986,7 @@ class Keuangan
                 $pendapatan_non_ops[$akn2->lev2] = [
                     'kode_akun' => $akn2->kode_akun,
                     'nama_akun' => $akn2->nama_akun,
-                    'rek'       => $data
+                    'rek' => $data,
                 ];
             }
 
@@ -987,7 +995,7 @@ class Keuangan
                 $beban_non_ops[$akn2->lev2] = [
                     'kode_akun' => $akn2->kode_akun,
                     'nama_akun' => $akn2->nama_akun,
-                    'rek'       => $data
+                    'rek' => $data,
                 ];
             }
         }
@@ -996,7 +1004,7 @@ class Keuangan
             'pendapatan' => $pendapatan,
             'beban' => $beban,
             'pendapatan_non_ops' => $pendapatan_non_ops,
-            'beban_non_ops' => $beban_non_ops
+            'beban_non_ops' => $beban_non_ops,
         ];
     }
 
@@ -1011,7 +1019,7 @@ class Keuangan
 
         return [
             'debit' => $saldo_debit,
-            'kredit' => $saldo_kredit
+            'kredit' => $saldo_kredit,
         ];
     }
 }
