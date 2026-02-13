@@ -1905,15 +1905,15 @@ class PinjamanKelompokController extends Controller
             ['jenis_dokumen', $jenis_dokumen],
         ])->with('tanda_tangan')->first();
 
+        $level = '4';
         $data['title'] = ($data['pinkel']->status == 'P') ? 'FORM VERIFIKASI' : 'DATA VERIFIKASI';
         if ($jenis_dokumen == 'dokumen_pencairan') {
+            $level = '5';
             $data['title'] = ' KEPUTUSAN PENDANAAN';
         }
 
-        $level = '4';
         $data['tanda_tangan'] = '';
         if ($dokumenPinjaman->tanda_tangan) {
-            $level = '5';
             $data['tanda_tangan'] = Pinjaman::keyword($dokumenPinjaman->tanda_tangan->tanda_tangan, $data);
         }
 
