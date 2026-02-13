@@ -414,7 +414,7 @@
     @csrf
 </form>
 
-<form action="/perguliran/dokumen?status=W&jenis=dokumen_pencairan" target="_blank" method="post"
+<form action="/perguliran/dokumen?status=W&jenis=dokumen_verifikasi" target="_blank" method="post"
     id="formCetakRekomTV">
     @csrf
 
