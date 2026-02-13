@@ -300,7 +300,7 @@
                                     sesuai dengan peraturan yang berlaku. Berdasarkan hasil Pendanaan dan rekomendasi yang
                                     telah
                                     dilakukan, kelompok tersebut dinyatakan <b>LAYAK/TIDAK LAYAK</b> untuk diberikan
-                                    pendanaan/piutang. Pernyataan ini digunakan sebagai dasar verifikasi pada SI DBM.
+                                    pendanaan/piutang. Pernyataan ini digunakan sebagai dasar pendanaan pada SI DBM.
                                 </div>
                             @endif
 
