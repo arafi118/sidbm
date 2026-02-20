@@ -300,7 +300,7 @@ class AuthController extends Controller
         ])->whereBetween('tgl_invoice', [$tgl_invoice, $tgl_pakai]);
 
         $pesan = '';
-        if ($invoice->count() <= 0 && (date('Y-m-d') <= date('Y-m-t', strtotime($tgl_pakai)) && date('Y-m-d') >= $tgl_invoice)) {
+        if ($invoice->count() <= 0 && date('Y-m-d') >= $tgl_invoice) {
 
             $tanggal = date('Y-m-d');
             $nomor_invoice = date('ymd', strtotime($tanggal));
