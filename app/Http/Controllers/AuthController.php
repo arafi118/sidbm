@@ -312,7 +312,7 @@ class AuthController extends Controller
                 'lokasi' => $kec->id,
                 'nomor' => $nomor_invoice,
                 'jenis_pembayaran' => 2,
-                'tgl_invoice' => date('Y-m-d'),
+                'tgl_invoice' => $tgl_pakai,
                 'tgl_lunas' => date('Y-m-d'),
                 'status' => 'UNPAID',
                 'jumlah' => $kec->biaya_tahunan,
