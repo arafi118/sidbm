@@ -79,6 +79,8 @@
                                             if (
                                                 $pinkel->status == 'L' ||
                                                 $pinkel->status == 'H' ||
+                                                $pinkel->status == 'T' ||
+                                                $pinkel->status == 'B' ||
                                                 $pinkel->status == 'R'
                                             ) {
                                                 $link = '/detail' . '/' . $pinkel->id;
