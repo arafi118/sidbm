@@ -29,14 +29,6 @@
                     'value' => $pa->anggota->alamat,
                 ],
                 [
-                    'label' => 'Jenis Kelamin',
-                    'value' => $pa->anggota->jk,
-                ],
-                [
-                    'label' => 'Lama Menjadi Anggota',
-                    'value' => '',
-                ],
-                [
                     'label' => 'Pekerjaan Pokok Suami',
                     'value' => '',
                 ],
@@ -52,10 +44,6 @@
                     'label' => 'Jenis Usaha yang Akan Didanai',
                     'value' => is_numeric($pa->anggota->usaha) ? $pa->anggota->u->nama_usaha : $pa->anggota->usaha,
                 ],
-                [
-                    'label' => 'Alokasi Lalu',
-                    'value' => '',
-                ],
             ];
             $informasi_dalam_kelompok = [
                 'Apakah anggota ini aktif dalam pertemuan kelompok',
@@ -70,9 +58,7 @@
             ];
             $pendapatan_pengeluaran = [
                 [
-                    'Pendapatan keluarga 1 (satu) bulan',
-                    'Pendapatan dan usaha suami',
-                    'Pendapatan dan usaha istri',
+                    'Pendapatan rutin keluarga (suami & istri) per bulan',
                     'Pendapatan dari hasil kebun, sawah, ladang',
                     'Pendapatan lain-lain',
                 ],
@@ -84,7 +70,6 @@
                     'Pengeluaran untuk sekolah',
                     'Pengeluaran untuk sosial',
                     'Pengeluaran listrik, telpon, dll',
-                    'Angsuran piutang di bank/koperasi/perorangan',
                     'Pengeluaran lain-lain',
                 ],
             ];
@@ -108,7 +93,7 @@
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size: 11px; table-layout: fixed;">
             <tbody>
                 <tr style="font-weight: bold;">
-                    <td width="3%" height="15" align="center">A.</td>
+                    <td width="3%" align="center">A.</td>
                     <td colspan="6">IDENTITAS PEMINJAM (ANGGOTA)</td>
                 </tr>
 
@@ -147,7 +132,7 @@
                 </tr>
 
                 <tr style="font-weight: bold;">
-                    <td class="t l b" align="center" height="15">B.</td>
+                    <td class="t l b" align="center">B.</td>
                     <td class="t b" colspan="4">INFORMASI DALAM KELOMPOK</td>
                     <td class="t l b" width="7%" align="center">YA</td>
                     <td class="t l b r" width="7%" align="center">TIDAK</td>
@@ -164,7 +149,7 @@
                 @endforeach
 
                 <tr style="font-weight: bold;">
-                    <td height="15" align="center">C.</td>
+                    <td align="center">C.</td>
                     <td colspan="6">INFORMASI PENDAPATAN & PENGELUARAN</td>
                 </tr>
 
@@ -206,7 +191,7 @@
                 @endforeach
 
                 <tr style="font-weight: bold;">
-                    <td height="15" align="center">D.</td>
+                    <td align="center">D.</td>
                     <td colspan="6">IDENTITAS JAMINAN</td>
                 </tr>
 
@@ -220,7 +205,7 @@
                     </tr>
                 @endforeach
 
-                <tr style="font-weight: bold;" class="break">
+                <tr style="font-weight: bold;">
                     <td>&nbsp;</td>
                     <td align="center" width="3%">&nbsp;</td>
                     <td align="center" colspan="2">Total Nilai Jaminan</td>
@@ -229,7 +214,7 @@
                 </tr>
 
                 <tr style="font-weight: bold;">
-                    <td height="15" align="center">E.</td>
+                    <td align="center">E.</td>
                     <td colspan="6">PENILAIAN</td>
                 </tr>
 
@@ -244,7 +229,7 @@
                 @endforeach
 
                 <tr style="font-weight: bold;">
-                    <td height="15" align="center">E.</td>
+                    <td align="center">E.</td>
                     <td colspan="6">KESIMPULAN</td>
                 </tr>
 
