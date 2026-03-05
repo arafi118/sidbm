@@ -468,6 +468,7 @@
         })
 
         if (lanjut) {
+            $('#Simpan').prop('disabled', true)
             var form = $('#FormInput')
             $.ajax({
                 type: 'POST',
@@ -478,9 +479,12 @@
                         Swal.fire('Berhasil', result.msg, 'success').then(() => {
                             window.location.href = '/detail/' + result.id
                         })
+
                     } else {
                         Swal.fire('Error', result.msg, 'error')
                     }
+
+                    $('#Simpan').prop('disabled', false)
                 },
                 error: function(result) {
                     const respons = result.responseJSON;
@@ -492,6 +496,8 @@
                                 'is-invalid')
                         $('#msg_' + key).html(res)
                     })
+
+                    $('#Simpan').prop('disabled', false)
                 }
             })
         }
