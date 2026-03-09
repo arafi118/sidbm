@@ -351,7 +351,6 @@ class PinjamanKelompokController extends Controller
 
             $validasi['ketua'] = 'required';
             $validasi['sekretaris'] = 'required';
-            $validasi['bendahara'] = 'required';
 
             $struktur_kelompok = [
                 'ketua' => $request->ketua,
@@ -678,7 +677,6 @@ class PinjamanKelompokController extends Controller
                 'sistem_angsuran_jasa_proposal' => 'required',
                 'ketua' => 'required',
                 'sekretaris' => 'required',
-                'bendahara' => 'required',
             ]);
 
             $data['jangka'] = $data['jangka_proposal'];
