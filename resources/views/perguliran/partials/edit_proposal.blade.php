@@ -4,9 +4,9 @@
     $bendahara = $perguliran->kelompok->bendahara;
     if ($perguliran->struktur_kelompok) {
         $struktur_kelompok = json_decode($perguliran->struktur_kelompok, true);
-        $ketua = $struktur_kelompok['ketua'];
-        $sekretaris = $struktur_kelompok['sekretaris'];
-        $bendahara = $struktur_kelompok['bendahara'];
+        $ketua = $struktur_kelompok['ketua'] ?? '';
+        $sekretaris = $struktur_kelompok['sekretaris'] ?? '';
+        $bendahara = $struktur_kelompok['bendahara'] ?? '';
     }
 @endphp
 
@@ -115,8 +115,16 @@
             <div class="text-center fw-bold">
                 Struktur Kelompok
             </div>
+
+            @php
+                $class = 'col-md-4';
+                if ($perguliran->jenis_pp == 3) {
+                    $class = 'col-md-6';
+                }
+            @endphp
+
             <div class="row">
-                <div class="col-md-4">
+                <div class="{{ $class }}">
                     <div class="input-group input-group-static my-3">
                         <label for="ketua">Ketua</label>
                         <input autocomplete="off" type="text" name="ketua" id="ketua" class="form-control"
@@ -124,7 +132,7 @@
                         <small class="text-danger" id="msg_ketua"></small>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="{{ $class }}">
                     <div class="input-group input-group-static my-3">
                         <label for="sekretaris">Sekretaris</label>
                         <input autocomplete="off" type="text" name="sekretaris" id="sekretaris"
@@ -132,14 +140,18 @@
                         <small class="text-danger" id="msg_sekretaris"></small>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="input-group input-group-static my-3">
-                        <label for="bendahara">Bendahara</label>
-                        <input autocomplete="off" type="text" name="bendahara" id="bendahara"
-                            class="form-control" value="{{ $bendahara }}">
-                        <small class="text-danger" id="msg_bendahara"></small>
+                @if ($perguliran->jenis_pp != 3)
+                    <div class="{{ $class }}">
+                        <div class="input-group input-group-static my-3">
+                            <label for="bendahara">Bendahara</label>
+                            <input autocomplete="off" type="text" name="bendahara" id="bendahara"
+                                class="form-control" value="{{ $bendahara }}">
+                            <small class="text-danger" id="msg_bendahara"></small>
+                        </div>
                     </div>
-                </div>
+                @else
+                    <input type="hidden" name="bendahara" id="bendahara" value="{{ $bendahara }}">
+                @endif
             </div>
         </div>
     </div>
