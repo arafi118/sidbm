@@ -324,8 +324,7 @@ Route::group(['middleware' => 'tenant'], function () {
     })->name('download');
 
     Route::get('/generate', [GenerateController::class, 'index']);
-    Route::post('/generate_v1/save/{offset?}', [GenerateController::class, '_generate']);
-    Route::post('/generate_v2/save/{offset?}', [GenerateController::class, 'generate']);
+    Route::post('/generate/save/{offset?}', [GenerateController::class, 'generate']);
 
     Route::get('/unpaid', [DashboardController::class, 'unpaid'])->middleware('auth');
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');

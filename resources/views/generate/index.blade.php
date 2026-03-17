@@ -71,7 +71,6 @@
 
 
                     <input type="hidden" name="pinjaman" id="pinjaman" value="kelompok">
-                    <input type="hidden" name="generate_version" id="generate_version" value="v1">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead class="bg-dark text-white">
@@ -125,11 +124,8 @@
 
                     <div class="sticky-bottom">
                         <div class="d-flex justify-content-end bg-white shadow-sm p-2 pt-3 pb-3 rounded">
-                            <button type="button" id="GenerateV1" class="btn btn-info btn-sm ms-2 mb-0">
-                                Generate V1
-                            </button>
-                            <button type="submit" id="GenerateV2" class="btn btn-info btn-sm ms-2 mb-0">
-                                Generate V2
+                            <button type="submit" id="Generate" class="btn btn-info btn-sm ms-2 mb-0">
+                                Generate
                             </button>
                         </div>
                     </div>
@@ -149,22 +145,6 @@
     <script>
         $.get('/generate/kelompok', function(result) {
             $('#StructurKelompok').html(result.view)
-        })
-
-        $(document).on('click', '#GenerateV1', function(e) {
-            e.preventDefault()
-
-            $('#GenerateForm').attr('action', '/generate_v1/save')
-            $('#generate_version').val('v1')
-            $('#GenerateForm').submit()
-        })
-
-        $(document).on('click', '#GenerateV2', function(e) {
-            e.preventDefault()
-
-            $('#GenerateForm').attr('action', '/generate_v2/save')
-            $('#generate_version').val('v2')
-            $('#GenerateForm').submit()
         })
     </script>
 
