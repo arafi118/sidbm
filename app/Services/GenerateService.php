@@ -111,7 +111,11 @@ class GenerateService
             }
 
             if (count($res['rencana']) > 0) RencanaAngsuran::insert($res['rencana']);
-            if (count($res['real']) > 0) RealAngsuran::insert($res['real']);
+
+            $real = collect($res['real'])->filter(function ($item) {
+                return isset($item['id']) && intval($item['id']) > 0;
+            })->values()->all();
+            if (count($real) > 0) RealAngsuran::insert($real);
         });
 
         return true;
@@ -180,7 +184,7 @@ class GenerateService
 
         ksort($data_rencana);
         foreach ($pinkel->trx as $trx) {
-            if (in_array($trx->idtp, $data_idtp)) continue;
+            if (intval($trx->idtp) <= 0 || in_array($trx->idtp, $data_idtp)) continue;
             
             $res = $this->getTrxAmounts($trx);
             $sum_p += $res['p']; $sum_j += $res['j'];
@@ -240,6 +244,7 @@ class GenerateService
 
         $penghapusan = []; $idx = 1;
         foreach ($pinkel->trx_penghapusan as $trx_h) {
+            if (intval($trx_h->idtp) <= 0) continue;
             $am = $this->getTrxAmounts($trx_h);
             $penghapusan[$idx++] = [
                 'tgl' => $trx_h->tgl_transaksi, 'p' => $am['p'], 'j' => $am['j'],
@@ -284,7 +289,7 @@ class GenerateService
 
         ksort($data_rencana);
         foreach ($pinkel->trx as $trx) {
-            if (in_array($trx->idtp, $data_idtp)) continue;
+            if (intval($trx->idtp) <= 0 || in_array($trx->idtp, $data_idtp)) continue;
             $am = $this->getTrxAmounts($trx);
             $sum_p += $am['p']; $sum_j += $am['j'];
             $saldo_p = $alokasi_p - $sum_p;
@@ -312,7 +317,7 @@ class GenerateService
         return [
             'loan_id' => $loan_id, 'angsuran_ke' => $ke, 'jatuh_tempo' => $tempo,
             'wajib_pokok' => $p, 'wajib_jasa' => $j, 'target_pokok' => $tp, 'target_jasa' => $tj,
-            'lu' => date('Y-m-d H:i:s'), 'id_user' => 1
+            'lu' => date('Y-m-d H:i:s'), 'id_user' => (auth()->user()->id ?? 1)
         ];
     }
 
@@ -322,7 +327,7 @@ class GenerateService
             'id' => $trx->idtp, 'loan_id' => $loan_id, 'tgl_transaksi' => $trx->tgl_transaksi,
             'realisasi_pokok' => $p, 'realisasi_jasa' => $j, 'sum_pokok' => $sp, 'sum_jasa' => $sj,
             'saldo_pokok' => $slp, 'saldo_jasa' => $slj, 'tunggakan_pokok' => $tp, 'tunggakan_jasa' => $tj,
-            'lu' => date('Y-m-d H:i:s'), 'id_user' => 1
+            'lu' => date('Y-m-d H:i:s'), 'id_user' => (auth()->user()->id ?? 1)
         ];
     }
 
