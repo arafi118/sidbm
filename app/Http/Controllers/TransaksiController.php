@@ -38,6 +38,7 @@ class TransaksiController extends Controller
     {
         $this->generateService = $generateService;
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -2307,7 +2308,9 @@ class TransaksiController extends Controller
     public function detailAngsuran($id)
     {
         $pinkel = PinjamanKelompok::where('id', $id)->with([
-            'real',
+            'real' => function ($query) {
+                $query->where('id', '!=', '0');
+            },
             'real.trx',
             'kelompok',
         ])->first();
@@ -2874,7 +2877,7 @@ class TransaksiController extends Controller
 
     public function regenerateReal($pinkel)
     {
-        if (!$pinkel) {
+        if (! $pinkel) {
             return response()->json([
                 'success' => false,
                 'msg' => 'Error',
@@ -2891,6 +2894,7 @@ class TransaksiController extends Controller
     public function realisasi($id_pinkel)
     {
         $pinkel = PinjamanKelompok::where('id', $id_pinkel)->first();
+
         return $this->regenerateReal($pinkel);
     }
 }
