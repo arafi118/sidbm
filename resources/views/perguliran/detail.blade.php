@@ -842,7 +842,7 @@
         </div>
     </div>
 
-    <form action="/generate_v2/save" method="post" target="_blank" id="FormSinkronisasi">
+    <form action="/generate/save" method="post" target="_blank" id="FormSinkronisasi">
         @csrf
 
         <input type="hidden" name="pinjaman" value="kelompok">
