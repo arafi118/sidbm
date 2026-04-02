@@ -13,7 +13,9 @@ use Session;
 class GenerateService
 {
     protected $kode_pokok = ['1.1.03.01', '1.1.03.02', '1.1.03.03'];
+
     protected $kode_jasa = ['1.1.03.04', '1.1.03.05', '1.1.03.06', '4.1.01.01', '4.1.01.02', '4.1.01.03'];
+
     protected $kode_denda = ['4.1.01.04', '4.1.01.05', '4.1.01.06'];
 
     public function generate(array $data, int $offset = 0)
@@ -56,6 +58,7 @@ class GenerateService
         foreach ($pinjaman as $pinkel) {
             if ($pinkel->status == 'H' || $pinkel->pinjaman) {
                 $data_pinjaman_H[] = $pinkel->id;
+
                 continue;
             }
 
@@ -66,18 +69,18 @@ class GenerateService
         return [
             'data_pinjaman' => array_merge($data_pinjaman, [$data_pinjaman_H]),
             'offset' => $offset + $limit,
-            'limit' => $limit
+            'limit' => $limit,
         ];
     }
 
     public function generateByLoan($pinkel, $kec = null)
     {
-        if (!$kec) {
+        if (! $kec) {
             $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         }
 
         // Ensure relationships are loaded
-        if (!$pinkel->relationLoaded('pinjaman_anggota')) {
+        if (! $pinkel->relationLoaded('pinjaman_anggota')) {
             $pinkel->load([
                 'pinjaman_anggota', 'sis_pokok', 'sis_jasa',
                 'trx' => function ($query) {
@@ -90,11 +93,11 @@ class GenerateService
                 'kelompok', 'kelompok.d',
                 'pinjaman' => function ($query) {
                     $query->where('status', 'H');
-                }
+                },
             ]);
         }
 
-        $sum_aloc_anggota = $pinkel->pinjaman_anggota->sum(fn($pa) => $this->getAlokasi($pa));
+        $sum_aloc_anggota = $pinkel->pinjaman_anggota->sum(fn ($pa) => $this->getAlokasi($pa));
         $aloc_kelompok = $this->getAlokasi($pinkel);
 
         if ($sum_aloc_anggota != $aloc_kelompok && count($pinkel->pinjaman_anggota) > 0) {
@@ -110,12 +113,16 @@ class GenerateService
                 RealAngsuran::whereIn('id', $res['id_real'])->delete();
             }
 
-            if (count($res['rencana']) > 0) RencanaAngsuran::insert($res['rencana']);
+            if (count($res['rencana']) > 0) {
+                RencanaAngsuran::insert($res['rencana']);
+            }
 
             $real = collect($res['real'])->filter(function ($item) {
                 return isset($item['id']) && intval($item['id']) > 0;
             })->values()->all();
-            if (count($real) > 0) RealAngsuran::insert($real);
+            if (count($real) > 0) {
+                RealAngsuran::insert($real);
+            }
         });
 
         return true;
@@ -125,6 +132,7 @@ class GenerateService
     {
         $res = $this->buildRencanaV1($pinkel, $kec);
         $res['real'] = $this->buildRealV1($pinkel, $res['data_rencana']);
+
         return $res;
     }
 
@@ -136,6 +144,7 @@ class GenerateService
             $res = $this->buildRencanaV2($pinkel, $kec);
         }
         $res['real'] = $this->buildRealV2($pinkel, $res['data_rencana']);
+
         return $res;
     }
 
@@ -158,12 +167,14 @@ class GenerateService
         $data_rencana[strtotime($tgl_cair)] = $this->fmtRencana($pinkel->id, 0, $tgl_cair, 0, 0, 0, 0);
         $rencana[] = $data_rencana[strtotime($tgl_cair)];
 
-        $target_p = 0; $target_j = 0;
+        $target_p = 0;
+        $target_j = 0;
         for ($i = 1; $i <= $jangka; $i++) {
             $jatuh_tempo = $this->jatuh_tempo($i, $pinkel->sistem_angsuran, $tgl_cair);
             $pokok = $ra_data['pokok'][$i] ?? 0;
             $jasa = $ra_data['jasa'][$i] ?? 0;
-            $target_p += $pokok; $target_j += $jasa;
+            $target_p += $pokok;
+            $target_j += $jasa;
 
             $data_rencana[strtotime($jatuh_tempo)] = $this->fmtRencana(
                 $pinkel->id, $i, $jatuh_tempo, $pokok, $jasa, $target_p, $target_j
@@ -177,18 +188,23 @@ class GenerateService
     protected function buildRealV1($pinkel, $data_rencana)
     {
         $real = [];
-        $sum_p = 0; $sum_j = 0;
+        $sum_p = 0;
+        $sum_j = 0;
         $alokasi_p = $this->getAlokasi($pinkel);
         $alokasi_j = (collect($data_rencana)->max('target_jasa') ?? 0);
         $data_idtp = [];
 
         ksort($data_rencana);
         foreach ($pinkel->trx as $trx) {
-            if (intval($trx->idtp) <= 0 || in_array($trx->idtp, $data_idtp)) continue;
-            
+            if (intval($trx->idtp) <= 0 || in_array($trx->idtp, $data_idtp)) {
+                continue;
+            }
+
             $res = $this->getTrxAmounts($trx);
-            $sum_p += $res['p']; $sum_j += $res['j'];
-            $alokasi_p -= $res['p']; $alokasi_j -= $res['j'];
+            $sum_p += $res['p'];
+            $sum_j += $res['j'];
+            $alokasi_p -= $res['p'];
+            $alokasi_j -= $res['j'];
 
             $target = ['p' => 0, 'j' => 0];
             foreach ($data_rencana as $key => $val) {
@@ -204,6 +220,7 @@ class GenerateService
             );
             $data_idtp[] = $trx->idtp;
         }
+
         return $real;
     }
 
@@ -220,35 +237,47 @@ class GenerateService
 
     protected function buildRencanaWithPenghapusan($pinkel, $anggota, $kec)
     {
-        $rencana = []; $data_rencana = []; $data_id_real = [];
+        $rencana = [];
+        $data_rencana = [];
+        $data_id_real = [];
         $detail = $this->detail_pinjaman($pinkel, $pinkel->kelompok->d, $kec->batas_angsuran);
         $tgl_cair = $detail['tgl_cair'];
         $jangka = $pinkel->jangka;
         $sis_p = $this->sistem($pinkel->sistem_angsuran, $jangka, $pinkel->sis_pokok->sistem ?? '1');
         $sis_j = $this->sistem($pinkel->sa_jasa, $jangka, $pinkel->sis_jasa->sistem ?? '1');
 
-        $rec_p = []; $rec_j = []; $alokasi_total = 0;
+        $rec_p = [];
+        $rec_j = [];
+        $alokasi_total = 0;
         if ($anggota) {
             foreach ($anggota as $pa) {
                 $dt = $this->detail_pinjaman($pa, $pinkel->kelompok->d, $kec->batas_angsuran);
                 $sch = $this->rencana_angsuran($pa, $sis_p, $sis_j, $dt['alokasi'], $kec->pembulatan);
-                foreach ($sch['pokok'] as $k => $v) $rec_p[$k] = ($rec_p[$k] ?? 0) + $v;
-                foreach ($sch['jasa'] as $k => $v) $rec_j[$k] = ($rec_j[$k] ?? 0) + $v;
+                foreach ($sch['pokok'] as $k => $v) {
+                    $rec_p[$k] = ($rec_p[$k] ?? 0) + $v;
+                }
+                foreach ($sch['jasa'] as $k => $v) {
+                    $rec_j[$k] = ($rec_j[$k] ?? 0) + $v;
+                }
                 $alokasi_total += $dt['alokasi'];
             }
         } else {
             $sch = $this->rencana_angsuran($pinkel, $sis_p, $sis_j, $detail['alokasi'], $kec->pembulatan);
-            $rec_p = $sch['pokok']; $rec_j = $sch['jasa'];
+            $rec_p = $sch['pokok'];
+            $rec_j = $sch['jasa'];
             $alokasi_total = $detail['alokasi'];
         }
 
-        $penghapusan = []; $idx = 1;
+        $penghapusan = [];
+        $idx = 1;
         foreach ($pinkel->trx_penghapusan as $trx_h) {
-            if (intval($trx_h->idtp) <= 0) continue;
+            if (intval($trx_h->idtp) <= 0) {
+                continue;
+            }
             $am = $this->getTrxAmounts($trx_h);
             $penghapusan[$idx++] = [
                 'tgl' => $trx_h->tgl_transaksi, 'p' => $am['p'], 'j' => $am['j'],
-                'alloc_p' => 0, 'alloc_j' => 0, 'idtp' => $trx_h->idtp
+                'alloc_p' => 0, 'alloc_j' => 0, 'idtp' => $trx_h->idtp,
             ];
             $data_id_real[] = $trx_h->idtp;
         }
@@ -256,24 +285,28 @@ class GenerateService
         $data_rencana[strtotime($tgl_cair)] = $this->fmtRencana($pinkel->id, 0, $tgl_cair, 0, 0, 0, 0);
         $rencana[] = $data_rencana[strtotime($tgl_cair)];
 
-        $target_p = 0; $target_j = 0;
+        $target_p = 0;
+        $target_j = 0;
         $total_jasa = $alokasi_total * ($pinkel->pros_jasa / 100);
 
         for ($i = 1; $i <= $jangka; $i++) {
             $tempo = $this->jatuh_tempo($i, $pinkel->sistem_angsuran, $tgl_cair);
-            $cur_p = $rec_p[$i] ?? 0; $cur_j = $rec_j[$i] ?? 0;
+            $cur_p = $rec_p[$i] ?? 0;
+            $cur_j = $rec_j[$i] ?? 0;
 
             foreach ($penghapusan as $k => $h) {
                 if (strtotime($tempo) >= strtotime($h['tgl']) && $h['alloc_p'] == 0) {
                     $data_rencana[strtotime($h['tgl'])] = $this->fmtRencana($pinkel->id, $i, $h['tgl'], $h['p'], $h['j'], $target_p + $h['p'], $target_j + $h['j']);
                     $rencana[] = $data_rencana[strtotime($h['tgl'])];
-                    $target_p += $h['p']; $target_j += $h['j'];
+                    $target_p += $h['p'];
+                    $target_j += $h['j'];
                     $penghapusan[$k]['alloc_p'] = $alokasi_total - $target_p;
                     $penghapusan[$k]['alloc_j'] = $total_jasa - $target_j;
                 }
             }
 
-            $target_p += $cur_p; $target_j += $cur_j;
+            $target_p += $cur_p;
+            $target_j += $cur_j;
             $data_rencana[strtotime($tempo)] = $this->fmtRencana($pinkel->id, $i, $tempo, $cur_p, $cur_j, $target_p, $target_j);
             $rencana[] = $data_rencana[strtotime($tempo)];
         }
@@ -283,15 +316,21 @@ class GenerateService
 
     protected function buildRealV2($pinkel, $data_rencana)
     {
-        $real = []; $sum_p = 0; $sum_j = 0; $data_idtp = [];
+        $real = [];
+        $sum_p = 0;
+        $sum_j = 0;
+        $data_idtp = [];
         $alokasi_p = $this->getAlokasi($pinkel);
         $alokasi_j = $alokasi_p * ($pinkel->pros_jasa / 100);
 
         ksort($data_rencana);
         foreach ($pinkel->trx as $trx) {
-            if (intval($trx->idtp) <= 0 || in_array($trx->idtp, $data_idtp)) continue;
+            if (intval($trx->idtp) <= 0 || in_array($trx->idtp, $data_idtp)) {
+                continue;
+            }
             $am = $this->getTrxAmounts($trx);
-            $sum_p += $am['p']; $sum_j += $am['j'];
+            $sum_p += $am['p'];
+            $sum_j += $am['j'];
             $saldo_p = $alokasi_p - $sum_p;
             $saldo_j = ($pinkel->jenis_jasa == '2') ? ($saldo_p * ($pinkel->pros_jasa / 100) - $am['j']) : ($alokasi_j - $sum_j);
 
@@ -309,6 +348,7 @@ class GenerateService
             );
             $data_idtp[] = $trx->idtp;
         }
+
         return $real;
     }
 
@@ -317,7 +357,7 @@ class GenerateService
         return [
             'loan_id' => $loan_id, 'angsuran_ke' => $ke, 'jatuh_tempo' => $tempo,
             'wajib_pokok' => $p, 'wajib_jasa' => $j, 'target_pokok' => $tp, 'target_jasa' => $tj,
-            'lu' => date('Y-m-d H:i:s'), 'id_user' => (auth()->user()->id ?? 1)
+            'lu' => date('Y-m-d H:i:s'), 'id_user' => (auth()->user()->id ?? 1),
         ];
     }
 
@@ -327,24 +367,35 @@ class GenerateService
             'id' => $trx->idtp, 'loan_id' => $loan_id, 'tgl_transaksi' => $trx->tgl_transaksi,
             'realisasi_pokok' => $p, 'realisasi_jasa' => $j, 'sum_pokok' => $sp, 'sum_jasa' => $sj,
             'saldo_pokok' => $slp, 'saldo_jasa' => $slj, 'tunggakan_pokok' => $tp, 'tunggakan_jasa' => $tj,
-            'lu' => date('Y-m-d H:i:s'), 'id_user' => (auth()->user()->id ?? 1)
+            'lu' => date('Y-m-d H:i:s'), 'id_user' => (auth()->user()->id ?? 1),
         ];
     }
 
     protected function getTrxAmounts($trx)
     {
-        $p = 0; $j = 0;
+        $p = 0;
+        $j = 0;
         foreach ($trx->tr_idtp as $idtp) {
-            if (in_array($idtp->rekening_kredit, $this->kode_pokok)) $p += floatval($idtp->jumlah);
-            if (in_array($idtp->rekening_kredit, $this->kode_jasa)) $j += floatval($idtp->jumlah);
+            if (in_array($idtp->rekening_kredit, $this->kode_pokok)) {
+                $p += floatval($idtp->jumlah);
+            }
+            if (in_array($idtp->rekening_kredit, $this->kode_jasa)) {
+                $j += floatval($idtp->jumlah);
+            }
         }
+
         return ['p' => $p, 'j' => $j];
     }
 
     protected function getAlokasi($pinjaman)
     {
-        if ($pinjaman->status == 'P') return $pinjaman->proposal;
-        if ($pinjaman->status == 'V') return $pinjaman->verifikasi;
+        if ($pinjaman->status == 'P') {
+            return $pinjaman->proposal;
+        }
+        if ($pinjaman->status == 'V') {
+            return $pinjaman->verifikasi;
+        }
+
         return $pinjaman->alokasi;
     }
 
@@ -359,18 +410,23 @@ class GenerateService
             if (is_array($val)) {
                 $opt = $val['operator'];
                 $value = $val['value'];
-                if (!$value) continue;
+                if (! $value) {
+                    continue;
+                }
                 if ($opt == 'IN') {
                     $whereIn[$key] = explode(',', $value);
+
                     continue;
                 }
                 if ($opt == 'NOT IN') {
                     $whereNotIn[$key] = explode(',', $value);
+
                     continue;
                 }
             }
             $where[] = [$key, $opt, $value];
         }
+
         return ['where' => $where, 'whereIn' => $whereIn, 'whereNotIn' => $whereNotIn];
     }
 
@@ -384,6 +440,7 @@ class GenerateService
             $tempo = floor($jangka_pinjaman / $sistem);
             $mulai_angsuran = 0;
         }
+
         return ['tempo' => $tempo, 'sistem' => $sistem, 'mulai_angsuran' => $mulai_angsuran];
     }
 
@@ -398,7 +455,7 @@ class GenerateService
         }
 
         if ($desa->jadwal_angsuran_desa > 0) {
-            $tgl_cair = date('Y-m', strtotime($tgl_cair)) . '-' . $desa->jadwal_angsuran_desa;
+            $tgl_cair = date('Y-m', strtotime($tgl_cair)).'-'.$desa->jadwal_angsuran_desa;
         }
 
         if ($batas_angsuran > 0 && date('d', strtotime($tgl_cair)) >= $batas_angsuran) {
@@ -436,21 +493,25 @@ class GenerateService
                     $jasa = Keuangan::pembulatan($alokasi_jasa / $ang_jasa['tempo'], $pembulatan);
                 }
             }
-            if ($pinkel->jenis_jasa == '2') $temp_alokasi -= $pokok;
+            if ($pinkel->jenis_jasa == '2') {
+                $temp_alokasi -= $pokok;
+            }
             $rencana['jasa'][$j] = $jasa;
         }
+
         return $rencana;
     }
 
     protected function jatuh_tempo($index, $sa_pokok, $tanggal)
     {
-        $penambahan = ($sa_pokok == 12) ? "+" . ($index * 7) . " days" : "+$index month";
+        $penambahan = ($sa_pokok == 12) ? '+'.($index * 7).' days' : "+$index month";
         $base = date('Y-m', strtotime($tanggal));
         $target = date('Y-m', strtotime($penambahan, strtotime($base)));
         $day = date('d', strtotime($tanggal));
         if ($day > date('t', strtotime($target))) {
             return date('Y-m-t', strtotime($target));
         }
-        return $target . '-' . $day;
+
+        return $target.'-'.$day;
     }
 }
