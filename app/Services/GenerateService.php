@@ -75,6 +75,35 @@ class GenerateService
 
     public function generateByLoan($pinkel, $kec = null)
     {
+        $res = $this->preview($pinkel, $kec);
+
+        DB::transaction(function () use ($pinkel, $res) {
+            RencanaAngsuran::where('loan_id', $pinkel->id)->delete();
+            RealAngsuran::where('loan_id', $pinkel->id)->delete();
+            if (count($res['id_real'] ?? []) > 0) {
+                RealAngsuran::whereIn('id', $res['id_real'])->delete();
+            }
+
+            if (count($res['rencana'] ?? []) > 0) {
+                RencanaAngsuran::insert($res['rencana']);
+            }
+
+            $real = collect($res['real'] ?? [])->filter(function ($item) {
+                return isset($item['id']) && intval($item['id']) > 0;
+            })->values()->all();
+            if (count($real) > 0) {
+                RealAngsuran::insert($real);
+            }
+        });
+
+        return true;
+    }
+
+    /**
+     * Preview the schedule without saving to DB
+     */
+    public function preview($pinkel, $kec = null)
+    {
         if (! $kec) {
             $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         }
@@ -106,26 +135,7 @@ class GenerateService
             $res = $this->processV2($pinkel, $kec);
         }
 
-        DB::transaction(function () use ($pinkel, $res) {
-            RencanaAngsuran::where('loan_id', $pinkel->id)->delete();
-            RealAngsuran::where('loan_id', $pinkel->id)->delete();
-            if (count($res['id_real']) > 0) {
-                RealAngsuran::whereIn('id', $res['id_real'])->delete();
-            }
-
-            if (count($res['rencana']) > 0) {
-                RencanaAngsuran::insert($res['rencana']);
-            }
-
-            $real = collect($res['real'])->filter(function ($item) {
-                return isset($item['id']) && intval($item['id']) > 0;
-            })->values()->all();
-            if (count($real) > 0) {
-                RealAngsuran::insert($real);
-            }
-        });
-
-        return true;
+        return $res;
     }
 
     protected function processV1($pinkel, $kec)
@@ -162,6 +172,7 @@ class GenerateService
         $ang_p = $this->sistem($pinkel->sistem_angsuran, $jangka, $sis_p);
         $ang_j = $this->sistem($pinkel->sa_jasa, $jangka, $sis_j);
 
+        // ALWAYS calculate based on total alokasi to ensure correct group-level rounding
         $ra_data = $this->rencana_angsuran($pinkel, $ang_p, $ang_j, $alokasi, $kec->pembulatan);
 
         $data_rencana[strtotime($tgl_cair)] = $this->fmtRencana($pinkel->id, 0, $tgl_cair, 0, 0, 0, 0);
@@ -252,21 +263,16 @@ class GenerateService
         if ($anggota) {
             foreach ($anggota as $pa) {
                 $dt = $this->detail_pinjaman($pa, $pinkel->kelompok->d, $kec->batas_angsuran);
-                $sch = $this->rencana_angsuran($pa, $sis_p, $sis_j, $dt['alokasi'], $kec->pembulatan);
-                foreach ($sch['pokok'] as $k => $v) {
-                    $rec_p[$k] = ($rec_p[$k] ?? 0) + $v;
-                }
-                foreach ($sch['jasa'] as $k => $v) {
-                    $rec_j[$k] = ($rec_j[$k] ?? 0) + $v;
-                }
                 $alokasi_total += $dt['alokasi'];
             }
         } else {
-            $sch = $this->rencana_angsuran($pinkel, $sis_p, $sis_j, $detail['alokasi'], $kec->pembulatan);
-            $rec_p = $sch['pokok'];
-            $rec_j = $sch['jasa'];
             $alokasi_total = $detail['alokasi'];
         }
+
+        // Generate schedule ONCE for the total sum to ensure correct group rounding
+        $sch = $this->rencana_angsuran($pinkel, $sis_p, $sis_j, $alokasi_total, $kec->pembulatan);
+        $rec_p = $sch['pokok'];
+        $rec_j = $sch['jasa'];
 
         $penghapusan = [];
         $idx = 1;
@@ -467,11 +473,6 @@ class GenerateService
 
     protected function rencana_angsuran($pinkel, $ang_pokok, $ang_jasa, $alokasi, $pembulatan = '500')
     {
-        \Log::info('RENCANA_ANGSURAN_CALLED', [
-            'alokasi' => $alokasi,
-            'pembulatan' => $pembulatan,
-            'tempo_p' => $ang_pokok['tempo'],
-        ]);
         $rencana = ['pokok' => [], 'jasa' => []];
         $alokasi_pokok = $alokasi;
         $temp_alokasi = $alokasi;
