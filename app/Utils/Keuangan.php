@@ -16,15 +16,13 @@ class Keuangan
     public static function bulatkan($angka)
     {
         $angka = round($angka);
-        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
-        $pembulatan = intval($kec->pembulatan);
-        
-        if ($pembulatan <= 0) return $angka;
 
-        $ratusan = $angka % 1000;
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
+        $pembulatan = number_format($kec->pembulatan, 0, '', '');
+        $ratusan = substr($angka, -3);
         $nilai_tengah = $pembulatan / 2;
 
-        if ($ratusan <= $nilai_tengah) {
+        if ($ratusan < $nilai_tengah) {
             $akhir = $angka - $ratusan;
         } else {
             $akhir = $angka + ($pembulatan - $ratusan);
@@ -45,29 +43,33 @@ class Keuangan
         $sistem = 'auto';
         if (self::startWith($pembulatan, '+')) {
             $sistem = 'keatas';
-            $pembulatan = intval(substr($pembulatan, 1));
-        } elseif (self::startWith($pembulatan, '-')) {
-            $sistem = 'kebawah';
-            $pembulatan = intval(substr($pembulatan, 1));
-        } else {
             $pembulatan = intval($pembulatan);
         }
 
-        if ($pembulatan <= 0) return $angka;
+        if (self::startWith($pembulatan, '-')) {
+            $sistem = 'kebawah';
+            $pembulatan = intval($pembulatan * -1);
+        }
 
-        $sisa = $angka % 1000;
-        if ($sisa == 0) return $angka;
+        $ratusan = substr($angka, -strlen($pembulatan / 2));
+        $nilai_tengah = $pembulatan / 2;
 
         $akhir = $angka;
-        if ($sistem == 'keatas') {
-            $akhir = ($angka - $sisa) + $pembulatan;
-        } elseif ($sistem == 'kebawah') {
-            $akhir = $angka - $sisa;
-        } elseif ($sistem == 'auto') {
-            if ($sisa <= ($pembulatan / 2)) {
-                $akhir = $angka - $sisa;
-            } else {
-                $akhir = ($angka - $sisa) + $pembulatan;
+        if ($ratusan > 0) {
+            if ($sistem == 'keatas') {
+                $akhir = $angka + ($pembulatan - $ratusan);
+            }
+
+            if ($sistem == 'kebawah') {
+                $akhir = $angka - $ratusan;
+            }
+
+            if ($sistem == 'auto') {
+                if ($ratusan <= $nilai_tengah) {
+                    $akhir = $angka - $ratusan;
+                } else {
+                    $akhir = $angka + ($pembulatan - $ratusan);
+                }
             }
         }
 
