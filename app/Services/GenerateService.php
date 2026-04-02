@@ -471,14 +471,16 @@ class GenerateService
         $alokasi_pokok = $alokasi;
         $temp_alokasi = $alokasi;
 
+        $pokok_dibulatkan = Keuangan::pembulatan($alokasi_pokok / $ang_pokok['tempo'], $pembulatan);
+
         for ($j = 1; $j <= $pinkel->jangka; $j++) {
             $pokok = 0;
             if ($j % $ang_pokok['sistem'] == 0) {
                 $ke = $j / $ang_pokok['sistem'];
                 if ($ke == $ang_pokok['tempo']) {
-                    $pokok = $alokasi_pokok - (Keuangan::pembulatan($alokasi_pokok / $ang_pokok['tempo'], $pembulatan) * ($ang_pokok['tempo'] - 1));
+                    $pokok = $alokasi_pokok - ($pokok_dibulatkan * ($ang_pokok['tempo'] - 1));
                 } elseif ($ke > $ang_pokok['mulai_angsuran'] && $ke < $ang_pokok['tempo']) {
-                    $pokok = Keuangan::pembulatan($alokasi_pokok / $ang_pokok['tempo'], $pembulatan);
+                    $pokok = $pokok_dibulatkan;
                 }
             }
             $rencana['pokok'][$j] = $pokok;
@@ -487,12 +489,19 @@ class GenerateService
             if ($j % $ang_jasa['sistem'] == 0) {
                 $ke = $j / $ang_jasa['sistem'];
                 $alokasi_jasa = $temp_alokasi * ($pinkel->pros_jasa / 100);
-                if ($ke == $ang_jasa['tempo']) {
-                    $jasa = $alokasi_jasa - (Keuangan::pembulatan($alokasi_jasa / $ang_jasa['tempo'], $pembulatan) * ($ang_jasa['tempo'] - 1));
-                } elseif ($ke > $ang_jasa['mulai_angsuran'] && $ke < $ang_jasa['tempo']) {
-                    $jasa = Keuangan::pembulatan($alokasi_jasa / $ang_jasa['tempo'], $pembulatan);
+                $jasa_dibulatkan = Keuangan::pembulatan($alokasi_jasa / $ang_jasa['tempo'], $pembulatan);
+
+                if ($pinkel->jenis_jasa == '2') {
+                    $jasa = $jasa_dibulatkan;
+                } else {
+                    if ($ke == $ang_jasa['tempo']) {
+                        $jasa = $alokasi_jasa - ($jasa_dibulatkan * ($ang_jasa['tempo'] - 1));
+                    } elseif ($ke > $ang_jasa['mulai_angsuran'] && $ke < $ang_jasa['tempo']) {
+                        $jasa = $jasa_dibulatkan;
+                    }
                 }
             }
+
             if ($pinkel->jenis_jasa == '2') {
                 $temp_alokasi -= $pokok;
             }
