@@ -467,6 +467,11 @@ class GenerateService
 
     protected function rencana_angsuran($pinkel, $ang_pokok, $ang_jasa, $alokasi, $pembulatan = '500')
     {
+        \Log::info('RENCANA_ANGSURAN_CALLED', [
+            'alokasi' => $alokasi,
+            'pembulatan' => $pembulatan,
+            'tempo_p' => $ang_pokok['tempo'],
+        ]);
         $rencana = ['pokok' => [], 'jasa' => []];
         $alokasi_pokok = $alokasi;
         $temp_alokasi = $alokasi;
