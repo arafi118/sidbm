@@ -295,6 +295,21 @@ class GenerateService
         $target_j = 0;
         $total_jasa = $alokasi_total * ($pinkel->pros_jasa / 100);
 
+        $rencana_anggota = [];
+        if ($anggota) {
+            foreach ($anggota as $pa) {
+                $sch_pa = $this->rencana_angsuran($pinkel, $sis_p, $sis_j, $this->getAlokasi($pa), $kec->pembulatan);
+                $target_pa_p = array_sum($sch_pa['pokok']);
+                $target_pa_j = array_sum($sch_pa['jasa']);
+
+                $rencana_anggota['id'.$pa->id] = [
+                    'pokok' => $sch_pa['pokok'],
+                    'jasa' => $sch_pa['jasa'],
+                    'jumlah_angsuran' => ($target_pa_p + $target_pa_j) / $pa->jangka
+                ];
+            }
+        }
+
         for ($i = 1; $i <= $jangka; $i++) {
             $tempo = $this->jatuh_tempo($i, $pinkel->sistem_angsuran, $tgl_cair);
             $cur_p = $rec_p[$i] ?? 0;
@@ -317,7 +332,12 @@ class GenerateService
             $rencana[] = $data_rencana[strtotime($tempo)];
         }
 
-        return ['rencana' => $rencana, 'data_rencana' => $data_rencana, 'id_real' => $data_id_real];
+        return [
+            'rencana' => $rencana,
+            'data_rencana' => $data_rencana,
+            'id_real' => $data_id_real,
+            'rencana_anggota' => $rencana_anggota
+        ];
     }
 
     protected function buildRealV2($pinkel, $data_rencana)

@@ -888,7 +888,6 @@ class PinjamanKelompokController extends Controller
                 'jenis_jasa' => $data['jenis_jasa'],
                 'sistem_angsuran' => $data['sistem_angsuran_pokok'],
                 'sa_jasa' => $data['sistem_angsuran_jasa'],
-                'tgl_cair' => Tanggal::tglNasional($data['tgl_cair']),
                 'spk_no' => $data['nomor_spk'],
                 'status' => $data['status'],
             ];
@@ -2039,7 +2038,8 @@ class PinjamanKelompokController extends Controller
                 ['angsuran_ke', '!=', '0'],
             ])->orderBy('jatuh_tempo', 'ASC')->get();
         } else {
-            $data['rencana'] = $this->generate($id)->getData()->rencana;
+            $generate = $this->generate($id)->getData();
+            $data['rencana'] = $generate->rencana ?? $generate->rencana_angsuran ?? [];
         }
 
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
@@ -2884,36 +2884,12 @@ class PinjamanKelompokController extends Controller
         $generateService = new \App\Services\GenerateService();
         $res = $generateService->preview($pinkel);
 
-        $rencana_anggota = [];
-        foreach ($pinkel->pinjaman_anggota as $pa) {
-            $pa_res = $generateService->preview($pa);
-
-            $pokok = [];
-            $jasa = [];
-            $target_p = 0;
-            $target_j = 0;
-            foreach ($pa_res['rencana'] as $ra) {
-                if ($ra['angsuran_ke'] > 0) {
-                    $pokok[$ra['angsuran_ke']] = $ra['wajib_pokok'];
-                    $jasa[$ra['angsuran_ke']] = $ra['wajib_jasa'];
-                    $target_p = $ra['target_pokok'];
-                    $target_j = $ra['target_jasa'];
-                }
-            }
-
-            $rencana_anggota['id'.$pa->id] = [
-                'pokok' => $pokok,
-                'jasa' => $jasa,
-                'jumlah_angsuran' => ($target_p + $target_j) / $pa->jangka,
-            ];
-        }
-
         return response()->json([
             'success' => true,
             'msg' => 'Rencana angsuran berhasil di generate',
             'rencana' => $res['rencana'],
             'rencana_angsuran' => $res['rencana'],
-            'rencana_angsuran_anggota' => $rencana_anggota,
+            'rencana_angsuran_anggota' => $res['rencana_anggota'] ?? [],
         ], Response::HTTP_ACCEPTED);
     }
 
