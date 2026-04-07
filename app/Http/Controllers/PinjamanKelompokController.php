@@ -26,6 +26,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Services\GenerateService;
 use PDF;
 use Session;
 use Yajra\DataTables\DataTables;
@@ -966,7 +967,8 @@ class PinjamanKelompokController extends Controller
         $pinkel = PinjamanKelompok::where('id', $perguliran->id)->update($update);
 
         if ($request->status == 'W' || $request->status == 'A') {
-            $this->generate($perguliran->id);
+            $pinkelFresh = PinjamanKelompok::where('id', $perguliran->id)->firstOrFail();
+            (new GenerateService())->generateByLoan($pinkelFresh);
         }
 
         if ($perguliran->status == 'P') {
@@ -1116,7 +1118,8 @@ class PinjamanKelompokController extends Controller
         PinjamanKelompok::where('id', $id)->update($updatePinjamanKelompok);
         PinjamanAnggota::where('id_pinkel', $id)->update($updatePinjamanAnggota);
 
-        $this->generate($id);
+        $pinkelFresh = PinjamanKelompok::where('id', $id)->firstOrFail();
+        (new GenerateService())->generateByLoan($pinkelFresh);
 
         $data['success'] = true;
         $data['msg'] = 'Piutang Kelompok '.$pinkel->kelompok->nama_kelompok.' Berhasil Diperbarui';
@@ -1143,7 +1146,8 @@ class PinjamanKelompokController extends Controller
         PinjamanKelompok::where('id', $id->id)->update($update);
         PinjamanAnggota::where('id_pinkel', $id->id)->update($update);
 
-        $this->generate($id->id);
+        $pinkelFresh = PinjamanKelompok::where('id', $id->id)->firstOrFail();
+        (new GenerateService())->generateByLoan($pinkelFresh);
 
         return response()->json([
             'success' => true,
@@ -2432,14 +2436,28 @@ class PinjamanKelompokController extends Controller
     {
         $data['nia'] = $nia;
         $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
+        $kode_denda = ['4.1.01.04', '4.1.01.05', '4.1.01.06'];
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'kelompok',
+            'kelompok.d',
             'jpp',
             'sis_pokok',
+            'sis_jasa',
             'real',
             'real.transaksi',
             'pinjaman_anggota',
             'pinjaman_anggota.anggota',
+            'trx' => function ($query) use ($kode_denda) {
+                $query->where('idtp', '!=', '0')->whereNotIn('rekening_kredit', $kode_denda);
+            },
+            'trx.tr_idtp' => function ($query) use ($kode_denda) {
+                $query->whereNotIn('rekening_kredit', $kode_denda);
+            },
+            'trx_penghapusan',
+            'trx_penghapusan.tr_idtp',
+            'pinjaman' => function ($query) {
+                $query->where('status', 'H');
+            },
         ])->withCount('real')->first();
 
         $data['generate'] = $this->generate($id, $data['pinkel'])->getData();
@@ -2477,15 +2495,28 @@ class PinjamanKelompokController extends Controller
         $data['idtp'] = $idtp;
         $data['nia'] = $nia;
         $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
+        $kode_denda = ['4.1.01.04', '4.1.01.05', '4.1.01.06'];
         $data['pinkel'] = PinjamanKelompok::where('id', $id)->with([
             'kelompok',
+            'kelompok.d',
             'jpp',
             'sis_pokok',
+            'sis_jasa',
             'real',
-            'real.transaksi',
             'real.transaksi',
             'pinjaman_anggota',
             'pinjaman_anggota.anggota',
+            'trx' => function ($query) use ($kode_denda) {
+                $query->where('idtp', '!=', '0')->whereNotIn('rekening_kredit', $kode_denda);
+            },
+            'trx.tr_idtp' => function ($query) use ($kode_denda) {
+                $query->whereNotIn('rekening_kredit', $kode_denda);
+            },
+            'trx_penghapusan',
+            'trx_penghapusan.tr_idtp',
+            'pinjaman' => function ($query) {
+                $query->where('status', 'H');
+            },
         ])->withCount('real')->first();
 
         $data['generate'] = $this->generate($id, $data['pinkel'])->getData();

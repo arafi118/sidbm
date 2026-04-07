@@ -108,8 +108,8 @@ class GenerateService
             $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
         }
 
-        // Ensure relationships are loaded
-        if (! $pinkel->relationLoaded('pinjaman_anggota')) {
+        // Ensure all required relationships are loaded
+        if (! $pinkel->relationLoaded('trx')) {
             $pinkel->load([
                 'pinjaman_anggota', 'sis_pokok', 'sis_jasa',
                 'trx' => function ($query) {
