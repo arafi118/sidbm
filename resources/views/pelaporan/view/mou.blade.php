@@ -524,8 +524,8 @@
                 <td align="center">Pihak Kedua,</td>
             </tr>
             <tr>
-                <td align="center" valign="bottom" height="60">
-                    <img src="{{ public_path('assets/img/ttd/ttd-santoso.jpeg') }}" height="60">
+                <td align="center" valign="bottom" height="60" style="position: relative;">
+                    <img style="position: absolute; top: -32px; left: 28px;" src="{{ public_path('assets/img/ttd.png') }}" width="220" alt="">
                 </td>
                 <td align="center" valign="bottom" height="60">
                     &nbsp;

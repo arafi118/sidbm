@@ -109,8 +109,9 @@ class DashboardController extends Controller
         $data['api'] = env('APP_API', 'http://localhost:3000');
         $data['api_key'] = env('APP_API_KEY');
 
-        $data['wa_device_id'] = $kec->wa_session->device_id ?? null;
-        $data['wa_device_key'] = $kec->wa_session->device_key ?? null;
+        $wa = \App\Models\Whatsapp::where('lokasi', Session::get('lokasi'))->first();
+        $data['wa_device_id'] = $wa->device_id ?? null;
+        $data['wa_device_key'] = $wa->device_key ?? null;
 
         $data['title'] = 'Dashboard';
 

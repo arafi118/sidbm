@@ -895,12 +895,16 @@
             });
 
             const DEVICE_ID = '{{ $wa_device_id }}'
-            const DEVICE_KEY = '{{ $wa_device_key }}'
+            console.log('Sending message via Gateway:', {
+                device_id: DEVICE_ID,
+                url: '{{ $api }}/api/send/personalized'
+            });
+
             $.ajax({
                 type: 'POST',
                 url: '{{ $api }}/api/send/personalized',
                 headers: {
-                    'x-api-key': DEVICE_KEY
+                    'x-api-key': '{{ $api_key }}'
                 },
                 contentType: 'application/json',
                 data: JSON.stringify({
