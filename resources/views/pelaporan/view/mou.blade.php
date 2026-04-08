@@ -524,7 +524,12 @@
                 <td align="center">Pihak Kedua,</td>
             </tr>
             <tr>
-                <td colspan="2" height="40">&nbsp;</td>
+                <td align="center" valign="bottom" height="60">
+                    <img src="{{ public_path('assets/img/ttd/ttd-santoso.jpeg') }}" height="60">
+                </td>
+                <td align="center" valign="bottom" height="60">
+                    &nbsp;
+                </td>
             </tr>
             <tr>
                 <td align="center">
@@ -542,7 +547,16 @@
                 <td colspan="2" align="center">Saksi:</td>
             </tr>
             <tr>
-                <td colspan="2" height="40">&nbsp;</td>
+                <td align="center" valign="bottom" height="60">
+                    @if (isset($saksi_mou[0]) && strpos(strtoupper($saksi_mou[0]), 'MAULIDA') !== false)
+                        <img src="{{ public_path('assets/img/ttd/ttd-maulida.jpeg') }}" height="60">
+                    @else
+                        &nbsp;
+                    @endif
+                </td>
+                <td align="center" valign="bottom" height="60">
+                    &nbsp;
+                </td>
             </tr>
             <tr>
                 <td align="center">

@@ -22,7 +22,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('wa_session')->first();
         if (Session::get('pesan')) {
             // $this->piutang();
             $this->sync(Session::get('lokasi'));
@@ -106,7 +106,12 @@ class DashboardController extends Controller
         $data['charts'] = json_encode($this->_saldo($tgl));
         $data['jumlah_saldo'] = Saldo::where('kode_akun', 'NOT LIKE', $kec->kd_kec.'%')->count();
 
-        $data['api'] = env('APP_API', 'http://localhost:8080');
+        $data['api'] = env('APP_API', 'http://localhost:3000');
+        $data['api_key'] = env('APP_API_KEY');
+
+        $data['wa_device_id'] = $kec->wa_session->device_id ?? null;
+        $data['wa_device_key'] = $kec->wa_session->device_key ?? null;
+
         $data['title'] = 'Dashboard';
 
         return view('dashboard.index')->with($data);

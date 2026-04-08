@@ -1,5 +1,11 @@
 @php
     $pesan_wa = json_decode($kec->whatsapp, true);
+    if (!$pesan_wa) {
+        $pesan_wa = [
+            'tagihan' => '',
+            'angsuran' => ''
+        ];
+    }
 @endphp
 
 <form action="/pengaturan/pesan_whatsapp/{{ $kec->id }}" method="post" id="FormScanWhatsapp">
@@ -23,14 +29,12 @@
 </form>
 
 <div class="d-flex justify-content-end">
-    @if (in_array('personalisasi_sop.scan_whatsapp', Session::get('tombol')))
-        <button type="button" id="HapusWa" class="btn btn-sm btn-danger mb-0 me-2">
-            Hapus Whatsapp
-        </button>
-        <button type="button" id="ScanWA" class="btn btn-sm btn-info mb-0 me-2">
-            Scan Whatsapp
-        </button>
-    @endif
+    <button type="button" id="HapusWa" class="btn btn-sm btn-danger mb-0 me-2" style="display: none;">
+        Hapus Whatsapp
+    </button>
+    <button type="button" id="ScanWA" class="btn btn-sm btn-info mb-0 me-2" style="display: none;">
+        Scan Whatsapp
+    </button>
 
     <button type="button" id="SimpanWhatsapp" data-target="#FormScanWhatsapp"
         class="btn btn-sm btn-github mb-0 btn-simpan">

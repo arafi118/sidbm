@@ -41,4 +41,9 @@ class Kecamatan extends Model
     {
         return $this->hasMany(Personalia::class, 'lokasi', 'id');
     }
+
+    public function wa_session()
+    {
+        return $this->hasOne(Whatsapp::class, 'lokasi');
+    }
 }

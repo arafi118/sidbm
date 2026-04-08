@@ -12,6 +12,7 @@ use App\Models\Rekening;
 use App\Models\RencanaAngsuran;
 use App\Models\TandaTanganLaporan;
 use App\Models\User;
+use App\Models\Whatsapp;
 use App\Utils\Keuangan;
 use App\Utils\Pinjaman;
 use App\Utils\Tanggal;
@@ -19,24 +20,28 @@ use Cookie;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use PDF;
-use Session;
 use Yajra\DataTables\DataTables;
 
 class SopController extends Controller
 {
     public function index()
     {
-        $api = env('APP_API', 'http://localhost:8080');
+        $api = env('APP_API', 'http://localhost:3000');
+        $api_key = env('APP_API_KEY');
 
-        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('ttd', 'personalia')->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('ttd', 'personalia', 'wa_session')->first();
         $token = $kec->token;
+
+        $device_id = $kec->wa_session->device_id ?? null;
+        $device_key = $kec->wa_session->device_key ?? null;
 
         $title = 'Personalisasi SOP';
 
-        return view('sop.index')->with(compact('title', 'kec', 'api', 'token'));
+        return view('sop.index')->with(compact('title', 'kec', 'api', 'token', 'api_key', 'device_id', 'device_key'));
     }
 
     public function coa()
@@ -578,11 +583,11 @@ class SopController extends Controller
         $data['kec'] = Kecamatan::where('id', Session::get('lokasi'))->with('kabupaten')->first();
         $data['jenis_pp'] = JenisProdukPinjaman::where(function ($query) {
             $query->where('lokasi', '0')
-                ->where('kecuali', 'NOT LIKE', '%#' . session('lokasi') . '#%');
+                ->where('kecuali', 'NOT LIKE', '%#'.session('lokasi').'#%');
         })
             ->orWhere(function ($query) {
                 $query->where('lokasi', session('lokasi'))
-                    ->where('kecuali', 'NOT LIKE', '%#' . session('lokasi') . '#%');
+                    ->where('kecuali', 'NOT LIKE', '%#'.session('lokasi').'#%');
             })
             ->get();
         $data['rencana'] = RencanaAngsuran::select($tb_ra.'.*', $tb_pinj.'.jenis_pp')->join($tb_pinj, $tb_pinj.'.id', '=', $tb_ra.'.loan_id')
@@ -885,5 +890,50 @@ class SopController extends Controller
             'success' => true,
             'msg' => 'Pengaturan Halaman berhasil disimpan',
         ])->cookie($cookie);
+    }
+
+    public function save_whatsapp_session(Request $request)
+    {
+        $id = Session::get('lokasi');
+        $device_id = $request->device_id;
+        $device_key = $request->device_key;
+
+        \Log::info('Saving WA Session: ', [
+            'lokasi' => $id,
+            'device_id' => $device_id,
+            'device_key' => $device_key,
+        ]);
+
+        if (! $id) {
+            return response()->json(['success' => false, 'msg' => 'Lokasi session tidak ditemukan']);
+        }
+
+        try {
+            $kec = Kecamatan::where('id', $id)->first();
+            Whatsapp::updateOrCreate(
+                ['lokasi' => $id],
+                [
+                    'nama' => $kec->nama_lembaga_sort ?? 'BUMDESMA',
+                    'token' => $kec->token ?? '',
+                    'device_id' => $device_id,
+                    'device_key' => $device_key,
+                    'status' => 'connected',
+                ]
+            );
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            \Log::error('DB Error saving WA session: '.$e->getMessage());
+
+            return response()->json(['success' => false, 'msg' => $e->getMessage()], 500);
+        }
+    }
+
+    public function delete_whatsapp_session(Request $request)
+    {
+        $id = Session::get('lokasi');
+        Whatsapp::where('lokasi', $id)->delete();
+
+        return response()->json(['success' => true]);
     }
 }

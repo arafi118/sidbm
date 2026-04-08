@@ -156,6 +156,8 @@ Route::group(['middleware' => 'tenant'], function () {
     Route::put('/pengaturan/tanggung_renteng/{kec}', [SopController::class, 'tanggungRenteng'])->middleware('auth');
     Route::get('/pengaturan/local_view/{key}/{val?}', [SopController::class, 'localView'])->middleware('auth');
 
+    Route::post('/pengaturan/whatsapp/save_device', [SopController::class, 'save_whatsapp_session'])->middleware('auth');
+    Route::post('/pengaturan/whatsapp/delete_session', [SopController::class, 'delete_whatsapp_session'])->middleware('auth');
     Route::post('/pengaturan/whatsapp/{token}', [SopController::class, 'whatsapp'])->middleware('auth');
 
     Route::get('/pengaturan/invoice', [SopController::class, 'invoice'])->middleware('auth');

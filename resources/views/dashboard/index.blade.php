@@ -894,16 +894,25 @@
                 })
             });
 
+            const DEVICE_ID = '{{ $wa_device_id }}'
+            const DEVICE_KEY = '{{ $wa_device_key }}'
             $.ajax({
                 type: 'POST',
-                url: '{{ $api }}/api/message/{{ $kec->token }}/send_messages',
+                url: '{{ $api }}/api/send/personalized',
+                headers: {
+                    'x-api-key': DEVICE_KEY
+                },
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    messages
+                    device_id: DEVICE_ID,
+                    messages: messages.map(m => ({
+                        to: m.number,
+                        message: m.message
+                    }))
                 }),
                 success: function(result) {
                     if (result.success) {
-                        Swal.fire('Berhasil', 'Pesan Berhasil Dikirim', 'success')
+                        Swal.fire('Berhasil', 'Pesan Berhasil Masuk Antrean', 'success')
                     }
                 }
             })
@@ -974,23 +983,23 @@
     @if (Session::get('invoice'))
         <script>
             function msgInvoice(number, msg, repeat = 0) {
+                const DEVICE_ID = '{{ $wa_device_id }}'
+                const DEVICE_KEY = '{{ $wa_device_key }}'
                 $.ajax({
-                    type: 'post',
-                    url: '{{ $api }}/send-text',
+                    type: 'POST',
+                    url: '{{ $api }}/api/send/text',
                     timeout: 0,
                     headers: {
-                        "Content-Type": "application/json"
-                    },
-                    xhrFields: {
-                        withCredentials: true
+                        "Content-Type": "application/json",
+                        "x-api-key": DEVICE_KEY
                     },
                     data: JSON.stringify({
-                        token: "DBM-0001",
-                        number: number,
-                        text: msg
+                        device_id: DEVICE_ID,
+                        to: number,
+                        message: msg
                     }),
                     success: function(result) {
-                        if (!result.status) {
+                        if (!result.success) {
                             setTimeout(function() {
                                 msgInvoice(number, msg, repeat + 1)
                             }, 1000)

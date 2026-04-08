@@ -65,7 +65,7 @@ class TransaksiController extends Controller
             ['kode_akun', 'LIKE', '1.1.01.%'],
             ['lev4', '!=', '02'],
         ])->orderBy('kode_akun')->get();
-        $kec = Kecamatan::where('id', Session::get('lokasi'))->first();
+        $kec = Kecamatan::where('id', Session::get('lokasi'))->with('wa_session')->first();
         if (request()->get('pinkel')) {
             $pinkel = PinjamanKelompok::where('id', request()->get('pinkel'))->with('kelompok');
             $pinkel = $pinkel->first();
@@ -73,9 +73,13 @@ class TransaksiController extends Controller
             $pinkel = '0';
         }
 
-        $api = env('APP_API', 'http://localhost:8080');
+        $api = env('APP_API', 'http://localhost:3000');
+        $api_key = env('APP_API_KEY');
 
-        return view('transaksi.jurnal_angsuran.index')->with(compact('title', 'rekening', 'pinkel', 'kec', 'api'));
+        $wa_device_id = $kec->wa_session->device_id ?? null;
+        $wa_device_key = $kec->wa_session->device_key ?? null;
+
+        return view('transaksi.jurnal_angsuran.index')->with(compact('title', 'rekening', 'pinkel', 'kec', 'api', 'api_key', 'wa_device_id', 'wa_device_key'));
     }
 
     public function ebudgeting()
