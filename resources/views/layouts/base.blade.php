@@ -585,18 +585,23 @@
             });
 
             waSocket.on('message_sent', (res) => {
-                // Jangan munculkan jika sudah berada di halaman pengaturan WhatsApp agar tidak dobel
-                if (window.location.pathname.indexOf('/pengaturan/whatsapp') === -1) {
-                    Toastr('success', `WA: Pesan terkirim ke ${res.recipient}`);
+                if (res.device_id === deviceId) {
+                    if (window.location.pathname.indexOf('/pengaturan/whatsapp') === -1) {
+                        Toastr('success', `WA: Pesan terkirim ke ${res.recipient}`);
+                    }
                 }
             });
 
             waSocket.on('message_failed', (res) => {
-                Toastr('error', `WA: Gagal ke ${res.recipient}: ${res.error}`);
+                if (res.device_id === deviceId) {
+                    Toastr('error', `WA: Gagal ke ${res.recipient}: ${res.error}`);
+                }
             });
 
             waSocket.on('ready', (res) => {
-                MultiToast('success', `WhatsApp Aktif (${res.phone_number})`);
+                if (window.location.pathname.indexOf('/pengaturan/whatsapp') !== -1) {
+                    MultiToast('success', `WhatsApp Aktif (${res.phone_number})`);
+                }
             });
 
             waSocket.on('status', (res) => {
