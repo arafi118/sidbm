@@ -97,10 +97,12 @@
             $keyId = 'id' . $pinj->id;
             $rencana_angsuran_raw = $generate->rencana_angsuran;
             // Filter: buang baris ke-0 (tanggal pencairan), hanya ambil angsuran ke-1+
-            $rencana_angsuran = array_values(array_filter(
-                is_array($rencana_angsuran_raw) ? $rencana_angsuran_raw : (array) $rencana_angsuran_raw,
-                fn($r) => (is_array($r) ? ($r['angsuran_ke'] ?? 0) : ($r->angsuran_ke ?? 0)) > 0
-            ));
+            $rencana_angsuran = array_values(
+                array_filter(
+                    is_array($rencana_angsuran_raw) ? $rencana_angsuran_raw : (array) $rencana_angsuran_raw,
+                    fn($r) => (is_array($r) ? $r['angsuran_ke'] ?? 0 : $r->angsuran_ke ?? 0) > 0,
+                ),
+            );
             $rencana_angsuran_anggota = $generate->rencana_angsuran_anggota->$keyId ?? null;
 
             if (!$rencana_angsuran_anggota) {
@@ -190,7 +192,7 @@
                     <td align="center">:</td>
 
                     <td style="display: inline-block;">
-                        {{ number_format($rencana_angsuran_anggota->jumlah_angsuran) }} /
+                        {{ number_format($rencana_pokok + $rencana_jasa) }} /
                         {{ $pinkel->sis_pokok->nama_sistem }}
                     </td>
                     <td colspan="3">
