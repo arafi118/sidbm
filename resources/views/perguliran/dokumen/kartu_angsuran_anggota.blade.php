@@ -192,7 +192,11 @@
                     <td align="center">:</td>
 
                     <td style="display: inline-block;">
-                        {{ number_format($rencana_pokok + $rencana_jasa) }} /
+                        @php
+                            $ke1 = $rencana_angsuran[0]->angsuran_ke ?? 1;
+                            $angsuran = ($rencana_pokok->$ke1 ?? 0) + ($rencana_jasa->$ke1 ?? 0);
+                        @endphp
+                        {{ number_format($angsuran) }} /
                         {{ $pinkel->sis_pokok->nama_sistem }}
                     </td>
                     <td colspan="3">
