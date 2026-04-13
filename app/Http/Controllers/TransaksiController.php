@@ -1896,6 +1896,14 @@ class TransaksiController extends Controller
         $sisa_pokok = $pinkel->alokasi - $real->sum_pokok;
         $sisa_jasa = $alokasi_jasa - $real->sum_jasa;
 
+        if ($saldo_pokok > $sisa_pokok) {
+            $saldo_pokok = $sisa_pokok;
+        }
+
+        if ($saldo_jasa > $sisa_jasa) {
+            $saldo_jasa = $sisa_jasa;
+        }
+
         $sum_pokok = $real->sum_pokok;
         $sum_jasa = $real->sum_jasa;
 
@@ -1980,6 +1988,18 @@ class TransaksiController extends Controller
 
         $saldo_pokok = ($target_pokok - $real->sum_pokok > 0) ? $target_pokok - $real->sum_pokok : 0;
         $saldo_jasa = ($target_jasa - $real->sum_jasa > 0) ? $target_jasa - $real->sum_jasa : 0;
+
+        $alokasi_jasa = $pinkel->alokasi * ($pinkel->pros_jasa / 100);
+        $sisa_pokok = $pinkel->alokasi - $real->sum_pokok;
+        $sisa_jasa = $alokasi_jasa - $real->sum_jasa;
+
+        if ($saldo_pokok > $sisa_pokok) {
+            $saldo_pokok = $sisa_pokok;
+        }
+
+        if ($saldo_jasa > $sisa_jasa) {
+            $saldo_jasa = $sisa_jasa;
+        }
 
         return response()->json([
             'saldo_pokok' => $saldo_pokok,
