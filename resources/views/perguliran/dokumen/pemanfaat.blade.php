@@ -136,17 +136,21 @@
                             <td colspan="3" height="10">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td align="center" width="33%">Ketua</td>
-                            <td align="center" width="33%">Sekretaris</td>
-                            <td align="center" width="33%">Bendahara</td>
+                            <td align="center" width="{{ $pinkel->jenis_pp != '3' ? '33%' : '50%' }}">{{ $pinkel->jenis_pp != '3' ? 'Ketua' : 'Pimpinan' }}</td>
+                            <td align="center" width="{{ $pinkel->jenis_pp != '3' ? '33%' : '50%' }}">{{ $pinkel->jenis_pp != '3' ? 'Sekretaris' : 'Penanggung Jawab' }}</td>
+                            @if ($pinkel->jenis_pp != '3')
+                                <td align="center" width="33%">Bendahara</td>
+                            @endif
                         </tr>
                         <tr>
-                            <td align="center" colspan="3" height="30">&nbsp;</td>
+                            <td align="center" colspan="{{ $pinkel->jenis_pp != '3' ? '3' : '2' }}" height="30">&nbsp;</td>
                         </tr>
                         <tr style="font-weight: bold;">
                             <td align="center">{{ $ketua }}</td>
                             <td align="center">{{ $sekretaris }}</td>
-                            <td align="center">{{ $bendahara }}</td>
+                            @if ($pinkel->jenis_pp != '3')
+                                <td align="center">{{ $bendahara }}</td>
+                            @endif
                         </tr>
                     </table>
                 @endif
