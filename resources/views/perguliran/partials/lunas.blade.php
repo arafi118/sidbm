@@ -9,8 +9,8 @@
 
 @section('content')
     @php
-        $saldo_pokok = $ra->target_pokok - $real->sum_pokok;
-        $saldo_jasa = $ra->target_jasa - $real->sum_jasa;
+        $saldo_pokok = $real->saldo_pokok;
+        $saldo_jasa = $real->saldo_jasa;
 
         $keterangan1 = 'Belum Lunas';
         $keterangan2 = 'Belum Lunas';
@@ -81,14 +81,14 @@
                 <tbody>
                     <tr>
                         <td>Pokok</td>
-                        <td>{{ number_format($ra->target_pokok) }}</td>
+                        <td>{{ number_format($real->sum_pokok + $real->saldo_pokok) }}</td>
                         <td>{{ number_format($real->sum_pokok) }}</td>
                         <td>{{ number_format($saldo_pokok) }}</td>
                         <td>{{ $keterangan1 }}</td>
                     </tr>
                     <tr>
                         <td>Jasa</td>
-                        <td>{{ number_format($ra->target_jasa) }}</td>
+                        <td>{{ number_format($real->sum_jasa + $real->saldo_jasa) }}</td>
                         <td>{{ number_format($real->sum_jasa) }}</td>
                         <td>{{ number_format($saldo_jasa) }}</td>
                         <td>{{ $keterangan2 }}</td>
