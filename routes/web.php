@@ -168,6 +168,8 @@ Route::group(['middleware' => 'tenant'], function () {
     Route::get('/pengaturan/proyeksi_pendapatan_jasa', [SopController::class, 'RencanaPendapatanJasa'])->middleware('auth');
     Route::post('/pengaturan/proyeksi_pendapatan_jasa', [SopController::class, 'PreviewPendapatanJasa'])->middleware('auth');
 
+    Route::get('/pengaturan/panduan_transaksi', [\App\Http\Controllers\PanduanController::class, 'index'])->middleware('auth');
+
     Route::get('/pengaturan/tanda_tangan', [TandaTanganController::class, 'index'])->middleware('auth');
     Route::post('/pengaturan/simpan_tanda_tangan', [TandaTanganController::class, 'store'])->middleware('auth');
 

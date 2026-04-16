@@ -26,6 +26,17 @@
             <hr class="horizontal light mt-0">
 
             @include('layouts.menu', ['parent_menu' => Session::get('menu')])
+
+            <hr class="horizontal light mt-0">
+            <li class="nav-item nav-item-link">
+                <a class="nav-link text-white {{ Request::path() == 'pengaturan/panduan_transaksi' ? 'active' : '' }}"
+                    href="/pengaturan/panduan_transaksi">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">description</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Panduan Transaksi</span>
+                </a>
+            </li>
         </ul>
     </div>
 </aside>
