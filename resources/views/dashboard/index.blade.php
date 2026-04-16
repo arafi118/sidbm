@@ -20,9 +20,10 @@
             </div>
         @endif
         <div class="col-12">
-            <div class="alert alert-info text-light">
-                Download panduan tutup buku SI DBM
-                <a href="/download/tutup-buku-si-dbm.pdf" class="alert-link" target="_blank">disini</a>.
+            <div class="alert alert-primary text-white" role="alert">
+                <strong>Pahami Panduan Transaksi SI DBM</strong> untuk meminimalisir kesalahan input jurnal. Klik 
+                <a href="/pengaturan/panduan_transaksi" class="alert-link text-white text-decoration-underline">disini</a> 
+                untuk melihat panduan lengkap 17 jenis transaksi.
             </div>
         </div>
         <div class="col-sm-4">
