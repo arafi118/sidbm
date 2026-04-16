@@ -45,7 +45,7 @@
     <div class="row mb-5">
         {{-- Navigation Sidebar --}}
         <div class="col-lg-3">
-            <div class="card position-sticky top-10" style="z-index: 1050; max-height: calc(100vh - 120px); overflow-y: auto; overflow-x: hidden;">
+            <div class="card position-sticky top-10 sticky-sidebar-card">
                 <ul class="nav flex-column flex-nowrap bg-white border-radius-lg p-3" id="GuideSidebar">
                     <li class="nav-item mb-2">
                         <b>Daftar Panduan</b>
@@ -273,14 +273,33 @@
             scroll-margin-top: 120px;
         }
         
-        #GuideSidebar {
-            position: relative;
-            height: calc(100vh - 150px);
-            overflow: hidden !important;
-        }
-
         .ps__scrollbar-y-rail {
             z-index: 1060 !important;
+        }
+
+        /* Disable sticky on mobile */
+        @media (max-width: 991.98px) {
+            .sticky-sidebar-card {
+                position: relative !important;
+                top: 0 !important;
+                max-height: none !important;
+                overflow: visible !important;
+                margin-bottom: 2rem;
+            }
+            #GuideSidebar {
+                height: auto !important;
+                overflow: visible !important;
+            }
+        }
+
+        /* Desktop Sticky & Scroll */
+        @media (min-width: 992px) {
+            .sticky-sidebar-card {
+                max-height: calc(100vh - 120px);
+                overflow-y: auto;
+                overflow-x: hidden;
+                z-index: 100; /* Lower than main navbar */
+            }
         }
     </style>
 @endsection
