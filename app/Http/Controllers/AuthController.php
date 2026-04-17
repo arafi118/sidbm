@@ -50,6 +50,7 @@ class AuthController extends Controller
         ];
 
         Session::put('login', true);
+        /*
         if ($invoice) {
             $tgl_pakai = $kec->tgl_registrasi;
             $tgl_aktif = date('Y').'-'.date('m-d', strtotime($tgl_pakai));
@@ -60,6 +61,7 @@ class AuthController extends Controller
                 Session::put('login', false);
             }
         }
+        */
 
         $app = AppUpdate::latest()->first();
 
@@ -84,9 +86,11 @@ class AuthController extends Controller
             ]);
         }
 
+        /*
         if (! Session::get('login')) {
             return redirect()->back()->with('error', 'Invoice belum terbayar');
         }
+        */
 
         $kec = Kecamatan::where('web_kec', $url)->orwhere('web_alternatif', $url)->with('kabupaten')->first();
         $lokasi = $kec->id;
@@ -117,7 +121,10 @@ class AuthController extends Controller
         if ($user) {
             if ($password === $user->pass) {
                 if (Auth::loginUsingId($user->id)) {
+                    // Remove dashboard (ID 1) from restricted list so it is always accessible
                     $hak_akses = explode(',', $user->akses_menu);
+                    $hak_akses = array_diff($hak_akses, ['1']);
+
                     $menu = Menu::where(function ($query) use ($hak_akses) {
                         $query->where('parent_id', '0')->whereNotIn('id', $hak_akses);
                     });
@@ -180,6 +187,7 @@ class AuthController extends Controller
                     ]);
 
                     $redirect = '/dashboard';
+                    /*
                     if (in_array('1', $hak_akses)) {
                         $menu_redirect = Menu::where([
                             ['parent_id', '0'],
@@ -187,6 +195,7 @@ class AuthController extends Controller
                         ])->whereNotIn('id', $hak_akses)->where('link', 'LIKE', '/%')->orderBy('sort', 'ASC')->orderBy('id', 'ASC')->first();
                         $redirect = $menu_redirect->link;
                     }
+                    */
 
                     return redirect($redirect)->with([
                         'pesan' => 'Selamat Datang '.$user->namadepan.' '.$user->namabelakang,
