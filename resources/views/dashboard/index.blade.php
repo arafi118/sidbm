@@ -19,13 +19,15 @@
                 </div>
             </div>
         @endif
-        <div class="col-12">
-            <div class="alert alert-primary text-white" role="alert">
-                <strong>Pahami Panduan Transaksi SI DBM</strong> untuk meminimalisir kesalahan input jurnal. Klik 
-                <a href="/pengaturan/panduan_transaksi" class="alert-link text-white text-decoration-underline">disini</a> 
-                untuk melihat panduan lengkap 17 jenis transaksi.
+        @if (Session::get('lokasi') != '1')
+            <div class="col-12">
+                <div class="alert alert-primary text-white" role="alert">
+                    <strong>Pahami Panduan Transaksi SI DBM</strong> untuk meminimalisir kesalahan input jurnal. Klik
+                    <a href="/pengaturan/panduan_transaksi" class="alert-link text-white text-decoration-underline">disini</a>
+                    untuk melihat panduan lengkap 17 jenis transaksi.
+                </div>
             </div>
-        </div>
+        @endif
         <div class="col-sm-4">
             <div class="card">
                 <div class="card-body p-3 position-relative pointer" id="btnAktif">

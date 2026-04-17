@@ -50,8 +50,9 @@
             <thead>
                 <tr style="background: rgb(230, 230, 230); font-weight: bold;">
                     <th class="t l b" width="5%" height="20">No</th>
-                    <th class="t l b" width="25%">Nama Anggota</th>
-                    <th class="t l b" width="30%">Alamat</th>
+                    <th class="t l b" width="20%">Nama Anggota</th>
+                    <th class="t l b" width="25%">Alamat</th>
+                    <th class="t l b" width="10%">Tanggal Tunggu</th>
                     <th class="t l b" width="10%">Pengajuan</th>
                     <th class="t l b" width="10%">Pinjaman Lalu</th>
                     <th class="t l b" width="10%">Verifikasi</th>
@@ -91,7 +92,7 @@
                         @endif
 
                         <tr style="font-weight: bold;">
-                            <td class="t l b r" colspan="7" align="left" height="15">
+                            <td class="t l b r" colspan="8" align="left" height="15">
                                 {{ $pinkel->kode_desa }}. {{ $pinkel->nama_desa }}
                             </td>
                         </tr>
@@ -109,7 +110,7 @@
 
                     <tr>
                         <td class="t l b" align="center">{{ $nomor++ }}</td>
-                        <td class="t l b r" align="left" colspan="6">
+                        <td class="t l b r" align="left" colspan="7">
                             {{ $jenis_pinjaman }} {{ $pinkel->nama_kelompok }} - {{ $pinkel->id }}
                         </td>
                     </tr>
@@ -148,6 +149,7 @@
                                 {{ $pinjaman_anggota->anggota->d->nama_desa }}
                                 {{ $pinjaman_anggota->anggota->alamat }}
                             </td>
+                            <td class="t l b" align="center">{{ Tanggal::tglIndo($pinkel->tgl_tunggu) }}</td>
                             <td class="t l b" align="right">{{ number_format($pinjaman_anggota->proposal, 2) }}</td>
                             <td class="t l b" align="right">{{ number_format($pinjaman_lalu, 2) }}</td>
                             <td class="t l b" align="right">{{ number_format($pinjaman_anggota->verifikasi, 2) }}</td>
@@ -169,7 +171,7 @@
 
                     <tr>
                         <td class="t l b">&nbsp;</td>
-                        <td class="t l b" align="left" colspan="2" height="15">
+                        <td class="t l b" align="left" colspan="3" height="15">
                             Jumlah {{ $jenis_pinjaman }} {{ $pinkel->nama_kelompok }} - {{ $pinkel->id }}
                         </td>
                         <td class="t l b" align="right">
@@ -193,7 +195,7 @@
                         $t_pengajuan_lalu += $j_pengajuan_lalu;
                     @endphp
                     <tr style="font-weight: bold;">
-                        <td class="t l b" align="left" colspan="3" height="20">
+                        <td class="t l b" align="left" colspan="4" height="20">
                             Jumlah {{ $nama_desa }}
                         </td>
                         <td class="t l b" align="right">
