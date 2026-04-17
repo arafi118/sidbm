@@ -126,7 +126,7 @@
 
                                     if (
                                         in_array(
-                                            'ttahapan_perguliran.verifikasi.edit_verifikasi_anggota',
+                                            'tahapan_perguliran.verifikasi.edit_verifikasi_anggota',
                                             Session::get('tombol'),
                                         )
                                     ) {

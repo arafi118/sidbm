@@ -876,7 +876,7 @@ class SopController extends Controller
                 'sidebarColor' => 'success',
                 'sidebarType' => 'bg-gradient-dark',
                 'navbarFixed' => 'position-sticky blur shadow-blur mt-4 left-auto top-1 z-index-sticky',
-                'sidebarMini' => 'g-sidenav-pinned',
+                'sidebarMini' => '',
                 'darkMode' => '',
             ];
         }
