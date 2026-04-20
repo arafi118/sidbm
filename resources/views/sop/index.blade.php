@@ -262,6 +262,9 @@
         const CURRENT_ID = SAVED_ID || '{{ $token }}'
         const CURRENT_KEY = SAVED_KEY || MASTER_KEY
 
+        const LOKASI_ID = '{{ $kec->id }}'
+        const KODE_KEC = '{{ $kec->kd_kec }}'
+
         var socket;
         var socketId = 0;
 
@@ -394,7 +397,7 @@
                             'x-api-key': MASTER_KEY
                         },
                         data: {
-                            name: $('#nama_bumdesma').val()
+                            name: LOKASI_ID + '-' + KODE_KEC.replace(/\./g, '-')
                         },
                         success: function(result) {
                             if (result.success) {
