@@ -480,13 +480,22 @@ class GenerateService
             $tgl_cair = $pinjaman->tgl_tunggu;
         }
 
+        $time = strtotime($tgl_cair);
+        $y = date('Y', $time);
+        $m = (int) date('m', $time);
+        $d = (int) date('d', $time);
+
         if ($desa->jadwal_angsuran_desa > 0) {
-            $tgl_cair = date('Y-m', strtotime($tgl_cair)).'-'.$desa->jadwal_angsuran_desa;
+            $d = (int) $desa->jadwal_angsuran_desa;
         }
 
-        if ($batas_angsuran > 0 && date('d', strtotime($tgl_cair)) >= $batas_angsuran) {
-            $tgl_cair = date('Y-m-d', strtotime('+1 month', strtotime($tgl_cair)));
+        if ($batas_angsuran > 0 && $d >= $batas_angsuran) {
+            $m++;
         }
+
+        $tgl_baru = mktime(0, 0, 0, $m, 1, $y);
+        $max_d = (int) date('t', $tgl_baru);
+        $tgl_cair = date('Y-m', $tgl_baru) . '-' . sprintf('%02d', min($d, $max_d));
 
         return ['alokasi' => $alokasi, 'tgl_cair' => $tgl_cair];
     }
