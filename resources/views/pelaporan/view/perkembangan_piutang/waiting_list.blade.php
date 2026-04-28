@@ -77,7 +77,7 @@
                                 $t_verifikasi_lalu += $j_verifikasi_lalu;
                             @endphp
                             <tr style="font-weight: bold;">
-                                <td class="t l b" align="left" colspan="3" height="20">
+                                <td class="t l b" align="left" colspan="4" height="20">
                                     Jumlah {{ $nama_desa }}
                                 </td>
                                 <td class="t l b" align="right">
@@ -211,9 +211,8 @@
                             {{ number_format($j_verifikasi_lalu, 2) }}
                         </td>
                     </tr>
-
                     <tr>
-                        <td colspan="7" style="padding: 0px !important;">
+                        <td colspan="8" style="padding: 0px !important;">
                             <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
                                 style=" table-layout: fixed;">
                                 <tr style="background: rgb(230, 230, 230); font-weight: bold;">

@@ -243,7 +243,6 @@
                             {{ number_format($j_waiting_lalu, 2) }}
                         </td>
                     </tr>
-
                     <tr>
                         <td colspan="9" style="padding: 0px !important;">
                             <table class="p" border="0" width="100%" cellspacing="0" cellpadding="0"
@@ -261,7 +260,7 @@
                                     <td class="t l b" width="10%" align="right">
                                         {{ number_format($t_verifikasi) }}
                                     </td>
-                                    <td class="t l b r" width="10%" align="right">
+                                    <td class="t l b" width="10%" align="right">
                                         {{ number_format($t_verifikasi_lalu) }}
                                     </td>
                                     <td class="t l b" width="10%" align="right">
