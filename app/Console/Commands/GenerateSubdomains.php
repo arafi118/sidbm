@@ -36,6 +36,8 @@ class GenerateSubdomains extends Command
         $skipped = 0;
         $failed = 0;
 
+        $rootDomain = env('CPANEL_DOMAIN', 'sidbm.net');
+
         foreach ($kecamatans as $kec) {
             $webKec = $kec->web_kec;
 
@@ -45,8 +47,8 @@ class GenerateSubdomains extends Command
                 continue;
             }
 
-            // Skip if not sidbm.net
-            if (!str_ends_with($webKec, 'sidbm.net')) {
+            // Skip if not the target domain
+            if (!str_ends_with($webKec, $rootDomain)) {
                 $skipped++;
                 continue;
             }
@@ -86,11 +88,12 @@ class GenerateSubdomains extends Command
         $rootDomain = env('CPANEL_DOMAIN', 'sidbm.net');
         $user = env('CPANEL_USER');
         $pass = env('CPANEL_PASS');
-        $host = env('CPANEL_HOST');
+        $host = env('CPANEL_URL');
+        $host = str_replace(['https://', 'http://'], '', $host);
         $dir = env('CPANEL_DIR', '/public_html');
 
         if (!$user || !$pass || !$host) {
-            $this->error("  [ERROR] cPanel credentials (CPANEL_USER, CPANEL_PASS, CPANEL_HOST) not configured in .env");
+            $this->error("  [ERROR] cPanel credentials (CPANEL_USER, CPANEL_PASS, CPANEL_URL) not configured in .env");
             return false;
         }
 
