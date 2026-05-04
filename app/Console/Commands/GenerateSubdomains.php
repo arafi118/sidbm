@@ -155,7 +155,7 @@ class GenerateSubdomains extends Command
             'domain' => "{$subdomain}.{$rootDomain}",
         ];
 
-        $url = "https://{$host}:2083/execute/SubDomain/delsubdomain?" . http_build_query($query);
+        $url = "https://{$host}:2083/execute/SubDomain/delete_domain?" . http_build_query($query);
 
         try {
             Http::withHeaders([
