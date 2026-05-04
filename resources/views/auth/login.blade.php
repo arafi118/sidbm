@@ -77,14 +77,16 @@
     <main class="main-content  mt-0">
         <section>
             <div class="page-header min-vh-100">
-                <div class="download-app">
-                    <button type="button" id="download-app"
-                        class="btn btn-lg btn-facebook btn-icon-only rounded-circle">
-                        <span class="btn-inner--icon">
-                            <i class="fas fa-cloud-download-alt"></i>
-                        </span>
-                    </button>
-                </div>
+                @if ($app)
+                    <div class="download-app">
+                        <button type="button" id="download-app"
+                            class="btn btn-lg btn-facebook btn-icon-only rounded-circle">
+                            <span class="btn-inner--icon">
+                                <i class="fas fa-cloud-download-alt"></i>
+                            </span>
+                        </button>
+                    </div>
+                @endif
 
                 <div class="container">
                     <div class="row">
@@ -173,11 +175,13 @@
             });
         }
 
-        $(document).on('click', '#download-app', function(e) {
-            e.preventDefault();
+        @if ($app)
+            $(document).on('click', '#download-app', function(e) {
+                e.preventDefault();
 
-            window.open('{{ $app->apk_url }}', '_blank');
-        })
+                window.open('{{ $app->apk_url }}', '_blank');
+            })
+        @endif
     </script>
 
     @if (session('pesan'))
