@@ -83,7 +83,7 @@ class GenerateSubdomains extends Command
     }
 
     /**
-     * Call cPanel UAPI to create a subdomain
+     * Call cPanel API 2 to create a subdomain
      */
     private function createSubdomain($subdomain, $recreate = false)
     {
@@ -95,26 +95,27 @@ class GenerateSubdomains extends Command
         $dir = env('CPANEL_DIR', '/public_html');
 
         if (!$user || !$pass || !$host) {
-            $this->error("  [ERROR] cPanel credentials (CPANEL_USER, CPANEL_PASS, CPANEL_URL) not configured in .env");
+            $this->error("  [ERROR] cPanel credentials not configured in .env");
             return false;
         }
 
         if ($recreate) {
-            $this->info("  [CPANEL] Deleting existing subdomain...");
+            $this->info("  [CPANEL] Deleting existing subdomain via API 2...");
             $this->deleteSubdomain($subdomain);
         }
 
-        $query = [
+        $params = [
+            'cpanel_jsonapi_apiversion' => 2,
+            'cpanel_jsonapi_module' => 'SubDomain',
+            'cpanel_jsonapi_func' => 'addsubdomain',
             'domain' => $subdomain,
             'rootdomain' => $rootDomain,
-            'canoff' => '1',
             'dir' => $dir,
-            'disallowdot' => '1',
+            'canoff' => 1,
+            'disallowdot' => 1
         ];
 
-        // Construct URL based on cPanel UAPI standards
-        // Example: https://hostname:2083/execute/SubDomain/addsubdomain
-        $url = "https://{$host}:2083/execute/SubDomain/addsubdomain?" . http_build_query($query);
+        $url = "https://{$host}:2083/json-api/cpanel?" . http_build_query($params);
         
         try {
             $response = Http::withHeaders([
@@ -123,15 +124,16 @@ class GenerateSubdomains extends Command
 
             if ($response->successful()) {
                 $data = $response->json();
-                if (isset($data['status']) && $data['status'] == 1) {
+                // API 2 returns data in cpanelresult
+                $result = $data['cpanelresult'] ?? [];
+                if (empty($result['error'])) {
                     return true;
                 } else {
-                    $errors = isset($data['errors']) ? implode(', ', $data['errors']) : 'Unknown error';
-                    $this->error("  [API ERROR] " . $errors);
+                    $this->error("  [API ERROR] " . $result['error']);
                     return false;
                 }
             } else {
-                $this->error("  [HTTP ERROR] Status: " . $response->status() . " - " . $response->body());
+                $this->error("  [HTTP ERROR] Status: " . $response->status());
                 return false;
             }
         } catch (\Exception $e) {
@@ -141,7 +143,7 @@ class GenerateSubdomains extends Command
     }
 
     /**
-     * Delete subdomain via cPanel UAPI
+     * Delete subdomain via cPanel API 2
      */
     private function deleteSubdomain($subdomain)
     {
@@ -151,11 +153,14 @@ class GenerateSubdomains extends Command
         $host = env('CPANEL_URL');
         $host = str_replace(['https://', 'http://'], '', $host);
 
-        $query = [
+        $params = [
+            'cpanel_jsonapi_apiversion' => 2,
+            'cpanel_jsonapi_module' => 'SubDomain',
+            'cpanel_jsonapi_func' => 'delsubdomain',
             'domain' => "{$subdomain}.{$rootDomain}",
         ];
 
-        $url = "https://{$host}:2083/execute/SubDomain/delete_domain?" . http_build_query($query);
+        $url = "https://{$host}:2083/json-api/cpanel?" . http_build_query($params);
 
         try {
             Http::withHeaders([
