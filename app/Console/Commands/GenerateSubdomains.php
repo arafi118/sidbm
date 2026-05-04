@@ -13,7 +13,7 @@ class GenerateSubdomains extends Command
      *
      * @var string
      */
-    protected $signature = 'kecamatan:generate-subdomains {--dry-run : Only show what would be done without making changes}';
+    protected $signature = 'kecamatan:generate-subdomains {--dry-run : Only show what would be done without making changes} {--recreate : Delete existing subdomain before creating to update path}';
 
     /**
      * The console command description.
@@ -28,6 +28,7 @@ class GenerateSubdomains extends Command
     public function handle()
     {
         $dryRun = $this->option('dry-run');
+        $recreate = $this->option('recreate');
         $kecamatans = Kecamatan::all();
 
         $this->info("Scanning " . $kecamatans->count() . " kecamatan records...");
@@ -47,27 +48,28 @@ class GenerateSubdomains extends Command
                 continue;
             }
 
-            // Skip if not the target domain
-            if (!str_ends_with($webKec, $rootDomain)) {
-                $skipped++;
-                continue;
-            }
-
-            // Extract prefix (e.g. "puspo" from "puspo.sidbm.net")
+            // Extract prefix (e.g. "puspo" from "puspo.sidbm.net" or "puspo.sidbm.id")
             $prefix = explode('.', $webKec)[0];
+            $newDomain = "{$prefix}.{$rootDomain}";
             
-            $this->info("Processing: {$prefix}.sidbm.net (ID: {$kec->id})");
+            $this->info("Processing: {$webKec} -> {$newDomain} (ID: {$kec->id})");
 
             if ($dryRun) {
-                $this->line("  [DRY RUN] Would create subdomain: {$prefix} on root domain: " . env('CPANEL_DOMAIN', 'sidbm.net'));
+                $this->line("  [DRY RUN] Would update DB and create subdomain: {$newDomain}");
                 $processed++;
             } else {
-                $success = $this->createSubdomain($prefix);
+                // Update Database
+                $kec->web_kec = $newDomain;
+                $kec->save();
+                $this->info("  [DB] Updated to {$newDomain}");
+
+                // Create/Update in cPanel
+                $success = $this->createSubdomain($prefix, $recreate);
                 if ($success) {
-                    $this->info("  [SUCCESS] Subdomain created.");
+                    $this->info("  [CPANEL] Subdomain processed.");
                     $processed++;
                 } else {
-                    $this->error("  [FAILED] Failed to create subdomain.");
+                    $this->error("  [CPANEL] Failed to process subdomain.");
                     $failed++;
                 }
             }
@@ -83,7 +85,7 @@ class GenerateSubdomains extends Command
     /**
      * Call cPanel UAPI to create a subdomain
      */
-    private function createSubdomain($subdomain)
+    private function createSubdomain($subdomain, $recreate = false)
     {
         $rootDomain = env('CPANEL_DOMAIN', 'sidbm.net');
         $user = env('CPANEL_USER');
@@ -95,6 +97,11 @@ class GenerateSubdomains extends Command
         if (!$user || !$pass || !$host) {
             $this->error("  [ERROR] cPanel credentials (CPANEL_USER, CPANEL_PASS, CPANEL_URL) not configured in .env");
             return false;
+        }
+
+        if ($recreate) {
+            $this->info("  [CPANEL] Deleting existing subdomain...");
+            $this->deleteSubdomain($subdomain);
         }
 
         $query = [
@@ -129,6 +136,33 @@ class GenerateSubdomains extends Command
             }
         } catch (\Exception $e) {
             $this->error("  [EXCEPTION] " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Delete subdomain via cPanel UAPI
+     */
+    private function deleteSubdomain($subdomain)
+    {
+        $rootDomain = env('CPANEL_DOMAIN', 'sidbm.net');
+        $user = env('CPANEL_USER');
+        $pass = env('CPANEL_PASS');
+        $host = env('CPANEL_URL');
+        $host = str_replace(['https://', 'http://'], '', $host);
+
+        $query = [
+            'domain' => "{$subdomain}.{$rootDomain}",
+        ];
+
+        $url = "https://{$host}:2083/execute/SubDomain/delsubdomain?" . http_build_query($query);
+
+        try {
+            Http::withHeaders([
+                'Authorization' => 'Basic ' . base64_encode("{$user}:{$pass}"),
+            ])->get($url);
+            return true;
+        } catch (\Exception $e) {
             return false;
         }
     }
