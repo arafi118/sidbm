@@ -495,7 +495,7 @@ class TransaksiController extends Controller
                     'id_pinj_i' => '0',
                     'keterangan_transaksi' => $keterangan,
                     'relasi' => '-',
-                    'jumlah' => $pembagian_desa,
+                    'jumlah' => floatval($pembagian_desa),
                     'urutan' => '0',
                     'id_user' => auth()->user()->id,
                 ];
@@ -530,7 +530,7 @@ class TransaksiController extends Controller
                         'id_pinj_i' => '0',
                         'keterangan_transaksi' => $keterangan,
                         'relasi' => '-',
-                        'jumlah' => str_replace(',', '', str_replace('.00', '', $pembagian_laba_masyarakat[$urut])),
+                        'jumlah' => floatval(str_replace(',', '', str_replace('.00', '', $pembagian_laba_masyarakat[$urut]))),
                         'urutan' => '0',
                         'id_user' => auth()->user()->id,
                     ];
@@ -2788,7 +2788,7 @@ class TransaksiController extends Controller
     public function generateReal($id_pinkel)
     {
         $pinkel = PinjamanKelompok::where('id', $id_pinkel)->first();
-        if (!$pinkel) {
+        if (! $pinkel) {
             return response()->json([
                 'success' => false,
                 'msg' => 'Error',
