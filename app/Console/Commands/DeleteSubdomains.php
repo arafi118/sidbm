@@ -104,6 +104,7 @@ class DeleteSubdomains extends Command
      */
     private function deleteSubdomain($fullDomain)
     {
+        $rootDomain = env('CPANEL_DOMAIN', 'sidbm.net');
         $user = env('CPANEL_USER');
         $pass = env('CPANEL_PASS');
         $host = env('CPANEL_URL');
@@ -114,17 +115,21 @@ class DeleteSubdomains extends Command
             return false;
         }
 
+        // Extract prefix to match GenerateSubdomains logic
+        $subdomain = explode('.', $fullDomain)[0];
+
         $params = [
             'cpanel_jsonapi_apiversion' => 2,
             'cpanel_jsonapi_module' => 'SubDomain',
             'cpanel_jsonapi_func' => 'delsubdomain',
-            'domain' => $fullDomain,
+            'domain' => "{$subdomain}.{$rootDomain}",
         ];
 
         $url = "https://{$host}:2083/json-api/cpanel?" . http_build_query($params);
 
         try {
-            $response = Http::withHeaders([
+            // Increased timeout to 60 seconds as cPanel operations can be slow
+            $response = Http::timeout(60)->withHeaders([
                 'Authorization' => 'Basic ' . base64_encode("{$user}:{$pass}"),
             ])->get($url);
 
@@ -135,6 +140,10 @@ class DeleteSubdomains extends Command
                     return true;
                 } else {
                     $this->error("  [API ERROR] " . $result['error']);
+                    // If it says the subdomain doesn't exist, we can treat it as "deleted" for DB purposes
+                    if (str_contains($result['error'], "does not exist") || str_contains($result['error'], "not found")) {
+                        return true;
+                    }
                     return false;
                 }
             } else {
@@ -147,4 +156,5 @@ class DeleteSubdomains extends Command
         }
     }
 }
+
 
