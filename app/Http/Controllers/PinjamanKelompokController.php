@@ -16,6 +16,7 @@ use App\Models\RencanaAngsuran;
 use App\Models\SistemAngsuran;
 use App\Models\Transaksi;
 use App\Models\User;
+use App\Services\GenerateService;
 use App\Utils\Keuangan;
 use App\Utils\Pinjaman;
 use App\Utils\Tanggal;
@@ -26,7 +27,6 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Services\GenerateService;
 use PDF;
 use Session;
 use Yajra\DataTables\DataTables;
@@ -3043,7 +3043,9 @@ class PinjamanKelompokController extends Controller
 
     private function supabaseToBase64($url)
     {
-        $response = Http::get($url);
+        $response = Http::withOptions([
+            'verify' => false,
+        ])->get($url);
 
         if (! $response->successful()) {
             return null;
