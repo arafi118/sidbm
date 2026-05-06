@@ -2,25 +2,25 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Kecamatan;
+use App\Models\Kabupaten;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
-class GenerateSubdomains extends Command
+class GenerateKabupatenSubdomains extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'kecamatan:generate-subdomains {--dry-run : Only show what would be done without making changes} {--recreate : Delete existing subdomain before creating to update path}';
+    protected $signature = 'kabupaten:generate-subdomains {--dry-run : Only show what would be done without making changes} {--recreate : Delete existing subdomain before creating to update path}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generate subdomains for kecamatan based on web_kec prefix and register them in cPanel';
+    protected $description = 'Generate subdomains for kabupaten based on web_kab prefix and register them in cPanel';
 
     /**
      * Execute the console command.
@@ -29,9 +29,9 @@ class GenerateSubdomains extends Command
     {
         $dryRun = $this->option('dry-run');
         $recreate = $this->option('recreate');
-        $kecamatans = Kecamatan::all();
+        $kabupatens = Kabupaten::all();
 
-        $this->info("Scanning " . $kecamatans->count() . " kecamatan records...");
+        $this->info("Scanning " . $kabupatens->count() . " kabupaten records...");
 
         $processed = 0;
         $skipped = 0;
@@ -39,35 +39,35 @@ class GenerateSubdomains extends Command
 
         $rootDomain = env('CPANEL_DOMAIN', 'sidbm.net');
 
-        foreach ($kecamatans as $kec) {
-            $webKec = trim($kec->web_kec);
+        foreach ($kabupatens as $kab) {
+            $webKab = trim($kab->web_kab);
 
             // Skip if empty
-            if (empty($webKec)) {
+            if (empty($webKab)) {
                 $skipped++;
                 continue;
             }
 
-            $prefix = explode('.', $webKec)[0];
+            $prefix = explode('.', $webKab)[0];
             $newDomain = "{$prefix}.{$rootDomain}";
             
             // 1. Skip if domain belongs to another server (does not contain rootDomain)
-            if (!str_contains($webKec, $rootDomain)) {
-                $this->line("  [SKIP] Domain belongs to another server: {$webKec}");
+            if (!str_contains($webKab, $rootDomain)) {
+                $this->line("  [SKIP] Domain belongs to another server: {$webKab}");
                 $skipped++;
                 continue;
             }
 
-            $this->info("Processing: {$webKec} -> {$newDomain} (ID: {$kec->id})");
+            $this->info("Processing: {$webKab} -> {$newDomain} (ID: {$kab->id})");
             
             if ($dryRun) {
                 $this->line("  [DRY RUN] Would update DB and create subdomain: {$newDomain}");
                 $processed++;
             } else {
                 // Update Database (hanya jika berbeda)
-                if ($webKec !== $newDomain) {
-                    $kec->web_kec = $newDomain;
-                    $kec->save();
+                if ($webKab !== $newDomain) {
+                    $kab->web_kab = $newDomain;
+                    $kab->save();
                     $this->info("  [DB] Updated to {$newDomain}");
                 } else {
                     $this->info("  [DB] Already correct: {$newDomain}");
@@ -86,7 +86,7 @@ class GenerateSubdomains extends Command
         }
 
         $this->info("--- Summary ---");
-        $this->info("Total Records: " . $kecamatans->count());
+        $this->info("Total Records: " . $kabupatens->count());
         $this->info("Processed: " . $processed);
         $this->info("Skipped: " . $skipped);
         $this->info("Failed: " . $failed);
@@ -134,7 +134,6 @@ class GenerateSubdomains extends Command
 
             if ($response->successful()) {
                 $data = $response->json();
-                // API 2 returns data in cpanelresult
                 $result = $data['cpanelresult'] ?? [];
                 if (empty($result['error'])) {
                     return true;

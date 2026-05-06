@@ -17,7 +17,9 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-/public/trigger.php
 /.vs/sidbm
 /.vs
+
+/public/trigger.php
 /public/custom.php
+/public/regenerate.php
