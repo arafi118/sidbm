@@ -796,7 +796,7 @@ class PinjamanKelompokController extends Controller
 
             $update = [
                 $tgl => Tanggal::tglNasional($data[$tgl]),
-                $alokasi => str_replace(',', '', str_replace('.00', '', $data[$alokasi])),
+                $alokasi => str_replace(',', '', $data[$alokasi]),
                 'status' => 'A',
             ];
 
@@ -824,7 +824,7 @@ class PinjamanKelompokController extends Controller
                 'id_pinj_i' => '0',
                 'keterangan_transaksi' => (string) $keterangan,
                 'relasi' => (string) $perguliran->kelompok->nama_kelompok.' ['.$perguliran->id.'] '.$perguliran->kelompok->ketua,
-                'jumlah' => str_replace(',', '', str_replace('.00', '', $data[$alokasi])),
+                'jumlah' => str_replace(',', '', $data[$alokasi]),
                 'urutan' => '0',
                 'id_user' => auth()->user()->id,
             ]);
@@ -835,11 +835,11 @@ class PinjamanKelompokController extends Controller
                 $UpdateDataPemanfaat = [];
 
                 foreach ($request->idpa as $idpa => $val) {
-                    $val = (int) str_replace([',', '.00'], '', $val);
+                    $val = str_replace(',', '', $val);
                     $UpdatePinjamanAnggota[] = [
                         'id' => $idpa,
-                        'tgl_dana' => Tanggal::tglNasional($data[$tgl]),
-                        'tgl_cair' => Tanggal::tglNasional($data[$tgl]),
+                        'tgl_dana' => Tanggal::tglNasional($data['tgl_cair']),
+                        'tgl_cair' => Tanggal::tglNasional($data['tgl_cair']),
                         $tgl => Tanggal::tglNasional($data[$tgl]),
                         $alokasi => $val,
                         'status' => $data['status'],
@@ -880,10 +880,10 @@ class PinjamanKelompokController extends Controller
             }
 
             $update = [
-                'tgl_dana' => Tanggal::tglNasional($data[$tgl]),
-                'tgl_cair' => Tanggal::tglNasional($data[$tgl]),
+                'tgl_dana' => Tanggal::tglNasional($data['tgl_cair']),
+                'tgl_cair' => Tanggal::tglNasional($data['tgl_cair']),
                 $tgl => Tanggal::tglNasional($data[$tgl]),
-                $alokasi => str_replace(',', '', str_replace('.00', '', $data[$alokasi])),
+                $alokasi => str_replace(',', '', $data[$alokasi]),
                 'jangka' => $data['jangka'],
                 'pros_jasa' => $data['pros_jasa'],
                 'jenis_jasa' => $data['jenis_jasa'],
@@ -898,7 +898,7 @@ class PinjamanKelompokController extends Controller
                 $UpdateDataPemanfaat = [];
 
                 foreach ($request->idpa as $idpa => $val) {
-                    $val = (int) str_replace([',', '.00'], '', $val);
+                    $val = str_replace(',', '', $val);
                     $UpdatePinjamanAnggota[] = [
                         'id' => $idpa,
                         $tgl => Tanggal::tglNasional($data[$tgl]),
@@ -934,7 +934,7 @@ class PinjamanKelompokController extends Controller
 
             $update = [
                 $tgl => Tanggal::tglNasional($data[$tgl]),
-                $alokasi => str_replace(',', '', str_replace('.00', '', $data[$alokasi])),
+                $alokasi => str_replace(',', '', $data[$alokasi]),
                 'jangka' => $data['jangka'],
                 'pros_jasa' => $data['pros_jasa'],
                 'jenis_jasa' => $data['jenis_jasa'],
