@@ -60,7 +60,7 @@ return [
             'driver' => 's3',
             'key' => env('SUPABASE_S3_KEY'),
             'secret' => env('SUPABASE_S3_SECRET'),
-            'region' => env('SUPABASE_S3_REGION'),
+            'region' => env('SUPABASE_S3_REGION', 'ap-southeast-1'),
             'bucket' => env('SUPABASE_S3_BUCKET', 'public'),
             'endpoint' => env('SUPABASE_S3_ENDPOINT'),
             'use_path_style_endpoint' => true,
