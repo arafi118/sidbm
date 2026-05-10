@@ -34,7 +34,7 @@ class AuthController extends Controller
         if (! $kec) {
             $kab = Kabupaten::where('web_kab', request()->getHost())->orwhere('web_kab_alternatif', request()->getHost())->first();
             if (! $kab) {
-                abort(404);
+                abort(404, 'Lembaga atau domain tidak terdaftar');
             }
 
             return redirect('/kab');
@@ -93,6 +93,9 @@ class AuthController extends Controller
         */
 
         $kec = Kecamatan::where('web_kec', $url)->orwhere('web_alternatif', $url)->with('kabupaten')->first();
+        if (!$kec) {
+            abort(404, 'Lembaga tidak ditemukan');
+        }
         $lokasi = $kec->id;
 
         $icon = '/assets/img/icon/favicon.png';
@@ -219,6 +222,9 @@ class AuthController extends Controller
         $password = $uname;
 
         $kec = Kecamatan::where('web_kec', $url)->orwhere('web_alternatif', $url)->first();
+        if (!$kec) {
+            abort(404, 'Lembaga tidak ditemukan');
+        }
         $lokasi = $kec->id;
 
         $icon = '/assets/img/icon/favicon.png';
