@@ -1469,8 +1469,8 @@ class TransaksiController extends Controller
             $rek_pokok = ['1.1.03.01', '1.1.03.02', '1.1.03.03'];
             $rek_jasa = ['1.1.03.04', '1.1.03.05', '1.1.03.06', '4.1.01.01', '4.1.01.02', '4.1.01.03'];
 
-            $alokasi_pokok = intval($pinkel->alokasi);
-            $alokasi_jasa = intval($pinkel->pros_jasa == 0 ? 0 : $pinkel->alokasi * ($pinkel->pros_jasa / 100));
+            $alokasi_pokok = round($pinkel->alokasi, 2);
+            $alokasi_jasa = round($pinkel->pros_jasa == 0 ? 0 : $pinkel->alokasi * ($pinkel->pros_jasa / 100), 2);
 
             $real_angsuran = [
                 'id' => $idtp,
@@ -1878,7 +1878,7 @@ class TransaksiController extends Controller
             ['tgl_transaksi', '<=', date('Y-m-d')],
         ])->orderBy('tgl_transaksi', 'DESC')->orderBy('id', 'DESC');
 
-        $alokasi_jasa = $pinkel->alokasi * ($pinkel->pros_jasa / 100);
+        $alokasi_jasa = round($pinkel->alokasi * ($pinkel->pros_jasa / 100), 2);
 
         if ($real->count() > 0) {
             $real = $real->first();
@@ -1890,11 +1890,11 @@ class TransaksiController extends Controller
         $target_pokok = $pinkel->rencana_sum_wajib_pokok;
         $target_jasa = $pinkel->rencana_sum_wajib_jasa;
 
-        $saldo_pokok = ($target_pokok - $real->sum_pokok > 0) ? $target_pokok - $real->sum_pokok : 0;
-        $saldo_jasa = ($target_jasa - $real->sum_jasa > 0) ? $target_jasa - $real->sum_jasa : 0;
+        $saldo_pokok = round(($target_pokok - $real->sum_pokok > 0) ? $target_pokok - $real->sum_pokok : 0, 2);
+        $saldo_jasa = round(($target_jasa - $real->sum_jasa > 0) ? $target_jasa - $real->sum_jasa : 0, 2);
 
-        $sisa_pokok = $pinkel->alokasi - $real->sum_pokok;
-        $sisa_jasa = $alokasi_jasa - $real->sum_jasa;
+        $sisa_pokok = round($pinkel->alokasi - $real->sum_pokok, 2);
+        $sisa_jasa = round($alokasi_jasa - $real->sum_jasa, 2);
 
         if ($saldo_pokok > $sisa_pokok) {
             $saldo_pokok = $sisa_pokok;
@@ -1903,6 +1903,9 @@ class TransaksiController extends Controller
         if ($saldo_jasa > $sisa_jasa) {
             $saldo_jasa = $sisa_jasa;
         }
+
+        $saldo_pokok = max(0, $saldo_pokok);
+        $saldo_jasa = max(0, $saldo_jasa);
 
         $sum_pokok = $real->sum_pokok;
         $sum_jasa = $real->sum_jasa;
@@ -1986,12 +1989,12 @@ class TransaksiController extends Controller
         $target_pokok = $pinkel->rencana_sum_wajib_pokok;
         $target_jasa = $pinkel->rencana_sum_wajib_jasa;
 
-        $saldo_pokok = ($target_pokok - $real->sum_pokok > 0) ? $target_pokok - $real->sum_pokok : 0;
-        $saldo_jasa = ($target_jasa - $real->sum_jasa > 0) ? $target_jasa - $real->sum_jasa : 0;
+        $saldo_pokok = round(($target_pokok - $real->sum_pokok > 0) ? $target_pokok - $real->sum_pokok : 0, 2);
+        $saldo_jasa = round(($target_jasa - $real->sum_jasa > 0) ? $target_jasa - $real->sum_jasa : 0, 2);
 
-        $alokasi_jasa = $pinkel->alokasi * ($pinkel->pros_jasa / 100);
-        $sisa_pokok = $pinkel->alokasi - $real->sum_pokok;
-        $sisa_jasa = $alokasi_jasa - $real->sum_jasa;
+        $alokasi_jasa = round($pinkel->alokasi * ($pinkel->pros_jasa / 100), 2);
+        $sisa_pokok = round($pinkel->alokasi - $real->sum_pokok, 2);
+        $sisa_jasa = round($alokasi_jasa - $real->sum_jasa, 2);
 
         if ($saldo_pokok > $sisa_pokok) {
             $saldo_pokok = $sisa_pokok;
@@ -2000,6 +2003,9 @@ class TransaksiController extends Controller
         if ($saldo_jasa > $sisa_jasa) {
             $saldo_jasa = $sisa_jasa;
         }
+
+        $saldo_pokok = max(0, $saldo_pokok);
+        $saldo_jasa = max(0, $saldo_jasa);
 
         return response()->json([
             'saldo_pokok' => $saldo_pokok,
