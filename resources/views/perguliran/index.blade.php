@@ -3,14 +3,31 @@
 @section('css')
     <style>
         .nav-wrapper .nav-link {
-            transition: all 0.2s ease !important;
+            transition: all 0.3s ease !important;
+            border-radius: 0.75rem !important;
+            margin: 0 6px !important; /* Memberi pemisah antar tombol */
         }
 
+        /* 1. State Standar: Kotak Biasa */
+        .nav-wrapper .nav-link:not(.active) {
+            background-color: #ffffff !important;
+            border: 1px solid rgba(0, 0, 0, 0.08) !important;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.03) !important;
+            color: #7b809a !important;
+        }
+
+        /* 2. State Hover: Efek Mengambang (Floating) */
         .nav-wrapper .nav-link:hover:not(.active) {
-            background-color: #f0f2f5 !important;
-            box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.05) !important;
-            transform: translateY(-1px);
+            background-color: #ffffff !important;
+            box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+            transform: translateY(-3px) !important;
+            color: #344767 !important;
             cursor: pointer;
+        }
+
+        /* 3. State Aktif: Memastikan konsistensi margin dengan framework */
+        .nav-wrapper .nav-link.active {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.07) !important;
         }
     </style>
 @endsection
