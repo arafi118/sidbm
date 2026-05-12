@@ -2,60 +2,15 @@
 
 @section('css')
     <style>
-        /* 0. Reset kontainer: Hilangkan background pembungkus agar menjadi kartu terpisah */
-        .nav-wrapper .nav-pills {
-            background-color: transparent !important;
-            box-shadow: none !important;
-            padding: 0 !important;
-        }
-
-        /* Memberi pemisah merata pada ITEM (bukan link) agar ukuran link konsisten & sinkron */
-        .nav-wrapper .nav-item {
-            padding: 0 6px !important;
-        }
-
-        /* 1. Konfigurasi Utama Tombol (Nav Link) */
         .nav-wrapper .nav-link {
-            transition: all 0.3s ease !important;
-            border-radius: 0.75rem !important;
-            padding-top: 12px !important; /* Memberi ruang vertikal lebih lega */
-            padding-bottom: 12px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            width: 100% !important;
-            min-height: 45px !important; /* Memastikan tinggi seragam */
+            transition: all 0.2s ease !important;
         }
 
-        /* 2. State Standar (Card Biasa) */
-        .nav-wrapper .nav-link:not(.active) {
-            background-color: #ffffff !important;
-            border: 1px solid rgba(0, 0, 0, 0.06) !important;
-            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04) !important;
-            color: #67748e !important;
-        }
-
-        /* 3. State Hover (Efek Mengambang Lebih Dinamis) */
         .nav-wrapper .nav-link:hover:not(.active) {
-            background-color: #ffffff !important;
-            box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
-            transform: translateY(-3px) !important;
-            color: #344767 !important;
+            background-color: #f0f2f5 !important;
+            box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.05) !important;
+            transform: translateY(-1px);
             cursor: pointer;
-        }
-
-        /* 4. State Aktif (Selaraskan ukuran & visual dengan yang lain) */
-        .nav-wrapper .nav-link.active {
-            background-color: #ffffff !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-            border: 1px solid rgba(0, 0, 0, 0.03) !important;
-            color: #344767 !important;
-        }
-
-        /* Rapikan posisi icon di dalam tombol agar berdampingan proporsional */
-        .nav-wrapper .nav-link .material-icons {
-            margin-right: 8px !important;
-            margin-bottom: 0 !important;
         }
     </style>
 @endsection
