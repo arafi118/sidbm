@@ -34,7 +34,7 @@
                 class="nav-link text-white {{ $active }}"
                 aria-controls="menu_{{ str_replace('#', '', $menu->link) }}" role="button" aria-expanded="false">
                 @if (isset($is_sub))
-                    <span class="sidenav-mini-icon"> • </span>
+                    <span class="sidenav-mini-icon"> <i class="fas fa-circle" style="font-size: 8px;"></i> </span>
                 @elseif ($menu->type == 'material')
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">{{ $menu->ikon }}</i>
@@ -45,7 +45,7 @@
                 <span class="nav-link-text ms-1">{{ $menu->title }}</span>
             </a>
             <div class="collapse" id="menu_{{ str_replace('#', '', $menu->link) }}">
-                <ul class="nav nav-sm flex-column">
+                <ul class="nav nav-sm flex-column ms-3">
                     @include('layouts.menu', ['parent_menu' => $menu->child, 'is_sub' => true])
                 </ul>
             </div>
@@ -77,7 +77,7 @@
             <li class="nav-item nav-item-link {{ $active }}">
                 <a class="nav-link text-white {{ $active }}" href="{{ $menu->link }}">
                     @if (isset($is_sub))
-                        <span class="sidenav-mini-icon"> • </span>
+                        <span class="sidenav-mini-icon"> <i class="fas fa-circle" style="font-size: 8px;"></i> </span>
                     @elseif ($menu->type == 'material')
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">{{ $menu->ikon }}</i>
