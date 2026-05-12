@@ -138,19 +138,19 @@
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item nav-item-link {{ active('buat_invoice') }}">
                             <a class="nav-link text-white {{ active('buat_invoice') }}" href="/master/buat_invoice">
-                                <span class="sidenav-mini-icon"> BB </span>
+                                <span class="sidenav-mini-icon"> • </span>
                                 <span class="sidenav-normal  ms-2  ps-1"> Buat Baru </span>
                             </a>
                         </li>
                         <li class="nav-item nav-item-link {{ active('unpaid') }}">
                             <a class="nav-link text-white {{ active('unpaid') }}" href="/master/unpaid">
-                                <span class="sidenav-mini-icon"> P </span>
+                                <span class="sidenav-mini-icon"> • </span>
                                 <span class="sidenav-normal  ms-2  ps-1"> Invoice Unpaid </span>
                             </a>
                         </li>
                         <li class="nav-item nav-item-link {{ active('paid') }}">
                             <a class="nav-link text-white {{ active('paid') }}" href="/master/paid">
-                                <span class="sidenav-mini-icon"> U </span>
+                                <span class="sidenav-mini-icon"> • </span>
                                 <span class="sidenav-normal  ms-2  ps-1"> Invoice Paid </span>
                             </a>
                         </li>

@@ -33,7 +33,9 @@
             <a data-bs-toggle="collapse" href="#menu_{{ str_replace('#', '', $menu->link) }}"
                 class="nav-link text-white {{ $active }}"
                 aria-controls="menu_{{ str_replace('#', '', $menu->link) }}" role="button" aria-expanded="false">
-                @if ($menu->type == 'material')
+                @if (isset($is_sub))
+                    <span class="sidenav-mini-icon"> • </span>
+                @elseif ($menu->type == 'material')
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">{{ $menu->ikon }}</i>
                     </div>
@@ -44,7 +46,7 @@
             </a>
             <div class="collapse" id="menu_{{ str_replace('#', '', $menu->link) }}">
                 <ul class="nav nav-sm flex-column">
-                    @include('layouts.menu', ['parent_menu' => $menu->child])
+                    @include('layouts.menu', ['parent_menu' => $menu->child, 'is_sub' => true])
                 </ul>
             </div>
         </li>
@@ -74,7 +76,9 @@
             @endphp
             <li class="nav-item nav-item-link {{ $active }}">
                 <a class="nav-link text-white {{ $active }}" href="{{ $menu->link }}">
-                    @if ($menu->type == 'material')
+                    @if (isset($is_sub))
+                        <span class="sidenav-mini-icon"> • </span>
+                    @elseif ($menu->type == 'material')
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">{{ $menu->ikon }}</i>
                         </div>
